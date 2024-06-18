@@ -892,6 +892,7 @@
 		C0D6CA092C18451800D4709B /* CallViewController.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA082C18451800D4709B /* CallViewController.Environment.swift */; };
 		C0D6CA1B2C185BDE00D4709B /* EngagementView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA1A2C185BDE00D4709B /* EngagementView.Environment.swift */; };
 		C0D6CA1D2C185D2900D4709B /* CallView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA1C2C185D2900D4709B /* CallView.Environment.swift */; };
+		C0D6CA0D2C1848E700D4709B /* GliaViewController.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA0C2C1848E700D4709B /* GliaViewController.Environment.swift */; };
 		C0D6CA1F2C185E3500D4709B /* BubbleView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA1E2C185E3500D4709B /* BubbleView.Environment.swift */; };
 		C0D6CA3F2C19A8DA00D4709B /* SecureConversations.FileUploadView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA3E2C19A8DA00D4709B /* SecureConversations.FileUploadView.Environment.swift */; };
 		C0D6CA412C19A97100D4709B /* SecureConversations.FileUploadListView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA402C19A97100D4709B /* SecureConversations.FileUploadListView.Environment.swift */; };
@@ -937,7 +938,10 @@
 		C0D6CA5D2C19C07200D4709B /* ConnectOperatorView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA5C2C19C07200D4709B /* ConnectOperatorView.Environment.swift */; };
 		C0D6CA612C19C4D900D4709B /* OnHoldOverlayVisualEffectView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA602C19C4D900D4709B /* OnHoldOverlayVisualEffectView.Environment.swift */; };
 		C0D6CA612C19C4D900D4709B /* OnHoldOverlayVisualEffectView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA602C19C4D900D4709B /* OnHoldOverlayVisualEffectView.Environment.swift */; };
+		C0D6CA4F2C19B9A300D4709B /* GliaPresenter.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA4E2C19B9A300D4709B /* GliaPresenter.Environment.swift */; };
+		C0D6CA512C19BB5600D4709B /* SurveyViewController.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA502C19BB5600D4709B /* SurveyViewController.Environment.swift */; };
 		C0D6CA532C19BC0300D4709B /* FilePreviewView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA522C19BC0300D4709B /* FilePreviewView.Environment.swift */; };
+		C0D6CA632C19C59100D4709B /* Glia.OpaqueAuthentication.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA622C19C59100D4709B /* Glia.OpaqueAuthentication.Environment.swift */; };
 		C0D6CA572C19BDCD00D4709B /* FilePickerViewModel.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA562C19BDCD00D4709B /* FilePickerViewModel.Environment.swift */; };
 		C0D6CA592C19BE9D00D4709B /* FilePickerController.Envrionment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA582C19BE9D00D4709B /* FilePickerController.Envrionment.swift */; };
 		C0D6CA5B2C19BF1D00D4709B /* SecureConversations.ConfirmationViewModel.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA5A2C19BF1D00D4709B /* SecureConversations.ConfirmationViewModel.Environment.swift */; };
@@ -1922,6 +1926,7 @@
 		C0D6CA082C18451800D4709B /* CallViewController.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewController.Environment.swift; sourceTree = "<group>"; };
 		C0D6CA1A2C185BDE00D4709B /* EngagementView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementView.Environment.swift; sourceTree = "<group>"; };
 		C0D6CA1C2C185D2900D4709B /* CallView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallView.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA0C2C1848E700D4709B /* GliaViewController.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaViewController.Environment.swift; sourceTree = "<group>"; };
 		C0D6CA0E2C184AB700D4709B /* SecureConversations.WelcomeViewModel.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.WelcomeViewModel.Environment.swift; sourceTree = "<group>"; };
 		C0D6CA102C184CCA00D4709B /* SecureConversations.WelcomeViewController.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.WelcomeViewController.Environment.swift; sourceTree = "<group>"; };
 		C0D6CA122C184DFF00D4709B /* FileDownloader.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileDownloader.Environment.swift; sourceTree = "<group>"; };
@@ -1965,6 +1970,9 @@
 		C0D6CA4C2C19B86000D4709B /* OnHoldOverlayView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnHoldOverlayView.Environment.swift; sourceTree = "<group>"; };
 		C0D6CA5C2C19C07200D4709B /* ConnectOperatorView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectOperatorView.Environment.swift; sourceTree = "<group>"; };
 		C0D6CA602C19C4D900D4709B /* OnHoldOverlayVisualEffectView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnHoldOverlayVisualEffectView.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA4E2C19B9A300D4709B /* GliaPresenter.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaPresenter.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA502C19BB5600D4709B /* SurveyViewController.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewController.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA622C19C59100D4709B /* Glia.OpaqueAuthentication.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.OpaqueAuthentication.Environment.swift; sourceTree = "<group>"; };
 		C0E948032AB1D5D200890026 /* ActionButtonSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonSwiftUI.swift; sourceTree = "<group>"; };
 		C0E948052AB1D64700890026 /* HeaderButtonSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderButtonSwiftUI.swift; sourceTree = "<group>"; };
 		C0E948082AB1D6AB00890026 /* HeaderSwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSwiftUI.swift; sourceTree = "<group>"; };
@@ -2593,6 +2601,7 @@
 				1A0C143D25B85DA300B00695 /* Call */,
 				1A63B2EF257A3EF100508478 /* Common */,
 				1AC7A7472582237500567FF8 /* GliaViewController.swift */,
+				C0D6CA0C2C1848E700D4709B /* GliaViewController.Environment.swift */,
 				AFA2FDF128907E9D00428E6D /* GliaViewController.Mock.swift */,
 				1A0C142825B84E5500B00695 /* EngagementViewController.swift */,
 				C0D6CA062C1843A900D4709B /* EngagementViewController.Environment.swift */,
@@ -2873,6 +2882,7 @@
 			children = (
 				1A60AFF02566A4B300E53F53 /* NavigationPresenter.swift */,
 				C43C12F82694B14900C37E1B /* GliaPresenter.swift */,
+				C0D6CA4E2C19B9A300D4709B /* GliaPresenter.Environment.swift */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -3720,6 +3730,7 @@
 				845876A02823FF21007AC3DF /* Mocks */,
 				75AF8D0227DBF069009EEE2C /* Components */,
 				75AF8CEE27DAA819009EEE2C /* SurveyViewController.swift */,
+				C0D6CA502C19BB5600D4709B /* SurveyViewController.Environment.swift */,
 				75AF8CF027DBB1F9009EEE2C /* SurveyViewController.View.swift */,
 				75F58EE027E7D5300065BA2D /* Survey.ViewController.Props.swift */,
 				7529F2B327E1D503004D3581 /* Survey.swift */,
@@ -5517,6 +5528,7 @@
 				9AB196E627C510DA00FD60AB /* ChatMessage.Mock.swift in Sources */,
 				C08D776428F5910A000461E5 /* UIView+Extensions.swift in Sources */,
 				C090467F2B7D022C003C437C /* WelcomeStyle.FilePickerButtonStyle.RemoteConfig.swift in Sources */,
+				C0D6CA4F2C19B9A300D4709B /* GliaPresenter.Environment.swift in Sources */,
 				9A19926A27D3BA8700161AAE /* ViewFactory.Environment.Interface.swift in Sources */,
 				C09046842B7D0301003C437C /* WelcomeStyle.SubtitleStyle.RemoteConfig.swift in Sources */,
 				1A0EDF8225E8E0150076D1AD /* PopoverViewController.swift in Sources */,
@@ -5548,6 +5560,7 @@
 				C0D6CA5D2C19C07200D4709B /* ConnectOperatorView.Environment.swift in Sources */,
 				8491AF0A2A78FED700CC3E72 /* GvaGalleryListViewStyle.swift in Sources */,
 				845E2F9D283FCB1400C04D56 /* Theme.Survey.Checkbox.Accessibility.swift in Sources */,
+				C0D6CA0D2C1848E700D4709B /* GliaViewController.Environment.swift in Sources */,
 				C090477A2B7E27AC003C437C /* AlertStyle.RemoteConfig.swift in Sources */,
 				752A833C2AF59EDB005E468D /* SnackBar+View.swift in Sources */,
 				C0D2F0542993CCD100803B47 /* VideoCallView.CallButtonBar.swift in Sources */,
@@ -5702,6 +5715,7 @@
 				9A3E1D9427B6C29C005634EB /* ChatEngagementFile.Mock.swift in Sources */,
 				C09046D22B7E0843003C437C /* BadgeStyle.RemoteConfig.swift in Sources */,
 				1A2DA73B25EFC00500032611 /* FileUploadListStyle.swift in Sources */,
+				C0D6CA632C19C59100D4709B /* Glia.OpaqueAuthentication.Environment.swift in Sources */,
 				7594095A298D386F008B173A /* NSLayoutConstraint+Extensions.swift in Sources */,
 				C07F62462ABC322B003EFC97 /* OrientationManager.Mock.swift in Sources */,
 				C0D2F06829A4B71C00803B47 /* VideoCallViewModel.Mock.swift in Sources */,
@@ -5936,6 +5950,7 @@
 				C0175A252A66A431001FACDE /* GvaPersistentButtonOptionView.swift in Sources */,
 				AF10ED9129BF85C700E85309 /* UnreadMessageDividerStyle.swift in Sources */,
 				75AF8CF127DBB1F9009EEE2C /* SurveyViewController.View.swift in Sources */,
+				C0D6CA512C19BB5600D4709B /* SurveyViewController.Environment.swift in Sources */,
 				9AA64E142811B91C00FA56FF /* FontScaling.swift in Sources */,
 				C0D2F04629925C5A00803B47 /* VideoCallView.ConnectStatusView.swift in Sources */,
 				C090470B2B7E1675003C437C /* ThemeColor.RemoteConfig.swift in Sources */,
