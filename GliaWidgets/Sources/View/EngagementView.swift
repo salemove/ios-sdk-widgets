@@ -19,13 +19,7 @@ class EngagementView: BaseView {
         self.connectView = ConnectView(
             with: style.connect,
             layout: layout,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding
-            )
+            environment: .create(with: environment)
         )
         super.init()
     }

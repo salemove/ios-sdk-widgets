@@ -23,7 +23,7 @@ final class SystemMessageView: ChatMessageView {
                 )
             ),
             contentAlignment: .left,
-            environment: .init(uiScreen: environment.uiScreen)
+            environment: .create(with: environment)
         )
         setup()
         layout()

@@ -7,14 +7,7 @@ extension ChatView {
         showsImage: Bool,
         imageUrl: String?
     ) -> ChatItemCell.Content {
-        let listViewEnvironment = GvaGalleryListView.Environment(
-            data: environment.data,
-            uuid: environment.uuid,
-            gcd: environment.gcd,
-            imageViewCache: environment.imageViewCache,
-            uiScreen: environment.uiScreen
-        )
-        let view = GvaGalleryListView(environment: listViewEnvironment)
+        let view = GvaGalleryListView(environment: .create(with: environment))
         let items = makeProps(for: gallery)
         let height = calculateHeight(for: view, props: items)
         view.props = .init(
@@ -53,12 +46,7 @@ extension ChatView {
             if let urlString = card.imageUrl, let url = URL(string: urlString) {
                 image = GvaGalleryCardView.Props.Image(
                     url: url,
-                    environment: .init(
-                        data: environment.data,
-                        uuid: environment.uuid,
-                        gcd: environment.gcd,
-                        imageViewCache: environment.imageViewCache
-                    )
+                    environment: .create(with: environment)
                 )
             }
             return GvaGalleryCardView.Props(

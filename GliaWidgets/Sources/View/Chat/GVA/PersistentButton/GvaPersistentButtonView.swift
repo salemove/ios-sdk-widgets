@@ -13,13 +13,7 @@ final class GvaPersistentButtonView: OperatorChatMessageView {
         self.environment = environment
         super.init(
             with: style.operatorMessageStyle,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                uiScreen: environment.uiScreen
-            )
+            environment: .create(with: environment)
         )
     }
 
