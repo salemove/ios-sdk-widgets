@@ -127,15 +127,7 @@ class CallView: EngagementView {
         super.init(
             with: style,
             layout: .call,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen
-            ),
+            environment: .create(with: environment),
             headerProps: props.header
         )
         setup()

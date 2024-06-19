@@ -7,12 +7,7 @@ final class GvaResponseTextView: ChatMessageView {
                 guard operatorImageView == nil else { return }
                 let operatorImageView = UserImageView(
                     with: viewStyle.operatorImage,
-                    environment: .init(
-                        data: environment.data,
-                        uuid: environment.uuid,
-                        gcd: environment.gcd,
-                        imageViewCache: environment.imageViewCache
-                    )
+                    environment: .create(with: environment)
                 )
                 self.operatorImageView = operatorImageView
                 operatorImageViewContainer.addSubview(operatorImageView)
@@ -49,7 +44,7 @@ final class GvaResponseTextView: ChatMessageView {
                 )
             ),
             contentAlignment: .left,
-            environment: .init(uiScreen: environment.uiScreen)
+            environment: .create(with: environment)
         )
         setup()
         layout()

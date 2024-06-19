@@ -25,7 +25,7 @@ class VisitorChatMessageView: ChatMessageView {
                 )
             ),
             contentAlignment: .right,
-            environment: .init(uiScreen: environment.uiScreen)
+            environment: .create(with: environment)
         )
 
         setup(style: style)

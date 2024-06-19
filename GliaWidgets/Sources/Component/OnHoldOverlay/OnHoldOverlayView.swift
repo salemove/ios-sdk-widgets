@@ -12,7 +12,7 @@ final class OnHoldOverlayView: UIView {
         style: OnHoldOverlayStyle
     ) {
         self.style = style
-        self.blurEffectView = OnHoldOverlayVisualEffectView(environment: .init(gcd: environment.gcd))
+        self.blurEffectView = .init(environment: .create(with: environment))
 
         super.init(frame: .zero)
 
