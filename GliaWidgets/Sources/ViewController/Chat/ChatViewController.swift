@@ -19,14 +19,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
 
         super.init(
             viewModel: viewModel.engagementModel,
-            environment: .init(
-                viewFactory: environment.viewFactory,
-                snackBar: environment.snackBar,
-                timerProviding: environment.timerProviding,
-                gcd: environment.gcd,
-                notificationCenter: environment.notificationCenter,
-                alertManager: environment.alertManager
-            )
+            environment: .create(with: environment)
         )
     }
 

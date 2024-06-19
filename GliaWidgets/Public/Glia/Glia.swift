@@ -426,9 +426,8 @@ extension Glia {
         let interactor = Interactor(
             visitorContext: configuration.visitorContext,
             queueIds: queueIds,
-            environment: .init(
-                coreSdk: environment.coreSdk,
-                gcd: environment.gcd,
+            environment: .create(
+                with: environment,
                 log: loggerPhase.logger
             )
         )
