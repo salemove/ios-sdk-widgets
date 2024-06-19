@@ -231,30 +231,18 @@ extension ChatViewController {
         fileManager.attributesOfItemAtPath = { _ in
             [FileAttributeKey.size: 12345678]
         }
-        let gcd = GCD.mock
-        let uiScreen = UIKitBased.UIScreen.mock
-        let data = FoundationBased.Data.mock
-        let date = Date.mock
+
         var fileUploadEnv: FileUpload.Environment = .mock
         fileUploadEnv.uuid = generateUUID
         let fileUploadComplete: FileUpload = .mock(
             localFile: .mock(
                 url: localFileURL,
-                environment: .init(
-                    fileManager: fileManager,
-                    gcd: gcd,
-                    uiScreen: uiScreen,
-                    thumbnailGenerator: .mock
-                )
+                environment: .mock()
             ),
             storage: FileSystemStorage.mock(
                 directory: .documents(fileManager),
                 expiration: .none,
-                environment: .init(
-                    fileManager: fileManager,
-                    data: data,
-                    date: { date }
-                )
+                environment: .mock()
             ),
             environment: fileUploadEnv
         )
@@ -265,21 +253,12 @@ extension ChatViewController {
         let fileUploadWithError: FileUpload = .mock(
             localFile: .mock(
                 url: localFileURL,
-                environment: .init(
-                    fileManager: fileManager,
-                    gcd: gcd,
-                    uiScreen: uiScreen,
-                    thumbnailGenerator: .mock
-                )
+                environment: .mock()
             ),
             storage: FileSystemStorage.mock(
                 directory: .documents(fileManager),
                 expiration: .none,
-                environment: .init(
-                    fileManager: fileManager,
-                    data: data,
-                    date: { date }
-                )
+                environment: .mock()
             ),
             environment: fileUploadEnv
         )

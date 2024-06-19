@@ -78,13 +78,9 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 
         let chatController = ChatViewController(
             viewModel: model,
-            environment: .init(
-                timerProviding: environment.timerProviding,
-                viewFactory: viewFactory,
-                gcd: environment.gcd,
-                snackBar: environment.snackBar,
-                notificationCenter: environment.notificationCenter,
-                alertManager: environment.alertManager
+            environment: .create(
+                with: environment,
+                viewFactory: viewFactory
             )
         )
         self.controller = chatController
@@ -118,7 +114,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private func presentFilePickerController(with pickerEvent: ObservableValue<FilePickerEvent>) {
         let viewModel = FilePickerViewModel(
             pickerEvent: pickerEvent,
-            environment: .init(log: environment.log)
+            environment: .create(with: environment)
         )
         viewModel.delegate = { [weak self] event in
             switch event {
@@ -129,7 +125,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 
         let controller = FilePickerController(
             viewModel: viewModel,
-            environment: .init(fileManager: environment.fileManager)
+            environment: .create(with: environment)
         )
         filePickerController = controller
         navigationPresenter.present(controller.viewController)
