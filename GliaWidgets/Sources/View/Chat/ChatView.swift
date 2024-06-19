@@ -200,6 +200,10 @@ extension ChatView {
     }
 
     func updateItemsUserImage(animated: Bool) {
+        // Prevent breaking autolayout.
+        guard self.frame != .zero else {
+            return
+        }
         tableView.indexPathsForVisibleRows?.forEach {
             if let cell = tableView.cellForRow(at: $0) as? ChatItemCell,
                let item = itemForRow?($0.row, $0.section) {
@@ -275,6 +279,10 @@ extension ChatView {
     }
 
     func scrollToBottom(animated: Bool) {
+        // Prevent breaking autolayout.
+        guard self.frame != .zero else {
+            return
+        }
         tableView.scrollToBottom(animated: animated)
     }
 
