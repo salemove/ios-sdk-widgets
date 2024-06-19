@@ -40,12 +40,9 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.sceneProvider = sceneProvider
         self.engagementKind = engagementKind
         self.gliaPresenter = GliaPresenter(
-            environment: .init(
-                appWindowsProvider: .init(
-                    uiApplication: environment.uiApplication,
-                    sceneProvider: sceneProvider
-                ),
-                log: environment.log
+            environment: .create(
+                with: environment,
+                sceneProvider: sceneProvider
             )
         )
         self.navigationPresenter = NavigationPresenter(with: navigationController)
@@ -86,10 +83,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
                 : .video
             let call = Call(
                 kind,
-                environment: .init(
-                    audioSession: environment.audioSession,
-                    uuid: environment.uuid
-                )
+                environment: .create(with: environment)
             )
             call.kind.addObserver(self) { [weak self] _, _ in
                 self?.engagementKind = EngagementKind(with: call.kind.value)
@@ -200,10 +194,7 @@ extension EngagementCoordinator {
         environment.log.prefixed(Self.self).info("Create Survey screen")
         let viewController = Survey.ViewController(
             viewFactory: self.viewFactory,
-            environment: .init(
-                notificationCenter: self.environment.notificationCenter,
-                log: environment.log
-            )
+            environment: .create(with: environment)
         )
         viewController.props = .live(
             sdkSurvey: survey,
@@ -250,46 +241,9 @@ extension EngagementCoordinator {
             screenShareHandler: screenShareHandler,
             isWindowVisible: isWindowVisible,
             startAction: startAction,
-            environment: .init(
-                fetchFile: environment.fetchFile,
-                uploadFileToEngagement: environment.uploadFileToEngagement,
-                fileManager: environment.fileManager,
-                data: environment.data,
-                date: environment.date,
-                gcd: environment.gcd,
-                uiScreen: environment.uiScreen,
-                createThumbnailGenerator: environment.createThumbnailGenerator,
-                createFileDownload: environment.createFileDownload,
-                fromHistory: environment.loadChatMessagesFromHistory,
-                fetchSiteConfigurations: environment.fetchSiteConfigurations,
-                getCurrentEngagement: environment.getCurrentEngagement,
-                submitSurveyAnswer: environment.submitSurveyAnswer,
-                uuid: environment.uuid,
-                uiApplication: environment.uiApplication,
-                fetchChatHistory: environment.fetchChatHistory,
-                createFileUploadListModel: environment.createFileUploadListModel,
-                sendSecureMessagePayload: environment.sendSecureMessagePayload,
-                queueIds: interactor.queueIds,
-                listQueues: environment.listQueues,
-                secureUploadFile: environment.uploadSecureFile,
-                getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
-                messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
-                secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
-                downloadSecureFile: environment.downloadSecureFile,
-                isAuthenticated: environment.isAuthenticated,
-                interactor: interactor,
-                startSocketObservation: environment.startSocketObservation,
-                stopSocketObservation: environment.stopSocketObservation,
-                createSendMessagePayload: environment.createSendMessagePayload,
-                proximityManager: environment.proximityManager,
-                log: environment.log,
-                timerProviding: environment.timerProviding,
-                snackBar: environment.snackBar,
-                notificationCenter: environment.notificationCenter,
-                maximumUploads: environment.maximumUploads,
-                cameraDeviceManager: environment.cameraDeviceManager,
-                flipCameraButtonStyle: environment.flipCameraButtonStyle,
-                alertManager: environment.alertManager
+            environment: .create(
+                with: environment,
+                interactor: interactor
             ),
             startWithSecureTranscriptFlow: false
         )
@@ -301,7 +255,6 @@ extension EngagementCoordinator {
         return coordinator.start()
     }
 
-    // swiftlint:disable function_body_length
     private func handleChatCoordinatorEvent(event: ChatCoordinator.DelegateEvent) {
         switch event {
         case .back:
@@ -363,35 +316,7 @@ extension EngagementCoordinator {
             unreadMessages: unreadMessages,
             screenShareHandler: screenShareHandler,
             startAction: startAction,
-            environment: .init(
-                fetchFile: environment.fetchFile,
-                downloadSecureFile: environment.downloadSecureFile,
-                uploadFileToEngagement: environment.uploadFileToEngagement,
-                fileManager: environment.fileManager,
-                data: environment.data,
-                date: environment.date,
-                gcd: environment.gcd,
-                createThumbnailGenerator: environment.createThumbnailGenerator,
-                createFileDownload: environment.createFileDownload,
-                fromHistory: environment.loadChatMessagesFromHistory,
-                fetchSiteConfigurations: environment.fetchSiteConfigurations,
-                getCurrentEngagement: environment.getCurrentEngagement,
-                timerProviding: environment.timerProviding,
-                submitSurveyAnswer: environment.submitSurveyAnswer,
-                uuid: environment.uuid,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen,
-                notificationCenter: environment.notificationCenter,
-                fetchChatHistory: environment.fetchChatHistory,
-                createFileUploadListModel: environment.createFileUploadListModel,
-                createSendMessagePayload: environment.createSendMessagePayload,
-                proximityManager: environment.proximityManager,
-                log: environment.log,
-                snackBar: environment.snackBar,
-                cameraDeviceManager: environment.cameraDeviceManager,
-                flipCameraButtonStyle: environment.flipCameraButtonStyle,
-                alertManager: environment.alertManager
-            )
+            environment: .create(with: environment)
         )
         coordinator.delegate = { [weak self] event in
             guard let self = self else { return }
@@ -435,7 +360,6 @@ extension EngagementCoordinator {
 
         return coordinator.start()
     }
-    // swiftlint:enable function_body_length
 
     private func makeGliaView(
         bubbleView: BubbleView,
@@ -466,10 +390,8 @@ extension EngagementCoordinator {
                     delegate: self,
                     sceneProvider: sceneProvider,
                     features: features,
-                    environment: .init(
-                        uiApplication: environment.uiApplication,
-                        uiScreen: environment.uiScreen,
-                        log: environment.log,
+                    environment: .create(
+                        with: environment,
                         animate: animate
                     )
                 )
@@ -478,10 +400,8 @@ extension EngagementCoordinator {
                     bubbleView: bubbleView,
                     delegate: self,
                     features: features,
-                    environment: .init(
-                        uiApplication: environment.uiApplication,
-                        uiScreen: environment.uiScreen,
-                        log: environment.log,
+                    environment: .create(
+                        with: environment,
                         animate: animate
                     )
                 )
@@ -491,10 +411,8 @@ extension EngagementCoordinator {
                 bubbleView: bubbleView,
                 delegate: self,
                 features: features,
-                environment: .init(
-                    uiApplication: environment.uiApplication,
-                    uiScreen: environment.uiScreen,
-                    log: environment.log,
+                environment: .create(
+                    with: environment,
                     animate: animate
                 )
             )
@@ -571,10 +489,7 @@ extension EngagementCoordinator {
             guard let kind = CallKind(with: offer) else { return }
             let call = Call(
                 kind,
-                environment: .init(
-                    audioSession: environment.audioSession,
-                    uuid: environment.uuid
-                )
+                environment: .create(with: environment)
             )
             call.kind.addObserver(self) { [weak self] _, _ in
                 self?.engagementKind = EngagementKind(with: call.kind.value)

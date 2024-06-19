@@ -129,7 +129,7 @@ extension Glia {
                     completion(result.mapError(Glia.Authentication.Error.init))
                 }
             },
-            environment: .init(log: loggerPhase.logger)
+            environment: .create(with: loggerPhase.logger)
         )
     }
 

@@ -31,12 +31,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     ) {
         self.call = call
         self.startWith = startWith
-        self.durationCounter = CallDurationCounter(
-            environment: .init(
-                timerProviding: environment.timerProviding,
-                date: environment.date
-            )
-        )
+        self.durationCounter = CallDurationCounter(environment: .create(with: environment))
         self.unreadMessages = unreadMessages
         super.init(
             interactor: interactor,
