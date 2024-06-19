@@ -92,37 +92,16 @@ public class Glia {
     }()
 
     public lazy var callVisualizer = CallVisualizer(
-        environment: .init(
-            data: environment.data,
-            uuid: environment.uuid,
-            gcd: environment.gcd,
-            imageViewCache: environment.imageViewCache,
-            timerProviding: environment.timerProviding,
-            uiApplication: environment.uiApplication,
-            uiScreen: environment.uiScreen,
-            uiDevice: environment.uiDevice,
-            notificationCenter: environment.notificationCenter,
-            requestVisitorCode: environment.coreSdk.requestVisitorCode,
+        environment: .create(
+            with: environment,
             interactorProviding: { [weak self] in self?.interactor },
-            callVisualizerPresenter: environment.callVisualizerPresenter,
-            bundleManaging: environment.bundleManaging,
-            screenShareHandler: environment.screenShareHandler,
-            audioSession: environment.audioSession,
-            date: environment.date,
             engagedOperator: { [weak self] in
                 self?.environment.coreSdk.getCurrentEngagement()?.engagedOperator
             },
             theme: theme,
-            assetsBuilder: { [weak self] in self?.assetsBuilder ?? .standard },
-            getCurrentEngagement: environment.coreSdk.getCurrentEngagement,
-            eventHandler: onEvent,
-            orientationManager: environment.orientationManager,
-            proximityManager: environment.proximityManager,
-            log: loggerPhase.logger,
-            fetchSiteConfigurations: environment.coreSdk.fetchSiteConfigurations,
-            snackBar: environment.snackBar,
-            coreSdk: environment.coreSdk,
-            cameraDeviceManager: environment.cameraDeviceManager,
+            assetBuilder: { [weak self] in self?.assetsBuilder ?? .standard },
+            onEvent: onEvent,
+            loggerPhase: loggerPhase,
             alertManager: alertManager
         )
     )
