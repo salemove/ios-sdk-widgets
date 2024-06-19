@@ -61,7 +61,6 @@ class ChatViewModel: EngagementViewModel {
 
     let chatType: ChatType
 
-    // swiftlint:disable function_body_length
     init(
         interactor: Interactor,
         screenShareHandler: ScreenShareHandler,
@@ -83,16 +82,7 @@ class ChatViewModel: EngagementViewModel {
         self.chatType = chatType
         let uploader = FileUploader(
             maximumUploads: maximumUploads(),
-            environment: .init(
-                uploadFile: .toEngagement(environment.uploadFileToEngagement),
-                fileManager: environment.fileManager,
-                data: environment.data,
-                date: environment.date,
-                gcd: environment.gcd,
-                uiScreen: environment.uiScreen,
-                createThumbnailGenerator: environment.createThumbnailGenerator,
-                uuid: environment.uuid
-            )
+            environment: .create(with: environment)
         )
         self.fileUploadListModel = environment.createFileUploadListModel(
             .init(
@@ -114,19 +104,7 @@ class ChatViewModel: EngagementViewModel {
             }
         }
 
-        self.downloader = FileDownloader(
-            environment: .init(
-                fetchFile: environment.fetchFile,
-                downloadSecureFile: environment.downloadSecureFile,
-                fileManager: environment.fileManager,
-                data: environment.data,
-                date: environment.date,
-                gcd: environment.gcd,
-                uiScreen: environment.uiScreen,
-                createThumbnailGenerator: environment.createThumbnailGenerator,
-                createFileDownload: environment.createFileDownload
-            )
-        )
+        self.downloader = FileDownloader(environment: .create(with: environment))
         self.deliveredStatusText = deliveredStatusText
         super.init(
             interactor: interactor,
@@ -152,7 +130,6 @@ class ChatViewModel: EngagementViewModel {
             self?.action?(.pickMediaButtonEnabled(!limitReached))
         }
     }
-    // swiftlint:enable function_body_length
 
     override func viewDidAppear() {
         super.viewDidAppear()

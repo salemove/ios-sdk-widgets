@@ -121,19 +121,13 @@ class GliaViewController: UIViewController {
         if let windowScene = windowScene() {
             return BubbleWindow(
                 bubbleView: bubbleView,
-                environment: .init(
-                    uiScreen: environment.uiScreen,
-                    uiApplication: environment.uiApplication
-                ),
+                environment: .create(with: environment),
                 windowScene: windowScene
             )
         } else {
             return BubbleWindow(
                 bubbleView: bubbleView,
-                environment: .init(
-                    uiScreen: environment.uiScreen,
-                    uiApplication: environment.uiApplication
-                )
+                environment: .create(with: environment)
             )
         }
     }
