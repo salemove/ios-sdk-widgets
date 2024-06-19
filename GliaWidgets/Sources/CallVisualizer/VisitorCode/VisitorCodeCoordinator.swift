@@ -29,10 +29,7 @@ extension CallVisualizer {
         func showVisitorCodeViewController(by presentation: CallVisualizer.Presentation) -> UIViewController {
             let viewModel = VisitorCodeViewModel(
                 presentation: presentation,
-                environment: .init(
-                    timerProviding: environment.timerProviding,
-                    requestVisitorCode: environment.requestVisitorCode
-                ),
+                environment: .create(with: environment),
                 theme: theme,
                 delegate: { [weak self] action in
                     switch action {
