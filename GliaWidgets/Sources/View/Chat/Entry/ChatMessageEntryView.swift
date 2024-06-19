@@ -61,9 +61,7 @@ class ChatMessageEntryView: BaseView {
     ) {
         self.style = style
         self.environment = environment
-        uploadListView = SecureConversations.FileUploadListView(
-            environment: .init(uiScreen: environment.uiScreen)
-        )
+        uploadListView = .init(environment: .create(with: environment))
         pickMediaButton = MessageButton(with: style.mediaButton)
         sendButton = MessageButton(with: style.sendButton)
         isChoiceCardModeEnabled = false

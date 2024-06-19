@@ -53,12 +53,7 @@ final class ConnectView: BaseView {
         self.environment = environment
         self.operatorView = ConnectOperatorView(
             with: style.connectOperator,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
-            )
+            environment: .create(with: environment)
         )
         super.init()
     }

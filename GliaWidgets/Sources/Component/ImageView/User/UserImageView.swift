@@ -12,14 +12,7 @@ final class UserImageView: BaseView {
     ) {
         self.style = style
         self.environment = environment
-        self.operatorImageView = ImageView(
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
-            )
-        )
+        self.operatorImageView = ImageView(environment: .create(with: environment))
         super.init()
     }
 

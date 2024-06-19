@@ -38,7 +38,7 @@ class BubbleView: BaseView {
         self.style = style
         self.environment = environment
         self.onHoldView = OnHoldOverlayView(
-            environment: .init(gcd: environment.gcd),
+            environment: .create(with: environment),
             style: style.onHoldOverlay
         )
         self.onHoldView.clipsToBounds = true
@@ -128,12 +128,7 @@ class BubbleView: BaseView {
             guard let userImageView = userImageView else {
                 let userImageView = UserImageView(
                     with: style.userImage,
-                    environment: .init(
-                        data: environment.data,
-                        uuid: environment.uuid,
-                        gcd: environment.gcd,
-                        imageViewCache: environment.imageViewCache
-                    )
+                    environment: .create(with: environment)
                 )
                 userImageView.setOperatorImage(fromUrl: url, animated: true)
                 self.userImageView = userImageView

@@ -19,7 +19,7 @@ class ChatFileDownloadContentView: ChatFileContentView {
         self.style = style
         self.filePreviewView = FilePreviewView(
             with: style.filePreview,
-            environment: .init(uiScreen: environment.uiScreen)
+            environment: .create(with: environment)
         )
         super.init(
             with: style,
