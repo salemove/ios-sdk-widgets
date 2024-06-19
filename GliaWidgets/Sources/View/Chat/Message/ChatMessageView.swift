@@ -117,7 +117,7 @@ class ChatMessageView: BaseView {
                     with: style.fileDownload,
                     content: .localFile(file),
                     accessibilityProperties: accessibilityProperties,
-                    environment: .init(uiScreen: environment.uiScreen),
+                    environment: .create(with: environment),
                     tap: { [weak self] in self?.fileTapped?(file) }
                 )
             }
@@ -142,7 +142,7 @@ class ChatMessageView: BaseView {
                     with: style.fileDownload,
                     content: .download(download),
                     accessibilityProperties: accessibilityProperties,
-                    environment: .init(uiScreen: environment.uiScreen),
+                    environment: .create(with: environment),
                     tap: { [weak self] in self?.downloadTapped?(download) }
                 )
             }

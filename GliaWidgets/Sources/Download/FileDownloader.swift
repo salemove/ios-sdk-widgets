@@ -14,11 +14,7 @@ class FileDownloader {
         self.environment = environment
         self.storage = FileSystemStorage(
             directory: .documents(environment.fileManager),
-            environment: .init(
-                fileManager: environment.fileManager,
-                data: environment.data,
-                date: environment.date
-            )
+            environment: .create(with: environment)
         )
     }
 

@@ -28,15 +28,7 @@ class ViewFactory {
         return ChatView(
             with: theme.chat,
             messageRenderer: messageRenderer,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen
-            ),
+            environment: .create(with: environment),
             props: Self.chatHeaderProps(
                 theme: theme,
                 endCmd: endCmd,
@@ -77,16 +69,7 @@ class ViewFactory {
     ) -> CallView {
         return CallView(
             with: theme.call,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen,
-                uiDevice: environment.uiDevice
-            ),
+            environment: .create(with: environment),
             props: Self.callHeaderProps(
                 theme: theme,
                 endCmd: endCmd,
@@ -126,12 +109,7 @@ class ViewFactory {
     func makeBubbleView() -> BubbleView {
         return BubbleView(
             with: theme.minimizedBubble,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
-            )
+            environment: .create(with: environment)
         )
     }
 
