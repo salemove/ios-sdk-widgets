@@ -304,8 +304,8 @@ extension GliaTests {
         }
 
         let configuredSdkTheme = resultingViewFactory?.theme
-        XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "Company Name")
-        XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "Company Name")
+        XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "")
+        XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "")
     }
 
     func testCompanyNameIsReceivedFromThemeIfCustomLocalesIsEmpty() throws {
@@ -400,7 +400,7 @@ extension GliaTests {
         try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
 
         let configuredSdkTheme = resultingViewFactory?.theme
-        let localFallbackCompanyName = "Company Name"
+        let localFallbackCompanyName = ""
         XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, localFallbackCompanyName)
         XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, localFallbackCompanyName)
     }

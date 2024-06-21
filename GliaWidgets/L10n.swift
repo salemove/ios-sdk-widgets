@@ -400,7 +400,7 @@ public enum L10n {
       }
       public enum Queue {
         /// CompanyName
-        public static let firstText = L10n.tr("Deprecated", "call.connect.queue.firstText", fallback: "CompanyName")
+        public static let firstText = L10n.tr("Deprecated", "call.connect.queue.firstText", fallback: "")
         /// We are here to help!
         public static let secondText = L10n.tr("Deprecated", "call.connect.queue.secondText", fallback: "We are here to help!")
       }
@@ -644,7 +644,7 @@ public enum L10n {
       }
       public enum Queue {
         /// CompanyName
-        public static let firstText = L10n.tr("Deprecated", "chat.connect.queue.firstText", fallback: "CompanyName")
+        public static let firstText = L10n.tr("Deprecated", "chat.connect.queue.firstText", fallback: "")
         /// We are here to help!
         public static let secondText = L10n.tr("Deprecated", "chat.connect.queue.secondText", fallback: "We are here to help!")
       }
