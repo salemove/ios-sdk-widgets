@@ -176,7 +176,7 @@
 "general.close" = "Close";
 "general.close.accessibility" = "Close Button";
 "general.comment" = "Comment";
-"general.company_name" = "Company Name";
+"general.company_name" = "";
 "general.decline" = "Decline";
 "general.download" = "Download";
 "general.end" = "End";
