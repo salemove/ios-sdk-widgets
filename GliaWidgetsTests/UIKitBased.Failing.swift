@@ -26,7 +26,7 @@ extension UIKitBased.UIApplication {
             fail("\(Self.self).isIdleTimerDisabled")
         },
         windows: {
-            fail("\(Self.self).window")
+            fail("\(Self.self).windows")
             return []
         },
         connectionScenes: {

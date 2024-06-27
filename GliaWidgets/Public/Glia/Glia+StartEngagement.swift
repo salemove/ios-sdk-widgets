@@ -26,13 +26,26 @@ extension Glia {
         features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
-        // It checks if ongoing engagement exists on WidgetsSDK side, if it doesn't but ongoing engagement exists
-        // on CoreSDK side, it will be restored.
-        guard engagement == .none else { throw GliaError.engagementExists }
+        // In order to align behaviour between platforms,
+        // `GliaError.engagementExists` is no longer thrown,
+        // instead engagement is getting restored.
         guard let configuration = self.configuration else { throw GliaError.sdkIsNotConfigured }
-        if let engagement = environment.coreSdk.getCurrentEngagement(),
-            engagement.source == .callVisualizer {
-            throw GliaError.callVisualizerEngagementExists
+
+        if let engagement = environment.coreSdk.getCurrentEngagement() {
+            if engagement.source == .callVisualizer {
+                throw GliaError.callVisualizerEngagementExists
+            } else {
+                if interactor != nil, let rootCoordinator {
+                    rootCoordinator.maximize()
+                } else {
+                    self.restoreOngoingEngagement(
+                        configuration: configuration,
+                        currentEngagement: engagement,
+                        maximize: true
+                    )
+                }
+                return
+            }
         }
 
         // Creates interactor instance
@@ -100,7 +113,7 @@ extension Glia {
         }
     }
 
-    private func applyCompanyName(using configuration: Configuration, theme: Theme) -> Theme {
+    func applyCompanyName(using configuration: Configuration, theme: Theme) -> Theme {
         theme.chat.connect.queue.firstText = companyName(
             using: configuration,
             themeCompanyName: theme.chat.connect.queue.firstText
