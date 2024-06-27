@@ -223,13 +223,22 @@ public class Glia {
                 let getRemoteString = self.environment.coreSdk.localeProvider.getRemoteString
                 self.stringProvidingPhase = .configured(getRemoteString)
 
-                if let engagement = self.environment.coreSdk.getCurrentEngagement(),
-                   engagement.source == .callVisualizer {
+                // Configuration completion handler has to be called in any case,
+                // at the end of the scope, whether there's ongoing engagement or not.
+                defer { completion(.success(())) }
+
+                guard let currentEngagement = self.environment.coreSdk.getCurrentEngagement() else { return }
+
+                if currentEngagement.source == .callVisualizer {
                     self.setupInteractor(configuration: configuration)
                     self.callVisualizer.handleRestoredEngagement()
+                } else {
+                    self.restoreOngoingEngagement(
+                        configuration: configuration,
+                        currentEngagement: currentEngagement,
+                        maximize: false
+                    )
                 }
-
-                completion(.success(()))
             case .failure(let error):
                 typealias ProcessError = CoreSdkClient.ConfigurationProcessError
                 var errorForCompletion: GliaError = .internalError

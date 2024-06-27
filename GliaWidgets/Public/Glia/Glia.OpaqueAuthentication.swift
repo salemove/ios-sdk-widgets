@@ -87,21 +87,29 @@ extension Glia {
                 auth.authenticate(
                     with: .init(rawValue: idToken),
                     externalAccessToken: accessToken.map { .init(rawValue: $0) }
-                ) { result in
-                    switch result {
-                    case .success:
-                        // Handle authentication
-                        self?.restartEngagementIfNeeded(
-                            interactor: interactor,
-                            viewFactory: viewFactory,
-                            sceneProvider: sceneProvider,
-                            features: features
-                        )
-                    case .failure:
-                        break
-                    }
+                ) { [weak self]  result in
+                    // Wait for possible engagement to get restored if there is one.
+                    self?.environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(1)) {
+                        switch result {
+                        case .success:
+                            // Attempt to restore ongoing engagement.
+                            if let ongoingEngagement = self?.environment.coreSdk.getCurrentEngagement(), let configuration = self?.configuration {
+                                self?.restoreOngoingEngagement(configuration: configuration, currentEngagement: ongoingEngagement, maximize: false)
+                            } else {
+                                // Handle authentication with possibility to restart engagement.
+                                self?.restartEngagementIfNeeded(
+                                    interactor: interactor,
+                                    viewFactory: viewFactory,
+                                    sceneProvider: sceneProvider,
+                                    features: features
+                                )
+                            }
+                        case .failure:
+                            break
+                        }
 
-                    callback(result.mapError(Glia.Authentication.Error.init) )
+                        callback(result.mapError(Glia.Authentication.Error.init) )
+                    }
                 }
             },
             deauthenticateWithCallback: { [weak self] callback in
