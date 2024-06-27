@@ -4,8 +4,18 @@ import XCTest
 @testable import GliaWidgets
 
 extension GliaTests {
-    func testStartEngagementThrowsErrorWhenEngagementAlreadyExists() throws {
+    func testStartEngagementNoLongerThrowsErrorWhenEngagementAlreadyExists() throws {
         var sdkEnv = Glia.Environment.failing
+        sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+        sdkEnv.coreSdk.localeProvider = .mock
+        let rootCoordinator = EngagementCoordinator.mock(
+            engagementKind: .chat,
+            screenShareHandler: .mock,
+            environment: .engagementCoordEnvironmentWithKeyWindow
+        )
+        sdkEnv.createRootCoordinator = { _, _, _, _, _, _, _ in
+            rootCoordinator
+        }
         sdkEnv.print.printClosure = { _, _, _ in }
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
@@ -17,18 +27,21 @@ extension GliaTests {
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
+        let window = UIWindow(frame: .zero)
+        window.makeKeyAndVisible()
+        sdkEnv.uiApplication.windows = { [window] }
         let sdk = Glia(environment: sdkEnv)
-        sdk.rootCoordinator = .mock(engagementKind: .chat, screenShareHandler: .mock)
+
+        sdk.rootCoordinator = rootCoordinator
+        print("🐾", "rootCoordinator", rootCoordinator)
         try sdk.configure(with: .mock(), theme: .mock()) { _ in }
 
-        XCTAssertThrowsError(
+        XCTAssertNoThrow(
             try sdk.startEngagement(
                 engagementKind: .chat,
                 in: ["queueID"]
             )
-        ) { error in
-            XCTAssertEqual(error as? GliaError, GliaError.engagementExists)
-        }
+        )
     }
 
     func testStartEngagementThrowsErrorDuringActiveCallVisualizerEngagement() throws {
@@ -76,7 +89,6 @@ extension GliaTests {
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
         environment.coreSdk.getCurrentEngagement = { nil }
         let sdk = Glia(environment: environment)
-        
         try sdk.configure(with: .mock(), theme: .mock()) { _ in }
 
         XCTAssertNoThrow(
