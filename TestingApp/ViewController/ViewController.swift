@@ -224,11 +224,17 @@ extension ViewController {
 
         let startEngagement = {
             self.catchingError {
-                try Glia.sharedInstance.startEngagement(
-                    engagementKind: engagementKind,
-                    in: [self.queueId],
-                    theme: self.theme
-                )
+                // If there's no ongoing engagement we start new engagement.
+                if Glia.sharedInstance.engagement == .none {
+                    try Glia.sharedInstance.startEngagement(
+                        engagementKind: engagementKind,
+                        in: [self.queueId],
+                        theme: self.theme
+                    )
+                } else {
+                    // If engagement exists we should resume it.
+                    try Glia.sharedInstance.resume()
+                }
             }
         }
 

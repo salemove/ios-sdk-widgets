@@ -100,7 +100,7 @@ extension Glia {
         }
     }
 
-    private func applyCompanyName(using configuration: Configuration, theme: Theme) -> Theme {
+    func applyCompanyName(using configuration: Configuration, theme: Theme) -> Theme {
         theme.chat.connect.queue.firstText = companyName(
             using: configuration,
             themeCompanyName: theme.chat.connect.queue.firstText

@@ -636,6 +636,7 @@
 		AFB24A1A2BEAA8B700B47DBF /* CallViewModel+CameraFlip.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFB24A192BEAA8B700B47DBF /* CallViewModel+CameraFlip.swift */; };
 		AFBBF5782851C391004993B3 /* Glia.Deprecated.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBBF5772851C391004993B3 /* Glia.Deprecated.swift */; };
 		AFC40C1C29965F0F001B4C53 /* SecureConversations.ChatWithTranscriptModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC40C1B29965F0F001B4C53 /* SecureConversations.ChatWithTranscriptModel.swift */; };
+		AFC7ABB82C2D93A0006F15AA /* Glia+RestoreEngagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC7ABB72C2D93A0006F15AA /* Glia+RestoreEngagement.swift */; };
 		AFCF8A5A2A02A97100B7ABB3 /* ChatItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCF8A592A02A97100B7ABB3 /* ChatItemTests.swift */; };
 		AFCF8A5C2A02AB3000B7ABB3 /* OutgoingMessage.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFCF8A5B2A02AB3000B7ABB3 /* OutgoingMessage.Mock.swift */; };
 		AFD3C52C2A472B7500BC37A9 /* VisitorInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD3C52B2A472B7500BC37A9 /* VisitorInfoModel.swift */; };
@@ -1741,6 +1742,7 @@
 		AFB24A192BEAA8B700B47DBF /* CallViewModel+CameraFlip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CallViewModel+CameraFlip.swift"; sourceTree = "<group>"; };
 		AFBBF5772851C391004993B3 /* Glia.Deprecated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.Deprecated.swift; sourceTree = "<group>"; };
 		AFC40C1B29965F0F001B4C53 /* SecureConversations.ChatWithTranscriptModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.ChatWithTranscriptModel.swift; sourceTree = "<group>"; };
+		AFC7ABB72C2D93A0006F15AA /* Glia+RestoreEngagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Glia+RestoreEngagement.swift"; sourceTree = "<group>"; };
 		AFCF8A592A02A97100B7ABB3 /* ChatItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItemTests.swift; sourceTree = "<group>"; };
 		AFCF8A5B2A02AB3000B7ABB3 /* OutgoingMessage.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutgoingMessage.Mock.swift; sourceTree = "<group>"; };
 		AFD3C52B2A472B7500BC37A9 /* VisitorInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorInfoModel.swift; sourceTree = "<group>"; };
@@ -3724,6 +3726,7 @@
 				1A60AF7D25656F0400E53F53 /* Glia.swift */,
 				C0D6CA622C19C59100D4709B /* Glia.OpaqueAuthentication.Environment.swift */,
 				755D187E29A6B1B90009F5E8 /* Glia+StartEngagement.swift */,
+				AFC7ABB72C2D93A0006F15AA /* Glia+RestoreEngagement.swift */,
 			);
 			path = Glia;
 			sourceTree = "<group>";
@@ -6130,6 +6133,7 @@
 				C09046942B7D05A5003C437C /* WelcomeStyle.MessageTextViewDisabledStyle.Accessibility.swift in Sources */,
 				75B7BD7E2A39D5430060794D /* Layout+UIView.swift in Sources */,
 				84D2293E28D36B2A00F64FE7 /* UIColor+Hex.swift in Sources */,
+				AFC7ABB82C2D93A0006F15AA /* Glia+RestoreEngagement.swift in Sources */,
 				75C1143629A406F00004E5F7 /* SecureConversations.RemoteConfig.swift in Sources */,
 				C090470F2B7E175F003C437C /* Theme.Button.RemoteConfig.swift in Sources */,
 				C090473E2B7E1F6F003C437C /* FileUploadErrorStateStyle.RemoteConfig.swift in Sources */,
