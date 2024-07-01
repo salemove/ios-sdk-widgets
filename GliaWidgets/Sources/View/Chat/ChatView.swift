@@ -301,11 +301,6 @@ extension ChatView {
         _ section: Int,
         animated: Bool
     ) {
-        // Avoid autolayout warnings.
-        guard self.tableView.frame != .zero else {
-            return
-        }
-
         if animated {
             tableView.reloadSections([section], with: .fade)
         } else {
@@ -420,11 +415,6 @@ extension ChatView {
     }
 
     private func updateTableView(animated: Bool) {
-        // Avoid autolayout warnings.
-        guard tableView.frame != .zero else {
-            return
-        }
-
         if animated {
             tableView.beginUpdates()
             tableView.endUpdates()
