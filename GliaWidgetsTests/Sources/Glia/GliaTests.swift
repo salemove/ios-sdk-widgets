@@ -357,6 +357,27 @@ final class GliaTests: XCTestCase {
         }
     }
 
+    func testConfigureSetsFeaturesFieldPassedAsParameter() throws {
+        var environment = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.infoClosure = { _, _, _, _ in }
+        logger.prefixedClosure = { _ in logger }
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        environment.coreSdk.createLogger = { _ in logger }
+        environment.conditionalCompilation.isDebug = { false }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.success(()))
+        }
+        let sdk = Glia(environment: environment)
+        try sdk.configure(with: .mock(), features: .bubbleView) { _ in }
+        XCTAssertEqual(sdk.features, .bubbleView)
+        try sdk.configure(with: .mock(), features: []) { _ in }
+        XCTAssertEqual(sdk.features, [])
+        try sdk.configure(with: .mock(), features: .all) { _ in }
+        XCTAssertEqual(sdk.features, .all)
+    }
+
     func testClearVisitorSessionThrowsErrorDuringActiveEngagement() throws {
         var environment = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing

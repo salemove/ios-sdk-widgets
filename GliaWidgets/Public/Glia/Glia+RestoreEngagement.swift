@@ -4,6 +4,7 @@ extension Glia {
     func restoreOngoingEngagement(
         configuration: Configuration,
         currentEngagement: CoreSdkClient.Engagement,
+        features: Features,
         maximize: Bool
     ) {
         // Creates interactor instance
@@ -22,16 +23,9 @@ extension Glia {
         let viewFactory = ViewFactory(
             with: modifiedTheme,
             messageRenderer: messageRenderer,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen,
-                log: loggerPhase.logger,
-                uiDevice: environment.uiDevice
+            environment: .create(
+                with: self.environment,
+                loggerPhase: self.loggerPhase
             )
         )
 
@@ -48,8 +42,7 @@ extension Glia {
             viewFactory: viewFactory,
             sceneProvider: nil,
             engagementKind: EngagementKind(media: ongoingEngagementMediaStreams),
-            // TODO: figure out if we can get features from somewhere, because bubble may explicitly removed as feature, and in such case bubble should not show up.
-            features: .all,
+            features: features,
             maximize: maximize
         )
 
