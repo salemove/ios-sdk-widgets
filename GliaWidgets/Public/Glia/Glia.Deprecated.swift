@@ -181,8 +181,8 @@ extension Glia {
         )
     }
 
-    /// Deprecated, use ``Glia.startEngagement(engagementKind:in queueIds:features:sceneProvider:)`` instead.
-    /// Use ``configure(with configuration:uiConfig:theme:assetsBuilder:completion:)`` to pass in ``RemoteConfiguration``.
+    /// Deprecated, use ``Glia.startEngagement(engagementKind:in queueIds:sceneProvider:)`` instead.
+    /// Use ``configure(with configuration:uiConfig:theme:assetsBuilder:features:completion:)`` to pass in ``RemoteConfiguration``.
     @available(*, deprecated, message: """
             Deprecated, use ``Glia.startEngagement(engagementKind:in queueIds:features:sceneProvider:)`` instead.
             Use ``configure(with configuration:uiConfig:theme:assetsBuilder:completion:)`` to pass in ``RemoteConfiguration``.
@@ -203,6 +203,27 @@ extension Glia {
             features: features,
             sceneProvider: sceneProvider
         )
+    }
+
+    /// Deprecated, use ``Glia.startEngagement(engagementKind:in queueIds:sceneProvider:)`` instead.
+    /// Use ``configure(with configuration:uiConfig:theme:assetsBuilder:features:completion:)`` to pass in ``Features``.
+    public func startEngagement(
+        engagementKind: EngagementKind,
+        in queueIds: [String] = [],
+        features: Features = .all,
+        sceneProvider: SceneProvider? = nil
+    ) throws {
+        // Even though `configuration` is validated via non-deprecated
+        // `Glia.startEngagement(engagementKind:in queueIds:sceneProvider:)`,
+        // we need to validate it also here to make sure that `features` are assigned
+        // only if `configuration` passes validation.
+        guard self.configuration != nil else { throw GliaError.sdkIsNotConfigured }
+        // We need to assign features to be used for restored engagement
+        // during Direct ID authenticated flow.
+        // Here we overwrite value that was set via `configure` method,
+        // to preserve initial behaviour, when `configure` was not providing `features`.
+        self.features = features
+        try startEngagement(of: engagementKind, in: queueIds, sceneProvider: sceneProvider)
     }
 
     /// Deprecated, use ``configure(with configuration:theme:uiConfig:assetsBuilder:completion:)`` instead.

@@ -82,26 +82,36 @@ extension Glia {
                 let interactor = self?.rootCoordinator?.interactor
                 let viewFactory = self?.rootCoordinator?.viewFactory
                 let sceneProvider = self?.rootCoordinator?.sceneProvider
-                let features = self?.rootCoordinator?.features
+
+                let prevEngagementIsNotPresent = self?.environment.coreSdk.getCurrentEngagement() == nil
 
                 auth.authenticate(
                     with: .init(rawValue: idToken),
                     externalAccessToken: accessToken.map { .init(rawValue: $0) }
                 ) { [weak self]  result in
-                    // Wait for possible engagement to get restored if there is one.
+                    // Wait for possible engagement (if there is one)
+                    // to get restored along with `rootCoordinator`
+                    // and bubble view.
                     self?.environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(1)) {
                         switch result {
                         case .success:
-                            // Attempt to restore ongoing engagement.
-                            if let ongoingEngagement = self?.environment.coreSdk.getCurrentEngagement(), let configuration = self?.configuration {
-                                self?.restoreOngoingEngagement(configuration: configuration, currentEngagement: ongoingEngagement, maximize: false)
+                            // Attempt to restore ongoing engagement after configuration.
+                            if let ongoingEngagement = self?.environment.coreSdk.getCurrentEngagement(),
+                                let configuration = self?.configuration, prevEngagementIsNotPresent {
+                                self?.closeRootCoordinator()
+                                self?.restoreOngoingEngagement(
+                                    configuration: configuration,
+                                    currentEngagement: ongoingEngagement,
+                                    features: self?.features ?? .all,
+                                    maximize: false
+                                )
                             } else {
                                 // Handle authentication with possibility to restart engagement.
                                 self?.restartEngagementIfNeeded(
                                     interactor: interactor,
                                     viewFactory: viewFactory,
                                     sceneProvider: sceneProvider,
-                                    features: features
+                                    features: self?.features
                                 )
                             }
                         case .failure:
