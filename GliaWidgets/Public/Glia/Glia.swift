@@ -113,6 +113,9 @@ public class Glia {
     var assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard
     var loggerPhase: LoggerPhase
     var alertManager: AlertManager
+    // We need to store `features` via `configure` or deprecated `startEngagement` methods
+    // to use it when engagement gets restored for Direct ID authentication flow.
+    var features: Features?
 
     private(set) var configuration: Configuration?
 
@@ -162,6 +165,7 @@ public class Glia {
     ///   - theme: A custom theme to use with the engagement.
     ///   - uiConfig: Remote UI configuration.
     ///   - assetsBuilder: Provides assets for remote configuration.
+    ///   - features: Set of features to be enabled in the SDK.
     ///   - completion: Completion handler that will be fired once configuration is
     ///     complete.
     ///
@@ -174,6 +178,7 @@ public class Glia {
         theme: Theme = Theme(),
         uiConfig: RemoteConfiguration? = nil,
         assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
+        features: Features = .all,
         completion: @escaping (Result<Void, Error>) -> Void
     ) throws {
         guard environment.coreSdk.getCurrentEngagement() == nil else {
@@ -185,6 +190,9 @@ public class Glia {
         }
         self.theme = theme
         self.assetsBuilder = assetsBuilder
+        // We need to store features to be used for restored engagement
+        // during Direct ID authenticated flow.
+        self.features = features
         // `configuration` should be erased to avoid cases when integrators
         // call `configure` and `startEngagement` asynchronously, and
         // second-time configuration has not been complete, but `startEngagement`
@@ -236,6 +244,7 @@ public class Glia {
                     self.restoreOngoingEngagement(
                         configuration: configuration,
                         currentEngagement: currentEngagement,
+                        features: features,
                         maximize: false
                     )
                 }
