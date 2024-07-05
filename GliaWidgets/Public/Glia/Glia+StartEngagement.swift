@@ -7,7 +7,6 @@ extension Glia {
     /// - Parameters:
     ///   - engagementKind: Engagement media type.
     ///   - in: Queue identifiers
-    ///   - features: Set of features to be enabled in the SDK.
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to
     ///     the first active foreground scene.
     ///
@@ -21,15 +20,17 @@ extension Glia {
     ///   initially prior to this method, because `GliaError.sdkIsNotConfigured` will occur otherwise.
     ///
     public func startEngagement(
-        engagementKind: EngagementKind,
+        of engagementKind: EngagementKind, // To help compiler to avoid ambiguity, change signature of `engagementKind` parameter.
         in queueIds: [String] = [],
-        features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
         // In order to align behaviour between platforms,
         // `GliaError.engagementExists` is no longer thrown,
         // instead engagement is getting restored.
         guard let configuration = self.configuration else { throw GliaError.sdkIsNotConfigured }
+
+        // It is assumed that `features` to be provided from `configure` or via deprecated `startEngagement` method.
+        let features = self.features ?? []
 
         if let engagement = environment.coreSdk.getCurrentEngagement() {
             if engagement.source == .callVisualizer {
@@ -41,6 +42,7 @@ extension Glia {
                     self.restoreOngoingEngagement(
                         configuration: configuration,
                         currentEngagement: engagement,
+                        features: features,
                         maximize: true
                     )
                 }
