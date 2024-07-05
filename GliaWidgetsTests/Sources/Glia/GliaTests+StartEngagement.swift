@@ -33,7 +33,6 @@ extension GliaTests {
         let sdk = Glia(environment: sdkEnv)
 
         sdk.rootCoordinator = rootCoordinator
-        print("🐾", "rootCoordinator", rootCoordinator)
         try sdk.configure(with: .mock(), theme: .mock()) { _ in }
 
         XCTAssertNoThrow(
@@ -42,6 +41,46 @@ extension GliaTests {
                 in: ["queueID"]
             )
         )
+    }
+
+    func testStartEngagementOverwritesFeaturesFieldSetViaConfigure() throws {
+        var environment = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.infoClosure = { _, _, _, _ in }
+        logger.prefixedClosure = { _ in logger }
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        environment.coreSdk.createLogger = { _ in logger }
+        environment.conditionalCompilation.isDebug = { false }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.success(()))
+        }
+        environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
+        environment.coreSDKConfigurator.configureWithInteractor = { _ in }
+
+        let rootCoordinator = EngagementCoordinator.mock(
+            engagementKind: .chat,
+            screenShareHandler: .mock,
+            environment: .engagementCoordEnvironmentWithKeyWindow
+        )
+        environment.createRootCoordinator = { _, _, _, _, _, _, _ in
+            rootCoordinator
+        }
+
+        let window = UIWindow(frame: .zero)
+        window.makeKeyAndVisible()
+        environment.uiApplication.windows = { [window] }
+        let sdk = Glia(environment: environment)
+        sdk.rootCoordinator = rootCoordinator
+        try sdk.configure(with: .mock(), features: .bubbleView) { _ in }
+        XCTAssertEqual(sdk.features, .bubbleView)
+        try sdk.startEngagement(
+            engagementKind: .chat,
+            in: [UUID.mock.uuidString],
+            features: [],
+            sceneProvider: nil
+        )
+        XCTAssertEqual(sdk.features, [])
     }
 
     func testStartEngagementThrowsErrorDuringActiveCallVisualizerEngagement() throws {
