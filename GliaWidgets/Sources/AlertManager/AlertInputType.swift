@@ -51,7 +51,8 @@ enum AlertInputType: Equatable {
         case (.microphoneSettings, .microphoneSettings):
             return true
         case (.operatorEndedEngagement, .operatorEndedEngagement):
-            return true
+            // temporarily considered as unequal to fix presenting `operatorEndedEngagement` alert
+            return false
         case (.unsupportedGvaBroadcastError, .unsupportedGvaBroadcastError):
             return true
         case (.unavailableMessageCenter, .unavailableMessageCenter):
