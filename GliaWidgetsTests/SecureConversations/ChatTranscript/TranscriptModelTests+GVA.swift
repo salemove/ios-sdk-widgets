@@ -127,6 +127,7 @@ extension SecureConversationsTranscriptModelTests {
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }
         modelEnv.log = logger
 
         let json = """
@@ -149,8 +150,8 @@ extension SecureConversationsTranscriptModelTests {
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
-            queueIds: modelEnv.queueIds,
-            isAuthenticated: { true }
+            isAuthenticated: { true },
+            log: logger
         )
 
         let viewModel = TranscriptModel(
@@ -184,6 +185,7 @@ private extension SecureConversationsTranscriptModelTests {
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }
         modelEnv.log = logger
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
@@ -192,8 +194,8 @@ private extension SecureConversationsTranscriptModelTests {
         modelEnv.maximumUploads = { 2 }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
-            queueIds: modelEnv.queueIds,
-            isAuthenticated: { true }
+            isAuthenticated: { true },
+            log: logger
         )
 
         return TranscriptModel(
