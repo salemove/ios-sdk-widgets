@@ -108,6 +108,8 @@ private extension AlertManager {
         case .view:
             viewController.insertChild(alertViewController)
             alertViewController.view.translatesAutoresizingMaskIntoConstraints = false
+            // Disabled interaction is needed to pass touches to the view behind
+            alertViewController.view.isUserInteractionEnabled = false
             NSLayoutConstraint.activate([
                 viewController.view.topAnchor.constraint(equalTo: alertViewController.view.topAnchor),
                 viewController.view.bottomAnchor.constraint(equalTo: alertViewController.view.bottomAnchor),
