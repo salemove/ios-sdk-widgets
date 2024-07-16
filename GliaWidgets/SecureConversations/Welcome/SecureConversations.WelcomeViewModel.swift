@@ -22,7 +22,7 @@ extension SecureConversations {
         /// Flag indicating attachment(s) availability.
         /// By default attachments are not available, until site configurations are fetched.
         private (set) var isAttachmentsAvailable: Bool = false { didSet { reportChange() } }
-        var availabilityStatus: Availability.Status = .available { didSet { reportChange() } }
+        var availabilityStatus: Availability.Status = .available(queueIds: []) { didSet { reportChange() } }
         var messageInputState: MessageInputState = .normal { didSet { reportChange() } }
         var sendMessageRequestState: SendMessageRequestState = .waiting { didSet { reportChange() } }
 
@@ -61,11 +61,12 @@ extension SecureConversations {
         }
 
         private func checkSecureConversationsAvailability() {
-            availability.checkSecureConversationsAvailability { [weak self] result in
+            availability.checkSecureConversationsAvailability(for: environment.queueIds) { [weak self] result in
                 guard let self else { return }
                 switch result {
-                case .success(.available):
-                    self.availabilityStatus = .available
+                case let .success(.available(queueIds)):
+                    self.environment.queueIds = queueIds
+                    self.availabilityStatus = .available(queueIds: queueIds)
                 case .success(.unavailable(.emptyQueue)), .failure:
                     self.availabilityStatus = .unavailable(.emptyQueue)
                     self.delegate?(.showAlert(.unavailableMessageCenter()))
@@ -177,7 +178,7 @@ extension SecureConversations.WelcomeViewModel {
     ) -> SecureConversations.WelcomeStyle {
         var style = instance.environment.welcomeStyle
 
-        if instance.availabilityStatus != .available {
+        if instance.availabilityStatus != .available() {
             style.messageTitleStyle = nil
         }
 
@@ -190,7 +191,7 @@ extension SecureConversations.WelcomeViewModel {
         var filePickerButton: WelcomeViewProps.FilePickerButton?
 
         let isFilePickerEnabled = !instance.fileUploadListModel.isLimitReached
-        if instance.availabilityStatus == .available && instance.isAttachmentsAvailable {
+        if instance.availabilityStatus == .available(), instance.isAttachmentsAvailable {
             filePickerButton = WelcomeViewProps.FilePickerButton(
                 isEnabled: isFilePickerEnabled,
                 tap: Command { originView in
@@ -202,7 +203,7 @@ extension SecureConversations.WelcomeViewModel {
         return filePickerButton
     }
     static func textViewState(for instance: SecureConversations.WelcomeViewModel) -> TextViewProps? {
-        guard instance.availabilityStatus == .available else {
+        guard instance.availabilityStatus == .available() else {
             return nil
         }
 
@@ -253,7 +254,7 @@ extension SecureConversations.WelcomeViewModel {
         for instance: SecureConversations.WelcomeViewModel
     ) -> SendMessageButton? {
         // Is service available?
-        guard instance.availabilityStatus == .available else {
+        guard instance.availabilityStatus == .available() else {
             return nil
         }
 

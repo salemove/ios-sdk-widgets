@@ -132,10 +132,11 @@ extension SecureConversations {
         }
 
         private func checkSecureConversationsAvailability() {
-            availability.checkSecureConversationsAvailability { [weak self] result in
+            availability.checkSecureConversationsAvailability(for: environment.queueIds) { [weak self] result in
                 guard let self else { return }
                 switch result {
-                case .success(.available):
+                case let .success(.available(queueIds)):
+                    self.environment.queueIds = queueIds
                     self.isSecureConversationsAvailable = true
                 case .failure, .success(.unavailable(.emptyQueue)):
                     self.isSecureConversationsAvailable = false
