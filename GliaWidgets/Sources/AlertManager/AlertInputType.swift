@@ -56,9 +56,9 @@ enum AlertInputType: Equatable {
         case (.unsupportedGvaBroadcastError, .unsupportedGvaBroadcastError):
             return true
         case (.unavailableMessageCenter, .unavailableMessageCenter):
-            return true
+            return false
         case (.unavailableMessageCenterForBeingUnauthenticated, .unavailableMessageCenterForBeingUnauthenticated):
-            return true
+            return false
         case (.mediaUpgrade, .mediaUpgrade):
             return false
         case (.screenSharing, .screenSharing):
