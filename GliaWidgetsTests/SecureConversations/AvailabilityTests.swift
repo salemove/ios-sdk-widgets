@@ -152,6 +152,7 @@ final class AvailabilityTests: XCTestCase {
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }
         env.log = logger
         env.isAuthenticated = { true }
         let availability = Availability(environment: env)
