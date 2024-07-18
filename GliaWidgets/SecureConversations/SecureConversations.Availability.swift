@@ -49,16 +49,24 @@ extension SecureConversations {
                 environment.log.warning("Queue ID array for Secure Messaging contains invalid queue IDs: \(invalidIds).")
             }
 
-            guard !queueIds.isEmpty else {
-                // If no queueId is passed, then check default queues instead
+            let matchedQueues = queues.filter { queueIds.contains($0.id) }
+
+            guard !matchedQueues.isEmpty else {
+                // if provided queue ids array is not empty, but ids do not
+                // match with any queue, then log a warning message
+                if !queueIds.isEmpty {
+                    environment.log.warning("Provided queue IDs do not match with any queue.")
+                }
+                // If no passed queueId is matched with fetched queues,
+                // then check default queues instead
                 let defaultQueues = queues.filter(\.isDefault)
-                // Filter queues supporting `messaging` and are not `closed`
+                // Filter queues supporting `messaging` and have status other than `closed`
                 let filteredQueues = defaultQueues.filter(defaultPredicate)
 
                 if filteredQueues.isEmpty {
                     environment.log.warning("No default queues that have status other than closed and support messaging were found.")
-                    // if no default queue supports `messaging` and is not `closed`,
-                    // return `.unavailable(.emptyQueue)`
+                    // if no default queue supports `messaging` and
+                    // have status other than `closed`, return `.unavailable(.emptyQueue)`
                     completion(.success(.unavailable(.emptyQueue)))
                     return
                 }
@@ -70,12 +78,10 @@ extension SecureConversations {
                 return
             }
 
-            let filteredQueues = queues
-                .filter(defaultPredicate)
-                .filter { queueIds.contains($0.id) }
+            let filteredQueues = matchedQueues.filter(defaultPredicate)
 
-            // Check if provided queueIds match with existing queues,
-            // supporting `messaging` and are not `closed`
+            // Check if matched queues match support `messaging` and
+            // have status other than `closed`
             guard !filteredQueues.isEmpty else {
                 environment.log.warning("Provided queue IDs do not match with queues that have status other than closed and support messaging.")
                 completion(.success(.unavailable(.emptyQueue)))
