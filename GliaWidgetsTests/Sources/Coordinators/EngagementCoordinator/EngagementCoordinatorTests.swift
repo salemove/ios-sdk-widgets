@@ -47,7 +47,7 @@ final class EngagementCoordinatorTests: XCTestCase {
 
         coordinator.start()
 
-        XCTAssertEqual(coordinator.interactor.state, .enqueueing(.text))
+        XCTAssertEqual(coordinator.interactor.state, .none)
         let viewController = coordinator.navigationPresenter.viewControllers.first as? ChatViewController
         XCTAssertNotNil(viewController)
         XCTAssertNotNil(coordinator.gliaViewController)
@@ -169,7 +169,6 @@ final class EngagementCoordinatorTests: XCTestCase {
 
     func test_chatCoordinatorBackOnInteractorStateNone() {
         coordinator.start()
-        coordinator.interactor.state = .none
         
         XCTAssertNotEqual(coordinator.coordinators.count, 0)
 
@@ -189,6 +188,8 @@ final class EngagementCoordinatorTests: XCTestCase {
         }
 
         coordinator.start()
+
+        coordinator.interactor.state = .enqueueing(.text)
 
         let chatCoordinator = coordinator.coordinators.last as? ChatCoordinator
         chatCoordinator?.delegate?(.back)
