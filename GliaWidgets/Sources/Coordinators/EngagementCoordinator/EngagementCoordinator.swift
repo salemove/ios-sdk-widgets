@@ -68,7 +68,6 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
                 showsCallBubble: false
             )
             engagement = .chat(chatViewController)
-            interactor.state = .enqueueing(.text)
             navigationPresenter.setViewControllers(
                 [chatViewController],
                 animated: false
