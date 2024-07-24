@@ -13,10 +13,10 @@ extension Glia {
             queueIds: []
         )
 
-        // In case engagement should be restarted, LO ack should not
-        // be appeared again.
-        createdInteractor.skipLiveObservationConfirmations = true // TODO: snack bar has to be shown, but not dialog
-
+        // In this case, where engagement is restored, LO acknowledgement dialog
+        // should not appear again, however snack bar message has to be shown via
+        // `showSnackBarIfNeeded` function.
+        createdInteractor.skipLiveObservationConfirmations = true
         // Apply company name to theme and get the modified theme.
         let modifiedTheme = applyCompanyName(using: configuration, theme: theme)
 
@@ -50,5 +50,32 @@ extension Glia {
         if !maximize {
             self.rootCoordinator?.minimize()
         }
+
+        func showSnackBarMessage() {
+            environment.snackBar.showSnackBarMessage(
+                style: viewFactory.theme.snackBar,
+                topMostViewController: GliaPresenter(
+                    environment: .create(
+                        with: self.environment,
+                        log: self.loggerPhase.logger,
+                        sceneProvider: nil
+                    )
+                ).topMostViewController,
+                timerProviding: environment.timerProviding,
+                gcd: environment.gcd,
+                notificationCenter: environment.notificationCenter
+            )
+        }
+
+        func showSnackBarIfNeeded() {
+            environment.coreSdk.fetchSiteConfigurations { result in
+                guard case let .success(site) = result else { return }
+                guard site.mobileObservationEnabled == true else { return }
+                guard site.mobileObservationIndicationEnabled == true else { return }
+                showSnackBarMessage()
+            }
+        }
+
+        showSnackBarIfNeeded()
     }
 }
