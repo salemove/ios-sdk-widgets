@@ -30,4 +30,22 @@ struct SnackBar {
             notificationCenter
         )
     }
+
+    func showSnackBarMessage(
+        style: Theme.SnackBarStyle,
+        topMostViewController: UIViewController,
+        timerProviding: FoundationBased.Timer.Providing,
+        gcd: GCD,
+        notificationCenter: FoundationBased.NotificationCenter
+    ) {
+        self.present(
+            text: style.text,
+            style: style,
+            for: topMostViewController,
+            bottomOffset: -60,
+            timerProviding: timerProviding,
+            gcd: gcd,
+            notificationCenter: notificationCenter
+        )
+    }
 }
