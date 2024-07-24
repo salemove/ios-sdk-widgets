@@ -20,4 +20,18 @@ extension GliaPresenter.Environment {
             log: environment.log
         )
     }
+
+    static func create(
+        with environment: Glia.Environment,
+        log: CoreSdkClient.Logger,
+        sceneProvider: SceneProvider?
+    ) -> Self {
+            .init(
+                appWindowsProvider: .init(
+                    uiApplication: environment.uiApplication,
+                    sceneProvider: sceneProvider
+                ),
+                log: log
+            )
+    }
 }
