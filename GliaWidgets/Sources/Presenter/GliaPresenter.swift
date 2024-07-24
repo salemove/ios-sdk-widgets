@@ -2,7 +2,6 @@ import UIKit
 
 final class GliaPresenter {
     var environment: Environment
-    var delayedTask: Task<Void, Error>?
 
     var window: UIWindow? {
         // Retrieve all available windows.
