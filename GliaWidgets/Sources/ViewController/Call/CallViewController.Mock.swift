@@ -26,12 +26,8 @@ extension CallViewController {
     }
 
     static func mockAudioCallQueueState() throws -> CallViewController {
-        let queueId = UUID.mock.uuidString
         let interactorEnv = Interactor.Environment.mock
-        let interactor = Interactor.mock(
-            queueId: queueId,
-            environment: interactorEnv
-        )
+        let interactor = Interactor.mock(environment: interactorEnv)
         let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.audio
         let callEnv = Call.Environment.mock
@@ -58,12 +54,8 @@ extension CallViewController {
     }
 
     static func mockAudioCallConnectingState() throws -> CallViewController {
-        let queueId = UUID.mock.uuidString
         let interactorEnv = Interactor.Environment.mock
-        let interactor = Interactor.mock(
-            queueId: queueId,
-            environment: interactorEnv
-        )
+        let interactor = Interactor.mock(environment: interactorEnv)
         let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.audio
         let callEnv = Call.Environment.mock
@@ -89,15 +81,11 @@ extension CallViewController {
     }
 
     static func mockAudioCallConnectedState() throws -> CallViewController {
-        let queueId = UUID.mock.uuidString
         var interactorEnv = Interactor.Environment.mock
         interactorEnv.coreSdk.configureWithConfiguration = { _, callback in
             callback(.success(()))
         }
-        let interactor = Interactor.mock(
-            queueId: queueId,
-            environment: interactorEnv
-        )
+        let interactor = Interactor.mock(environment: interactorEnv)
         let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.audio
         let callEnv = Call.Environment.mock
@@ -141,12 +129,8 @@ extension CallViewController {
     }
 
     static func mockVideoCallConnectingState() throws -> CallViewController {
-        let queueId = UUID.mock.uuidString
         let interactorEnv = Interactor.Environment.mock
-        let interactor = Interactor.mock(
-            queueId: queueId,
-            environment: interactorEnv
-        )
+        let interactor = Interactor.mock(environment: interactorEnv)
         let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.video(direction: .oneWay)
         let callEnv = Call.Environment.mock
@@ -185,12 +169,8 @@ extension CallViewController {
     }
 
     static func mockVideoCallQueueState() throws -> CallViewController {
-        let queueId = UUID.mock.uuidString
         let interactorEnv = Interactor.Environment.mock
-        let interactor = Interactor.mock(
-            queueId: queueId,
-            environment: interactorEnv
-        )
+        let interactor = Interactor.mock(environment: interactorEnv)
         let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.video(direction: .oneWay)
         let callEnv = Call.Environment.mock
@@ -217,12 +197,8 @@ extension CallViewController {
     }
 
     static func mockVideoCallConnectedState() throws -> CallViewController {
-        let queueId = UUID.mock.uuidString
         let interactorEnv = Interactor.Environment.mock
-        let interactor = Interactor.mock(
-            queueId: queueId,
-            environment: interactorEnv
-        )
+        let interactor = Interactor.mock(environment: interactorEnv)
         let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.video(direction: .oneWay)
         let callEnv = Call.Environment.mock
@@ -263,12 +239,8 @@ extension CallViewController {
     }
 
     static func mockVideoCallConnectedStateWithFlipToBackCameraButton() throws -> CallViewController {
-        let queueId = UUID.mock.uuidString
         let interactorEnv = Interactor.Environment.mock
-        let interactor = Interactor.mock(
-            queueId: queueId,
-            environment: interactorEnv
-        )
+        let interactor = Interactor.mock(environment: interactorEnv)
         let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.video(direction: .oneWay)
         let callEnv = Call.Environment.mock

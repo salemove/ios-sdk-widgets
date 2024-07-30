@@ -4,19 +4,15 @@ extension Glia {
     func restoreOngoingEngagement(
         configuration: Configuration,
         currentEngagement: CoreSdkClient.Engagement,
+        interactor: Interactor,
         features: Features,
         maximize: Bool
     ) {
-        // Creates interactor instance
-        let createdInteractor = setupInteractor(
-            configuration: configuration,
-            queueIds: []
-        )
-
         // In this case, where engagement is restored, LO acknowledgement dialog
         // should not appear again, however snack bar message has to be shown via
         // `showSnackBarIfNeeded` function.
-        createdInteractor.skipLiveObservationConfirmations = true
+        interactor.skipLiveObservationConfirmations = true
+
         // Apply company name to theme and get the modified theme.
         let modifiedTheme = applyCompanyName(using: configuration, theme: theme)
 
@@ -38,7 +34,7 @@ extension Glia {
         )
 
         startRootCoordinator(
-            with: createdInteractor,
+            with: interactor,
             viewFactory: viewFactory,
             sceneProvider: nil,
             engagementKind: EngagementKind(media: ongoingEngagementMediaStreams),

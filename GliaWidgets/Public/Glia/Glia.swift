@@ -203,8 +203,6 @@ public class Glia {
 
         self.callVisualizer.delegate = { action in
             switch action {
-            case .visitorCodeIsRequested:
-                self.setupInteractor(configuration: configuration)
             case .engagementStarted:
                 self.onEvent?(.started)
             case .engagementEnded:
@@ -228,6 +226,10 @@ public class Glia {
                 // asynchronously, without waiting configuration completion.
                 self.configuration = configuration
 
+                let interactor = self.setupInteractor(configuration: configuration)
+                self.interactor = interactor
+                self.callVisualizer.startObservingInteractorEvents()
+
                 let getRemoteString = self.environment.coreSdk.localeProvider.getRemoteString
                 self.stringProvidingPhase = .configured(getRemoteString)
 
@@ -238,12 +240,12 @@ public class Glia {
                 guard let currentEngagement = self.environment.coreSdk.getCurrentEngagement() else { return }
 
                 if currentEngagement.source == .callVisualizer {
-                    self.setupInteractor(configuration: configuration)
                     self.callVisualizer.handleRestoredEngagement()
                 } else {
                     self.restoreOngoingEngagement(
                         configuration: configuration,
                         currentEngagement: currentEngagement,
+                        interactor: interactor,
                         features: features,
                         maximize: false
                     )
@@ -438,12 +440,10 @@ public class Glia {
 extension Glia {
     @discardableResult
     func setupInteractor(
-        configuration: Configuration,
-        queueIds: [String] = []
+        configuration: Configuration
     ) -> Interactor {
         let interactor = Interactor(
             visitorContext: configuration.visitorContext,
-            queueIds: queueIds,
             environment: .create(
                 with: environment,
                 log: loggerPhase.logger
@@ -457,7 +457,6 @@ extension Glia {
         environment.coreSDKConfigurator.configureWithInteractor(interactor)
         self.interactor = interactor
 
-        self.callVisualizer.startObservingInteractorEvents()
         return interactor
     }
 }
