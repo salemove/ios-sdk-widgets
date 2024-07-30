@@ -32,7 +32,6 @@ extension CallVisualizerTests {
         }
         let sdk = Glia(environment: gliaEnv)
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
-        sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
 
         interactable?.onEngagementRequest({ _, _, _ in })
 
@@ -68,7 +67,6 @@ extension CallVisualizerTests {
         }
         let sdk = Glia(environment: gliaEnv)
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
-        sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
 
         interactable?.onEngagementRequest({ _, _, _ in })
 
@@ -104,7 +102,6 @@ extension CallVisualizerTests {
         }
         let sdk = Glia(environment: gliaEnv)
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
-        sdk.callVisualizer.delegate?(.visitorCodeIsRequested)
 
         interactable?.onEngagementRequest({ _, _, _ in })
 

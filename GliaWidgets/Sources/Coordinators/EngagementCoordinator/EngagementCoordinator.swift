@@ -427,7 +427,7 @@ extension EngagementCoordinator {
             navigationPresenter: navigationPresenter,
             environment: .create(
                 with: environment,
-                queueIds: interactor.queueIds,
+                queueIds: interactor.queueIds ?? [],
                 viewFactory: viewFactory,
                 chatCall: chatCall,
                 unreadMessages: unreadMessages,
