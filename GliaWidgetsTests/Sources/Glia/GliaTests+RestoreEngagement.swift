@@ -41,11 +41,20 @@ extension GliaTests {
         }
 
         let sdk = Glia(environment: sdkEnv)
-
         sdk.rootCoordinator = rootCoordinator
+
+        try sdk.configure(with: .mock(), features: .all) { _ in }
+        sdk.stringProvidingPhase = .configured { _ in
+            return ""
+        }
+        guard let interactor = sdk.interactor else {
+            XCTFail("Interactor missing")
+            return
+        }
         sdk.restoreOngoingEngagement(
             configuration: .mock(),
             currentEngagement: .mock(),
+            interactor: interactor,
             features: .all,
             maximize: false
         )

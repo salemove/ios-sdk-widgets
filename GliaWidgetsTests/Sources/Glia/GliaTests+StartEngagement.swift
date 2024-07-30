@@ -33,7 +33,10 @@ extension GliaTests {
         let sdk = Glia(environment: sdkEnv)
 
         sdk.rootCoordinator = rootCoordinator
-        try sdk.configure(with: .mock(), theme: .mock()) { _ in }
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
 
         XCTAssertNoThrow(
             try sdk.startEngagement(
@@ -94,10 +97,14 @@ extension GliaTests {
         gliaEnv.coreSdk.createLogger = { _ in logger }
         let sdk = Glia(environment: gliaEnv)
         sdk.environment.conditionalCompilation.isDebug = { true }
+        sdk.environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
-        try sdk.configure(with: .mock(), theme: .mock()) { _ in }
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
         XCTAssertThrowsError(
             try sdk.startEngagement(
@@ -128,7 +135,10 @@ extension GliaTests {
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
         environment.coreSdk.getCurrentEngagement = { nil }
         let sdk = Glia(environment: environment)
-        try sdk.configure(with: .mock(), theme: .mock()) { _ in }
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
 
         XCTAssertNoThrow(
             try sdk.startEngagement(
@@ -210,7 +220,10 @@ extension GliaTests {
         theme.call.connect.queue.firstText = "Glia 1"
         theme.chat.connect.queue.firstText = "Glia 2"
 
-        try sdk.configure(with: .mock(), theme: theme) { _ in
+        try sdk.configure(
+            with: .mock(),
+            theme: theme
+        ) { _ in
             do {
                 try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
             } catch {
@@ -261,7 +274,10 @@ extension GliaTests {
         theme.call.connect.queue.firstText = "Glia 1"
         theme.chat.connect.queue.firstText = "Glia 2"
 
-        try sdk.configure(with: .mock(), theme: .mock()) { _ in
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in
             do {
                 try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
             } catch {
@@ -308,7 +324,10 @@ extension GliaTests {
 
         let sdk = Glia(environment: environment)
 
-        try sdk.configure(with: .mock(companyName: "Glia"), theme: .mock()) { _ in
+        try sdk.configure(
+            with: .mock(companyName: "Glia"),
+            theme: .mock()
+        ) { _ in
             do {
                 try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
             } catch {
@@ -355,7 +374,10 @@ extension GliaTests {
 
         let sdk = Glia(environment: environment)
 
-        try sdk.configure(with: .mock(), theme: .mock()) { _ in
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in
             do {
                 try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
             } catch {
@@ -408,7 +430,10 @@ extension GliaTests {
         theme.call.connect.queue.firstText = "Glia 1"
         theme.chat.connect.queue.firstText = "Glia 2"
 
-        try sdk.configure(with: .mock(), theme: theme) { _ in
+        try sdk.configure(
+            with: .mock(),
+            theme: theme
+        ) { _ in
             do {
                 try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
             } catch {
@@ -456,7 +481,10 @@ extension GliaTests {
         environment.coreSdk.getCurrentEngagement = { nil }
 
         let sdk = Glia(environment: environment)
-        try sdk.configure(with: .mock(), theme: .mock()) { _ in }
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
         try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
 
         let configuredSdkTheme = resultingViewFactory?.theme

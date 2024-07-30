@@ -55,7 +55,6 @@ public final class CallVisualizer {
     ///
     public func showVisitorCodeViewController(from source: UIViewController) {
         environment.log.prefixed(Self.self).info("Show Visitor Code Dialog")
-        delegate?(.visitorCodeIsRequested)
         coordinator.showVisitorCodeViewController(by: .alert(source))
     }
 
@@ -80,7 +79,6 @@ public final class CallVisualizer {
         onEngagementAccepted: @escaping () -> Void
     ) {
         environment.log.prefixed(Self.self).info("Show Visitor Code Dialog")
-        delegate?(.visitorCodeIsRequested)
         coordinator.showVisitorCodeViewController(
             by: .embedded(container, onEngagementAccepted: onEngagementAccepted)
         )

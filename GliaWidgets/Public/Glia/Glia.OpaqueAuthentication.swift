@@ -97,11 +97,13 @@ extension Glia {
                         case .success:
                             // Attempt to restore ongoing engagement after configuration.
                             if let ongoingEngagement = self?.environment.coreSdk.getCurrentEngagement(),
-                                let configuration = self?.configuration, prevEngagementIsNotPresent {
+                                let configuration = self?.configuration, prevEngagementIsNotPresent,
+                                let interactor {
                                 self?.closeRootCoordinator()
                                 self?.restoreOngoingEngagement(
                                     configuration: configuration,
                                     currentEngagement: ongoingEngagement,
+                                    interactor: interactor,
                                     features: self?.features ?? .all,
                                     maximize: false
                                 )

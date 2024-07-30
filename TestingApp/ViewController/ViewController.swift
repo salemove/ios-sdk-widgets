@@ -225,9 +225,8 @@ extension ViewController {
         let startEngagement = {
             self.catchingError {
                 try Glia.sharedInstance.startEngagement(
-                    engagementKind: engagementKind,
-                    in: [self.queueId],
-                    theme: self.theme
+                    of: engagementKind,
+                    in: [self.queueId]
                 )
             }
         }
@@ -265,8 +264,8 @@ extension ViewController {
 
         do {
             try Glia.sharedInstance.configure(
-                with: configuration, 
-                theme: Theme(),
+                with: configuration,
+                theme: theme,
                 uiConfig: uiConfig
             ) { result in
                 switch result {

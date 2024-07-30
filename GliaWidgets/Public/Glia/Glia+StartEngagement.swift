@@ -29,6 +29,9 @@ extension Glia {
         // instead engagement is getting restored.
         guard let configuration = self.configuration else { throw GliaError.sdkIsNotConfigured }
 
+        // Interactor is initialized during configuration, which means that queueIds need
+        // to be set in interactor when startEngagement is called.
+        self.interactor?.setQueuesIds(queueIds)
         // It is assumed that `features` to be provided from `configure` or via deprecated `startEngagement` method.
         let features = self.features ?? []
 
@@ -36,12 +39,17 @@ extension Glia {
             if engagement.source == .callVisualizer {
                 throw GliaError.callVisualizerEngagementExists
             } else {
-                if interactor != nil, let rootCoordinator {
+                guard let interactor else {
+                    loggerPhase.logger.prefixed(Self.self).warning("Interactor is missing")
+                    return
+                }
+                if let rootCoordinator {
                     rootCoordinator.maximize()
                 } else {
                     self.restoreOngoingEngagement(
                         configuration: configuration,
                         currentEngagement: engagement,
+                        interactor: interactor,
                         features: features,
                         maximize: true
                     )
@@ -49,12 +57,6 @@ extension Glia {
                 return
             }
         }
-
-        // Creates interactor instance
-        let createdInteractor = setupInteractor(
-            configuration: configuration,
-            queueIds: queueIds
-        )
 
         // Apply company name to theme and get the modified theme
         let modifiedTheme = applyCompanyName(using: configuration, theme: theme)
@@ -76,8 +78,12 @@ extension Glia {
             ongoingEngagementMediaStreams = .init(audio: media.audio, video: nil)
         }
 
+        guard let interactor else {
+            loggerPhase.logger.prefixed(Self.self).warning("Interactor is missing")
+            return
+        }
         startRootCoordinator(
-            with: createdInteractor,
+            with: interactor,
             viewFactory: viewFactory,
             sceneProvider: sceneProvider,
             engagementKind: ongoingEngagementMediaStreams.map { EngagementKind(media: $0) } ?? engagementKind,
