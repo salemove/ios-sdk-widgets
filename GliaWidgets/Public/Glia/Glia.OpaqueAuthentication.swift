@@ -82,26 +82,46 @@ extension Glia {
                 let interactor = self?.rootCoordinator?.interactor
                 let viewFactory = self?.rootCoordinator?.viewFactory
                 let sceneProvider = self?.rootCoordinator?.sceneProvider
-                let features = self?.rootCoordinator?.features
+
+                let prevEngagementIsNotPresent = self?.environment.coreSdk.getCurrentEngagement() == nil
 
                 auth.authenticate(
                     with: .init(rawValue: idToken),
                     externalAccessToken: accessToken.map { .init(rawValue: $0) }
-                ) { result in
-                    switch result {
-                    case .success:
-                        // Handle authentication
-                        self?.restartEngagementIfNeeded(
-                            interactor: interactor,
-                            viewFactory: viewFactory,
-                            sceneProvider: sceneProvider,
-                            features: features
-                        )
-                    case .failure:
-                        break
-                    }
+                ) { [weak self]  result in
+                    // Wait for possible engagement (if there is one)
+                    // to get restored along with `rootCoordinator`
+                    // and bubble view.
+                    self?.environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(1)) {
+                        switch result {
+                        case .success:
+                            // Attempt to restore ongoing engagement after configuration.
+                            if let ongoingEngagement = self?.environment.coreSdk.getCurrentEngagement(),
+                                let configuration = self?.configuration, prevEngagementIsNotPresent,
+                                let interactor {
+                                self?.closeRootCoordinator()
+                                self?.restoreOngoingEngagement(
+                                    configuration: configuration,
+                                    currentEngagement: ongoingEngagement,
+                                    interactor: interactor,
+                                    features: self?.features ?? .all,
+                                    maximize: false
+                                )
+                            } else {
+                                // Handle authentication with possibility to restart engagement.
+                                self?.restartEngagementIfNeeded(
+                                    interactor: interactor,
+                                    viewFactory: viewFactory,
+                                    sceneProvider: sceneProvider,
+                                    features: self?.features
+                                )
+                            }
+                        case .failure:
+                            break
+                        }
 
-                    callback(result.mapError(Glia.Authentication.Error.init) )
+                        callback(result.mapError(Glia.Authentication.Error.init) )
+                    }
                 }
             },
             deauthenticateWithCallback: { [weak self] callback in

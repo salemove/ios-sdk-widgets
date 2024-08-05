@@ -424,12 +424,9 @@ private extension CallVisualizer.Coordinator {
 
 private extension CallVisualizer.Coordinator {
     func showSnackBarMessage() {
-        let style = environment.viewFactory.theme.snackBar
-        environment.snackBar.present(
-            text: style.text,
-            style: style,
-            for: topMostViewController,
-            bottomOffset: -60,
+        environment.snackBar.showSnackBarMessage(
+            style: environment.viewFactory.theme.snackBar,
+            topMostViewController: topMostViewController,
             timerProviding: environment.timerProviding,
             gcd: environment.gcd,
             notificationCenter: environment.notificationCenter

@@ -7,7 +7,6 @@ extension Glia {
     /// - Parameters:
     ///   - engagementKind: Engagement media type.
     ///   - in: Queue identifiers
-    ///   - features: Set of features to be enabled in the SDK.
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to
     ///     the first active foreground scene.
     ///
@@ -21,25 +20,43 @@ extension Glia {
     ///   initially prior to this method, because `GliaError.sdkIsNotConfigured` will occur otherwise.
     ///
     public func startEngagement(
-        engagementKind: EngagementKind,
+        of engagementKind: EngagementKind, // To help compiler to avoid ambiguity, change signature of `engagementKind` parameter.
         in queueIds: [String] = [],
-        features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
-        // It checks if ongoing engagement exists on WidgetsSDK side, if it doesn't but ongoing engagement exists
-        // on CoreSDK side, it will be restored.
-        guard engagement == .none else { throw GliaError.engagementExists }
+        // In order to align behaviour between platforms,
+        // `GliaError.engagementExists` is no longer thrown,
+        // instead engagement is getting restored.
         guard let configuration = self.configuration else { throw GliaError.sdkIsNotConfigured }
-        if let engagement = environment.coreSdk.getCurrentEngagement(),
-            engagement.source == .callVisualizer {
-            throw GliaError.callVisualizerEngagementExists
-        }
 
-        // Creates interactor instance
-        let createdInteractor = setupInteractor(
-            configuration: configuration,
-            queueIds: queueIds
-        )
+        // Interactor is initialized during configuration, which means that queueIds need
+        // to be set in interactor when startEngagement is called.
+        self.interactor?.setQueuesIds(queueIds)
+        // It is assumed that `features` to be provided from `configure` or via deprecated `startEngagement` method.
+        let features = self.features ?? []
+
+        if let engagement = environment.coreSdk.getCurrentEngagement() {
+            if engagement.source == .callVisualizer {
+                throw GliaError.callVisualizerEngagementExists
+            } else {
+                guard let interactor else {
+                    loggerPhase.logger.prefixed(Self.self).warning("Interactor is missing")
+                    return
+                }
+                if let rootCoordinator {
+                    rootCoordinator.maximize()
+                } else {
+                    self.restoreOngoingEngagement(
+                        configuration: configuration,
+                        currentEngagement: engagement,
+                        interactor: interactor,
+                        features: features,
+                        maximize: true
+                    )
+                }
+                return
+            }
+        }
 
         // Apply company name to theme and get the modified theme
         let modifiedTheme = applyCompanyName(using: configuration, theme: theme)
@@ -61,8 +78,12 @@ extension Glia {
             ongoingEngagementMediaStreams = .init(audio: media.audio, video: nil)
         }
 
+        guard let interactor else {
+            loggerPhase.logger.prefixed(Self.self).warning("Interactor is missing")
+            return
+        }
         startRootCoordinator(
-            with: createdInteractor,
+            with: interactor,
             viewFactory: viewFactory,
             sceneProvider: sceneProvider,
             engagementKind: ongoingEngagementMediaStreams.map { EngagementKind(media: $0) } ?? engagementKind,
@@ -100,7 +121,7 @@ extension Glia {
         }
     }
 
-    private func applyCompanyName(using configuration: Configuration, theme: Theme) -> Theme {
+    func applyCompanyName(using configuration: Configuration, theme: Theme) -> Theme {
         theme.chat.connect.queue.firstText = companyName(
             using: configuration,
             themeCompanyName: theme.chat.connect.queue.firstText

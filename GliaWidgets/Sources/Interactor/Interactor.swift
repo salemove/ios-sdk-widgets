@@ -37,7 +37,7 @@ enum InteractorEvent {
 class Interactor {
     typealias EventHandler = (InteractorEvent) -> Void
 
-    let queueIds: [String]
+    private(set) var queueIds: [String]?
     var engagedOperator: CoreSdkClient.Operator? {
         switch state {
         case .engaged(let engagedOperator):
@@ -77,10 +77,8 @@ class Interactor {
 
     init(
         visitorContext: Configuration.VisitorContext?,
-        queueIds: [String],
         environment: Environment
     ) {
-        self.queueIds = queueIds
         self.visitorContext = visitorContext
         self.environment = environment
     }
@@ -109,6 +107,10 @@ class Interactor {
 }
 
 extension Interactor {
+    func setQueuesIds(_ queueIds: [String]) {
+        self.queueIds = queueIds
+    }
+
     func enqueueForEngagement(
         mediaType: CoreSdkClient.MediaType,
         success: @escaping () -> Void,
@@ -136,7 +138,7 @@ extension Interactor {
 
         self.environment.coreSdk.queueForEngagement(
             .init(
-                queueIds: self.queueIds,
+                queueIds: queueIds ?? [],
                 visitorContext: coreSdkVisitorContext,
                 // shouldCloseAllQueues is `true` by default core sdk,
                 // here it is passed explicitly

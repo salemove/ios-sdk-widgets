@@ -225,9 +225,8 @@ extension ViewController {
         let startEngagement = {
             self.catchingError {
                 try Glia.sharedInstance.startEngagement(
-                    engagementKind: engagementKind,
-                    in: [self.queueId],
-                    theme: self.theme
+                    of: engagementKind,
+                    in: [self.queueId]
                 )
             }
         }
@@ -265,8 +264,8 @@ extension ViewController {
 
         do {
             try Glia.sharedInstance.configure(
-                with: configuration, 
-                theme: Theme(),
+                with: configuration,
+                theme: theme,
                 uiConfig: uiConfig
             ) { result in
                 switch result {
@@ -421,7 +420,7 @@ extension ViewController {
     @IBAction private func toggleAuthentication() {
         let authenticate = {
             self.catchingError {
-                let authentication = try! Glia.sharedInstance.authentication(with: self.authenticationBehavior)
+                let authentication = try Glia.sharedInstance.authentication(with: self.authenticationBehavior)
                 switch authentication.isAuthenticated {
                 case false:
                     self.authentication = authentication

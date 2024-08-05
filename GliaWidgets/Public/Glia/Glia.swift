@@ -113,6 +113,9 @@ public class Glia {
     var assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard
     var loggerPhase: LoggerPhase
     var alertManager: AlertManager
+    // We need to store `features` via `configure` or deprecated `startEngagement` methods
+    // to use it when engagement gets restored for Direct ID authentication flow.
+    var features: Features?
 
     private(set) var configuration: Configuration?
 
@@ -162,6 +165,7 @@ public class Glia {
     ///   - theme: A custom theme to use with the engagement.
     ///   - uiConfig: Remote UI configuration.
     ///   - assetsBuilder: Provides assets for remote configuration.
+    ///   - features: Set of features to be enabled in the SDK.
     ///   - completion: Completion handler that will be fired once configuration is
     ///     complete.
     ///
@@ -174,6 +178,7 @@ public class Glia {
         theme: Theme = Theme(),
         uiConfig: RemoteConfiguration? = nil,
         assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
+        features: Features = .all,
         completion: @escaping (Result<Void, Error>) -> Void
     ) throws {
         guard environment.coreSdk.getCurrentEngagement() == nil else {
@@ -185,6 +190,9 @@ public class Glia {
         }
         self.theme = theme
         self.assetsBuilder = assetsBuilder
+        // We need to store features to be used for restored engagement
+        // during Direct ID authenticated flow.
+        self.features = features
         // `configuration` should be erased to avoid cases when integrators
         // call `configure` and `startEngagement` asynchronously, and
         // second-time configuration has not been complete, but `startEngagement`
@@ -195,8 +203,6 @@ public class Glia {
 
         self.callVisualizer.delegate = { action in
             switch action {
-            case .visitorCodeIsRequested:
-                self.setupInteractor(configuration: configuration)
             case .engagementStarted:
                 self.onEvent?(.started)
             case .engagementEnded:
@@ -220,16 +226,30 @@ public class Glia {
                 // asynchronously, without waiting configuration completion.
                 self.configuration = configuration
 
+                let interactor = self.setupInteractor(configuration: configuration)
+                self.interactor = interactor
+                self.callVisualizer.startObservingInteractorEvents()
+
                 let getRemoteString = self.environment.coreSdk.localeProvider.getRemoteString
                 self.stringProvidingPhase = .configured(getRemoteString)
 
-                if let engagement = self.environment.coreSdk.getCurrentEngagement(),
-                   engagement.source == .callVisualizer {
-                    self.setupInteractor(configuration: configuration)
-                    self.callVisualizer.handleRestoredEngagement()
-                }
+                // Configuration completion handler has to be called in any case,
+                // at the end of the scope, whether there's ongoing engagement or not.
+                defer { completion(.success(())) }
 
-                completion(.success(()))
+                guard let currentEngagement = self.environment.coreSdk.getCurrentEngagement() else { return }
+
+                if currentEngagement.source == .callVisualizer {
+                    self.callVisualizer.handleRestoredEngagement()
+                } else {
+                    self.restoreOngoingEngagement(
+                        configuration: configuration,
+                        currentEngagement: currentEngagement,
+                        interactor: interactor,
+                        features: features,
+                        maximize: false
+                    )
+                }
             case .failure(let error):
                 typealias ProcessError = CoreSdkClient.ConfigurationProcessError
                 var errorForCompletion: GliaError = .internalError
@@ -420,12 +440,10 @@ public class Glia {
 extension Glia {
     @discardableResult
     func setupInteractor(
-        configuration: Configuration,
-        queueIds: [String] = []
+        configuration: Configuration
     ) -> Interactor {
         let interactor = Interactor(
             visitorContext: configuration.visitorContext,
-            queueIds: queueIds,
             environment: .create(
                 with: environment,
                 log: loggerPhase.logger
@@ -439,7 +457,6 @@ extension Glia {
         environment.coreSDKConfigurator.configureWithInteractor(interactor)
         self.interactor = interactor
 
-        self.callVisualizer.startObservingInteractorEvents()
         return interactor
     }
 }

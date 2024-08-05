@@ -34,7 +34,6 @@ class InteractorTests: XCTestCase {
 
         interactor = .init(
             visitorContext: nil,
-            queueIds: [mock.queueId],
             environment: interactorEnv
         )
 
@@ -56,7 +55,6 @@ class InteractorTests: XCTestCase {
 
         interactor = .init(
             visitorContext: nil,
-            queueIds: [mock.queueId],
             environment: .init(coreSdk: .failing, gcd: .mock, log: .failing)
         )
 

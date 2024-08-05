@@ -68,7 +68,7 @@ extension ChatCoordinator.Environment {
             fetchChatHistory: environment.fetchChatHistory,
             createFileUploadListModel: environment.createFileUploadListModel,
             sendSecureMessagePayload: environment.sendSecureMessagePayload,
-            queueIds: interactor.queueIds,
+            queueIds: interactor.queueIds ?? [],
             listQueues: environment.listQueues,
             secureUploadFile: environment.uploadSecureFile,
             getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
