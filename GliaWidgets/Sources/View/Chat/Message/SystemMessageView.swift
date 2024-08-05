@@ -23,7 +23,7 @@ final class SystemMessageView: ChatMessageView {
                 )
             ),
             contentAlignment: .left,
-            environment: .init(uiScreen: environment.uiScreen)
+            environment: .create(with: environment)
         )
         setup()
         layout()
@@ -42,11 +42,5 @@ final class SystemMessageView: ChatMessageView {
             contentViews.topAnchor.constraint(equalTo: self.topAnchor, constant: kInsets.top),
             contentViews.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -kInsets.bottom)
         ])
-    }
-}
-
-extension SystemMessageView {
-    struct Environment {
-        var uiScreen: UIKitBased.UIScreen
     }
 }

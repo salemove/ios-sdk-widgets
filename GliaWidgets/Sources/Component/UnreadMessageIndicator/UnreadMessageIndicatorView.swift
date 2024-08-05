@@ -34,12 +34,7 @@ final class UnreadMessageIndicatorView: BaseView {
         self.environment = environment
         userImageView = UserImageView(
             with: style.userImage,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
-            )
+            environment: .create(with: environment)
         )
         badgeView = BadgeView(with: style.badge)
         super.init()
@@ -106,14 +101,5 @@ final class UnreadMessageIndicatorView: BaseView {
         accessibilityLabel = style.accessibility.label
         accessibilityValue = "\(newItemCount)"
         accessibilityIdentifier = "unread_message_indicator"
-    }
-}
-
-extension UnreadMessageIndicatorView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
-        var imageViewCache: ImageView.Cache
     }
 }

@@ -6,3 +6,12 @@ extension CallVisualizer.VisitorCodeViewModel {
         var requestVisitorCode: CoreSdkClient.RequestVisitorCode
     }
 }
+
+extension CallVisualizer.VisitorCodeViewModel.Environment {
+    static func create(with environment: CallVisualizer.VisitorCodeCoordinator.Environment) -> Self {
+        .init(
+            timerProviding: environment.timerProviding,
+            requestVisitorCode: environment.requestVisitorCode
+        )
+    }
+}

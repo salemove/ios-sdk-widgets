@@ -13,7 +13,6 @@ class FlipCameraButton: UIButton {
         let style: FlipCameraButtonStyle
         let tap: Cmd?
         let accessibility: Accessibility
-
     }
 
     var props = Props(

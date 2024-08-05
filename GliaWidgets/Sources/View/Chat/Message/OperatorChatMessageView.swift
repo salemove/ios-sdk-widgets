@@ -7,12 +7,7 @@ class OperatorChatMessageView: ChatMessageView {
                 guard operatorImageView == nil else { return }
                 let operatorImageView = UserImageView(
                     with: viewStyle.operatorImage,
-                    environment: .init(
-                        data: environment.data,
-                        uuid: environment.uuid,
-                        gcd: environment.gcd,
-                        imageViewCache: environment.imageViewCache
-                    )
+                    environment: .create(with: environment)
                 )
                 self.operatorImageView = operatorImageView
                 operatorImageViewContainer.addSubview(operatorImageView)
@@ -49,7 +44,7 @@ class OperatorChatMessageView: ChatMessageView {
                 )
             ),
             contentAlignment: .left,
-            environment: .init(uiScreen: environment.uiScreen)
+            environment: .create(with: environment)
         )
         setup()
         layout()
@@ -80,15 +75,5 @@ class OperatorChatMessageView: ChatMessageView {
         constraints += contentViews.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -imageViewInsets.right)
 
         constraints += contentViews.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -imageViewInsets.bottom)
-    }
-}
-
-extension OperatorChatMessageView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
-        var imageViewCache: ImageView.Cache
-        var uiScreen: UIKitBased.UIScreen
     }
 }

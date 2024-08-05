@@ -52,28 +52,3 @@ public extension Theme {
         }
     }
 }
-
-extension Theme.VisitorMessageStyle {
-    func toOldVisitorMessageStyle() -> VisitorChatMessageStyle {
-        .init(
-            text: .init(
-                textFont: text.font,
-                textColor: UIColor(hex: text.color),
-                textStyle: text.textStyle,
-                backgroundColor: background.background?.color ?? .clear,
-                cornerRadius: background.cornerRadius,
-                accessibility: .init(
-                    value: accessibility.value,
-                    isFontScalingEnabled: accessibility.isFontScalingEnabled
-                )
-            ),
-            imageFile: imageFile,
-            fileDownload: fileDownload,
-            statusFont: status.font,
-            statusColor: UIColor(hex: status.color),
-            statusTextStyle: status.textStyle,
-            delivered: delivered,
-            accessibility: .init(isFontScalingEnabled: accessibility.isFontScalingEnabled)
-        )
-    }
-}

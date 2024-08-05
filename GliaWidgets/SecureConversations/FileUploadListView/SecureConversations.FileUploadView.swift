@@ -38,7 +38,7 @@ extension SecureConversations {
         }
 
         init(props: Props, environment: Environment) {
-            filePreviewView = .init(environment: .init(uiScreen: environment.uiScreen))
+            filePreviewView = .init(environment: .create(with: environment))
             self.props = props
             super.init(frame: .zero)
             setup()
@@ -429,11 +429,5 @@ extension SecureConversations.FileUploadView.Props {
             case .generic: return "generic"
             }
         }
-    }
-}
-
-extension SecureConversations.FileUploadView {
-    struct Environment {
-        var uiScreen: UIKitBased.UIScreen
     }
 }

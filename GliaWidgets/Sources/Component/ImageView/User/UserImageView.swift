@@ -12,14 +12,7 @@ final class UserImageView: BaseView {
     ) {
         self.style = style
         self.environment = environment
-        self.operatorImageView = ImageView(
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
-            )
-        )
+        self.operatorImageView = ImageView(environment: .create(with: environment))
         super.init()
     }
 
@@ -103,14 +96,5 @@ final class UserImageView: BaseView {
     private func changeOperatorImageVisibility(visible: Bool) {
         placeholderImageView.isHidden = visible
         operatorImageView.isHidden = !visible
-    }
-}
-
-extension UserImageView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
-        var imageViewCache: ImageView.Cache
     }
 }

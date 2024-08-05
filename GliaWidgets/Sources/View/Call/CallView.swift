@@ -127,15 +127,7 @@ class CallView: EngagementView {
         super.init(
             with: style,
             layout: .call,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen
-            ),
+            environment: .create(with: environment),
             headerProps: props.header
         )
         setup()
@@ -521,18 +513,5 @@ extension CallView {
             width: width * Self.localVideoSideMultiplier,
             height: height * Self.localVideoSideMultiplier
         )
-    }
-}
-
-extension CallView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
-        var imageViewCache: ImageView.Cache
-        var timerProviding: FoundationBased.Timer.Providing
-        var uiApplication: UIKitBased.UIApplication
-        var uiScreen: UIKitBased.UIScreen
-        var uiDevice: UIKitBased.UIDevice
     }
 }

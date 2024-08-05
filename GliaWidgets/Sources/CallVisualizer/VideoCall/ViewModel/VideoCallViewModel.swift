@@ -76,12 +76,7 @@ extension CallVisualizer {
             self.style = style
             self.environment = environment
             self.call = call
-            self.durationCounter = CallDurationCounter(
-                environment: .init(
-                    timerProviding: environment.timerProviding,
-                    date: environment.date
-                )
-            )
+            self.durationCounter = CallDurationCounter(environment: .create(with: environment))
 
             let windows = environment.uiApplication.windows()
             interfaceOrientation = windows.first(where: {

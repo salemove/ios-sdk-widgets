@@ -121,19 +121,13 @@ class GliaViewController: UIViewController {
         if let windowScene = windowScene() {
             return BubbleWindow(
                 bubbleView: bubbleView,
-                environment: .init(
-                    uiScreen: environment.uiScreen,
-                    uiApplication: environment.uiApplication
-                ),
+                environment: .create(with: environment),
                 windowScene: windowScene
             )
         } else {
             return BubbleWindow(
                 bubbleView: bubbleView,
-                environment: .init(
-                    uiScreen: environment.uiScreen,
-                    uiApplication: environment.uiApplication
-                )
+                environment: .create(with: environment)
             )
         }
     }
@@ -173,22 +167,5 @@ extension GliaViewController: UIViewControllerTransitioningDelegate {
             originCenterPoint: bubbleWindow?.center ?? view.center,
             transitionMode: .dismiss
         )
-    }
-}
-
-extension GliaViewController {
-    struct Environment {
-        var uiApplication: UIKitBased.UIApplication
-        var uiScreen: UIKitBased.UIScreen
-        var log: CoreSdkClient.Logger
-        var animate: (_ animated: Bool, _ animations: @escaping () -> Void, _ completion: @escaping (Bool) -> Void) -> Void
-
-        func withAnimation(
-            animated: Bool,
-            animations: @escaping () -> Void,
-            completion: @escaping (Bool) -> Void
-        ) {
-            animate(animated, animations, completion)
-        }
     }
 }

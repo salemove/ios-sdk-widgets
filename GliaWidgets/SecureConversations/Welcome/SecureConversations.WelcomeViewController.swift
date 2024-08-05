@@ -3,13 +3,6 @@ import UIKit
 
 extension SecureConversations {
     final class WelcomeViewController: UIViewController {
-        struct Environemnt {
-            let gcd: GCD
-            let uiScreen: UIKitBased.UIScreen
-            let notificationCenter: FoundationBased.NotificationCenter
-            var log: CoreSdkClient.Logger
-        }
-
         var props: Props {
             didSet {
                 renderProps()
@@ -54,11 +47,7 @@ extension SecureConversations {
             } else {
                 welcomeView = viewFactory.makeSecureConversationsWelcomeView(
                     props: props,
-                    environment: .init(
-                        gcd: environment.gcd,
-                        uiScreen: environment.uiScreen,
-                        notificationCenter: environment.notificationCenter
-                    )
+                    environment: .create(with: environment)
                 )
                 view = welcomeView
             }
@@ -78,5 +67,3 @@ extension SecureConversations.WelcomeViewController {
 }
 
 extension SecureConversations.WelcomeViewController: PopoverPresenter {}
-
-extension SecureConversations.WelcomeViewController: AlertPresenter {}

@@ -43,18 +43,14 @@ extension ChatViewModel {
             self.action?(.scrollToBottom(animated: true))
         }
 
-        let failure: (CoreSdkClient.SalemoveError) -> Void = { [weak self] _ in
+        let failure: (CoreSdkClient.SalemoveError) -> Void = { [weak self] error in
             guard let self = self else { return }
             self.updateCustomCard(
                 messageId: messageId,
                 selectedOption: nil,
                 isActive: true
             )
-            self.environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
-            self.showAlert(
-                with: self.alertConfiguration.unexpectedError,
-                dismissed: nil
-            )
+            self.engagementAction?(.showAlert(.error(error: error.error)))
         }
 
         interactor.send(messagePayload: payload) { result in

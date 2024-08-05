@@ -176,6 +176,7 @@ struct CoreSdkClient {
     var createLogger: CreateLogger
 
     typealias GetCameraDeviceManageable = () throws -> CameraDeviceManageableClient
+
     var getCameraDeviceManageable: GetCameraDeviceManageable
 }
 

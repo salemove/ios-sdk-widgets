@@ -494,15 +494,11 @@ extension ViewController {
             }
         }
 
-        let isEmptyJwt = { enteredJwt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-
-        createAuthorizationAction.isEnabled = !isEmptyJwt()
         createAuthorizationAction.accessibilityIdentifier = "create_authentication_alert_button"
 
         let jwtTextFieldDelegate = TextFieldDelegate(
-            textChanged: { [weak createAuthorizationAction] text in
+            textChanged: { text in
                 enteredJwt = text
-                createAuthorizationAction?.isEnabled = !isEmptyJwt()
             }
         )
 

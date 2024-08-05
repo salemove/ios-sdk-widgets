@@ -3,7 +3,7 @@ extension FileSystemStorage {
     static func mock(
         directory: Directory = .documents(.mock),
         expiration: Expiration = .none,
-        environment: Environment = .mock
+        environment: Environment = .mock()
     ) -> FileSystemStorage {
         .init(
             directory: directory,

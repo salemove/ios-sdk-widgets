@@ -61,3 +61,12 @@ extension FileDownload.Environment.FetchFile {
         var downloadSecureFile: CoreSdkClient.DownloadSecureFile
     }
 }
+
+extension FileDownload.Environment.FetchFile.Environment {
+    static func create(with environment: FileDownload.Environment) -> Self {
+        .init(
+            fetchFile: environment.fetchFile,
+            downloadSecureFile: environment.downloadSecureFile
+        )
+    }
+}

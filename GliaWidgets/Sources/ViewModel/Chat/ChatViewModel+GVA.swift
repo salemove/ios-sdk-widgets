@@ -106,10 +106,7 @@ private extension ChatViewModel {
     func broadcastEventButtonAction() -> Cmd {
         .init { [weak self] in
             guard let self else { return }
-            self.showAlert(
-                with: self.alertConfiguration.unsupportedGvaBroadcastError,
-                dismissed: nil
-            )
+            self.engagementAction?(.showAlert(.unsupportedGvaBroadcastError()))
         }
     }
 
@@ -131,12 +128,8 @@ private extension ChatViewModel {
                         in: self.messagesSection
                     )
                 }
-            case .failure:
-                self.environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
-                self.showAlert(
-                    with: self.alertConfiguration.unexpectedError,
-                    dismissed: nil
-                )
+            case let .failure(error):
+                self.engagementAction?(.showAlert(.error(error: error.error)))
             }
         }
     }

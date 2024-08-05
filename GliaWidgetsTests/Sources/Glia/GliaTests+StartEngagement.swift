@@ -57,7 +57,7 @@ extension GliaTests {
         }
     }
 
-    func testStartEngagementThrowsErrorWhenSdkHasNoQueueIds() {
+    func testStartEngagementWithNoQueueIds() throws {
         var environment = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
         logger.infoClosure = { _, _, _, _ in }
@@ -66,16 +66,25 @@ extension GliaTests {
         logger.configureRemoteLogLevelClosure = { _ in }
         environment.coreSdk.createLogger = { _ in logger }
         environment.conditionalCompilation.isDebug = { false }
+        environment.createRootCoordinator = { _, _, _, _, _, _, _ in
+                .mock(environment: .engagementCoordEnvironmentWithKeyWindow)
+        }
+        environment.coreSDKConfigurator.configureWithInteractor = { _ in }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.success(()))
+        }
+        environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
+        environment.coreSdk.getCurrentEngagement = { nil }
         let sdk = Glia(environment: environment)
+        
+        try sdk.configure(with: .mock(), theme: .mock()) { _ in }
 
-        XCTAssertThrowsError(
+        XCTAssertNoThrow(
             try sdk.startEngagement(
                 engagementKind: .chat,
                 in: []
             )
-        ) { error in
-            XCTAssertEqual(error as? GliaError, GliaError.startingEngagementWithNoQueueIdsIsNotAllowed)
-        }
+        )
     }
 
     func testStartCallsConfigureSdk() throws {
@@ -304,8 +313,8 @@ extension GliaTests {
         }
 
         let configuredSdkTheme = resultingViewFactory?.theme
-        XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "Company Name")
-        XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "Company Name")
+        XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, "")
+        XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "")
     }
 
     func testCompanyNameIsReceivedFromThemeIfCustomLocalesIsEmpty() throws {
@@ -400,7 +409,7 @@ extension GliaTests {
         try sdk.startEngagement(engagementKind: .chat, in: ["queueId"])
 
         let configuredSdkTheme = resultingViewFactory?.theme
-        let localFallbackCompanyName = "Company Name"
+        let localFallbackCompanyName = ""
         XCTAssertEqual(configuredSdkTheme?.call.connect.queue.firstText, localFallbackCompanyName)
         XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, localFallbackCompanyName)
     }

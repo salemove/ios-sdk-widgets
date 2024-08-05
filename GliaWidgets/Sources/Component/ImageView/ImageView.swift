@@ -77,12 +77,3 @@ class ImageView: UIImageView {
         }
     }
 }
-
-extension ImageView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
-        var imageViewCache: Cache
-    }
-}

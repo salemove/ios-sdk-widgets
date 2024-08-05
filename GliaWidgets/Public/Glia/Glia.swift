@@ -92,38 +92,17 @@ public class Glia {
     }()
 
     public lazy var callVisualizer = CallVisualizer(
-        environment: .init(
-            data: environment.data,
-            uuid: environment.uuid,
-            gcd: environment.gcd,
-            imageViewCache: environment.imageViewCache,
-            timerProviding: environment.timerProviding,
-            uiApplication: environment.uiApplication,
-            uiScreen: environment.uiScreen,
-            uiDevice: environment.uiDevice,
-            notificationCenter: environment.notificationCenter,
-            requestVisitorCode: environment.coreSdk.requestVisitorCode,
+        environment: .create(
+            with: environment,
             interactorProviding: { [weak self] in self?.interactor },
-            callVisualizerPresenter: environment.callVisualizerPresenter,
-            bundleManaging: environment.bundleManaging,
-            screenShareHandler: environment.screenShareHandler,
-            audioSession: environment.audioSession,
-            date: environment.date,
             engagedOperator: { [weak self] in
                 self?.environment.coreSdk.getCurrentEngagement()?.engagedOperator
             },
             theme: theme,
-            assetsBuilder: { [weak self] in self?.assetsBuilder ?? .standard },
-            getCurrentEngagement: environment.coreSdk.getCurrentEngagement,
-            eventHandler: onEvent,
-            orientationManager: environment.orientationManager,
-            proximityManager: environment.proximityManager,
-            log: loggerPhase.logger,
-            fetchSiteConfigurations: environment.coreSdk.fetchSiteConfigurations,
-            snackBar: environment.snackBar,
-            coreSdk: environment.coreSdk,
-            operatorRequestHandlerService: operatorRequestHandlerService,
-            cameraDeviceManager: environment.cameraDeviceManager
+            assetBuilder: { [weak self] in self?.assetsBuilder ?? .standard },
+            onEvent: onEvent,
+            loggerPhase: loggerPhase,
+            alertManager: alertManager
         )
     )
     var rootCoordinator: EngagementCoordinator?
@@ -133,7 +112,7 @@ public class Glia {
     var theme: Theme
     var assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard
     var loggerPhase: LoggerPhase
-    var operatorRequestHandlerService: OperatorRequestHandlerService
+    var alertManager: AlertManager
 
     private(set) var configuration: Configuration?
 
@@ -162,25 +141,18 @@ public class Glia {
         let viewFactory = ViewFactory(
             with: theme,
             messageRenderer: messageRenderer,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen,
-                log: loggerPhase.logger,
-                uiDevice: environment.uiDevice
+            environment: .create(
+                with: environment,
+                loggerPhase: loggerPhase
             )
         )
 
-        operatorRequestHandlerService = .init(
-            environment: .init(
-                uiApplication: environment.uiApplication,
-                log: loggerPhase.logger
-            ),
-            viewFactory: viewFactory
+        alertManager = .init(
+            environment: .create(
+                with: environment,
+                logger: loggerPhase.logger,
+                viewFactory: viewFactory
+            )
         )
     }
 
@@ -219,7 +191,7 @@ public class Glia {
         // is fired and SDK has previous `configuration`.
         self.configuration = nil
 
-        operatorRequestHandlerService.overrideTheme(theme)
+        alertManager.overrideTheme(theme)
 
         self.callVisualizer.delegate = { action in
             switch action {
@@ -454,9 +426,8 @@ extension Glia {
         let interactor = Interactor(
             visitorContext: configuration.visitorContext,
             queueIds: queueIds,
-            environment: .init(
-                coreSdk: environment.coreSdk,
-                gcd: environment.gcd,
+            environment: .create(
+                with: environment,
                 log: loggerPhase.logger
             )
         )

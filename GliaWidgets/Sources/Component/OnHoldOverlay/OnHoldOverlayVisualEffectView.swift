@@ -32,9 +32,3 @@ final class OnHoldOverlayVisualEffectView: UIVisualEffectView {
         animator.stopAnimation(true)
     }
 }
-
-extension OnHoldOverlayVisualEffectView {
-    struct Environment {
-        let gcd: GCD
-    }
-}

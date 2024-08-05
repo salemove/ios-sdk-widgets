@@ -22,14 +22,10 @@ extension Glia {
     ///
     public func startEngagement(
         engagementKind: EngagementKind,
-        in queueIds: [String],
+        in queueIds: [String] = [],
         features: Features = .all,
         sceneProvider: SceneProvider? = nil
     ) throws {
-        let trimmedQueueIds = queueIds
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .filter { !$0.isEmpty }
-        guard !trimmedQueueIds.isEmpty else { throw GliaError.startingEngagementWithNoQueueIdsIsNotAllowed }
         // It checks if ongoing engagement exists on WidgetsSDK side, if it doesn't but ongoing engagement exists
         // on CoreSDK side, it will be restored.
         guard engagement == .none else { throw GliaError.engagementExists }
@@ -42,7 +38,7 @@ extension Glia {
         // Creates interactor instance
         let createdInteractor = setupInteractor(
             configuration: configuration,
-            queueIds: trimmedQueueIds
+            queueIds: queueIds
         )
 
         // Apply company name to theme and get the modified theme
@@ -51,16 +47,9 @@ extension Glia {
         let viewFactory = ViewFactory(
             with: modifiedTheme,
             messageRenderer: messageRenderer,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen,
-                log: loggerPhase.logger,
-                uiDevice: environment.uiDevice
+            environment: .create(
+                with: environment,
+                loggerPhase: loggerPhase
             )
         )
 
@@ -138,55 +127,12 @@ extension Glia {
             engagementKind: engagementKind,
             screenShareHandler: environment.screenShareHandler,
             features: features,
-            environment: .init(
-                fetchFile: environment.coreSdk.fetchFile,
-                uploadFileToEngagement: environment.coreSdk.uploadFileToEngagement,
-                audioSession: environment.audioSession,
-                uuid: environment.uuid,
-                fileManager: environment.fileManager,
-                data: environment.data,
-                date: environment.date,
-                gcd: environment.gcd,
-                createThumbnailGenerator: environment.createThumbnailGenerator,
-                createFileDownload: environment.createFileDownload,
-                loadChatMessagesFromHistory: environment.loadChatMessagesFromHistory,
-                timerProviding: environment.timerProviding,
-                fetchSiteConfigurations: environment.coreSdk.fetchSiteConfigurations,
-                getCurrentEngagement: environment.coreSdk.getCurrentEngagement,
-                submitSurveyAnswer: environment.coreSdk.submitSurveyAnswer,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen,
-                notificationCenter: environment.notificationCenter,
-                fetchChatHistory: environment.coreSdk.fetchChatHistory,
-                listQueues: environment.coreSdk.listQueues,
-                sendSecureMessagePayload: environment.coreSdk.sendSecureMessagePayload,
-                createFileUploader: environment.createFileUploader,
-                createFileUploadListModel: environment.createFileUploadListModel,
-                uploadSecureFile: environment.coreSdk.uploadSecureFile,
-                getSecureUnreadMessageCount: environment.coreSdk.getSecureUnreadMessageCount,
-                messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
-                secureMarkMessagesAsRead: environment.coreSdk.secureMarkMessagesAsRead,
-                downloadSecureFile: environment.coreSdk.downloadSecureFile,
-                isAuthenticated: { [environment] in
-                    do {
-                        return try environment.coreSdk.authentication(.forbiddenDuringEngagement).isAuthenticated
-                    } catch {
-                        debugPrint(#function, "isAuthenticated:", error.localizedDescription)
-                        return false
-                    }
-                },
-                startSocketObservation: environment.coreSdk.startSocketObservation,
-                stopSocketObservation: environment.coreSdk.stopSocketObservation,
-                pushNotifications: environment.coreSdk.pushNotifications,
-                createSendMessagePayload: environment.coreSdk.createSendMessagePayload,
-                orientationManager: environment.orientationManager,
-                proximityManager: environment.proximityManager,
-                log: loggerPhase.logger,
-                snackBar: environment.snackBar,
-                operatorRequestHandlerService: operatorRequestHandlerService,
+            environment: .create(
+                with: environment,
+                loggerPhase: loggerPhase,
                 maximumUploads: { self.maximumUploads },
-                cameraDeviceManager: environment.cameraDeviceManager,
-                flipCameraButtonStyle: viewFactory.theme.call.flipCameraButtonStyle
+                viewFactory: viewFactory,
+                alertManager: alertManager
             )
         )
         rootCoordinator?.delegate = { [weak self] event in self?.handleCoordinatorEvent(event) }

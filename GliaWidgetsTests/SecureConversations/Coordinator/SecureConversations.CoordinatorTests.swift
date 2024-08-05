@@ -133,17 +133,7 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
         window?.rootViewController = welcomeViewController
         defer { window?.rootViewController = oldRootViewController }
 
-        let configuration = MessageAlertConfiguration(
-            title: "",
-            message: ""
-        )
-        coordinator.viewModel?.delegate?(
-            .showAlert(
-                configuration,
-                accessibilityIdentifier: nil,
-                dismissed: nil
-            )
-        )
+        coordinator.viewModel?.delegate?(.showAlert(.mediaSourceNotAvailable()))
 
         let presentedViewController = welcomeViewController.presentedViewController as? AlertViewController
 
@@ -158,17 +148,7 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
         window?.rootViewController = welcomeViewController
         defer { window?.rootViewController = oldRootViewController }
 
-        let configuration = MessageAlertConfiguration(
-            title: "",
-            message: ""
-        )
-        coordinator.viewModel?.delegate?(
-            .showAlertAsView(
-                configuration,
-                accessibilityIdentifier: nil,
-                dismissed: nil
-            )
-        )
+        coordinator.viewModel?.delegate?(.showAlert(.unavailableMessageCenter()))
 
         let presentedViewController = welcomeViewController.children.first { $0 is AlertViewController }
 
@@ -183,18 +163,7 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
         window?.rootViewController = welcomeViewController
         defer { window?.rootViewController = oldRootViewController }
 
-        let configuration = SettingsAlertConfiguration(
-            title: "",
-            message: "",
-            settingsTitle: "", 
-            cancelTitle: ""
-        )
-        coordinator.viewModel?.delegate?(
-            .showSettingsAlert(
-                configuration,
-                cancelled: { }
-            )
-        )
+        coordinator.viewModel?.delegate?(.showAlert(.cameraSettings()))
 
         let presentedViewController = welcomeViewController.presentedViewController as? UIAlertController
 

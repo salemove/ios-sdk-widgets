@@ -53,12 +53,7 @@ final class ConnectView: BaseView {
         self.environment = environment
         self.operatorView = ConnectOperatorView(
             with: style.connectOperator,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
-            )
+            environment: .create(with: environment)
         )
         super.init()
     }
@@ -195,16 +190,6 @@ private extension ConnectView {
     private func stopConnectTimer() {
         connectTimer?.invalidate()
         connectTimer = nil
-    }
-}
-
-extension ConnectView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
-        var imageViewCache: ImageView.Cache
-        var timerProviding: FoundationBased.Timer.Providing
     }
 }
 

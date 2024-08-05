@@ -23,12 +23,7 @@ final class GvaGalleryListView: BaseView {
 
     private lazy var operatorImageView = UserImageView(
         with: props.style.operatorImage,
-        environment: .init(
-            data: environment.data,
-            uuid: environment.uuid,
-            gcd: environment.gcd,
-            imageViewCache: environment.imageViewCache
-        )
+        environment: .create(with: environment)
     )
     lazy var collectionView = SelfSizingCollectionView(
         frame: .zero,
@@ -158,17 +153,5 @@ extension GvaGalleryListView {
         let style: GvaGalleryListViewStyle
 
         static var nop: Props { .init(items: [], style: .initial) }
-    }
-}
-
-// MARK: - Environment
-
-extension GvaGalleryListView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
-        var imageViewCache: ImageView.Cache
-        var uiScreen: UIKitBased.UIScreen
     }
 }

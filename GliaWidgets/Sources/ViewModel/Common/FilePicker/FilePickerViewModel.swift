@@ -68,9 +68,3 @@ class FilePickerViewModel: ViewModel {
         }
     }
 }
-
-extension FilePickerViewModel {
-    struct Environment {
-        var log: CoreSdkClient.Logger
-    }
-}

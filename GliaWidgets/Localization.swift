@@ -460,9 +460,9 @@ internal enum Localization {
     /// Comment
     internal static var comment: String { Localization.tr("Localizable", "general.comment", fallback: "Comment") }
     /// Company Name
-    internal static var companyName: String { Localization.tr("Localizable", "general.company_name", fallback: "Company Name") }
+    internal static var companyName: String { Localization.tr("Localizable", "general.company_name", fallback: "") }
     /// Company Name without asking string provider
-    internal static var companyNameLocalFallbackOnly: String { Localization.tr("Localizable", "general.company_name", fallback: "Company Name", stringProviding: nil) }
+    internal static var companyNameLocalFallbackOnly: String { Localization.tr("Localizable", "general.company_name", fallback: "", stringProviding: nil) }
     /// Decline
     internal static var decline: String { Localization.tr("Localizable", "general.decline", fallback: "Decline") }
     /// Download

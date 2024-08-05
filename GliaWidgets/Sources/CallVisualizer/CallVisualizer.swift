@@ -18,37 +18,12 @@ public final class CallVisualizer {
         let viewFactory = ViewFactory(
             with: environment.theme,
             messageRenderer: nil,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                timerProviding: environment.timerProviding,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen,
-                log: environment.log,
-                uiDevice: environment.uiDevice
-            )
+            environment: .create(with: environment)
         )
         return Coordinator(
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                uiApplication: environment.uiApplication,
-                uiScreen: environment.uiScreen,
-                uiDevice: environment.uiDevice,
-                notificationCenter: environment.notificationCenter,
+            environment: .create(
+                with: environment,
                 viewFactory: viewFactory,
-                presenter: environment.callVisualizerPresenter,
-                bundleManaging: environment.bundleManaging,
-                screenShareHandler: environment.screenShareHandler,
-                timerProviding: environment.timerProviding,
-                requestVisitorCode: environment.requestVisitorCode,
-                audioSession: environment.audioSession,
-                date: environment.date,
-                engagedOperator: environment.engagedOperator,
                 eventHandler: { [weak self] event in
                     switch event {
                     case .minimized:
@@ -56,14 +31,7 @@ public final class CallVisualizer {
                     case .maximized:
                         self?.environment.eventHandler?(.maximized)
                     }
-                },
-                orientationManager: environment.orientationManager,
-                proximityManager: environment.proximityManager,
-                log: environment.log,
-                interactorProviding: environment.interactorProviding(),
-                fetchSiteConfigurations: environment.fetchSiteConfigurations,
-                snackBar: environment.snackBar,
-                cameraDeviceManager: environment.cameraDeviceManager
+                }
             )
         )
     }()
@@ -174,23 +142,29 @@ extension CallVisualizer {
             switch event {
             case .screenShareOffer(answer: let answer):
                 self?.environment.coreSdk.requestEngagedOperator { operators, _ in
-                    self?.environment.operatorRequestHandlerService.offerScreenShare(
-                        from: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
-                        accepted: { [weak self] in
-                            self?.observeScreenSharingHandlerState()
-                        },
-                        answer: answer
+                    self?.environment.alertManager.present(
+                        in: .global,
+                        as: .screenSharing(
+                            operators: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
+                            accepted: { [weak self] in
+                                self?.observeScreenSharingHandlerState()
+                            },
+                            answer: answer
+                        )
                     )
                 }
             case let .upgradeOffer(offer, answer):
                 self?.environment.coreSdk.requestEngagedOperator { operators, _ in
-                    self?.environment.operatorRequestHandlerService.offerMediaUpgrade(
-                        from: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
-                        offer: offer,
-                        accepted: { [weak self] in
-                            self?.handleAcceptedUpgrade()
-                        },
-                        answer: answer
+                    self?.environment.alertManager.present(
+                        in: .global,
+                        as: .mediaUpgrade(
+                            operators: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
+                            offer: offer,
+                            accepted: { [weak self] in
+                                self?.handleAcceptedUpgrade()
+                            },
+                            answer: answer
+                        )
                     )
                 }
             case let .videoStreamAdded(stream):

@@ -54,12 +54,7 @@ final class ConnectOperatorView: BaseView {
         self.environment = environment
         self.imageView = UserImageView(
             with: style.operatorImage,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache
-            )
+            environment: .create(with: environment)
         )
         super.init()
     }
@@ -130,7 +125,7 @@ final class ConnectOperatorView: BaseView {
         onHoldView?.removeFromSuperview()
 
         let onHoldView = OnHoldOverlayView(
-            environment: .init(gcd: environment.gcd),
+            environment: .create(with: environment),
             style: style.onHoldOverlay
         )
         self.onHoldView = onHoldView
@@ -142,14 +137,5 @@ final class ConnectOperatorView: BaseView {
     func hideOnHoldView() {
         onHoldView?.removeFromSuperview()
         onHoldView = nil
-    }
-}
-
-extension ConnectOperatorView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
-        var imageViewCache: ImageView.Cache
     }
 }

@@ -67,7 +67,7 @@ extension SecureConversationsWelcomeViewModelTests {
 // Is attachment available
 extension SecureConversationsWelcomeViewModelTests {
     func testIsAttachmentAvailable() throws {
-        var environment: WelcomeViewModel.Environment = .mock
+        var environment: WelcomeViewModel.Environment = .mock()
         let site: CoreSdkClient.Site = try .mock(
             allowedFileSenders: .init(operator: true, visitor: true)
         )
@@ -82,7 +82,7 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 
     func testIsAttachmentNotAvailable() throws {
-        var environment: WelcomeViewModel.Environment = .mock
+        var environment: WelcomeViewModel.Environment = .mock()
         let site: CoreSdkClient.Site = try .mock(
             allowedFileSenders: .init(operator: true, visitor: false)
         )
@@ -97,19 +97,19 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 
     func testIsAttachmentAvailableFailed() {
-        var environment: WelcomeViewModel.Environment = .mock
+        var environment: WelcomeViewModel.Environment = .mock()
         environment.fetchSiteConfigurations = { completion in
             completion(.failure(CoreSdkClient.GliaCoreError(reason: "")))
         }
 
         var isCalled = false
-        var messageAlertConfiguration: MessageAlertConfiguration?
+        var alertInputType: AlertInputType?
 
         let delegate: (WelcomeViewModel.DelegateEvent) -> Void = { event in
             switch event {
-            case .showAlert(let configuration, _, _):
+            case let .showAlert(type):
                 isCalled = true
-                messageAlertConfiguration = configuration
+                alertInputType = type
             default: break
             }
         }
@@ -117,7 +117,14 @@ extension SecureConversationsWelcomeViewModelTests {
         viewModel = .init(environment: environment, availability: .mock, delegate: delegate)
 
         XCTAssertTrue(isCalled)
-        XCTAssertTrue(messageAlertConfiguration?.message == viewModel.environment.alertConfiguration.unexpectedError.message)
+        let isValidInput: Bool
+        if case .error = alertInputType {
+            isValidInput = true
+        } else {
+            isValidInput = false
+        }
+
+        XCTAssertTrue(isValidInput)
     }
 
 }
@@ -155,7 +162,7 @@ extension SecureConversationsWelcomeViewModelTests {
 
     func testFailedMessageSend() {
         var isCalled = false
-        var messageAlertConfiguration: MessageAlertConfiguration?
+        var alertInputType: AlertInputType?
         viewModel.environment.sendSecureMessagePayload = { _, _, completion in
             completion(.failure(CoreSdkClient.GliaCoreError(reason: "")))
 
@@ -164,9 +171,9 @@ extension SecureConversationsWelcomeViewModelTests {
 
         viewModel.delegate = { event in
             switch event {
-            case .showAlert(let configuration, _, _):
+            case let .showAlert(type):
                 isCalled = true
-                messageAlertConfiguration = configuration
+                alertInputType = type
             default: break
             }
         }
@@ -175,7 +182,14 @@ extension SecureConversationsWelcomeViewModelTests {
 
         XCTAssertEqual(viewModel.sendMessageRequestState, .waiting)
         XCTAssertTrue(isCalled)
-        XCTAssertTrue(messageAlertConfiguration?.message == viewModel.environment.alertConfiguration.unexpectedError.message)
+        let isValidInput: Bool
+        if case .error = alertInputType {
+            isValidInput = true
+        } else {
+            isValidInput = false
+        }
+
+        XCTAssertTrue(isValidInput)
     }
 }
 
@@ -241,7 +255,7 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 
     func testFilePickerButtonIsAvailable() throws {
-        var environment: WelcomeViewModel.Environment = .mock
+        var environment: WelcomeViewModel.Environment = .mock()
         let site: CoreSdkClient.Site = try .mock(
             allowedFileSenders: .init(operator: true, visitor: true)
         )
@@ -251,7 +265,7 @@ extension SecureConversationsWelcomeViewModelTests {
         }
 
         viewModel = .init(environment: environment, availability: .mock)
-        viewModel.availabilityStatus = .available
+        viewModel.availabilityStatus = .available()
 
         if case .welcome(let props) = viewModel.props() {
             XCTAssertNotNil(props.filePickerButton)
@@ -321,7 +335,7 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 
     func testSendMessageButtonStateFileUploads() {
-        viewModel.availabilityStatus = .available
+        viewModel.availabilityStatus = .available()
         let uploadFile: FileUpload.Environment.UploadFile = .toSecureMessaging { file, progress, completion in
             completion(.failure(CoreSdkClient.GliaCoreError(reason: "")))
             return .mock
@@ -340,7 +354,7 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 
     func testSendMessageButtonStateInProgressFileUpload() {
-        viewModel.availabilityStatus = .available
+        viewModel.availabilityStatus = .available()
         let fileUpload: FileUpload = .mock()
         fileUpload.startUpload()
         viewModel.fileUploadListModel.environment.uploader.uploads = [fileUpload]
@@ -353,7 +367,7 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 
     func testSendMessageButtonStateEmptyText() {
-        viewModel.availabilityStatus = .available
+        viewModel.availabilityStatus = .available()
         viewModel.messageText = ""
 
         if case .welcome(let props) = viewModel.props() {
@@ -364,7 +378,7 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 
     func testSendMessageButtonStateSuccessfulUpload() {
-        viewModel.availabilityStatus = .available
+        viewModel.availabilityStatus = .available()
         viewModel.fileUploadListModel.environment.uploader = FileUploader(maximumUploads: 100, environment: .mock)
         viewModel.messageText = ""
 
@@ -376,7 +390,7 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 
     func testSendMessageButtonStateNoQueues() {
-        viewModel.availabilityStatus = .available
+        viewModel.availabilityStatus = .available()
         viewModel.messageText = "text"
         viewModel.fileUploadListModel.environment.uploader = FileUploader(maximumUploads: 100, environment: .mock)
         viewModel.environment.queueIds = []
@@ -389,7 +403,7 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 
     func testSendMessageButtonStateLoadingMessageRequestState() {
-        viewModel.availabilityStatus = .available
+        viewModel.availabilityStatus = .available()
         viewModel.messageText = "text"
         viewModel.fileUploadListModel.environment.uploader = FileUploader(maximumUploads: 100, environment: .mock)
         viewModel.environment.queueIds = [""]
@@ -403,7 +417,7 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 
     func testSendMessageButtonStateWaitingMessageRequestState() {
-        viewModel.availabilityStatus = .available
+        viewModel.availabilityStatus = .available()
         viewModel.messageText = "text"
         viewModel.fileUploadListModel.environment.uploader = FileUploader(maximumUploads: 100, environment: .mock)
         viewModel.environment.queueIds = [""]
@@ -432,7 +446,7 @@ extension SecureConversationsWelcomeViewModelTests {
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
 
         XCTAssertTrue(isCalled)
     }
@@ -450,7 +464,7 @@ extension SecureConversationsWelcomeViewModelTests {
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
 
         XCTAssertTrue(isCalled)
     }
@@ -468,7 +482,7 @@ extension SecureConversationsWelcomeViewModelTests {
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
 
         XCTAssertTrue(isCalled)
     }
@@ -484,13 +498,13 @@ extension SecureConversationsWelcomeViewModelTests {
             case .pickMedia(let callback):
                 callback(.cancelled)
                 isCalled = true
-            case .showSettingsAlert(_, _), .showAlert(_, _, _):
+            case .showAlert:
                 XCTFail()
             default: break
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
         XCTAssertTrue(isCalled)
     }
 
@@ -507,7 +521,7 @@ extension SecureConversationsWelcomeViewModelTests {
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
 
         XCTAssertTrue(!viewModel.fileUploadListModel.activeUploads.isEmpty)
     }
@@ -522,13 +536,13 @@ extension SecureConversationsWelcomeViewModelTests {
                 callback(.photoLibrary)
             case .pickMedia(let callback):
                 callback(.sourceNotAvailable)
-            case .showAlert(_, _, _):
+            case .showAlert:
                 isCalled = true
             default: break
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
 
         XCTAssertTrue(isCalled)
     }
@@ -543,13 +557,13 @@ extension SecureConversationsWelcomeViewModelTests {
                 callback(.photoLibrary)
             case .pickMedia(let callback):
                 callback(.noCameraPermission)
-            case .showSettingsAlert(_, _):
+            case .showAlert:
                 isCalled = true
             default: break
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
         XCTAssertTrue(isCalled)
     }
 
@@ -566,7 +580,7 @@ extension SecureConversationsWelcomeViewModelTests {
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
 
         XCTAssertTrue(!viewModel.fileUploadListModel.activeUploads.isEmpty)
     }
@@ -584,7 +598,7 @@ extension SecureConversationsWelcomeViewModelTests {
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
 
         XCTAssertTrue(viewModel.fileUploadListModel.activeUploads.isEmpty)
     }
@@ -605,17 +619,15 @@ extension SecureConversationsWelcomeViewModelTests {
             )
             completion([queue], nil)
         }
-
         availability.environment.isAuthenticated = { true }
-        availability.environment.queueIds = [uuid]
 
-        viewModel = .init(environment: .mock, availability: availability)
+        viewModel = .init(environment: .mock(queueIds: [uuid]), availability: availability)
 
-        XCTAssertEqual(viewModel.availabilityStatus, .available)
+        XCTAssertEqual(viewModel.availabilityStatus, .available())
     }
 
     func testAvailabilityUnavailableEmptyQueues() {
-        var alertConfiguration: MessageAlertConfiguration?
+        var alertInputType: AlertInputType?
 
         let uuid = UUID.mock.uuidString
         var availability = SecureConversations.Availability.mock
@@ -631,31 +643,34 @@ extension SecureConversationsWelcomeViewModelTests {
         }
 
         availability.environment.isAuthenticated = { true }
-        availability.environment.queueIds = [uuid]
 
         let delegate: (WelcomeViewModel.DelegateEvent) -> Void = { event in
             switch event {
-            case .showAlertAsView(let configuration, _, _):
-                alertConfiguration = configuration
+            case let .showAlert(type):
+                alertInputType = type
             default: break
             }
         }
 
         viewModel = .init(
-            environment: .mock,
+            environment: .mock(queueIds: [uuid]),
             availability: availability,
             delegate: delegate
         )
 
         XCTAssertEqual(viewModel.availabilityStatus, .unavailable(.emptyQueue))
-        XCTAssertEqual(
-            alertConfiguration?.message,
-            viewModel.environment.alertConfiguration.unavailableMessageCenter.message
-        )
+        let isValidInput: Bool
+        if case .unavailableMessageCenter = alertInputType {
+            isValidInput = true
+        } else {
+            isValidInput = false
+        }
+
+        XCTAssertTrue(isValidInput)
     }
 
     func testAvailabilityUnavailableUnauthenticated() {
-        var alertConfiguration: MessageAlertConfiguration?
+        var alertInputType: AlertInputType?
 
         let uuid = UUID.mock.uuidString
         var availability = SecureConversations.Availability.mock
@@ -671,27 +686,29 @@ extension SecureConversationsWelcomeViewModelTests {
         }
 
         availability.environment.isAuthenticated = { false }
-        availability.environment.queueIds = [uuid]
 
         let delegate: (WelcomeViewModel.DelegateEvent) -> Void = { event in
             switch event {
-            case .showAlertAsView(let configuration, _, _):
-                alertConfiguration = configuration
+            case let .showAlert(type):
+                alertInputType = type
             default: break
             }
         }
 
         viewModel = .init(
-            environment: .mock,
+            environment: .mock(queueIds: [uuid]),
             availability: availability,
             delegate: delegate
         )
 
         XCTAssertEqual(viewModel.availabilityStatus, .unavailable(.unauthenticated))
-        XCTAssertEqual(
-            alertConfiguration?.message,
-            viewModel.environment.alertConfiguration.unavailableMessageCenterForBeingUnauthenticated.message
-        )
+        let isValidInput: Bool
+        if case .unavailableMessageCenterForBeingUnauthenticated = alertInputType {
+            isValidInput = true
+        } else {
+            isValidInput = false
+        }
+        XCTAssertTrue(isValidInput)
     }
 }
 
@@ -710,7 +727,7 @@ extension SecureConversationsWelcomeViewModelTests {
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
 
         if case .toSecureMessaging = viewModel.fileUploadListModel.environment.uploader.environment.uploadFile {
             XCTAssertTrue(true)
@@ -732,7 +749,7 @@ extension SecureConversationsWelcomeViewModelTests {
             }
         }
 
-        viewModel.presentMediaPicker(from: UIView(), alertConfiguration: viewModel.environment.alertConfiguration)
+        viewModel.presentMediaPicker(from: UIView())
 
         if case .toEngagement = viewModel.fileUploadListModel.environment.uploader.environment.uploadFile {
             XCTAssertTrue(true)

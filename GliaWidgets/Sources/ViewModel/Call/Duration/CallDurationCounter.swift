@@ -44,10 +44,3 @@ class CallDurationCounter {
         onUpdate?(duration)
     }
 }
-
-extension CallDurationCounter {
-    struct Environment {
-        var timerProviding: FoundationBased.Timer.Providing
-        var date: () -> Date
-    }
-}

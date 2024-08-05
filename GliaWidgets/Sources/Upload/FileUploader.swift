@@ -63,11 +63,7 @@ class FileUploader {
         self.environment = environment
         self.storage = FileSystemStorage(
             directory: .documents(environment.fileManager),
-            environment: .init(
-                fileManager: environment.fileManager,
-                data: environment.data,
-                date: environment.date
-            )
+            environment: .create(with: environment)
         )
         updateLimitReached()
     }
@@ -76,20 +72,12 @@ class FileUploader {
         guard !limitReached.value else { return nil }
         let localFile = LocalFile(
             with: url,
-            environment: .init(
-                fileManager: environment.fileManager,
-                gcd: environment.gcd,
-                uiScreen: environment.uiScreen,
-                thumbnailGenerator: environment.createThumbnailGenerator()
-            )
+            environment: .create(with: environment)
         )
         let upload = FileUpload(
             with: localFile,
             storage: storage,
-            environment: .init(
-                uploadFile: environment.uploadFile,
-                uuid: environment.uuid
-            )
+            environment: .create(with: environment)
         )
         upload.state.addObserver(self) { [weak self] _, _ in
             self?.updateState()

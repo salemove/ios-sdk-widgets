@@ -61,34 +61,10 @@ private extension CallCoordinator {
         environment.log.prefixed(Self.self).info("Create Call screen")
         let viewModel = CallViewModel(
             interactor: interactor,
-            alertConfiguration: viewFactory.theme.alertConfiguration,
             screenShareHandler: screenShareHandler,
-            environment: .init(
-                fetchFile: environment.fetchFile,
-                downloadSecureFile: environment.downloadSecureFile,
-                uploadFileToEngagement: environment.uploadFileToEngagement,
-                fileManager: environment.fileManager,
-                data: environment.data,
-                date: environment.date,
-                gcd: environment.gcd,
-                uiScreen: environment.uiScreen,
-                createThumbnailGenerator: environment.createThumbnailGenerator,
-                createFileDownload: environment.createFileDownload,
-                loadChatMessagesFromHistory: environment.fromHistory,
-                fetchSiteConfigurations: environment.fetchSiteConfigurations,
-                getCurrentEngagement: environment.getCurrentEngagement,
-                timerProviding: environment.timerProviding,
-                uuid: environment.uuid,
-                uiApplication: environment.uiApplication,
-                fetchChatHistory: environment.fetchChatHistory,
-                fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
-                createFileUploadListModel: environment.createFileUploadListModel,
-                createSendMessagePayload: environment.createSendMessagePayload,
-                proximityManager: environment.proximityManager,
-                log: environment.log,
-                operatorRequestHandlerService: environment.operatorRequestHandlerService,
-                cameraDeviceManager: environment.cameraDeviceManager,
-                flipCameraButtonStyle: environment.flipCameraButtonStyle
+            environment: .create(
+                with: environment,
+                viewFactory: viewFactory
             ),
             call: call,
             unreadMessages: unreadMessages,
@@ -102,13 +78,9 @@ private extension CallCoordinator {
         }
         return CallViewController(
             viewModel: viewModel,
-            environment: .init(
-                viewFactory: viewFactory,
-                notificationCenter: environment.notificationCenter,
-                log: environment.log,
-                timerProviding: environment.timerProviding,
-                gcd: environment.gcd,
-                snackBar: environment.snackBar
+            environment: .create(
+                with: environment,
+                viewFactory: viewFactory
             )
         )
     }
@@ -135,37 +107,5 @@ private extension CallCoordinator {
         case .visitorOnHoldUpdated(let isOnHold):
             delegate?(.visitorOnHoldUpdated(isOnHold: isOnHold))
         }
-    }
-}
-
-extension CallCoordinator {
-    struct Environment {
-        var fetchFile: CoreSdkClient.FetchFile
-        var downloadSecureFile: CoreSdkClient.DownloadSecureFile
-        var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
-        var fileManager: FoundationBased.FileManager
-        var data: FoundationBased.Data
-        var date: () -> Date
-        var gcd: GCD
-        var createThumbnailGenerator: () -> QuickLookBased.ThumbnailGenerator
-        var createFileDownload: FileDownloader.CreateFileDownload
-        var fromHistory: () -> Bool
-        var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
-        var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
-        var timerProviding: FoundationBased.Timer.Providing
-        var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
-        var uuid: () -> UUID
-        var uiApplication: UIKitBased.UIApplication
-        var uiScreen: UIKitBased.UIScreen
-        var notificationCenter: FoundationBased.NotificationCenter
-        var fetchChatHistory: CoreSdkClient.FetchChatHistory
-        var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
-        var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
-        var proximityManager: ProximityManager
-        var log: CoreSdkClient.Logger
-        var snackBar: SnackBar
-        var operatorRequestHandlerService: OperatorRequestHandlerService
-        var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
-        var flipCameraButtonStyle: FlipCameraButtonStyle
     }
 }

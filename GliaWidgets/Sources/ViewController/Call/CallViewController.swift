@@ -12,13 +12,7 @@ final class CallViewController: EngagementViewController {
         self.viewModel = viewModel
         super.init(
             viewModel: viewModel,
-            environment: .init(
-                viewFactory: environment.viewFactory,
-                snackBar: environment.snackBar,
-                timerProviding: environment.timerProviding,
-                gcd: environment.gcd,
-                notificationCenter: environment.notificationCenter
-            )
+            environment: .create(with: environment)
         )
     }
 
@@ -205,16 +199,5 @@ private extension CallButton.State {
         case .inactive:
             self = .inactive
         }
-    }
-}
-
-extension CallViewController {
-    struct Environment {
-        var viewFactory: ViewFactory
-        var notificationCenter: FoundationBased.NotificationCenter
-        var log: CoreSdkClient.Logger
-        var timerProviding: FoundationBased.Timer.Providing
-        var gcd: GCD
-        var snackBar: SnackBar
     }
 }

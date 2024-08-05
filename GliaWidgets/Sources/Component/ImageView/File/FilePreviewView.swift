@@ -125,9 +125,3 @@ class FilePreviewView: UIView {
         }
     }
 }
-
-extension FilePreviewView {
-    struct Environment {
-        var uiScreen: UIKitBased.UIScreen
-    }
-}

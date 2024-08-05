@@ -51,15 +51,6 @@ extension CallVisualizer.VideoCallViewController {
     }
 }
 
-// MARK: - Environment
-
-extension CallVisualizer.VideoCallViewController {
-    struct Environment {
-        var videoCallView: CallVisualizer.VideoCallView.Environment
-        var notificationCenter: FoundationBased.NotificationCenter
-    }
-}
-
 // MARK: - Private
 
 private extension CallVisualizer.VideoCallViewController {

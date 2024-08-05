@@ -17,7 +17,6 @@ class ChatViewModelTests: XCTestCase {
         let choiceCardMock = try ChatChoiceCardOption.mock()
         viewModel = .init(
             interactor: .mock(),
-            alertConfiguration: .mock(),
             screenShareHandler: .mock,
             call: .init(with: nil),
             unreadMessages: .init(with: 0),
@@ -64,9 +63,9 @@ class ChatViewModelTests: XCTestCase {
                 },
                 proximityManager: .mock,
                 log: .mock,
-                operatorRequestHandlerService: .mock(),
                 cameraDeviceManager: { .mock },
-                flipCameraButtonStyle: .nop
+                flipCameraButtonStyle: .nop,
+                alertManager: .mock()
             ),
             maximumUploads: { 2 }
         )
@@ -450,12 +449,13 @@ class ChatViewModelTests: XCTestCase {
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }
         transcriptModelEnv.log = logger
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: transcriptModelEnv.listQueues,
-            queueIds: transcriptModelEnv.queueIds,
-            isAuthenticated: { true }
+            isAuthenticated: { true },
+            log: logger
         )
         let transcriptModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -464,8 +464,7 @@ class ChatViewModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         transcriptModel.sections[transcriptModel.pendingSection.index].append(.init(kind: .unreadMessageDivider))
@@ -801,8 +800,12 @@ class ChatViewModelTests: XCTestCase {
 
         viewModel.engagementAction = { action in
             switch action {
-            case let .showLiveObservationConfirmation(config):
-                alertConfig = config
+            case let .showLiveObservationConfirmation(link, accepted, declined):
+                alertConfig = .init(
+                    link: link,
+                    accepted: accepted,
+                    declined: declined
+                )
             default:
                 XCTFail()
             }
@@ -836,8 +839,12 @@ class ChatViewModelTests: XCTestCase {
         )
         viewModel.engagementAction = { action in
             switch action {
-            case let .showLiveObservationConfirmation(config):
-                alertConfig = config
+            case let .showLiveObservationConfirmation(link, accepted, declined):
+                alertConfig = .init(
+                    link: link,
+                    accepted: accepted,
+                    declined: declined
+                )
             default:
                 XCTFail()
             }
@@ -846,6 +853,41 @@ class ChatViewModelTests: XCTestCase {
         alertConfig?.declined()
         XCTAssertEqual(interactor.state, .ended(.byVisitor))
         XCTAssertTrue(calls.isEmpty)
+    }
+
+    func test_alertInputTypeWhenEngagementIsEndedByOperator() {
+        var alertInputType: AlertInputType?
+
+        let delegate: (EngagementViewModel.Action) -> Void = { action in
+            switch action {
+            case let .showAlert(type):
+                alertInputType = type
+            default: break
+            }
+        }
+
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.gcd = .mock
+        interactorEnv.coreSdk.getCurrentEngagement = {
+            .mock(fetchSurvey: { _, completion in
+                completion(.success(nil))
+            })
+        }
+
+        let interactor = Interactor.mock(environment: interactorEnv)
+
+        viewModel = .mock(interactor: interactor)
+        viewModel.engagementAction = delegate
+
+        interactor.end(with: .operatorHungUp)
+
+        let isValidInput: Bool
+        if case .operatorEndedEngagement = alertInputType {
+            isValidInput = true
+        } else {
+            isValidInput = false
+        }
+        XCTAssertTrue(isValidInput)
     }
 }
 

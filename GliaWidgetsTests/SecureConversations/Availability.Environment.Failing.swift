@@ -5,10 +5,10 @@ extension SecureConversations.Availability.Environment {
         listQueues: { _ in
             fail("\(Self.self).listQueues")
         },
-        queueIds: [],
         isAuthenticated: {
             fail("\(Self.self).isAuthenticated")
             return false
-        }
+        },
+        log: .failing
     )
 }

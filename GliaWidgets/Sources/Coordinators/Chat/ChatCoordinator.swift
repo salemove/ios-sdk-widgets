@@ -78,12 +78,9 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 
         let chatController = ChatViewController(
             viewModel: model,
-            environment: .init(
-                timerProviding: environment.timerProviding,
-                viewFactory: viewFactory,
-                gcd: environment.gcd,
-                snackBar: environment.snackBar,
-                notificationCenter: environment.notificationCenter
+            environment: .create(
+                with: environment,
+                viewFactory: viewFactory
             )
         )
         self.controller = chatController
@@ -117,7 +114,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private func presentFilePickerController(with pickerEvent: ObservableValue<FilePickerEvent>) {
         let viewModel = FilePickerViewModel(
             pickerEvent: pickerEvent,
-            environment: .init(log: environment.log)
+            environment: .create(with: environment)
         )
         viewModel.delegate = { [weak self] event in
             switch event {
@@ -128,7 +125,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 
         let controller = FilePickerController(
             viewModel: viewModel,
-            environment: .init(fileManager: environment.fileManager)
+            environment: .create(with: environment)
         )
         filePickerController = controller
         navigationPresenter.present(controller.viewController)
@@ -157,7 +154,6 @@ extension ChatCoordinator {
         )
         let viewModel = ChatViewModel(
             interactor: interactor,
-            alertConfiguration: viewFactory.theme.alertConfiguration,
             screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
@@ -167,7 +163,10 @@ extension ChatCoordinator {
             startAction: startAction,
             deliveredStatusText: viewFactory.theme.chat.visitorMessageStyle.delivered,
             chatType: chatType,
-            environment: Self.environmentForChatModel(environment: environment, viewFactory: viewFactory),
+            environment: .create(
+                with: environment,
+                viewFactory: viewFactory
+            ),
             maximumUploads: environment.maximumUploads
         )
         viewModel.isInteractableCard = viewFactory.messageRenderer?.isInteractable
@@ -223,39 +222,6 @@ extension ChatCoordinator {
             self.delegate?(.finished)
         }
     }
-
-    static func environmentForChatModel(
-        environment: Environment,
-        viewFactory: ViewFactory
-    ) -> ChatViewModel.Environment {
-        ChatViewModel.Environment(
-            fetchFile: environment.fetchFile,
-            downloadSecureFile: environment.downloadSecureFile,
-            uploadFileToEngagement: environment.uploadFileToEngagement,
-            fileManager: environment.fileManager,
-            data: environment.data,
-            date: environment.date,
-            gcd: environment.gcd,
-            uiScreen: environment.uiScreen,
-            createThumbnailGenerator: environment.createThumbnailGenerator,
-            createFileDownload: environment.createFileDownload,
-            loadChatMessagesFromHistory: environment.fromHistory,
-            fetchSiteConfigurations: environment.fetchSiteConfigurations,
-            getCurrentEngagement: environment.getCurrentEngagement,
-            timerProviding: .live,
-            uuid: environment.uuid,
-            uiApplication: environment.uiApplication,
-            fetchChatHistory: environment.fetchChatHistory,
-            fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
-            createFileUploadListModel: environment.createFileUploadListModel,
-            createSendMessagePayload: environment.createSendMessagePayload,
-            proximityManager: environment.proximityManager,
-            log: environment.log,
-            operatorRequestHandlerService: environment.operatorRequestHandlerService,
-            cameraDeviceManager: environment.cameraDeviceManager,
-            flipCameraButtonStyle: environment.flipCameraButtonStyle
-        )
-    }
 }
 
 // MARK: Transcript model
@@ -263,20 +229,13 @@ extension ChatCoordinator {
     private func transcriptModel(with controller: @escaping () -> ChatViewController?) -> SecureConversations.TranscriptModel {
         let viewModel = SecureConversations.TranscriptModel(
             isCustomCardSupported: viewFactory.messageRenderer != nil,
-            environment: Self.environmentForTranscriptModel(
-                environment: environment,
+            environment: .create(
+                with: environment,
                 viewFactory: viewFactory
             ),
-            availability: .init(
-                environment: .init(
-                    listQueues: environment.listQueues,
-                    queueIds: environment.queueIds,
-                    isAuthenticated: environment.isAuthenticated
-                )
-            ),
+            availability: .init(environment: .create(with: environment)),
             deliveredStatusText: viewFactory.theme.chat.visitorMessageStyle.delivered,
-            interactor: interactor,
-            alertConfiguration: viewFactory.theme.alertConfiguration
+            interactor: interactor
         )
 
         viewModel.shouldShowCard = viewFactory.messageRenderer?.shouldShowCard
@@ -302,12 +261,6 @@ extension ChatCoordinator {
             switch event {
             case .showFile(let file):
                 self?.presentQuickLookController(with: file)
-            case let .showAlertAsView(conf, accessibilityIdentifier, dismissed):
-                controller()?.presentAlertAsView(
-                    with: conf,
-                    accessibilityIdentifier: accessibilityIdentifier,
-                    dismissed: dismissed
-                )
             case .pickMedia(let pickerEvent):
                 self?.presentMediaPickerController(
                     with: pickerEvent,
@@ -334,44 +287,6 @@ extension ChatCoordinator {
                 self?.delegate?(.minimize)
             }
         }
-    }
-
-    static func environmentForTranscriptModel(
-        environment: Environment,
-        viewFactory: ViewFactory
-    ) -> SecureConversations.TranscriptModel.Environment {
-        SecureConversations.TranscriptModel.Environment(
-           fetchFile: environment.fetchFile,
-           downloadSecureFile: environment.downloadSecureFile,
-           fileManager: environment.fileManager,
-           data: environment.data,
-           date: environment.date,
-           gcd: environment.gcd,
-           uiScreen: environment.uiScreen,
-           createThumbnailGenerator: environment.createThumbnailGenerator,
-           createFileDownload: environment.createFileDownload,
-           loadChatMessagesFromHistory: environment.fromHistory,
-           fetchChatHistory: environment.fetchChatHistory,
-           uiApplication: environment.uiApplication,
-           sendSecureMessagePayload: environment.sendSecureMessagePayload,
-           queueIds: environment.queueIds,
-           listQueues: environment.listQueues,
-           alertConfiguration: viewFactory.theme.alertConfiguration,
-           createFileUploadListModel: environment.createFileUploadListModel,
-           uuid: environment.uuid,
-           secureUploadFile: environment.secureUploadFile,
-           fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
-           fetchSiteConfigurations: environment.fetchSiteConfigurations,
-           getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
-           messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
-           secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
-           interactor: environment.interactor,
-           startSocketObservation: environment.startSocketObservation,
-           stopSocketObservation: environment.stopSocketObservation,
-           createSendMessagePayload: environment.createSendMessagePayload,
-           log: environment.log,
-           maximumUploads: environment.maximumUploads
-       )
     }
 }
 

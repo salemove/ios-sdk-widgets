@@ -8,14 +8,7 @@ class CallViewControllerTests: XCTestCase {
         autoreleasepool {
             let viewController: CallViewController? = CallViewController(
                 viewModel: CallViewModel.mock(environment: CallViewModel.Environment.mock),
-                environment: .init(
-                    viewFactory: .mock(),
-                    notificationCenter: .mock,
-                    log: .mock,
-                    timerProviding: .mock,
-                    gcd: .mock,
-                    snackBar: .mock
-                )
+                environment: .mock()
             )
             weakViewController = viewController
         }
@@ -63,7 +56,8 @@ class CallViewControllerTests: XCTestCase {
             log: .mock,
             timerProviding: .failing,
             gcd: .failing,
-            snackBar: snackBar
+            snackBar: snackBar,
+            alertManager: .mock()
         )
         let viewController = CallViewController(
             viewModel: viewModel,
@@ -117,7 +111,8 @@ class CallViewControllerTests: XCTestCase {
             log: .mock,
             timerProviding: .failing,
             gcd: .failing,
-            snackBar: snackBar
+            snackBar: snackBar,
+            alertManager: .mock()
         )
         let viewController = CallViewController(
             viewModel: viewModel,
@@ -171,7 +166,8 @@ class CallViewControllerTests: XCTestCase {
             log: .mock,
             timerProviding: .failing,
             gcd: .failing,
-            snackBar: snackBar
+            snackBar: snackBar,
+            alertManager: .mock()
         )
         let viewController = CallViewController(
             viewModel: viewModel,

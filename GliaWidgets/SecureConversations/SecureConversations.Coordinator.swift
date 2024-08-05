@@ -38,43 +38,11 @@ extension SecureConversations {
 
         private func makeWelcomeViewModel() -> SecureConversations.WelcomeViewModel {
             SecureConversations.WelcomeViewModel(
-                environment: .init(
-                    welcomeStyle: viewFactory.theme.secureConversationsWelcome,
-                    queueIds: environment.queueIds,
-                    listQueues: environment.listQueues,
-                    sendSecureMessagePayload: environment.sendSecureMessagePayload,
-                    alertConfiguration: viewFactory.theme.alertConfiguration,
-                    fileUploader: environment.createFileUploader(
-                        environment.maximumUploads(),
-                        .init(
-                            uploadFile: .toSecureMessaging(environment.uploadSecureFile),
-                            fileManager: environment.fileManager,
-                            data: environment.data,
-                            date: environment.date,
-                            gcd: environment.gcd,
-                            uiScreen: environment.uiScreen,
-                            createThumbnailGenerator: environment.createThumbnailGenerator,
-                            uuid: environment.uuid
-                        )
-                    ),
-                    uiApplication: environment.uiApplication,
-                    createFileUploadListModel: environment.createFileUploadListModel,
-                    fetchSiteConfigurations: environment.fetchSiteConfigurations,
-                    startSocketObservation: environment.startSocketObservation,
-                    stopSocketObservation: environment.stopSocketObservation,
-                    getCurrentEngagement: environment.getCurrentEngagement,
-                    uploadSecureFile: environment.uploadSecureFile,
-                    uploadFileToEngagement: environment.uploadFileToEngagement,
-                    createSendMessagePayload: environment.createSendMessagePayload,
-                    log: environment.log
+                environment: .create(
+                    with: environment,
+                    viewFactory: viewFactory
                 ),
-                availability: .init(
-                    environment: .init(
-                        listQueues: environment.listQueues,
-                        queueIds: environment.queueIds,
-                        isAuthenticated: environment.isAuthenticated
-                    )
-                )
+                availability: .init(environment: .create(with: environment))
             )
         }
 
@@ -85,12 +53,7 @@ extension SecureConversations {
             let controller = SecureConversations.WelcomeViewController(
                 viewFactory: viewFactory,
                 props: viewModel.props(),
-                environment: .init(
-                    gcd: environment.gcd,
-                    uiScreen: environment.uiScreen,
-                    notificationCenter: environment.notificationCenter,
-                    log: environment.log
-                )
+                environment: .create(with: environment)
             )
 
             viewModel.delegate = { [weak self, weak controller] event in
@@ -141,36 +104,21 @@ extension SecureConversations {
                 )
             case let .pickFile(callback):
                 presentFilePickerController(with: callback)
-            case let .showAlert(conf, accessibilityIdentifier, dismissed):
-                controller?.presentAlert(
-                    with: conf,
-                    accessibilityIdentifier: accessibilityIdentifier,
-                    dismissed: dismissed
-                )
-            case let .showAlertAsView(conf, accessibilityIdentifier, dismissed):
-                controller?.presentAlertAsView(
-                    with: conf,
-                    accessibilityIdentifier: accessibilityIdentifier,
-                    dismissed: dismissed
-                )
-            case let .showSettingsAlert(conf, cancelled):
-                controller?.presentSettingsAlert(
-                    with: conf, cancelled: cancelled
-                )
             case .transcriptRequested:
                 navigateToTranscript()
+            case let .showAlert(type):
+                guard let controller else { return }
+                environment.alertManager.present(
+                    in: .root(controller),
+                    as: type
+                )
             }
         }
 
         func presentSecureConversationsConfirmationViewController() {
             environment.log.prefixed(Self.self).info("Show Message Center Confirmation screen")
-            let environment: ConfirmationViewSwiftUI.Model.Environment = .init(
-                orientationManager: environment.orientationManager,
-                uiApplication: environment.uiApplication
-            )
-
             let model = SecureConversations.ConfirmationViewSwiftUI.Model(
-                environment: environment,
+                environment: .create(with: environment),
                 style: viewFactory.theme.secureConversationsConfirmation,
                 delegate: { [weak self] event in
                     switch event {
@@ -226,7 +174,7 @@ extension SecureConversations {
             observable.addObserver(self, update: { event, _ in pickerEvent(event) })
             let viewModel = FilePickerViewModel(
                 pickerEvent: observable,
-                environment: .init(log: environment.log)
+                environment: .create(with: environment)
             )
             viewModel.delegate = { [weak self] event in
                 switch event {
@@ -236,7 +184,7 @@ extension SecureConversations {
             }
             let controller = FilePickerController(
                 viewModel: viewModel,
-                environment: .init(fileManager: environment.fileManager)
+                environment: .create(with: environment)
             )
             // Keep strong reference, otherwise
             // `controller` will be deallocted, resulting in
@@ -250,7 +198,6 @@ extension SecureConversations {
 
 // Chat transcript
 extension SecureConversations.Coordinator {
-    // swiftlint:disable function_body_length
     @discardableResult
     private func navigateToTranscript() -> UIViewController {
         let coordinator = ChatCoordinator(
@@ -263,47 +210,7 @@ extension SecureConversations.Coordinator {
             screenShareHandler: environment.screenShareHandler,
             isWindowVisible: environment.isWindowVisible,
             startAction: .startEngagement,
-            environment: .init(
-                fetchFile: environment.fetchFile,
-                uploadFileToEngagement: environment.uploadFileToEngagement,
-                fileManager: environment.fileManager,
-                data: environment.data,
-                date: environment.date,
-                gcd: environment.gcd,
-                uiScreen: environment.uiScreen,
-                createThumbnailGenerator: environment.createThumbnailGenerator,
-                createFileDownload: environment.createFileDownload,
-                fromHistory: environment.loadChatMessagesFromHistory,
-                fetchSiteConfigurations: environment.fetchSiteConfigurations,
-                getCurrentEngagement: environment.getCurrentEngagement,
-                submitSurveyAnswer: environment.submitSurveyAnswer,
-                uuid: environment.uuid,
-                uiApplication: environment.uiApplication,
-                fetchChatHistory: environment.fetchChatHistory,
-                createFileUploadListModel: environment.createFileUploadListModel,
-                sendSecureMessagePayload: environment.sendSecureMessagePayload,
-                queueIds: environment.queueIds,
-                listQueues: environment.listQueues,
-                secureUploadFile: environment.uploadSecureFile,
-                getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
-                messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
-                secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
-                downloadSecureFile: environment.downloadSecureFile,
-                isAuthenticated: environment.isAuthenticated,
-                interactor: environment.interactor,
-                startSocketObservation: environment.startSocketObservation,
-                stopSocketObservation: environment.stopSocketObservation,
-                createSendMessagePayload: environment.createSendMessagePayload,
-                proximityManager: environment.proximityManager,
-                log: environment.log,
-                timerProviding: environment.timerProviding,
-                snackBar: environment.snackBar,
-                notificationCenter: environment.notificationCenter,
-                operatorRequestHandlerService: environment.operatorRequestHandlerService,
-                maximumUploads: environment.maximumUploads,
-                cameraDeviceManager: environment.cameraDeviceManager,
-                flipCameraButtonStyle: environment.flipCameraButtonStyle
-            ),
+            environment: .create(with: environment),
             startWithSecureTranscriptFlow: true
         )
 
@@ -325,60 +232,9 @@ extension SecureConversations.Coordinator {
 
         return viewController
     }
-    // swiftlint:enable function_body_length
 }
 
 extension SecureConversations.Coordinator {
-    struct Environment {
-        var queueIds: [String]
-        var listQueues: CoreSdkClient.ListQueues
-        var sendSecureMessagePayload: CoreSdkClient.SendSecureMessagePayload
-        var createFileUploader: FileUploader.Create
-        var uploadSecureFile: CoreSdkClient.SecureConversationsUploadFile
-        var fileManager: FoundationBased.FileManager
-        var data: FoundationBased.Data
-        var date: () -> Date
-        var gcd: GCD
-        var createThumbnailGenerator: () -> QuickLookBased.ThumbnailGenerator
-        var uuid: () -> UUID
-        var uiApplication: UIKitBased.UIApplication
-        var uiScreen: UIKitBased.UIScreen
-        var notificationCenter: FoundationBased.NotificationCenter
-        var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
-        var viewFactory: ViewFactory
-        var fetchFile: CoreSdkClient.FetchFile
-        var createFileDownload: FileDownloader.CreateFileDownload
-        var loadChatMessagesFromHistory: () -> Bool
-        var fetchChatHistory: CoreSdkClient.FetchChatHistory
-        var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
-        var chatCall: ObservableValue<Call?>
-        var unreadMessages: ObservableValue<Int>
-        var showsCallBubble: Bool
-        var screenShareHandler: ScreenShareHandler
-        var isWindowVisible: ObservableValue<Bool>
-        var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
-        var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
-        var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
-        var interactor: Interactor
-        var getSecureUnreadMessageCount: CoreSdkClient.GetSecureUnreadMessageCount
-        var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
-        var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
-        var downloadSecureFile: CoreSdkClient.DownloadSecureFile
-        var isAuthenticated: () -> Bool
-        var startSocketObservation: CoreSdkClient.StartSocketObservation
-        var stopSocketObservation: CoreSdkClient.StopSocketObservation
-        var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
-        var orientationManager: OrientationManager
-        var proximityManager: ProximityManager
-        var log: CoreSdkClient.Logger
-        var timerProviding: FoundationBased.Timer.Providing
-        var snackBar: SnackBar
-        var operatorRequestHandlerService: OperatorRequestHandlerService
-        var maximumUploads: () -> Int
-        var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
-        var flipCameraButtonStyle: FlipCameraButtonStyle
-    }
-
     enum DelegateEvent {
         case backTapped
         case closeTapped(SurveyPresentation)

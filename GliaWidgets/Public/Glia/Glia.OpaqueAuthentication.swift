@@ -129,7 +129,7 @@ extension Glia {
                     completion(result.mapError(Glia.Authentication.Error.init))
                 }
             },
-            environment: .init(log: loggerPhase.logger)
+            environment: .create(with: loggerPhase.logger)
         )
     }
 
@@ -247,11 +247,5 @@ extension Glia.Authentication {
 extension Glia.Authentication.Error {
     init(error: CoreSdkClient.SalemoveError) {
         self.reason = error.reason
-    }
-}
-
-extension Glia.Authentication {
-    struct Environment {
-        var log: CoreSdkClient.Logger
     }
 }

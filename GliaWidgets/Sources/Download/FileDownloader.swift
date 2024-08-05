@@ -14,11 +14,7 @@ class FileDownloader {
         self.environment = environment
         self.storage = FileSystemStorage(
             directory: .documents(environment.fileManager),
-            environment: .init(
-                fileManager: environment.fileManager,
-                data: environment.data,
-                date: environment.date
-            )
+            environment: .create(with: environment)
         )
     }
 
@@ -104,16 +100,4 @@ extension FileDownloader {
         _ storage: DataStorage,
         _ environment: FileDownload.Environment
     ) -> FileDownload
-
-    struct Environment {
-        var fetchFile: CoreSdkClient.FetchFile
-        var downloadSecureFile: CoreSdkClient.DownloadSecureFile
-        var fileManager: FoundationBased.FileManager
-        var data: FoundationBased.Data
-        var date: () -> Date
-        var gcd: GCD
-        var uiScreen: UIKitBased.UIScreen
-        var createThumbnailGenerator: () -> QuickLookBased.ThumbnailGenerator
-        var createFileDownload: CreateFileDownload
-    }
 }

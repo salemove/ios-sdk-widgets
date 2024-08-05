@@ -13,13 +13,7 @@ final class GvaPersistentButtonView: OperatorChatMessageView {
         self.environment = environment
         super.init(
             with: style.operatorMessageStyle,
-            environment: .init(
-                data: environment.data,
-                uuid: environment.uuid,
-                gcd: environment.gcd,
-                imageViewCache: environment.imageViewCache,
-                uiScreen: environment.uiScreen
-            )
+            environment: .create(with: environment)
         )
     }
 
@@ -69,16 +63,6 @@ final class GvaPersistentButtonView: OperatorChatMessageView {
         stackView.addArrangedSubviews(optionViews)
 
         return containerView
-    }
-}
-
-extension GvaPersistentButtonView {
-    struct Environment {
-        var data: FoundationBased.Data
-        var uuid: () -> UUID
-        var gcd: GCD
-        var imageViewCache: ImageView.Cache
-        var uiScreen: UIKitBased.UIScreen
     }
 }
 

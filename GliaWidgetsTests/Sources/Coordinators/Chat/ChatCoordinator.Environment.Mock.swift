@@ -38,9 +38,9 @@ extension ChatCoordinator.Environment {
         timerProviding: .mock,
         snackBar: .mock,
         notificationCenter: .mock,
-        operatorRequestHandlerService: .mock(),
         maximumUploads: { 2 },
         cameraDeviceManager: { .mock }, 
-        flipCameraButtonStyle: .nop
+        flipCameraButtonStyle: .nop,
+        alertManager: .mock()
     )
 }

@@ -123,13 +123,6 @@ class BubbleViewController: UIViewController {
     }
 }
 
-extension BubbleWindow {
-    struct Environment {
-        var uiScreen: UIKitBased.UIScreen
-        var uiApplication: UIKitBased.UIApplication
-    }
-}
-
 #if DEBUG
 extension BubbleWindow {
     static func mock(makeKeyAndVisible: Bool = true) -> BubbleWindow {
@@ -140,10 +133,6 @@ extension BubbleWindow {
         }
         return window
     }
-}
-
-extension BubbleWindow.Environment {
-    static let mock = Self(uiScreen: .mock, uiApplication: .mock)
 }
 
 #endif

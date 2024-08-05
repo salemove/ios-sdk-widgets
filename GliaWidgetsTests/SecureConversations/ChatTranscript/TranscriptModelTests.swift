@@ -10,6 +10,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }
         modelEnv.log = logger
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
@@ -17,8 +18,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.maximumUploads = { 2 }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
-            queueIds: modelEnv.queueIds,
-            isAuthenticated: { true }
+            isAuthenticated: { true },
+            log: logger
         )
         let viewModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -27,8 +28,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         XCTAssertFalse(viewModel.isSecureConversationsAvailable)
@@ -46,8 +46,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.maximumUploads = { 2 }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
-            queueIds: modelEnv.queueIds,
-            isAuthenticated: { false }
+            isAuthenticated: { false },
+            log: logger
         )
         let viewModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -56,8 +56,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         XCTAssertFalse(viewModel.isSecureConversationsAvailable)
@@ -79,8 +78,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
-            queueIds: modelEnv.queueIds,
-            isAuthenticated: { true }
+            isAuthenticated: { true },
+            log: .failing
         )
 
         let viewModel = TranscriptModel(
@@ -90,8 +89,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         viewModel.start()
@@ -124,8 +122,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.startSocketObservation = {}
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
-            queueIds: modelEnv.queueIds,
-            isAuthenticated: { true }
+            isAuthenticated: { true },
+            log: .failing
         )
         let viewModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -134,8 +132,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
         viewModel.start()
         XCTAssertEqual(
@@ -151,13 +148,13 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.listQueues = { _ in }
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.getSecureUnreadMessageCount = { _ in  }
+        modelEnv.getSecureUnreadMessageCount = { _ in }
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
-            queueIds: modelEnv.queueIds,
-            isAuthenticated: { true }
+            isAuthenticated: { true },
+            log: .failing
         )
         let viewModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -166,8 +163,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
         viewModel.start()
         let text = "Test text"
@@ -198,12 +194,12 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.listQueues = { _ in }
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.getSecureUnreadMessageCount = { _ in  }
+        modelEnv.getSecureUnreadMessageCount = { _ in }
         modelEnv.maximumUploads = { 2 }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
-            queueIds: modelEnv.queueIds,
-            isAuthenticated: { true }
+            isAuthenticated: { true },
+            log: .failing
         )
 
         let viewModel = TranscriptModel(
@@ -213,8 +209,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         viewModel.event(.messageTextChanged(emptyMessageText))
@@ -239,12 +234,12 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.listQueues = { _ in }
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.getSecureUnreadMessageCount = { _ in  }
+        modelEnv.getSecureUnreadMessageCount = { _ in }
         modelEnv.maximumUploads = { 2 }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
-            queueIds: modelEnv.queueIds,
-            isAuthenticated: { true }
+            isAuthenticated: { true },
+            log: .failing
         )
 
         let viewModel = TranscriptModel(
@@ -254,8 +249,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         viewModel.event(.messageTextChanged(emptyMessageText))
@@ -276,12 +270,12 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.listQueues = { _ in }
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.getSecureUnreadMessageCount = { _ in  }
+        modelEnv.getSecureUnreadMessageCount = { _ in }
         modelEnv.maximumUploads = { 2 }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
-            queueIds: modelEnv.queueIds,
-            isAuthenticated: { true }
+            isAuthenticated: { true },
+            log: .failing
         )
 
         let viewModel = TranscriptModel(
@@ -291,8 +285,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         viewModel.event(.messageTextChanged(nonEmptyText))
@@ -310,7 +303,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.listQueues = { _ in }
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.getSecureUnreadMessageCount = { _ in  }
+        modelEnv.getSecureUnreadMessageCount = { _ in }
         modelEnv.createSendMessagePayload = {
             .mock(messageIdSuffix: "mock", content: $0, attachment: $1)
         }
@@ -323,8 +316,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
-            queueIds: modelEnv.queueIds,
-            isAuthenticated: { true }
+            isAuthenticated: { true },
+            log: .failing
         )
 
         let viewModel = TranscriptModel(
@@ -334,8 +327,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         viewModel.event(.messageTextChanged(nonEmptyText))
@@ -362,8 +354,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
-            queueIds: modelEnv.queueIds,
-            isAuthenticated: { true }
+            isAuthenticated: { true },
+            log: .failing
         )
 
         let viewModel = TranscriptModel(
@@ -373,8 +365,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         viewModel.start()
@@ -404,8 +395,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
-            queueIds: modelEnv.queueIds,
-            isAuthenticated: { true }
+            isAuthenticated: { true },
+            log: .failing
         )
 
         let viewModel = TranscriptModel(
@@ -415,8 +406,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
 
         viewModel.start()
@@ -453,8 +443,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
-            queueIds: modelEnv.queueIds,
-            isAuthenticated: { true }
+            isAuthenticated: { true },
+            log: .failing
         )
 
         let interactor: Interactor = .failing
@@ -466,8 +456,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: interactor,
-            alertConfiguration: .mock()
+            interactor: interactor
         )
 
         modelEnv.fetchChatHistory = { _ in
@@ -518,8 +507,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
-            queueIds: modelEnv.queueIds,
-            isAuthenticated: { true }
+            isAuthenticated: { true },
+            log: .failing
         )
 
         let interactor: Interactor = .failing
@@ -531,8 +520,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
-            interactor: interactor,
-            alertConfiguration: .mock()
+            interactor: interactor
         )
 
         modelEnv.fetchChatHistory = { _ in
@@ -572,8 +560,10 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }
         modelEnvironment.log = logger
         var availabilityEnv = SecureConversations.Availability.Environment.failing
+        availabilityEnv.log = logger
         availabilityEnv.listQueues = { callback in
             callback([], nil)
         }
@@ -583,8 +573,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             environment: modelEnvironment,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
         XCTAssertFalse(model.isSecureConversationsAvailable)
     }
@@ -594,6 +583,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }
         modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
         modelEnvironment.maximumUploads = { 2 }
@@ -601,6 +591,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             .mock(environment: $0)
         }
         var availabilityEnv = SecureConversations.Availability.Environment.failing
+        availabilityEnv.log = logger
         availabilityEnv.listQueues = { callback in
             callback([.mock()], nil)
         }
@@ -610,8 +601,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             environment: modelEnvironment,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
         XCTAssertFalse(model.isSecureConversationsAvailable)
     }
@@ -637,8 +627,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             environment: modelEnvironment,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
         XCTAssertFalse(model.isSecureConversationsAvailable)
     }
@@ -648,6 +637,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }
         modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
         modelEnvironment.maximumUploads = { 2 }
@@ -655,6 +645,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             .mock(environment: $0)
         }
         var availabilityEnv = SecureConversations.Availability.Environment.failing
+        availabilityEnv.log = logger
         availabilityEnv.listQueues = { callback in
             callback([.mock()], nil)
         }
@@ -664,8 +655,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             environment: modelEnvironment,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
         XCTAssertFalse(model.isSecureConversationsAvailable)
     }
@@ -675,6 +665,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }
         modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
         modelEnvironment.maximumUploads = { 2 }
@@ -682,6 +673,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             .mock(environment: $0)
         }
         var availabilityEnv = SecureConversations.Availability.Environment.failing
+        availabilityEnv.log = logger
         availabilityEnv.listQueues = { callback in
             callback([.mock()], nil)
         }
@@ -691,8 +683,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             environment: modelEnvironment,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
-            interactor: .failing,
-            alertConfiguration: .mock()
+            interactor: .failing
         )
         var actions: [TranscriptModel.Action] = []
         model.action = {

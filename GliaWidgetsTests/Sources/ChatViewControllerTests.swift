@@ -25,13 +25,7 @@ class ChatViewControllerTests: XCTestCase {
         autoreleasepool {
             let viewController: ChatViewController? = ChatViewController(
                 viewModel: .chat(ChatViewModel.mock(environment: ChatViewModel.Environment.mock)),
-                environment: .init(
-                    timerProviding: .mock,
-                    viewFactory: .mock(),
-                    gcd: .mock,
-                    snackBar: .mock,
-                    notificationCenter: .mock
-                )
+                environment: .mock()
             )
             weakViewController = viewController
         }
@@ -69,7 +63,7 @@ class ChatViewControllerTests: XCTestCase {
 
         viewModel.engagementAction = { action in
             switch action {
-            case .showCriticalErrorAlert:
+            case .showAlert:
                 calls.append(.presentCriticalErrorAlert)
             default:
                 break
@@ -122,7 +116,8 @@ class ChatViewControllerTests: XCTestCase {
             viewFactory: .mock(),
             gcd: .failing,
             snackBar: snackBar,
-            notificationCenter: .failing
+            notificationCenter: .failing,
+            alertManager: .mock()
         )
         let viewController = ChatViewController(
             viewModel: .chat(viewModel),
@@ -176,7 +171,8 @@ class ChatViewControllerTests: XCTestCase {
             viewFactory: .mock(),
             gcd: .failing,
             snackBar: snackBar,
-            notificationCenter: .failing
+            notificationCenter: .failing,
+            alertManager: .mock()
         )
         let viewController = ChatViewController(
             viewModel: .chat(viewModel),
@@ -224,7 +220,8 @@ class ChatViewControllerTests: XCTestCase {
             viewFactory: .mock(),
             gcd: .failing,
             snackBar: snackBar,
-            notificationCenter: .failing
+            notificationCenter: .failing,
+            alertManager: .mock()
         )
         let viewController = ChatViewController(
             viewModel: .chat(viewModel),
