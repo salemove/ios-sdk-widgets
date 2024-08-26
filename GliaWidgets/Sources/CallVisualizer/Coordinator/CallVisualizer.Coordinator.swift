@@ -55,7 +55,12 @@ extension CallVisualizer {
             showVideoCallViewController()
         }
 
-        func handleEngagementRequestAccepted(_ answer: Command<Bool>) {
+        func handleEngagementRequestAccepted(request: CoreSdkClient.Request, answer: Command<Bool>) {
+            if let outcome = request.outcome, outcome == "timed_out" {
+                self.environment.alertManager.dismissCurrentAlert()
+                answer(false)
+                return
+            }
             fetchSiteConfigurations { [weak self] site in
                 let showSnackBarIfNeeded: () -> Void = {
                     guard site.mobileObservationEnabled == true else { return }
