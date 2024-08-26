@@ -76,6 +76,11 @@ extension AlertManager {
         self.composer.overrideTheme(with: newTheme)
         self.environment.viewFactory.overrideTheme(with: newTheme)
     }
+
+    func dismissCurrentAlert() {
+        guard let alertViewController = alertViewController else { return }
+        cleanup()
+    }
 }
 
 // MARK: - Private Methods

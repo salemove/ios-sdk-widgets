@@ -33,7 +33,8 @@ extension CallVisualizerTests {
         let sdk = Glia(environment: gliaEnv)
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
 
-        interactable?.onEngagementRequest({ _, _, _ in })
+        let request = CoreSdkClient.Request.init(id: "123", outcome: nil, platform: nil)
+        interactable?.onEngagementRequest(request, { _, _, _ in })
 
         XCTAssertEqual(calls, [.presentSnackBar])
     }
@@ -68,7 +69,8 @@ extension CallVisualizerTests {
         let sdk = Glia(environment: gliaEnv)
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
 
-        interactable?.onEngagementRequest({ _, _, _ in })
+        let request = CoreSdkClient.Request.init(id: "123", outcome: nil, platform: nil)
+        interactable?.onEngagementRequest(request, { _, _, _ in })
 
         XCTAssertEqual(calls, [])
     }
@@ -103,7 +105,8 @@ extension CallVisualizerTests {
         let sdk = Glia(environment: gliaEnv)
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
 
-        interactable?.onEngagementRequest({ _, _, _ in })
+        let request = CoreSdkClient.Request.init(id: "123", outcome: nil, platform: nil)
+        interactable?.onEngagementRequest(request, { _, _, _ in })
 
         XCTAssertEqual(calls, [])
     }

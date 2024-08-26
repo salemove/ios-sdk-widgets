@@ -40,7 +40,8 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
             mobileConfirmDialogEnabled: false,
             mobileObservationIndicationEnabled: true,
             mobileObservationVideoFps: try videoFps(),
-            mobileObservationEnabled: true
+            mobileObservationEnabled: true,
+            readOnlySettings: nil
         )
 
         coordinator.environment.fetchSiteConfigurations = { callback in
@@ -52,7 +53,8 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
             answers.append(boolean)
         }
 
-        coordinator.handleEngagementRequestAccepted(answer)
+        let request = CoreSdkClient.Request(id: "123", outcome: nil, platform: nil)
+        coordinator.handleEngagementRequestAccepted(request: request, answer: answer)
         XCTAssertEqual(answers, [true])
     }
 
@@ -75,7 +77,8 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
             mobileConfirmDialogEnabled: true,
             mobileObservationIndicationEnabled: true,
             mobileObservationVideoFps: try videoFps(),
-            mobileObservationEnabled: true
+            mobileObservationEnabled: true,
+            readOnlySettings: nil
         )
 
         coordinator.environment.fetchSiteConfigurations = { callback in
@@ -83,9 +86,44 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
         }
 
         let answer = Command<Bool> { _ in }
-        coordinator.handleEngagementRequestAccepted(answer)
+        let request = CoreSdkClient.Request(id: "123", outcome: nil, platform: nil)
+        coordinator.handleEngagementRequestAccepted(request: request, answer: answer)
 
         XCTAssertTrue(coordinator.environment.presenter.getInstance()?.presentedViewController is AlertViewController)
+    }
+
+    func test_handleEngagementRequestTimeOutDismissedConfirmationDialog() throws {
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.first as? UIWindowScene)
+        let window = scene.windows.first
+        let oldRootViewController = window?.rootViewController
+        window?.rootViewController = viewController
+        defer { window?.rootViewController = oldRootViewController }
+
+        let presenter = CallVisualizer.Presenter(presenter: { self.viewController })
+        coordinator.environment.presenter = presenter
+
+        let site = CoreSdkClient.Site(
+            id: .mock, defaultOperatorPicture: nil,
+            alwaysUseDefaultOperatorPicture: false,
+            allowedFileSenders: try .mock(),
+            maskingRegularExpressions: [],
+            visitorAppDefaultLocale: "",
+            mobileConfirmDialogEnabled: true,
+            mobileObservationIndicationEnabled: true,
+            mobileObservationVideoFps: try videoFps(),
+            mobileObservationEnabled: true, 
+            readOnlySettings: nil
+        )
+
+        coordinator.environment.fetchSiteConfigurations = { callback in
+            callback(.success(site))
+        }
+
+        let answer = Command<Bool> { _ in }
+        let request = CoreSdkClient.Request(id: "123", outcome: "timed_out", platform: nil)
+        coordinator.handleEngagementRequestAccepted(request: request, answer: answer)
+
+        XCTAssertFalse(coordinator.environment.presenter.getInstance()?.presentedViewController is AlertViewController)
     }
 
     func test_end() {
@@ -109,7 +147,8 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
             mobileConfirmDialogEnabled: true,
             mobileObservationIndicationEnabled: true,
             mobileObservationVideoFps: try videoFps(),
-            mobileObservationEnabled: true
+            mobileObservationEnabled: true,
+            readOnlySettings: nil
         )
 
         coordinator.environment.fetchSiteConfigurations = { callback in
