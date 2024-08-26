@@ -31,7 +31,7 @@ enum InteractorEvent {
     case error(CoreSdkClient.SalemoveError)
     case engagementTransferred(CoreSdkClient.Operator?)
     case engagementTransferring
-    case onEngagementRequest(Command<Bool>)
+    case onEngagementRequest(CoreSdkClient.Request, answer: Command<Bool>)
 }
 
 class Interactor {
@@ -251,7 +251,7 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     var onEngagementRequest: CoreSdkClient.RequestOfferBlock {
-        return { [weak self] answer in
+        return { [weak self] request, answer  in
             let action = Command<Bool> { agreed in
                 let completion: CoreSdkClient.SuccessBlock = { _, error in
                     if let reason = error?.reason {
@@ -264,7 +264,7 @@ extension Interactor: CoreSdkClient.Interactable {
                     .map(CoreSdkClient.VisitorContext.init(_:))
                 answer(coreSdkVisitorContext, agreed, completion)
             }
-            self?.notify(.onEngagementRequest(action))
+            self?.notify(.onEngagementRequest(request, answer: action))
         }
     }
 

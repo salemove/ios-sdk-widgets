@@ -294,6 +294,7 @@ extension CoreSdkClient {
     typealias LogConfigurable = GliaCoreSDK.LogConfigurable
     typealias LoggingError = GliaCoreSDK.LoggingError
     typealias LogLevel = GliaCoreSDK.LogLevel
+    typealias Request = GliaCoreSDK.Request
 }
 
 extension CoreSdkClient {
