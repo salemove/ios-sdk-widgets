@@ -255,6 +255,7 @@ extension ChatViewModel {
             messageText = text
         case .sendTapped:
             sendMessage()
+            action?(.quickReplyPropsUpdated(.hidden))
         case .removeUploadTapped(let upload):
             removeUpload(upload)
         case .pickMediaTapped:
