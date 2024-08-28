@@ -889,6 +889,33 @@ class ChatViewModelTests: XCTestCase {
         }
         XCTAssertTrue(isValidInput)
     }
+
+    func test_quickReplyWillBeHiddenAfterMessageIsSent() throws {
+        enum Calls { case quickReplyHidden }
+        var calls: [Calls] = []
+        let interactorEnv = Interactor.Environment(coreSdk: .failing, gcd: .mock, log: .mock)
+        let interactor = Interactor.mock(environment: interactorEnv)
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
+        viewModel.action = { action in
+            switch action {
+            case let .quickReplyPropsUpdated(state):
+                switch state {
+                case .shown:
+                    break
+                case .hidden:
+                    calls.append(.quickReplyHidden)
+                }
+            default:
+                break
+            }
+        }
+        viewModel.event(.sendTapped)
+        XCTAssertEqual(calls, [.quickReplyHidden])
+    }
 }
 
 extension ChatChoiceCardOption {
