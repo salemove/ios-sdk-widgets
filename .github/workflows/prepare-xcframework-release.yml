@@ -99,7 +99,6 @@ jobs:
           title: 'GliaWidgets SDK Release ${{ steps.fetch_semver.outputs.semver}}'
           commit-message: |
             GliaWidgets SDK XCFramework Release ${{ steps.fetch_semver.outputs.semver}}
-          base: 'master'
 
       - uses: actions/create-release@v1
         id: create_release
