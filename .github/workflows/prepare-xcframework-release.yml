@@ -95,10 +95,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: "release/${{ steps.fetch_semver.outputs.semver}}"
+          branch: "release/xcf/${{ steps.fetch_semver.outputs.semver}}"
           title: 'GliaWidgets SDK Release ${{ steps.fetch_semver.outputs.semver}}'
           commit-message: |
-            GliaWidgets SDK Release ${{ steps.fetch_semver.outputs.semver}}
+            GliaWidgets SDK XCFramework Release ${{ steps.fetch_semver.outputs.semver}}
           team-reviewers: 'tm-mobile-ios'
 
       - uses: actions/create-release@v1
