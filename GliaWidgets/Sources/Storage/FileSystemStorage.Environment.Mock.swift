@@ -1,3 +1,5 @@
+import Foundation
+
 #if DEBUG
 extension FileSystemStorage.Environment {
     static func mock(
