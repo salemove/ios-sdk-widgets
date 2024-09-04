@@ -84,22 +84,24 @@ jobs:
       
       - name: Update Package.swift
         run: |
-          filename=Package.swift
           semver=${{ steps.fetch_semver.outputs.semver}}
           checksum=${{ steps.calculate_xcf_checksum.outputs.checksum}}
-          sed -i.bak "s/\${WIDGETS_SDK_SEMVER}/$semver/g" "$filename"
-          sed -i.bak "s/\${WIDGETS_SDK_CHECKSUM}/$checksum/g" "$filename"
+          release_branch_name="release/xcf/${{ steps.fetch_semver.outputs.semver}}"
+          chmod +x ./scripts/update_ios_widgets_package.sh
+          ./scripts/update_ios_widgets_package.sh "$semver" "$checksum" "$release_branch_name"
+          
+        shell: bash
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          branch: "release/${{ steps.fetch_semver.outputs.semver}}"
+          branch: "release/xcf/${{ steps.fetch_semver.outputs.semver}}"
           title: 'GliaWidgets SDK Release ${{ steps.fetch_semver.outputs.semver}}'
           commit-message: |
-            GliaWidgets SDK Release ${{ steps.fetch_semver.outputs.semver}}
-          team-reviewers: 'tm-mobile-ios'
+            GliaWidgets SDK XCFramework Release ${{ steps.fetch_semver.outputs.semver}}
+          base: 'master'
 
       - uses: actions/create-release@v1
         id: create_release
