@@ -116,17 +116,6 @@ platform :ios do
     core_sdk_checksum = options[:core_sdk_checksum]
     UI.user_error!("No Core SDK checksum specified") unless !core_sdk_checksum.nil?
 
-    # Copy a new podspec file from template
-    sh("cp ../templates/GliaWidgets.podspec ../GliaWidgets.podspec")
-    # Replace CORE_SDK_VERSION_SEMVER with passed value.
-    sh("sed -i '' 's/${CORE_SDK_VERSION_SEMVER}/#{core_sdk_version}/g' ../GliaWidgets.podspec")
-
-    # Copy a new Package.swift file from template
-    sh("cp ../templates/Package.swift ../Package.swift")
-
-    # Replace CORE_SDK_SEMVER with passed value.
-    sh("sed -i '' 's/\${CORE_SDK_SEMVER}/#{core_sdk_version}/' ../Package.swift")
-    # Replace CORE_SDK_CHECKSUM with passed value.
-    sh("sed -i '' 's/\${CORE_SDK_CHECKSUM}/#{core_sdk_checksum}/' ../Package.swift")
+    sh("bash ../scripts/update_core_sdk_version.sh '#{project_version}' '#{core_sdk_version}' '#{core_sdk_checksum}'")
   end
 end
