@@ -82,16 +82,6 @@ workflows:
     - git-tag@1:
         inputs:
         - tag: $NEW_VERSION
-    - generate-changelog@0: {}
-    - github-release@0:
-        inputs:
-        - username: $GITHUB_USERNAME
-        - name: Glia iOS Widgets SDK $NEW_VERSION
-        - body: $BITRISE_CHANGELOG
-        - api_token: $GITHUB_API_TOKEN
-        - draft: "no"
-        - tag: $NEW_VERSION
-        - commit: $GIT_CLONE_COMMIT_HASH
     - script@1:
         inputs:
         - content: pod trunk push GliaWidgets.podspec --verbose --allow-warnings
