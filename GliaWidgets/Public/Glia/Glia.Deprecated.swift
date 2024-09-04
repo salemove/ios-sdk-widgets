@@ -181,11 +181,11 @@ extension Glia {
         )
     }
 
-    /// Deprecated, use ``Glia.startEngagement(engagementKind:in queueIds:sceneProvider:)`` instead.
+    /// Deprecated, use ``Glia.startEngagement(of kind:in queueIds:sceneProvider:)`` instead.
     /// Use ``configure(with configuration:uiConfig:theme:assetsBuilder:features:completion:)`` to pass in ``RemoteConfiguration``.
     @available(*, deprecated, message: """
-            Deprecated, use ``Glia.startEngagement(engagementKind:in queueIds:features:sceneProvider:)`` instead.
-            Use ``configure(with configuration:uiConfig:theme:assetsBuilder:completion:)`` to pass in ``RemoteConfiguration``.
+            Deprecated, use ``Glia.startEngagement(of kind:in queueIds:features:sceneProvider:)`` instead.
+            Use ``configure(with configuration:uiConfig:theme:assetsBuilder:features:completion:)`` to pass in ``RemoteConfiguration``.
         """
     )
     public func startEngagement(
@@ -205,7 +205,7 @@ extension Glia {
         )
     }
 
-    /// Deprecated, use ``Glia.startEngagement(engagementKind:in queueIds:sceneProvider:)`` instead.
+    /// Deprecated, use ``Glia.startEngagement(of kind:in queueIds:sceneProvider:)`` instead.
     /// Use ``configure(with configuration:uiConfig:theme:assetsBuilder:features:completion:)`` to pass in ``Features``.
     public func startEngagement(
         engagementKind: EngagementKind,
