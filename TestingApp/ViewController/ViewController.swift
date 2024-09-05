@@ -230,6 +230,20 @@ extension ViewController {
                     theme: self.theme
                 )
             }
+            #warning("Remove this task once unauthentication simulation is not needed.")
+            // Simulation code to get visitor unauthenticated after one minute.
+            Task { @MainActor [weak self] in
+                if self?.authentication != nil {
+                    print("Schedule unauthentication")
+                    try await Task.sleep(nanoseconds: NSEC_PER_SEC * 60)
+                    print("Perform unauthentication")
+                    self?.authentication?.deauthenticate(completion: { result in
+                        print("unauthentication result:", result)
+                    })
+                } else {
+                    print("no authentication")
+                }
+            }
         }
 
         if autoConfigureSdkToggle.isOn {
