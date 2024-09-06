@@ -79,7 +79,7 @@ extension Glia {
                     "Authenticate. Is external access token used: \(accessToken != nil)"
                 )
 
-                let interactor = self?.rootCoordinator?.interactor
+                let interactor = self?.interactor
                 let viewFactory = self?.rootCoordinator?.viewFactory
                 let sceneProvider = self?.rootCoordinator?.sceneProvider
 
