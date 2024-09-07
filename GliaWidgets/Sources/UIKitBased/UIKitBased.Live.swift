@@ -11,7 +11,8 @@ extension UIKitBased.UIApplication {
         preferredContentSizeCategory: { UIApplication.shared.preferredContentSizeCategory },
         isIdleTimerDisabled: { UIApplication.shared.isIdleTimerDisabled = $0 },
         windows: { UIApplication.shared.windows },
-        connectionScenes: { UIApplication.shared.connectedScenes }
+        connectionScenes: { UIApplication.shared.connectedScenes },
+        applicationState: { UIApplication.shared.applicationState }
     )
 }
 

@@ -22,6 +22,10 @@ final class AlertManager {
     /// The window used to present global alerts.
     private var alertWindow: UIWindow?
 
+    /// Flag used internally to specify if view controller presentation has to be animated.
+    /// Useful to be set to false during unit tests to avoid dealing with delays, thus slow tests.
+    private var isViewControllerPresentationAnimated = true
+
     /// - Parameters:
     ///   - environment: The environment configuration for the alert manager.
     ///   - viewFactory: The view factory responsible for creating the alert views.
@@ -102,7 +106,7 @@ private extension AlertManager {
             )
             viewController.present(
                 alert,
-                animated: true,
+                animated: isViewControllerPresentationAnimated,
                 completion: nil
             )
         case .view:
@@ -117,10 +121,10 @@ private extension AlertManager {
                 viewController.view.trailingAnchor.constraint(equalTo: alertViewController.view.trailingAnchor)
             ])
         default:
-            let completion: () -> Void = {
+            let completion: () -> Void = { [isViewControllerPresentationAnimated] in
                 viewController.present(
                     alertViewController,
-                    animated: true
+                    animated: isViewControllerPresentationAnimated
                 )
             }
             guard let presented = viewController.presentedViewController as? Replaceable else {
@@ -156,7 +160,7 @@ private extension AlertManager {
         alertWindow.makeKeyAndVisible()
         alertWindow.rootViewController?.present(
             alertViewController,
-            animated: true,
+            animated: isViewControllerPresentationAnimated,
             completion: nil
         )
     }
@@ -227,3 +231,12 @@ private extension AlertManager {
             .first
     }
 }
+
+#if DEBUG
+extension AlertManager {
+    /// Enables and disables presentation animation for view controller for unit testing
+    func setViewControllerPresentationAnimated(_ isAnimated: Bool) {
+        self.isViewControllerPresentationAnimated = isAnimated
+    }
+}
+#endif

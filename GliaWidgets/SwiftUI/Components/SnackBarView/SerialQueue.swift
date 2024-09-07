@@ -51,7 +51,7 @@ extension SerialQueue {
     /// ```
     final class Operation {
         var didFinish: (() -> Void)?
-        let action: (_ done: @escaping() -> Void) -> Void
+        let action: (_ done: @escaping () -> Void) -> Void
 
         init(action: @escaping (_ done: @escaping () -> Void) -> Void) {
             self.action = action

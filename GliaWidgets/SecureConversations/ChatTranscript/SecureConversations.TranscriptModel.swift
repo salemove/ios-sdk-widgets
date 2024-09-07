@@ -35,8 +35,8 @@ extension SecureConversations {
 
         private let downloader: FileDownloader
         let fileUploadListModel: SecureConversations.FileUploadListViewModel
-        private (set) var hasViewAppeared: Bool
-        private (set) var messageText = "" {
+        private(set) var hasViewAppeared: Bool
+        private(set) var messageText = "" {
             didSet {
                 validateMessage()
                 action?(.setMessageText(messageText))
@@ -45,13 +45,13 @@ extension SecureConversations {
 
         private let isCustomCardSupported: Bool
         private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
-        private (set) var isViewLoaded: Bool = false
+        private(set) var isViewLoaded: Bool = false
 
         var environment: Environment
         var availability: Availability
         var interactor: Interactor
 
-        private (set) var isSecureConversationsAvailable: Bool = true {
+        private(set) var isSecureConversationsAvailable: Bool = true {
             didSet {
                 action?(.transcript(.messageCenterAvailabilityUpdated))
             }
@@ -75,7 +75,7 @@ extension SecureConversations {
         var historySection: Section<ChatItem> { sections[0] }
         var pendingSection: Section<ChatItem> { sections[1] }
 
-        private (set) var receivedMessages = [String: [MessageSource]]()
+        private(set) var receivedMessages = [String: [MessageSource]]()
 
         let deliveredStatusText: String
 

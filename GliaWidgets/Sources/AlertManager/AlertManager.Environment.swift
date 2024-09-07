@@ -2,9 +2,9 @@ import Foundation
 
 extension AlertManager {
     struct Environment {
-        let log: CoreSdkClient.Logger
-        let uiApplication: UIKitBased.UIApplication
-        let viewFactory: ViewFactory
+        var log: CoreSdkClient.Logger
+        var uiApplication: UIKitBased.UIApplication
+        var viewFactory: ViewFactory
     }
 }
 

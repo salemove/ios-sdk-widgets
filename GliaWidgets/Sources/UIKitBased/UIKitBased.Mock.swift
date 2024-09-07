@@ -14,7 +14,8 @@ extension UIKitBased.UIApplication {
         preferredContentSizeCategory: { .unspecified },
         isIdleTimerDisabled: { _ in },
         windows: { .init() },
-        connectionScenes: { .init() }
+        connectionScenes: { .init() },
+        applicationState: { .inactive }
     )
 }
 

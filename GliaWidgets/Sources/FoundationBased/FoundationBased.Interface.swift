@@ -75,23 +75,48 @@ enum FoundationBased {
             _ object: Any?)
         -> Void
 
+        var addObserverForNameWithObjectWithQueueUsingBlock: (
+            _ name: NSNotification.Name?,
+            _ object: Any?,
+            _ queue: Foundation.OperationQueue?,
+            _ block: @escaping @Sendable (Notification) -> Void
+        ) -> any NSObjectProtocol
+
         var removeObserverClosure: (Any) -> Void
         var removeObserverWithNameAndObject: (
             _ observer: Any,
             _ name: NSNotification.Name?,
-            _ object: Any?)
-        -> Void
+            _ object: Any?
+        ) -> Void
 
-        func addObserver(_ observer: Any, selector aSelector: Selector, name aName: NSNotification.Name?, object anObject: Any?) {
+        func addObserver(
+            _ observer: Any,
+            selector aSelector: Selector,
+            name aName: NSNotification.Name?,
+            object anObject: Any?
+        ) {
             addObserverClosure(observer, aSelector, aName, anObject)
         }
 
-        func removeObserver(_ observer: Any, name aName: NSNotification.Name?, object anObject: Any?) {
+        func removeObserver(
+            _ observer: Any,
+            name aName: NSNotification.Name?,
+            object anObject: Any?
+        ) {
             removeObserverWithNameAndObject(observer, aName, anObject)
         }
 
         func removeObserver(_ observer: Any) {
             removeObserverClosure(observer)
+        }
+
+        func addObserver(
+            forName name: NSNotification.Name?,
+            object obj: Any?,
+            queue: Foundation.OperationQueue?,
+            using block: @escaping @Sendable (Notification) -> Void
+        ) -> any NSObjectProtocol {
+            addObserverForNameWithObjectWithQueueUsingBlock(name, obj, queue, block)
         }
 
         var publisherForNotification: (NSNotification.Name) -> AnyPublisher<Notification, Never>

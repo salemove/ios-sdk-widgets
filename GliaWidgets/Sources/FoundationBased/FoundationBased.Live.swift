@@ -65,6 +65,7 @@ extension FoundationBased.Timer.Providing {
 extension FoundationBased.NotificationCenter {
     static let live = Self(
         addObserverClosure: NotificationCenter.default.addObserver,
+        addObserverForNameWithObjectWithQueueUsingBlock: NotificationCenter.default.addObserver(forName:object:queue:using:),
         removeObserverClosure: NotificationCenter.default.removeObserver,
         removeObserverWithNameAndObject: NotificationCenter.default.removeObserver,
         publisherForNotification: { NotificationCenter.default.publisher(for: $0).eraseToAnyPublisher() }
