@@ -32,7 +32,7 @@ class ChatViewModel: EngagementViewModel {
 
     private let downloader: FileDownloader
     private let deliveredStatusText: String
-    private (set) var messageText = "" {
+    private(set) var messageText = "" {
         didSet {
             validateMessage()
             sendMessagePreview(messageText)
@@ -43,12 +43,12 @@ class ChatViewModel: EngagementViewModel {
     private var pendingMessages: [OutgoingMessage] = []
     var isViewLoaded: Bool = false
     var isChoiceCardInputModeEnabled: Bool = false
-    private (set) var siteConfiguration: CoreSdkClient.Site?
+    private(set) var siteConfiguration: CoreSdkClient.Site?
     // Stored message ids retrieved from history.
     // They are used to discard messages received from socket
     // to avoid duplication.
-    private (set) var historyMessageIds: Set<ChatMessage.MessageId> = []
-    private (set) var receivedMessageIds: Set<ChatMessage.MessageId> = []
+    private(set) var historyMessageIds: Set<ChatMessage.MessageId> = []
+    private(set) var receivedMessageIds: Set<ChatMessage.MessageId> = []
 
     var mediaPickerButtonVisibility: MediaPickerButtonVisibility {
         guard let site = siteConfiguration else { return .disabled }

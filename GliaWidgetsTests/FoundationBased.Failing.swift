@@ -85,6 +85,10 @@ extension FoundationBased.NotificationCenter {
         addObserverClosure: { _, _, _, _ in
             fail("\(Self.self).addObserverClosure")
         },
+        addObserverForNameWithObjectWithQueueUsingBlock: { _, _, _, _ in
+            fail("\(Self.self).addObserverForNameWithObjectWithQueueUsingBlock")
+            return NSObject()
+        },
         removeObserverClosure: { _ in
             fail("\(Self.self).removeObserverClosure")
         },

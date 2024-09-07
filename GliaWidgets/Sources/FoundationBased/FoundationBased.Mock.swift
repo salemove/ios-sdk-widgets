@@ -50,6 +50,9 @@ extension FoundationBased.Timer.Providing {
 extension FoundationBased.NotificationCenter {
     static let mock = Self(
         addObserverClosure: { _, _, _, _ in },
+        addObserverForNameWithObjectWithQueueUsingBlock: { _, _, _, _ in
+            NSObject()
+        },
         removeObserverClosure: { _ in },
         removeObserverWithNameAndObject: { _, _, _ in },
         publisherForNotification: { _ in
