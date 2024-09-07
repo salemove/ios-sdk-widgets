@@ -12,6 +12,7 @@ enum UIKitBased {
         var isIdleTimerDisabled: (Bool) -> Void
         var windows: () -> [UIKit.UIWindow]
         var connectionScenes: () -> Set<UIScene>
+        var applicationState: () -> UIKit.UIApplication.State
     }
 
     struct UIDevice {

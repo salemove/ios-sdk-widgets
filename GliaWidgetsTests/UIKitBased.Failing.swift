@@ -32,6 +32,10 @@ extension UIKitBased.UIApplication {
         connectionScenes: {
             fail("\(Self.self).connectionScenes")
             return .init()
+        },
+        applicationState: {
+            fail("\(Self.self).applicationState")
+            return .inactive
         }
     )
 }

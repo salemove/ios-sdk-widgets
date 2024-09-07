@@ -11,7 +11,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private let unreadMessages: ObservableValue<Int>
 
     /// Speaker button state used for logging.
-    private (set) var loggedSpeakerButtonOnState: Bool = false {
+    private(set) var loggedSpeakerButtonOnState: Bool = false {
         didSet {
             guard loggedSpeakerButtonOnState != oldValue else { return }
             environment.log.prefixed(Self.self).info(

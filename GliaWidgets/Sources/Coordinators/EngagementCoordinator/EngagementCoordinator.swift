@@ -1,4 +1,5 @@
 import UIKit
+import Foundation
 
 class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     var delegate: ((DelegateEvent) -> Void)?
@@ -25,6 +26,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let kBubbleViewSize: CGFloat = 60.0
     let features: Features
     private let environment: Environment
+    var applicationStateObserver: NSObjectProtocol?
 
     init(
         interactor: Interactor,
@@ -152,7 +154,7 @@ extension EngagementCoordinator {
             break
         }
 
-        let dismissGliaViewController = { [weak self] in
+        let dismissGliaViewController: () -> Void = { [weak self] in
             self?.dismissGliaViewController(animated: true) { [weak self] in
                 self?.event(.minimized)
                 self?.engagement = .none
@@ -168,21 +170,83 @@ extension EngagementCoordinator {
             return
         }
 
-        engagement.getSurvey { [weak self] result in
-            guard
-                case .success(let survey) = result,
-                let survey = survey
-            else {
+        func handleSurveyResult(
+            _ result: Result<CoreSdkClient.Survey?, CoreSdkClient.GliaCoreError>,
+            in coordinator: EngagementCoordinator
+        ) {
+            switch result {
+            case let .success(.some(survey)):
+                environment.log.prefixed(Self.self).info("Survey loaded")
+                presentSurvey(
+                    engagementId: engagement.id,
+                    survey: survey,
+                    dismissGliaViewController: dismissGliaViewController
+                )
+            case .success(.none):
                 dismissGliaViewController()
-                return
+            case let .failure(error):
+                // This is special case of CoreSDK not being able to perform API requests when
+                // application is in background, so we have to assume that if error occurs
+                // during application background state, then it is likely CoreSDK's URLSession
+                // issue. This edge case handling may be reworked after MOB-3564.
+                guard environment.uiApplication.applicationState() == .background else {
+                    presentSurveyError(error, dismissGliaViewController: dismissGliaViewController)
+                    return
+                }
+                presentSurveyAfterAppBackgroundError(for: engagement, dismissGliaViewController: dismissGliaViewController)
             }
-            self?.environment.log.prefixed(Self.self).info("Survey loaded")
-            self?.presentSurvey(
-                engagementId: engagement.id,
-                survey: survey,
-                dismissGliaViewController: dismissGliaViewController
+        }
+
+        engagement.getSurvey { [weak self] surveyResult in
+            guard let self else { return }
+            handleSurveyResult(
+                surveyResult,
+                in: self
             )
         }
+    }
+
+    func presentSurveyAfterAppBackgroundError(
+        for engagement: CoreSdkClient.Engagement,
+        dismissGliaViewController: @escaping () -> Void
+    ) {
+        applicationStateObserver = environment.notificationCenter.addObserver(
+            forName: UIApplication.willEnterForegroundNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self, let applicationStateObserver else { return }
+            environment.notificationCenter.removeObserver(applicationStateObserver)
+            engagement.getSurvey { [weak self] surveyResult in
+                guard let self else { return }
+                switch surveyResult {
+                case let .success(.some(survey)):
+                    environment.log.prefixed(Self.self).info("Survey loaded")
+                    presentSurvey(
+                        engagementId: engagement.id,
+                        survey: survey,
+                        dismissGliaViewController: dismissGliaViewController
+                    )
+                case .success(.none):
+                    dismissGliaViewController()
+                case let .failure(error):
+                    presentSurveyError(error, dismissGliaViewController: dismissGliaViewController)
+                }
+            }
+        }
+    }
+
+    func presentSurveyError(
+        _ error: Error,
+        dismissGliaViewController: @escaping () -> Void
+    ) {
+        environment.alertManager.present(
+            in: .global,
+            as: .error(
+                error: error,
+                dismissed: dismissGliaViewController
+            )
+        )
     }
 
     private func presentSurvey(

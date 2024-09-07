@@ -21,7 +21,7 @@ extension SecureConversations {
         var messageText: String = "" { didSet { reportChange() } }
         /// Flag indicating attachment(s) availability.
         /// By default attachments are not available, until site configurations are fetched.
-        private (set) var isAttachmentsAvailable: Bool = false { didSet { reportChange() } }
+        private(set) var isAttachmentsAvailable: Bool = false { didSet { reportChange() } }
         var availabilityStatus: Availability.Status = .available(queueIds: []) { didSet { reportChange() } }
         var messageInputState: MessageInputState = .normal { didSet { reportChange() } }
         var sendMessageRequestState: SendMessageRequestState = .waiting { didSet { reportChange() } }
