@@ -46,3 +46,24 @@ public extension Theme {
         }
     }
 }
+
+extension Theme.OperatorMessageStyle {
+    func toOldOperatorMessageStyle() -> OperatorChatMessageStyle {
+        .init(
+            text: .init(
+                textFont: text.font,
+                textColor: UIColor(hex: text.color),
+                textStyle: text.textStyle,
+                backgroundColor: background.background?.color ?? .clear,
+                cornerRadius: background.cornerRadius,
+                accessibility: .init(
+                    value: accessibility.value,
+                    isFontScalingEnabled: accessibility.isFontScalingEnabled
+                )
+            ),
+            imageFile: imageFile,
+            fileDownload: fileDownload,
+            operatorImage: operatorImage
+        )
+    }
+}
