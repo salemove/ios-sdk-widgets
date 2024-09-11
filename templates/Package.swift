@@ -49,7 +49,7 @@ let package = Package(
                 .target(name: "GliaCoreDependency"),
                 .target(name: "TwilioVoice"),
                 .target(name: "WebRTC"),
-                .target(name: "GliaCoreSDK"),
+                .target(name: "GliaCoreSDK")
             ],
             path: "GliaWidgets",
             exclude: [
