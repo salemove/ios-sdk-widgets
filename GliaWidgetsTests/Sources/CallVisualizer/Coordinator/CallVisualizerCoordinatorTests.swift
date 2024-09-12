@@ -54,7 +54,7 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
         }
 
         let request = CoreSdkClient.Request(id: "123", outcome: nil, platform: nil)
-        coordinator.handleEngagementRequestAccepted(request: request, answer: answer)
+        coordinator.handleEngagementRequest(request: request, answer: answer)
         XCTAssertEqual(answers, [true])
     }
 
@@ -87,7 +87,7 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
 
         let answer = Command<Bool> { _ in }
         let request = CoreSdkClient.Request(id: "123", outcome: nil, platform: nil)
-        coordinator.handleEngagementRequestAccepted(request: request, answer: answer)
+        coordinator.handleEngagementRequest(request: request, answer: answer)
 
         XCTAssertTrue(coordinator.environment.presenter.getInstance()?.presentedViewController is AlertViewController)
     }
@@ -121,7 +121,7 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
 
         let answer = Command<Bool> { _ in }
         let request = CoreSdkClient.Request(id: "123", outcome: "timed_out", platform: nil)
-        coordinator.handleEngagementRequestAccepted(request: request, answer: answer)
+        coordinator.handleEngagementRequest(request: request, answer: answer)
 
         XCTAssertFalse(coordinator.environment.presenter.getInstance()?.presentedViewController is AlertViewController)
     }
