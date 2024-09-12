@@ -93,8 +93,8 @@ extension CallVisualizer {
         coordinator.handleAcceptedUpgrade()
     }
 
-    func handleEngagementRequestAccepted(request: CoreSdkClient.Request, answer: Command<Bool>) {
-        coordinator.handleEngagementRequestAccepted(request: request, answer: answer)
+    func handleEngagementRequest(request: CoreSdkClient.Request, answer: Command<Bool>) {
+        coordinator.handleEngagementRequest(request: request, answer: answer)
     }
 
     func addVideoStream(stream: CoreSdkClient.VideoStreamable) {
@@ -131,7 +131,7 @@ extension CallVisualizer {
             else {
                 switch event {
                 case let .onEngagementRequest(request, answer):
-                    self?.handleEngagementRequestAccepted(request: request, answer: answer)
+                    self?.handleEngagementRequest(request: request, answer: answer)
                 default: return
                 }
                 return

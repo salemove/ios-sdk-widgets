@@ -49,6 +49,7 @@ extension Glia {
 
         func showSnackBarMessage() {
             environment.snackBar.showSnackBarMessage(
+                text: viewFactory.theme.snackBar.text,
                 style: viewFactory.theme.snackBar,
                 topMostViewController: GliaPresenter(
                     environment: .create(
