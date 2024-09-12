@@ -55,17 +55,35 @@ extension CallVisualizer {
             showVideoCallViewController()
         }
 
-        func handleEngagementRequestAccepted(request: CoreSdkClient.Request, answer: Command<Bool>) {
-            if let outcome = request.outcome, outcome == "timed_out" {
-                self.environment.alertManager.dismissCurrentAlert()
-                answer(false)
+        func handleEngagementRequest(
+            request: CoreSdkClient.Request,
+            answer: Command<Bool>
+        ) {
+            guard let outcome = request.outcome else {
+                handleEngagementRequestOutcomeNil(answer: answer)
                 return
             }
+            if outcome == "timed_out" {
+                handleEngagementRequestOutcomeTimeout(answer: answer)
+            }
+        }
+
+        func handleEngagementRequestOutcomeTimeout(answer: Command<Bool>) {
+            environment.alertManager.dismissCurrentAlert()
+            environment.gcd.mainQueue.asyncAfterDeadline(.now() + 0.5) {
+                // Will be swapped for localized string
+                self.showSnackBarMessage(text: "Request has timed out")
+            }
+            answer(false)
+        }
+
+        func handleEngagementRequestOutcomeNil(answer: Command<Bool>) {
             fetchSiteConfigurations { [weak self] site in
                 let showSnackBarIfNeeded: () -> Void = {
                     guard site.mobileObservationEnabled == true else { return }
                     guard site.mobileObservationIndicationEnabled == true else { return }
-                    self?.showSnackBarMessage()
+                    guard let self else { return }
+                    self.showSnackBarMessage(text: self.environment.viewFactory.theme.snackBar.text)
                 }
                 let completion: Command<Bool> = .init { isAccepted in
                     if isAccepted {
@@ -100,7 +118,8 @@ extension CallVisualizer {
             fetchSiteConfigurations { [weak self] site in
                 guard site.mobileObservationEnabled == true else { return }
                 guard site.mobileObservationIndicationEnabled == true else { return }
-                self?.showSnackBarMessage()
+                guard let self else { return }
+                self.showSnackBarMessage(text: self.environment.viewFactory.theme.snackBar.text)
             }
         }
 
@@ -428,8 +447,9 @@ private extension CallVisualizer.Coordinator {
 // MARK: - Live Observation
 
 private extension CallVisualizer.Coordinator {
-    func showSnackBarMessage() {
+    func showSnackBarMessage(text: String) {
         environment.snackBar.showSnackBarMessage(
+            text: text,
             style: environment.viewFactory.theme.snackBar,
             topMostViewController: topMostViewController,
             timerProviding: environment.timerProviding,
