@@ -18,7 +18,7 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
         defer { window?.rootViewController = oldRootViewController }
 
         coordinator.showVisitorCodeViewController(by: .alert(viewController))
-        
+
         XCTAssertTrue(viewController.presentedViewController is CallVisualizer.VisitorCodeViewController)
     }
 
@@ -53,7 +53,7 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
             answers.append(boolean)
         }
 
-        let request = CoreSdkClient.Request(id: "123", outcome: nil, platform: nil)
+        let request = CoreSdkClient.Request(id: "123", outcome: .accepted, platform: nil)
         coordinator.handleEngagementRequestAccepted(request: request, answer: answer)
         XCTAssertEqual(answers, [true])
     }
@@ -86,7 +86,7 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
         }
 
         let answer = Command<Bool> { _ in }
-        let request = CoreSdkClient.Request(id: "123", outcome: nil, platform: nil)
+        let request = CoreSdkClient.Request(id: "123", outcome: .accepted, platform: nil)
         coordinator.handleEngagementRequestAccepted(request: request, answer: answer)
 
         XCTAssertTrue(coordinator.environment.presenter.getInstance()?.presentedViewController is AlertViewController)
@@ -111,7 +111,7 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
             mobileConfirmDialogEnabled: true,
             mobileObservationIndicationEnabled: true,
             mobileObservationVideoFps: try videoFps(),
-            mobileObservationEnabled: true, 
+            mobileObservationEnabled: true,
             readOnlySettings: nil
         )
 
@@ -120,7 +120,7 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
         }
 
         let answer = Command<Bool> { _ in }
-        let request = CoreSdkClient.Request(id: "123", outcome: "timed_out", platform: nil)
+        let request = CoreSdkClient.Request(id: "123", outcome: .timedOut, platform: nil)
         coordinator.handleEngagementRequestAccepted(request: request, answer: answer)
 
         XCTAssertFalse(coordinator.environment.presenter.getInstance()?.presentedViewController is AlertViewController)
@@ -154,9 +154,9 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
         coordinator.environment.fetchSiteConfigurations = { callback in
             callback(.success(site))
         }
-        
+
         var presentCallCounter = 0
-        coordinator.environment.snackBar.present = { (_, _, _, _, _, _, _) in
+        coordinator.environment.snackBar.present = { _, _, _, _, _, _, _ in
             presentCallCounter += 1
         }
 

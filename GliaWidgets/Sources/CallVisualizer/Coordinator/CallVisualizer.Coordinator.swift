@@ -56,7 +56,7 @@ extension CallVisualizer {
         }
 
         func handleEngagementRequestAccepted(request: CoreSdkClient.Request, answer: Command<Bool>) {
-            if let outcome = request.outcome, outcome == "timed_out" {
+            if request.outcome == .timedOut {
                 self.environment.alertManager.dismissCurrentAlert()
                 answer(false)
                 return
