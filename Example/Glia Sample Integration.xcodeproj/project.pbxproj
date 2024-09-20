@@ -16,7 +16,6 @@
 		C03A802F292B7AFA00DDECA6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A802E292B7AFA00DDECA6 /* AppDelegate.swift */; };
 		C03A8035292B7D0E00DDECA6 /* EngagementButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8034292B7D0E00DDECA6 /* EngagementButtonStyle.swift */; };
 		C03A8037292B7DFA00DDECA6 /* ContentViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8036292B7DFA00DDECA6 /* ContentViewPresenter.swift */; };
-		C03A803F292B7EFB00DDECA6 /* GliaEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A803E292B7EFB00DDECA6 /* GliaEnvironment.swift */; };
 		C03A8041292B812B00DDECA6 /* AvailabilityModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A8040292B812B00DDECA6 /* AvailabilityModifier.swift */; };
 		C03A804C292CE2FE00DDECA6 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A804B292CE2FE00DDECA6 /* Colors.swift */; };
 /* End PBXBuildFile section */
@@ -31,7 +30,6 @@
 		C03A802E292B7AFA00DDECA6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C03A8034292B7D0E00DDECA6 /* EngagementButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementButtonStyle.swift; sourceTree = "<group>"; };
 		C03A8036292B7DFA00DDECA6 /* ContentViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewPresenter.swift; sourceTree = "<group>"; };
-		C03A803E292B7EFB00DDECA6 /* GliaEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaEnvironment.swift; sourceTree = "<group>"; };
 		C03A8040292B812B00DDECA6 /* AvailabilityModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvailabilityModifier.swift; sourceTree = "<group>"; };
 		C03A804B292CE2FE00DDECA6 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -71,7 +69,6 @@
 				C03A8039292B7E5200DDECA6 /* Presenters */,
 				C03A8038292B7E4200DDECA6 /* Views */,
 				C03A8033292B7CEC00DDECA6 /* ViewModifiers */,
-				C03A803D292B7EE100DDECA6 /* Extensions */,
 				C03A804A292CE2DD00DDECA6 /* Appearance */,
 				C03A8024292B7A6700DDECA6 /* Assets.xcassets */,
 				C03A8026292B7A6700DDECA6 /* Preview Content */,
@@ -112,14 +109,6 @@
 				C03A8036292B7DFA00DDECA6 /* ContentViewPresenter.swift */,
 			);
 			path = Presenters;
-			sourceTree = "<group>";
-		};
-		C03A803D292B7EE100DDECA6 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				C03A803E292B7EFB00DDECA6 /* GliaEnvironment.swift */,
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		C03A8045292B9FAE00DDECA6 /* Delegate */ = {
@@ -214,7 +203,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C03A803F292B7EFB00DDECA6 /* GliaEnvironment.swift in Sources */,
 				C03A804C292CE2FE00DDECA6 /* Colors.swift in Sources */,
 				C03A802F292B7AFA00DDECA6 /* AppDelegate.swift in Sources */,
 				75BC62532A852855004763C8 /* Configuration.swift in Sources */,
@@ -438,7 +426,7 @@
 			repositoryURL = "https://github.com/salemove/ios-sdk-widgets.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.10.4;
+				minimumVersion = 2.8.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
