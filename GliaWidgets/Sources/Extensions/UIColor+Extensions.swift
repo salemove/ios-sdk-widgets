@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 
 extension UIColor {
     convenience init(hex: Int, alpha: CGFloat = 1.0) {
@@ -8,6 +9,10 @@ extension UIColor {
             blue: CGFloat(hex & 0xff) / 255.0,
             alpha: alpha
         )
+    }
+
+    func swiftUIColor() -> SwiftUI.Color {
+        return SwiftUI.Color(self)
     }
 
     var hex: String {

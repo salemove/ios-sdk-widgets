@@ -70,6 +70,9 @@ public class Theme {
     /// Chat view style.
     public lazy var webView: WebViewStyle = { webViewStyle }()
 
+    /// EntryWidget style.
+    public lazy var entryWidget: EntryWidgetStyle = { entryWidgetStyle }()
+
     /// Initilizes the theme with base color and font style.
     /// - Parameters:
     ///   - colorStyle: Color style for the theme. Defaults to `default` style.

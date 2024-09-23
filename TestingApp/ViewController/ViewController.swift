@@ -98,6 +98,10 @@ class ViewController: UIViewController {
         }
     }
 
+    @IBAction private func contactUsTapped() {
+        Glia.sharedInstance.entryWidget.show(by: .sheet(self))
+    }
+
     @IBAction private func audioTapped() {
         do {
             try presentGlia(.audioCall)
