@@ -940,6 +940,17 @@
 		C0EC58CE2B02775100E78C70 /* SnackBar+View+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58CD2B02775100E78C70 /* SnackBar+View+Mock.swift */; };
 		C0EC58D02B028FB100E78C70 /* SnackBarVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58CF2B028FB100E78C70 /* SnackBarVoiceOverTests.swift */; };
 		C0EC58D22B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EC58D12B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift */; };
+		C0F3DE372C69F51D00DE6D7B /* EntryWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3DE362C69F51D00DE6D7B /* EntryWidget.swift */; };
+		C0F3DE392C69FC2100DE6D7B /* EntryWidget.Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3DE382C69FC2100DE6D7B /* EntryWidget.Presentation.swift */; };
+		C0F3DE3B2C6E0DD900DE6D7B /* EntryWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3DE3A2C6E0DD900DE6D7B /* EntryWidgetView.swift */; };
+		C0F3DE3D2C6E170600DE6D7B /* EntryWidgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3DE3C2C6E170600DE6D7B /* EntryWidgetViewModel.swift */; };
+		C0F3DE3F2C6E176A00DE6D7B /* EntryWidget.Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3DE3E2C6E176A00DE6D7B /* EntryWidget.Channel.swift */; };
+		C0F3DE412C6E36C900DE6D7B /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3DE402C6E36C900DE6D7B /* View+Extensions.swift */; };
+		C0F3DE432C6E3D2400DE6D7B /* Theme.EntryWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3DE422C6E3D2400DE6D7B /* Theme.EntryWidget.swift */; };
+		C0F3DE452C6E3D7C00DE6D7B /* EntryWidgetStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3DE442C6E3D7C00DE6D7B /* EntryWidgetStyle.swift */; };
+		C0F3DE482C6E468400DE6D7B /* PoweredByView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3DE472C6E468400DE6D7B /* PoweredByView.swift */; };
+		C0F7EA382CA1D6D40038019C /* CustomPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F7EA372CA1D6D40038019C /* CustomPresentationController.swift */; };
+		C0F7EA3A2CA1D7050038019C /* EntryWidget.SizeConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F7EA392CA1D7050038019C /* EntryWidget.SizeConstraints.swift */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
 		C42463742673ABE10082C135 /* ScreenShareHandler.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */; };
 		C43C12F92694B14900C37E1B /* GliaPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43C12F82694B14900C37E1B /* GliaPresenter.swift */; };
@@ -1960,6 +1971,17 @@
 		C0EC58CD2B02775100E78C70 /* SnackBar+View+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnackBar+View+Mock.swift"; sourceTree = "<group>"; };
 		C0EC58CF2B028FB100E78C70 /* SnackBarVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBarVoiceOverTests.swift; sourceTree = "<group>"; };
 		C0EC58D12B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBarDynamicTypeFontTests.swift; sourceTree = "<group>"; };
+		C0F3DE362C69F51D00DE6D7B /* EntryWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidget.swift; sourceTree = "<group>"; };
+		C0F3DE382C69FC2100DE6D7B /* EntryWidget.Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidget.Presentation.swift; sourceTree = "<group>"; };
+		C0F3DE3A2C6E0DD900DE6D7B /* EntryWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetView.swift; sourceTree = "<group>"; };
+		C0F3DE3C2C6E170600DE6D7B /* EntryWidgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetViewModel.swift; sourceTree = "<group>"; };
+		C0F3DE3E2C6E176A00DE6D7B /* EntryWidget.Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidget.Channel.swift; sourceTree = "<group>"; };
+		C0F3DE402C6E36C900DE6D7B /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
+		C0F3DE422C6E3D2400DE6D7B /* Theme.EntryWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.EntryWidget.swift; sourceTree = "<group>"; };
+		C0F3DE442C6E3D7C00DE6D7B /* EntryWidgetStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetStyle.swift; sourceTree = "<group>"; };
+		C0F3DE472C6E468400DE6D7B /* PoweredByView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoweredByView.swift; sourceTree = "<group>"; };
+		C0F7EA372CA1D6D40038019C /* CustomPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPresentationController.swift; sourceTree = "<group>"; };
+		C0F7EA392CA1D7050038019C /* EntryWidget.SizeConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidget.SizeConstraints.swift; sourceTree = "<group>"; };
 		C4119E05268F41D1004DFEFB /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.Interface.swift; sourceTree = "<group>"; };
 		C43C12F82694B14900C37E1B /* GliaPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaPresenter.swift; sourceTree = "<group>"; };
@@ -2654,6 +2676,7 @@
 				75FF151527F4E11000FE7BE2 /* Survey */,
 				C09047052B7E1574003C437C /* Snackbar */,
 				1A60AF7925656E0500E53F53 /* Theme.swift */,
+				C0F3DE422C6E3D2400DE6D7B /* Theme.EntryWidget.swift */,
 				C09047032B7E153F003C437C /* Theme.RemoteConfig.swift */,
 				9A19926D27D3BB7800161AAE /* Theme.Mock.swift */,
 				1A0C9A6625C16DC400815406 /* Theme+Chat.swift */,
@@ -2686,6 +2709,7 @@
 		1A60AFC12566857200E53F53 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C0F3DE352C69F4A700DE6D7B /* EntryWidget */,
 				C0D6C9E72C09C70B00D4709B /* AlertManager */,
 				84C24CF62B8353840089A388 /* ProcessInfoHandling */,
 				84520BD92B0FA14700F97617 /* WebViewController */,
@@ -4529,6 +4553,7 @@
 			children = (
 				C06152D42AB1BC1300063BF8 /* Font+Extensions.swift */,
 				AF18F1D42ABD954500121627 /* View+Accessibility.swift */,
+				C0F3DE402C6E36C900DE6D7B /* View+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -4923,6 +4948,7 @@
 		C0E948012AB1D5B100890026 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				C0F3DE462C6E466F00DE6D7B /* PoweredBy */,
 				75D987F22AF29EF50016A702 /* SnackBarView */,
 				C0E948072AB1D69C00890026 /* Header */,
 				C0E948022AB1D5BC00890026 /* Buttons */,
@@ -4946,6 +4972,29 @@
 				C0E948082AB1D6AB00890026 /* HeaderSwiftUI.swift */,
 			);
 			path = Header;
+			sourceTree = "<group>";
+		};
+		C0F3DE352C69F4A700DE6D7B /* EntryWidget */ = {
+			isa = PBXGroup;
+			children = (
+				C0F3DE362C69F51D00DE6D7B /* EntryWidget.swift */,
+				C0F7EA392CA1D7050038019C /* EntryWidget.SizeConstraints.swift */,
+				C0F3DE382C69FC2100DE6D7B /* EntryWidget.Presentation.swift */,
+				C0F3DE3E2C6E176A00DE6D7B /* EntryWidget.Channel.swift */,
+				C0F3DE3A2C6E0DD900DE6D7B /* EntryWidgetView.swift */,
+				C0F3DE3C2C6E170600DE6D7B /* EntryWidgetViewModel.swift */,
+				C0F3DE442C6E3D7C00DE6D7B /* EntryWidgetStyle.swift */,
+				C0F7EA372CA1D6D40038019C /* CustomPresentationController.swift */,
+			);
+			path = EntryWidget;
+			sourceTree = "<group>";
+		};
+		C0F3DE462C6E466F00DE6D7B /* PoweredBy */ = {
+			isa = PBXGroup;
+			children = (
+				C0F3DE472C6E468400DE6D7B /* PoweredByView.swift */,
+			);
+			path = PoweredBy;
 			sourceTree = "<group>";
 		};
 		C42463722673ABCD0082C135 /* Screensharing */ = {
@@ -5543,6 +5592,7 @@
 				1A0C9A8C25C4092400815406 /* CallButtonStyle.swift in Sources */,
 				C0D6CA412C19A97100D4709B /* SecureConversations.FileUploadListView.Environment.swift in Sources */,
 				C09046CA2B7E05F7003C437C /* AttachmentSourceListStyle.Mock.swift in Sources */,
+				C0F3DE412C6E36C900DE6D7B /* View+Extensions.swift in Sources */,
 				1A6075E7258220E300569B0E /* UserImageStyle.swift in Sources */,
 				1ABD6C5D25B59D1C00D56EFA /* BubbleWindow.swift in Sources */,
 				75940964298D3889008B173A /* MessageRenderer.Web.swift in Sources */,
@@ -5649,6 +5699,7 @@
 				C0D6CA2B2C19A0E800D4709B /* OperatorChatMessageView.Environment.swift in Sources */,
 				3197F7B129E958F4008EE9F7 /* SystemMessageStyle.swift in Sources */,
 				3100D92C296E946600DEC9CE /* SecureConversations.ConfirmationViewController.swift in Sources */,
+				C0F3DE3B2C6E0DD900DE6D7B /* EntryWidgetView.swift in Sources */,
 				C090474C2B7E210C003C437C /* FileUploadStyle.Equatable.swift in Sources */,
 				C09047402B7E1FBC003C437C /* MessageCenterFileUploadStyle.swift in Sources */,
 				9A8130BB27D7A41000220BBD /* FileUpload.Environment.Interface.swift in Sources */,
@@ -5658,6 +5709,7 @@
 				C090477C2B7E27F1003C437C /* EngagementStyle.Equatable.swift in Sources */,
 				8491AF132A7ACC5400CC3E72 /* Theme.OperatorChatMessageStyle.swift in Sources */,
 				845E2F93283FB6D000C04D56 /* Theme.Survey.Accessibility.swift in Sources */,
+				C0F3DE452C6E3D7C00DE6D7B /* EntryWidgetStyle.swift in Sources */,
 				75940959298D386F008B173A /* UIStackView.Extensions.swift in Sources */,
 				C07F627D2AC2F31F003EFC97 /* ScreenSharingViewModel.swift in Sources */,
 				1A0C9A9125C41AB900815406 /* CallButtonBar.swift in Sources */,
@@ -5674,6 +5726,7 @@
 				C0D6CA232C1861F400D4709B /* VideoCallView.Environment.swift in Sources */,
 				C09046D02B7E074B003C437C /* OperatorTypingIndicatorStyle.RemoteConfig.swift in Sources */,
 				9A186A3B27F5E6B50055886D /* ChatFileContentStyle.Accessibility.swift in Sources */,
+				C0F3DE3D2C6E170600DE6D7B /* EntryWidgetViewModel.swift in Sources */,
 				C09046FA2B7E10C7003C437C /* Theme.ChoiceCardStyle.Options.swift in Sources */,
 				7594091529891C5C008B173A /* Environment.swift in Sources */,
 				9A3E1D9927B6D0DB005634EB /* FoundationBased.Live.swift in Sources */,
@@ -5718,6 +5771,7 @@
 				C0D6CA632C19C59100D4709B /* Glia.OpaqueAuthentication.Environment.swift in Sources */,
 				7594095A298D386F008B173A /* NSLayoutConstraint+Extensions.swift in Sources */,
 				C07F62462ABC322B003EFC97 /* OrientationManager.Mock.swift in Sources */,
+				C0F7EA3A2CA1D7050038019C /* EntryWidget.SizeConstraints.swift in Sources */,
 				C0D2F06829A4B71C00803B47 /* VideoCallViewModel.Mock.swift in Sources */,
 				AFEF5C6F29928DB0005C3D8D /* SecureConversations.FileUploadView.swift in Sources */,
 				C0D6CA092C18451800D4709B /* CallViewController.Environment.swift in Sources */,
@@ -5735,6 +5789,7 @@
 				84265E64298D7B2900D65842 /* ScreenSharingViewStyle.Accessibility.swift in Sources */,
 				756B8B202996EFA2001D2BB2 /* Header.Props.swift in Sources */,
 				AFA2FDFC289082F500428E6D /* OnHoldOverlayStyle.Mock.swift in Sources */,
+				C0F3DE432C6E3D2400DE6D7B /* Theme.EntryWidget.swift in Sources */,
 				C090476E2B7E2546003C437C /* UnreadMessageDividerStyle.Equatable.swift in Sources */,
 				C09047602B7E2320003C437C /* ChatFileDownloadStyle.RemoteConfig.swift in Sources */,
 				1A0C142925B84E5500B00695 /* EngagementViewController.swift in Sources */,
@@ -5772,6 +5827,7 @@
 				75B7BD792A39D12B0060794D /* Button.swift in Sources */,
 				9A19926C27D3BA8700161AAE /* ViewFactory.Mock.swift in Sources */,
 				C09047822B7E29F8003C437C /* CallButtonStyle.StateStyle.RemoteConfig.swift in Sources */,
+				C0F3DE372C69F51D00DE6D7B /* EntryWidget.swift in Sources */,
 				C0D6CA3F2C19A8DA00D4709B /* SecureConversations.FileUploadView.Environment.swift in Sources */,
 				1A60B02D256BF7FF00E53F53 /* OperatorChatMessageView.swift in Sources */,
 				C43C12F92694B14900C37E1B /* GliaPresenter.swift in Sources */,
@@ -5874,6 +5930,7 @@
 				C0D6CA392C19A57200D4709B /* ChatMessageEntryView.Environment.swift in Sources */,
 				C0D6CA372C19A4EB00D4709B /* GvaPersistentButtonView.Environment.swift in Sources */,
 				6EEAD84E2701A8C10074C191 /* ChoiceCardOptionStateStyle.swift in Sources */,
+				C0F7EA382CA1D6D40038019C /* CustomPresentationController.swift in Sources */,
 				C090472A2B7E1C4C003C437C /* GvaPersistentButtonStyle.RemoteConfig.swift in Sources */,
 				C090467A2B7D0183003C437C /* WelcomeStyle.TitleStyle.RemoteConfig.swift in Sources */,
 				84520BE92B176C6500F97617 /* ChatViewModel+LiveObservation.swift in Sources */,
@@ -6022,6 +6079,7 @@
 				75940985298D38C2008B173A /* VisitorCodeCoordinator+DelegateEvent.swift in Sources */,
 				1A0C9AC225C9400000815406 /* CallDurationCounter.swift in Sources */,
 				9A19926527D3BA3A00161AAE /* UIKitBased.Mock.swift in Sources */,
+				C0F3DE482C6E468400DE6D7B /* PoweredByView.swift in Sources */,
 				C0D2F06B29A4DAA000803B47 /* VideoCallViewMock.swift in Sources */,
 				1AFB1E6225F7AE1300CA460D /* ChatEngagementFile.swift in Sources */,
 				84681A9D2A669DB500DD7406 /* QuickReplyButtonCell.swift in Sources */,
@@ -6121,6 +6179,7 @@
 				75940981298D38C2008B173A /* VisitorCodeView+NumberView.swift in Sources */,
 				7529F2B427E1D503004D3581 /* Survey.swift in Sources */,
 				84681AA12A66B9F100DD7406 /* SelfSizingCollectionView.swift in Sources */,
+				C0F3DE392C69FC2100DE6D7B /* EntryWidget.Presentation.swift in Sources */,
 				1A5F494B25CA86CA003E3678 /* Call.swift in Sources */,
 				8491AF1D2A7D01BF00CC3E72 /* Theme.ChatMessageStyle.swift in Sources */,
 				84265E65298D7B2900D65842 /* ScreenSharingView.swift in Sources */,
@@ -6227,6 +6286,7 @@
 				C0D2F07329A4DC2000803B47 /* CallStyle.Mock.swift in Sources */,
 				846A5C3629CB3E270049B29F /* ScreenShareHandler.Mock.swift in Sources */,
 				C0D2F03B299149D600803B47 /* VideoCallViewModel.swift in Sources */,
+				C0F3DE3F2C6E176A00DE6D7B /* EntryWidget.Channel.swift in Sources */,
 				C0D2F02E2991221900803B47 /* VideoCallCoordinator.DelegateEvent.swift in Sources */,
 				1A2DA73125EFA77E00032611 /* FileUploader.swift in Sources */,
 				84520BE32B14B97A00F97617 /* Theme+WebView.swift in Sources */,
@@ -6618,7 +6678,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -6676,7 +6736,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -6705,6 +6765,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = GliaWidgets/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6738,6 +6799,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = GliaWidgets/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6759,6 +6821,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = GliaWidgetsTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6778,6 +6841,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = GliaWidgetsTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6806,6 +6870,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TestingApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Glia Widgets";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6837,6 +6902,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TestingApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Glia Widgets";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6860,7 +6926,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.glia.TestingAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -6879,7 +6945,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.glia.TestingAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
