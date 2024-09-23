@@ -1,5 +1,6 @@
 import UIKit
 import AVFoundation
+import SwiftUI
 
 extension UIImage {
     func resized(to size: CGSize) -> UIImage? {
@@ -73,5 +74,9 @@ extension UIImage {
         let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
         UIGraphicsEndImageContext()
         return newImage
+    }
+
+    func asSwiftUIImage() -> SwiftUI.Image {
+        SwiftUI.Image(uiImage: self)
     }
 }
