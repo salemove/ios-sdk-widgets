@@ -953,6 +953,7 @@
 		C0F3DE482C6E468400DE6D7B /* PoweredByView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3DE472C6E468400DE6D7B /* PoweredByView.swift */; };
 		C0F7EA382CA1D6D40038019C /* CustomPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F7EA372CA1D6D40038019C /* CustomPresentationController.swift */; };
 		C0F7EA3A2CA1D7050038019C /* EntryWidget.SizeConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F7EA392CA1D7050038019C /* EntryWidget.SizeConstraints.swift */; };
+		C0F7EA3C2CA581E70038019C /* Glia+EntryWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F7EA3B2CA581E70038019C /* Glia+EntryWidget.swift */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
 		C42463742673ABE10082C135 /* ScreenShareHandler.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */; };
 		C43C12F92694B14900C37E1B /* GliaPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43C12F82694B14900C37E1B /* GliaPresenter.swift */; };
@@ -1986,6 +1987,7 @@
 		C0F3DE472C6E468400DE6D7B /* PoweredByView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoweredByView.swift; sourceTree = "<group>"; };
 		C0F7EA372CA1D6D40038019C /* CustomPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPresentationController.swift; sourceTree = "<group>"; };
 		C0F7EA392CA1D7050038019C /* EntryWidget.SizeConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidget.SizeConstraints.swift; sourceTree = "<group>"; };
+		C0F7EA3B2CA581E70038019C /* Glia+EntryWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Glia+EntryWidget.swift"; sourceTree = "<group>"; };
 		C4119E05268F41D1004DFEFB /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C42463732673ABE10082C135 /* ScreenShareHandler.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareHandler.Interface.swift; sourceTree = "<group>"; };
 		C43C12F82694B14900C37E1B /* GliaPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaPresenter.swift; sourceTree = "<group>"; };
@@ -3621,6 +3623,7 @@
 				755D187E29A6B1B90009F5E8 /* Glia+StartEngagement.swift */,
 				AFC7ABB72C2D93A0006F15AA /* Glia+RestoreEngagement.swift */,
 				215A258F2CA44D8A0013023E /* Glia+EngagementLauncher.swift */,
+				C0F7EA3B2CA581E70038019C /* Glia+EntryWidget.swift */,
 			);
 			path = Glia;
 			sourceTree = "<group>";
@@ -6122,6 +6125,7 @@
 				C0D2F0332991377C00803B47 /* VideoCallViewController.swift in Sources */,
 				1A8B61D225C974A1000D780E /* ChatCallUpgradeView.swift in Sources */,
 				845E2F88283FB49F00C04D56 /* Theme.Survey.BooleanQuestion.Accessibility.swift in Sources */,
+				C0F7EA3C2CA581E70038019C /* Glia+EntryWidget.swift in Sources */,
 				C06A7584296EC9DC006B69A2 /* NumberSlotStyle.Accessibility.swift in Sources */,
 				8491AF212A7D1F7900CC3E72 /* ChatView.GvaGallery.swift in Sources */,
 				847956402ADED7A2004EF60C /* CallVisualizer.Action.swift in Sources */,
