@@ -5,9 +5,13 @@ struct EntryWidgetView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            headerView()
+            if model.showHeader {
+                headerView()
+            }
             channelsView()
-            poweredByView()
+            if model.showPoweredBy {
+                poweredByView()
+            }
         }
         .maxSize()
         .padding(.horizontal)

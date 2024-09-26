@@ -45,6 +45,7 @@ class ViewController: UIViewController {
 
     var authentication: Authentication?
     var authTimer: Timer?
+    var entryWidget: EntryWidget?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,6 +70,7 @@ class ViewController: UIViewController {
     }
 
     @IBOutlet weak var visitorCodeView: UIView!
+    @IBOutlet weak var entryWidgetView: UIView!
     @IBOutlet var toggleAuthenticateButton: UIButton!
     @IBOutlet var refreshAccessTokenButton: UIButton!
     @IBOutlet var configureButton: UIButton!
@@ -98,8 +100,12 @@ class ViewController: UIViewController {
         }
     }
 
-    @IBAction private func contactUsTapped() {
-        Glia.sharedInstance.entryWidget.show(by: .sheet(self))
+    @IBAction private func entryWidgetSheetTapped() {
+        self.entryWidget?.show(by: .sheet(self))
+    }
+
+    @IBAction private func entryWidgetEmbbededTapped() {
+        self.entryWidget?.show(by: .embedded(entryWidgetView))
     }
 
     @IBAction private func audioTapped() {
@@ -327,8 +333,10 @@ extension ViewController {
             ) { result in
                 switch result {
                 case .success:
+                    self.entryWidget = Glia.sharedInstance.getEntryWidget(queueIds: [""])
                     completionBlock("SDK has been configured")
                     completion?(.success(()))
+
                 case let .failure(error):
                     completionBlock("Error configuring the SDK")
                     completion?(.failure(error))
