@@ -119,9 +119,6 @@ public class Glia {
 
     private(set) var configuration: Configuration?
 
-    // Interface for entry widget
-    public private(set) var entryWidget: EntryWidget
-
     init(environment: Environment) {
         self.environment = environment
         self.theme = Theme()
@@ -160,7 +157,6 @@ public class Glia {
                 viewFactory: viewFactory
             )
         )
-        entryWidget = .init(theme: theme)
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.

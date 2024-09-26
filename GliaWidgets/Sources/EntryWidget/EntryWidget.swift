@@ -53,6 +53,7 @@ private extension EntryWidget {
     func showView(in parentView: UIView) {
         parentView.subviews.forEach { $0.removeFromSuperview() }
         let model = makeViewModel(
+            showHeader: false,
             channels: channels,
             selection: { channel in
                 // Logic for handling this callback will be handled later - MOB-3473
@@ -77,8 +78,10 @@ private extension EntryWidget {
 
     func showSheet(in parentViewController: UIViewController) {
         let model = makeViewModel(
+            showHeader: true,
             channels: channels,
             selection: { channel in
+                // Logic for handling this callback will be handled later - MOB-3473
                 print(channel.headline)
             }
         )
@@ -86,7 +89,7 @@ private extension EntryWidget {
         let hostingController = UIHostingController(rootView: view)
 
         hostingController.view.backgroundColor = UIColor.white
-        
+
         // Due to the more modern sheet presenting approach being
         // available starting from iOS 16, we need to handle cases
         // where the visitor has either iOS 14 or 15 installed. For
@@ -97,7 +100,6 @@ private extension EntryWidget {
             let smallDetent: UISheetPresentationController.Detent = .custom { _ in
                 return self.calculateHeight(
                     channels: self.channels,
-                    showPoweredBy: self.theme.showsPoweredBy,
                     sizeConstraints: self.sizeConstraints
                 )
             }
@@ -118,11 +120,13 @@ private extension EntryWidget {
     }
 
     func makeViewModel(
+        showHeader: Bool,
         channels: [Channel],
         selection: @escaping (Channel) -> Void
     ) -> EntryWidgetView.Model {
         .init(
-            style: theme.entryWidgetStyle,
+            theme: theme,
+            showHeader: showHeader,
             sizeConstrainsts: sizeConstraints,
             channels: channels,
             channelSelected: selection
@@ -131,7 +135,6 @@ private extension EntryWidget {
 
     func calculateHeight(
         channels: [Channel],
-        showPoweredBy: Bool,
         sizeConstraints: SizeConstraints
     ) -> CGFloat {
         var appliedHeight: CGFloat = 0
@@ -155,7 +158,6 @@ extension EntryWidget: UIViewControllerTransitioningDelegate {
     ) -> UIPresentationController? {
         let height = calculateHeight(
             channels: channels,
-            showPoweredBy: theme.showsPoweredBy,
             sizeConstraints: sizeConstraints
         )
         return CustomPresentationController(
