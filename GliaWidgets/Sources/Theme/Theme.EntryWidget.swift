@@ -21,7 +21,7 @@ extension Theme {
         let style: EntryWidgetStyle = .init(
             channel: channel,
             backgroundColor: backgroundColor,
-            poweredBy: poweredBy, 
+            poweredBy: poweredBy,
             draggerColor: color.baseShade
         )
 
