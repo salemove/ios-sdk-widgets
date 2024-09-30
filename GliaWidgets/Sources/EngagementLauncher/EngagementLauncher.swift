@@ -4,10 +4,12 @@ import GliaCoreSDK
  /// `EngagementLauncher`class allows launching different types of engagements, such as chat,
  /// audio calls, video calls, and secure messaging.
 public final class EngagementLauncher {
-    private let queueIds: [String]?
+    typealias StartEngagementAction = (EngagementKind, SceneProvider?) throws -> Void
 
-    public init(queueIds: [String]?) {
-        self.queueIds = queueIds
+    private var startEngagement: StartEngagementAction
+
+    init(startEngagement: @escaping StartEngagementAction) rethrows {
+        self.startEngagement = startEngagement
     }
 
     /// Starts a chat.
@@ -15,8 +17,8 @@ public final class EngagementLauncher {
     /// - Parameters:
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to
     ///     the first active foreground scene.
-    public func startChat(sceneProvider: SceneProvider? = nil) {
-        startEngagement(of: .chat, sceneProvider: sceneProvider)
+    public func startChat(sceneProvider: SceneProvider? = nil) throws {
+        try startEngagement(.chat, sceneProvider)
     }
 
     /// Starts a audio call.
@@ -24,8 +26,8 @@ public final class EngagementLauncher {
     /// - Parameters:
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to
     ///     the first active foreground scene.
-    public func startAudioCall(sceneProvider: SceneProvider? = nil) {
-        startEngagement(of: .audioCall, sceneProvider: sceneProvider)
+    public func startAudioCall(sceneProvider: SceneProvider? = nil) throws {
+        try startEngagement(.audioCall, sceneProvider)
     }
 
     /// Starts a video call.
@@ -33,8 +35,8 @@ public final class EngagementLauncher {
     /// - Parameters:
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to
     ///     the first active foreground scene.
-    public func startVideoCall(sceneProvider: SceneProvider? = nil) {
-        startEngagement(of: .videoCall, sceneProvider: sceneProvider)
+    public func startVideoCall(sceneProvider: SceneProvider? = nil) throws {
+        try startEngagement(.videoCall, sceneProvider)
     }
 
     /// Starts a secure messaging.
@@ -42,12 +44,7 @@ public final class EngagementLauncher {
     /// - Parameters:
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to
     ///     the first active foreground scene.
-    public func startSecureMessaging(sceneProvider: SceneProvider? = nil) {
-        startEngagement(of: .messaging(.welcome), sceneProvider: sceneProvider)
+    public func startSecureMessaging(sceneProvider: SceneProvider? = nil) throws {
+        try startEngagement(.messaging(.welcome), sceneProvider)
     }
-
-    private func startEngagement(
-        of engagementKind: EngagementKind,
-        sceneProvider: SceneProvider?
-    ) {}
 }
