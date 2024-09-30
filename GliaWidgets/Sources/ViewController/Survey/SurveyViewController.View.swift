@@ -35,11 +35,13 @@ extension Survey {
             // from getting truncated, for example for large
             // dynamic font types.
             $0.titleLabel?.lineBreakMode = .byWordWrapping
+            $0.accessibilityIdentifier = "survey_cancel_button"
         }
         let submitButton = UIButton(type: .custom).make {
             $0.setTitle(Localization.General.submit, for: .normal)
             $0.titleLabel?.numberOfLines = 0
             $0.titleLabel?.lineBreakMode = .byWordWrapping
+            $0.accessibilityIdentifier = "survey_submit_button"
         }
         lazy var buttonStackView = UIStackView.make(.horizontal, spacing: 16)(
             cancelButton,
