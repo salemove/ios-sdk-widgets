@@ -60,6 +60,7 @@ extension RemoteConfiguration {
         let text: Text?
         let file: FileMessage?
         let status: Text?
+        let error: Text?
         let userImage: UserImageStyle?
     }
 

@@ -21,6 +21,11 @@ extension Theme.VisitorMessageStyle {
             assetsBuilder: assetsBuilder
         )
 
+        error.apply(
+            configuration: configuration?.error,
+            assetsBuilder: assetsBuilder
+        )
+
         fileDownload.apply(
             configuration: configuration?.file,
             assetsBuilder: assetsBuilder

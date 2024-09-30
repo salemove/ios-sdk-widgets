@@ -177,6 +177,13 @@ extension Theme {
                 accessibility: .init(isFontScalingEnabled: true)
             ),
             delivered: Localization.Chat.Message.delivered,
+            error: .init(
+                color: color.systemNegative.hex,
+                font: font.caption,
+                textStyle: .caption1,
+                accessibility: .init(isFontScalingEnabled: true)
+            ),
+            failedToDeliver: Localization.Chat.Message.FailedToDeliver.retry,
             accessibility: .init(isFontScalingEnabled: true)
         )
         let operatorImageFile = ChatImageFileContentStyle(
