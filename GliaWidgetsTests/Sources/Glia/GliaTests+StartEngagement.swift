@@ -95,6 +95,7 @@ extension GliaTests {
         var gliaEnv = Glia.Environment.failing
         gliaEnv.conditionalCompilation.isDebug = { false }
         gliaEnv.coreSdk.createLogger = { _ in logger }
+        gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
         let sdk = Glia(environment: gliaEnv)
         sdk.environment.conditionalCompilation.isDebug = { true }
         sdk.environment.coreSDKConfigurator.configureWithInteractor = { _ in }

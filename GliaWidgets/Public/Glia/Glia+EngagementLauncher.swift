@@ -8,7 +8,18 @@ extension Glia {
     ///
     /// - Returns:
     ///   - `EngagementLauncher` instance.
-    public func getEngagementLauncher(queueIds: [String]?) -> EngagementLauncher {
-        .init(queueIds: queueIds)
+    public func getEngagementLauncher(queueIds: [String]?) throws -> EngagementLauncher {
+        let parameters = try getEngagementParameters(in: queueIds ?? [])
+        return try EngagementLauncher { [weak self] engagementKind, sceneProvider in
+            try self?.resolveEngangementState(
+                engagementKind: engagementKind,
+                sceneProvider: sceneProvider,
+                configuration: parameters.configuration,
+                interactor: parameters.interactor,
+                features: parameters.features,
+                viewFactory: parameters.viewFactory,
+                ongoingEngagementMediaStreams: parameters.ongoingEngagementMediaStreams
+            )
+        }
     }
 }
