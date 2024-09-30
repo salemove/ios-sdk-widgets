@@ -30,7 +30,7 @@ class ChatItem {
     init(
         with message: OutgoingMessage
     ) {
-        kind = .outgoingMessage(message)
+        kind = .outgoingMessage(message, error: nil)
     }
 
     init?(
@@ -78,7 +78,7 @@ class ChatItem {
 extension ChatItem {
     enum Kind {
         case queueOperator
-        case outgoingMessage(OutgoingMessage)
+        case outgoingMessage(OutgoingMessage, error: String?)
         case visitorMessage(ChatMessage, status: String?)
         case operatorMessage(ChatMessage, showsImage: Bool, imageUrl: String?)
         case choiceCard(ChatMessage, showsImage: Bool, imageUrl: String?, isActive: Bool)

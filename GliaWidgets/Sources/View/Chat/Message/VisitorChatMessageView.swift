@@ -6,7 +6,15 @@ class VisitorChatMessageView: ChatMessageView {
         set { statusLabel.text = newValue }
     }
 
+    var error: String? {
+        get { return errorLabel.text }
+        set { errorLabel.text = newValue }
+    }
+
+    var messageTapped: (() -> Void)?
+
     private let statusLabel = UILabel().makeView()
+    private let errorLabel = UILabel().makeView()
     private let contentInsets = UIEdgeInsets(top: 8, left: 88, bottom: 8, right: 16)
 
     init(
@@ -42,6 +50,13 @@ class VisitorChatMessageView: ChatMessageView {
             style.accessibility.isFontScalingEnabled,
             for: statusLabel
         )
+
+        errorLabel.font = style.error.font
+        errorLabel.textColor = UIColor(hex: style.error.color)
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: errorLabel
+        )
     }
 
     override func defineLayout() {
@@ -55,6 +70,24 @@ class VisitorChatMessageView: ChatMessageView {
         addSubview(statusLabel)
         constraints += statusLabel.topAnchor.constraint(equalTo: contentViews.bottomAnchor, constant: 2)
         constraints += statusLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -contentInsets.right)
-        constraints += statusLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -contentInsets.bottom)
+
+        addSubview(errorLabel)
+        constraints += errorLabel.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 0)
+        constraints += errorLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -contentInsets.right)
+        constraints += errorLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -contentInsets.bottom)
+
+        defineTapGestureRecognizer()
+    }
+
+    func defineTapGestureRecognizer() {
+        let tapRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(tapped)
+        )
+        addGestureRecognizer(tapRecognizer)
+    }
+
+    @objc private func tapped() {
+        messageTapped?()
     }
 }

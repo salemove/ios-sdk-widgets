@@ -32,6 +32,7 @@ class ChatViewModel: EngagementViewModel {
 
     private let downloader: FileDownloader
     private let deliveredStatusText: String
+    private let failedToDeliverStatusText: String
     private(set) var messageText = "" {
         didSet {
             validateMessage()
@@ -71,6 +72,7 @@ class ChatViewModel: EngagementViewModel {
         isWindowVisible: ObservableValue<Bool>,
         startAction: StartAction,
         deliveredStatusText: String,
+        failedToDeliverStatusText: String,
         chatType: ChatType,
         environment: Environment,
         maximumUploads: () -> Int
@@ -106,6 +108,7 @@ class ChatViewModel: EngagementViewModel {
 
         self.downloader = FileDownloader(environment: .create(with: environment))
         self.deliveredStatusText = deliveredStatusText
+        self.failedToDeliverStatusText = failedToDeliverStatusText
         super.init(
             interactor: interactor,
             screenShareHandler: screenShareHandler,
@@ -198,10 +201,9 @@ class ChatViewModel: EngagementViewModel {
 
             pendingMessages.forEach { [weak self] outgoingMessage in
                 self?.interactor.send(messagePayload: outgoingMessage.payload) {  [weak self] result in
+                    guard let self else { return }
                     switch result {
                     case let .success(message):
-                        guard let self else { return }
-
                         self.replace(
                             outgoingMessage,
                             uploads: [],
@@ -210,9 +212,11 @@ class ChatViewModel: EngagementViewModel {
                         )
 
                         self.action?(.scrollToBottom(animated: true))
-                    case let .failure(error):
-                        guard let self else { return }
-                        self.engagementAction?(.showAlert(.error(error: error.error)))
+                    case .failure:
+                        self.markMessageAsFailed(
+                            outgoingMessage,
+                            in: self.messagesSection
+                        )
                     }
                 }
             }
@@ -276,6 +280,8 @@ extension ChatViewModel {
             sendSelectedCustomCardOption(option, for: messageId)
         case .gvaButtonTapped(let option):
             gvaOptionAction(for: option)()
+        case .retryMessageTapped(let message):
+            retryMessageSending(message)
         }
     }
 }
@@ -460,11 +466,11 @@ extension ChatViewModel {
                         )
                         self.action?(.scrollToBottom(animated: true))
                     }
-                case let .failure(error):
-                    self.engagementAction?(.showAlert(.error(
-                        error: error.error,
-                        dismissed: endSession
-                    )))
+                case .failure:
+                    self.markMessageAsFailed(
+                        outgoingMessage,
+                        in: self.messagesSection
+                    )
                 }
             }
         case .enqueued:
@@ -518,6 +524,29 @@ extension ChatViewModel {
         )
     }
 
+    func markMessageAsFailed(
+        _ outgoingMessage: OutgoingMessage,
+        in section: Section<ChatItem>
+    ) {
+        SecureConversations.ChatWithTranscriptModel.markMessageAsFailed(
+            outgoingMessage,
+            in: section,
+            message: failedToDeliverStatusText,
+            action: action
+        )
+    }
+
+    func removeMessage(
+        _ outgoingMessage: OutgoingMessage,
+        in section: Section<ChatItem>
+    ) {
+        SecureConversations.ChatWithTranscriptModel.removeMessage(
+            outgoingMessage,
+            in: section,
+            action: action
+        )
+    }
+
     @discardableResult
     private func validateMessage() -> Bool {
         let canSendText = !messageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -549,7 +578,7 @@ extension ChatViewModel {
             // processing time.
             for chatItem in messagesSection.items.reversed() {
                 switch chatItem.kind {
-                case let .outgoingMessage(outgoingMessage)
+                case let .outgoingMessage(outgoingMessage, _)
                     where outgoingMessage.payload.messageId.rawValue.uppercased() == message.id.uppercased():
                     isMatchingOutgoingMessage = true
                 default:
@@ -611,7 +640,7 @@ extension ChatViewModel {
         // avoid message duplication. Currently pending messages
         // stay in pending section whole session.
         for pendingMessage in self.pendingSection.items {
-            if case let .outgoingMessage(outgoingPendingMessage) = pendingMessage.kind,
+            if case let .outgoingMessage(outgoingPendingMessage, _) = pendingMessage.kind,
                 outgoingPendingMessage.payload.messageId.rawValue.uppercased() == message.id.uppercased() {
                 return
             }
@@ -784,6 +813,67 @@ extension ChatViewModel {
             delegate?(.showFile(file))
         case .error:
             download.startDownload()
+        }
+    }
+}
+
+// MARK: Message sending retry
+
+extension ChatViewModel {
+    // TODO: - This will be covered with unit tests in next PR
+    private func retryMessageSending(_ outgoingMessage: OutgoingMessage) {
+        removeMessage(
+            outgoingMessage,
+            in: messagesSection
+        )
+
+        let item = ChatItem(with: outgoingMessage)
+        appendItem(item, to: messagesSection, animated: true)
+        action?(.scrollToBottom(animated: true))
+
+        interactor.send(messagePayload: outgoingMessage.payload) { [weak self] result in
+            guard let self else { return }
+
+            switch result {
+            case let .success(message):
+                if !self.hasReceivedMessage(messageId: message.id) {
+                    self.registerReceivedMessage(messageId: message.id)
+
+                    self.updateSelectedOption(with: outgoingMessage)
+
+                    self.replace(
+                        outgoingMessage,
+                        uploads: [],
+                        with: message,
+                        in: self.messagesSection
+                    )
+                    self.action?(.scrollToBottom(animated: true))
+                }
+            case .failure:
+                self.markMessageAsFailed(
+                    outgoingMessage,
+                    in: self.messagesSection
+                )
+            }
+        }
+    }
+
+    // Updates Response Card or Custom Card selected option
+    // TODO: - This will be covered with unit tests in next PR
+    private func updateSelectedOption(with outgoingMessage: OutgoingMessage) {
+        let selectedOption = outgoingMessage.payload.attachment?.selectedOption
+
+        switch outgoingMessage.relation {
+        case let .customCard(messageId):
+            updateCustomCard(
+                messageId: messageId,
+                selectedOptionValue: selectedOption,
+                isActive: false
+            )
+        case let .singleChoice(messageId):
+            respond(to: messageId.rawValue, with: selectedOption)
+        case .none:
+            return
         }
     }
 }

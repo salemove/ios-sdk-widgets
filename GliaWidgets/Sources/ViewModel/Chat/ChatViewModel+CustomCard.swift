@@ -18,7 +18,10 @@ extension ChatViewModel {
         )
 
         let payload = environment.createSendMessagePayload(option.text, attachment)
-        let outgoingMessage = OutgoingMessage(payload: payload)
+        let outgoingMessage = OutgoingMessage(
+            payload: payload,
+            relation: .customCard(messageId: messageId)
+        )
 
         registerReceivedMessage(messageId: payload.messageId.rawValue)
 
@@ -31,7 +34,7 @@ extension ChatViewModel {
 
             self.updateCustomCard(
                 messageId: messageId,
-                selectedOption: option,
+                selectedOptionValue: option.value,
                 isActive: false
             )
             self.replace(
@@ -43,29 +46,32 @@ extension ChatViewModel {
             self.action?(.scrollToBottom(animated: true))
         }
 
-        let failure: (CoreSdkClient.SalemoveError) -> Void = { [weak self] error in
+        let failure: () -> Void = { [weak self] in
             guard let self = self else { return }
             self.updateCustomCard(
                 messageId: messageId,
-                selectedOption: nil,
+                selectedOptionValue: nil,
                 isActive: true
             )
-            self.engagementAction?(.showAlert(.error(error: error.error)))
+            self.markMessageAsFailed(
+                outgoingMessage,
+                in: self.messagesSection
+            )
         }
 
         interactor.send(messagePayload: payload) { result in
             switch result {
             case let .success(message):
                 success(message)
-            case let .failure(error):
-                failure(error)
+            case .failure:
+                failure()
             }
         }
     }
 
-    private func updateCustomCard(
+    func updateCustomCard(
         messageId: MessageRenderer.Message.Identifier,
-        selectedOption: HtmlMetadata.Option?,
+        selectedOptionValue: String?,
         isActive: Bool
     ) {
         guard let index = messagesSection.items
@@ -85,7 +91,7 @@ extension ChatViewModel {
             _
         ) = customCardItem.kind else { return }
 
-        message.attachment?.selectedOption = selectedOption?.value
+        message.attachment?.selectedOption = selectedOptionValue
         let item = ChatItem(kind: .customCard(
             message,
             showsImage: showsImage,

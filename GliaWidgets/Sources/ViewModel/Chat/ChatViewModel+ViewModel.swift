@@ -18,6 +18,7 @@ extension ChatViewModel: ViewModel {
             messageId: MessageRenderer.Message.Identifier
         )
         case gvaButtonTapped(GvaOption)
+        case retryMessageTapped(OutgoingMessage)
     }
 
     enum Action {
@@ -37,6 +38,7 @@ extension ChatViewModel: ViewModel {
         case refreshRow(Int, in: Int, animated: Bool)
         case refreshRows([Int], in: Int, animated: Bool)
         case refreshSection(Int, animated: Bool = false)
+        case deleteRows([Int], in: Int, animated: Bool)
         case refreshAll
         case scrollToBottom(animated: Bool)
         case updateItemsUserImage(animated: Bool)

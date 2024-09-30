@@ -211,6 +211,9 @@ extension SecureConversations {
                 break
             case let .gvaButtonTapped(option):
                 gvaOptionAction(for: option)()
+            case let .retryMessageTapped(message):
+                // Will be handled in next PR
+                break
             }
         }
 
@@ -265,7 +268,7 @@ extension SecureConversations.TranscriptModel {
         )
 
         appendItem(
-            .init(kind: .outgoingMessage(outgoingMessage)),
+            .init(kind: .outgoingMessage(outgoingMessage, error: nil)),
             to: pendingSection,
             animated: true
         )
