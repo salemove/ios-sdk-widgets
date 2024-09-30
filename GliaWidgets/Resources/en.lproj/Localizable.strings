@@ -125,6 +125,7 @@
 "chat.operator_name.accessibility.label" = "Operator Name";
 "chat.operator_joined.system_message" = "{operatorName} has joined the conversation.";
 "chat.message.delivered" = "Delivered";
+"chat.message.failed_to_deliver.retry" = "Failed to deliver. Tap to retry.";
 "chat.status.typing" = "Operator is typing";
 "chat.status.typing.accessibility.label" = "{operatorName} is typing";
 "chat.unread_message_divider" = "New Messages";
