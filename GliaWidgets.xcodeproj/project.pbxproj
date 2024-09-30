@@ -167,6 +167,8 @@
 		1AFB1E7825F8B26800CA460D /* ChatTextContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E7725F8B26800CA460D /* ChatTextContentStyle.swift */; };
 		215A25902CA44D8A0013023E /* Glia+EngagementLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215A258F2CA44D8A0013023E /* Glia+EngagementLauncher.swift */; };
 		215A25932CA44D900013023E /* EngagementLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215A25912CA44D900013023E /* EngagementLauncher.swift */; };
+		215A25982CABC7DF0013023E /* EngagementLauncherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215A25972CABC7DF0013023E /* EngagementLauncherTests.swift */; };
+		215A259A2CAC19780013023E /* GliaTests+EngagementLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215A25992CAC19780013023E /* GliaTests+EngagementLauncher.swift */; };
 		23D69155F4F4C5043173EF05 /* Pods_GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7A5CDD05FB57D55971AA68A /* Pods_GliaWidgets.framework */; };
 		3100D929296E946600DEC9CE /* SecureConversations.ConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100D924296E946600DEC9CE /* SecureConversations.ConfirmationView.swift */; };
 		3100D92A296E946600DEC9CE /* Theme+SecureConversationsConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100D925296E946600DEC9CE /* Theme+SecureConversationsConfirmation.swift */; };
@@ -1205,6 +1207,8 @@
 		1AFB1E7725F8B26800CA460D /* ChatTextContentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextContentStyle.swift; sourceTree = "<group>"; };
 		215A258F2CA44D8A0013023E /* Glia+EngagementLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Glia+EngagementLauncher.swift"; sourceTree = "<group>"; };
 		215A25912CA44D900013023E /* EngagementLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EngagementLauncher.swift; sourceTree = "<group>"; };
+		215A25972CABC7DF0013023E /* EngagementLauncherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementLauncherTests.swift; sourceTree = "<group>"; };
+		215A25992CAC19780013023E /* GliaTests+EngagementLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GliaTests+EngagementLauncher.swift"; sourceTree = "<group>"; };
 		235300A49A5836A51EB1C4E8 /* Pods-GliaWidgets.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.release.xcconfig"; sourceTree = "<group>"; };
 		2797F86D83B9055FAD6E596E /* Pods-SnapshotTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapshotTests.debug.xcconfig"; path = "Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3100D924296E946600DEC9CE /* SecureConversations.ConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureConversations.ConfirmationView.swift; sourceTree = "<group>"; };
@@ -3217,6 +3221,14 @@
 			path = EngagementLauncher;
 			sourceTree = "<group>";
 		};
+		215A25962CABC7C50013023E /* EngagementLauncher */ = {
+			isa = PBXGroup;
+			children = (
+				215A25972CABC7DF0013023E /* EngagementLauncherTests.swift */,
+			);
+			path = EngagementLauncher;
+			sourceTree = "<group>";
+		};
 		3100D921296E943100DEC9CE /* Welcome */ = {
 			isa = PBXGroup;
 			children = (
@@ -3487,6 +3499,7 @@
 		7512A57827BF9FB800319DF1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				215A25962CABC7C50013023E /* EngagementLauncher */,
 				C0D6C9FE2C106A0D00D4709B /* AlertManager */,
 				8418AD792BFB68C9007DE207 /* OnHoldOverlayVisualEffectView */,
 				8485704D2BEE39EB00CEBCC5 /* ChatView */,
@@ -4105,6 +4118,7 @@
 				7512A5A627C3926500319DF1 /* GliaTests.swift */,
 				846A5C4429F6BEFA0049B29F /* GliaTests+StartEngagement.swift */,
 				AFFA99812C57D658004A2825 /* GliaTests+RestoreEngagement.swift */,
+				215A25992CAC19780013023E /* GliaTests+EngagementLauncher.swift */,
 			);
 			path = Glia;
 			sourceTree = "<group>";
@@ -6377,6 +6391,7 @@
 				C03A8049292BC8DB00DDECA6 /* CallViewControllerTests.swift in Sources */,
 				84D5B9662A15204400807F92 /* QuickLookBased.Failing.swift in Sources */,
 				84602A772AEA5BEA0031E606 /* ProximityManager.Failing.swift in Sources */,
+				215A259A2CAC19780013023E /* GliaTests+EngagementLauncher.swift in Sources */,
 				31758EC62B5FC182007BBD9F /* SceneProvider.Mock.swift in Sources */,
 				753B05F82AFC1D750084611E /* SerialQueueTests.swift in Sources */,
 				31B278032B55BE670021DEC1 /* SecureConversations.WelcomeViewController.Mock.swift in Sources */,
@@ -6400,6 +6415,7 @@
 				AF1C19802B14FE9F00F8810F /* ConditionalCompilationClient.Failing.swift in Sources */,
 				84520BED2B19FD3000F97617 /* CallVisualizerTests+LO.swift in Sources */,
 				9A19927027D3BCAE00161AAE /* GCD.Failing.swift in Sources */,
+				215A25982CABC7DF0013023E /* EngagementLauncherTests.swift in Sources */,
 				3142696A29FFB712003DF62E /* Interactor.Failing.swift in Sources */,
 				8485704F2BEE3A0800CEBCC5 /* ChatViewTest.swift in Sources */,
 				8492F9152CAAE30F00242691 /* SecureConversations.ChatWithTranscriptModelTests.swift in Sources */,
