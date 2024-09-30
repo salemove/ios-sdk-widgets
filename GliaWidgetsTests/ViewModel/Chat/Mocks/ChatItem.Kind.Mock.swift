@@ -14,7 +14,7 @@ extension ChatItem.Kind {
     static func mock(kind: Internal) -> ChatItem.Kind {
         switch kind {
         case .queueOperator: return .queueOperator
-        case .outgoingMessage: return .outgoingMessage(.mock())
+        case .outgoingMessage: return .outgoingMessage(.mock(), error: nil)
         case .visitorMessage: return .visitorMessage(.mock(), status: nil)
         case .operatorMessage:
             return .operatorMessage(

@@ -100,7 +100,7 @@ private extension SecureConversations.TranscriptModel {
         let outgoingMessage = OutgoingMessage(payload: payload)
 
         appendItem(
-            .init(kind: .outgoingMessage(outgoingMessage)),
+            .init(kind: .outgoingMessage(outgoingMessage, error: nil)),
             to: pendingSection,
             animated: true
         )

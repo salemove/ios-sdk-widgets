@@ -24,6 +24,7 @@ class ChatView: EngagementView {
     var linkTapped: ((URL) -> Void)?
     var selectCustomCardOption: ((HtmlMetadata.Option, MessageRenderer.Message.Identifier) -> Void)?
     var gvaButtonTapped: ((GvaOption) -> Void)?
+    var retryMessageTapped: ((OutgoingMessage) -> Void)?
 
     let style: ChatStyle
     let environment: Environment
@@ -310,6 +311,10 @@ extension ChatView {
         }
     }
 
+    func deleteRows(_ rows: [Int], in section: Int, animated: Bool) {
+        tableView.deleteRows(rows, in: section, animated: animated)
+    }
+
     func refreshAll() {
         tableView.reloadData()
     }
@@ -345,8 +350,8 @@ extension ChatView {
         switch item.kind {
         case .queueOperator:
             return .queueOperator(connectView)
-        case let .outgoingMessage(message):
-            return outgoingMessageContent(message)
+        case let .outgoingMessage(message, error):
+            return outgoingMessageContent(message, error: error)
         case let .visitorMessage(message, status):
             return visitorMessageContent(message, status: status)
         case let .operatorMessage(message, showsImage, imageUrl):
@@ -667,7 +672,10 @@ extension ChatView {
         return .systemMessage(view)
     }
 
-    private func outgoingMessageContent(_ message: OutgoingMessage) -> ChatItemCell.Content {
+    private func outgoingMessageContent(
+        _ message: OutgoingMessage,
+        error: String?
+    ) -> ChatItemCell.Content {
         let view = VisitorChatMessageView(
             with: style.visitorMessageStyle,
             environment: .create(with: environment)
@@ -692,6 +700,12 @@ extension ChatView {
         )
         view.fileTapped = { [weak self] in self?.fileTapped?($0) }
         view.linkTapped = { [weak self] in self?.linkTapped?($0) }
+        view.error = error
+        if error != nil {
+            view.messageTapped = { [weak self] in
+                self?.retryMessageTapped?(message)
+            }
+        }
         return .outgoingMessage(view)
     }
 

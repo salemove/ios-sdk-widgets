@@ -28,7 +28,7 @@ extension ChatViewModel {
         }
     }
 
-    private func respond(to choiceCardId: String, with selection: String?) {
+    func respond(to choiceCardId: String, with selection: String?) {
         // In the case of upgrading a secure conversation to a live chat,
         // there's a bug (MSG-483) that sends the welcome message web socket event before the
         // start engagement event. This means that we display it in the `pendingSection`

@@ -11,6 +11,7 @@ extension ChatViewModel {
         isWindowVisible: ObservableValue<Bool> = .init(with: true),
         startAction: StartAction = .startEngagement,
         deliveredStatusText: String = "Delivered",
+        failedToDeliverStatusText: String = "Failed",
         chatType: ChatViewModel.ChatType = .nonAuthenticated,
         environment: Environment = .mock,
         maximumUploads: () -> Int = { 2 }
@@ -25,6 +26,7 @@ extension ChatViewModel {
             isWindowVisible: isWindowVisible,
             startAction: startAction,
             deliveredStatusText: deliveredStatusText,
+            failedToDeliverStatusText: failedToDeliverStatusText,
             chatType: chatType,
             environment: environment,
             maximumUploads: maximumUploads

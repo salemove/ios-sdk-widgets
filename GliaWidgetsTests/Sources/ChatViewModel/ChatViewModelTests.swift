@@ -24,7 +24,8 @@ class ChatViewModelTests: XCTestCase {
             isCustomCardSupported: false,
             isWindowVisible: .init(with: true),
             startAction: .none,
-            deliveredStatusText: "Delivered",
+            deliveredStatusText: "Delivered", 
+            failedToDeliverStatusText: "Failed",
             chatType: .nonAuthenticated,
             environment: .init(
                 fetchFile: { _, _, _ in },
@@ -744,7 +745,7 @@ class ChatViewModelTests: XCTestCase {
 
         let outgoingMessage = OutgoingMessage(payload: .mock(messageIdSuffix: messageIdSuffix))
         viewModel.pendingSection.append(
-            .init(kind: .outgoingMessage(outgoingMessage))
+            .init(kind: .outgoingMessage(outgoingMessage, error: nil))
         )
 
         viewModel.interactorEvent(.receivedMessage(.mock(id: outgoingMessage.payload.messageId.rawValue)))
