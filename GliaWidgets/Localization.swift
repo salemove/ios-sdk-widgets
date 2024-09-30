@@ -290,6 +290,10 @@ internal enum Localization {
       internal static var delivered: String { Localization.tr("Localizable", "chat.message.delivered", fallback: "Delivered") }
       /// Send a message to start chatting
       internal static var startEngagementPlaceholder: String { Localization.tr("Localizable", "chat.message.start_engagement_placeholder", fallback: "Send a message to start chatting") }
+      internal enum FailedToDeliver {
+        /// Failed to deliver. Tap to retry.
+        internal static var retry: String { Localization.tr("Localizable", "chat.message.failed_to_deliver.retry", fallback: "Failed to deliver. Tap to retry.") }
+      }
       internal enum Unread {
         internal enum Accessibility {
           /// Unread messages
@@ -459,9 +463,9 @@ internal enum Localization {
     internal static var close: String { Localization.tr("Localizable", "general.close", fallback: "Close") }
     /// Comment
     internal static var comment: String { Localization.tr("Localizable", "general.comment", fallback: "Comment") }
-    /// Company Name
+    /// 
     internal static var companyName: String { Localization.tr("Localizable", "general.company_name", fallback: "") }
-    /// Company Name without asking string provider
+    ///  without asking string provider
     internal static var companyNameLocalFallbackOnly: String { Localization.tr("Localizable", "general.company_name", fallback: "", stringProviding: nil) }
     /// Decline
     internal static var decline: String { Localization.tr("Localizable", "general.decline", fallback: "Decline") }
