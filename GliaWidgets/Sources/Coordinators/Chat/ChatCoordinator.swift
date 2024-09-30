@@ -162,6 +162,7 @@ extension ChatCoordinator {
             isWindowVisible: isWindowVisible,
             startAction: startAction,
             deliveredStatusText: viewFactory.theme.chat.visitorMessageStyle.delivered,
+            failedToDeliverStatusText: viewFactory.theme.chat.visitorMessageStyle.failedToDeliver,
             chatType: chatType,
             environment: .create(
                 with: environment,

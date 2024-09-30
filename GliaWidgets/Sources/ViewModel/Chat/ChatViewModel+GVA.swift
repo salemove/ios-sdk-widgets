@@ -128,8 +128,11 @@ private extension ChatViewModel {
                         in: self.messagesSection
                     )
                 }
-            case let .failure(error):
-                self.engagementAction?(.showAlert(.error(error: error.error)))
+            case .failure:
+                self.markMessageAsFailed(
+                    outgoingMessage,
+                    in: self.messagesSection
+                )
             }
         }
     }

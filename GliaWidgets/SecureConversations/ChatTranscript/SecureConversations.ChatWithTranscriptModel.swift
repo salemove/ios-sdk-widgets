@@ -117,7 +117,7 @@ extension SecureConversations.ChatWithTranscriptModel {
             guard let index = section.items
                 .enumerated()
                 .first(where: {
-                    guard case .outgoingMessage(let message) = $0.element.kind else { return false }
+                    guard case .outgoingMessage(let message, _) = $0.element.kind else { return false }
                     return message.payload.messageId == outgoingMessage.payload.messageId
                 })?.offset
             else { return }
@@ -197,7 +197,7 @@ extension SecureConversations.ChatWithTranscriptModel {
             messageId: ChatMessage.MessageId
         ) -> Bool {
             switch chatItem.kind {
-            case let .outgoingMessage(outgoingMessage):
+            case let .outgoingMessage(outgoingMessage, _):
                 return outgoingMessage.payload.messageId.rawValue.uppercased() == messageId.uppercased()
             case let .visitorMessage(message, _):
                 return message.id.uppercased() == messageId.uppercased()
@@ -310,6 +310,51 @@ extension SecureConversations.ChatWithTranscriptModel {
         }
     }
     // swiftlint:enable function_body_length
+
+    // TODO: - This will be covered with unit tests in next PR
+    static func markMessageAsFailed(
+        _ outgoingMessage: OutgoingMessage,
+        in section: Section<ChatItem>,
+        message: String,
+        action: ActionCallback?
+    ) {
+        guard let index = section.items
+            .enumerated()
+            .first(where: { _, element in
+                Self.chatItemMatchesMessageId(
+                    chatItem: element,
+                    messageId: outgoingMessage.payload.messageId.rawValue
+                )
+            })?.offset
+        else { return }
+
+        let item = ChatItem(kind: .outgoingMessage(
+            outgoingMessage,
+            error: message
+        ))
+        section.replaceItem(at: index, with: item)
+        action?(.refreshRows([index], in: section.index, animated: false))
+    }
+
+    // TODO: - This will be covered with unit tests in next PR
+    static func removeMessage(
+        _ outgoingMessage: OutgoingMessage,
+        in section: Section<ChatItem>,
+        action: ActionCallback?
+    ) {
+        guard let index = section.items
+            .enumerated()
+            .first(where: { _, element in
+                Self.chatItemMatchesMessageId(
+                    chatItem: element,
+                    messageId: outgoingMessage.payload.messageId.rawValue
+                )
+            })?.offset
+        else { return }
+
+        section.removeItem(at: index)
+        action?(.deleteRows([index], in: section.index, animated: true))
+    }
 
     static private func shouldShowOperatorImage(
         for row: Int,

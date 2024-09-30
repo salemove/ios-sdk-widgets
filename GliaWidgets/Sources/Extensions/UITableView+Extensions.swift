@@ -45,4 +45,20 @@ internal extension UITableView {
             self.scrollToRow(at: indexPath, at: .bottom, animated: animated)
         }
     }
+
+    func deleteRows(_ rows: [Int], in section: Int, animated: Bool) {
+        let refreshBlock = {
+            self.beginUpdates()
+            let indexPaths = rows.map { IndexPath(row: $0, section: section) }
+            self.deleteRows(at: indexPaths, with: .fade)
+            self.endUpdates()
+        }
+        if animated {
+            refreshBlock()
+        } else {
+            UIView.performWithoutAnimation {
+                refreshBlock()
+            }
+        }
+    }
 }

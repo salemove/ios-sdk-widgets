@@ -102,6 +102,10 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             viewModel.event(.gvaButtonTapped(option))
         }
 
+        view.retryMessageTapped = { message in
+            viewModel.event(.retryMessageTapped(message))
+        }
+
         var viewModel = viewModel
 
         viewModel.action = { [weak self, weak view] action in
@@ -131,6 +135,8 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                 view?.refreshRows(rows, in: section, animated: animated)
             case let .refreshSection(section, animated):
                 view?.refreshSection(section, animated: animated)
+            case let .deleteRows(rows, in: section, animated: animated):
+                view?.deleteRows(rows, in: section, animated: animated)
             case .refreshAll:
                 view?.refreshAll()
             case .scrollToBottom(let animated):
