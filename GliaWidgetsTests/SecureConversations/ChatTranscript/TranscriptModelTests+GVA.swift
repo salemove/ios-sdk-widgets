@@ -159,6 +159,7 @@ extension SecureConversationsTranscriptModelTests {
             environment: modelEnv,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
         viewModel.action = { action in
@@ -203,6 +204,7 @@ private extension SecureConversationsTranscriptModelTests {
             environment: modelEnv,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
     }

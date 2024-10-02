@@ -311,7 +311,6 @@ extension SecureConversations.ChatWithTranscriptModel {
     }
     // swiftlint:enable function_body_length
 
-    // TODO: - This will be covered with unit tests in next PR
     static func markMessageAsFailed(
         _ outgoingMessage: OutgoingMessage,
         in section: Section<ChatItem>,
@@ -336,7 +335,6 @@ extension SecureConversations.ChatWithTranscriptModel {
         action?(.refreshRows([index], in: section.index, animated: false))
     }
 
-    // TODO: - This will be covered with unit tests in next PR
     static func removeMessage(
         _ outgoingMessage: OutgoingMessage,
         in section: Section<ChatItem>,
