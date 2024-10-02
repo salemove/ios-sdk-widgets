@@ -77,7 +77,8 @@ extension SecureConversations {
 
         private(set) var receivedMessages = [String: [MessageSource]]()
 
-        let deliveredStatusText: String
+        private let deliveredStatusText: String
+        private let failedToDeliverStatusText: String
 
         var numberOfSections: Int {
             sections.count
@@ -90,6 +91,7 @@ extension SecureConversations {
             environment: Environment,
             availability: Availability,
             deliveredStatusText: String,
+            failedToDeliverStatusText: String,
             interactor: Interactor
         ) {
             self.isCustomCardSupported = isCustomCardSupported
@@ -98,6 +100,7 @@ extension SecureConversations {
 
             self.availability = availability
             self.deliveredStatusText = deliveredStatusText
+            self.failedToDeliverStatusText = failedToDeliverStatusText
             self.interactor = interactor
             self.hasViewAppeared = false
             let uploader = FileUploader(
@@ -212,8 +215,7 @@ extension SecureConversations {
             case let .gvaButtonTapped(option):
                 gvaOptionAction(for: option)()
             case let .retryMessageTapped(message):
-                // Will be handled in next PR
-                break
+                retryMessageSending(message)
             }
         }
 
@@ -281,8 +283,11 @@ extension SecureConversations.TranscriptModel {
             switch result {
             case let .success(message):
                 self.receiveMessage(from: .api(message, outgoingMessage: outgoingMessage))
-            case let .failure(error):
-                self.engagementAction?(.showAlert(.error(error: error)))
+            case .failure:
+                self.markMessageAsFailed(
+                    outgoingMessage,
+                    in: self.pendingSection
+                )
             }
         }
 
@@ -313,6 +318,36 @@ extension SecureConversations.TranscriptModel {
     func clearInputs() {
         messageText = ""
         fileUploadListModel.removeSucceededUploads()
+    }
+}
+
+// MARK: Message sending retry
+extension SecureConversations.TranscriptModel {
+    private func retryMessageSending(_ outgoingMessage: OutgoingMessage) {
+        removeMessage(
+            outgoingMessage,
+            in: pendingSection
+        )
+
+        let item = ChatItem(with: outgoingMessage)
+        appendItem(item, to: pendingSection, animated: true)
+        action?(.scrollToBottom(animated: true))
+
+        _ = environment.sendSecureMessagePayload(
+            outgoingMessage.payload,
+            environment.queueIds
+        ) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case let .success(message):
+                self.receiveMessage(from: .api(message, outgoingMessage: outgoingMessage))
+            case .failure:
+                self.markMessageAsFailed(
+                    outgoingMessage,
+                    in: self.pendingSection
+                )
+            }
+        }
     }
 }
 
@@ -366,6 +401,29 @@ extension SecureConversations.TranscriptModel {
     func linkTapped(_ url: URL) {
         guard environment.uiApplication.canOpenURL(url) else { return }
         environment.uiApplication.open(url)
+    }
+
+    func markMessageAsFailed(
+        _ outgoingMessage: OutgoingMessage,
+        in section: Section<ChatItem>
+    ) {
+        SecureConversations.ChatWithTranscriptModel.markMessageAsFailed(
+            outgoingMessage,
+            in: section,
+            message: failedToDeliverStatusText,
+            action: action
+        )
+    }
+
+    func removeMessage(
+        _ outgoingMessage: OutgoingMessage,
+        in section: Section<ChatItem>
+    ) {
+        SecureConversations.ChatWithTranscriptModel.removeMessage(
+            outgoingMessage,
+            in: section,
+            action: action
+        )
     }
 }
 

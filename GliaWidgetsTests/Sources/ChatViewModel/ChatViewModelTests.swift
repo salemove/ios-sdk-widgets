@@ -465,6 +465,7 @@ class ChatViewModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
 
