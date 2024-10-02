@@ -820,7 +820,6 @@ extension ChatViewModel {
 // MARK: Message sending retry
 
 extension ChatViewModel {
-    // TODO: - This will be covered with unit tests in next PR
     private func retryMessageSending(_ outgoingMessage: OutgoingMessage) {
         removeMessage(
             outgoingMessage,
@@ -839,8 +838,6 @@ extension ChatViewModel {
                 if !self.hasReceivedMessage(messageId: message.id) {
                     self.registerReceivedMessage(messageId: message.id)
 
-                    self.updateSelectedOption(with: outgoingMessage)
-
                     self.replace(
                         outgoingMessage,
                         uploads: [],
@@ -849,6 +846,8 @@ extension ChatViewModel {
                     )
                     self.action?(.scrollToBottom(animated: true))
                 }
+
+                self.updateSelectedOption(with: outgoingMessage)
             case .failure:
                 self.markMessageAsFailed(
                     outgoingMessage,

@@ -119,7 +119,10 @@ private extension SecureConversations.TranscriptModel {
                     in: self.pendingSection
                 )
             case let .failure(error):
-                self.engagementAction?(.showAlert(.error(error: error)))
+                self.markMessageAsFailed(
+                    outgoingMessage,
+                    in: self.pendingSection
+                )
             }
         }
     }

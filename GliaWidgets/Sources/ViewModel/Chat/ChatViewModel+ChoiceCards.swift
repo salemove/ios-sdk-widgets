@@ -12,8 +12,17 @@ extension ChatViewModel {
             imageUrl: nil
         )
 
-        let payload = self.environment.createSendMessagePayload(text, attachment)
+        let payload = environment.createSendMessagePayload(text, attachment)
         registerReceivedMessage(messageId: payload.messageId.rawValue)
+
+        let outgoingMessage = OutgoingMessage(
+            payload: payload,
+            relation: .singleChoice(messageId: .init(rawValue: messageId))
+        )
+
+        let item = ChatItem(with: outgoingMessage)
+        appendItem(item, to: messagesSection, animated: true)
+        action?(.scrollToBottom(animated: true))
 
         interactor.send(messagePayload: payload) { [weak self] result in
             guard let self = self else { return }
@@ -22,8 +31,11 @@ extension ChatViewModel {
             case .success(let message):
                 let selection = message.content
                 self.respond(to: messageId, with: selection)
-            case let .failure(error):
-                self.engagementAction?(.showAlert(.error(error: error.error)))
+            case .failure:
+                self.markMessageAsFailed(
+                    outgoingMessage,
+                    in: self.messagesSection
+                )
             }
         }
     }
@@ -52,16 +64,17 @@ extension ChatViewModel {
         message.attachment?.selectedOption = selection
 
         let item = ChatItem(
-            kind: .visitorMessage(
+            kind: .operatorMessage(
                 ChatMessage(
                     id: message.id,
                     operator: message.operator,
                     sender: message.sender,
-                    content: message.attachment?.selectedOption ?? "",
+                    content: message.content,
                     attachment: message.attachment,
                     downloads: message.downloads
                 ),
-                status: nil
+                showsImage: false,
+                imageUrl: message.operator?.pictureUrl
             )
         )
         section.replaceItem(at: index, with: item)

@@ -27,7 +27,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             availability: .init(
                 environment: availabilityEnv
             ),
-            deliveredStatusText: "",
+            deliveredStatusText: "", 
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
 
@@ -56,6 +57,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
 
@@ -89,6 +91,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
 
@@ -132,6 +135,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
         viewModel.start()
@@ -163,6 +167,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
         viewModel.start()
@@ -209,6 +214,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
 
@@ -249,6 +255,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
 
@@ -285,6 +292,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
 
@@ -327,6 +335,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
 
@@ -365,6 +374,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
 
@@ -406,6 +416,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
 
@@ -456,6 +467,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: interactor
         )
 
@@ -520,6 +532,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
                 environment: availabilityEnv
             ),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: interactor
         )
 
@@ -573,6 +586,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             environment: modelEnvironment,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
         XCTAssertFalse(model.isSecureConversationsAvailable)
@@ -601,6 +615,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             environment: modelEnvironment,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
         XCTAssertFalse(model.isSecureConversationsAvailable)
@@ -627,6 +642,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             environment: modelEnvironment,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
         XCTAssertFalse(model.isSecureConversationsAvailable)
@@ -655,6 +671,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             environment: modelEnvironment,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
         XCTAssertFalse(model.isSecureConversationsAvailable)
@@ -683,6 +700,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             environment: modelEnvironment,
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
+            failedToDeliverStatusText: "",
             interactor: .failing
         )
         var actions: [TranscriptModel.Action] = []
