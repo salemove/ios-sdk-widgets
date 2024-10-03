@@ -2,7 +2,7 @@ import UIKit
 
 final class CustomPresentationController: UIPresentationController {
     private let height: CGFloat
-
+    private let cornerRadius: CGFloat
     private let dimmingView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.black.withAlphaComponent(0.13)
@@ -12,9 +12,11 @@ final class CustomPresentationController: UIPresentationController {
     init(
         presentedViewController: UIViewController,
         presenting presentingViewController: UIViewController?,
-        height: CGFloat
+        height: CGFloat,
+        cornerRadius: CGFloat
     ) {
         self.height = height
+        self.cornerRadius = cornerRadius
         super.init(
             presentedViewController: presentedViewController,
             presenting: presentingViewController
@@ -46,7 +48,7 @@ final class CustomPresentationController: UIPresentationController {
 
     override func containerViewWillLayoutSubviews() {
         super.containerViewWillLayoutSubviews()
-        presentedView?.layer.cornerRadius = 24
+        presentedView?.layer.cornerRadius = cornerRadius
         presentedView?.layer.masksToBounds = true
         presentedView?.frame = frameOfPresentedViewInContainerView
     }
