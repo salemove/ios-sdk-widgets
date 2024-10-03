@@ -12,6 +12,7 @@ public struct RemoteConfiguration: Codable {
     let secureConversationsConfirmationScreen: SecureConversationsConfirmationScreen?
     let snackBar: SnackBar?
     let webBrowserScreen: WebView?
+    let entryWidget: EntryWidget?
 }
 
 extension RemoteConfiguration {
@@ -200,5 +201,25 @@ extension RemoteConfiguration {
         let option: Text?
         let tintColor: Color?
         let title: Text?
+    }
+
+    struct EntryWidget: Codable {
+        let background: Layer?
+        let mediaTypeItems: MediaTypeItems?
+        let errorTitle: Text?
+        let errorMessage: Text?
+        let errorButton: Button?
+    }
+
+    struct MediaTypeItems: Codable {
+        let mediaTypeItem: MediaTypeItem?
+        let dividerColor: Color?
+    }
+
+    struct MediaTypeItem: Codable {
+        let background: Layer?
+        let iconColor: Color?
+        let title: Text?
+        let message: Text?
     }
 }
