@@ -680,6 +680,7 @@
 		C0175A2C2A67E2E9001FACDE /* Theme+Gva.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A2B2A67E2E9001FACDE /* Theme+Gva.swift */; };
 		C02248A72AD53DDA00CC4930 /* LiveObservationConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02248A62AD53DDA00CC4930 /* LiveObservationConfirmation.swift */; };
 		C02248AA2AD53E6100CC4930 /* LiveObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02248A92AD53E6100CC4930 /* LiveObservation.swift */; };
+		C034EEED2CAAB525002650B8 /* EntryWidgetStyle.RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C034EEEC2CAAB525002650B8 /* EntryWidgetStyle.RemoteConfig.swift */; };
 		C039FA7F2B19EB6E00DFD0E0 /* MediaPickerLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C039FA7E2B19EB6E00DFD0E0 /* MediaPickerLayoutTests.swift */; };
 		C039FA812B19ECBA00DFD0E0 /* MediaPickerDynamicFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C039FA802B19ECBA00DFD0E0 /* MediaPickerDynamicFontTests.swift */; };
 		C039FA832B19ED7D00DFD0E0 /* MediaPickerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C039FA822B19ED7D00DFD0E0 /* MediaPickerVoiceOverTests.swift */; };
@@ -851,6 +852,8 @@
 		C090478C2B7E5C8F003C437C /* FilePreviewStyle.Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C090478B2B7E5C8F003C437C /* FilePreviewStyle.Equatable.swift */; };
 		C096B40B297EBDE400F0C552 /* VisitorCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C096B40A297EBDE400F0C552 /* VisitorCodeTests.swift */; };
 		C0B325E72AC5A8FA006BC430 /* AlertViewController+LiveObservationConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B325E62AC5A8FA006BC430 /* AlertViewController+LiveObservationConfirmation.swift */; };
+		C0C5BB772CAD4278001B2025 /* MediaTypeItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C5BB762CAD4259001B2025 /* MediaTypeItemStyle.swift */; };
+		C0C5BB792CAD42FD001B2025 /* MediaTypeItemStyle.RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C5BB782CAD42FD001B2025 /* MediaTypeItemStyle.RemoteConfig.swift */; };
 		C0D2F02C2991219100803B47 /* VideoCallCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F02B2991219100803B47 /* VideoCallCoordinator.swift */; };
 		C0D2F02E2991221900803B47 /* VideoCallCoordinator.DelegateEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F02D2991221900803B47 /* VideoCallCoordinator.DelegateEvent.swift */; };
 		C0D2F0302991229F00803B47 /* VideoCallCoordinator.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F02F2991229F00803B47 /* VideoCallCoordinator.Environment.swift */; };
@@ -1716,6 +1719,7 @@
 		C0175A2B2A67E2E9001FACDE /* Theme+Gva.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Gva.swift"; sourceTree = "<group>"; };
 		C02248A62AD53DDA00CC4930 /* LiveObservationConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveObservationConfirmation.swift; sourceTree = "<group>"; };
 		C02248A92AD53E6100CC4930 /* LiveObservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveObservation.swift; sourceTree = "<group>"; };
+		C034EEEC2CAAB525002650B8 /* EntryWidgetStyle.RemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetStyle.RemoteConfig.swift; sourceTree = "<group>"; };
 		C039FA7E2B19EB6E00DFD0E0 /* MediaPickerLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerLayoutTests.swift; sourceTree = "<group>"; };
 		C039FA802B19ECBA00DFD0E0 /* MediaPickerDynamicFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerDynamicFontTests.swift; sourceTree = "<group>"; };
 		C039FA822B19ED7D00DFD0E0 /* MediaPickerVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerVoiceOverTests.swift; sourceTree = "<group>"; };
@@ -1887,6 +1891,8 @@
 		C090478B2B7E5C8F003C437C /* FilePreviewStyle.Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewStyle.Equatable.swift; sourceTree = "<group>"; };
 		C096B40A297EBDE400F0C552 /* VisitorCodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorCodeTests.swift; sourceTree = "<group>"; };
 		C0B325E62AC5A8FA006BC430 /* AlertViewController+LiveObservationConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+LiveObservationConfirmation.swift"; sourceTree = "<group>"; };
+		C0C5BB762CAD4259001B2025 /* MediaTypeItemStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaTypeItemStyle.swift; sourceTree = "<group>"; };
+		C0C5BB782CAD42FD001B2025 /* MediaTypeItemStyle.RemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaTypeItemStyle.RemoteConfig.swift; sourceTree = "<group>"; };
 		C0D2F02B2991219100803B47 /* VideoCallCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallCoordinator.swift; sourceTree = "<group>"; };
 		C0D2F02D2991221900803B47 /* VideoCallCoordinator.DelegateEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallCoordinator.DelegateEvent.swift; sourceTree = "<group>"; };
 		C0D2F02F2991229F00803B47 /* VideoCallCoordinator.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallCoordinator.Environment.swift; sourceTree = "<group>"; };
@@ -5008,14 +5014,17 @@
 		C0F3DE352C69F4A700DE6D7B /* EntryWidget */ = {
 			isa = PBXGroup;
 			children = (
+				C0F7EA372CA1D6D40038019C /* CustomPresentationController.swift */,
 				C0F3DE362C69F51D00DE6D7B /* EntryWidget.swift */,
-				C0F7EA392CA1D7050038019C /* EntryWidget.SizeConstraints.swift */,
-				C0F3DE382C69FC2100DE6D7B /* EntryWidget.Presentation.swift */,
 				C0F3DE3E2C6E176A00DE6D7B /* EntryWidget.Channel.swift */,
+				C0F3DE382C69FC2100DE6D7B /* EntryWidget.Presentation.swift */,
+				C0F7EA392CA1D7050038019C /* EntryWidget.SizeConstraints.swift */,
+				C0F3DE442C6E3D7C00DE6D7B /* EntryWidgetStyle.swift */,
+				C034EEEC2CAAB525002650B8 /* EntryWidgetStyle.RemoteConfig.swift */,
 				C0F3DE3A2C6E0DD900DE6D7B /* EntryWidgetView.swift */,
 				C0F3DE3C2C6E170600DE6D7B /* EntryWidgetViewModel.swift */,
-				C0F3DE442C6E3D7C00DE6D7B /* EntryWidgetStyle.swift */,
-				C0F7EA372CA1D6D40038019C /* CustomPresentationController.swift */,
+				C0C5BB762CAD4259001B2025 /* MediaTypeItemStyle.swift */,
+				C0C5BB782CAD42FD001B2025 /* MediaTypeItemStyle.RemoteConfig.swift */,
 			);
 			path = EntryWidget;
 			sourceTree = "<group>";
@@ -5655,6 +5664,7 @@
 				9AE9E4B727E1E30500BFE239 /* MockHelpers.swift in Sources */,
 				C0EC58CE2B02775100E78C70 /* SnackBar+View+Mock.swift in Sources */,
 				8464297D2A459E7D00943BD6 /* UIViewController+Replaceble.swift in Sources */,
+				C0C5BB772CAD4278001B2025 /* MediaTypeItemStyle.swift in Sources */,
 				C09046EA2B7E0F06003C437C /* Theme.VIsitorChatMessageStyle.RemoteConfig.swift in Sources */,
 				C09046A82B7D08CD003C437C /* WelcomeStyle.SendButton.LoadingStyle.RemoteConfig.swift in Sources */,
 				1A2DA72625EF892600032611 /* FilePickerController.swift in Sources */,
@@ -5822,6 +5832,7 @@
 				84265E64298D7B2900D65842 /* ScreenSharingViewStyle.Accessibility.swift in Sources */,
 				756B8B202996EFA2001D2BB2 /* Header.Props.swift in Sources */,
 				AFA2FDFC289082F500428E6D /* OnHoldOverlayStyle.Mock.swift in Sources */,
+				C034EEED2CAAB525002650B8 /* EntryWidgetStyle.RemoteConfig.swift in Sources */,
 				C0F3DE432C6E3D2400DE6D7B /* Theme.EntryWidget.swift in Sources */,
 				C090476E2B7E2546003C437C /* UnreadMessageDividerStyle.Equatable.swift in Sources */,
 				C09047602B7E2320003C437C /* ChatFileDownloadStyle.RemoteConfig.swift in Sources */,
@@ -5984,6 +5995,7 @@
 				3100D92D296E946600DEC9CE /* SecureConversations.ConfirmationViewModel.swift in Sources */,
 				75D987FC2AF2D9F90016A702 /* SnackBar.Live.swift in Sources */,
 				3100EEFB293F363100D57F71 /* SecureConversations.WelcomeView.swift in Sources */,
+				C0C5BB792CAD42FD001B2025 /* MediaTypeItemStyle.RemoteConfig.swift in Sources */,
 				1A475BBC25DFA10100296D55 /* UnreadMessagesHandler.swift in Sources */,
 				C09046752B7CFFCB003C437C /* ConfirmationStyle.CheckMessageButtonStyle.Accessibility.swift in Sources */,
 				845E2F85283FA90200C04D56 /* Theme.Survey.ValidationError.Accessibility.swift in Sources */,
