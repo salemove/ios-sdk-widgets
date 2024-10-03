@@ -602,6 +602,42 @@ extension ChatViewController {
             }
         """.utf8)
     }
+
+    // MARK: - Message Sending Failed State
+    static func mockMessageSendingFailedState() throws -> ChatViewController {
+        var chatViewModelEnv = ChatViewModel.Environment.mock
+        let messageUuid = UUID.incrementing
+
+        chatViewModelEnv.createSendMessagePayload = {
+            .mock(messageIdSuffix: messageUuid().uuidString, content: $0, attachment: $1)
+        }
+
+        var viewFactoryEnv = ViewFactory.Environment.mock
+        viewFactoryEnv.imageViewCache.getImageForKey = { _ in UIImage.mock }
+
+        var interactorEnv = Interactor.Environment.mock
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, completion in
+            completion(.failure(.mock()))
+        }
+        let chatViewModel = ChatViewModel.mock(
+            interactor: .mock(environment: interactorEnv),
+            failedToDeliverStatusText: "Failed to send. Tap on the message to retry.",
+            environment: chatViewModelEnv
+        )
+        chatViewModel.interactor.state = .engaged(nil)
+        let controller = ChatViewController.mock(
+            chatViewModel: chatViewModel,
+            viewFactory: .init(
+                with: .mock(),
+                messageRenderer: .mock,
+                environment: viewFactoryEnv
+            )
+        )
+        chatViewModel.invokeSetTextAndSendMessage(text: "mock")
+        chatViewModel.invokeSetTextAndSendMessage(text: "mock mock")
+        controller.view.updateConstraints()
+        return controller
+    }
 }
 
 /// Defines wrapper structure for getting decoding container.
