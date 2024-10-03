@@ -72,4 +72,10 @@ final class ChatViewControllerLayoutTests: SnapshotTestCase {
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
+
+    func test_messageSendingFailedState() throws {
+        let viewController = try ChatViewController.mockMessageSendingFailedState()
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
+    }
 }
