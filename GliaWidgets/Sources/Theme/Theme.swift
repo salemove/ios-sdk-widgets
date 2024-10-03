@@ -89,6 +89,7 @@ public class Theme {
         self.showsPoweredBy = showsPoweredBy
     }
 
+    // swiftlint:disable function_body_length
     convenience init(
         uiConfig config: RemoteConfiguration,
         assetsBuilder: RemoteConfiguration.AssetsBuilder
@@ -152,5 +153,10 @@ public class Theme {
             configuration: config.webBrowserScreen,
             assetsBuilder: assetsBuilder
         )
+        entryWidget.apply(
+            configuration: config.entryWidget,
+            assetsBuilder: assetsBuilder
+        )
     }
+    // swiftlint:enable function_body_length
 }
