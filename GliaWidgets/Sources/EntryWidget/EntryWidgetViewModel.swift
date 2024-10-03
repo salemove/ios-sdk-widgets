@@ -2,6 +2,7 @@ import SwiftUI
 
 extension EntryWidgetView {
     class Model: ObservableObject {
+        @Published var viewState: ViewState
         let theme: Theme
         let channelSelected: (EntryWidget.Channel) -> Void
         let channels: [EntryWidget.Channel]
@@ -32,6 +33,7 @@ extension EntryWidgetView {
             self.showHeader = showHeader
             self.channels = channels
             self.channelSelected = channelSelected
+            self.viewState = .offline
         }
     }
 }
@@ -39,5 +41,19 @@ extension EntryWidgetView {
 extension EntryWidgetView.Model {
     func selectChannel(_ channel: EntryWidget.Channel) {
         channelSelected(channel)
+    }
+
+    func onTryAgainTapped() {
+        // The logic will be added together with EngagementLauncher integration
+        print("Try again button tapped")
+    }
+}
+
+extension EntryWidgetView.Model {
+    enum ViewState {
+        case error
+        case loading
+        case mediaTypes
+        case offline
     }
 }
