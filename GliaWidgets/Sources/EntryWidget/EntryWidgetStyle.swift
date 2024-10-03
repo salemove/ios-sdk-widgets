@@ -1,71 +1,80 @@
 import UIKit
 
 public struct EntryWidgetStyle {
-    /// Engagement channel style.
-    public var channel: EntryWidgetChannelStyle
+    /// The style of a media type item.
+    public var mediaTypeItem: MediaTypeItemStyle
 
-    /// Background color of the view.
-    public var backgroundColor: UIColor
+    /// The background color of the view.
+    public var backgroundColor: ColorType
 
-    /// Style of 'powered by' view.
+    /// The corner radius of the view.
+    public var cornerRadius: CGFloat
+
+    /// The style of 'powered by' view.
     public var poweredBy: PoweredByStyle
 
-    /// The color of the dragger
-    public var draggerColor: UIColor
+    /// The color of the divider.
+    public var dividerColor: UIColor
+
+    /// The font for the title of the error message.
+    public var errorTitleFont: UIFont
+
+    /// The text style for the title of the error message.
+    public var errorTitleStyle: UIFont.TextStyle
+
+    /// The color for the title of the error message.
+    public var errorTitleColor: UIColor
+
+    /// The error message string.
+    public var errorMessageFont: UIFont
+
+    /// The text style for the error message.
+    public var errorMessageStyle: UIFont.TextStyle
+
+    /// The color for the error message.
+    public var errorMessageColor: UIColor
+
+    /// The style of the error button.
+    public var errorButton: ActionButtonStyle
 
     /// - Parameters:
-    ///   - channel: Engagement channel style.
-    ///   - backgroundColor: Background color of the view.
-    ///   - poweredBy: Style of 'powered by' view.
-    ///   - draggerColor: The color of the dragger
-    ///
+    ///   - mediaTypeItem: The style of a media type item.
+    ///   - backgroundColor: The background color of the view.
+    ///   - cornerRadius: The corner radius of the view.
+    ///   - poweredBy: The style of the 'powered by' view.
+    ///   - dividerColor: The color of the divider.
+    ///   - errorTitleFont: The font for the title of the error message.
+    ///   - errorTitleStyle: The text style for the title of the error message.
+    ///   - errorTitleColor: The color for the title of the error message.
+    ///   - errorMessage: The error message string.
+    ///   - errorMessageStyle: The text style for the error message.
+    ///   - errorMessageColor: The color for the error message.
+    ///   - errorButton: The style of the error button.
     public init(
-        channel: EntryWidgetChannelStyle,
-        backgroundColor: UIColor,
+        mediaTypeItem: MediaTypeItemStyle,
+        backgroundColor: ColorType,
+        cornerRadius: CGFloat,
         poweredBy: PoweredByStyle,
-        draggerColor: UIColor
+        dividerColor: UIColor,
+        errorTitleFont: UIFont,
+        errorTitleStyle: UIFont.TextStyle,
+        errorTitleColor: UIColor,
+        errorMessageFont: UIFont,
+        errorMessageStyle: UIFont.TextStyle,
+        errorMessageColor: UIColor,
+        errorButton: ActionButtonStyle
     ) {
-        self.channel = channel
+        self.mediaTypeItem = mediaTypeItem
         self.backgroundColor = backgroundColor
+        self.cornerRadius = cornerRadius
         self.poweredBy = poweredBy
-        self.draggerColor = draggerColor
-    }
-}
-
-public struct EntryWidgetChannelStyle {
-    /// Font of the headline text.
-    public var headlineFont: UIFont
-
-    /// Color of the headline text.
-    public var headlineColor: UIColor
-
-    /// Font of the subheadline text.
-    public var subheadlineFont: UIFont
-
-    /// Color of the subheadline text.
-    public var subheadlineColor: UIColor
-
-    /// Color of the icon.
-    public var iconColor: UIColor
-
-    /// - Parameters:
-    ///   - headlineFont: Font of the headline text.
-    ///   - headlineColor: Color of the headline text.
-    ///   - subheadlineFont: Font of the subheadline text.
-    ///   - subheadlineColor: Color of the subheadline text.
-    ///   - iconColor: Color of the icon.
-    ///
-    public init(
-        headlineFont: UIFont,
-        headlineColor: UIColor,
-        subheadlineFont: UIFont,
-        subheadlineColor: UIColor,
-        iconColor: UIColor
-    ) {
-        self.headlineFont = headlineFont
-        self.headlineColor = headlineColor
-        self.subheadlineFont = subheadlineFont
-        self.subheadlineColor = subheadlineColor
-        self.iconColor = iconColor
+        self.dividerColor = dividerColor
+        self.errorTitleFont = errorTitleFont
+        self.errorTitleStyle = errorTitleStyle
+        self.errorTitleColor = errorTitleColor
+        self.errorMessageFont = errorMessageFont
+        self.errorMessageStyle = errorMessageStyle
+        self.errorMessageColor = errorMessageColor
+        self.errorButton = errorButton
     }
 }

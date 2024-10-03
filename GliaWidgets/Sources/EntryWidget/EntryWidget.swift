@@ -88,7 +88,15 @@ private extension EntryWidget {
         let view = makeView(model: model)
         let hostingController = UIHostingController(rootView: view)
 
-        hostingController.view.backgroundColor = UIColor.white
+        switch theme.entryWidget.backgroundColor {
+        case .fill(let color):
+            hostingController.view.backgroundColor = color
+        case .gradient(let colors):
+            hostingController.view.makeGradientBackground(
+                colors: colors,
+                cornerRadius: theme.entryWidget.cornerRadius
+            )
+        }
 
         // Due to the more modern sheet presenting approach being
         // available starting from iOS 16, we need to handle cases
@@ -105,7 +113,7 @@ private extension EntryWidget {
             }
             sheet.detents = [smallDetent]
             sheet.prefersScrollingExpandsWhenScrolledToEdge = true
-            sheet.preferredCornerRadius = 24
+            sheet.preferredCornerRadius = theme.entryWidget.cornerRadius
         } else {
             hostingController.modalPresentationStyle = .custom
             hostingController.transitioningDelegate = self
@@ -163,7 +171,8 @@ extension EntryWidget: UIViewControllerTransitioningDelegate {
         return CustomPresentationController(
             presentedViewController: presented,
             presenting: presenting,
-            height: height
+            height: height,
+            cornerRadius: theme.entryWidget.cornerRadius
         )
     }
 }
