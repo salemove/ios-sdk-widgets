@@ -178,6 +178,20 @@ struct CoreSdkClient {
     typealias GetCameraDeviceManageable = () throws -> CameraDeviceManageableClient
 
     var getCameraDeviceManageable: GetCameraDeviceManageable
+
+    typealias SubscribeForQueuesUpdates = (
+        _ queueIds: [String],
+        _ completion: @escaping (Result<GliaCoreSDK.Queue, GliaCoreSDK.GliaCoreError>) -> Void
+    ) -> String?
+
+    var subscribeForQueuesUpdates: SubscribeForQueuesUpdates
+
+    typealias UnsubscribeFromUpdates = (
+        _ queueCallbackId: String,
+        _ onError: @escaping (GliaCoreSDK.GliaCoreError) -> Void
+    ) -> Void
+
+    var unsubscribeFromUpdates: UnsubscribeFromUpdates
 }
 
 extension CoreSdkClient {
