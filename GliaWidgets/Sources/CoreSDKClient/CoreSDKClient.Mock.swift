@@ -37,7 +37,9 @@ extension CoreSdkClient {
         stopSocketObservation: {},
         createSendMessagePayload: { _, _ in .mock() },
         createLogger: { _ in Logger.mock },
-        getCameraDeviceManageable: { .mock }
+        getCameraDeviceManageable: { .mock },
+        subscribeForQueuesUpdates: { _, _ in UUID().uuidString },
+        unsubscribeFromUpdates: { _, _ in }
     )
 }
 
