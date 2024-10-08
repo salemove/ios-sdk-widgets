@@ -84,10 +84,20 @@ class VisitorChatMessageView: ChatMessageView {
             target: self,
             action: #selector(tapped)
         )
+        tapRecognizer.delegate = self
         addGestureRecognizer(tapRecognizer)
     }
 
     @objc private func tapped() {
         messageTapped?()
+    }
+}
+
+extension VisitorChatMessageView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(
+        _ gestureRecognizer: UIGestureRecognizer,
+        shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+    ) -> Bool {
+        true
     }
 }
