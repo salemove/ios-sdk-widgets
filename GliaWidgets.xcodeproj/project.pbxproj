@@ -165,10 +165,13 @@
 		1AFB1E6825F7AE3C00CA460D /* ChatAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E6725F7AE3C00CA460D /* ChatAttachment.swift */; };
 		1AFB1E7425F8B00B00CA460D /* ChatTextContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E7325F8B00B00CA460D /* ChatTextContentView.swift */; };
 		1AFB1E7825F8B26800CA460D /* ChatTextContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E7725F8B26800CA460D /* ChatTextContentStyle.swift */; };
+		2100B4802CB6B5A400AC7527 /* LockIsolated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2100B47F2CB6B5A400AC7527 /* LockIsolated.swift */; };
 		215A25902CA44D8A0013023E /* Glia+EngagementLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215A258F2CA44D8A0013023E /* Glia+EngagementLauncher.swift */; };
 		215A25932CA44D900013023E /* EngagementLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215A25912CA44D900013023E /* EngagementLauncher.swift */; };
 		215A25982CABC7DF0013023E /* EngagementLauncherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215A25972CABC7DF0013023E /* EngagementLauncherTests.swift */; };
 		215A259A2CAC19780013023E /* GliaTests+EngagementLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215A25992CAC19780013023E /* GliaTests+EngagementLauncher.swift */; };
+		2198B7AC2CAEB14D002C442B /* QueuesMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2198B7AB2CAEB14D002C442B /* QueuesMonitor.swift */; };
+		2198B7AE2CB035A6002C442B /* QueuesMonitor.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2198B7AD2CB035A6002C442B /* QueuesMonitor.Environment.swift */; };
 		23D69155F4F4C5043173EF05 /* Pods_GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7A5CDD05FB57D55971AA68A /* Pods_GliaWidgets.framework */; };
 		3100D929296E946600DEC9CE /* SecureConversations.ConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100D924296E946600DEC9CE /* SecureConversations.ConfirmationView.swift */; };
 		3100D92A296E946600DEC9CE /* Theme+SecureConversationsConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100D925296E946600DEC9CE /* Theme+SecureConversationsConfirmation.swift */; };
@@ -1207,10 +1210,13 @@
 		1AFB1E6725F7AE3C00CA460D /* ChatAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAttachment.swift; sourceTree = "<group>"; };
 		1AFB1E7325F8B00B00CA460D /* ChatTextContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextContentView.swift; sourceTree = "<group>"; };
 		1AFB1E7725F8B26800CA460D /* ChatTextContentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTextContentStyle.swift; sourceTree = "<group>"; };
+		2100B47F2CB6B5A400AC7527 /* LockIsolated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockIsolated.swift; sourceTree = "<group>"; };
 		215A258F2CA44D8A0013023E /* Glia+EngagementLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Glia+EngagementLauncher.swift"; sourceTree = "<group>"; };
 		215A25912CA44D900013023E /* EngagementLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EngagementLauncher.swift; sourceTree = "<group>"; };
 		215A25972CABC7DF0013023E /* EngagementLauncherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementLauncherTests.swift; sourceTree = "<group>"; };
 		215A25992CAC19780013023E /* GliaTests+EngagementLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GliaTests+EngagementLauncher.swift"; sourceTree = "<group>"; };
+		2198B7AB2CAEB14D002C442B /* QueuesMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueuesMonitor.swift; sourceTree = "<group>"; };
+		2198B7AD2CB035A6002C442B /* QueuesMonitor.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueuesMonitor.Environment.swift; sourceTree = "<group>"; };
 		235300A49A5836A51EB1C4E8 /* Pods-GliaWidgets.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.release.xcconfig"; sourceTree = "<group>"; };
 		2797F86D83B9055FAD6E596E /* Pods-SnapshotTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapshotTests.debug.xcconfig"; path = "Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3100D924296E946600DEC9CE /* SecureConversations.ConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureConversations.ConfirmationView.swift; sourceTree = "<group>"; };
@@ -2725,6 +2731,7 @@
 		1A60AFC12566857200E53F53 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				2198B7AA2CAEB13E002C442B /* QueuesMonitor */,
 				215A25922CA44D900013023E /* EngagementLauncher */,
 				C0F3DE352C69F4A700DE6D7B /* EntryWidget */,
 				C0D6C9E72C09C70B00D4709B /* AlertManager */,
@@ -2768,6 +2775,7 @@
 				84A318A02869ECFC00CA1DE5 /* Unavailable.swift */,
 				1A2DA72B25EF9B5B00032611 /* Upload */,
 				845A28FD28AFF2DC008558EA /* URLScheme */,
+				2100B4812CB8078E00AC7527 /* Utilities */,
 				1A60AF6925656C0A00E53F53 /* View */,
 				1A60AF6725656BF200E53F53 /* ViewController */,
 				1A60AFCC256694E300E53F53 /* ViewFactory */,
@@ -3216,6 +3224,14 @@
 			path = Video;
 			sourceTree = "<group>";
 		};
+		2100B4812CB8078E00AC7527 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				2100B47F2CB6B5A400AC7527 /* LockIsolated.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		215A25922CA44D900013023E /* EngagementLauncher */ = {
 			isa = PBXGroup;
 			children = (
@@ -3230,6 +3246,15 @@
 				215A25972CABC7DF0013023E /* EngagementLauncherTests.swift */,
 			);
 			path = EngagementLauncher;
+			sourceTree = "<group>";
+		};
+		2198B7AA2CAEB13E002C442B /* QueuesMonitor */ = {
+			isa = PBXGroup;
+			children = (
+				2198B7AB2CAEB14D002C442B /* QueuesMonitor.swift */,
+				2198B7AD2CB035A6002C442B /* QueuesMonitor.Environment.swift */,
+			);
+			path = QueuesMonitor;
 			sourceTree = "<group>";
 		};
 		3100D921296E943100DEC9CE /* Welcome */ = {
@@ -5616,6 +5641,7 @@
 				1A6EBB0325ADB82000EE325D /* MediaUpgradeActionView.swift in Sources */,
 				9AB196E627C510DA00FD60AB /* ChatMessage.Mock.swift in Sources */,
 				C08D776428F5910A000461E5 /* UIView+Extensions.swift in Sources */,
+				2198B7AC2CAEB14D002C442B /* QueuesMonitor.swift in Sources */,
 				C090467F2B7D022C003C437C /* WelcomeStyle.FilePickerButtonStyle.RemoteConfig.swift in Sources */,
 				C0D6CA4F2C19B9A300D4709B /* GliaPresenter.Environment.swift in Sources */,
 				9A19926A27D3BA8700161AAE /* ViewFactory.Environment.Interface.swift in Sources */,
@@ -5773,6 +5799,7 @@
 				7594091529891C5C008B173A /* Environment.swift in Sources */,
 				9A3E1D9927B6D0DB005634EB /* FoundationBased.Live.swift in Sources */,
 				84265E4C298D7B1900D65842 /* CallVisualizer.Coordinator.Environment.swift in Sources */,
+				2198B7AE2CB035A6002C442B /* QueuesMonitor.Environment.swift in Sources */,
 				1A7CA82F25751B5A0047CBBE /* ConnectOperatorStyle.swift in Sources */,
 				C06A757F296EC76B006B69A2 /* VisitorCodeStyle.swift in Sources */,
 				9AB196D227C3D74300FD60AB /* Interactor.Environment.Interface.swift in Sources */,
@@ -6188,6 +6215,7 @@
 				1A60AFCA2566943F00E53F53 /* EngagementCoordinator.swift in Sources */,
 				1ABD6C9225B6F2D200D56EFA /* String+TemplateString.swift in Sources */,
 				C09046EE2B7E0F70003C437C /* Theme.OperatorChatMessageStyle.Accessibility.swift in Sources */,
+				2100B4802CB6B5A400AC7527 /* LockIsolated.swift in Sources */,
 				84265E61298D7B2900D65842 /* ScreenSharingCoordinator.swift in Sources */,
 				C09047662B7E2396003C437C /* ChatFileDownloadErrorStateStyle.swift in Sources */,
 				1A60B0042567F25600E53F53 /* Header.swift in Sources */,
