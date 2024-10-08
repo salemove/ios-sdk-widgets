@@ -67,6 +67,13 @@ extension CoreSdkClient {
         },
         getCameraDeviceManageable: {
             .failing
+        },
+        subscribeForQueuesUpdates: { _, _ in
+            fail("\(Self.self).subscribeForQueuesUpdates")
+            return UUID().uuidString
+        },
+        unsubscribeFromUpdates: { _, _ in
+            fail("\(Self.self).unsubscribeFromUpdates")
         }
     )
 }
