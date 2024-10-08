@@ -60,7 +60,9 @@ extension CoreSdkClient {
                 try CameraDeviceManageableClient(
                     GliaCore.sharedInstance.cameraDeviceManageable()
                 )
-            }
+            },
+            subscribeForQueuesUpdates: GliaCore.sharedInstance.subscribeForQueuesUpdates(forQueues:completion:),
+            unsubscribeFromUpdates: GliaCore.sharedInstance.unsubscribeFromUpdates(queueCallbackId:onError:)
         )
     }()
 }
