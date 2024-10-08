@@ -25,9 +25,9 @@ extension EntryWidget {
             case .chat:
                 return "For the texter in all of us"
             case .audio:
-                return "Speak through your phone"
+                return "Speak through your device"
             case .video:
-                return "You'll see us, but we won't see you"
+                return "Face-to-face, just like in person"
             case .secureMessaging:
                 return "Start a conversation, we'll get back to you"
             }
