@@ -204,6 +204,11 @@ class ChatViewModel: EngagementViewModel {
                     guard let self else { return }
                     switch result {
                     case let .success(message):
+                        // When pending message is successfully delivered,
+                        // it has to be removed from the `pendingMessages` list, to avoid
+                        // situation where it gets sent again, for example after
+                        // transfer to another operator.
+                        removePendingMessage(by: message.id)
                         self.replace(
                             outgoingMessage,
                             uploads: [],
@@ -910,6 +915,10 @@ extension ChatViewModel {
     ) -> Bool {
         return section.item(after: row) == nil
     }
+
+    func removePendingMessage(by messageId: String) {
+        pendingMessages.removeAll { $0.payload.messageId.rawValue.uppercased() == messageId.uppercased() }
+    }
 }
 
 // MARK: Call
@@ -938,7 +947,7 @@ extension ChatViewModel {
     }
 }
 
-// MARK: Site Confgurations
+// MARK: Site Configurations
 
 extension ChatViewModel {
     func fetchSiteConfigurations() {
@@ -975,6 +984,16 @@ extension ChatViewModel {
     func invokeSetTextAndSendMessage(text: String) {
         self.messageText = text
         self.sendMessage()
+    }
+
+    /// Sets pending messages list for unit testing
+    func setPendingMessagesForTesting(_ message: [OutgoingMessage]) {
+        self.pendingMessages = message
+    }
+
+    /// Gets pending messages list for unit testing
+    func getPendingMessageForTesting() -> [OutgoingMessage] {
+        self.pendingMessages
     }
 }
 #endif
