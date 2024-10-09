@@ -9,7 +9,7 @@ class QueuesMonitor {
         case failed(Error)
     }
 
-    private(set) var state: State = .idle
+    @Published private(set) var state: State = .idle
 
     private let environment: Environment
     private var subscriptionId: String?
