@@ -2,6 +2,7 @@ import Foundation
 import GliaCoreSDK
 import Combine
 
+// TODO: Add unit tests in context of MOB-3412
 class QueuesMonitor {
     enum State {
         case idle
@@ -12,8 +13,15 @@ class QueuesMonitor {
     @Published private(set) var state: State = .idle
 
     private let environment: Environment
-    private var subscriptionId: String?
-    private var queues: [Queue] = []
+    private var subscriptionId: String? {
+        _subscriptionId.value
+    }
+    private var queues: [Queue] {
+        _queues.value
+    }
+    
+    private var _subscriptionId: LockIsolated<String?> = .init(nil)
+    private var _queues: LockIsolated<[Queue]> = .init([])
 
     init(environment: Environment) {
         self.environment = environment
@@ -32,7 +40,7 @@ class QueuesMonitor {
             }
 
             if let queues {
-                self.queues = queues
+                self._queues.setValue(queues)
                 self.state = .updated(queues)
                 self.observeQueuesUpdates(queues)
                 return
@@ -51,16 +59,18 @@ class QueuesMonitor {
 
 private extension QueuesMonitor {
     func updateQueue(_ queue: Queue) {
-        guard let indexToChange = self.queues.firstIndex(where: { $0.id == queue.id }) else {
-            self.queues.append(queue)
-            return
+        _queues.withValue { queues in
+            guard let indexToChange = queues.firstIndex(where: { $0.id == queue.id }) else {
+                queues.append(queue)
+                return
+            }
+            queues[indexToChange] = queue
         }
-        self.queues[indexToChange] = queue
     }
 
     func observeQueuesUpdates(_ queues: [Queue]) {
         let queuesIds = queues.map { $0.id }
-        subscriptionId = environment.sdkClient.subscribeForQueuesUpdates(queuesIds) { [weak self] result in
+        let subscriptionId = environment.sdkClient.subscribeForQueuesUpdates(queuesIds) { [weak self] result in
             guard let self else {
                 return
             }
@@ -74,5 +84,6 @@ private extension QueuesMonitor {
                 return
             }
         }
+        _subscriptionId.setValue(subscriptionId)
     }
 }
