@@ -2773,13 +2773,13 @@
 				84A318A02869ECFC00CA1DE5 /* Unavailable.swift */,
 				1A2DA72B25EF9B5B00032611 /* Upload */,
 				845A28FD28AFF2DC008558EA /* URLScheme */,
+				2100B4812CB8078E00AC7527 /* Utilities */,
 				1A60AF6925656C0A00E53F53 /* View */,
 				1A60AF6725656BF200E53F53 /* ViewController */,
 				1A60AFCC256694E300E53F53 /* ViewFactory */,
 				1A60AFC52566865600E53F53 /* ViewModel */,
 				84D2292C28C61DE000F64FE7 /* WKNavigationPolicyProvider */,
 				AF9C0C3B2BC4739800C25E47 /* Transformable.swift */,
-				2100B47F2CB6B5A400AC7527 /* LockIsolated.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -3220,6 +3220,14 @@
 				1AC8AADC25D419CE00DAFE50 /* VideoStreamView.swift */,
 			);
 			path = Video;
+			sourceTree = "<group>";
+		};
+		2100B4812CB8078E00AC7527 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				2100B47F2CB6B5A400AC7527 /* LockIsolated.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		215A25922CA44D900013023E /* EngagementLauncher */ = {
