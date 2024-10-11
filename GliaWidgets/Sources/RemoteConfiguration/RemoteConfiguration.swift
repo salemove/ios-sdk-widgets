@@ -222,4 +222,17 @@ extension RemoteConfiguration {
         let title: Text?
         let message: Text?
     }
+
+    struct SecureConversations: Codable {
+        let unavailableStatusBackground: Layer?
+        let unavailableStatusText: Text?
+        let bottomBannerBackground: Layer?
+        let bottomBannerText: Text?
+        let bottomBannerDividerColor: Color?
+        let topBannerBackground: Layer?
+        let topBannerText: Text?
+        let topBannerDividerColor: Color?
+        let topBannerDropDownIconColor: Color?
+        let mediaTypeItems: MediaTypeItems
+    }
 }
