@@ -1,3 +1,4 @@
+import GliaCoreSDK
 import SwiftUI
 
 extension EntryWidget {
@@ -44,6 +45,26 @@ extension EntryWidget {
             case .secureMessaging:
                 return Asset.mcEnvelope.image
             }
+        }
+    }
+}
+
+extension EntryWidget.Channel {
+    init?(mediaType: MediaType) {
+        switch mediaType {
+        case .audio:
+            self = .audio
+        case .video:
+            self = .video
+        case .text:
+            self = .chat
+        case .messaging:
+            self = .secureMessaging
+        case .phone, .unknown:
+            return nil
+        @unknown default:
+            debugPrint("💥 Unknown type MediaType received in: \(Self.self)")
+            return nil
         }
     }
 }
