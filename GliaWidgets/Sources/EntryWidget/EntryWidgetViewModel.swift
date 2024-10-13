@@ -3,9 +3,9 @@ import SwiftUI
 extension EntryWidgetView {
     class Model: ObservableObject {
         @Published var viewState: ViewState
+        @Published var channels: [EntryWidget.Channel] = []
         let theme: Theme
-        let channelSelected: (EntryWidget.Channel) -> Void
-        let channels: [EntryWidget.Channel]
+        let channelSelected: (EntryWidget.Channel) throws -> Void
         let sizeConstraints: EntryWidget.SizeConstraints
         let showHeader: Bool
 
@@ -25,22 +25,28 @@ extension EntryWidgetView {
             theme: Theme,
             showHeader: Bool,
             sizeConstrainsts: EntryWidget.SizeConstraints,
-            channels: [EntryWidget.Channel],
-            channelSelected: @escaping (EntryWidget.Channel) -> Void
+            channels: Published<[EntryWidget.Channel]>.Publisher,
+            channelSelected: @escaping (EntryWidget.Channel) throws -> Void
         ) {
             self.theme = theme
             self.sizeConstraints = sizeConstrainsts
             self.showHeader = showHeader
-            self.channels = channels
             self.channelSelected = channelSelected
-            self.viewState = .offline
+            self.viewState = .mediaTypes
+
+            channels.assign(to: &self.$channels)
         }
     }
 }
 
 extension EntryWidgetView.Model {
     func selectChannel(_ channel: EntryWidget.Channel) {
-        channelSelected(channel)
+        do {
+            try channelSelected(channel)
+        } catch {
+            // TODO: Distinguish errors on View if needed 
+            viewState = .error
+        }
     }
 
     func onTryAgainTapped() {
