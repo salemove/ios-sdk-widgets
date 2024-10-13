@@ -8,8 +8,13 @@ extension Glia {
     ///
     /// - Returns:
     ///   - `EntryWidget` instance.
-    public func getEntryWidget(queueIds: [String]) -> EntryWidget {
-        // The real implementation will be added once EngagementLauncher is added
-        .init(theme: theme)
+    public func getEntryWidget(queueIds: [String]) throws -> EntryWidget {
+        EntryWidget(
+            environment: .init(
+                queuesMonitor: environment.queuesMonitor,
+                engagementLauncher: try getEngagementLauncher(queueIds: queueIds),
+                theme: theme
+            )
+        )
     }
 }
