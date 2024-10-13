@@ -42,7 +42,14 @@ extension Glia.Environment {
         conditionalCompilation: .live,
         snackBar: .live,
         processInfo: .live,
-        cameraDeviceManager: { try CoreSdkClient.live.getCameraDeviceManageable() }
+        cameraDeviceManager: { try CoreSdkClient.live.getCameraDeviceManageable() },
+        queuesMonitor: .init(
+            environment: .init(
+                listQueues: CoreSdkClient.live.listQueues,
+                subscribeForQueuesUpdates: CoreSdkClient.live.subscribeForQueuesUpdates,
+                unsubscribeFromUpdates: CoreSdkClient.live.unsubscribeFromUpdates
+            )
+        )
     )
 }
 
