@@ -89,7 +89,7 @@ class ViewController: UIViewController {
     // Switch control that toggles bubble visibility via deprecated
     // `Glia.sharedInstance.startEngagement(engagementKind:in:features:sceneProvider:)`
     @IBOutlet weak var togglingStartEngBubbleSwitch: UISwitch!
-    
+
     @IBAction private func settingsTapped() {
         presentSettings()
     }
@@ -330,10 +330,15 @@ extension ViewController {
                 theme: theme,
                 uiConfig: uiConfig,
                 features: features
-            ) { result in
+            ) { [weak self] result in
+                guard let self else {
+                    return
+                }
                 switch result {
                 case .success:
-                    self.entryWidget = Glia.sharedInstance.getEntryWidget(queueIds: [""])
+                    self.catchingError {
+                        self.entryWidget = try? Glia.sharedInstance.getEntryWidget(queueIds: [""])
+                    }
                     completionBlock("SDK has been configured")
                     completion?(.success(()))
 
