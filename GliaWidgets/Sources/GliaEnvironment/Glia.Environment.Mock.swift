@@ -33,7 +33,8 @@ extension Glia.Environment {
         conditionalCompilation: .mock,
         snackBar: .mock,
         processInfo: .mock(),
-        cameraDeviceManager: { .mock }
+        cameraDeviceManager: { .mock },
+        queuesMonitor: .mock
     )
 }
 
