@@ -2,6 +2,8 @@ import Foundation
 
 extension QueuesMonitor {
     struct Environment {
-        var sdkClient: CoreSdkClient
+        var listQueues: CoreSdkClient.ListQueues
+        var subscribeForQueuesUpdates: CoreSdkClient.SubscribeForQueuesUpdates
+        var unsubscribeFromUpdates: CoreSdkClient.UnsubscribeFromUpdates
     }
 }
