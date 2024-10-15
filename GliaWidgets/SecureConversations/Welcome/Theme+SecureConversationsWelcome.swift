@@ -26,8 +26,8 @@ extension Theme {
 
         let checkMessagesButtonStyle = SecureConversations.WelcomeStyle.CheckMessagesButtonStyle(
             title: Localization.MessageCenter.Welcome.checkMessages,
-            font: font.header2,
-            textStyle: .title2,
+            font: font.bodyText,
+            textStyle: .body,
             color: color.primary,
             accessibility: .init(
                 isFontScalingEnabled: true,
