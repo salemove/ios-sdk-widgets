@@ -5,7 +5,7 @@ import Dispatch
 
 extension SecureConversations {
     final class WelcomeView: BaseView {
-        static let sideMargin = 24.0
+        static let sideMargin = 16.0
         static let filePickerButtonSize = 44.0
 
         var props: Props {
