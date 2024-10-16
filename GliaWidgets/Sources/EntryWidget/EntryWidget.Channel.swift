@@ -2,10 +2,10 @@ import GliaCoreSDK
 import SwiftUI
 
 extension EntryWidget {
-    enum Channel {
-        case chat
-        case audio
+    enum MediaTypeItem: Int {
         case video
+        case audio
+        case chat
         case secureMessaging
 
         var headline: String {
@@ -17,7 +17,7 @@ extension EntryWidget {
             case .video:
                 return "Video"
             case .secureMessaging:
-                return "SecureMessaging"
+                return "Secure Messaging"
             }
         }
 
@@ -49,7 +49,7 @@ extension EntryWidget {
     }
 }
 
-extension EntryWidget.Channel {
+extension EntryWidget.MediaTypeItem {
     init?(mediaType: MediaType) {
         switch mediaType {
         case .audio:
