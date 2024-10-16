@@ -2,13 +2,12 @@ import SwiftUI
 
 extension EntryWidgetView {
     class Model: ObservableObject {
-        @Published var viewState: ViewState
-        @Published var channels: [EntryWidget.Channel] = []
+        @Published var viewState: EntryWidget.ViewState = .loading
         let theme: Theme
-        let channelSelected: (EntryWidget.Channel) throws -> Void
+        let mediaTypeSelected: (EntryWidget.MediaTypeItem) -> Void
         let sizeConstraints: EntryWidget.SizeConstraints
         let showHeader: Bool
-
+        var retryMonitoring: (() -> Void)?
         var style: EntryWidgetStyle {
             theme.entryWidgetStyle
         }
@@ -24,42 +23,24 @@ extension EntryWidgetView {
         init(
             theme: Theme,
             showHeader: Bool,
-            sizeConstrainsts: EntryWidget.SizeConstraints,
-            channels: Published<[EntryWidget.Channel]>.Publisher,
-            channelSelected: @escaping (EntryWidget.Channel) throws -> Void
+            sizeConstraints: EntryWidget.SizeConstraints,
+            viewStatePublisher: Published<EntryWidget.ViewState>.Publisher,
+            mediaTypeSelected: @escaping (EntryWidget.MediaTypeItem) -> Void
         ) {
             self.theme = theme
-            self.sizeConstraints = sizeConstrainsts
             self.showHeader = showHeader
-            self.channelSelected = channelSelected
-            self.viewState = .mediaTypes
+            self.sizeConstraints = sizeConstraints
+            self.mediaTypeSelected = mediaTypeSelected
 
-            channels.assign(to: &self.$channels)
+            viewStatePublisher.assign(to: &$viewState)
         }
-    }
-}
 
-extension EntryWidgetView.Model {
-    func selectChannel(_ channel: EntryWidget.Channel) {
-        do {
-            try channelSelected(channel)
-        } catch {
-            // TODO: Distinguish errors on View if needed 
-            viewState = .error
+        func selectMediaType(_ mediaTypeItem: EntryWidget.MediaTypeItem) {
+            mediaTypeSelected(mediaTypeItem)
         }
-    }
 
-    func onTryAgainTapped() {
-        // The logic will be added together with EngagementLauncher integration
-        print("Try again button tapped")
-    }
-}
-
-extension EntryWidgetView.Model {
-    enum ViewState {
-        case error
-        case loading
-        case mediaTypes
-        case offline
+        func onTryAgainTapped() {
+            retryMonitoring?()
+        }
     }
 }

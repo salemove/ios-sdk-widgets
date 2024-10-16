@@ -7,9 +7,10 @@ import SwiftUI
 public final class EntryWidget: NSObject {
     private var hostedViewController: UIViewController?
     private var embeddedView: UIView?
-    private var queueIds: [String] = []
+    private var queueIds: [String]
 
-    @Published private var channels: [Channel] = []
+    @Published private var viewState: ViewState = .loading
+
     private let sizeConstraints: SizeConstraints = .init(
         singleCellHeight: 72,
         singleCellIconSize: 24,
@@ -24,7 +25,11 @@ public final class EntryWidget: NSObject {
 
     private var cancellables = CancelBag()
 
-    init(environment: Environment) {
+    init(
+        queueIds: [String],
+        environment: Environment
+    ) {
+        self.queueIds = queueIds
         self.environment = environment
         super.init()
 
@@ -55,14 +60,75 @@ public final class EntryWidget: NSObject {
     }
 }
 
+// MARK: - Private methods
 private extension EntryWidget {
+    func handleQueuesMonitorUpdates(state: QueuesMonitor.State) {
+        switch state {
+        case .idle:
+            viewState = .loading
+        case .updated(let queues):
+            let availableMediaTypes = resolveAvailableMediaTypes(from: queues)
+            if availableMediaTypes.isEmpty {
+                viewState = .offline
+            } else {
+                viewState = .mediaTypes(availableMediaTypes)
+            }
+        case .failed:
+            viewState = .error
+            print("Failed to update queues")
+        }
+    }
+
+    func resolveAvailableMediaTypes(from queues: [Queue]) -> [MediaTypeItem] {
+        var availableMediaTypes: Set<MediaTypeItem> = []
+
+        queues.forEach { queue in
+            queue.state.media.forEach { mediaType in
+                if let mediaTypeItem = MediaTypeItem(mediaType: mediaType) {
+                    availableMediaTypes.insert(mediaTypeItem)
+                }
+            }
+        }
+        return Array(availableMediaTypes).sorted(by: { $0.rawValue < $1.rawValue })
+    }
+
+    func mediaTypeSelected(_ mediaTypeItem: MediaTypeItem) {
+        do {
+            switch mediaTypeItem {
+            case .chat:
+                try environment.engagementLauncher.startChat()
+            case .audio:
+                try environment.engagementLauncher.startAudioCall()
+            case .video:
+                try environment.engagementLauncher.startVideoCall()
+            case .secureMessaging:
+                try environment.engagementLauncher.startSecureMessaging()
+            }
+        } catch {
+            viewState = .error
+        }
+    }
+
+    func makeViewModel(showHeader: Bool) -> EntryWidgetView.Model {
+        let viewModel = EntryWidgetView.Model(
+            theme: environment.theme,
+            showHeader: showHeader,
+            sizeConstraints: sizeConstraints,
+            viewStatePublisher: $viewState,
+            mediaTypeSelected: mediaTypeSelected(_:)
+        )
+
+        viewModel.retryMonitoring = { [weak self] in
+            self?.viewState = .loading
+            self?.environment.queuesMonitor.startMonitoring(queuesIds: self?.queueIds ?? [])
+        }
+
+        return viewModel
+    }
+
     func showView(in parentView: UIView) {
         parentView.subviews.forEach { $0.removeFromSuperview() }
-        let model = makeViewModel(
-            showHeader: false,
-            channels: channels,
-            selection: channelSelected(_:)
-        )
+        let model = makeViewModel(showHeader: false)
         let view = makeView(model: model)
         let hostingController = UIHostingController(rootView: view)
 
@@ -80,11 +146,7 @@ private extension EntryWidget {
     }
 
     func showSheet(in parentViewController: UIViewController) {
-        let model = makeViewModel(
-            showHeader: true,
-            channels: channels,
-            selection: channelSelected(_:)
-        )
+        let model = makeViewModel(showHeader: true)
         let view = makeView(model: model)
         let hostingController = UIHostingController(rootView: view)
 
@@ -106,10 +168,7 @@ private extension EntryWidget {
         if #available(iOS 16.0, *) {
             guard let sheet = hostingController.sheetPresentationController else { return }
             let smallDetent: UISheetPresentationController.Detent = .custom { _ in
-                return self.calculateHeight(
-                    channels: self.channels,
-                    sizeConstraints: self.sizeConstraints
-                )
+                return self.calculateHeight()
             }
             sheet.detents = [smallDetent]
             sheet.prefersScrollingExpandsWhenScrolledToEdge = true
@@ -121,101 +180,84 @@ private extension EntryWidget {
 
         parentViewController.present(hostingController, animated: true, completion: nil)
         hostedViewController = hostingController
+
+        observeViewState()
+    }
+
+    func observeViewState() {
+        $viewState
+            .receive(on: RunLoop.main)
+            .sink { [weak self] state in
+                self?.viewStateDidChange(state)
+            }
+            .store(in: &cancellables)
+    }
+
+    func viewStateDidChange(_ state: ViewState) {
+        let newHeight = calculateHeight()
+
+        if #available(iOS 16.0, *) {
+            if let sheet = hostedViewController?.sheetPresentationController {
+                let smallDetent = UISheetPresentationController.Detent.custom { _ in
+                    return newHeight
+                }
+                sheet.detents = [smallDetent]
+                sheet.animateChanges {
+                    sheet.selectedDetentIdentifier = nil
+                }
+            }
+        } else {
+            if let customPresentationController = hostedViewController?.presentationController as? CustomPresentationController {
+                customPresentationController.updateHeight(to: newHeight)
+            }
+        }
+    }
+
+    func calculateHeight() -> CGFloat {
+        var mediaTypesCount: Int
+        switch viewState {
+        case .mediaTypes(let mediaTypes):
+            mediaTypesCount = mediaTypes.count
+        case .loading, .error, .offline:
+            // 4 gives the desired fixed size
+            mediaTypesCount = 4
+        }
+        var appliedHeight: CGFloat = 0
+        appliedHeight += sizeConstraints.sheetHeaderHeight
+        appliedHeight += CGFloat(mediaTypesCount) * (sizeConstraints.singleCellHeight + sizeConstraints.dividerHeight)
+        appliedHeight += sizeConstraints.poweredByContainerHeight
+
+        return appliedHeight
     }
 
     func makeView(model: EntryWidgetView.Model) -> EntryWidgetView {
         .init(model: model)
     }
+}
 
-    func makeViewModel(
-        showHeader: Bool,
-        channels: [Channel],
-        selection: @escaping (Channel) throws -> Void
-    ) -> EntryWidgetView.Model {
-        .init(
-            theme: environment.theme,
-            showHeader: showHeader,
-            sizeConstrainsts: sizeConstraints,
-            channels: $channels,
-            channelSelected: selection
-        )
-    }
-
-    func calculateHeight(
-        channels: [Channel],
-        sizeConstraints: SizeConstraints
-    ) -> CGFloat {
-        var appliedHeight: CGFloat = 0
-
-        appliedHeight += sizeConstraints.sheetHeaderHeight
-        channels.forEach { _ in
-            appliedHeight += sizeConstraints.singleCellHeight
-            appliedHeight += sizeConstraints.dividerHeight
-        }
-        appliedHeight += sizeConstraints.poweredByContainerHeight
-
-        return appliedHeight
+// MARK: - View State
+extension EntryWidget {
+    enum ViewState {
+        case loading
+        case mediaTypes([MediaTypeItem])
+        case offline
+        case error
     }
 }
 
+// MARK: - UIViewControllerTransitioningDelegate
 extension EntryWidget: UIViewControllerTransitioningDelegate {
     public func presentationController(
         forPresented presented: UIViewController,
         presenting: UIViewController?,
         source: UIViewController
     ) -> UIPresentationController? {
-        let height = calculateHeight(
-            channels: channels,
-            sizeConstraints: sizeConstraints
-        )
+        let height = calculateHeight()
         return CustomPresentationController(
             presentedViewController: presented,
             presenting: presenting,
             height: height,
             cornerRadius: environment.theme.entryWidget.cornerRadius
         )
-    }
-}
-
-private extension EntryWidget {
-    func handleQueuesMonitorUpdates(state: QueuesMonitor.State) {
-        switch state {
-        case .idle:
-            break
-        case .updated(let queues):
-            let availableChannels = resolveAvailableChannels(from: queues)
-            self.channels = availableChannels
-        case .failed(let error):
-            // TODO: Handle error on EntryWidgetView
-            print(error)
-        }
-    }
-
-    func resolveAvailableChannels(from queues: [Queue]) -> [Channel] {
-        var availableChannels: Set<Channel> = []
-
-        queues.forEach { queue in
-            queue.state.media.forEach { mediaType in
-                guard let channel = Channel(mediaType: mediaType) else {
-                    return
-                }
-                availableChannels.insert(channel)
-            }
-        }
-        // TODO: Add sorting for representing on UI
-        return Array(availableChannels)
-    }
-
-    func channelSelected(_ channel: Channel) throws {
-        switch channel {
-        case .chat:
-            try environment.engagementLauncher.startChat()
-        case .audio:
-            try environment.engagementLauncher.startAudioCall()
-        case .video:
-            try environment.engagementLauncher.startVideoCall()
-        case .secureMessaging:
-            try environment.engagementLauncher.startSecureMessaging()
-        }
     }
 }
