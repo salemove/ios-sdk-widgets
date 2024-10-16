@@ -9,8 +9,8 @@ struct EntryWidgetView: View {
             errorView()
         case .loading:
             loadingView()
-        case .mediaTypes:
-            mediaTypesView()
+        case let .mediaTypes(types):
+            mediaTypesView(types)
         case .offline:
             offilineView()
         }
@@ -43,6 +43,7 @@ private extension EntryWidgetView {
         }
         .maxSize()
         .padding(.horizontal)
+        .applyColorTypeBackground(model.style.backgroundColor)
     }
 
     @ViewBuilder
@@ -52,18 +53,19 @@ private extension EntryWidgetView {
     }
 
     @ViewBuilder
-    func mediaTypesView() -> some View {
+    func mediaTypesView(_ types: [EntryWidget.MediaTypeItem]) -> some View {
         VStack(spacing: 0) {
             if model.showHeader {
                 headerView()
             }
-            channelsView()
+            mediaTypes(types)
             if model.showPoweredBy {
                 poweredByView()
             }
         }
         .maxSize()
         .padding(.horizontal)
+        .applyColorTypeBackground(model.style.backgroundColor)
     }
 
     @ViewBuilder
@@ -89,16 +91,17 @@ private extension EntryWidgetView {
         }
         .maxSize()
         .padding(.horizontal)
+        .applyColorTypeBackground(model.style.backgroundColor)
     }
 }
 
 // MARK: - View Components
 private extension EntryWidgetView {
     @ViewBuilder
-    func channelsView() -> some View {
+    func mediaTypes(_ types: [EntryWidget.MediaTypeItem]) -> some View {
         VStack(spacing: 0) {
-            ForEach(model.channels.indices, id: \.self) { index in
-                channelCell(channel: model.channels[index])
+            ForEach(types.indices, id: \.self) { index in
+                mediaTypeCell(mediaType: types[index])
                 Divider()
                     .height(model.sizeConstraints.dividerHeight)
                     .setColor(model.style.dividerColor)
@@ -127,12 +130,12 @@ private extension EntryWidgetView {
     }
 
     @ViewBuilder
-    func channelCell(channel: EntryWidget.Channel) -> some View {
+    func mediaTypeCell(mediaType: EntryWidget.MediaTypeItem) -> some View {
         HStack(spacing: 16) {
-            icon(channel.image)
+            icon(mediaType.image)
             VStack(alignment: .leading, spacing: 2) {
-                headlineText(channel.headline)
-                subheadlineText(channel.subheadline)
+                headlineText(mediaType.headline)
+                subheadlineText(mediaType.subheadline)
             }
         }
         .maxWidth(alignment: .leading)
@@ -140,7 +143,7 @@ private extension EntryWidgetView {
         .applyColorTypeBackground(model.style.mediaTypeItem.backgroundColor)
         .contentShape(.rect)
         .onTapGesture {
-            model.selectChannel(channel)
+            model.selectMediaType(mediaType)
         }
     }
 
