@@ -10,6 +10,7 @@ extension Glia {
     ///   - `EntryWidget` instance.
     public func getEntryWidget(queueIds: [String]) throws -> EntryWidget {
         EntryWidget(
+            queueIds: queueIds,
             environment: .init(
                 queuesMonitor: environment.queuesMonitor,
                 engagementLauncher: try getEngagementLauncher(queueIds: queueIds),
