@@ -26,12 +26,10 @@ private extension EntryWidgetView {
                 headerView()
             }
             VStack(spacing: 16) {
-                // Will be swapped for localized string in MOB-3607
-                Text("Oops! Contacts Couldn't Be Loaded")
+                Text(Localization.EntryWidget.ErrorState.title)
                     .setFont(model.style.errorTitleFont)
                     .setColor(model.style.errorTitleColor)
-                // Will be swapped for localized string in MOB-3607
-                Text("We couldn't load the contacts at this time. This may be due to a temporary syncing issue or network problem.")
+                Text(Localization.EntryWidget.ErrorState.description)
                     .setFont(model.style.errorMessageFont)
                     .setColor(model.style.errorTitleColor)
                 errorButton()
@@ -75,12 +73,10 @@ private extension EntryWidgetView {
                 headerView()
             }
             VStack(spacing: 16) {
-                // Will be swapped for localized string in MOB-3607
-                Text("Support team is currently offline")
+                Text(Localization.EntryWidget.EmptyState.title)
                     .setFont(model.style.errorTitleFont)
                     .setColor(model.style.errorTitleColor)
-                // Will be swapped for localized string in MOB-3607
-                Text(" We are here to assist you during our business hours: Monday to Friday 9:00 AM - 5:00 PM")
+                Text(Localization.EntryWidget.EmptyState.description)
                     .setFont(model.style.errorMessageFont)
                     .setColor(model.style.errorTitleColor)
             }
