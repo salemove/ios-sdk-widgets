@@ -249,3 +249,17 @@
 "secure_messaging.chat.leave_current_conversation.message" = "You have an ongoing conversation. Starting a new conversation before ongoing ones are resolved may lead to our agents overlooking your current query.";
 "secure_messaging.chat.leave_current_conversation.button.positive" = "Stay";
 "secure_messaging.chat.leave_current_conversation.button.negative" = "Leave";
+
+"entry_widget.live_chat.button.label" = "Live Chat";
+"entry_widget.live_chat.button.description" = "For the texter in all of us";
+"entry_widget.audio.button.label" = "Audio";
+"entry_widget.audio.button.description" = "Speak through your device";
+"entry_widget.video.button.label" = "Video";
+"entry_widget.video.button.description" = "Face-to-face, just like in person";
+"entry_widget.secure_messaging.button.label" = "Secure Messaging";
+"entry_widget.secure_messaging.button.description" = "Start a conversation, we’ll get back to you";
+"entry_widget.empty_state.title" = "Support team is currently offline";
+"entry_widget.empty_state.description" = "We are here to assist you during our business hours.";
+"entry_widget.error_state.title" = "Oops! Contacts Couldn't Be Loaded";
+"entry_widget.error_state.description" = "We couldn't load the contacts at this time. This may be due to a temporary syncing issue or network problem.";
+"entry_widget.error_state.try_again.button.label" = "Try again";
