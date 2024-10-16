@@ -1,7 +1,7 @@
 import UIKit
 
 final class CustomPresentationController: UIPresentationController {
-    private let height: CGFloat
+    private var height: CGFloat
     private let cornerRadius: CGFloat
     private let dimmingView: UIView = {
         let view = UIView()
@@ -79,6 +79,15 @@ final class CustomPresentationController: UIPresentationController {
     override func dismissalTransitionDidEnd(_ completed: Bool) {
         if completed {
             dimmingView.removeFromSuperview()
+        }
+    }
+}
+
+extension CustomPresentationController {
+    func updateHeight(to newHeight: CGFloat) {
+        self.height = newHeight
+        UIView.animate(withDuration: 0.3) {
+            self.presentedView?.frame = self.frameOfPresentedViewInContainerView
         }
     }
 }
