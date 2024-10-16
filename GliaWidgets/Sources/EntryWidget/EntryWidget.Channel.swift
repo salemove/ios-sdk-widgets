@@ -11,26 +11,26 @@ extension EntryWidget {
         var headline: String {
             switch self {
             case .chat:
-                return "Live Chat"
+                return Localization.EntryWidget.LiveChat.Button.label
             case .audio:
-                return "Audio"
+                return Localization.EntryWidget.Audio.Button.label
             case .video:
-                return "Video"
+                return Localization.EntryWidget.Video.Button.label
             case .secureMessaging:
-                return "Secure Messaging"
+                return Localization.EntryWidget.SecureMessaging.Button.label
             }
         }
 
         var subheadline: String {
             switch self {
             case .chat:
-                return "For the texter in all of us"
+                return Localization.EntryWidget.LiveChat.Button.description
             case .audio:
-                return "Speak through your device"
+                return Localization.EntryWidget.Audio.Button.description
             case .video:
-                return "Face-to-face, just like in person"
+                return Localization.EntryWidget.Video.Button.description
             case .secureMessaging:
-                return "Start a conversation, we'll get back to you"
+                return Localization.EntryWidget.SecureMessaging.Button.description
             }
         }
 
