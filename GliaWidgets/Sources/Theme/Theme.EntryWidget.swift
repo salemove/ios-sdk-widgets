@@ -22,7 +22,7 @@ extension Theme {
         )
 
         let errorButton: ActionButtonStyle = .init(
-            title: "Try again", // Will be swapped for localized string in MOB-3607
+            title: Localization.EntryWidget.ErrorState.TryAgain.label,
             titleFont: font.bodyText,
             titleColor: color.primary,
             backgroundColor: .fill(color: color.baseLight),
