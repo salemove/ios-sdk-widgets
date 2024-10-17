@@ -918,6 +918,29 @@ class ChatViewModelTests: XCTestCase {
         viewModel.event(.sendTapped)
         XCTAssertEqual(calls, [.quickReplyHidden])
     }
+
+    func test_pendingMessageGetsRemovedFromListWhenMessageIsSentSuccesfully() {
+        var interactorEnv = Interactor.Environment(coreSdk: .failing, gcd: .mock, log: .mock)
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { payload, callback in
+            callback(.success(.mock(id: payload.messageId.rawValue)))
+        }
+        let interactor = Interactor.mock(environment: interactorEnv)
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.fetchSiteConfigurations = { _ in }
+        viewModelEnv.log = .mock
+        let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
+        let pendingMessages: [OutgoingMessage] = [
+            .mock(payload: .mock(messageIdSuffix: "0")),
+            .mock(payload: .mock(messageIdSuffix: "1"))
+        ]
+        viewModel.setPendingMessagesForTesting(pendingMessages)
+        XCTAssertEqual(pendingMessages, viewModel.getPendingMessageForTesting())
+        viewModel.update(for: .engaged(.mock()))
+        XCTAssertTrue(viewModel.getPendingMessageForTesting().isEmpty)
+    }
 }
 
 extension ChatChoiceCardOption {
