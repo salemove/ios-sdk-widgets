@@ -187,6 +187,5 @@ class QueuesMonitorTests: XCTestCase {
         monitor.stopMonitoring()
 
         wait(for: [expectation], timeout: 1.0)
-
     }
 }
