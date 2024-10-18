@@ -45,6 +45,7 @@ class ViewController: UIViewController {
 
     var authentication: Authentication?
     var authTimer: Timer?
+    var entryWidget: EntryWidget?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,6 +70,7 @@ class ViewController: UIViewController {
     }
 
     @IBOutlet weak var visitorCodeView: UIView!
+    @IBOutlet weak var entryWidgetView: UIView!
     @IBOutlet var toggleAuthenticateButton: UIButton!
     @IBOutlet var refreshAccessTokenButton: UIButton!
     @IBOutlet var configureButton: UIButton!
@@ -87,7 +89,7 @@ class ViewController: UIViewController {
     // Switch control that toggles bubble visibility via deprecated
     // `Glia.sharedInstance.startEngagement(engagementKind:in:features:sceneProvider:)`
     @IBOutlet weak var togglingStartEngBubbleSwitch: UISwitch!
-    
+
     @IBAction private func settingsTapped() {
         presentSettings()
     }
@@ -96,6 +98,14 @@ class ViewController: UIViewController {
         catchingError {
             try presentGlia(.chat)
         }
+    }
+
+    @IBAction private func entryWidgetSheetTapped() {
+        self.entryWidget?.show(by: .sheet(self))
+    }
+
+    @IBAction private func entryWidgetEmbbededTapped() {
+        self.entryWidget?.show(by: .embedded(entryWidgetView))
     }
 
     @IBAction private func audioTapped() {
@@ -320,11 +330,18 @@ extension ViewController {
                 theme: theme,
                 uiConfig: uiConfig,
                 features: features
-            ) { result in
+            ) { [weak self] result in
+                guard let self else {
+                    return
+                }
                 switch result {
                 case .success:
+                    self.catchingError {
+                        self.entryWidget = try? Glia.sharedInstance.getEntryWidget(queueIds: [""])
+                    }
                     completionBlock("SDK has been configured")
                     completion?(.success(()))
+
                 case let .failure(error):
                     completionBlock("Error configuring the SDK")
                     completion?(.failure(error))

@@ -24,39 +24,39 @@ extension Glia {
         in queueIds: [String] = [],
         sceneProvider: SceneProvider? = nil
     ) throws {
+        let parameters = try getEngagementParameters(in: queueIds)
+
+        try resolveEngangementState(
+            engagementKind: engagementKind,
+            sceneProvider: sceneProvider,
+            configuration: parameters.configuration,
+            interactor: parameters.interactor,
+            features: parameters.features,
+            viewFactory: parameters.viewFactory,
+            ongoingEngagementMediaStreams: parameters.ongoingEngagementMediaStreams
+        )
+    }
+
+    /// Set up and returns parameters needed to start or restore engagement
+    func getEngagementParameters(in queueIds: [String] = []) throws -> EngagementParameters {
         // In order to align behaviour between platforms,
         // `GliaError.engagementExists` is no longer thrown,
         // instead engagement is getting restored.
-        guard let configuration = self.configuration else { throw GliaError.sdkIsNotConfigured }
+        guard let configuration else {
+            throw GliaError.sdkIsNotConfigured
+        }
+
+        guard let interactor else {
+            loggerPhase.logger.prefixed(Self.self).warning("Interactor is missing")
+            throw GliaError.sdkIsNotConfigured
+        }
 
         // Interactor is initialized during configuration, which means that queueIds need
         // to be set in interactor when startEngagement is called.
-        self.interactor?.setQueuesIds(queueIds)
+        interactor.setQueuesIds(queueIds)
+
         // It is assumed that `features` to be provided from `configure` or via deprecated `startEngagement` method.
         let features = self.features ?? []
-
-        if let engagement = environment.coreSdk.getCurrentEngagement() {
-            if engagement.source == .callVisualizer {
-                throw GliaError.callVisualizerEngagementExists
-            } else {
-                guard let interactor else {
-                    loggerPhase.logger.prefixed(Self.self).warning("Interactor is missing")
-                    return
-                }
-                if let rootCoordinator {
-                    rootCoordinator.maximize()
-                } else {
-                    self.restoreOngoingEngagement(
-                        configuration: configuration,
-                        currentEngagement: engagement,
-                        interactor: interactor,
-                        features: features,
-                        maximize: true
-                    )
-                }
-                return
-            }
-        }
 
         // Apply company name to theme and get the modified theme
         let modifiedTheme = applyCompanyName(using: configuration, theme: theme)
@@ -78,10 +78,44 @@ extension Glia {
             ongoingEngagementMediaStreams = .init(audio: media.audio, video: nil)
         }
 
-        guard let interactor else {
-            loggerPhase.logger.prefixed(Self.self).warning("Interactor is missing")
-            return
+        return EngagementParameters(
+            viewFactory: viewFactory,
+            interactor: interactor,
+            ongoingEngagementMediaStreams: ongoingEngagementMediaStreams,
+            features: features,
+            configuration: configuration
+        )
+    }
+
+    func resolveEngangementState(
+        engagementKind: EngagementKind,
+        sceneProvider: SceneProvider?,
+        configuration: Configuration,
+        interactor: Interactor,
+        features: Features,
+        viewFactory: ViewFactory,
+        ongoingEngagementMediaStreams: Engagement.Media?
+    ) throws {
+        if let engagement = environment.coreSdk.getCurrentEngagement() {
+            if engagement.source == .callVisualizer {
+                throw GliaError.callVisualizerEngagementExists
+            } else {
+                if let rootCoordinator {
+                    rootCoordinator.maximize()
+                } else {
+                    self.restoreOngoingEngagement(
+                        configuration: configuration,
+                        currentEngagement: engagement,
+                        interactor: interactor,
+                        features: features,
+                        maximize: true
+                    )
+                }
+                loggerPhase.logger.prefixed(Self.self).info("Engagement was restored")
+                return
+            }
         }
+
         startRootCoordinator(
             with: interactor,
             viewFactory: viewFactory,
@@ -174,5 +208,14 @@ extension Glia {
         case .maximized:
             onEvent?(.maximized)
         }
+    }
+
+    /// The `EngagementParameters` encapsulates all parameters required to initiate or restore the coordinator
+    struct EngagementParameters {
+        let viewFactory: ViewFactory
+        let interactor: Interactor
+        let ongoingEngagementMediaStreams: Engagement.Media?
+        let features: Features
+        let configuration: Configuration
     }
 }
