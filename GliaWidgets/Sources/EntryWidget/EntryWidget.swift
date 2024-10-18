@@ -4,10 +4,16 @@ import GliaCoreSDK
 import UIKit
 import SwiftUI
 
+/// The `EntryWidget` class is a customizable UI component designed to display
+/// engagement options (such as chat, audio, video, or secure messaging) based on
+/// the availability of media types in the given queues. It offers functionality to
+/// either embed itself within a view or present as a modal sheet.
 public final class EntryWidget: NSObject {
     private var hostedViewController: UIViewController?
     private var embeddedView: UIView?
     private var queueIds: [String]
+    private var cancellables = CancelBag()
+    private let environment: Environment
 
     @Published private var viewState: ViewState = .loading
 
@@ -21,14 +27,14 @@ public final class EntryWidget: NSObject {
         dividerHeight: 1
     )
 
-    private let environment: Environment
+    // MARK: - Initialization
 
-    private var cancellables = CancelBag()
-
-    init(
-        queueIds: [String],
-        environment: Environment
-    ) {
+    /// Initializes the `EntryWidget` with queue identifiers and an environment.
+    ///
+    /// - Parameters:
+    ///   - queueIds: An array of strings representing the queue identifiers.
+    ///   - environment: An `Environment` object containing external dependencies.
+    init(queueIds: [String], environment: Environment) {
         self.queueIds = queueIds
         self.environment = environment
         super.init()
@@ -37,25 +43,28 @@ public final class EntryWidget: NSObject {
             .sink(receiveValue: handleQueuesMonitorUpdates(state:))
             .store(in: &cancellables)
     }
+}
 
-    public func show(by presentation: EntryWidget.Presentation) {
-        defer {
-            environment.queuesMonitor.startMonitoring(queuesIds: queueIds)
-        }
-        switch presentation {
-        case let .sheet(parentViewController):
-            showSheet(in: parentViewController)
-        case let .embedded(parentView):
-            showView(in: parentView)
-        }
+// MARK: - Public methods
+public extension EntryWidget {
+    /// Displays the widget as a modal sheet in the given view controller.
+    ///
+    /// - Parameter viewController: The `UIViewController` in which the widget will be shown as a sheet.
+    func show(in viewController: UIViewController) {
+        showSheet(in: viewController)
     }
 
+    /// Embeds the widget as a view in the given parent view.
+    ///
+    /// - Parameter view: The `UIView` in which the widget will be embedded.
+    func embed(in view: UIView) {
+        showView(in: view)
+    }
+
+    /// Hides the widget, dismissing any presented sheets and stopping queue monitoring.
     func hide() {
         hostedViewController?.dismiss(animated: true, completion: nil)
         hostedViewController = nil
-        embeddedView?.removeFromSuperview()
-        embeddedView = nil
-
         environment.queuesMonitor.stopMonitoring()
     }
 }
