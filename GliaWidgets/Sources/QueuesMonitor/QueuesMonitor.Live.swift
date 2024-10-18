@@ -2,7 +2,6 @@ import Foundation
 import GliaCoreSDK
 import Combine
 
-// TODO: Add unit tests in context of MOB-3669
 final class QueuesMonitor {
     enum State {
         case idle
@@ -12,7 +11,8 @@ final class QueuesMonitor {
 
     @Published private(set) var state: State = .idle
 
-    private let environment: Environment
+    /// Declared as internal var for unit tests purposes
+    var environment: Environment
     private var subscriptionId: String? {
         _subscriptionId.value
     }
