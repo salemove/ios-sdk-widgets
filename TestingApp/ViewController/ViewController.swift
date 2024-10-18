@@ -101,11 +101,11 @@ class ViewController: UIViewController {
     }
 
     @IBAction private func entryWidgetSheetTapped() {
-        self.entryWidget?.show(by: .sheet(self))
+        self.entryWidget?.show(in: self)
     }
 
     @IBAction private func entryWidgetEmbbededTapped() {
-        self.entryWidget?.show(by: .embedded(entryWidgetView))
+        self.entryWidget?.embed(in: entryWidgetView)
     }
 
     @IBAction private func audioTapped() {
