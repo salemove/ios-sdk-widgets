@@ -54,7 +54,9 @@ class QueuesMonitorTests: XCTestCase {
             completion(mockQueues, nil)
         }
 
-        let expectation = XCTestExpectation(description: "State is updated with default queues if no queue is found")
+        let expectation = XCTestExpectation(
+            description: "State is updated with default queues if no queue is found"
+        )
 
         monitor.$state
             .sink { state in
@@ -77,7 +79,9 @@ class QueuesMonitorTests: XCTestCase {
             completion(nil, expectedError)
         }
 
-        let expectation = XCTestExpectation(description: "State is failed with error")
+        let expectation = XCTestExpectation(
+            description: "State is failed with list queues error"
+        )
 
         monitor.$state
             .sink { state in
@@ -108,7 +112,9 @@ class QueuesMonitorTests: XCTestCase {
             return UUID().uuidString
         }
 
-        let expectation = XCTestExpectation(description: "State is updated with queues")
+        let expectation = XCTestExpectation(
+            description: "State is updated with queues received from socket"
+        )
 
         monitor.$state
             // Drop initial .idle and .updated with listed queues state update
@@ -141,7 +147,9 @@ class QueuesMonitorTests: XCTestCase {
             return nil
         }
 
-        let expectation = XCTestExpectation(description: "State is updated with queues")
+        let expectation = XCTestExpectation(
+            description: "State is updated with socket error"
+        )
 
         monitor.$state
             // Drop initial .idle and .updated with listed queues state update
@@ -173,7 +181,9 @@ class QueuesMonitorTests: XCTestCase {
 
         monitor.startMonitoring(queuesIds: ["1"])
 
-        let expectation = XCTestExpectation(description: "Check if stopMonitoring changes state to idle")
+        let expectation = XCTestExpectation(
+            description: "State is updated with unsubscribe request error"
+        )
         monitor.$state
             .dropFirst()
             .sink { state in
