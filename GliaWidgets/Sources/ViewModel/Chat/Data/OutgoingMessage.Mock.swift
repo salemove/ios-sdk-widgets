@@ -4,11 +4,13 @@ import Foundation
 extension OutgoingMessage {
     static func mock(
         payload: CoreSdkClient.SendMessagePayload = .mock(),
-        files: [LocalFile] = []
+        files: [LocalFile] = [],
+        relation: Relation = .none
     ) -> OutgoingMessage {
         OutgoingMessage(
             payload: payload,
-            files: files
+            files: files,
+            relation: relation
         )
     }
 }
