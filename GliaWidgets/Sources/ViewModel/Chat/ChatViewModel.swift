@@ -863,7 +863,6 @@ extension ChatViewModel {
     }
 
     // Updates Response Card or Custom Card selected option
-    // TODO: - This will be covered with unit tests in next PR
     private func updateSelectedOption(with outgoingMessage: OutgoingMessage) {
         let selectedOption = outgoingMessage.payload.attachment?.selectedOption
 
