@@ -25,6 +25,7 @@ class ChatView: EngagementView {
     var selectCustomCardOption: ((HtmlMetadata.Option, MessageRenderer.Message.Identifier) -> Void)?
     var gvaButtonTapped: ((GvaOption) -> Void)?
     var retryMessageTapped: ((OutgoingMessage) -> Void)?
+    let secureMessagingBottomBannerView = SecureMessagingBottomBannerView().makeView()
 
     let style: ChatStyle
     let environment: Environment
@@ -144,6 +145,13 @@ class ChatView: EngagementView {
         constraints += quickReplyView.layoutIn(safeAreaLayoutGuide, edges: .horizontal)
         constraints += quickReplyView.topAnchor.constraint(equalTo: tableAndIndicatorStack.bottomAnchor)
 
+        addSubview(secureMessagingBottomBannerView)
+        constraints += [
+            secureMessagingBottomBannerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            secureMessagingBottomBannerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            secureMessagingBottomBannerView.topAnchor.constraint(equalTo: quickReplyView.bottomAnchor)
+        ]
+
         addSubview(messageEntryView)
         let messageEntryInsets = UIEdgeInsets(
             top: 0,
@@ -161,7 +169,7 @@ class ChatView: EngagementView {
         }
 
         constraints += messageEntryView.layoutIn(safeAreaLayoutGuide, edges: .horizontal)
-        constraints += messageEntryView.topAnchor.constraint(equalTo: quickReplyView.bottomAnchor)
+        constraints += messageEntryView.topAnchor.constraint(equalTo: secureMessagingBottomBannerView.bottomAnchor)
 
         addSubview(unreadMessageIndicatorView)
         unreadMessageIndicatorView.translatesAutoresizingMaskIntoConstraints = false
@@ -169,6 +177,11 @@ class ChatView: EngagementView {
 
         constraints += unreadMessageIndicatorView.bottomAnchor.constraint(
             equalTo: messageEntryView.topAnchor, constant: kUnreadMessageIndicatorInset
+        )
+
+        secureMessagingBottomBannerView.props = .init(
+            style: style.secureMessagingBottomBannerStyle,
+            isHidden: true // Logic to show/hide SC bottom banner is to be added with MOB-3634
         )
     }
 }
