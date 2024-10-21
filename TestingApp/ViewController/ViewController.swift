@@ -337,7 +337,7 @@ extension ViewController {
                 switch result {
                 case .success:
                     self.catchingError {
-                        self.entryWidget = try? Glia.sharedInstance.getEntryWidget(queueIds: [""])
+                        self.entryWidget = try? Glia.sharedInstance.getEntryWidget(queueIds: [self.queueId])
                     }
                     completionBlock("SDK has been configured")
                     completion?(.success(()))
