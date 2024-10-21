@@ -42,12 +42,28 @@ private extension EntryWidgetView {
         .maxSize()
         .padding(.horizontal)
         .applyColorTypeBackground(model.style.backgroundColor)
+        .redacted(reason: .placeholder)
     }
 
     @ViewBuilder
     func loadingView() -> some View {
-        ProgressView()
-            .progressViewStyle(.circular)
+        VStack(spacing: 0) {
+            if model.showHeader {
+                headerView()
+            }
+            mediaTypes(
+                [.secureMessaging, .secureMessaging, .secureMessaging, .secureMessaging],
+                isPlaceholder: true
+            )
+            .redacted(reason: .placeholder)
+            .disabled(true)
+            if model.showPoweredBy {
+                poweredByView()
+            }
+        }
+        .maxSize()
+        .padding(.horizontal)
+        .applyColorTypeBackground(model.style.backgroundColor)
     }
 
     @ViewBuilder
@@ -94,10 +110,18 @@ private extension EntryWidgetView {
 // MARK: - View Components
 private extension EntryWidgetView {
     @ViewBuilder
-    func mediaTypes(_ types: [EntryWidget.MediaTypeItem]) -> some View {
+    func mediaTypes(
+        _ types: [EntryWidget.MediaTypeItem],
+        isPlaceholder: Bool = false
+    ) -> some View {
         VStack(spacing: 0) {
             ForEach(types.indices, id: \.self) { index in
-                mediaTypeCell(mediaType: types[index])
+                if isPlaceholder {
+                    placeholderMediaTypeCell(mediaType: types[index])
+                } else {
+                    mediaTypeCell(mediaType: types[index])
+                }
+
                 Divider()
                     .height(model.sizeConstraints.dividerHeight)
                     .setColor(model.style.dividerColor)
@@ -132,6 +156,31 @@ private extension EntryWidgetView {
             VStack(alignment: .leading, spacing: 2) {
                 headlineText(mediaType.headline)
                 subheadlineText(mediaType.subheadline)
+            }
+        }
+        .maxWidth(alignment: .leading)
+        .height(model.sizeConstraints.singleCellHeight)
+        .applyColorTypeBackground(model.style.mediaTypeItem.backgroundColor)
+        .contentShape(.rect)
+        .onTapGesture {
+            model.selectMediaType(mediaType)
+        }
+    }
+
+    @ViewBuilder
+    func placeholderMediaTypeCell(mediaType: EntryWidget.MediaTypeItem) -> some View {
+        HStack(spacing: 16) {
+            Circle()
+                .fill(Color.baseShade.swiftUIColor().opacity(0.5))
+                .width(model.sizeConstraints.singleCellIconSize)
+                .height(model.sizeConstraints.singleCellIconSize)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(mediaType.headline)
+                    .setFont(model.style.mediaTypeItem.titleFont)
+                    .setColor(Color.baseNormal)
+                Text(mediaType.subheadline)
+                    .setFont(model.style.mediaTypeItem.messageFont)
+                    .setColor(Color.baseNormal)
             }
         }
         .maxWidth(alignment: .leading)
