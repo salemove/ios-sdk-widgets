@@ -1,6 +1,7 @@
 import UIKit
 @testable import GliaWidgets
 
+#if DEBUG
 extension ChatStyle {
     static func mock(
         header: HeaderStyle = .mock(),
@@ -22,7 +23,8 @@ extension ChatStyle {
         secureTranscriptHeader: HeaderStyle = .mock(),
         unreadMessageDivider: UnreadMessageDividerStyle = .mock(),
         systemMessageStyle: Theme.SystemMessageStyle = .mock(),
-        gliaVirtualAssistant: GliaVirtualAssistantStyle = .mock()
+        gliaVirtualAssistant: GliaVirtualAssistantStyle = .mock(),
+        secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle = .mock()
     ) -> ChatStyle {
         ChatStyle.init(
             header: header,
@@ -44,7 +46,8 @@ extension ChatStyle {
             secureTranscriptHeader: secureTranscriptHeader,
             unreadMessageDivider: unreadMessageDivider,
             systemMessageStyle: systemMessageStyle,
-            gliaVirtualAssistant: gliaVirtualAssistant
+            gliaVirtualAssistant: gliaVirtualAssistant,
+            secureMessagingBottomBannerStyle: secureMessagingBottomBannerStyle
         )
     }
 }
@@ -533,3 +536,22 @@ extension Theme.ChatTextContentStyle {
         )
     }
 }
+
+extension SecureMessagingBottomBannerViewStyle {
+    static func mock(
+        message: String = Localization.SecureMessaging.Chat.Banner.bottom,
+        font: UIFont = Theme().chat.secureMessagingBottomBannerStyle.font,
+        textColor: UIColor = Theme().chat.secureMessagingBottomBannerStyle.textColor,
+        backgroundColor: UIColor = Theme().chat.secureMessagingBottomBannerStyle.backgroundColor,
+        dividerColor: UIColor = Theme().chat.secureMessagingBottomBannerStyle.dividerColor
+    ) -> Self {
+        .init(
+            message: message,
+            font: font,
+            textColor: textColor,
+            backgroundColor: backgroundColor,
+            dividerColor: dividerColor
+        )
+    }
+}
+#endif
