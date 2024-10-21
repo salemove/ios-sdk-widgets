@@ -136,6 +136,7 @@ private extension EntryWidget {
     }
 
     func showView(in parentView: UIView) {
+        self.environment.queuesMonitor.startMonitoring(queuesIds: self.queueIds)
         parentView.subviews.forEach { $0.removeFromSuperview() }
         let model = makeViewModel(showHeader: false)
         let view = makeView(model: model)
@@ -155,6 +156,7 @@ private extension EntryWidget {
     }
 
     func showSheet(in parentViewController: UIViewController) {
+        self.environment.queuesMonitor.startMonitoring(queuesIds: self.queueIds)
         let model = makeViewModel(showHeader: true)
         let view = makeView(model: model)
         let hostingController = UIHostingController(rootView: view)
