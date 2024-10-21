@@ -188,7 +188,7 @@ workflows:
         inputs:
         - content: |-
             #!/usr/bin/env bash # fail if any commands fails set -e # make pipelines' return status equal the last command to exit with a non-zero status, or zero if all commands exit successfully set -o pipefail # debug log set -x
-            make clone-snapshots-ci repo_url="https://$GITHUB_USERNAME:$GITHUB_API_TOKEN@$SNAPSHOTS_REPO"
+            make clone-snapshots-ci repo_url="https://$GITHUB_USERNAME:$GITHUB_API_TOKEN@$SNAPSHOTS_REPO" destination_branch=$BITRISEIO_GIT_BRANCH_DEST
     - cache-pull@2: {}
     - certificate-and-profile-installer@1: {}
     - script:
