@@ -2,6 +2,10 @@ import UIKit
 
 extension Theme {
     var entryWidgetStyle: EntryWidgetStyle {
+        let loading: EntryWidgetStyle.MediaTypeItemStyle.LoadingStyle = .init(
+            accessibility: .init(label: Localization.EntryWidget.Loading.Accessibility.label)
+        )
+
         let mediaTypeItem: EntryWidgetStyle.MediaTypeItemStyle = .init(
             titleFont: font.bodyText,
             titleColor: color.baseDark,
@@ -10,7 +14,8 @@ extension Theme {
             messageColor: color.baseNormal,
             messageTextStyle: .caption1,
             iconColor: .fill(color: color.primary),
-            backgroundColor: .fill(color: color.baseLight)
+            backgroundColor: .fill(color: color.baseLight),
+            loading: loading
         )
 
         let backgroundColor: ColorType = .fill(color: color.baseLight)
@@ -22,7 +27,7 @@ extension Theme {
         )
 
         let errorButton: ActionButtonStyle = .init(
-            title: Localization.EntryWidget.ErrorState.TryAgain.label,
+            title: Localization.EntryWidget.ErrorState.TryAgain.Button.label,
             titleFont: font.bodyText,
             titleColor: color.primary,
             backgroundColor: .fill(color: color.baseLight),
