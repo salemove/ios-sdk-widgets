@@ -26,6 +26,9 @@ extension EntryWidgetStyle {
         /// Background color of the view.
         public var backgroundColor: ColorType
 
+        /// Loading style of the EntryWidget MediaType.
+        public var loading: LoadingStyle
+
         /// - Parameters:
         ///   - titleFont: Font of the headline text.
         ///   - titleColor: Color of the headline text.
@@ -35,6 +38,7 @@ extension EntryWidgetStyle {
         ///   - messageTextStyle: The style of the title text.
         ///   - iconColor: Color of the icon.
         ///   - backgroundColor: Background color of the view.
+        ///   - loading: Loading style of the EntryWidget MediaType.
         ///
         public init(
             titleFont: UIFont,
@@ -44,7 +48,8 @@ extension EntryWidgetStyle {
             messageColor: UIColor,
             messageTextStyle: UIFont.TextStyle,
             iconColor: ColorType,
-            backgroundColor: ColorType
+            backgroundColor: ColorType,
+            loading: LoadingStyle
         ) {
             self.titleFont = titleFont
             self.titleColor = titleColor
@@ -54,6 +59,7 @@ extension EntryWidgetStyle {
             self.messageTextStyle = messageTextStyle
             self.iconColor = iconColor
             self.backgroundColor = backgroundColor
+            self.loading = loading
         }
     }
 }
