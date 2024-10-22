@@ -2,7 +2,6 @@ clone-snapshots:
 	@echo "	⏬  Cloning snapshots..."
 	@command git clone git@github.com:salemove/ios-widgets-snapshots.git SnapshotTests/__Snapshots__
 
-source_branch := $(shell git rev-parse --abbrev-ref HEAD)
 clone-snapshots-ci:
 	@echo "	⏬  Cloning snapshots..."
 	@command git clone $(repo_url) SnapshotTests/__Snapshots__
