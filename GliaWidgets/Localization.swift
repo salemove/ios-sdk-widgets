@@ -440,6 +440,80 @@ internal enum Localization {
       internal static var title: String { Localization.tr("Localizable", "engagement.video.title", fallback: "Video") }
     }
   }
+  internal enum EntryWidget {
+    internal enum Audio {
+      internal enum Button {
+        /// Speak through your device
+        internal static var description: String { Localization.tr("Localizable", "entry_widget.audio.button.description", fallback: "Speak through your device") }
+        /// Audio
+        internal static var label: String { Localization.tr("Localizable", "entry_widget.audio.button.label", fallback: "Audio") }
+        internal enum Accessibility {
+          /// Starts a call
+          internal static var hint: String { Localization.tr("Localizable", "entry_widget.audio.button.accessibility.hint", fallback: "Starts a call") }
+        }
+      }
+    }
+    internal enum EmptyState {
+      /// We are here to assist you during our business hours.
+      internal static var description: String { Localization.tr("Localizable", "entry_widget.empty_state.description", fallback: "We are here to assist you during our business hours.") }
+      /// Support team is currently offline
+      internal static var title: String { Localization.tr("Localizable", "entry_widget.empty_state.title", fallback: "Support team is currently offline") }
+    }
+    internal enum ErrorState {
+      /// We could not load the contacts at this time. This may be due to a temporary syncing issue or network problem.
+      internal static var description: String { Localization.tr("Localizable", "entry_widget.error_state.description", fallback: "We could not load the contacts at this time. This may be due to a temporary syncing issue or network problem.") }
+      /// Could not load the contacts
+      internal static var title: String { Localization.tr("Localizable", "entry_widget.error_state.title", fallback: "Could not load the contacts") }
+      internal enum TryAgain {
+        internal enum Button {
+          /// Try again
+          internal static var label: String { Localization.tr("Localizable", "entry_widget.error_state.try_again.button.label", fallback: "Try again") }
+        }
+      }
+    }
+    internal enum LiveChat {
+      internal enum Button {
+        /// For the texter in all of us
+        internal static var description: String { Localization.tr("Localizable", "entry_widget.live_chat.button.description", fallback: "For the texter in all of us") }
+        /// Live Chat
+        internal static var label: String { Localization.tr("Localizable", "entry_widget.live_chat.button.label", fallback: "Live Chat") }
+        internal enum Accessibility {
+          /// Starts a chat
+          internal static var hint: String { Localization.tr("Localizable", "entry_widget.live_chat.button.accessibility.hint", fallback: "Starts a chat") }
+        }
+      }
+    }
+    internal enum Loading {
+      internal enum Accessibility {
+        /// Loading indicator. Waiting for available options.
+        internal static var label: String { Localization.tr("Localizable", "entry_widget.loading.accessibility.label", fallback: "Loading indicator. Waiting for available options.") }
+      }
+    }
+    internal enum SecureMessaging {
+      internal enum Button {
+        /// Start a conversation, we’ll get back to you
+        internal static var description: String { Localization.tr("Localizable", "entry_widget.secure_messaging.button.description", fallback: "Start a conversation, we’ll get back to you") }
+        /// Secure Messaging
+        internal static var label: String { Localization.tr("Localizable", "entry_widget.secure_messaging.button.label", fallback: "Secure Messaging") }
+        internal enum Accessibility {
+          /// Starts messaging with us
+          internal static var hint: String { Localization.tr("Localizable", "entry_widget.secure_messaging.button.accessibility.hint", fallback: "Starts messaging with us") }
+        }
+      }
+    }
+    internal enum Video {
+      internal enum Button {
+        /// Face-to-face, just like in person
+        internal static var description: String { Localization.tr("Localizable", "entry_widget.video.button.description", fallback: "Face-to-face, just like in person") }
+        /// Video
+        internal static var label: String { Localization.tr("Localizable", "entry_widget.video.button.label", fallback: "Video") }
+        internal enum Accessibility {
+          /// Starts a video call
+          internal static var hint: String { Localization.tr("Localizable", "entry_widget.video.button.accessibility.hint", fallback: "Starts a video call") }
+        }
+      }
+    }
+  }
   internal enum Error {
     /// Something went wrong.
     internal static var general: String { Localization.tr("Localizable", "error.general", fallback: "Something went wrong.") }
@@ -715,56 +789,6 @@ internal enum Localization {
   internal enum VisitorCode {
     /// Could not load the visitor code. Please try refreshing.
     internal static var failed: String { Localization.tr("Localizable", "visitor_code.failed", fallback: "Could not load the visitor code. Please try refreshing.") }
-  }
-  internal enum EntryWidget {
-    internal enum LiveChat {
-      internal enum Button {
-        /// Live Chat
-        internal static var label: String { Localization.tr("Localizable", "entry_widget.live_chat.button.label", fallback: "Live Chat") }
-        /// For the texter in all of us
-        internal static var description: String { Localization.tr("Localizable", "entry_widget.live_chat.button.description", fallback: "For the texter in all of us") }
-      }
-    }
-    internal enum Audio {
-      internal enum Button {
-        /// Audio
-        internal static var label: String { Localization.tr("Localizable", "entry_widget.audio.button.label", fallback: "Audio") }
-        /// Speak through your device
-        internal static var description: String { Localization.tr("Localizable", "entry_widget.audio.button.description", fallback: "Speak through your device") }
-      }
-    }
-    internal enum Video {
-      internal enum Button {
-        /// Video
-        internal static var label: String { Localization.tr("Localizable", "entry_widget.video.button.label", fallback: "Video") }
-        /// Face-to-face, just like in person
-        internal static var description: String { Localization.tr("Localizable", "entry_widget.video.button.description", fallback: "Face-to-face, just like in person") }
-      }
-    }
-    internal enum SecureMessaging {
-      internal enum Button {
-        /// Secure Messaging
-        internal static var label: String { Localization.tr("Localizable", "entry_widget.secure_messaging.button.label", fallback: "Secure Messaging") }
-        /// Start a conversation, we’ll get back to you
-        internal static var description: String { Localization.tr("Localizable", "entry_widget.secure_messaging.button.description", fallback: "Start a conversation, we’ll get back to you") }
-      }
-    }
-    internal enum EmptyState {
-      /// Support team is currently offline
-      internal static var title: String { Localization.tr("Localizable", "entry_widget.empty_state.title", fallback: "Support team is currently offline") }
-      /// We are here to assist you during our business hours.
-      internal static var description: String { Localization.tr("Localizable", "entry_widget.empty_state.description", fallback: "We are here to assist you during our business hours.") }
-    }
-    internal enum ErrorState {
-      /// Oops! Contacts Couldn't Be Loaded
-      internal static var title: String { Localization.tr("Localizable", "entry_widget.error_state.title", fallback: "Oops! Contacts Couldn't Be Loaded") }
-      /// We couldn't load the contacts at this time. This may be due to a temporary syncing issue or network problem.
-      internal static var description: String { Localization.tr("Localizable", "entry_widget.error_state.description", fallback: "We couldn't load the contacts at this time. This may be due to a temporary syncing issue or network problem.") }
-      internal enum TryAgain {
-        /// Try again
-        internal static var label: String { Localization.tr("Localizable", "entry_widget.error_state.try_again.button.label", fallback: "Try again") }
-      }
-    }
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
