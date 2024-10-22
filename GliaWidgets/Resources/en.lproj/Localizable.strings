@@ -252,14 +252,19 @@
 
 "entry_widget.live_chat.button.label" = "Live Chat";
 "entry_widget.live_chat.button.description" = "For the texter in all of us";
+"entry_widget.live_chat.button.accessibility.hint" = "Starts a chat";
 "entry_widget.audio.button.label" = "Audio";
 "entry_widget.audio.button.description" = "Speak through your device";
+"entry_widget.audio.button.accessibility.hint" = "Starts a call";
 "entry_widget.video.button.label" = "Video";
 "entry_widget.video.button.description" = "Face-to-face, just like in person";
+"entry_widget.video.button.accessibility.hint" = "Starts a video call";
 "entry_widget.secure_messaging.button.label" = "Secure Messaging";
 "entry_widget.secure_messaging.button.description" = "Start a conversation, we’ll get back to you";
+"entry_widget.secure_messaging.button.accessibility.hint" = "Starts messaging with us";
 "entry_widget.empty_state.title" = "Support team is currently offline";
 "entry_widget.empty_state.description" = "We are here to assist you during our business hours.";
-"entry_widget.error_state.title" = "Oops! Contacts Couldn't Be Loaded";
-"entry_widget.error_state.description" = "We couldn't load the contacts at this time. This may be due to a temporary syncing issue or network problem.";
+"entry_widget.error_state.title" = "Could not load the contacts";
+"entry_widget.error_state.description" = "We could not load the contacts at this time. This may be due to a temporary syncing issue or network problem.";
 "entry_widget.error_state.try_again.button.label" = "Try again";
+"entry_widget.loading.accessibility.label" = "Loading indicator. Waiting for available options.";
