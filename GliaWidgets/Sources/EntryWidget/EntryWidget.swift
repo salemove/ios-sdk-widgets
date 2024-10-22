@@ -162,7 +162,9 @@ private extension EntryWidget {
     func showSheet(in parentViewController: UIViewController) {
         self.environment.queuesMonitor.startMonitoring(queuesIds: self.queueIds)
         let model = makeViewModel(showHeader: true)
-        let view = makeView(model: model)
+        let view = makeView(model: model).accessibilityAction(.escape, {
+            self.hide()
+        })
         let hostingController = UIHostingController(rootView: view)
 
         switch environment.theme.entryWidget.backgroundColor {
