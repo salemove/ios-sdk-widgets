@@ -6,7 +6,7 @@ source_branch := $(shell git rev-parse --abbrev-ref HEAD)
 clone-snapshots-ci:
 	@echo "	⏬  Cloning snapshots..."
 	@command git clone $(repo_url) SnapshotTests/__Snapshots__
-	@command cd SnapshotTests/__Snapshots__ && ./checkout.sh $(SOURCE_BRANCH) $(destination_branch)
+	@command cd SnapshotTests/__Snapshots__ && ./checkout.sh $(source_branch) $(destination_branch)
 
 commit-snapshots:
 	@echo "	💾  Committing snapshots..."
