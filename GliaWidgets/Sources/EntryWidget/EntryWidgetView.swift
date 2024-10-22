@@ -42,7 +42,6 @@ private extension EntryWidgetView {
         .maxSize()
         .padding(.horizontal)
         .applyColorTypeBackground(model.style.backgroundColor)
-        .redacted(reason: .placeholder)
     }
 
     @ViewBuilder
@@ -56,7 +55,9 @@ private extension EntryWidgetView {
                 isPlaceholder: true
             )
             .redacted(reason: .placeholder)
-            .disabled(true)
+            .accessibility(hidden: false)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(model.style.mediaTypeItem.loading.accessibility.label)
             if model.showPoweredBy {
                 poweredByView()
             }
@@ -162,6 +163,9 @@ private extension EntryWidgetView {
         .height(model.sizeConstraints.singleCellHeight)
         .applyColorTypeBackground(model.style.mediaTypeItem.backgroundColor)
         .contentShape(.rect)
+        .accessibilityElement(children: .combine)
+        .accessibility(addTraits: .isButton)
+        .accessibilityHint(mediaType.hintline)
         .onTapGesture {
             model.selectMediaType(mediaType)
         }
@@ -187,9 +191,7 @@ private extension EntryWidgetView {
         .height(model.sizeConstraints.singleCellHeight)
         .applyColorTypeBackground(model.style.mediaTypeItem.backgroundColor)
         .contentShape(.rect)
-        .onTapGesture {
-            model.selectMediaType(mediaType)
-        }
+        .disabled(true)
     }
 
     @ViewBuilder
@@ -200,6 +202,7 @@ private extension EntryWidgetView {
             .width(model.sizeConstraints.singleCellIconSize)
             .height(model.sizeConstraints.singleCellIconSize)
             .applyColorTypeForeground(model.style.mediaTypeItem.iconColor)
+            .accessibilityHidden(true)
     }
 
     @ViewBuilder
@@ -242,5 +245,6 @@ private extension EntryWidgetView {
             )
             .contentShape(.rect)
             .onTapGesture(perform: model.onTryAgainTapped)
+            .accessibility(addTraits: .isButton)
     }
 }
