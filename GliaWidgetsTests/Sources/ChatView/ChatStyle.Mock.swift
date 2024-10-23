@@ -541,13 +541,15 @@ extension SecureMessagingBottomBannerViewStyle {
     static func mock(
         message: String = Localization.SecureMessaging.Chat.Banner.bottom,
         font: UIFont = Theme().chat.secureMessagingBottomBannerStyle.font,
+        textStyle: UIFont.TextStyle = Theme().chat.secureMessagingBottomBannerStyle.textStyle,
         textColor: UIColor = Theme().chat.secureMessagingBottomBannerStyle.textColor,
-        backgroundColor: UIColor = Theme().chat.secureMessagingBottomBannerStyle.backgroundColor,
+        backgroundColor: ColorType = Theme().chat.secureMessagingBottomBannerStyle.backgroundColor,
         dividerColor: UIColor = Theme().chat.secureMessagingBottomBannerStyle.dividerColor
     ) -> Self {
         .init(
             message: message,
             font: font,
+            textStyle: textStyle,
             textColor: textColor,
             backgroundColor: backgroundColor,
             dividerColor: dividerColor
