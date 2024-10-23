@@ -39,7 +39,7 @@ extension Theme {
         let messageTitleStyle = SecureConversations.WelcomeStyle.MessageTitleStyle(
             title: Localization.MessageCenter.Welcome.messageTitle,
             font: font.mediumSubtitle1,
-            textStyle: .subheadline,
+            textStyle: .headline,
             color: .black,
             accessibility: .init(isFontScalingEnabled: true)
         )

@@ -68,7 +68,7 @@ public struct ThemeFont {
         self.bodyText = fontScaling.uiFont(with: .body) // bodyText ?? Font.regular(16) // .body
         self.subtitle = fontScaling.uiFont(with: .footnote) // subtitle ?? Font.regular(14) // .footnote
         self.mediumSubtitle1 = fontScaling.uiFont(
-            with: .subheadline,
+            with: .headline,
             font: .systemFont(ofSize: 16, weight: .medium)
         ) // medium16 ?? Font.medium(16) // .subheadline
         self.mediumSubtitle2 = fontScaling.uiFont(with: .subheadline)// mediumSubtitle ?? Font.medium(14) // .subheadline
@@ -102,11 +102,11 @@ extension FontScaling.Style {
         case .footnote:
             return .init(weight: .regular, size: 14)  // subtitle ?? Font.regular(14) // ???
         case .headline:
-            return .init(weight: .bold, size: 17)
+            return .init(weight: .medium, size: 16) // mediumSubtitle1 ?? Font.medium(16)
         case .largeTitle:
             return .init(weight: .regular, size: 34)
         case .subheadline:
-            return .init(weight: .medium, size: 14) // mediumSubtitle ?? Font.medium(14)
+            return .init(weight: .medium, size: 14) // mediumSubtitle2 ?? Font.medium(14)
         case .title1:
             return .init(weight: .bold, size: 24) // header1 ?? Font.bold(24)
         case .title2:
