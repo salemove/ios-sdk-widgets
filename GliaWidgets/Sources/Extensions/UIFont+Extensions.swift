@@ -50,3 +50,22 @@ extension UIFont {
         return UIFont(descriptor: descriptor, size: size)
     }
 }
+
+extension UIFont {
+    static func scaledFont(forTextStyle: UIFont.TextStyle) -> UIFont? {
+        var descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: forTextStyle)
+        guard let style = FontScaling.Style(forTextStyle),
+              let description = FontScaling.theme.descriptions[style] else {
+            return nil
+        }
+        descriptor = descriptor.addingAttributes(
+            [
+                UIFontDescriptor.AttributeName.traits: [UIFontDescriptor.TraitKey.weight: description.weight]
+            ]
+        )
+        /// Create a font copy with original size to scale it with current preferred content size category
+        let fontCopy = UIFont(descriptor: descriptor, size: description.size)
+
+        return UIFontMetrics(forTextStyle: forTextStyle).scaledFont(for: fontCopy)
+    }
+}
