@@ -432,7 +432,7 @@ extension ChatViewModel {
         let uploads = fileUploadListModel.succeededUploads
         let files = uploads.map { $0.localFile }
 
-        let payload = environment.createSendMessagePayload(messageText, nil)
+        let payload = environment.createSendMessagePayload(messageText, attachment)
 
         let outgoingMessage = OutgoingMessage(
             payload: payload,
@@ -446,17 +446,9 @@ extension ChatViewModel {
             fileUploadListModel.succeededUploads.forEach { action?(.removeUpload($0)) }
             fileUploadListModel.removeSucceededUploads()
             action?(.scrollToBottom(animated: true))
-            let messageTextTemp = messageText
             messageText = ""
 
-            // In order to keep using same payload, with its
-            // initial ID, we make mutable copy of it
-            // and assign attachment and content accordingly
-            // before passing payload to send-message request.
-            var messagePayload = outgoingMessage.payload
-            messagePayload.content = messageTextTemp
-            messagePayload.attachment = attachment
-            interactor.send(messagePayload: messagePayload) { [weak self] result in
+            interactor.send(messagePayload: outgoingMessage.payload) { [weak self] result in
                 guard let self else { return }
 
                 switch result {

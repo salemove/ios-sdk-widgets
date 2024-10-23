@@ -941,6 +941,39 @@ class ChatViewModelTests: XCTestCase {
         viewModel.update(for: .engaged(.mock()))
         XCTAssertTrue(viewModel.getPendingMessageForTesting().isEmpty)
     }
+
+    func test_messageAttachmentIsKeptAfterFailureSending() throws {
+        var interactorEnv = Interactor.Environment.mock
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, callback in
+            callback(.failure(.mock()))
+        }
+        interactorEnv.coreSdk.sendMessagePreview = { _, _ in }
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.state = .engaged(nil)
+
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+
+        let upload = FileUpload.mock()
+        upload.state.value = .uploaded(file: try .mock())
+        var fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
+        fileUploadListViewModelEnv.uploader.uploads = [upload]
+        viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
+        viewModelEnv.createSendMessagePayload = { .mock(content: $0, attachment: $1) }
+        let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
+
+        let messageContent = "Mock"
+        viewModel.invokeSetTextAndSendMessage(text: messageContent)
+
+        switch viewModel.messagesSection.items.last?.kind {
+        case let .outgoingMessage(message, _):
+            XCTAssertNotNil(message.payload.attachment)
+            XCTAssertEqual(message.payload.content, messageContent)
+        default:
+            XCTFail("message kind should be `visitorMessage`")
+        }
+    }
 }
 
 extension ChatChoiceCardOption {
