@@ -6,24 +6,28 @@ public struct SecureMessagingBottomBannerViewStyle: Equatable {
     public var message: String
     /// Font of banner message.
     public var font: UIFont
+    /// Style of the text of the  banner message.
+    public var textStyle: UIFont.TextStyle
     /// Color of the text of the  banner message.
     public var textColor: UIColor
     /// Color of the banner background.
-    public var backgroundColor: UIColor
+    public var backgroundColor: ColorType
     /// Color of the banner divider.
     public var dividerColor: UIColor
 
     /// - Parameters:
     ///   - message: Text of the banner message.
     ///   - font: Font of banner message.
+    ///   - textStyle: Style of the text of the  banner message.
     ///   - textColor: Color of the text of the  banner message.
     ///   - backgroundColor: Color of the banner background.
     ///   - dividerColor: Color of the banner divider.
     public init(
         message: String,
         font: UIFont,
+        textStyle: UIFont.TextStyle,
         textColor: UIColor,
-        backgroundColor: UIColor,
+        backgroundColor: ColorType,
         dividerColor: UIColor
     ) {
         self.message = message
@@ -31,6 +35,7 @@ public struct SecureMessagingBottomBannerViewStyle: Equatable {
         self.textColor = textColor
         self.backgroundColor = backgroundColor
         self.dividerColor = dividerColor
+        self.textStyle = textStyle
     }
 }
 
@@ -38,8 +43,9 @@ extension SecureMessagingBottomBannerViewStyle {
     static let initial = Self(
         message: "",
         font: .preferredFont(forTextStyle: .caption1),
+        textStyle: .caption1,
         textColor: .label,
-        backgroundColor: .red,
+        backgroundColor: .fill(color: .red),
         dividerColor: .yellow
     )
 }
