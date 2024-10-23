@@ -55,12 +55,26 @@ extension ChatStyle {
             text: configuration?.newMessagesDividerText,
             assetBuilder: assetsBuilder
         )
+        applyAdditionalStyles(
+            configuration: configuration,
+            assetsBuilder: assetsBuilder
+        )
+    }
+
+    private func applyAdditionalStyles(
+        configuration: RemoteConfiguration.Chat?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
         systemMessageStyle.apply(
             configuration: configuration?.systemMessage,
             assetsBuilder: assetsBuilder
         )
         gliaVirtualAssistant.apply(
             configuration: configuration?.gva,
+            assetBuilder: assetsBuilder
+        )
+        secureMessagingBottomBannerStyle.apply(
+            configuration: configuration?.secureMessaging,
             assetBuilder: assetsBuilder
         )
         applyBackground(color: configuration?.background?.color)

@@ -71,7 +71,7 @@ final class SecureMessagingBottomBannerView: UIView {
     private func renderProps() {
         label.text = props.style.message
         label.textColor = props.style.textColor
-        backgroundColor = props.style.backgroundColor
+        backgroundColor = props.style.backgroundColor.color
         label.font = props.style.font
         isHidden = props.isHidden
         divider.backgroundColor = props.style.dividerColor
