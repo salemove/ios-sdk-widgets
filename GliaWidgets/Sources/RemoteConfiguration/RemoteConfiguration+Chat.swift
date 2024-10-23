@@ -19,6 +19,7 @@ extension RemoteConfiguration {
         let newMessagesDividerText: Text?
         let systemMessage: MessageBalloon?
         let gva: Gva?
+        let secureMessaging: SecureConversations?
     }
 
     struct Gva: Codable {
