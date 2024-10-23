@@ -398,8 +398,9 @@ extension Theme {
         let secureMessagingBottomBannerStyle = SecureMessagingBottomBannerViewStyle(
             message: Localization.SecureMessaging.Chat.Banner.bottom,
             font: font.caption,
+            textStyle: .caption1,
             textColor: color.baseNormal,
-            backgroundColor: color.baseNeutral,
+            backgroundColor: .fill(color: color.baseNeutral),
             dividerColor: color.baseShade
         )
 
