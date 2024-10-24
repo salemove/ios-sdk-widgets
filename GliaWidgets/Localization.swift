@@ -723,6 +723,10 @@ internal enum Localization {
         internal static var label: String { Localization.tr("Localizable", "entry_widget.live_chat.button.label", fallback: "Live Chat") }
         /// For the texter in all of us
         internal static var description: String { Localization.tr("Localizable", "entry_widget.live_chat.button.description", fallback: "For the texter in all of us") }
+        internal enum Accessibility {
+          /// Starts a chat
+          internal static var hint: String { Localization.tr("Localizable", "entry_widget.live_chat.button.accessibility.hint", fallback: "Starts a chat") }
+        }
       }
     }
     internal enum Audio {
@@ -731,6 +735,10 @@ internal enum Localization {
         internal static var label: String { Localization.tr("Localizable", "entry_widget.audio.button.label", fallback: "Audio") }
         /// Speak through your device
         internal static var description: String { Localization.tr("Localizable", "entry_widget.audio.button.description", fallback: "Speak through your device") }
+        internal enum Accessibility {
+          /// Starts a call
+          internal static var hint: String { Localization.tr("Localizable", "entry_widget.audio.button.accessibility.hint", fallback: "Starts a call") }
+        }
       }
     }
     internal enum Video {
@@ -739,6 +747,10 @@ internal enum Localization {
         internal static var label: String { Localization.tr("Localizable", "entry_widget.video.button.label", fallback: "Video") }
         /// Face-to-face, just like in person
         internal static var description: String { Localization.tr("Localizable", "entry_widget.video.button.description", fallback: "Face-to-face, just like in person") }
+        internal enum Accessibility {
+          /// Starts a video call
+          internal static var hint: String { Localization.tr("Localizable", "entry_widget.video.button.accessibility.hint", fallback: "Starts a video call") }
+        }
       }
     }
     internal enum SecureMessaging {
@@ -747,6 +759,10 @@ internal enum Localization {
         internal static var label: String { Localization.tr("Localizable", "entry_widget.secure_messaging.button.label", fallback: "Secure Messaging") }
         /// Start a conversation, we’ll get back to you
         internal static var description: String { Localization.tr("Localizable", "entry_widget.secure_messaging.button.description", fallback: "Start a conversation, we’ll get back to you") }
+        internal enum Accessibility {
+          /// Starts messaging with us
+          internal static var hint: String { Localization.tr("Localizable", "entry_widget.secure_messaging.button.accessibility.hint", fallback: "Starts messaging with us") }
+        }
       }
     }
     internal enum EmptyState {
@@ -756,13 +772,19 @@ internal enum Localization {
       internal static var description: String { Localization.tr("Localizable", "entry_widget.empty_state.description", fallback: "We are here to assist you during our business hours.") }
     }
     internal enum ErrorState {
-      /// Oops! Contacts Couldn't Be Loaded
-      internal static var title: String { Localization.tr("Localizable", "entry_widget.error_state.title", fallback: "Oops! Contacts Couldn't Be Loaded") }
-      /// We couldn't load the contacts at this time. This may be due to a temporary syncing issue or network problem.
-      internal static var description: String { Localization.tr("Localizable", "entry_widget.error_state.description", fallback: "We couldn't load the contacts at this time. This may be due to a temporary syncing issue or network problem.") }
+      /// Could not load the contacts
+      internal static var title: String { Localization.tr("Localizable", "entry_widget.error_state.title", fallback: "Could not load the contacts") }
+      /// We could not load the contacts at this time. This may be due to a temporary syncing issue or network problem.
+      internal static var description: String { Localization.tr("Localizable", "entry_widget.error_state.description", fallback: "We could not load the contacts at this time. This may be due to a temporary syncing issue or network problem.") }
       internal enum TryAgain {
         /// Try again
         internal static var label: String { Localization.tr("Localizable", "entry_widget.error_state.try_again.button.label", fallback: "Try again") }
+      }
+    }
+    internal enum Loading {
+      internal enum Accessibility {
+        /// Loading indicator. Waiting for available options.
+        internal static var label: String { Localization.tr("Localizable", "entry_widget.loading.accessibility.label", fallback: "Loading indicator. Waiting for available options.") }
       }
     }
   }

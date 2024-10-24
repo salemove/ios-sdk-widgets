@@ -34,6 +34,19 @@ extension EntryWidget {
             }
         }
 
+        var hintline: String {
+            switch self {
+            case .chat:
+                return Localization.EntryWidget.LiveChat.Button.Accessibility.hint
+            case .audio:
+                return Localization.EntryWidget.Audio.Button.Accessibility.hint
+            case .video:
+                return Localization.EntryWidget.Video.Button.Accessibility.hint
+            case .secureMessaging:
+                return Localization.EntryWidget.SecureMessaging.Button.Accessibility.hint
+            }
+        }
+
         var image: UIImage {
             switch self {
             case .chat:
