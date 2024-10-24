@@ -50,3 +50,25 @@ extension UIFont {
         return UIFont(descriptor: descriptor, size: size)
     }
 }
+
+extension UIFont {
+    /// Returns a font instance that is scaled appropriately based on the user's current content size category preferences
+    /// for the specified `UIFont.TextStyle`. It resolves the internal `FontScaling.Style` and `FontScaling.Description`
+    /// to retrieve the original font's weight and size, then scales it according to the current content size category.
+    static func scaledFont(forTextStyle: UIFont.TextStyle) -> UIFont? {
+        var descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: forTextStyle)
+        guard let style = FontScaling.Style(forTextStyle),
+              let description = FontScaling.theme.descriptions[style] else {
+            return nil
+        }
+        descriptor = descriptor.addingAttributes(
+            [
+                UIFontDescriptor.AttributeName.traits: [UIFontDescriptor.TraitKey.weight: description.weight]
+            ]
+        )
+        // Create a font copy with original size to scale it with current preferred content size category
+        let fontCopy = UIFont(descriptor: descriptor, size: description.size)
+
+        return UIFontMetrics(forTextStyle: forTextStyle).scaledFont(for: fontCopy)
+    }
+}

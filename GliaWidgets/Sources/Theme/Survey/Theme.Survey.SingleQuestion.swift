@@ -26,7 +26,7 @@ public extension Theme.SurveyStyle {
                 title: .init(
                     color: color.baseDark.hex,
                     font: font.mediumSubtitle1,
-                    textStyle: .subheadline,
+                    textStyle: .headline,
                     accessibility: .init(isFontScalingEnabled: true)
                 ),
                 tintColor: color.primary.hex,
