@@ -1,28 +1,25 @@
 import UIKit
 
-final class SecureMessagingBottomBannerView: UIView {
+final class SendingMessageUnavailableBannerView: UIView {
     private static let horizontalMargins = 16.0
     private static let verticalMargins = 8.0
 
     private let label = UILabel().makeView()
-    private let divider = UIView().makeView()
+    private let icon = UIImageView(image: Asset.sendMessageUnavailableInfo.image).makeView()
 
-    private lazy var visibleLabelConstraints: [NSLayoutConstraint] = [
-        label.leadingAnchor.constraint(lessThanOrEqualTo: leadingAnchor, constant: Self.horizontalMargins),
+    private lazy var visibleConstraints: [NSLayoutConstraint] = [
+        icon.trailingAnchor.constraint(equalTo: label.leadingAnchor, constant: -8),
+        icon.centerYAnchor.constraint(equalTo: label.centerYAnchor),
+        icon.widthAnchor.constraint(equalToConstant: 16),
+        icon.heightAnchor.constraint(equalTo: icon.widthAnchor, multiplier: 1.0),
+        label.leadingAnchor.constraint(lessThanOrEqualTo: leadingAnchor, constant: 40),
         label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Self.horizontalMargins),
         label.topAnchor.constraint(equalTo: topAnchor, constant: Self.verticalMargins),
         label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Self.verticalMargins)
     ]
 
-    private lazy var visibleDividerConstraints: [NSLayoutConstraint] = [
-        divider.heightAnchor.constraint(equalToConstant: 1),
-        divider.topAnchor.constraint(equalTo: topAnchor, constant: -1),
-        divider.leadingAnchor.constraint(lessThanOrEqualTo: leadingAnchor),
-        divider.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
-    ]
-
-    private lazy var invisibleConstraints = [
-        self.heightAnchor.constraint(equalToConstant: 0)
+    private lazy var invisibleConstraints: [NSLayoutConstraint] = [
+        self.heightAnchor.constraint(lessThanOrEqualToConstant: 0)
     ]
 
     var props = Props.initial {
@@ -45,7 +42,9 @@ final class SecureMessagingBottomBannerView: UIView {
     private func setup() {
         addSubview(label)
         label.numberOfLines = 0
-        addSubview(divider)
+
+        addSubview(icon)
+
         renderHidden(isHidden)
         renderProps()
     }
@@ -65,13 +64,11 @@ final class SecureMessagingBottomBannerView: UIView {
         // we deactivate relevant constraints if view gets hidden
         // and activate zero-height constraints.
         if hidden {
-            NSLayoutConstraint.deactivate(visibleLabelConstraints)
-            NSLayoutConstraint.deactivate(visibleDividerConstraints)
+            NSLayoutConstraint.deactivate(visibleConstraints)
             NSLayoutConstraint.activate(invisibleConstraints)
         } else {
             NSLayoutConstraint.deactivate(invisibleConstraints)
-            NSLayoutConstraint.activate(visibleLabelConstraints)
-            NSLayoutConstraint.activate(visibleDividerConstraints)
+            NSLayoutConstraint.activate(visibleConstraints)
         }
         // Layout manually to enforce constraints to be applied immediately,
         // thus affecting the `frame`.
@@ -83,18 +80,18 @@ final class SecureMessagingBottomBannerView: UIView {
         label.textColor = props.style.textColor
         backgroundColor = props.style.backgroundColor.color
         label.font = props.style.font
+        icon.tintColor = props.style.iconColor
         isHidden = props.isHidden
-        divider.backgroundColor = props.style.dividerColor
     }
 }
 
-extension SecureMessagingBottomBannerView {
+extension SendingMessageUnavailableBannerView {
     struct Props: Equatable {
-        let style: SecureMessagingBottomBannerViewStyle
+        let style: SendingMessageUnavailableBannerViewStyle
         let isHidden: Bool
     }
 }
 
-extension SecureMessagingBottomBannerView.Props {
+extension SendingMessageUnavailableBannerView.Props {
     fileprivate static let initial = Self(style: .initial, isHidden: false)
 }
