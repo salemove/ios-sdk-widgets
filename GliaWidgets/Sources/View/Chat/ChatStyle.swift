@@ -53,6 +53,9 @@ public class ChatStyle: EngagementStyle {
     /// Style of the Glia Virtual Assistant
     public var gliaVirtualAssistant: GliaVirtualAssistantStyle
 
+    /// Style of the secure messaging bottom banner view.
+    public var secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle
+
     /// - Parameters:
     ///   - header: Style of the view's header (navigation bar area) when the screen is displaying live chat.
     ///   - connect: Styles for different engagement connection states.
@@ -95,7 +98,8 @@ public class ChatStyle: EngagementStyle {
         secureTranscriptHeader: HeaderStyle,
         unreadMessageDivider: UnreadMessageDividerStyle,
         systemMessageStyle: Theme.SystemMessageStyle,
-        gliaVirtualAssistant: GliaVirtualAssistantStyle
+        gliaVirtualAssistant: GliaVirtualAssistantStyle,
+        secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle
     ) {
         self.title = title
         self.visitorMessageStyle = visitorMessageStyle
@@ -114,6 +118,7 @@ public class ChatStyle: EngagementStyle {
         self.unreadMessageDivider = unreadMessageDivider
         self.systemMessageStyle = systemMessageStyle
         self.gliaVirtualAssistant = gliaVirtualAssistant
+        self.secureMessagingBottomBannerStyle = secureMessagingBottomBannerStyle
 
         super.init(
             header: header,

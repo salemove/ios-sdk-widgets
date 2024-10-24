@@ -163,7 +163,7 @@
 "engagement.queue.transferring" = "Transferring";
 "ios.engagement.connection_screen.video_notice" = "(By default, your video will be turned off)";
 "engagement.queue_wait.message" = "You can continue browsing and we will connect you automatically.";
-"engagement.secure_messaging.title" = "Messaging";
+"engagement.secure_messaging.title" = "Secure Messaging";
 "error.general" = "Something went wrong.";
 "error.internal" = "Something went wrong.";
 "error.unexpected" = "Something went wrong.";
@@ -203,20 +203,20 @@
 "message_center.welcome.check_messages" = "Check messages";
 "message_center.confirmation.check_messages.accessibility.hint" = "Navigates you to the chat transcript.";
 "message_center.confirmation.check_messages.accessibility.label" = "Check messages";
-"message_center.confirmation.subtitle" = "Your message has been sent. We will get back to you within 48 hours.";
-"message_center.header" = "Messaging";
+"message_center.confirmation.subtitle" = "Your message has been sent. We will get back to you within 1 business day.";
+"message_center.header" = "Secure Messaging";
 "message_center.not_authenticated.message" = "We could not verify your authentication status.";
 "message_center.unavailable.message" = "The Message Center is currently unavailable. Please try again later.";
 "message_center.unavailable.title" = "Message Center Unavailable";
-"message_center.welcome.subtitle" = "Send a message and we will get back to you within 48 hours.";
+"message_center.welcome.subtitle" = "Send a message and we will get back to you within 1 business day.";
 "message_center.welcome.check_messages.accessibility.hint" = "Navigates you to the chat transcript.";
 "message_center.welcome.file_picker.accessibility.hint" = "Opens the file picker to attach media.";
 "message_center.welcome.file_picker.accessibility.label" = "File picker";
 "message_center.welcome.message_length.error" = "The message cannot exceed 10,000 characters.";
-"message_center.welcome.message_input.placeholder" = "Enter your message";
+"message_center.welcome.message_input.placeholder" = "Enter message";
 "message_center.welcome.message_title" = "Your message";
 "message_center.welcome.send.accessibility.hint" = "Sends a secure message.";
-"message_center.welcome.title" = "Welcome to Message Center";
+"message_center.welcome.title" = "Welcome to Secure Messaging";
 "screen_sharing.visitor_screen.disclaimer.title" = "You are about to share your screen";
 "screen_sharing.visitor_screen.end.title" = "End Screen Sharing";
 "screen_sharing.visitor_screen.end.accessibility.hint" = "Ends screen sharing";
@@ -241,3 +241,25 @@
 "engagement.confirm.link2.accessibility.label" = "Privacy Policies";
 
 "live_observation.indicator.message" = "Your app screen is visible to the operator.";
+
+"secure_messaging.chat.banner.top" = "Need live support?";
+"secure_messaging.chat.banner.bottom" = "Secure messaging has an expected response time of 1 business day.";
+"secure_messaging.chat.unavailable.message" = "Sending messages is currently not available.";
+"secure_messaging.chat.leave_current_conversation.title" = "Leave Current Conversation?";
+"secure_messaging.chat.leave_current_conversation.message" = "You have an ongoing conversation. Starting a new conversation before ongoing ones are resolved may lead to our agents overlooking your current query.";
+"secure_messaging.chat.leave_current_conversation.button.positive" = "Stay";
+"secure_messaging.chat.leave_current_conversation.button.negative" = "Leave";
+
+"entry_widget.live_chat.button.label" = "Live Chat";
+"entry_widget.live_chat.button.description" = "For the texter in all of us";
+"entry_widget.audio.button.label" = "Audio";
+"entry_widget.audio.button.description" = "Speak through your device";
+"entry_widget.video.button.label" = "Video";
+"entry_widget.video.button.description" = "Face-to-face, just like in person";
+"entry_widget.secure_messaging.button.label" = "Secure Messaging";
+"entry_widget.secure_messaging.button.description" = "Start a conversation, we’ll get back to you";
+"entry_widget.empty_state.title" = "Support team is currently offline";
+"entry_widget.empty_state.description" = "We are here to assist you during our business hours.";
+"entry_widget.error_state.title" = "Oops! Contacts Couldn't Be Loaded";
+"entry_widget.error_state.description" = "We couldn't load the contacts at this time. This may be due to a temporary syncing issue or network problem.";
+"entry_widget.error_state.try_again.button.label" = "Try again";

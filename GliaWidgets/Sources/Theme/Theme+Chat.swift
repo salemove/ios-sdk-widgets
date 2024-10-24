@@ -395,6 +395,15 @@ extension Theme {
             fileDownload: fileDownload
         )
 
+        let secureMessagingBottomBannerStyle = SecureMessagingBottomBannerViewStyle(
+            message: Localization.SecureMessaging.Chat.Banner.bottom,
+            font: font.caption,
+            textStyle: .caption1,
+            textColor: color.baseNormal,
+            backgroundColor: .fill(color: color.baseNeutral),
+            dividerColor: color.baseShade
+        )
+
         return ChatStyle(
             header: header,
             connect: connect,
@@ -420,7 +429,8 @@ extension Theme {
             secureTranscriptHeader: secureTranscriptHeader,
             unreadMessageDivider: unreadMessageDivider,
             systemMessageStyle: systemMessage,
-            gliaVirtualAssistant: gliaVirtualAssistantStyle
+            gliaVirtualAssistant: gliaVirtualAssistantStyle,
+            secureMessagingBottomBannerStyle: secureMessagingBottomBannerStyle
         )
     }
 
