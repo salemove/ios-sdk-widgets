@@ -11,7 +11,7 @@ extension GliaTests {
         ) { _ in }
 
         XCTAssertNoThrow(
-            try sdk.getEngagementLauncher(queueIds: nil)
+            try sdk.getEngagementLauncher(queueIds: [])
         )
     }
     
@@ -23,7 +23,7 @@ extension GliaTests {
             theme: .mock()
         ) { _ in }
         
-        let engagementLauncher = try sdk.getEngagementLauncher(queueIds: nil)
+        let engagementLauncher = try sdk.getEngagementLauncher(queueIds: [])
         
         try engagementLauncher.startChat()
 
@@ -38,7 +38,7 @@ extension GliaTests {
             theme: .mock()
         ) { _ in }
         
-        let engagementLauncher = try sdk.getEngagementLauncher(queueIds: nil)
+        let engagementLauncher = try sdk.getEngagementLauncher(queueIds: [])
         
         try engagementLauncher.startAudioCall()
 
@@ -53,7 +53,7 @@ extension GliaTests {
             theme: .mock()
         ) { _ in }
         
-        let engagementLauncher = try sdk.getEngagementLauncher(queueIds: nil)
+        let engagementLauncher = try sdk.getEngagementLauncher(queueIds: [])
         
         try engagementLauncher.startVideoCall()
 
@@ -68,7 +68,7 @@ extension GliaTests {
             theme: .mock()
         ) { _ in }
         
-        let engagementLauncher = try sdk.getEngagementLauncher(queueIds: nil)
+        let engagementLauncher = try sdk.getEngagementLauncher(queueIds: [])
         
         try engagementLauncher.startSecureMessaging()
 
