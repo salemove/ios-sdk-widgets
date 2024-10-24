@@ -34,7 +34,8 @@ extension Glia.Environment {
         snackBar: .mock,
         processInfo: .mock(),
         cameraDeviceManager: { .mock },
-        queuesMonitor: .mock
+        queuesMonitor: .mock,
+        isAuthenticated: { false }
     )
 }
 
