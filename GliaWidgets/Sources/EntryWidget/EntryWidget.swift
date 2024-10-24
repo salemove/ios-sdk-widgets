@@ -15,7 +15,7 @@ public final class EntryWidget: NSObject {
     private var cancellables = CancelBag()
     private let environment: Environment
 
-    @Published private var viewState: ViewState = .loading
+    @Published private(set) var viewState: ViewState = .loading
 
     private let sizeConstraints: SizeConstraints = .init(
         singleCellHeight: 72,
@@ -98,6 +98,10 @@ private extension EntryWidget {
                 }
             }
         }
+        if !environment.isAuthenticated() {
+            availableMediaTypes.remove(.secureMessaging)
+        }
+
         return Array(availableMediaTypes).sorted(by: { $0.rawValue < $1.rawValue })
     }
 
