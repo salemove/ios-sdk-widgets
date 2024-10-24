@@ -26,6 +26,7 @@ class ChatView: EngagementView {
     var gvaButtonTapped: ((GvaOption) -> Void)?
     var retryMessageTapped: ((OutgoingMessage) -> Void)?
     let secureMessagingBottomBannerView = SecureMessagingBottomBannerView().makeView()
+    let sendingMessageUnavailabilityBannerView = SendingMessageUnavailableBannerView().makeView()
 
     let style: ChatStyle
     let environment: Environment
@@ -115,6 +116,8 @@ class ChatView: EngagementView {
         addKeyboardDismissalTapGesture()
         typingIndicatorView.accessibilityIdentifier = "chat_typingIndicator"
         typingIndicatorContainer.isHidden = true
+        // TODO: remove this call with implementation of MOB-3739
+        renderBanners()
     }
 
     override func defineLayout() {
@@ -152,6 +155,13 @@ class ChatView: EngagementView {
             secureMessagingBottomBannerView.topAnchor.constraint(equalTo: quickReplyView.bottomAnchor)
         ]
 
+        addSubview(sendingMessageUnavailabilityBannerView)
+        constraints += [
+            sendingMessageUnavailabilityBannerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            sendingMessageUnavailabilityBannerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            sendingMessageUnavailabilityBannerView.topAnchor.constraint(equalTo: secureMessagingBottomBannerView.bottomAnchor)
+        ]
+
         addSubview(messageEntryView)
         let messageEntryInsets = UIEdgeInsets(
             top: 0,
@@ -169,7 +179,7 @@ class ChatView: EngagementView {
         }
 
         constraints += messageEntryView.layoutIn(safeAreaLayoutGuide, edges: .horizontal)
-        constraints += messageEntryView.topAnchor.constraint(equalTo: secureMessagingBottomBannerView.bottomAnchor)
+        constraints += messageEntryView.topAnchor.constraint(equalTo: sendingMessageUnavailabilityBannerView.bottomAnchor)
 
         addSubview(unreadMessageIndicatorView)
         unreadMessageIndicatorView.translatesAutoresizingMaskIntoConstraints = false
@@ -178,10 +188,17 @@ class ChatView: EngagementView {
         constraints += unreadMessageIndicatorView.bottomAnchor.constraint(
             equalTo: messageEntryView.topAnchor, constant: kUnreadMessageIndicatorInset
         )
+    }
 
+    func renderBanners() {
         secureMessagingBottomBannerView.props = .init(
             style: style.secureMessagingBottomBannerStyle,
-            isHidden: true // Logic to show/hide SC bottom banner is to be added with MOB-3634
+            isHidden: true  // Logic to show/hide SC bottom banner is to be added with MOB-3634
+        )
+
+        sendingMessageUnavailabilityBannerView.props = .init(
+            style: style.sendingMessageUnavailableBannerViewStyle,
+            isHidden: true // Logic to show/hide unavailability is to be added with MOB-3739
         )
     }
 }
