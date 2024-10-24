@@ -65,6 +65,7 @@ public enum Asset {
       public static let uploadRemove = ImageAsset(name: "uploadRemove")
     public static let chatPickMedia = ImageAsset(name: "chatPickMedia")
     public static let chatSend = ImageAsset(name: "chatSend")
+    public static let sendMessageUnavailableInfo = ImageAsset(name: "send-message-unavailable-info")
     public static let unreadMessageIndicator = ImageAsset(name: "unreadMessageIndicator")
     public static let back = ImageAsset(name: "back")
     public static let close = ImageAsset(name: "close")
@@ -109,6 +110,7 @@ public enum Asset {
       uploadRemove,
       chatPickMedia,
       chatSend,
+      sendMessageUnavailableInfo,
       unreadMessageIndicator,
       back,
       close,
