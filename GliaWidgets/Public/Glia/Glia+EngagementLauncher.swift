@@ -8,8 +8,8 @@ extension Glia {
     ///
     /// - Returns:
     ///   - `EngagementLauncher` instance.
-    public func getEngagementLauncher(queueIds: [String]?) throws -> EngagementLauncher {
-        let parameters = try getEngagementParameters(in: queueIds ?? [])
+    public func getEngagementLauncher(queueIds: [String]) throws -> EngagementLauncher {
+        let parameters = try getEngagementParameters(in: queueIds)
         return try EngagementLauncher { [weak self] engagementKind, sceneProvider in
             try self?.resolveEngangementState(
                 engagementKind: engagementKind,
