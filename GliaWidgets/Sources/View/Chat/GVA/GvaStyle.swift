@@ -1,6 +1,6 @@
 import UIKit
 
-/// Style of the GVA views
+/// Style of the GVA views.
 public struct GliaVirtualAssistantStyle {
     /// Style of Persistent Button
     public var persistentButton: GvaPersistentButtonStyle

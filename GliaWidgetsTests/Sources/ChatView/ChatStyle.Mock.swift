@@ -24,7 +24,8 @@ extension ChatStyle {
         unreadMessageDivider: UnreadMessageDividerStyle = .mock(),
         systemMessageStyle: Theme.SystemMessageStyle = .mock(),
         gliaVirtualAssistant: GliaVirtualAssistantStyle = .mock(),
-        secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle = .mock()
+        secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle = .mock(),
+        sendingMessageUnavailableBannerViewStyle: SendingMessageUnavailableBannerViewStyle = .mock()
     ) -> ChatStyle {
         ChatStyle.init(
             header: header,
@@ -47,7 +48,8 @@ extension ChatStyle {
             unreadMessageDivider: unreadMessageDivider,
             systemMessageStyle: systemMessageStyle,
             gliaVirtualAssistant: gliaVirtualAssistant,
-            secureMessagingBottomBannerStyle: secureMessagingBottomBannerStyle
+            secureMessagingBottomBannerStyle: secureMessagingBottomBannerStyle,
+            sendingMessageUnavailableBannerViewStyle: sendingMessageUnavailableBannerViewStyle
         )
     }
 }
@@ -553,6 +555,26 @@ extension SecureMessagingBottomBannerViewStyle {
             textColor: textColor,
             backgroundColor: backgroundColor,
             dividerColor: dividerColor
+        )
+    }
+}
+
+extension SendingMessageUnavailableBannerViewStyle {
+    static func mock(
+        message: String = Localization.SecureMessaging.Chat.Unavailable.message,
+        font: UIFont = Theme().chat.sendingMessageUnavailableBannerViewStyle.font,
+        textStyle: UIFont.TextStyle = Theme().chat.sendingMessageUnavailableBannerViewStyle.textStyle,
+        textColor: UIColor = Theme().chat.sendingMessageUnavailableBannerViewStyle.textColor,
+        backgroundColor: ColorType = Theme().chat.sendingMessageUnavailableBannerViewStyle.backgroundColor,
+        iconColor: UIColor = Theme().chat.sendingMessageUnavailableBannerViewStyle.iconColor
+    ) -> Self {
+        .init(
+            message: message,
+            font: font,
+            textStyle: textStyle,
+            textColor: textColor,
+            backgroundColor: backgroundColor,
+            iconColor: iconColor
         )
     }
 }
