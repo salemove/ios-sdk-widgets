@@ -66,7 +66,11 @@ extension Glia.Environment {
             fail("\(Self.self).cameraDeviceManager")
             return .failing
         },
-        queuesMonitor: .failing
+        queuesMonitor: .failing,
+        isAuthenticated: {
+            fail("\(Self.self).isAuthenticated")
+            return false
+        }
     )
 }
 

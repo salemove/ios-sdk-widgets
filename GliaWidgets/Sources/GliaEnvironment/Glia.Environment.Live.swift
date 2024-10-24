@@ -49,7 +49,18 @@ extension Glia.Environment {
                 subscribeForQueuesUpdates: CoreSdkClient.live.subscribeForQueuesUpdates,
                 unsubscribeFromUpdates: CoreSdkClient.live.unsubscribeFromUpdates
             )
-        )
+        ),
+        // This logic was moved here from EngagementCoordinator.Environment
+        // Because it will be used for EntryWidget as well. This is as of now
+        // The simplest way to determine if visitor is authenticated or not
+        isAuthenticated: {
+            do {
+                return try CoreSdkClient.live.authentication(.forbiddenDuringEngagement).isAuthenticated
+            } catch {
+                debugPrint(#function, "isAuthenticated:", error.localizedDescription)
+                return false
+            }
+        }
     )
 }
 
