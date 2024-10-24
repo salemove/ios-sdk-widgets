@@ -126,7 +126,8 @@ class ChatTextContentView: BaseView {
             constraints += textView.layoutInSuperview(insets: kTextInsets)
         }
 
-        /// Retrieve scaled font for given text style because font of attributed font does not change with dynamic size update
+        // Retrieve scaled font for given text style because font of attributed
+        // string does not change with dynamic size update
         let scaledFont = UIFont.scaledFont(forTextStyle: style.text.textStyle) ?? style.text.font
 
         let attributes: [NSAttributedString.Key: Any] = [
