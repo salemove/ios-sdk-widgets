@@ -404,6 +404,15 @@ extension Theme {
             dividerColor: color.baseShade
         )
 
+        let sendingMessageUnavailableBannerViewStyle = SendingMessageUnavailableBannerViewStyle(
+            message: Localization.SecureMessaging.Chat.Unavailable.message,
+            font: font.caption,
+            textStyle: .caption1,
+            textColor: color.baseLight,
+            backgroundColor: .fill(color: color.systemNegative),
+            iconColor: color.baseLight
+        )
+
         return ChatStyle(
             header: header,
             connect: connect,
@@ -430,7 +439,8 @@ extension Theme {
             unreadMessageDivider: unreadMessageDivider,
             systemMessageStyle: systemMessage,
             gliaVirtualAssistant: gliaVirtualAssistantStyle,
-            secureMessagingBottomBannerStyle: secureMessagingBottomBannerStyle
+            secureMessagingBottomBannerStyle: secureMessagingBottomBannerStyle,
+            sendingMessageUnavailableBannerViewStyle: sendingMessageUnavailableBannerViewStyle
         )
     }
 

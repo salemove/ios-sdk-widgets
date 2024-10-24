@@ -56,6 +56,9 @@ public class ChatStyle: EngagementStyle {
     /// Style of the secure messaging bottom banner view.
     public var secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle
 
+    /// Style for unavailability to send messages banner view.
+    public var sendingMessageUnavailableBannerViewStyle: SendingMessageUnavailableBannerViewStyle
+
     /// - Parameters:
     ///   - header: Style of the view's header (navigation bar area) when the screen is displaying live chat.
     ///   - connect: Styles for different engagement connection states.
@@ -76,7 +79,10 @@ public class ChatStyle: EngagementStyle {
     ///   - secureTranscriptTitle: Header title for secure messaging transcript.
     ///   - secureTranscriptHeader: Style of the view's header (navigation bar area) when the screen is displaying secure conversations.
     ///   - unreadMessageDivider: Style for divider of unread messages in secure messaging transcript.
-    ///
+    ///   - systemMessageStyle: Style of a visitor's message.
+    ///   - gliaVirtualAssistant: Style of the GVA views.
+    ///   - secureMessagingBottomBannerStyle: Style of the secure messaging bottom banner view.
+    ///   - sendingMessageUnavailableBannerViewStyle: Style for unavailability to send messages banner view.
     public init(
         header: HeaderStyle,
         connect: ConnectStyle,
@@ -99,7 +105,8 @@ public class ChatStyle: EngagementStyle {
         unreadMessageDivider: UnreadMessageDividerStyle,
         systemMessageStyle: Theme.SystemMessageStyle,
         gliaVirtualAssistant: GliaVirtualAssistantStyle,
-        secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle
+        secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle,
+        sendingMessageUnavailableBannerViewStyle: SendingMessageUnavailableBannerViewStyle
     ) {
         self.title = title
         self.visitorMessageStyle = visitorMessageStyle
@@ -119,6 +126,7 @@ public class ChatStyle: EngagementStyle {
         self.systemMessageStyle = systemMessageStyle
         self.gliaVirtualAssistant = gliaVirtualAssistant
         self.secureMessagingBottomBannerStyle = secureMessagingBottomBannerStyle
+        self.sendingMessageUnavailableBannerViewStyle = sendingMessageUnavailableBannerViewStyle
 
         super.init(
             header: header,
