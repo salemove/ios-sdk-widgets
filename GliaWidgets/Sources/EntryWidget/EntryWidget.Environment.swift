@@ -5,5 +5,6 @@ extension EntryWidget {
         var queuesMonitor: QueuesMonitor
         var engagementLauncher: EngagementLauncher
         var theme: Theme
+        var isAuthenticated: () -> Bool
     }
 }

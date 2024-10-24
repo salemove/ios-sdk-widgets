@@ -83,14 +83,7 @@ extension EngagementCoordinator.Environment {
             messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
             secureMarkMessagesAsRead: environment.coreSdk.secureMarkMessagesAsRead,
             downloadSecureFile: environment.coreSdk.downloadSecureFile,
-            isAuthenticated: { [environment] in
-                do {
-                    return try environment.coreSdk.authentication(.forbiddenDuringEngagement).isAuthenticated
-                } catch {
-                    debugPrint(#function, "isAuthenticated:", error.localizedDescription)
-                    return false
-                }
-            },
+            isAuthenticated: environment.isAuthenticated,
             startSocketObservation: environment.coreSdk.startSocketObservation,
             stopSocketObservation: environment.coreSdk.stopSocketObservation,
             pushNotifications: environment.coreSdk.pushNotifications,

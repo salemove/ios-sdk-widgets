@@ -87,6 +87,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
+        gliaEnv.isAuthenticated = { return false }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
         gliaEnv.uuid = { .mock }

@@ -98,6 +98,10 @@ private extension EntryWidget {
                 }
             }
         }
+        if !environment.isAuthenticated() {
+            availableMediaTypes.remove(.secureMessaging)
+        }
+
         return Array(availableMediaTypes).sorted(by: { $0.rawValue < $1.rawValue })
     }
 

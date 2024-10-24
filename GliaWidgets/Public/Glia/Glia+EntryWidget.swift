@@ -14,7 +14,8 @@ extension Glia {
             environment: .init(
                 queuesMonitor: environment.queuesMonitor,
                 engagementLauncher: try getEngagementLauncher(queueIds: queueIds),
-                theme: theme
+                theme: theme,
+                isAuthenticated: environment.isAuthenticated
             )
         )
     }
