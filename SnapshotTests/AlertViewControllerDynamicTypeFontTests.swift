@@ -74,4 +74,15 @@ final class AlertViewControllerDynamicTypeFontTests: SnapshotTestCase {
         alert.assertSnapshot(as: .extra3LargeFont, in: .portrait)
         alert.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
+
+    func test_leaveCurrentConversationAlert() {
+        let alert = alert(ofKind: .leaveConversation(
+            conf: .leaveConversationMock(),
+            accessibilityIdentifier: "mocked-accessibility-identifier",
+            confirmed: {}
+        ))
+
+        alert.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        alert.assertSnapshot(as: .extra3LargeFont, in: .landscape)
+    }
 }
