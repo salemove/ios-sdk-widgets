@@ -74,4 +74,15 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
         alert.assertSnapshot(as: .image, in: .portrait)
         alert.assertSnapshot(as: .image, in: .landscape)
     }
+
+    func test_leaveCurrentConversationAlert() {
+        let alert = alert(ofKind: .leaveConversation(
+            conf: .leaveConversationMock(),
+            accessibilityIdentifier: "mocked-accessibility-identifier",
+            confirmed: {}
+        ))
+
+        alert.assertSnapshot(as: .image, in: .portrait)
+        alert.assertSnapshot(as: .image, in: .landscape)
+    }
 }
