@@ -44,6 +44,9 @@ public struct AlertStyle: Equatable {
     /// Style of a negative action button.
     public var negativeAction: ActionButtonStyle
 
+    /// Style of a new negative action button.
+    public var negativeNeutralAction: ActionButtonStyle
+
     /// Style of 'powered by' view.
     public var poweredBy: PoweredByStyle
 
@@ -65,6 +68,7 @@ public struct AlertStyle: Equatable {
     ///   - actionAxis: Direction of the action buttons.
     ///   - positiveAction: Style of a positive action button.
     ///   - negativeAction: Style of a negative action button.
+    ///   - newNegativeAction: Style of a new negative action button.
     ///   - poweredBy: Style of 'powered by' view.
     ///   - accessibility: Accessibility related properties.
     ///
@@ -83,6 +87,7 @@ public struct AlertStyle: Equatable {
         actionAxis: NSLayoutConstraint.Axis,
         positiveAction: ActionButtonStyle,
         negativeAction: ActionButtonStyle,
+        negativeNeutralAction: ActionButtonStyle,
         poweredBy: PoweredByStyle,
         accessibility: Accessibility = .unsupported
     ) {
@@ -100,6 +105,7 @@ public struct AlertStyle: Equatable {
         self.actionAxis = actionAxis
         self.positiveAction = positiveAction
         self.negativeAction = negativeAction
+        self.negativeNeutralAction = negativeNeutralAction
         self.poweredBy = poweredBy
         self.accessibility = accessibility
     }
