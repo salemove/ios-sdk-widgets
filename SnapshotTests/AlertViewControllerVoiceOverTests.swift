@@ -61,6 +61,16 @@ final class AlertViewControllerVoiceOverTests: SnapshotTestCase {
         alert.assertSnapshot(as: .accessibilityImage)
     }
 
+    func test_leaveCurrentConversationAlert() {
+        let alert = alert(ofKind: .leaveConversation(
+            conf: .leaveConversationMock(),
+            accessibilityIdentifier: "mocked-accessibility-identifier",
+            confirmed: {}
+        ))
+
+        alert.assertSnapshot(as: .accessibilityImage)
+    }
+
     private func alert(ofKind type: AlertType) -> AlertViewController {
         let viewController = AlertViewController(
             type: type,

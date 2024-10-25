@@ -84,6 +84,16 @@ extension ConfirmationAlertConfiguration {
             showsPoweredBy: true
         )
     }
+
+    static func leaveConversationMock() -> Self {
+        .init(
+            title: "Leave Current Conversation?",
+            message: "mocked-message",
+            negativeTitle: "Leave",
+            positiveTitle: "Stay",
+            showsPoweredBy: true
+        )
+    }
 }
 
 extension SingleMediaUpgradeAlertConfiguration {
