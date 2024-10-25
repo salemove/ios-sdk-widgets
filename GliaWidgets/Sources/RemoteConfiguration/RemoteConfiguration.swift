@@ -60,6 +60,7 @@ extension RemoteConfiguration {
         let linkButton: Button?
         let positiveButton: Button?
         let negativeButton: Button?
+        let negativeNeutralButton: Button?
         let buttonAxis: Axis?
     }
 
