@@ -60,6 +60,9 @@ public struct AlertConfiguration: Equatable {
     /// Configuration of expired access token error
     public var expiredAccessTokenError: MessageAlertConfiguration
 
+    /// Configuration of the current conversation leaving confirmation alert.
+    public var leaveCurrentConversation: ConfirmationAlertConfiguration
+
     /// - Parameters:
     ///   - leaveQueue: Configuration of the queue leaving confirmation alert.
     ///   - endEngagement: Configuration of the engagement ending confirmation alert.
@@ -81,7 +84,8 @@ public struct AlertConfiguration: Equatable {
     ///     due to unauthenticated visitor.
     ///   - unsupportedGvaBroadcastError: Configuration of the unsupported GVA broadcast events error alert.
     ///   - liveObservationConfirmation: Configuration of the Live Observation confirmation alert
-    ///   
+    ///   - leaveCurrentConversation: Configuration of the current conversation leaving confirmation alert.
+    ///
     public init(
         leaveQueue: ConfirmationAlertConfiguration,
         endEngagement: ConfirmationAlertConfiguration,
@@ -102,7 +106,8 @@ public struct AlertConfiguration: Equatable {
         unavailableMessageCenterForBeingUnauthenticated: MessageAlertConfiguration,
         unsupportedGvaBroadcastError: MessageAlertConfiguration,
         liveObservationConfirmation: ConfirmationAlertConfiguration,
-        expiredAccessTokenError: MessageAlertConfiguration
+        expiredAccessTokenError: MessageAlertConfiguration,
+        leaveCurrentConversation: ConfirmationAlertConfiguration
     ) {
         self.leaveQueue = leaveQueue
         self.endEngagement = endEngagement
@@ -124,5 +129,6 @@ public struct AlertConfiguration: Equatable {
         self.unsupportedGvaBroadcastError = unsupportedGvaBroadcastError
         self.liveObservationConfirmation = liveObservationConfirmation
         self.expiredAccessTokenError = expiredAccessTokenError
+        self.leaveCurrentConversation = leaveCurrentConversation
     }
 }

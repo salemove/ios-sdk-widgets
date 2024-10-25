@@ -30,6 +30,18 @@ extension Theme {
                 isFontScalingEnabled: true
             )
         )
+        let negativeNeutralAction = ActionButtonStyle(
+            title: Localization.SecureMessaging.Chat.LeaveCurrentConversation.Button.negative,
+            titleFont: font.buttonLabel,
+            titleColor: color.systemNegative,
+            backgroundColor: .fill(color: .clear),
+            borderWidth: 1,
+            borderColor: color.baseShade,
+            accessibility: .init(
+                label: Localization.SecureMessaging.Chat.LeaveCurrentConversation.Button.negative,
+                isFontScalingEnabled: true
+            )
+        )
         let positiveAction = ActionButtonStyle(
             title: Localization.General.yes,
             titleFont: font.buttonLabel,
@@ -58,6 +70,7 @@ extension Theme {
             actionAxis: .horizontal,
             positiveAction: positiveAction,
             negativeAction: negativeAction,
+            negativeNeutralAction: negativeNeutralAction,
             poweredBy: poweredBy,
             accessibility: .init(isFontScalingEnabled: true)
         )
