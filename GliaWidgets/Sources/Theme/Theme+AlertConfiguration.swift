@@ -149,6 +149,15 @@ extension Theme {
             showsPoweredBy: showsPoweredBy
         )
 
+        let leaveCurrentConversation = ConfirmationAlertConfiguration(
+            title: Localization.SecureMessaging.Chat.LeaveCurrentConversation.title,
+            message: Localization.SecureMessaging.Chat.LeaveCurrentConversation.message,
+            negativeTitle: Localization.SecureMessaging.Chat.LeaveCurrentConversation.Button.negative,
+            positiveTitle: Localization.SecureMessaging.Chat.LeaveCurrentConversation.Button.positive,
+            switchButtonBackgroundColors: false,
+            showsPoweredBy: showsPoweredBy
+        )
+
         return AlertConfiguration(
             leaveQueue: leaveQueue,
             endEngagement: endEngagement,
@@ -169,7 +178,8 @@ extension Theme {
             unavailableMessageCenterForBeingUnauthenticated: unavailableMessageCenterForBeingUnauthenticated,
             unsupportedGvaBroadcastError: unsupportedGvaBroadcastError,
             liveObservationConfirmation: liveObservationConfirmation,
-            expiredAccessTokenError: expiredAccessTokenError
+            expiredAccessTokenError: expiredAccessTokenError,
+            leaveCurrentConversation: leaveCurrentConversation
         )
     }
 }
