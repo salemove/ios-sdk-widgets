@@ -84,6 +84,9 @@ extension AlertManager.AlertTypeComposer {
                 error: error,
                 dismissed: dismissed
             )
+
+        case let .leaveCurrentConversation(confirmed):
+            return leaveCurrentConversationAlertType(confirmed: confirmed)
         }
     }
 
@@ -329,6 +332,15 @@ private extension AlertManager.AlertTypeComposer {
             theme.alertConfiguration.screenShareOffer.withOperatorName(operators),
             accepted: acceptedOffer,
             declined: declinedOffer
+        )
+    }
+
+    func leaveCurrentConversationAlertType(confirmed: @escaping () -> Void) -> AlertType {
+        environment.log.prefixed(Self.self).info("Show Leave Current Conversations Dialog")
+        return .leaveConversation(
+            conf: theme.alertConfiguration.leaveCurrentConversation,
+            accessibilityIdentifier: "alert_confirmation_leaveCurrentConversation",
+            confirmed: confirmed
         )
     }
 }

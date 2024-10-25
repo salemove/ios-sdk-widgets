@@ -2,8 +2,8 @@
 extension AlertConfiguration {
     static func mock(showsPoweredBy: Bool = true) -> Self {
         .init(
-            leaveQueue: .init(showsPoweredBy: showsPoweredBy),
-            endEngagement: .init(showsPoweredBy: showsPoweredBy),
+            leaveQueue: .mock(showsPoweredBy: showsPoweredBy),
+            endEngagement: .mock(showsPoweredBy: showsPoweredBy),
             operatorEndedEngagement: .mock(),
             operatorsUnavailable: .mock(),
             mediaUpgrade: .mock(),
@@ -21,7 +21,8 @@ extension AlertConfiguration {
             unavailableMessageCenterForBeingUnauthenticated: .mock(),
             unsupportedGvaBroadcastError: .mock(),
             liveObservationConfirmation: .mock(),
-            expiredAccessTokenError: .mock()
+            expiredAccessTokenError: .mock(),
+            leaveCurrentConversation: .mock()
         )
     }
 }
@@ -54,8 +55,12 @@ extension ScreenShareOfferAlertConfiguration {
 }
 
 extension ConfirmationAlertConfiguration {
-    static func mock() -> Self {
-        .init(showsPoweredBy: true)
+    static func mock(showsPoweredBy: Bool = true) -> ConfirmationAlertConfiguration {
+        .init(
+            negativeTitle: "",
+            positiveTitle: "",
+            showsPoweredBy: showsPoweredBy
+        )
     }
 
     static func liveObservationMock() -> Self {
