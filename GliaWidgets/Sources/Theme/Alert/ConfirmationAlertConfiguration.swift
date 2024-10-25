@@ -15,10 +15,10 @@ public struct ConfirmationAlertConfiguration: Equatable {
     public var secondLinkButtonUrl: String?
 
     /// Title of the negative action button.
-    public var negativeTitle: String?
+    public var negativeTitle: String
 
     /// Title of the positive action button.
-    public var positiveTitle: String?
+    public var positiveTitle: String
 
     /// Indicates whether the action button's colors should be switched.
     public var switchButtonBackgroundColors = false
