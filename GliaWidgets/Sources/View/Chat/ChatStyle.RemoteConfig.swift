@@ -77,6 +77,10 @@ extension ChatStyle {
             configuration: configuration?.secureMessaging,
             assetBuilder: assetsBuilder
         )
+        sendingMessageUnavailableBannerViewStyle.apply(
+            configuration: configuration?.secureMessaging,
+            assetBuilder: assetsBuilder
+        )
         applyBackground(color: configuration?.background?.color)
     }
 
