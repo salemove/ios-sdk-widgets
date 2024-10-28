@@ -26,10 +26,10 @@ private extension EntryWidgetView {
                 headerView()
             }
             VStack(spacing: 16) {
-                Text(Localization.EntryWidget.ErrorState.title)
+                Text(model.style.errorTitle)
                     .setFont(model.style.errorTitleFont)
                     .setColor(model.style.errorTitleColor)
-                Text(Localization.EntryWidget.ErrorState.description)
+                Text(model.style.errorMessage)
                     .setFont(model.style.errorMessageFont)
                     .setColor(model.style.errorTitleColor)
                 errorButton()
@@ -90,10 +90,10 @@ private extension EntryWidgetView {
                 headerView()
             }
             VStack(spacing: 16) {
-                Text(Localization.EntryWidget.EmptyState.title)
+                Text(model.style.offlineTitle)
                     .setFont(model.style.errorTitleFont)
                     .setColor(model.style.errorTitleColor)
-                Text(Localization.EntryWidget.EmptyState.description)
+                Text(model.style.offlineMessage)
                     .setFont(model.style.errorMessageFont)
                     .setColor(model.style.errorTitleColor)
             }
@@ -175,16 +175,22 @@ private extension EntryWidgetView {
     func placeholderMediaTypeCell(mediaType: EntryWidget.MediaTypeItem) -> some View {
         HStack(spacing: 16) {
             Circle()
-                .fill(Color.baseShade.swiftUIColor().opacity(0.5))
+                .applyColorTypeForeground(model.style.mediaTypeItem.loading.loadingTintColor)
                 .width(model.sizeConstraints.singleCellIconSize)
                 .height(model.sizeConstraints.singleCellIconSize)
             VStack(alignment: .leading, spacing: 2) {
                 Text(mediaType.headline)
                     .setFont(model.style.mediaTypeItem.titleFont)
-                    .setColor(Color.baseNormal)
+                    .redactedPlaceholder(
+                        model.style.mediaTypeItem.loading.loadingTintColor,
+                        font: model.style.mediaTypeItem.titleFont
+                    )
                 Text(mediaType.subheadline)
                     .setFont(model.style.mediaTypeItem.messageFont)
-                    .setColor(Color.baseNormal)
+                    .redactedPlaceholder(
+                        model.style.mediaTypeItem.loading.loadingTintColor,
+                        font: model.style.mediaTypeItem.messageFont
+                    )
             }
         }
         .maxWidth(alignment: .leading)
