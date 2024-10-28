@@ -24,10 +24,10 @@ extension EntryWidgetStyle.MediaTypeItemStyle {
                 $0.value
                     .map { UIColor(hex: $0) }
                     .first
-                    .unwrap { backgroundColor = .fill(color: $0) }
+                    .unwrap { iconColor = .fill(color: $0) }
             case .gradient:
                 let colors = $0.value.convertToCgColors()
-                backgroundColor = .gradient(colors: colors)
+                iconColor = .gradient(colors: colors)
             }
         }
 
@@ -50,5 +50,18 @@ extension EntryWidgetStyle.MediaTypeItemStyle {
             uiFont: assetsBuilder.fontBuilder(configuration?.message?.font),
             textStyle: messageTextStyle
         ).unwrap { messageFont = $0 }
+
+        configuration?.loadingTintColor.unwrap {
+            switch $0.type {
+            case .fill:
+                $0.value
+                    .map { UIColor(hex: $0) }
+                    .first
+                    .unwrap { loading.loadingTintColor = .fill(color: $0) }
+            case .gradient:
+                let colors = $0.value.convertToCgColors()
+                loading.loadingTintColor = .gradient(colors: colors)
+            }
+        }
     }
 }
