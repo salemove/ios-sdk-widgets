@@ -69,6 +69,15 @@ extension SecureConversations.ChatWithTranscriptModel {
         }
     }
 
+    var isSecureConversationsAvailable: Bool {
+        switch self {
+        case .chat:
+            false
+        case let .transcript(model):
+            model.isSecureConversationsAvailable
+        }
+    }
+
     var numberOfSections: Int {
         switch self {
         case let .chat(model):

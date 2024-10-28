@@ -259,9 +259,13 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         switch type {
         case .chat:
             chatView.props = .init(header: props.chat)
-        case let .secureTranscript(needsTextInput):
+        case let .secureTranscript(needsTextInputEnabled):
             chatView.props = .init(header: props.secureTranscript)
-            chatView.messageEntryView.isHidden = !needsTextInput
+            // Instead of hiding text input, we need to disable it and corresponding buttons.
+            // TODO: Currently there is no 'disabled' styles for text entry, so we need to confirm with Android
+            // if introduction of such styles is required.
+            chatView.messageEntryView.isEnabled = needsTextInputEnabled
+            chatView.setSendingMessageUnavailabilityBannerHidden(viewModel.isSecureConversationsAvailable)
         }
     }
 
@@ -299,12 +303,12 @@ extension ChatViewController {
             if chatViewModel.chatType == .secureTranscript {
                 return chatViewModel.activeEngagement != nil
                 ? .chat
-                : .secureTranscript(needsTextInput: true)
+                : .secureTranscript(needsTextInputEnabled: true)
             } else {
                 return .chat
             }
         case .transcript(let transcriptModel):
-            return .secureTranscript(needsTextInput: transcriptModel.isSecureConversationsAvailable)
+            return .secureTranscript(needsTextInputEnabled: transcriptModel.isSecureConversationsAvailable)
         }
     }
 }
@@ -317,5 +321,5 @@ extension ChatViewController {
 }
 private enum CurrentChatModelType {
     case chat
-    case secureTranscript(needsTextInput: Bool)
+    case secureTranscript(needsTextInputEnabled: Bool)
 }

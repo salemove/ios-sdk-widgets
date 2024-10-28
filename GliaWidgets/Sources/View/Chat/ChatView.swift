@@ -196,14 +196,19 @@ class ChatView: EngagementView {
             isHidden: true  // Logic to show/hide SC bottom banner is to be added with MOB-3634
         )
 
-        sendingMessageUnavailabilityBannerView.props = .init(
-            style: style.sendingMessageUnavailableBannerViewStyle,
-            isHidden: true // Logic to show/hide unavailability is to be added with MOB-3739
-        )
+        // Hide send message unavailability banner initially.
+        setSendingMessageUnavailabilityBannerHidden(true)
     }
 }
 
 extension ChatView {
+    func setSendingMessageUnavailabilityBannerHidden(_ isHidden: Bool) {
+        sendingMessageUnavailabilityBannerView.props = .init(
+            style: style.sendingMessageUnavailableBannerViewStyle,
+            isHidden: isHidden
+        )
+    }
+
     func setOperatorTypingIndicatorIsHidden(to isHidden: Bool) {
         typingIndicatorContainer.isHidden = isHidden
     }
