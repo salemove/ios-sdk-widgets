@@ -222,6 +222,7 @@ extension RemoteConfiguration {
         let iconColor: Color?
         let title: Text?
         let message: Text?
+        let loadingTintColor: Color?
     }
 
     struct SecureConversations: Codable {
