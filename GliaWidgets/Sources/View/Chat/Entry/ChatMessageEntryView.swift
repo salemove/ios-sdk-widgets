@@ -36,7 +36,9 @@ class ChatMessageEntryView: BaseView {
 
     var isEnabled: Bool {
         get { return isUserInteractionEnabled }
-        set { isUserInteractionEnabled = newValue }
+        set {
+            isUserInteractionEnabled = newValue
+        }
     }
 
     var mediaPickerButtonVisibility: MediaPickerButtonVisibility = .disabled
