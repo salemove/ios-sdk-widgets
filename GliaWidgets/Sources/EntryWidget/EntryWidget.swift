@@ -190,6 +190,8 @@ private extension EntryWidget {
             sheet.detents = [smallDetent]
             sheet.prefersScrollingExpandsWhenScrolledToEdge = true
             sheet.preferredCornerRadius = environment.theme.entryWidget.cornerRadius
+            sheet.prefersEdgeAttachedInCompactHeight = true
+            sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
         } else {
             hostingController.modalPresentationStyle = .custom
             hostingController.transitioningDelegate = self
