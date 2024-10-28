@@ -145,7 +145,7 @@ extension SecureConversations {
                     self.isSecureConversationsAvailable = false
                     self.engagementAction?(.showAlert(.unavailableMessageCenter()))
                 case .success(.unavailable(.unauthenticated)):
-                    self.engagementAction?(.showAlert(.unavailableMessageCenterForBeingUnauthenticated()))
+                    // For chat screen we no longer show unavailability dialog, but unavailability banner instead.
                     self.isSecureConversationsAvailable = false
                 }
             }
