@@ -3,6 +3,7 @@ import UIKit
 extension Theme {
     var entryWidgetStyle: EntryWidgetStyle {
         let loading: EntryWidgetStyle.MediaTypeItemStyle.LoadingStyle = .init(
+            loadingTintColor: .fill(color: color.baseShade),
             accessibility: .init(label: Localization.EntryWidget.Loading.Accessibility.label)
         )
 
@@ -40,13 +41,17 @@ extension Theme {
             cornerRadius: 24,
             poweredBy: poweredBy,
             dividerColor: color.baseNeutral,
+            errorTitle: Localization.EntryWidget.ErrorState.title,
             errorTitleFont: font.header3,
             errorTitleStyle: .body,
             errorTitleColor: color.baseDark,
+            errorMessage: Localization.EntryWidget.ErrorState.description,
             errorMessageFont: font.bodyText,
             errorMessageStyle: .body,
             errorMessageColor: color.baseNormal,
-            errorButton: errorButton
+            errorButton: errorButton,
+            offlineTitle: Localization.EntryWidget.EmptyState.title,
+            offlineMessage: Localization.EntryWidget.EmptyState.description
         )
 
         return style

@@ -103,4 +103,27 @@ extension SwiftUI.View {
             )
         }
     }
+
+    @ViewBuilder
+    func redactedPlaceholder(
+        _ colorType: ColorType,
+        font: UIFont? = nil,
+        cornerRadius: CGFloat = 2
+    ) -> some View {
+        let padding: CGFloat = if let font = font {
+            font.pointSize * 0.22
+        } else {
+            0
+        }
+
+        self
+            .opacity(0)
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .setColor(Color.baseShade)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding(.vertical, padding)
+            )
+            .redacted(reason: .placeholder)
+    }
 }
