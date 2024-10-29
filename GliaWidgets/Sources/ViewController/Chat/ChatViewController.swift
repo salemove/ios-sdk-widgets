@@ -259,6 +259,8 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         switch type {
         case .chat:
             chatView.props = .init(header: props.chat)
+            // For regular chat engagement bottom banner is hidden.
+            chatView.setSecureMessagingBottomBannerHidden(true)
         case let .secureTranscript(needsTextInputEnabled):
             chatView.props = .init(header: props.secureTranscript)
             // Instead of hiding text input, we need to disable it and corresponding buttons.
@@ -266,6 +268,8 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             // if introduction of such styles is required.
             chatView.messageEntryView.isEnabled = needsTextInputEnabled
             chatView.setSendingMessageUnavailabilityBannerHidden(viewModel.isSecureConversationsAvailable)
+            // For secure messaging bottom banner is visible.
+            chatView.setSecureMessagingBottomBannerHidden(false)
         }
     }
 
@@ -283,7 +287,7 @@ extension ChatViewController {
         // Swap existing engagement transcript model
         // (though it is technically not for engagement)
         // with engagement chat model in superclass EngagementViewController.
-        swapAndBindEgagementViewModel(viewModel.engagementModel)
+        swapAndBindEngagementViewModel(viewModel.engagementModel)
         // Bind chat model to chat view for sending actions
         // and receiving events.
         bind(
