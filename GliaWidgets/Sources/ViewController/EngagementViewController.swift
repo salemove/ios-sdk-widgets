@@ -76,7 +76,7 @@ class EngagementViewController: UIViewController {
         }
     }
 
-    func swapAndBindEgagementViewModel(_ engagementModel: CommonEngagementModel) {
+    func swapAndBindEngagementViewModel(_ engagementModel: CommonEngagementModel) {
         self.viewModel = engagementModel
         bind(engagementViewModel: engagementModel)
     }
