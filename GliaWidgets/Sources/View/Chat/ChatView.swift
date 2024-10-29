@@ -116,8 +116,9 @@ class ChatView: EngagementView {
         addKeyboardDismissalTapGesture()
         typingIndicatorView.accessibilityIdentifier = "chat_typingIndicator"
         typingIndicatorContainer.isHidden = true
-        // TODO: remove this call with implementation of MOB-3739
-        renderBanners()
+        // Hide secure conversation bottom banner unavailability banner initially.
+        setSecureMessagingBottomBannerHidden(true)
+        setSendingMessageUnavailabilityBannerHidden(true)
     }
 
     override func defineLayout() {
@@ -189,22 +190,19 @@ class ChatView: EngagementView {
             equalTo: messageEntryView.topAnchor, constant: kUnreadMessageIndicatorInset
         )
     }
-
-    func renderBanners() {
-        secureMessagingBottomBannerView.props = .init(
-            style: style.secureMessagingBottomBannerStyle,
-            isHidden: true  // Logic to show/hide SC bottom banner is to be added with MOB-3634
-        )
-
-        // Hide send message unavailability banner initially.
-        setSendingMessageUnavailabilityBannerHidden(true)
-    }
 }
 
 extension ChatView {
     func setSendingMessageUnavailabilityBannerHidden(_ isHidden: Bool) {
         sendingMessageUnavailabilityBannerView.props = .init(
             style: style.sendingMessageUnavailableBannerViewStyle,
+            isHidden: isHidden
+        )
+    }
+
+    func setSecureMessagingBottomBannerHidden(_ isHidden: Bool) {
+        secureMessagingBottomBannerView.props = .init(
+            style: style.secureMessagingBottomBannerStyle,
             isHidden: isHidden
         )
     }
