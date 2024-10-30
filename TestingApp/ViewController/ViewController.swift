@@ -3,6 +3,10 @@ import GliaWidgets
 import UIKit
 
 class ViewController: UIViewController {
+    var visitorHasOngoingMediaEngagement = false
+
+
+
     typealias Authentication = GliaWidgets.Glia.Authentication
     private var glia: Glia!
 
@@ -53,6 +57,7 @@ class ViewController: UIViewController {
         setupPushHandler()
         configureAuthenticationBehaviorToggleAccessibility()
         setupStartEngagementBubbleSwitches()
+        subscribeToMediaState()
     }
 
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
@@ -242,22 +247,24 @@ extension ViewController {
     }
 
     func presentGlia(_ engagementKind: EngagementKind) throws {
-        Glia.sharedInstance.onEvent = { event in
-            switch event {
-            case .started:
-                print("STARTED")
-            case .engagementChanged(let kind):
-                print("CHANGED:", kind)
-            case .ended:
-                print("ENDED")
-            case .minimized:
-                print("MINIMIZED")
-            case .maximized:
-                print("MAXIMIZED")
-            @unknown default:
-                print("UNknown case='\(event)'.")
-            }
-        }
+//        Glia.sharedInstance.onEvent = { event in
+//            switch event {
+//            case .started:
+//                print("STARTED")
+//            case .engagementChanged(let kind):
+//                print("CHANGED:", kind)
+//            case .ended:
+//                print("ENDED")
+//            case .minimized:
+//                print("MINIMIZED")
+//            case .maximized:
+//                print("MAXIMIZED")
+//            @unknown default:
+//                print("UNknown case='\(event)'.")
+//            }
+//        }
+
+        subscribeToMediaState()
 
         #if DEBUG
         let pushNotifications = Configuration.PushNotifications.sandbox
@@ -804,4 +811,53 @@ extension ViewController {
     @objc func pop() {
         presentedViewController?.dismiss(animated: true)
     }
+}
+
+extension ViewController {
+
+func subscribeToMediaState() {
+    Glia.sharedInstance.onEvent = { [weak self] event in
+        guard let self else { return }
+
+        switch event {
+        case .started:
+            GliaCore.sharedInstance.waitForActiveEngagement { [weak self] engagement, error in
+                guard error == nil else { return }
+                guard let self else { return }
+                self.visitorHasOngoingMediaEngagement = self.isMediaEngagement(of: Glia.sharedInstance.engagement)
+                print("engagement started", "visitorHasOngoingMediaEngagement:", visitorHasOngoingMediaEngagement)
+            }
+        case let .engagementChanged(engagementKind):
+            // Engagement kind can be: chat, audioCall, videoCall, messaging or none.
+            // It will be changed during media upgrade.
+            self.visitorHasOngoingMediaEngagement = self.isMediaEngagement(of: engagementKind)
+            print("engagement changed to \(engagementKind)", "visitorHasOngoingMediaEngagement:", visitorHasOngoingMediaEngagement)
+        case .ended:
+            // Note: that in case of engagement being ended on behalf of integrator and survey being
+            // present, `ended` event is fired **only** when survey is closed. In case if engagement is
+            // ended by operator (or Glia hub automation), `ended` event is fired immediately, and if survey is present,
+            // it will be fired once again when survey is closed.
+            self.visitorHasOngoingMediaEngagement = false
+            print("engagement ended", "visitorHasOngoingMediaEngagement:", visitorHasOngoingMediaEngagement)
+        case .minimized:
+            break
+        case .maximized:
+            break
+        @unknown default:
+            break
+        }
+    }
+}
+
+// use this method to check if there is ongoing audio or video engagement
+func isMediaEngagement(of kind: EngagementKind) -> Bool {
+    switch kind {
+    case .audioCall, .videoCall:
+        return true
+    case .chat, .messaging, .none:
+        return false
+    @unknown default:
+        return false
+    }
+}
 }
