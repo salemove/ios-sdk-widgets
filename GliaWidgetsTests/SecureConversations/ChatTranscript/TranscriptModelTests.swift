@@ -19,7 +19,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: logger
+            log: logger,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
         )
         let viewModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -48,7 +49,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { false },
-            log: logger
+            log: logger,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
         )
         let viewModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -81,7 +83,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
         )
 
         let viewModel = TranscriptModel(
@@ -126,7 +129,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
         )
         let viewModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -158,7 +162,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
         )
         let viewModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -204,7 +209,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
         )
 
         let viewModel = TranscriptModel(
@@ -245,7 +251,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
         )
 
         let viewModel = TranscriptModel(
@@ -282,7 +289,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
         )
 
         let viewModel = TranscriptModel(
@@ -325,7 +333,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
         )
 
         let viewModel = TranscriptModel(
@@ -364,7 +373,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
         )
 
         let viewModel = TranscriptModel(
@@ -406,7 +416,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
         )
 
         let viewModel = TranscriptModel(
@@ -455,7 +466,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
         )
 
         let interactor: Interactor = .failing
@@ -520,7 +532,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
         )
 
         let interactor: Interactor = .failing
@@ -581,6 +594,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             callback([], nil)
         }
         availabilityEnv.isAuthenticated = { true }
+        availabilityEnv.queuesMonitor = .mock(listQueues: availabilityEnv.listQueues)
         let model = TranscriptModel(
             isCustomCardSupported: false,
             environment: modelEnvironment,
@@ -610,6 +624,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             callback([.mock()], nil)
         }
         availabilityEnv.isAuthenticated = { false }
+        availabilityEnv.queuesMonitor = .mock(listQueues: availabilityEnv.listQueues)
         let model = TranscriptModel(
             isCustomCardSupported: false,
             environment: modelEnvironment,
@@ -637,6 +652,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             callback(nil, .mock())
         }
         availabilityEnv.isAuthenticated = { false }
+        availabilityEnv.queuesMonitor = .mock(listQueues: availabilityEnv.listQueues)
         let model = TranscriptModel(
             isCustomCardSupported: false,
             environment: modelEnvironment,
@@ -666,6 +682,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             callback([.mock()], nil)
         }
         availabilityEnv.isAuthenticated = { true }
+        availabilityEnv.queuesMonitor = .mock(listQueues: availabilityEnv.listQueues)
         let model = TranscriptModel(
             isCustomCardSupported: false,
             environment: modelEnvironment,
@@ -695,6 +712,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             callback([.mock()], nil)
         }
         availabilityEnv.isAuthenticated = { true }
+        availabilityEnv.queuesMonitor = .mock(listQueues: availabilityEnv.listQueues)
         let model = TranscriptModel(
             isCustomCardSupported: false,
             environment: modelEnvironment,

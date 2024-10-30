@@ -28,7 +28,7 @@ class InteractorTests: XCTestCase {
             coreSdkCalls.append(.queueForEngagement)
         }
 
-        var interactorEnv = Interactor.Environment(coreSdk: coreSdk, gcd: .failing, log: .failing)
+        var interactorEnv = Interactor.Environment(coreSdk: coreSdk, queuesMonitor: .mock(), gcd: .failing, log: .failing)
         interactorEnv.log.infoClosure = { _, _, _, _ in }
         interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }
 
@@ -55,7 +55,7 @@ class InteractorTests: XCTestCase {
 
         interactor = .init(
             visitorContext: nil,
-            environment: .init(coreSdk: .failing, gcd: .mock, log: .failing)
+            environment: .init(coreSdk: .failing, queuesMonitor: .mock(), gcd: .mock, log: .failing)
         )
 
         interactor.addObserver(self, handler: { event in
