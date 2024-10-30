@@ -96,6 +96,7 @@ private extension GliaTests {
             completion(.success(()))
         }
         sdkEnv.coreSdk.getCurrentEngagement = { nil }
+        sdkEnv.queuesMonitor = .mock()
         let window = UIWindow(frame: .zero)
         window.makeKeyAndVisible()
         sdkEnv.uiApplication.windows = { [window] }
