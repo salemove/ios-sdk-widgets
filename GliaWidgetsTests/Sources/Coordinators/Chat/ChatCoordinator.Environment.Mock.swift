@@ -41,6 +41,7 @@ extension ChatCoordinator.Environment {
         maximumUploads: { 2 },
         cameraDeviceManager: { .mock }, 
         flipCameraButtonStyle: .nop,
-        alertManager: .mock()
+        alertManager: .mock(),
+        queuesMonitor: .mock()
     )
 }
