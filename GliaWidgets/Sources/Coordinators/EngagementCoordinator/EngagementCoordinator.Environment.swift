@@ -43,6 +43,7 @@ extension EngagementCoordinator {
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var flipCameraButtonStyle: FlipCameraButtonStyle
         var alertManager: AlertManager
+        var queuesMonitor: QueuesMonitor
     }
 }
 
@@ -95,7 +96,8 @@ extension EngagementCoordinator.Environment {
             maximumUploads: maximumUploads,
             cameraDeviceManager: environment.cameraDeviceManager,
             flipCameraButtonStyle: viewFactory.theme.call.flipCameraButtonStyle,
-            alertManager: alertManager
+            alertManager: alertManager,
+            queuesMonitor: environment.queuesMonitor
         )
     }
 }

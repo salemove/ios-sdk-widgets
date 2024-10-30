@@ -92,6 +92,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
         gliaEnv.uuid = { .mock }
         gliaEnv.gcd.mainQueue.async = { callback in callback() }
+        gliaEnv.queuesMonitor = .mock()
 
         let expectedTheme = Theme.mock(
             colorStyle: .custom(.init()),
@@ -603,6 +604,7 @@ final class GliaTests: XCTestCase {
         var engCoordEnvironment = EngagementCoordinator.Environment.engagementCoordEnvironmentWithKeyWindow
         engCoordEnvironment.fileManager = .mock
         environment.createRootCoordinator = { _, _, _, _, _, _, _ in EngagementCoordinator.mock(environment: engCoordEnvironment) }
+        environment.queuesMonitor = .mock()
 
         let sdk = Glia(environment: environment)
         enum Call {
