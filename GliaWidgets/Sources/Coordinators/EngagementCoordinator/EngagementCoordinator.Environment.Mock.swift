@@ -43,7 +43,8 @@ extension EngagementCoordinator.Environment {
             .mock
         },
         flipCameraButtonStyle: .nop,
-        alertManager: .mock()
+        alertManager: .mock(),
+        queuesMonitor: .mock()
     )
 }
 #endif
