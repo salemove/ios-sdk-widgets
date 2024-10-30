@@ -95,6 +95,7 @@ extension EngagementCoordinator.Environment {
         },
         cameraDeviceManager: { .failing },
         flipCameraButtonStyle: .nop,
-        alertManager: .failing(viewFactory: .mock())
+        alertManager: .failing(viewFactory: .mock()),
+        queuesMonitor: .failing
     )
 }

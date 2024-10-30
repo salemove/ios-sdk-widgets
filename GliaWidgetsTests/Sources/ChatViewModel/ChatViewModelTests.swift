@@ -239,7 +239,7 @@ class ChatViewModelTests: XCTestCase {
         // Given
         enum Calls { case fetchSiteConfigurations }
         var calls: [Calls] = []
-        let interactorEnv = Interactor.Environment(coreSdk: .failing, gcd: .mock, log: .mock)
+        let interactorEnv = Interactor.Environment(coreSdk: .failing, queuesMonitor: .mock(), gcd: .mock, log: .mock)
         let interactor = Interactor.mock(environment: interactorEnv)
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
@@ -261,7 +261,7 @@ class ChatViewModelTests: XCTestCase {
         // Given
         enum Calls { case fetchSiteConfigurations }
         var calls: [Calls] = []
-        var interactorEnv = Interactor.Environment.init(coreSdk: .failing, gcd: .mock, log: .mock)
+        var interactorEnv = Interactor.Environment.init(coreSdk: .failing, queuesMonitor: .mock(), gcd: .mock, log: .mock)
         var interactorLog = CoreSdkClient.Logger.failing
         interactorLog.infoClosure = { _, _, _, _ in }
         interactorLog.prefixedClosure = { _ in interactorLog }
@@ -484,7 +484,8 @@ class ChatViewModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: transcriptModelEnv.listQueues,
             isAuthenticated: { true },
-            log: logger
+            log: logger,
+            queuesMonitor: .mock()
         )
         let transcriptModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -923,7 +924,7 @@ class ChatViewModelTests: XCTestCase {
     func test_quickReplyWillBeHiddenAfterMessageIsSent() throws {
         enum Calls { case quickReplyHidden }
         var calls: [Calls] = []
-        let interactorEnv = Interactor.Environment(coreSdk: .failing, gcd: .mock, log: .mock)
+        let interactorEnv = Interactor.Environment(coreSdk: .failing, queuesMonitor: .failing, gcd: .mock, log: .mock)
         let interactor = Interactor.mock(environment: interactorEnv)
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
@@ -948,7 +949,7 @@ class ChatViewModelTests: XCTestCase {
     }
 
     func test_pendingMessageGetsRemovedFromListWhenMessageIsSentSuccesfully() {
-        var interactorEnv = Interactor.Environment(coreSdk: .failing, gcd: .mock, log: .mock)
+        var interactorEnv = Interactor.Environment(coreSdk: .failing, queuesMonitor: .failing, gcd: .mock, log: .mock)
         interactorEnv.coreSdk.sendMessageWithMessagePayload = { payload, callback in
             callback(.success(.mock(id: payload.messageId.rawValue)))
         }
