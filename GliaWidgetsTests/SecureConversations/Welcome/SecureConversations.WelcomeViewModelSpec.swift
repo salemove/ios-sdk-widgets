@@ -643,6 +643,7 @@ extension SecureConversationsWelcomeViewModelTests {
         }
 
         availability.environment.isAuthenticated = { true }
+        availability.environment.queuesMonitor = .mock(listQueues: availability.environment.listQueues)
 
         let delegate: (WelcomeViewModel.DelegateEvent) -> Void = { event in
             switch event {
@@ -686,6 +687,7 @@ extension SecureConversationsWelcomeViewModelTests {
         }
 
         availability.environment.isAuthenticated = { false }
+        availability.environment.queuesMonitor = .mock(listQueues: availability.environment.listQueues)
 
         let delegate: (WelcomeViewModel.DelegateEvent) -> Void = { event in
             switch event {

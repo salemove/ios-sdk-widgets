@@ -109,6 +109,7 @@ class Interactor {
 extension Interactor {
     func setQueuesIds(_ queueIds: [String]) {
         self.queueIds = queueIds
+        environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds)
     }
 
     func enqueueForEngagement(

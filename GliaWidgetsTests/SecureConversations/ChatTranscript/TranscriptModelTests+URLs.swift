@@ -90,7 +90,8 @@ private extension SecureConversationsTranscriptModelTests {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: logger
+            log: logger,
+            queuesMonitor: .mock()
         )
 
         return TranscriptModel(
