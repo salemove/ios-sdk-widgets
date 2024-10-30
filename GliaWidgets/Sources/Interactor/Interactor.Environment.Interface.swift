@@ -1,6 +1,7 @@
 extension Interactor {
     struct Environment {
         var coreSdk: CoreSdkClient
+        var queuesMonitor: QueuesMonitor
         var gcd: GCD
         var log: CoreSdkClient.Logger
     }
@@ -13,6 +14,7 @@ extension Interactor.Environment {
     ) -> Self {
         .init(
             coreSdk: environment.coreSdk,
+            queuesMonitor: environment.queuesMonitor,
             gcd: environment.gcd,
             log: log
         )
