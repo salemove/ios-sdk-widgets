@@ -49,6 +49,7 @@ extension SecureConversations.Coordinator {
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var flipCameraButtonStyle: FlipCameraButtonStyle
         var alertManager: AlertManager
+        var queuesMonitor: QueuesMonitor
     }
 }
 
@@ -111,7 +112,8 @@ extension SecureConversations.Coordinator.Environment {
             maximumUploads: environment.maximumUploads,
             cameraDeviceManager: environment.cameraDeviceManager,
             flipCameraButtonStyle: environment.flipCameraButtonStyle,
-            alertManager: environment.alertManager
+            alertManager: environment.alertManager,
+            queuesMonitor: environment.queuesMonitor
         )
     }
 }

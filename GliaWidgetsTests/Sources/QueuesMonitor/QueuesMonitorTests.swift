@@ -26,8 +26,8 @@ class QueuesMonitorTests: XCTestCase {
         super.tearDown()
     }
 
-    // MARK: Start monitoring
-    func test_startMonitoringWithQueuesUpdatesWithQueuesList() {
+    // MARK: Fetch and Motitor queues
+    func test_fetchAndMonitorQueuesWithQueuesUpdatesWithQueuesList() {
         var envCalls: [Call] = []
 
         let mockQueueId = UUID().uuidString
@@ -53,13 +53,13 @@ class QueuesMonitorTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        monitor.startMonitoring(queuesIds: [mockQueueId])
+        monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
 
         XCTAssertEqual(receivedQueues, expectedObservedQueues)
         XCTAssertEqual(envCalls, [.listQueues, .subscribeForQueuesUpdates])
     }
 
-    func test_startMonitoringWithWrongQueueIdsReturnsUpdatesWithDefaultQueue() {
+    func test_fetchAndMonitorQueuesWithWrongQueueIdsReturnsUpdatesWithDefaultQueue() {
         var envCalls: [Call] = []
 
         let expectedObservedQueues = [Queue.mock(isDefault: true)]
@@ -83,13 +83,13 @@ class QueuesMonitorTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        monitor.startMonitoring(queuesIds: ["1"])
+        monitor.fetchAndMonitorQueues(queuesIds: ["1"])
 
         XCTAssertEqual(receivedQueues, expectedObservedQueues)
         XCTAssertEqual(envCalls, [.listQueues, .subscribeForQueuesUpdates])
     }
 
-    func test_startMonitoringListQueuesReturnsError() {
+    func test_fetchAndMonitorQueuesListQueuesReturnsError() {
         var envCalls: [Call] = []
 
         let expectedError = CoreSdkClient.SalemoveError.mock()
@@ -112,13 +112,13 @@ class QueuesMonitorTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        monitor.startMonitoring(queuesIds: ["1"])
+        monitor.fetchAndMonitorQueues(queuesIds: ["1"])
 
         XCTAssertEqual(receivedError, expectedError)
         XCTAssertEqual(envCalls, [.listQueues])
     }
 
-    func test_startMonitoringWithQueuesAndReceiveUpdatedQueueSuccess() {
+    func test_fetchAndMonitorQueuesWithQueuesAndReceiveUpdatedQueueSuccess() {
         var envCalls: [Call] = []
 
         let mockQueueId = UUID().uuidString
@@ -142,7 +142,6 @@ class QueuesMonitorTests: XCTestCase {
             // Drop initial .idle and .updated with listed queues state update
             .dropFirst(2)
             .sink { state in
-                print(state)
                 if case let .updated(queues) = state {
                     receivedQueues = queues
                     receivedUpdatedQueue = queues[0]
@@ -150,14 +149,107 @@ class QueuesMonitorTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        monitor.startMonitoring(queuesIds: [mockQueueId])
+        monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
 
         XCTAssertEqual(receivedQueues, [expectedUpdatedQueue])
         XCTAssertEqual(receivedUpdatedQueue?.state.status, .open)
         XCTAssertEqual(envCalls, [.listQueues, .subscribeForQueuesUpdates])
     }
 
-    func test_startMonitoringWithQueuesAndReceiveUpdatedQueueError() {
+    func test_fetchAndMonitorQueuesWithQueuesStopsPreviousMonitoring() {
+        var envCalls: [Call] = []
+
+        let mockQueueId = UUID().uuidString
+        let expectedObservedQueue = Queue.mock(id: mockQueueId, status: .closed)
+        let expectedUpdatedQueue = Queue.mock(id: mockQueueId, status: .open)
+        let mockQueues = [expectedObservedQueue, Queue.mock(id: UUID().uuidString)]
+
+        monitor.environment.listQueues = { completion in
+            envCalls.append(.listQueues)
+            completion(mockQueues, nil)
+        }
+        monitor.environment.subscribeForQueuesUpdates = { _, completion in
+            envCalls.append(.subscribeForQueuesUpdates)
+            completion(.success(expectedUpdatedQueue))
+            return UUID().uuidString
+        }
+        
+        monitor.environment.unsubscribeFromUpdates = { queueCallbackId, error in
+            envCalls.append(.unsubscribeFromUpdates)
+        }
+
+        var receivedQueues: [Queue]?
+        var receivedUpdatedQueue: Queue?
+        monitor.$state
+            // Drop initial .idle and .updated with listed queues state update
+            .dropFirst(2)
+            .sink { state in
+                if case let .updated(queues) = state {
+                    receivedQueues = queues
+                    receivedUpdatedQueue = queues[0]
+                }
+            }
+            .store(in: &cancellables)
+
+        monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+
+        XCTAssertEqual(receivedQueues, [expectedUpdatedQueue])
+        XCTAssertEqual(receivedUpdatedQueue?.state.status, .open)
+        XCTAssertEqual(
+            envCalls,
+            [.listQueues, .subscribeForQueuesUpdates, .unsubscribeFromUpdates, .listQueues, .subscribeForQueuesUpdates]
+        )
+    }
+    
+    func test_fetchAndMonitorQueuesWithQueuesStopsPreviousMonitoringFailed() {
+        var envCalls: [Call] = []
+
+        let mockQueueId = UUID().uuidString
+        let expectedObservedQueue = Queue.mock(id: mockQueueId, status: .closed)
+        let expectedUpdatedQueue = Queue.mock(id: mockQueueId, status: .open)
+        let mockQueues = [expectedObservedQueue, Queue.mock(id: UUID().uuidString)]
+
+        monitor.environment.listQueues = { completion in
+            envCalls.append(.listQueues)
+            completion(mockQueues, nil)
+        }
+        monitor.environment.subscribeForQueuesUpdates = { _, completion in
+            envCalls.append(.subscribeForQueuesUpdates)
+            completion(.success(expectedUpdatedQueue))
+            return UUID().uuidString
+        }
+        
+        monitor.environment.unsubscribeFromUpdates = { queueCallbackId, error in
+            envCalls.append(.unsubscribeFromUpdates)
+            error(CoreSdkClient.SalemoveError.mock())
+        }
+
+        var receivedQueues: [Queue]?
+        var receivedUpdatedQueue: Queue?
+        monitor.$state
+            // Drop initial .idle and .updated with listed queues state update
+            .dropFirst(2)
+            .sink { state in
+                if case let .updated(queues) = state {
+                    receivedQueues = queues
+                    receivedUpdatedQueue = queues[0]
+                }
+            }
+            .store(in: &cancellables)
+
+        monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+
+        XCTAssertEqual(receivedQueues, [expectedUpdatedQueue])
+        XCTAssertEqual(receivedUpdatedQueue?.state.status, .open)
+        XCTAssertEqual(
+            envCalls,
+            [.listQueues, .subscribeForQueuesUpdates, .unsubscribeFromUpdates, .listQueues, .subscribeForQueuesUpdates]
+        )
+    }
+
+    func test_fetchAndMonitorQueuesWithQueuesAndReceiveUpdatedQueueError() {
         var envCalls: [Call] = []
 
         let expectedError = CoreSdkClient.SalemoveError.mock()
@@ -178,14 +270,13 @@ class QueuesMonitorTests: XCTestCase {
             // Drop initial .idle and .updated with listed queues state update
             .dropFirst(2)
             .sink { state in
-                print(state)
                 if case let .failed(error as CoreSdkClient.SalemoveError) = state {
                     receivedError = error
                 }
             }
             .store(in: &cancellables)
 
-        monitor.startMonitoring(queuesIds: [UUID().uuidString])
+        monitor.fetchAndMonitorQueues(queuesIds: [UUID().uuidString])
 
         XCTAssertEqual(receivedError, expectedError)
         XCTAssertEqual(envCalls, [.listQueues, .subscribeForQueuesUpdates])
@@ -211,7 +302,7 @@ class QueuesMonitorTests: XCTestCase {
             completion(expectedError)
         }
 
-        monitor.startMonitoring(queuesIds: ["1"])
+        monitor.fetchAndMonitorQueues(queuesIds: ["1"])
 
         var receivedError: CoreSdkClient.SalemoveError?
         monitor.$state
@@ -246,7 +337,7 @@ class QueuesMonitorTests: XCTestCase {
             completion(.mock())
         }
 
-        monitor.startMonitoring(queuesIds: ["1"])
+        monitor.fetchAndMonitorQueues(queuesIds: ["1"])
 
         monitor.stopMonitoring()
 
