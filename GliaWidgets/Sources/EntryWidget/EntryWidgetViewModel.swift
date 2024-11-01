@@ -9,7 +9,7 @@ extension EntryWidgetView {
         let showHeader: Bool
         var retryMonitoring: (() -> Void)?
         var style: EntryWidgetStyle {
-            theme.entryWidgetStyle
+            theme.entryWidget
         }
 
         var showPoweredBy: Bool {
