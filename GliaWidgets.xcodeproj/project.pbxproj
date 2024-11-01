@@ -684,6 +684,9 @@
 		AFF9542C2ADDA10600C277E0 /* CoreSDKConfigurator.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF9542B2ADDA10600C277E0 /* CoreSDKConfigurator.Failing.swift */; };
 		AFF960982CCCFCA8006BF3BF /* SendingMessageUnavailableBannerViewStyle.RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF960972CCCFCA8006BF3BF /* SendingMessageUnavailableBannerViewStyle.RemoteConfig.swift */; };
 		AFFA99822C57D658004A2825 /* GliaTests+RestoreEngagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFFA99812C57D658004A2825 /* GliaTests+RestoreEngagement.swift */; };
+		C00DE0AB2CD3847B005956B4 /* EntryWidgetViewLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00DE0AA2CD3847B005956B4 /* EntryWidgetViewLayoutTests.swift */; };
+		C00DE0AD2CD3BD53005956B4 /* EntryWidgetViewVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00DE0AC2CD3BD53005956B4 /* EntryWidgetViewVoiceOverTests.swift */; };
+		C00DE0AF2CD3BF35005956B4 /* EntryWidgetViewDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00DE0AE2CD3BF35005956B4 /* EntryWidgetViewDynamicTypeFontTests.swift */; };
 		C0175A0F2A55A624001FACDE /* ChatMessagaEntryViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A0E2A55A624001FACDE /* ChatMessagaEntryViewTests.swift */; };
 		C0175A112A55AA3E001FACDE /* ChatMessageEntryView.+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A102A55AA3E001FACDE /* ChatMessageEntryView.+Mock.swift */; };
 		C0175A132A56E29E001FACDE /* ChatMessageCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A122A56E29E001FACDE /* ChatMessageCardType.swift */; };
@@ -1742,6 +1745,9 @@
 		AFF960972CCCFCA8006BF3BF /* SendingMessageUnavailableBannerViewStyle.RemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendingMessageUnavailableBannerViewStyle.RemoteConfig.swift; sourceTree = "<group>"; };
 		AFFA99812C57D658004A2825 /* GliaTests+RestoreEngagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GliaTests+RestoreEngagement.swift"; sourceTree = "<group>"; };
 		B97A8A0B9AD30D0AB8666042 /* Pods_GliaWidgetsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgetsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C00DE0AA2CD3847B005956B4 /* EntryWidgetViewLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetViewLayoutTests.swift; sourceTree = "<group>"; };
+		C00DE0AC2CD3BD53005956B4 /* EntryWidgetViewVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetViewVoiceOverTests.swift; sourceTree = "<group>"; };
+		C00DE0AE2CD3BF35005956B4 /* EntryWidgetViewDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetViewDynamicTypeFontTests.swift; sourceTree = "<group>"; };
 		C0175A0E2A55A624001FACDE /* ChatMessagaEntryViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessagaEntryViewTests.swift; sourceTree = "<group>"; };
 		C0175A102A55AA3E001FACDE /* ChatMessageEntryView.+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatMessageEntryView.+Mock.swift"; sourceTree = "<group>"; };
 		C0175A122A56E29E001FACDE /* ChatMessageCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCardType.swift; sourceTree = "<group>"; };
@@ -4449,6 +4455,9 @@
 				C039FA802B19ECBA00DFD0E0 /* MediaPickerDynamicFontTests.swift */,
 				C039FA822B19ED7D00DFD0E0 /* MediaPickerVoiceOverTests.swift */,
 				848B8ADD2C0870DC00E990E6 /* CustomCardContainerViewLayoutTests.swift */,
+				C00DE0AA2CD3847B005956B4 /* EntryWidgetViewLayoutTests.swift */,
+				C00DE0AE2CD3BF35005956B4 /* EntryWidgetViewDynamicTypeFontTests.swift */,
+				C00DE0AC2CD3BD53005956B4 /* EntryWidgetViewVoiceOverTests.swift */,
 			);
 			path = SnapshotTests;
 			sourceTree = "<group>";
@@ -6677,10 +6686,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				846E822828996A5C008EFBF0 /* AlertViewControllerVoiceOverTests.swift in Sources */,
+				C00DE0AD2CD3BD53005956B4 /* EntryWidgetViewVoiceOverTests.swift in Sources */,
 				AF03A7BB2A6ED73E0081887D /* SecureConversationsWelcomeScreenDynamicTypeFontTests.swift in Sources */,
 				C0EC58CC2B0275DE00E78C70 /* SnackBarLayoutTests.swift in Sources */,
 				C0EC58D22B02909500E78C70 /* SnackBarDynamicTypeFontTests.swift in Sources */,
 				75CF8D9129C3A85C00CB1524 /* SecureConversationsWelcomeScreenVoiceOverTests.swift in Sources */,
+				C00DE0AF2CD3BF35005956B4 /* EntryWidgetViewDynamicTypeFontTests.swift in Sources */,
 				AF22C8972A61A9BF0004BF3C /* VideoCallViewControllerLayoutTests.swift in Sources */,
 				C07F62772AC1BA2B003EFC97 /* UIViewController+Extensions.swift in Sources */,
 				AF03A7BD2A6EDACF0081887D /* SecureConversationsConfirmationScreenDynamicTypeFontTests.swift in Sources */,
@@ -6706,6 +6717,7 @@
 				AF03A7B32A6EA5490081887D /* CallViewControllerDynamicTypeFontTests.swift in Sources */,
 				9A1992D827D61F8100161AAE /* ChatViewControllerVoiceOverTests.swift in Sources */,
 				AF22C8892A6184C50004BF3C /* CallViewControllerLayoutTests.swift in Sources */,
+				C00DE0AB2CD3847B005956B4 /* EntryWidgetViewLayoutTests.swift in Sources */,
 				8458769F2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift in Sources */,
 				C07FA05129B0E41A00E9FB7F /* VisitorCodeViewControllerVoiceOverTests.swift in Sources */,
 				75CF8DAD29C8F2B500CB1524 /* SecureConversationsConfirmationScreenVoiceOverTests.swift in Sources */,
