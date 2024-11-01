@@ -8,3 +8,18 @@ extension EntryWidget {
         var isAuthenticated: () -> Bool
     }
 }
+
+#if DEBUG
+extension EntryWidget.Environment {
+    static func mock() -> Self {
+        let engagementLauncher = EngagementLauncher { _, _ in }
+        let theme = Theme()
+        return .init(
+            queuesMonitor: .mock,
+            engagementLauncher: engagementLauncher,
+            theme: theme,
+            isAuthenticated: { true }
+        )
+    }
+}
+#endif
