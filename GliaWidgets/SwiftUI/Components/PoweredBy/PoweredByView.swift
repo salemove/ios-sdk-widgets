@@ -4,6 +4,7 @@ struct PoweredByView: View {
     let style: PoweredByStyle
     let containerHeight: CGFloat
     let color: UIColor = Color.baseShade
+    @ScaledMetric var scale: CGFloat = 1
 
     init(
         style: PoweredByStyle,
@@ -19,11 +20,13 @@ struct PoweredByView: View {
                 .setColor(color.swiftUIColor())
                 .opacity(0.5)
                 .font(.convert(style.font))
+                .accessibilityLabel("Powered By Glia")
             Asset.gliaLogo.image.asSwiftUIImage()
                 .resizable()
                 .fit()
-                .height(20)
+                .height(20 * scale)
                 .setColor(color.swiftUIColor())
+                .accessibilityHidden(true)
         }
         .height(containerHeight)
     }
