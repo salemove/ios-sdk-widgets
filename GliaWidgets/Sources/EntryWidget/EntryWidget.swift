@@ -9,15 +9,15 @@ import SwiftUI
 /// the availability of media types in the given queues. It offers functionality to
 /// either embed itself within a view or present as a modal sheet.
 public final class EntryWidget: NSObject {
-    private var hostedViewController: UIViewController?
+    private(set) var hostedViewController: UIViewController?
     private var embeddedView: UIView?
     private var queueIds: [String]
     private var cancellables = CancelBag()
     private let environment: Environment
 
-    @Published private(set) var viewState: ViewState = .loading
+    @Published var viewState: ViewState = .loading
 
-    private let sizeConstraints: SizeConstraints = .init(
+    static let sizeConstraints: SizeConstraints = .init(
         singleCellHeight: 72,
         singleCellIconSize: 24,
         poweredByContainerHeight: 40,
@@ -66,6 +66,25 @@ public extension EntryWidget {
         hostedViewController?.dismiss(animated: true, completion: nil)
         hostedViewController = nil
         environment.queuesMonitor.stopMonitoring()
+    }
+}
+
+extension EntryWidget {
+    func calculateHeight() -> CGFloat {
+        var mediaTypesCount: Int
+        switch viewState {
+        case .mediaTypes(let mediaTypes):
+            mediaTypesCount = mediaTypes.count
+        case .loading, .error, .offline:
+            // 4 gives the desired fixed size
+            mediaTypesCount = 4
+        }
+        var appliedHeight: CGFloat = 0
+        appliedHeight += EntryWidget.sizeConstraints.sheetHeaderHeight
+        appliedHeight += CGFloat(mediaTypesCount) * (EntryWidget.sizeConstraints.singleCellHeight + EntryWidget.sizeConstraints.dividerHeight)
+        appliedHeight += EntryWidget.sizeConstraints.poweredByContainerHeight
+
+        return appliedHeight
     }
 }
 
@@ -126,7 +145,7 @@ private extension EntryWidget {
         let viewModel = EntryWidgetView.Model(
             theme: environment.theme,
             showHeader: showHeader,
-            sizeConstraints: sizeConstraints,
+            sizeConstraints: EntryWidget.sizeConstraints,
             viewStatePublisher: $viewState,
             mediaTypeSelected: mediaTypeSelected(_:)
         )
@@ -232,23 +251,6 @@ private extension EntryWidget {
         }
     }
 
-    func calculateHeight() -> CGFloat {
-        var mediaTypesCount: Int
-        switch viewState {
-        case .mediaTypes(let mediaTypes):
-            mediaTypesCount = mediaTypes.count
-        case .loading, .error, .offline:
-            // 4 gives the desired fixed size
-            mediaTypesCount = 4
-        }
-        var appliedHeight: CGFloat = 0
-        appliedHeight += sizeConstraints.sheetHeaderHeight
-        appliedHeight += CGFloat(mediaTypesCount) * (sizeConstraints.singleCellHeight + sizeConstraints.dividerHeight)
-        appliedHeight += sizeConstraints.poweredByContainerHeight
-
-        return appliedHeight
-    }
-
     func makeView(model: EntryWidgetView.Model) -> EntryWidgetView {
         .init(model: model)
     }
@@ -280,3 +282,12 @@ extension EntryWidget: UIViewControllerTransitioningDelegate {
         )
     }
 }
+
+#if DEBUG
+extension EntryWidget {
+    static func mock() -> Self {
+        .init(queueIds: [], environment: .mock())
+    }
+}
+
+#endif
