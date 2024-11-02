@@ -14,5 +14,5 @@ public class FileUploadListStyle: Equatable {
 }
 
 extension FileUploadListStyle {
-    static let initial: FileUploadListStyle = Theme().chatStyle.messageEntry.uploadList
+    static let initial: FileUploadListStyle = Theme().chatStyle.messageEntry.enabled.uploadList
 }

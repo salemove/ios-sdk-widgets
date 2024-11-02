@@ -293,17 +293,37 @@ extension Theme {
             choiceOption: choiceCardOption,
             accessibility: .init(imageLabel: Localization.Chat.ChoiceCard.Image.Accessibility.label)
         )
-        let mediaButton = MessageButtonStyle(
+        let mediaButtonEnabled = MessageButtonStateStyle(
             image: Asset.chatPickMedia.image,
             color: color.baseNormal,
             accessibility: .init(accessibilityLabel: Localization.Chat.attachFiles)
         )
-        let sendButton = MessageButtonStyle(
+        let mediaButtonDisabled = MessageButtonStateStyle(
+            image: Asset.chatPickMedia.image,
+            color: color.baseShade,
+            accessibility: .init(accessibilityLabel: Localization.Chat.attachFiles)
+        )
+        let mediaButton = MessageButtonStyle(
+            enabled: mediaButtonEnabled,
+            disabled: mediaButtonDisabled
+        )
+        let sendButtonEnabled = MessageButtonStateStyle(
             image: Asset.chatSend.image,
             color: color.primary,
             accessibility: .init(accessibilityLabel: Localization.General.send)
         )
-        let messageEntry = ChatMessageEntryStyle(
+
+        let sendButtonDisabled = MessageButtonStateStyle(
+            image: Asset.chatSend.image,
+            color: color.baseShade,
+            accessibility: .init(accessibilityLabel: Localization.General.send)
+        )
+
+        let sendButton = MessageButtonStyle(
+            enabled: sendButtonEnabled,
+            disabled: sendButtonDisabled
+        )
+        let messageEntryEnabled = ChatMessageEntryStateStyle(
             messageFont: font.bodyText,
             messageColor: color.baseDark,
             enterMessagePlaceholder: Localization.Chat.Input.placeholder,
@@ -321,6 +341,30 @@ extension Theme {
                 isFontScalingEnabled: true
             )
         )
+        let messageEntryDisabled = ChatMessageEntryStateStyle(
+            messageFont: font.bodyText,
+            messageColor: color.baseDark,
+            enterMessagePlaceholder: Localization.Chat.Input.placeholder,
+            startEngagementPlaceholder: Localization.Chat.Message.startEngagementPlaceholder,
+            choiceCardPlaceholder: Localization.Chat.ChoiceCard.placeholderMessage,
+            placeholderFont: font.bodyText,
+            placeholderColor: color.baseShade,
+            separatorColor: color.baseShade,
+            backgroundColor: color.baseLight,
+            mediaButton: mediaButton,
+            sendButton: sendButton,
+            uploadList: uploadListStyle,
+            accessibility: .init(
+                messageInputAccessibilityLabel: Localization.General.message,
+                isFontScalingEnabled: true
+            )
+        )
+
+        let messageEntry = ChatMessageEntryStyle(
+            enabled: messageEntryEnabled,
+            disabled: messageEntryDisabled
+        )
+
         let audioUpgrade = ChatCallUpgradeStyle(
             icon: Asset.upgradeAudio.image,
             iconColor: color.primary,
