@@ -6,15 +6,25 @@ class MessageButton: UIButton {
     override var isEnabled: Bool {
         didSet {
             super.isEnabled = isEnabled
-            alpha = isEnabled ? 1.0 : 0.6
+            style = isEnabled ? .enabled(styleStates.enabled)
+                              : .disabled(styleStates.disabled)
         }
     }
 
-    private let style: MessageButtonStyle
+    private let styleStates: MessageButtonStyle
+    private var style: StateStyle {
+        didSet {
+            renderStyle()
+        }
+    }
     private let width: CGFloat = 30
 
-    init(with style: MessageButtonStyle, tap: (() -> Void)? = nil) {
-        self.style = style
+    init(
+        with styleStates: MessageButtonStyle,
+        tap: (() -> Void)? = nil
+    ) {
+        self.styleStates = styleStates
+        self.style = .enabled(styleStates.enabled)
         self.tap = tap
         super.init(frame: .zero)
         setup()
@@ -27,10 +37,8 @@ class MessageButton: UIButton {
     }
 
     private func setup() {
-        tintColor = style.color
-        setImage(style.image, for: .normal)
-        setImage(style.image, for: .highlighted)
         addTarget(self, action: #selector(tapped), for: .touchUpInside)
+        renderStyle()
     }
 
     private func layout() {
@@ -39,5 +47,12 @@ class MessageButton: UIButton {
 
     @objc private func tapped() {
         tap?()
+    }
+
+    private func renderStyle() {
+        tintColor = style.color
+        setImage(style.image, for: .normal)
+        setImage(style.image, for: .highlighted)
+        accessibilityLabel = style.accessibility.accessibilityLabel
     }
 }
