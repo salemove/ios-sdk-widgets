@@ -38,6 +38,10 @@ class ChatMessageEntryView: BaseView {
         get { return isUserInteractionEnabled }
         set {
             isUserInteractionEnabled = newValue
+            style = newValue ? .enabled(styleStates.enabled)
+                             : .disabled(styleStates.disabled)
+            sendButton.isEnabled = newValue
+            pickMediaButton.isEnabled = newValue
         }
     }
 
@@ -46,7 +50,12 @@ class ChatMessageEntryView: BaseView {
 
     let textView = UITextView()
     let maxTextLines = 4
-    private let style: ChatMessageEntryStyle
+    private let styleStates: ChatMessageEntryStyle
+    private var style: StateStyle {
+        didSet {
+            renderStyle()
+        }
+    }
     private let separator = UIView()
     private let messageContainerView = UIView()
     private let placeholderLabel = UILabel()
@@ -58,10 +67,11 @@ class ChatMessageEntryView: BaseView {
     private let environment: Environment
 
     public init(
-        with style: ChatMessageEntryStyle,
+        with styleStates: ChatMessageEntryStyle,
         environment: Environment
     ) {
-        self.style = style
+        self.styleStates = styleStates
+        self.style = .enabled(styleStates.enabled)
         self.environment = environment
         uploadListView = .init(environment: .create(with: environment))
         pickMediaButton = MessageButton(with: style.mediaButton)
@@ -90,11 +100,6 @@ class ChatMessageEntryView: BaseView {
 
     override func setup() {
         super.setup()
-        backgroundColor = style.backgroundColor
-
-        separator.backgroundColor = style.separatorColor
-
-        messageContainerView.backgroundColor = style.backgroundColor
 
         let tapRecognizer = UITapGestureRecognizer(
             target: self,
@@ -108,31 +113,38 @@ class ChatMessageEntryView: BaseView {
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
         textView.autocapitalizationType = .sentences
-        textView.font = style.messageFont
-        textView.textColor = style.messageColor
         textView.backgroundColor = .clear
-        textView.accessibilityLabel = style.accessibility.messageInputAccessibilityLabel
-
         textView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
 
-        placeholderLabel.font = style.placeholderFont
-        placeholderLabel.textColor = style.placeholderColor
         placeholderLabel.isUserInteractionEnabled = false
         placeholderLabel.accessibilityIdentifier = "chat_textEntryPlaceholderLabel"
-        updatePlaceholderText()
 
         pickMediaButton.tap = { [weak self] in self?.pickMediaTapped?() }
-        pickMediaButton.accessibilityLabel = style.mediaButton.accessibility.accessibilityLabel
+
         updatePickMediaButtonVisibility(.disabled)
 
         sendButton.accessibilityIdentifier = "chat_sendButton"
         sendButton.tap = { [weak self] in self?.sendTap() }
-        sendButton.accessibilityLabel = style.sendButton.accessibility.accessibilityLabel
+
         showsSendButton = false
 
         buttonsStackView.axis = .horizontal
         buttonsStackView.spacing = 16
         buttonsStackView.addArrangedSubviews([pickMediaButton, sendButton])
+
+        renderStyle()
+    }
+
+    func renderStyle() {
+        backgroundColor = style.backgroundColor
+
+        separator.backgroundColor = style.separatorColor
+
+        messageContainerView.backgroundColor = style.backgroundColor
+        textView.font = style.messageFont
+        textView.textColor = style.messageColor
+        textView.accessibilityLabel = style.accessibility.messageInputAccessibilityLabel
+
         setFontScalingEnabled(
             style.accessibility.isFontScalingEnabled,
             for: textView
@@ -141,6 +153,11 @@ class ChatMessageEntryView: BaseView {
             style.accessibility.isFontScalingEnabled,
             for: placeholderLabel
         )
+
+        placeholderLabel.font = style.placeholderFont
+        placeholderLabel.textColor = style.placeholderColor
+
+        updatePlaceholderText()
     }
 
     override func defineLayout() {
