@@ -2,39 +2,39 @@
 import XCTest
 
 final class ChatMessageEntryViewTests: XCTestCase {
-    var messagageEntryView: ChatMessageEntryView!
+    var messageEntryView: ChatMessageEntryView!
 
     override func setUp() {
         super.setUp()
-        messagageEntryView = ChatMessageEntryView.mock()
+        messageEntryView = ChatMessageEntryView.mock()
     }
 
     override func tearDown() {
-        messagageEntryView = nil
+        messageEntryView = nil
         super.tearDown()
     }
 
     func test_text_view_height_with_more_than_max_lines() {
         let exampleText = "This\nis a\nfive\nlines\ntext"
-        let maxTextLines = CGFloat(messagageEntryView.maxTextLines)
-        let oneLineHeight = Theme().chatStyle.messageEntry.messageFont.lineHeight
+        let maxTextLines = CGFloat(messageEntryView.maxTextLines)
+        let oneLineHeight = Theme().chatStyle.messageEntry.enabled.messageFont.lineHeight
         let expectedTextViewHeight = oneLineHeight * maxTextLines
 
-        messagageEntryView.messageText = exampleText
-        messagageEntryView.defineLayout()
-        let textActualHeight = messagageEntryView.textViewHeightConstraint?.constant
+        messageEntryView.messageText = exampleText
+        messageEntryView.defineLayout()
+        let textActualHeight = messageEntryView.textViewHeightConstraint?.constant
 
         XCTAssertEqual(textActualHeight ?? 0.0, expectedTextViewHeight)
     }
 
     func test_text_view_is_scrollable() {
-        messagageEntryView.defineLayout()
-        XCTAssertEqual(messagageEntryView.textView.isScrollEnabled, false)
+        messageEntryView.defineLayout()
+        XCTAssertEqual(messageEntryView.textView.isScrollEnabled, false)
         let exampleText = "This\nis a\nfive\nlines\ntext"
 
-        messagageEntryView.messageText = exampleText
-        messagageEntryView.defineLayout()
+        messageEntryView.messageText = exampleText
+        messageEntryView.defineLayout()
 
-        XCTAssertEqual(messagageEntryView.textView.isScrollEnabled, true)
+        XCTAssertEqual(messageEntryView.textView.isScrollEnabled, true)
     }
 }
