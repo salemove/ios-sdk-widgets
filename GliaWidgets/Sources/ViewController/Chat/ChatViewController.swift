@@ -264,8 +264,6 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         case let .secureTranscript(needsTextInputEnabled):
             chatView.props = .init(header: props.secureTranscript)
             // Instead of hiding text input, we need to disable it and corresponding buttons.
-            // TODO: Currently there is no 'disabled' styles for text entry, so we need to confirm with Android
-            // if introduction of such styles is required.
             chatView.messageEntryView.isEnabled = needsTextInputEnabled
             chatView.setSendingMessageUnavailabilityBannerHidden(viewModel.isSecureConversationsAvailable)
             // For secure messaging bottom banner is visible.
