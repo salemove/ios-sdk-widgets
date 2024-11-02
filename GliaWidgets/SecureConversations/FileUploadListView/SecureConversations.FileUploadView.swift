@@ -304,7 +304,7 @@ extension SecureConversations.FileUploadView.Props {
 }
 
 extension FileUploadStyle {
-    static let initial = Theme().chat.messageEntry.uploadList.item
+    static let initial = Theme().chat.messageEntry.enabled.uploadList.item
 }
 
 extension SecureConversations.FileUploadView {

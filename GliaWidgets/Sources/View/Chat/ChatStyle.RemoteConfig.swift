@@ -23,6 +23,8 @@ extension ChatStyle {
         )
         messageEntry.apply(
             configuration: configuration?.input,
+            // TODO: Add Unified customization (MOB-3762)
+            disabledConfiguration: configuration?.input,
             assetsBuilder: assetsBuilder
         )
         choiceCardStyle.apply(
