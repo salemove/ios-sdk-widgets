@@ -1,4 +1,4 @@
-extension MessageButtonStyle {
+extension MessageButtonStateStyle {
     /// Accessibility properties of MessageButtonStyle.
     public struct Accessibility: Equatable {
         /// Accessibility label of the button.
@@ -13,7 +13,7 @@ extension MessageButtonStyle {
     }
 }
 
-extension MessageButtonStyle.Accessibility {
+extension MessageButtonStateStyle.Accessibility {
     /// Accessibility is not supported intentionally.
     public static let unsupported = Self(accessibilityLabel: "")
 }
