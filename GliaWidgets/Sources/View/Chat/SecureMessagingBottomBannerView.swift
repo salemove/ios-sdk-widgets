@@ -8,7 +8,7 @@ final class SecureMessagingBottomBannerView: UIView {
     private let divider = UIView().makeView()
 
     private lazy var visibleLabelConstraints: [NSLayoutConstraint] = [
-        label.leadingAnchor.constraint(lessThanOrEqualTo: leadingAnchor, constant: Self.horizontalMargins),
+        label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Self.horizontalMargins),
         label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Self.horizontalMargins),
         label.topAnchor.constraint(equalTo: topAnchor, constant: Self.verticalMargins),
         label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Self.verticalMargins)
