@@ -58,7 +58,8 @@ extension SecureConversations.TranscriptModel.Environment {
             createFileUploadListModel: environment.createFileUploadListModel,
             uuid: environment.uuid,
             secureUploadFile: environment.secureUploadFile,
-            fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.uploadList,
+            // TODO: MOB-3763
+            fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.enabled.uploadList,
             fetchSiteConfigurations: environment.fetchSiteConfigurations,
             getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
             messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
