@@ -321,6 +321,18 @@ extension Theme.Button {
 
 extension ChatMessageEntryStyle {
     static func mock(
+        enabled: ChatMessageEntryStateStyle = .mock(),
+        disabled: ChatMessageEntryStateStyle = .mock()
+    ) -> Self {
+        .init(
+            enabled: enabled,
+            disabled: disabled
+        )
+    }
+}
+
+extension ChatMessageEntryStateStyle {
+    static func mock(
         messageFont: UIFont = .systemFont(ofSize: 16),
         messageColor: UIColor = .black,
         enterMessagePlaceholder: String = "",
@@ -333,7 +345,7 @@ extension ChatMessageEntryStyle {
         mediaButton: MessageButtonStyle = .mock(),
         sendButton: MessageButtonStyle = .mock(),
         uploadList: FileUploadListStyle = .mock
-    ) -> ChatMessageEntryStyle {
+    ) -> Self {
         return .init(
             messageFont: messageFont,
             messageColor: messageColor,
@@ -351,14 +363,26 @@ extension ChatMessageEntryStyle {
     }
 }
 
-extension MessageButtonStyle {
+extension MessageButtonStateStyle {
     static func mock(
         image: UIImage = .mock,
         color: UIColor = .black
-    ) -> MessageButtonStyle {
+    ) -> Self {
         return .init(
             image: image,
             color: color
+        )
+    }
+}
+
+extension MessageButtonStyle {
+    static func mock(
+        enabled: MessageButtonStateStyle = .mock(),
+        disabled: MessageButtonStateStyle = .mock()
+    ) -> Self {
+        self.init(
+            enabled: enabled,
+            disabled: disabled
         )
     }
 }
