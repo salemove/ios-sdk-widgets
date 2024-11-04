@@ -7,16 +7,32 @@ extension Theme {
             accessibility: .init(label: Localization.EntryWidget.Loading.Accessibility.label)
         )
 
+        let mediaTypeAccessibility: EntryWidgetStyle.MediaTypeItemStyle.Accessibility = .init(
+            chatHint: Localization.EntryWidget.LiveChat.Button.Accessibility.hint,
+            audioHint: Localization.EntryWidget.Audio.Button.Accessibility.hint,
+            videoHint: Localization.EntryWidget.Video.Button.Accessibility.hint,
+            secureMessagingHint: Localization.EntryWidget.SecureMessaging.Button.Accessibility.hint
+        )
+
         let mediaTypeItem: EntryWidgetStyle.MediaTypeItemStyle = .init(
+            chatTitle: Localization.EntryWidget.LiveChat.Button.label,
+            audioTitle: Localization.EntryWidget.Audio.Button.label,
+            videoTitle: Localization.EntryWidget.Video.Button.label,
+            secureMessagingTitle: Localization.EntryWidget.SecureMessaging.Button.label,
             titleFont: font.bodyText,
             titleColor: color.baseDark,
             titleTextStyle: .body,
+            chatMessage: Localization.EntryWidget.LiveChat.Button.description,
+            audioMessage: Localization.EntryWidget.Audio.Button.description,
+            videoMessage: Localization.EntryWidget.Video.Button.description,
+            secureMessagingMessage: Localization.EntryWidget.SecureMessaging.Button.description,
             messageFont: font.caption,
             messageColor: color.baseNormal,
             messageTextStyle: .caption1,
             iconColor: .fill(color: color.primary),
             backgroundColor: .fill(color: color.baseLight),
-            loading: loading
+            loading: loading,
+            accessibility: mediaTypeAccessibility
         )
 
         let backgroundColor: ColorType = .fill(color: color.baseLight)
