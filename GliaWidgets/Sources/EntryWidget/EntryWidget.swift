@@ -105,20 +105,31 @@ private extension EntryWidget {
     }
 
     func mediaTypeSelected(_ mediaTypeItem: MediaTypeItem) {
-        do {
-            switch mediaTypeItem {
-            case .chat:
-                try environment.engagementLauncher.startChat()
-            case .audio:
-                try environment.engagementLauncher.startAudioCall()
-            case .video:
-                try environment.engagementLauncher.startVideoCall()
-            case .secureMessaging:
-                try environment.engagementLauncher.startSecureMessaging()
+        hideViewIfNecessary {
+            do {
+                switch mediaTypeItem {
+                case .chat:
+                    try self.environment.engagementLauncher.startChat()
+                case .audio:
+                    try self.environment.engagementLauncher.startAudioCall()
+                case .video:
+                    try self.environment.engagementLauncher.startVideoCall()
+                case .secureMessaging:
+                    try self.environment.engagementLauncher.startSecureMessaging()
+                }
+            } catch {
+                self.viewState = .error
             }
-        } catch {
-            viewState = .error
         }
+    }
+
+    func hideViewIfNecessary(completion: @escaping () -> Void) {
+        guard hostedViewController != nil else {
+            completion()
+            return
+        }
+        hostedViewController?.dismiss(animated: true, completion: completion)
+        hostedViewController = nil
     }
 
     func makeViewModel(showHeader: Bool) -> EntryWidgetView.Model {
