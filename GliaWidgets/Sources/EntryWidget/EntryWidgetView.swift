@@ -155,8 +155,8 @@ private extension EntryWidgetView {
         HStack(spacing: 16) {
             icon(mediaType.image)
             VStack(alignment: .leading, spacing: 2) {
-                headlineText(mediaType.headline)
-                subheadlineText(mediaType.subheadline)
+                headlineText(model.style.mediaTypeItem.title(for: mediaType))
+                subheadlineText(model.style.mediaTypeItem.message(for: mediaType))
             }
         }
         .maxWidth(alignment: .leading)
@@ -165,7 +165,7 @@ private extension EntryWidgetView {
         .contentShape(.rect)
         .accessibilityElement(children: .combine)
         .accessibility(addTraits: .isButton)
-        .accessibilityHint(mediaType.hintline)
+        .accessibilityHint(model.style.mediaTypeItem.accessibility.hint(for: mediaType))
         .onTapGesture {
             model.selectMediaType(mediaType)
         }
@@ -179,13 +179,13 @@ private extension EntryWidgetView {
                 .width(model.sizeConstraints.singleCellIconSize)
                 .height(model.sizeConstraints.singleCellIconSize)
             VStack(alignment: .leading, spacing: 2) {
-                Text(mediaType.headline)
+                Text(model.style.mediaTypeItem.title(for: mediaType))
                     .setFont(model.style.mediaTypeItem.titleFont)
                     .redactedPlaceholder(
                         model.style.mediaTypeItem.loading.loadingTintColor,
                         font: model.style.mediaTypeItem.titleFont
                     )
-                Text(mediaType.subheadline)
+                Text(model.style.mediaTypeItem.message(for: mediaType))
                     .setFont(model.style.mediaTypeItem.messageFont)
                     .redactedPlaceholder(
                         model.style.mediaTypeItem.loading.loadingTintColor,

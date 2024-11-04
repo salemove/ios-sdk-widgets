@@ -8,45 +8,6 @@ extension EntryWidget {
         case chat
         case secureMessaging
 
-        var headline: String {
-            switch self {
-            case .chat:
-                return Localization.EntryWidget.LiveChat.Button.label
-            case .audio:
-                return Localization.EntryWidget.Audio.Button.label
-            case .video:
-                return Localization.EntryWidget.Video.Button.label
-            case .secureMessaging:
-                return Localization.EntryWidget.SecureMessaging.Button.label
-            }
-        }
-
-        var subheadline: String {
-            switch self {
-            case .chat:
-                return Localization.EntryWidget.LiveChat.Button.description
-            case .audio:
-                return Localization.EntryWidget.Audio.Button.description
-            case .video:
-                return Localization.EntryWidget.Video.Button.description
-            case .secureMessaging:
-                return Localization.EntryWidget.SecureMessaging.Button.description
-            }
-        }
-
-        var hintline: String {
-            switch self {
-            case .chat:
-                return Localization.EntryWidget.LiveChat.Button.Accessibility.hint
-            case .audio:
-                return Localization.EntryWidget.Audio.Button.Accessibility.hint
-            case .video:
-                return Localization.EntryWidget.Video.Button.Accessibility.hint
-            case .secureMessaging:
-                return Localization.EntryWidget.SecureMessaging.Button.Accessibility.hint
-            }
-        }
-
         var image: UIImage {
             switch self {
             case .chat:
