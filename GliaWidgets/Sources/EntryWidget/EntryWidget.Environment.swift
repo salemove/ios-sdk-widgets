@@ -15,7 +15,7 @@ extension EntryWidget.Environment {
         let engagementLauncher = EngagementLauncher { _, _ in }
         let theme = Theme()
         return .init(
-            queuesMonitor: .mock,
+            queuesMonitor: .mock(),
             engagementLauncher: engagementLauncher,
             theme: theme,
             isAuthenticated: { true }
