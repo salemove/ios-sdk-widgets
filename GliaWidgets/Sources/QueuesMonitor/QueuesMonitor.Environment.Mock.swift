@@ -1,3 +1,4 @@
+import Foundation
 #if DEBUG
 extension QueuesMonitor.Environment {
     static let mock: Self = .init(
