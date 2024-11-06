@@ -5,7 +5,7 @@ let package = Package(
     name: "GliaWidgets",
     defaultLocalization: .init(stringLiteral: "en"),
     platforms: [
-        .iOS(.v13)
+        .iOS(.v14)
     ],
     products: [
         .library(
