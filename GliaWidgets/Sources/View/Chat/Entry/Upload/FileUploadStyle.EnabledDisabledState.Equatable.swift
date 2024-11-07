@@ -1,7 +1,7 @@
 import Foundation
 
-extension FileUploadStyle {
-    public static func == (lhs: FileUploadStyle, rhs: FileUploadStyle) -> Bool {
+extension FileUploadStyle.EnabledDisabledState {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.filePreview == rhs.filePreview &&
         lhs.uploading == rhs.uploading &&
         lhs.uploaded == rhs.uploaded &&
