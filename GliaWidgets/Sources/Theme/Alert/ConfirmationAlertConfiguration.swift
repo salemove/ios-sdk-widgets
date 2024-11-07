@@ -1,7 +1,7 @@
 import Foundation
 
 /// Configuration of the confirmation alert.
-public struct ConfirmationAlertConfiguration {
+public struct ConfirmationAlertConfiguration: Equatable {
     /// Title of the alert.
     public var title: String?
 

@@ -36,7 +36,7 @@ extension AlertManager.AlertTypeComposer {
     ///
     func composeAlert(
         input: AlertInputType
-    ) -> AlertType {
+    ) throws -> AlertType {
         switch input {
         case let .mediaSourceNotAvailable(dismissed):
             return mediaTypeNotAvailableAlertType(dismissed: dismissed)
@@ -65,7 +65,7 @@ extension AlertManager.AlertTypeComposer {
         case let .endEngagement(confirmed):
             return endEngagementAlertType(confirmed: confirmed)
         case let .mediaUpgrade(operators, offer, accepted, declined, answer):
-            return mediaUpgradeOfferAlertType(
+            return try mediaUpgradeOfferAlertType(
                 operators: operators,
                 offer: offer,
                 accepted: accepted,
@@ -267,7 +267,7 @@ private extension AlertManager.AlertTypeComposer {
         accepted: (() -> Void)? = nil,
         declined: (() -> Void)? = nil,
         answer: @escaping CoreSdkClient.AnswerWithSuccessBlock
-    ) -> AlertType {
+    ) throws -> AlertType {
         let acceptedOffer: () -> Void = {
             self.environment.log.prefixed(Self.self).info("Upgrade offer accepted by visitor")
             accepted?()
@@ -280,22 +280,28 @@ private extension AlertManager.AlertTypeComposer {
             answer(false, nil)
         }
 
+        let configuration: SingleMediaUpgradeAlertConfiguration
+
         switch offer.type {
         case .audio:
             environment.log.prefixed(Self.self).info("Audio upgrade requested")
             environment.log.prefixed(Self.self).info("Show Upgrade Audio Dialog")
+            configuration = theme.alertConfiguration.audioUpgrade.withOperatorName(operators)
         case .video where offer.direction == .oneWay:
             environment.log.prefixed(Self.self).info("1 way video upgrade requested")
             environment.log.prefixed(Self.self).info("Show Upgrade 1WayVideo Dialog")
+            configuration = theme.alertConfiguration.oneWayVideoUpgrade.withOperatorName(operators)
         case .video where offer.direction == .twoWay:
             environment.log.prefixed(Self.self).info("2 way video upgrade requested")
             environment.log.prefixed(Self.self).info("Show Upgrade 2WayVideo Dialog")
+            configuration = theme.alertConfiguration.twoWayVideoUpgrade.withOperatorName(operators)
         default:
-            break
+            environment.log.prefixed(Self.self).warning("Unsupported media upgrade offer type requested")
+            throw GliaError.internalError
         }
 
         return .singleMediaUpgrade(
-            theme.alertConfiguration.twoWayVideoUpgrade.withOperatorName(operators),
+            configuration,
             accepted: acceptedOffer,
             declined: declinedOffer
         )
