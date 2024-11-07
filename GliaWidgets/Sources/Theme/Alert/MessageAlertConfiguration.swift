@@ -1,5 +1,5 @@
 /// Configuration of a generic alert.
-public struct MessageAlertConfiguration {
+public struct MessageAlertConfiguration: Equatable {
     /// Title of the alert.
     public var title: String?
 

@@ -1,7 +1,7 @@
 import Foundation
 
 /// Configuration of the media upgrade confirmation alert.
-public struct MultipleMediaUpgradeAlertConfiguration {
+public struct MultipleMediaUpgradeAlertConfiguration: Equatable {
     /// Title of the alert.
     public var title: String
 

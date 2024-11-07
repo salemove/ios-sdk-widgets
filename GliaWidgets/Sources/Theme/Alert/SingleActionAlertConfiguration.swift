@@ -1,7 +1,7 @@
 import Foundation
 
 /// Configuration of the operator ending the engagement alert.
-public struct SingleActionAlertConfiguration {
+public struct SingleActionAlertConfiguration: Equatable {
     /// Title of the alert.
     public var title: String?
 
