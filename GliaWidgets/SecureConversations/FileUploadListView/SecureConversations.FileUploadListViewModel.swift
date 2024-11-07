@@ -6,6 +6,11 @@ extension SecureConversations {
 
         var action: ((Action) -> Void)?
         var delegate: ((DelegateEvent) -> Void)?
+        var isEnabled = true {
+            didSet {
+                reportChange()
+            }
+        }
 
         enum Event {}
         enum Action {}
@@ -91,7 +96,8 @@ extension SecureConversations {
                         style: style.item,
                         removeTapped: Cmd { [weak self] in
                             self?.removeUpload(fileUpload)
-                        }
+                        },
+                        isEnabled: isEnabled
                     )
                 }
             )
