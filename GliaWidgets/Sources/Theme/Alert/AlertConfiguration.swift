@@ -1,5 +1,5 @@
 /// Configurations for alerts and confirmations.
-public struct AlertConfiguration {
+public struct AlertConfiguration: Equatable {
     /// Configuration of the queue leaving confirmation alert.
     public var leaveQueue: ConfirmationAlertConfiguration
 

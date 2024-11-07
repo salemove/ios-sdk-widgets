@@ -416,6 +416,7 @@
 		847956362AD96AD7004EF60C /* CoreSDKConfigurator.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847956352AD96AD7004EF60C /* CoreSDKConfigurator.Interface.swift */; };
 		847956402ADED7A2004EF60C /* CallVisualizer.Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8479563F2ADED7A2004EF60C /* CallVisualizer.Action.swift */; };
 		847A7643285A1914004044D1 /* FileUploadListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */; };
+		847D7FAE2CDE0F3A00EA5C2D /* AlertTypeComposerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7FAD2CDE0F3A00EA5C2D /* AlertTypeComposerTests.swift */; };
 		8485704F2BEE3A0800CEBCC5 /* ChatViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8485704E2BEE3A0800CEBCC5 /* ChatViewTest.swift */; };
 		848570512BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848570502BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift */; };
 		848B8ADC2C0759C500E990E6 /* Theme.CustomCardContainerStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848B8ADB2C0759C500E990E6 /* Theme.CustomCardContainerStyle.swift */; };
@@ -1427,6 +1428,7 @@
 		847956352AD96AD7004EF60C /* CoreSDKConfigurator.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSDKConfigurator.Interface.swift; sourceTree = "<group>"; };
 		8479563F2ADED7A2004EF60C /* CallVisualizer.Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizer.Action.swift; sourceTree = "<group>"; };
 		847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadListViewModelTests.swift; sourceTree = "<group>"; };
+		847D7FAD2CDE0F3A00EA5C2D /* AlertTypeComposerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTypeComposerTests.swift; sourceTree = "<group>"; };
 		8485704E2BEE3A0800CEBCC5 /* ChatViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewTest.swift; sourceTree = "<group>"; };
 		848570502BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStyle.Mock.swift; sourceTree = "<group>"; };
 		848B8ADB2C0759C500E990E6 /* Theme.CustomCardContainerStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.CustomCardContainerStyle.swift; sourceTree = "<group>"; };
@@ -4913,6 +4915,7 @@
 			isa = PBXGroup;
 			children = (
 				C0D6C9FF2C106A1F00D4709B /* AlertManager.Failing.swift */,
+				847D7FAD2CDE0F3A00EA5C2D /* AlertTypeComposerTests.swift */,
 			);
 			path = AlertManager;
 			sourceTree = "<group>";
@@ -6336,6 +6339,7 @@
 				9A1992E127D6313500161AAE /* ImageView.Cache.Failing.swift in Sources */,
 				3189DD9629E4331200D68E9F /* SecureConversations.WelcomeViewModel.Mock.swift in Sources */,
 				31D286AF2A00DE2B009192A6 /* SecureConversations.ConfirmationViewModel.Mock.swift in Sources */,
+				847D7FAE2CDE0F3A00EA5C2D /* AlertTypeComposerTests.swift in Sources */,
 				31B278012B55903C0021DEC1 /* SecureConversations.Coordinator.Environment.Mock.swift in Sources */,
 				C0D2F06429A4B1E900803B47 /* VideoCallTests.swift in Sources */,
 				31FF0DCF2B5A88F500834AFB /* CallCoordinatorTests.swift in Sources */,

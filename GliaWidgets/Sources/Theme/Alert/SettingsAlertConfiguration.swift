@@ -1,7 +1,7 @@
 import Foundation
 
 /// Configuration of the alert that offers to go to the app's settings in the Settings app.
-public struct SettingsAlertConfiguration {
+public struct SettingsAlertConfiguration: Equatable {
     /// Title of the alert.
     public var title: String
 

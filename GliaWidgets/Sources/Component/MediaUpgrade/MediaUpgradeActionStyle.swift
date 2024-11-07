@@ -1,7 +1,7 @@
 import UIKit
 
 /// Style of the media upgrade action in a multiple media type alert window.
-public struct MediaUpgradeActionStyle {
+public struct MediaUpgradeActionStyle: Equatable {
     /// Title of the media upgrade action. Displayed to the left of the icon, at the top of the view.
     public var title: String
 
