@@ -54,7 +54,8 @@ final class SecureConversationsWelcomeScreenLayoutTests: SnapshotTestCase {
             id: "id-a",
             style: .messageCenter(theme.secureConversationsWelcome.attachmentListStyle.item),
             state: .uploaded(.init(localFile: .mock())),
-            removeTapped: .nop
+            removeTapped: .nop,
+            isEnabled: true
         )
     }
 
@@ -63,7 +64,8 @@ final class SecureConversationsWelcomeScreenLayoutTests: SnapshotTestCase {
             id: "id-b",
             style: .messageCenter(theme.secureConversationsWelcome.attachmentListStyle.item),
             state: .error(.network),
-            removeTapped: .nop
+            removeTapped: .nop,
+            isEnabled: true
         )
     }
 
@@ -98,21 +100,37 @@ final class SecureConversationsWelcomeScreenLayoutTests: SnapshotTestCase {
             fileUploadListProps: .init(
                 maxUnscrollableViews: 3,
                 style: .messageCenter(
-                    .init(item: .init(
-                        filePreview: .mock,
-                        uploading: .mock,
-                        uploaded: .mock,
-                        error: .mock,
-                        progressColor: Color.primary,
-                        errorProgressColor: Color.systemNegative,
-                        progressBackgroundColor: .clear,
-                        removeButtonImage: .mock,
-                        removeButtonColor: Color.baseShade,
-                        backgroundColor: Color.baseNeutral)
+                    .init(
+                        item: .init(
+                            enabled: .init(
+                                filePreview: .mock,
+                                uploading: .mock,
+                                uploaded: .mock,
+                                error: .mock,
+                                progressColor: Color.primary,
+                                errorProgressColor: Color.systemNegative,
+                                progressBackgroundColor: .clear,
+                                removeButtonImage: .mock,
+                                removeButtonColor: Color.baseShade,
+                                backgroundColor: Color.baseNeutral
+                            ),
+                            disabled: .init(
+                                filePreview: .mock,
+                                uploading: .mock,
+                                uploaded: .mock,
+                                error: .mock,
+                                progressColor: Color.primary,
+                                errorProgressColor: Color.systemNegative,
+                                progressBackgroundColor: .clear,
+                                removeButtonImage: .mock,
+                                removeButtonColor: Color.baseShade,
+                                backgroundColor: Color.baseNeutral
+                            )
+                        )
                     )
                 ),
                 uploads: .init(uploads),
-                isScrollingEnabled: true, 
+                isScrollingEnabled: true,
                 preferredContentSizeCategoryChanged: .nop
             ),
             headerProps: headerProps,

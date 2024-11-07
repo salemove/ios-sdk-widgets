@@ -172,7 +172,13 @@ extension Theme {
         )
 
         var uploadListStyle: MessageCenterFileUploadListStyle {
-            let filePreview = FilePreviewStyle(
+            // For now all disabled styles are the same as enabled ones.
+            // Because there is no design for disabled state of file upload
+            // and visually we do not show disabled state of file upload.
+            // But since file upload is a part of the message entry, that
+            // has to have disabled state, we need to provide these styles
+            // for file upload as well.
+            let filePreviewEnabled = FilePreviewStyle(
                 fileFont: font.subtitle,
                 fileColor: color.baseLight,
                 errorIcon: Asset.uploadError.image,
@@ -181,21 +187,44 @@ extension Theme {
                 errorBackgroundColor: color.baseNeutral,
                 accessibility: .init(isFontScalingEnabled: true)
             )
-            let uploading = FileUploadStateStyle(
+            let filePreviewDisabled = FilePreviewStyle(
+                fileFont: font.subtitle,
+                fileColor: color.baseLight,
+                errorIcon: Asset.uploadError.image,
+                errorIconColor: color.systemNegative,
+                backgroundColor: color.primary,
+                errorBackgroundColor: color.baseNeutral,
+                accessibility: .init(isFontScalingEnabled: true)
+            )
+            let uploadingEnabled = FileUploadStateStyle(
                 text: Localization.Chat.File.Upload.inProgress,
                 font: font.mediumSubtitle2,
                 textColor: color.baseDark,
                 infoFont: font.caption,
                 infoColor: color.baseNormal
             )
-            let uploaded = FileUploadStateStyle(
+            let uploadingDisabled = FileUploadStateStyle(
+                text: Localization.Chat.File.Upload.inProgress,
+                font: font.mediumSubtitle2,
+                textColor: color.baseDark,
+                infoFont: font.caption,
+                infoColor: color.baseNormal
+            )
+            let uploadedEnabled = FileUploadStateStyle(
                 text: Localization.Chat.File.Upload.success,
                 font: font.mediumSubtitle2,
                 textColor: color.baseDark,
                 infoFont: font.caption,
                 infoColor: color.baseNormal
             )
-            let error = FileUploadErrorStateStyle(
+            let uploadedDisabled = FileUploadStateStyle(
+                text: Localization.Chat.File.Upload.success,
+                font: font.mediumSubtitle2,
+                textColor: color.baseDark,
+                infoFont: font.caption,
+                infoColor: color.baseNormal
+            )
+            let errorEnabled = FileUploadErrorStateStyle(
                 text: Localization.Chat.File.Upload.failed,
                 font: font.mediumSubtitle2,
                 textColor: color.baseDark,
@@ -207,11 +236,23 @@ extension Theme {
                 infoNetworkError: Localization.Chat.File.Upload.networkError,
                 infoGenericError: Localization.Chat.File.Upload.genericError
             )
-            let upload = MessageCenterFileUploadStyle(
-                filePreview: filePreview,
-                uploading: uploading,
-                uploaded: uploaded,
-                error: error,
+            let errorDisabled = FileUploadErrorStateStyle(
+                text: Localization.Chat.File.Upload.failed,
+                font: font.mediumSubtitle2,
+                textColor: color.baseDark,
+                infoFont: font.caption,
+                infoColor: color.systemNegative,
+                infoFileTooBig: Localization.Chat.File.SizeLimit.error,
+                infoUnsupportedFileType: Localization.Chat.Attachment.unsupportedFile,
+                infoSafetyCheckFailed: Localization.Chat.File.InfectedFile.error,
+                infoNetworkError: Localization.Chat.File.Upload.networkError,
+                infoGenericError: Localization.Chat.File.Upload.genericError
+            )
+            let uploadEnabled = MessageCenterFileUploadStyle.EnabledDisabledState(
+                filePreview: filePreviewEnabled,
+                uploading: uploadingEnabled,
+                uploaded: uploadedEnabled,
+                error: errorEnabled,
                 progressColor: color.primary,
                 errorProgressColor: color.systemNegative,
                 progressBackgroundColor: color.baseNeutral,
@@ -225,7 +266,28 @@ extension Theme {
                     isFontScalingEnabled: true
                 )
             )
-
+            let uploadDisabled = MessageCenterFileUploadStyle.EnabledDisabledState(
+                filePreview: filePreviewDisabled,
+                uploading: uploadingDisabled,
+                uploaded: uploadedDisabled,
+                error: errorDisabled,
+                progressColor: color.primary,
+                errorProgressColor: color.systemNegative,
+                progressBackgroundColor: color.baseNeutral,
+                removeButtonImage: Asset.mcRemoveUpload.image,
+                removeButtonColor: color.baseNormal,
+                backgroundColor: .commonGray,
+                accessibility: .init(
+                    removeButtonAccessibilityLabel: Localization.Chat.File.RemoveUpload.Accessibility.label,
+                    progressPercentValue: Localization.Templates.percentValue,
+                    fileNameWithProgressValue: Localization.Templates.fileNameWithProgressValue,
+                    isFontScalingEnabled: true
+                )
+            )
+            let upload = MessageCenterFileUploadStyle(
+                enabled: uploadEnabled,
+                disabled: uploadDisabled
+            )
             return MessageCenterFileUploadListStyle(item: upload)
         }
 
