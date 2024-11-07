@@ -141,12 +141,11 @@ extension SecureConversations {
                 case let .success(.available(queueIds)):
                     self.environment.queueIds = queueIds
                     self.isSecureConversationsAvailable = true
-                case .failure, .success(.unavailable(.emptyQueue)):
-                    self.isSecureConversationsAvailable = false
-                    self.engagementAction?(.showAlert(.unavailableMessageCenter()))
-                case .success(.unavailable(.unauthenticated)):
+                    self.fileUploadListModel.isEnabled = true
+                case .failure, .success(.unavailable(.emptyQueue)), .success(.unavailable(.unauthenticated)):
                     // For chat screen we no longer show unavailability dialog, but unavailability banner instead.
                     self.isSecureConversationsAvailable = false
+                    self.fileUploadListModel.isEnabled = false
                 }
             }
         }

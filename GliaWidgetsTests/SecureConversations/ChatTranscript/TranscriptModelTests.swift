@@ -578,6 +578,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
     func testIsSecureConversationsAvailableIsFalseIsDueToEmptyQueue() {
         var modelEnvironment = TranscriptModel.Environment.failing
+        modelEnvironment.uiApplication = .mock
         modelEnvironment.fileManager = .mock
         modelEnvironment.maximumUploads = { 2 }
         modelEnvironment.createFileUploadListModel = {
@@ -611,7 +612,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
-        logger.warningClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }        
+        modelEnvironment.uiApplication = .mock
         modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
         modelEnvironment.maximumUploads = { 2 }
@@ -641,6 +643,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
+        modelEnvironment.uiApplication = .mock
         modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
         modelEnvironment.maximumUploads = { 2 }
@@ -670,6 +673,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
         logger.warningClosure = { _, _, _, _ in }
+        modelEnvironment.uiApplication = .mock
         modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
         modelEnvironment.maximumUploads = { 2 }
@@ -700,6 +704,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
         logger.warningClosure = { _, _, _, _ in }
+        modelEnvironment.uiApplication = .mock
         modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
         modelEnvironment.maximumUploads = { 2 }
