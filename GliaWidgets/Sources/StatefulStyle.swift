@@ -29,3 +29,5 @@ enum StatefulStyle<State> {
         }
     }
 }
+
+extension StatefulStyle: Equatable where State: Equatable {}
