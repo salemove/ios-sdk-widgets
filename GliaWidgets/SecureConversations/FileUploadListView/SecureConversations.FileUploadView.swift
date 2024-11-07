@@ -11,6 +11,7 @@ extension SecureConversations {
             let style: Style
             let state: State
             let removeTapped: Cmd
+            let isEnabled: Bool
         }
 
         static func height(for style: Style) -> CGFloat {
@@ -68,7 +69,7 @@ extension SecureConversations {
             constraints += contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: Self.height(for: props.style))
             addSubview(contentView)
             contentView.translatesAutoresizingMaskIntoConstraints = false
-            let style = Style.Properties(style: props.style)
+            let style = Style.Properties(style: props.style, isEnabled: props.isEnabled)
             constraints += contentView.layoutInSuperview(insets: style.contentInsets)
 
             contentView.addSubview(filePreviewView)
@@ -124,7 +125,8 @@ extension SecureConversations {
 
         func renderProps() {
             let style = SecureConversations.FileUploadView.Style.Properties(
-                style: props.style
+                style: props.style,
+                isEnabled: props.isEnabled
             )
             progressView.backgroundColor = style.progressBackgroundColor
             removeButton.tintColor = style.removeButtonColor
@@ -148,7 +150,7 @@ extension SecureConversations {
 
         private func update(for state: FileUpload.State) {
             let style = SecureConversations.FileUploadView.Style.Properties(
-                style: props.style
+                style: props.style, isEnabled: props.isEnabled
             )
             switch state {
             case .none:
@@ -289,7 +291,8 @@ extension SecureConversations.FileUploadView.Props {
     init(
         fileUpload: GliaWidgets.FileUpload,
         style: SecureConversations.FileUploadView.Style,
-        removeTapped: Cmd
+        removeTapped: Cmd,
+        isEnabled: Bool
     ) {
         self.init(
             id: fileUpload.uuid.uuidString,
@@ -298,7 +301,8 @@ extension SecureConversations.FileUploadView.Props {
                 state: fileUpload.state.value,
                 localFile: fileUpload.localFile
             ),
-            removeTapped: removeTapped
+            removeTapped: removeTapped,
+            isEnabled: isEnabled
         )
     }
 }
@@ -308,6 +312,8 @@ extension FileUploadStyle {
 }
 
 extension SecureConversations.FileUploadView {
+    typealias EnabledDisabledState = StatefulStyle<Style>
+
     enum Style: Equatable {
         case chat(FileUploadStyle)
         case messageCenter(MessageCenterFileUploadStyle)
@@ -341,9 +347,11 @@ extension SecureConversations.FileUploadView.Style {
         var backgroundColor: UIColor
         var removeButtonTopRightOffset: CGSize
 
-        init(style: SecureConversations.FileUploadView.Style) {
+        init(style: SecureConversations.FileUploadView.Style, isEnabled: Bool) {
             switch style {
-            case let .chat(uploadStyle):
+            case let .chat(styleStates):
+                let uploadStyle = isEnabled ? styleStates.enabled
+                                            : styleStates.disabled
                 filePreview = uploadStyle.filePreview
                 uploading = uploadStyle.uploading
                 uploaded = uploadStyle.uploaded
@@ -358,7 +366,9 @@ extension SecureConversations.FileUploadView.Style {
                 cornerRadius = 0
                 backgroundColor = .clear
                 removeButtonTopRightOffset = .zero
-            case let .messageCenter(uploadStyle):
+            case let .messageCenter(styleStates):
+                let uploadStyle = isEnabled ? styleStates.enabled
+                                            : styleStates.disabled
                 filePreview = uploadStyle.filePreview
                 uploading = uploadStyle.uploading
                 uploaded = uploadStyle.uploaded
