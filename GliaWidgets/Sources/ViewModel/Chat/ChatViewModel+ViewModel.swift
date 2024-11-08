@@ -77,8 +77,8 @@ extension ChatViewModel: ViewModel {
         case none
     }
 
-    enum ChatType {
-        case secureTranscript
+    enum ChatType: Equatable {
+        case secureTranscript(upgradedFromChat: Bool)
         case authenticated
         case nonAuthenticated
     }

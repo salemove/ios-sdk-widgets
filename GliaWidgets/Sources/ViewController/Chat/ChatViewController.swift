@@ -268,6 +268,11 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             chatView.setSendingMessageUnavailabilityBannerHidden(viewModel.isSecureConversationsAvailable)
             // For secure messaging bottom banner is visible.
             chatView.setSecureMessagingBottomBannerHidden(false)
+        case .chatToSecureTranscript:
+            chatView.props = .init(header: props.secureTranscript)
+            chatView.messageEntryView.isEnabled = true
+            chatView.setSendingMessageUnavailabilityBannerHidden(true)
+            chatView.setSecureMessagingBottomBannerHidden(false)
         }
     }
 
@@ -302,11 +307,15 @@ extension ChatViewController {
             // Even though we are using the chat view model already,
             // if the engagement is not active, we still need to show
             // secure transcript UI.
-            if chatViewModel.chatType == .secureTranscript {
+            switch chatViewModel.chatType {
+            case let .secureTranscript(upgradedFromChat):
+                if upgradedFromChat {
+                    return .chatToSecureTranscript
+                }
                 return chatViewModel.activeEngagement != nil
                 ? .chat
                 : .secureTranscript(needsTextInputEnabled: true)
-            } else {
+            case .authenticated, .nonAuthenticated:
                 return .chat
             }
         case .transcript(let transcriptModel):
@@ -324,4 +333,5 @@ extension ChatViewController {
 private enum CurrentChatModelType {
     case chat
     case secureTranscript(needsTextInputEnabled: Bool)
+    case chatToSecureTranscript
 }

@@ -148,7 +148,10 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 // MARK: Chat model
 extension ChatCoordinator {
     private func chatModel() -> ChatViewModel {
+        let engagement = environment.getCurrentEngagement()
+        let isTransferredToSecureConversations = engagement?.status == .transferring && engagement?.capabilities?.isTextMessageAllowed == true
         let chatType = Self.chatType(
+            isTransferredToSecureConversations: isTransferredToSecureConversations,
             startWithSecureTranscriptFlow: startWithSecureTranscriptFlow,
             isAuthenticated: environment.isAuthenticated()
         )
@@ -296,11 +299,14 @@ extension ChatCoordinator {
 
 extension ChatCoordinator {
     static func chatType(
+        isTransferredToSecureConversations: Bool,
         startWithSecureTranscriptFlow: Bool,
         isAuthenticated: Bool
     ) -> ChatViewModel.ChatType {
-        if startWithSecureTranscriptFlow {
-            return .secureTranscript
+        if isTransferredToSecureConversations {
+            return .secureTranscript(upgradedFromChat: true)
+        } else if startWithSecureTranscriptFlow {
+            return .secureTranscript(upgradedFromChat: false)
         } else if isAuthenticated {
             return .authenticated
         } else {

@@ -60,7 +60,7 @@ class ChatViewModel: EngagementViewModel {
         return .enabled(.enagagementConnection(isConnected: environment.getCurrentEngagement() != nil))
     }
 
-    let chatType: ChatType
+    private(set) var chatType: ChatType
 
     init(
         interactor: Interactor,
@@ -244,6 +244,9 @@ class ChatViewModel: EngagementViewModel {
             typingStatusUpdated(status)
         case .engagementTransferring:
             onEngagementTransferring()
+        case .onLiveToSecureConversationsEngagementTransferring:
+            chatType = .secureTranscript(upgradedFromChat: true)
+            action?(.refreshAll)
         case .engagementTransferred:
             onEngagementTransferred()
         case .stateChanged(.engaged):
