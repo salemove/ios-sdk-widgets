@@ -77,7 +77,7 @@ class ChatViewModelTests: XCTestCase {
     }
 
     func test_secureTranscriptChatTypeCases() throws {
-        let viewModel: ChatViewModel = .mock(chatType: .secureTranscript)
+        let viewModel: ChatViewModel = .mock(chatType: .secureTranscript(upgradedFromChat: false))
         viewModel.update(for: .enqueueing(.text))
         XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 0)
         viewModel.handle(pendingMessage: .mock())
@@ -102,16 +102,25 @@ class ChatViewModelTests: XCTestCase {
 
     func test_chatTypeResponse() throws {
         var chatType = ChatCoordinator.chatType(
+            isTransferredToSecureConversations: false,
             startWithSecureTranscriptFlow: true,
             isAuthenticated: true
         )
-        XCTAssertEqual(chatType, .secureTranscript)
+        XCTAssertEqual(chatType, .secureTranscript(upgradedFromChat: false))
         chatType = ChatCoordinator.chatType(
+            isTransferredToSecureConversations: true,
+            startWithSecureTranscriptFlow: false,
+            isAuthenticated: false
+        )
+        XCTAssertEqual(chatType, .secureTranscript(upgradedFromChat: true))
+        chatType = ChatCoordinator.chatType(
+            isTransferredToSecureConversations: false,
             startWithSecureTranscriptFlow: false,
             isAuthenticated: true
         )
         XCTAssertEqual(chatType, .authenticated)
         chatType = ChatCoordinator.chatType(
+            isTransferredToSecureConversations: false,
             startWithSecureTranscriptFlow: false,
             isAuthenticated: false
         )
