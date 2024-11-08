@@ -31,6 +31,7 @@ enum InteractorEvent {
     case error(CoreSdkClient.SalemoveError)
     case engagementTransferred(CoreSdkClient.Operator?)
     case engagementTransferring
+    case onLiveToSecureConversationsEngagementTransferring
     case onEngagementRequest(CoreSdkClient.Request, answer: Command<Bool>)
 }
 
@@ -289,7 +290,13 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     var onLiveToSecureConversationsEngagementTransferring: CoreSdkClient.EngagementTransferringBlock {
-        return {}
+        return { [weak self, environment] in
+            environment.log.prefixed(Self.self).info(
+                "Live to Secure Conversations Engagement Transfer",
+                function: "\(\Interactor.onLiveToSecureConversationsEngagementTransferring)"
+            )
+            self?.notify(.onLiveToSecureConversationsEngagementTransferring)
+        }
     }
 
     var onOperatorTypingStatusUpdate: CoreSdkClient.OperatorTypingStatusUpdate {
