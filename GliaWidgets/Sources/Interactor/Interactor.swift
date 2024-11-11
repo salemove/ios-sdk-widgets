@@ -287,6 +287,10 @@ extension Interactor: CoreSdkClient.Interactable {
         }
     }
 
+    var onLiveToSecureConversationsEngagementTransferring: CoreSdkClient.EngagementTransferringBlock {
+        return {}
+    }
+
     var onOperatorTypingStatusUpdate: CoreSdkClient.OperatorTypingStatusUpdate {
         return { [weak self] operatorTypingStatus in
             self?.notify(.typingStatusUpdated(operatorTypingStatus))
