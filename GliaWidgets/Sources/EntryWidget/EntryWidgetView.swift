@@ -51,7 +51,12 @@ private extension EntryWidgetView {
                 headerView()
             }
             mediaTypes(
-                [.secureMessaging, .secureMessaging, .secureMessaging, .secureMessaging],
+                [
+                    .init(type: .secureMessaging),
+                    .init(type: .secureMessaging),
+                    .init(type: .secureMessaging),
+                    .init(type: .secureMessaging)
+                ],
                 isPlaceholder: true
             )
             .redacted(reason: .placeholder)
@@ -158,6 +163,7 @@ private extension EntryWidgetView {
                 headlineText(model.style.mediaTypeItem.title(for: mediaType))
                 subheadlineText(model.style.mediaTypeItem.message(for: mediaType))
             }
+            unreadMessageCountView(for: mediaType)
         }
         .maxWidth(alignment: .leading)
         .height(model.sizeConstraints.singleCellHeight)
@@ -252,5 +258,19 @@ private extension EntryWidgetView {
             .contentShape(.rect)
             .onTapGesture(perform: model.onTryAgainTapped)
             .accessibility(addTraits: .isButton)
+    }
+
+    @ViewBuilder
+    func unreadMessageCountView(for mediaType: EntryWidget.MediaTypeItem) -> some View {
+        if mediaType.badgeCount > 0 {
+            Spacer()
+            Text("\(mediaType.badgeCount)")
+                .setFont(model.style.mediaTypeItem.unreadMessagesCounterFont)
+                .setColor(model.style.mediaTypeItem.unreadMessagesCounterColor)
+                .padding(.horizontal, 5)
+                .padding(.vertical, 1)
+                .applyColorTypeBackground(model.style.mediaTypeItem.unreadMessagesCounterBackgroundColor)
+                .clipShape(Circle())
+        }
     }
 }
