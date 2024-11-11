@@ -979,7 +979,7 @@
 		C0F3DE392C69FC2100DE6D7B /* EntryWidget.Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3DE382C69FC2100DE6D7B /* EntryWidget.Presentation.swift */; };
 		C0F3DE3B2C6E0DD900DE6D7B /* EntryWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3DE3A2C6E0DD900DE6D7B /* EntryWidgetView.swift */; };
 		C0F3DE3D2C6E170600DE6D7B /* EntryWidgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3DE3C2C6E170600DE6D7B /* EntryWidgetViewModel.swift */; };
-		C0F3DE3F2C6E176A00DE6D7B /* EntryWidget.Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3DE3E2C6E176A00DE6D7B /* EntryWidget.Channel.swift */; };
+		C0F3DE3F2C6E176A00DE6D7B /* EntryWidget.MediaTypeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3DE3E2C6E176A00DE6D7B /* EntryWidget.MediaTypeItem.swift */; };
 		C0F3DE412C6E36C900DE6D7B /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3DE402C6E36C900DE6D7B /* View+Extensions.swift */; };
 		C0F3DE432C6E3D2400DE6D7B /* Theme.EntryWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3DE422C6E3D2400DE6D7B /* Theme.EntryWidget.swift */; };
 		C0F3DE452C6E3D7C00DE6D7B /* EntryWidgetStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F3DE442C6E3D7C00DE6D7B /* EntryWidgetStyle.swift */; };
@@ -2046,7 +2046,7 @@
 		C0F3DE382C69FC2100DE6D7B /* EntryWidget.Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidget.Presentation.swift; sourceTree = "<group>"; };
 		C0F3DE3A2C6E0DD900DE6D7B /* EntryWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetView.swift; sourceTree = "<group>"; };
 		C0F3DE3C2C6E170600DE6D7B /* EntryWidgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetViewModel.swift; sourceTree = "<group>"; };
-		C0F3DE3E2C6E176A00DE6D7B /* EntryWidget.Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidget.Channel.swift; sourceTree = "<group>"; };
+		C0F3DE3E2C6E176A00DE6D7B /* EntryWidget.MediaTypeItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidget.MediaTypeItem.swift; sourceTree = "<group>"; };
 		C0F3DE402C6E36C900DE6D7B /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		C0F3DE422C6E3D2400DE6D7B /* Theme.EntryWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.EntryWidget.swift; sourceTree = "<group>"; };
 		C0F3DE442C6E3D7C00DE6D7B /* EntryWidgetStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetStyle.swift; sourceTree = "<group>"; };
@@ -5129,7 +5129,7 @@
 				C0F7EA372CA1D6D40038019C /* CustomPresentationController.swift */,
 				C0F3DE362C69F51D00DE6D7B /* EntryWidget.swift */,
 				2100B47B2CB66B6500AC7527 /* EntryWidget.Environment.swift */,
-				C0F3DE3E2C6E176A00DE6D7B /* EntryWidget.Channel.swift */,
+				C0F3DE3E2C6E176A00DE6D7B /* EntryWidget.MediaTypeItem.swift */,
 				C0F3DE382C69FC2100DE6D7B /* EntryWidget.Presentation.swift */,
 				C0F7EA392CA1D7050038019C /* EntryWidget.SizeConstraints.swift */,
 				C0F3DE442C6E3D7C00DE6D7B /* EntryWidgetStyle.swift */,
@@ -6470,7 +6470,7 @@
 				C0D2F07329A4DC2000803B47 /* CallStyle.Mock.swift in Sources */,
 				846A5C3629CB3E270049B29F /* ScreenShareHandler.Mock.swift in Sources */,
 				C0D2F03B299149D600803B47 /* VideoCallViewModel.swift in Sources */,
-				C0F3DE3F2C6E176A00DE6D7B /* EntryWidget.Channel.swift in Sources */,
+				C0F3DE3F2C6E176A00DE6D7B /* EntryWidget.MediaTypeItem.swift in Sources */,
 				C0D2F02E2991221900803B47 /* VideoCallCoordinator.DelegateEvent.swift in Sources */,
 				1A2DA73125EFA77E00032611 /* FileUploader.swift in Sources */,
 				84520BE32B14B97A00F97617 /* Theme+WebView.swift in Sources */,
