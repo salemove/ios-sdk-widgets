@@ -70,10 +70,14 @@ extension CoreSdkClient {
         },
         subscribeForQueuesUpdates: { _, _ in
             fail("\(Self.self).subscribeForQueuesUpdates")
-            return UUID().uuidString
+            return ""
         },
         unsubscribeFromUpdates: { _, _ in
             fail("\(Self.self).unsubscribeFromUpdates")
+        },
+        subscribeForUnreadSCMessageCount: { _ in
+            fail("\(Self.self).subscribeForUnreadSCMessageCount")
+            return ""
         }
     )
 }
