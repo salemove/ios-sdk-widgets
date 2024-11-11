@@ -74,7 +74,9 @@ final class EntryWidgetViewLayoutTests: SnapshotTestCase {
     func testEntryWidgetWhenFourMediaTypes() {
         let entryWidget: EntryWidget = .mock()
         entryWidget.show(in: .init())
-        entryWidget.viewState = .mediaTypes([.video, .audio, .chat, .secureMessaging])
+        entryWidget.viewState = .mediaTypes(
+            [.init(type: .video), .init(type: .audio), .init(type: .chat), .init(type: .secureMessaging)]
+        )
         let height = entryWidget.calculateHeight()
         let view = entryWidget.hostedViewController?.view
         view?.frame = viewControllerFrame(height: height)
@@ -86,7 +88,9 @@ final class EntryWidgetViewLayoutTests: SnapshotTestCase {
         let entryWidget: EntryWidget = .init(queueIds: [], environment: .mock())
         let view = UIView()
         entryWidget.embed(in: view)
-        entryWidget.viewState = .mediaTypes([.video, .audio, .chat, .secureMessaging])
+        entryWidget.viewState = .mediaTypes(
+            [.init(type: .video), .init(type: .audio), .init(type: .chat), .init(type: .secureMessaging)]
+        )
         let height = entryWidget.calculateHeight()
         view.frame = viewControllerFrame(height: height)
         view.assertSnapshot(as: .image, in: .portrait)
@@ -96,7 +100,7 @@ final class EntryWidgetViewLayoutTests: SnapshotTestCase {
     func testEntryWidgetWhenThreeMediaTypes() {
         let entryWidget: EntryWidget = .mock()
         entryWidget.show(in: .init())
-        entryWidget.viewState = .mediaTypes([.video, .audio, .chat])
+        entryWidget.viewState = .mediaTypes([.init(type: .video), .init(type: .audio), .init(type: .chat)])
         let height = entryWidget.calculateHeight()
         let view = entryWidget.hostedViewController?.view
         view?.frame = viewControllerFrame(height: height)
@@ -108,7 +112,7 @@ final class EntryWidgetViewLayoutTests: SnapshotTestCase {
         let entryWidget: EntryWidget = .init(queueIds: [], environment: .mock())
         let view = UIView()
         entryWidget.embed(in: view)
-        entryWidget.viewState = .mediaTypes([.video, .audio, .chat])
+        entryWidget.viewState = .mediaTypes([.init(type: .video), .init(type: .audio), .init(type: .chat)])
         let height = entryWidget.calculateHeight()
         view.frame = viewControllerFrame(height: height)
         view.assertSnapshot(as: .image, in: .portrait)
@@ -118,7 +122,7 @@ final class EntryWidgetViewLayoutTests: SnapshotTestCase {
     func testEntryWidgetWhenTwoMediaTypes() {
         let entryWidget: EntryWidget = .mock()
         entryWidget.show(in: .init())
-        entryWidget.viewState = .mediaTypes([.video, .audio])
+        entryWidget.viewState = .mediaTypes([.init(type: .video), .init(type: .audio)])
         let height = entryWidget.calculateHeight()
         let view = entryWidget.hostedViewController?.view
         view?.frame = viewControllerFrame(height: height)
@@ -130,7 +134,7 @@ final class EntryWidgetViewLayoutTests: SnapshotTestCase {
         let entryWidget: EntryWidget = .init(queueIds: [], environment: .mock())
         let view = UIView()
         entryWidget.embed(in: view)
-        entryWidget.viewState = .mediaTypes([.video, .audio])
+        entryWidget.viewState = .mediaTypes([.init(type: .video), .init(type: .audio)])
         let height = entryWidget.calculateHeight()
         view.frame = viewControllerFrame(height: height)
         view.assertSnapshot(as: .image, in: .portrait)
@@ -140,7 +144,7 @@ final class EntryWidgetViewLayoutTests: SnapshotTestCase {
     func testEntryWidgetWhenOneMediaTypes() {
         let entryWidget: EntryWidget = .mock()
         entryWidget.show(in: .init())
-        entryWidget.viewState = .mediaTypes([.video])
+        entryWidget.viewState = .mediaTypes([.init(type: .video)])
         let height = entryWidget.calculateHeight()
         let view = entryWidget.hostedViewController?.view
         view?.frame = viewControllerFrame(height: height)
@@ -152,7 +156,7 @@ final class EntryWidgetViewLayoutTests: SnapshotTestCase {
         let entryWidget: EntryWidget = .init(queueIds: [], environment: .mock())
         let view = UIView()
         entryWidget.embed(in: view)
-        entryWidget.viewState = .mediaTypes([.video])
+        entryWidget.viewState = .mediaTypes([.init(type: .video)])
         let height = entryWidget.calculateHeight()
         view.frame = viewControllerFrame(height: height)
         view.assertSnapshot(as: .image, in: .portrait)
