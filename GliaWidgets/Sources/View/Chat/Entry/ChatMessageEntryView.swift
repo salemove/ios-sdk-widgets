@@ -17,7 +17,7 @@ class ChatMessageEntryView: BaseView {
 
     var isChoiceCardModeEnabled: Bool {
         didSet {
-            updatePickMediaButtonVisibility(mediaPickerButtonVisibility)
+            updatePickMediaButtonVisibility(mediaPickerButtonEnabling)
             updatePlaceholderText()
         }
     }
@@ -25,13 +25,13 @@ class ChatMessageEntryView: BaseView {
     var isConnected: Bool {
         didSet {
             updatePlaceholderText()
-            updatePickMediaButtonVisibility(mediaPickerButtonVisibility)
+            updatePickMediaButtonVisibility(mediaPickerButtonEnabling)
         }
     }
 
-    var showsSendButton: Bool {
-        get { return !sendButton.isHidden }
-        set { sendButton.isHidden = !newValue }
+    var isSendButtonEnabled: Bool {
+        get { sendButton.isEnabled && isEnabled }
+        set { sendButton.isEnabled = newValue && isEnabled }
     }
 
     var isEnabled: Bool {
@@ -40,12 +40,11 @@ class ChatMessageEntryView: BaseView {
             isUserInteractionEnabled = newValue
             style = newValue ? .enabled(styleStates.enabled)
                              : .disabled(styleStates.disabled)
-            sendButton.isEnabled = newValue
-            pickMediaButton.isEnabled = newValue
+            updatePickMediaButtonVisibility(mediaPickerButtonEnabling)
         }
     }
 
-    var mediaPickerButtonVisibility: MediaPickerButtonVisibility = .disabled
+    var mediaPickerButtonEnabling: MediaPickerButtonEnabling = .disabled
     var textViewHeightConstraint: NSLayoutConstraint?
 
     let textView = UITextView()
@@ -126,7 +125,7 @@ class ChatMessageEntryView: BaseView {
         sendButton.accessibilityIdentifier = "chat_sendButton"
         sendButton.tap = { [weak self] in self?.sendTap() }
 
-        showsSendButton = false
+        isSendButtonEnabled = false
 
         buttonsStackView.axis = .horizontal
         buttonsStackView.spacing = 16
@@ -221,8 +220,8 @@ class ChatMessageEntryView: BaseView {
         placeholderLabel.text = text
     }
 
-    private func updatePickMediaButtonVisibility(_ visibility: MediaPickerButtonVisibility) {
-        pickMediaButton.isHidden = visibility.isHidden
+    private func updatePickMediaButtonVisibility(_ visibility: MediaPickerButtonEnabling) {
+        pickMediaButton.isEnabled = !visibility.isDisabled && isEnabled
     }
 
     private func updateTextViewHeight() {
@@ -288,27 +287,27 @@ extension ChatMessageEntryView: UITextViewDelegate {
 }
 
 extension ChatMessageEntryView {
-    func setPickMediaButtonVisibility(_ visibility: MediaPickerButtonVisibility) {
-        mediaPickerButtonVisibility = visibility
+    func setPickMediaButtonVisibility(_ visibility: MediaPickerButtonEnabling) {
+        mediaPickerButtonEnabling = visibility
         updatePickMediaButtonVisibility(visibility)
     }
 }
 
-enum MediaPickerButtonVisibility {
+enum MediaPickerButtonEnabling {
     enum ToggledBy {
-        case enagagementConnection(isConnected: Bool)
+        case engagementConnection(isConnected: Bool)
         case secureMessaging
     }
     case enabled(ToggledBy)
     case disabled
 }
 
-extension MediaPickerButtonVisibility {
-    var isHidden: Bool {
+extension MediaPickerButtonEnabling {
+    var isDisabled: Bool {
         switch self {
         case .disabled:
             return true
-        case let .enabled(.enagagementConnection(isConnected)):
+        case let .enabled(.engagementConnection(isConnected)):
             return !isConnected
         case .enabled(.secureMessaging):
             return false
