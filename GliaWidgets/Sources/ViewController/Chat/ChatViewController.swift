@@ -123,8 +123,8 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                 view?.messageEntryView.isChoiceCardModeEnabled = enabled
             case .setMessageText(let text):
                 view?.messageEntryView.messageText = text
-            case .sendButtonHidden(let hidden):
-                view?.messageEntryView.showsSendButton = !hidden
+            case .sendButtonDisabled(let isDisabled):
+                view?.messageEntryView.isSendButtonEnabled = !isDisabled
             case .pickMediaButtonEnabled(let enabled):
                 view?.messageEntryView.pickMediaButton.isEnabled = enabled
             case .appendRows(let count, let section, let animated):
@@ -166,7 +166,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                     view?.scrollToBottom(animated: true)
                 }
                 view?.setOperatorTypingIndicatorIsHidden(to: isHidden)
-            case let .setAttachmentButtonVisibility(visibility):
+            case let .setAttachmentButtonEnabling(visibility):
                 view?.messageEntryView.setPickMediaButtonVisibility(visibility)
             case .transferring:
                 view?.setConnectState(.transferring, animated: true)
