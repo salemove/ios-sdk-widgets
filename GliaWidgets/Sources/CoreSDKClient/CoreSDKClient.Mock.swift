@@ -483,7 +483,9 @@ extension CoreSdkClient.Engagement {
         source: EngagementSource = .coreEngagement,
         fetchSurvey: @escaping FetchSurvey = { _, _ in },
         restartedFromEngagementId: String? = nil,
-        media: Engagement.Media = .init(audio: nil, video: nil)
+        media: Engagement.Media = .init(audio: nil, video: nil),
+        status: Status = .unknown("mock"),
+        capabilities: Capabilities = .init(text: false)
     ) -> CoreSdkClient.Engagement {
         .init(
             id: id,
@@ -491,7 +493,9 @@ extension CoreSdkClient.Engagement {
             source: source,
             fetchSurvey: fetchSurvey,
             restartedFromEngagementId: restartedFromEngagementId,
-            mediaStreams: media
+            mediaStreams: media,
+            status: status,
+            capabilities: capabilities
         )
     }
 }
