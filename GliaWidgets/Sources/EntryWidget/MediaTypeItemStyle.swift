@@ -41,6 +41,15 @@ extension EntryWidgetStyle {
         /// Color of the subheadline (message) text.
         public var messageColor: UIColor
 
+        /// Font of the unread messages counter number.
+        public var unreadMessagesCounterFont: UIFont
+
+        /// Color of the unread messages counter number.
+        public var unreadMessagesCounterColor: UIColor
+
+        /// Color of the unread messages counter background.
+        public var unreadMessagesCounterBackgroundColor: ColorType
+
         /// Text style of the message text.
         public var messageTextStyle: UIFont.TextStyle
 
@@ -70,6 +79,8 @@ extension EntryWidgetStyle {
         ///   - secureMessagingMessage: The subheadline (message) text for secure messaging media type.
         ///   - messageFont: Font of the subheadline (message) text.
         ///   - messageColor: Color of the subheadline (message) text.
+        ///   - unreadMessagesCounterFont: Font of the unread messages counter number.
+        ///   - unreadMessagesCounterBackgroundColor: Color of the unread messages counter background.
         ///   - messageTextStyle: The style of the title text.
         ///   - iconColor: Color of the icon.
         ///   - backgroundColor: Background color of the view.
@@ -90,6 +101,9 @@ extension EntryWidgetStyle {
             secureMessagingMessage: String,
             messageFont: UIFont,
             messageColor: UIColor,
+            unreadMessagesCounterFont: UIFont,
+            unreadMessagesCounterColor: UIColor,
+            unreadMessagesCounterBackgroundColor: ColorType,
             messageTextStyle: UIFont.TextStyle,
             iconColor: ColorType,
             backgroundColor: ColorType,
@@ -109,6 +123,9 @@ extension EntryWidgetStyle {
             self.secureMessagingMessage = secureMessagingMessage
             self.messageFont = messageFont
             self.messageColor = messageColor
+            self.unreadMessagesCounterFont = unreadMessagesCounterFont
+            self.unreadMessagesCounterColor = unreadMessagesCounterColor
+            self.unreadMessagesCounterBackgroundColor = unreadMessagesCounterBackgroundColor
             self.messageTextStyle = messageTextStyle
             self.iconColor = iconColor
             self.backgroundColor = backgroundColor
@@ -116,8 +133,8 @@ extension EntryWidgetStyle {
             self.accessibility = accessibility
         }
 
-        func title(for type: EntryWidget.MediaTypeItem) -> String {
-            switch type {
+        func title(for item: EntryWidget.MediaTypeItem) -> String {
+            switch item.type {
             case .chat:
                 return chatTitle
             case .audio:
@@ -129,8 +146,8 @@ extension EntryWidgetStyle {
             }
         }
 
-        func message(for type: EntryWidget.MediaTypeItem) -> String {
-            switch type {
+        func message(for item: EntryWidget.MediaTypeItem) -> String {
+            switch item.type {
             case .chat:
                 return chatMessage
             case .audio:

@@ -33,8 +33,8 @@ extension EntryWidgetStyle.MediaTypeItemStyle {
             self.secureMessagingHint = secureMessagingHint
         }
 
-        func hint(for type: EntryWidget.MediaTypeItem) -> String {
-            switch type {
+        func hint(for item: EntryWidget.MediaTypeItem) -> String {
+            switch item.type {
             case .chat:
                 return chatHint
             case .audio:
