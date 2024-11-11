@@ -266,11 +266,11 @@ extension ChatViewController {
         fileUploadListModel.environment.uploader.uploads.append(fileUploadWithError)
         fileUploadWithError.state.value = .error(FileUpload.Error.fileTooBig)
         chatViewModel.interactor.state = .enqueueing(.text)
-        chatViewModel.action?(.sendButtonHidden(false))
+        chatViewModel.action?(.sendButtonDisabled(false))
         chatViewModel.action?(.updateUnreadMessageIndicator(itemCount: 5))
         chatViewModel.action?(.setChoiceCardInputModeEnabled(false))
         chatViewModel.action?(.connected(name: "Mocked Operator Name", imageUrl: localFileURL.absoluteString))
-        chatViewModel.action?(.setAttachmentButtonVisibility(.enabled(.enagagementConnection(isConnected: true))))
+        chatViewModel.action?(.setAttachmentButtonEnabling(.enabled(.engagementConnection(isConnected: true))))
         chatViewModel.action?(.pickMediaButtonEnabled(true))
         chatViewModel.action?(.setOperatorTypingIndicatorIsHiddenTo(false, false))
 

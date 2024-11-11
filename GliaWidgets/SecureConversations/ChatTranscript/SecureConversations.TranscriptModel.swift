@@ -59,7 +59,7 @@ extension SecureConversations {
 
         var siteConfiguration: CoreSdkClient.Site?
 
-        var mediaPickerButtonVisibility: MediaPickerButtonVisibility {
+        var mediaPickerButtonEnabling: MediaPickerButtonEnabling {
             guard let site = siteConfiguration else { return .disabled }
             guard site.allowedFileSenders.visitor else { return .disabled }
             return .enabled(.secureMessaging)
@@ -245,7 +245,7 @@ extension SecureConversations.TranscriptModel {
         let hasAttachments = !fileUploadListModel.succeededUploads.isEmpty
 
         let isValid = canSendText || hasAttachments
-        action?(.sendButtonHidden(!isValid))
+        action?(.sendButtonDisabled(!isValid))
         return isValid
     }
 }
@@ -519,7 +519,7 @@ extension SecureConversations.TranscriptModel {
             switch result {
             case .success(let site):
                 self.siteConfiguration = site
-                self.action?(.setAttachmentButtonVisibility(self.mediaPickerButtonVisibility))
+                self.action?(.setAttachmentButtonEnabling(self.mediaPickerButtonEnabling))
             case let .failure(error):
                 self.engagementAction?(.showAlert(.error(error: error)))
             }
