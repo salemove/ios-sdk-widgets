@@ -28,7 +28,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             availability: .init(
                 environment: availabilityEnv
             ),
-            deliveredStatusText: "", 
+            deliveredStatusText: "",
             failedToDeliverStatusText: "",
             interactor: .failing
         )
@@ -66,7 +66,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isSecureConversationsAvailable)
     }
 
-    func testMediaPickerButtonVisibilityDependsOnSiteConfiguration() throws {
+    func testMediaPickerButtonEnablingDependsOnSiteConfiguration() throws {
         var modelEnv = TranscriptModel.Environment.failing
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
@@ -100,7 +100,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
         viewModel.start()
 
-        XCTAssertFalse(viewModel.mediaPickerButtonVisibility.isHidden)
+        XCTAssertFalse(viewModel.mediaPickerButtonEnabling.isDisabled)
     }
 
     func testStartLoadsConfigurationAndChatHistoryAndGetUnreadMessageCount() {
@@ -612,7 +612,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
-        logger.warningClosure = { _, _, _, _ in }        
+        logger.warningClosure = { _, _, _, _ in }
         modelEnvironment.uiApplication = .mock
         modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
