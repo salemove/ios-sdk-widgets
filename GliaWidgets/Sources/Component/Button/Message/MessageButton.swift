@@ -54,5 +54,6 @@ class MessageButton: UIButton {
         setImage(style.image, for: .normal)
         setImage(style.image, for: .highlighted)
         accessibilityLabel = style.accessibility.accessibilityLabel
+        isAccessibilityElement = isEnabled
     }
 }

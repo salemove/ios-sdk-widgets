@@ -51,13 +51,13 @@ class ChatViewModel: EngagementViewModel {
     private(set) var historyMessageIds: Set<ChatMessage.MessageId> = []
     private(set) var receivedMessageIds: Set<ChatMessage.MessageId> = []
 
-    var mediaPickerButtonVisibility: MediaPickerButtonVisibility {
+    var mediaPickerButtonEnabling: MediaPickerButtonEnabling {
         guard let site = siteConfiguration else { return .disabled }
         guard site.allowedFileSenders.visitor else { return .disabled }
         guard environment.getCurrentEngagement() != nil else {
-            return .enabled(.enagagementConnection(isConnected: false))
+            return .enabled(.engagementConnection(isConnected: false))
         }
-        return .enabled(.enagagementConnection(isConnected: environment.getCurrentEngagement() != nil))
+        return .enabled(.engagementConnection(isConnected: environment.getCurrentEngagement() != nil))
     }
 
     let chatType: ChatType
@@ -294,7 +294,7 @@ extension ChatViewModel {
 extension ChatViewModel {
     private func onEngagementTransferring() {
         action?(.setMessageEntryEnabled(false))
-        action?(.setAttachmentButtonVisibility(.disabled))
+        action?(.setAttachmentButtonEnabling(.disabled))
         appendItem(.init(kind: .transferring), to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
         endScreenSharing()
@@ -302,7 +302,7 @@ extension ChatViewModel {
 
     private func onEngagementTransferred() {
         action?(.setMessageEntryEnabled(true))
-        action?(.setAttachmentButtonVisibility(mediaPickerButtonVisibility))
+        action?(.setAttachmentButtonEnabling(mediaPickerButtonEnabling))
 
         let engagedOperator = interactor.engagedOperator
         action?(.setCallBubbleImage(imageUrl: engagedOperator?.picture?.url))
@@ -552,7 +552,7 @@ extension ChatViewModel {
                 && fileUploadListModel.failedUploads.isEmpty
                 && !fileUploadListModel.succeededUploads.isEmpty
         let isValid = canSendText || canSendAttachment
-        action?(.sendButtonHidden(!isValid))
+        action?(.sendButtonDisabled(!isValid))
         return isValid
     }
 
@@ -949,7 +949,7 @@ extension ChatViewModel {
             case .success(let site):
                 self.siteConfiguration = site
                 self.action?(
-                    .setAttachmentButtonVisibility(self.mediaPickerButtonVisibility)
+                    .setAttachmentButtonEnabling(self.mediaPickerButtonEnabling)
                 )
                 self.showSnackBarIfNeeded()
             case let .failure(error):

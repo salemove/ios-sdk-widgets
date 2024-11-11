@@ -43,8 +43,8 @@ extension ChatViewModelTests {
 
         viewModel.action = { action in
             switch action {
-            case let .setAttachmentButtonVisibility(visibility):
-                switch visibility {
+            case let .setAttachmentButtonEnabling(enabling):
+                switch enabling {
                 case .enabled:
                     calls.append(.updateVisibility(.enabled))
                 case .disabled:
