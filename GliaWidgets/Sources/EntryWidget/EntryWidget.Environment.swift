@@ -2,9 +2,12 @@ import Foundation
 
 extension EntryWidget {
     struct Environment {
+        var observeSecureUnreadMessageCount: CoreSdkClient.SubscribeForUnreadSCMessageCount
+        var unsubscribeFromUpdates: CoreSdkClient.UnsubscribeFromUpdates
         var queuesMonitor: QueuesMonitor
         var engagementLauncher: EngagementLauncher
         var theme: Theme
+        var log: CoreSdkClient.Logger
         var isAuthenticated: () -> Bool
     }
 }
@@ -13,11 +16,13 @@ extension EntryWidget {
 extension EntryWidget.Environment {
     static func mock() -> Self {
         let engagementLauncher = EngagementLauncher { _, _ in }
-        let theme = Theme()
         return .init(
+            observeSecureUnreadMessageCount: { _ in UUID.mock.uuidString },
+            unsubscribeFromUpdates: { _, _ in },
             queuesMonitor: .mock(),
             engagementLauncher: engagementLauncher,
-            theme: theme,
+            theme: .mock(),
+            log: .mock,
             isAuthenticated: { true }
         )
     }
