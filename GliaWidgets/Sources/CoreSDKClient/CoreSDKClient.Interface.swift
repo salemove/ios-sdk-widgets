@@ -192,6 +192,12 @@ struct CoreSdkClient {
     ) -> Void
 
     var unsubscribeFromUpdates: UnsubscribeFromUpdates
+
+    typealias SubscribeForUnreadSCMessageCount = (
+        _ completion: @escaping (Result<Int?, Error>) -> Void
+    ) -> String?
+
+    var subscribeForUnreadSCMessageCount: SubscribeForUnreadSCMessageCount
 }
 
 extension CoreSdkClient {

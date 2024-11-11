@@ -14,6 +14,8 @@ public final class EntryWidget: NSObject {
     private var queueIds: [String]
     private var cancellables = CancelBag()
     private let environment: Environment
+    @Published private var unreadSecureMessageCount: Int?
+    private(set) var unreadSecureMessageSubscriptionId: String?
 
     @Published var viewState: ViewState = .loading
 
@@ -39,9 +41,21 @@ public final class EntryWidget: NSObject {
         self.environment = environment
         super.init()
 
-        environment.queuesMonitor.$state
-            .sink(receiveValue: handleQueuesMonitorUpdates(state:))
+        observeSecureUnreadMessageCount()
+
+        Publishers.CombineLatest(environment.queuesMonitor.$state, $unreadSecureMessageCount)
+            .sink(receiveValue: handleQueuesMonitorUpdates(state:unreadSecureMessagesCount:))
             .store(in: &cancellables)
+    }
+
+    deinit {
+        if let unreadSecureMessageSubscriptionId {
+            environment.unsubscribeFromUpdates(unreadSecureMessageSubscriptionId) { [environment] error in
+                environment.log.prefixed(Self.self).warning(
+                    "Unsubscribing from unread secure messages count without configured SDK: \(error.localizedDescription)"
+                )
+            }
+        }
     }
 }
 
@@ -89,29 +103,49 @@ extension EntryWidget {
 
 // MARK: - Private methods
 private extension EntryWidget {
-    func handleQueuesMonitorUpdates(state: QueuesMonitor.State) {
+    func handleQueuesMonitorUpdates(state: QueuesMonitor.State, unreadSecureMessagesCount: Int?) {
         switch state {
         case .idle:
             viewState = .loading
         case .updated(let queues):
-            let availableMediaTypes = resolveAvailableMediaTypes(from: queues)
-            if availableMediaTypes.isEmpty {
+            let availableEngagementTypes = resolveAvailableEngagementTypes(from: queues)
+            if availableEngagementTypes.isEmpty {
                 viewState = .offline
             } else {
-                viewState = .mediaTypes(availableMediaTypes)
+                let mediaTypes = availableEngagementTypes.map { type in
+                    if type == .secureMessaging {
+                        return EntryWidget.MediaTypeItem(
+                            type: type,
+                            badgeCount: unreadSecureMessagesCount ?? 0
+                        )
+                    }
+                    return EntryWidget.MediaTypeItem(type: type)
+                }
+
+                viewState = .mediaTypes(mediaTypes)
             }
-        case .failed:
+        case .failed(let error):
             viewState = .error
-            print("Failed to update queues")
+            environment.log.prefixed(Self.self).error("Setting up queues. Failed to get site queues \(error)")
         }
     }
 
-    func resolveAvailableMediaTypes(from queues: [Queue]) -> [MediaTypeItem] {
-        var availableMediaTypes: Set<MediaTypeItem> = []
+    func observeSecureUnreadMessageCount() {
+        self.unreadSecureMessageSubscriptionId = environment.observeSecureUnreadMessageCount { [weak self] result in
+            guard let self else {
+                return
+            }
+            let messagesCount = try? result.get()
+            self.unreadSecureMessageCount = messagesCount ?? 0
+        }
+    }
+
+    func resolveAvailableEngagementTypes(from queues: [Queue]) -> [EngagementType] {
+        var availableMediaTypes: Set<EngagementType> = []
 
         queues.forEach { queue in
             queue.state.media.forEach { mediaType in
-                if let mediaTypeItem = MediaTypeItem(mediaType: mediaType) {
+                if let mediaTypeItem = EngagementType(mediaType: mediaType) {
                     availableMediaTypes.insert(mediaTypeItem)
                 }
             }
@@ -126,7 +160,7 @@ private extension EntryWidget {
     func mediaTypeSelected(_ mediaTypeItem: MediaTypeItem) {
         hideViewIfNecessary {
             do {
-                switch mediaTypeItem {
+                switch mediaTypeItem.type {
                 case .chat:
                     try self.environment.engagementLauncher.startChat()
                 case .audio:
