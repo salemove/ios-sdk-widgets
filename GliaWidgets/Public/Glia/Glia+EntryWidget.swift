@@ -14,7 +14,7 @@ extension Glia {
             environment: .init(
                 observeSecureUnreadMessageCount: environment.coreSdk.subscribeForUnreadSCMessageCount,
                 unsubscribeFromUpdates: environment.coreSdk.unsubscribeFromUpdates,
-                queuesMonitor: environment.queuesMonitor,
+                queuesMonitor: queuesMonitor,
                 engagementLauncher: try getEngagementLauncher(queueIds: queueIds),
                 theme: theme,
                 log: loggerPhase.logger,
