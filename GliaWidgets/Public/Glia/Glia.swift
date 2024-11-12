@@ -112,6 +112,7 @@ public class Glia {
     var theme: Theme
     var assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard
     var loggerPhase: LoggerPhase
+    var queuesMonitor: QueuesMonitor
     var alertManager: AlertManager
     // We need to store `features` via `configure` or deprecated `startEngagement` methods
     // to use it when engagement gets restored for Direct ID authentication flow.
@@ -134,7 +135,6 @@ public class Glia {
                 try logger.configureLocalLogLevel(.none)
                 try logger.configureRemoteLogLevel(.info)
             }
-
             loggerPhase = .configured(logger)
         } catch {
             environment.print("Unable to configure logger: '\(error)'.")
@@ -149,7 +149,12 @@ public class Glia {
                 loggerPhase: loggerPhase
             )
         )
-
+        queuesMonitor = .init(environment: .init(
+            listQueues: environment.coreSdk.listQueues,
+            subscribeForQueuesUpdates: environment.coreSdk.subscribeForQueuesUpdates,
+            unsubscribeFromUpdates: environment.coreSdk.unsubscribeFromUpdates,
+            logger: loggerPhase.logger
+        ))
         alertManager = .init(
             environment: .create(
                 with: environment,
@@ -446,7 +451,8 @@ extension Glia {
             visitorContext: configuration.visitorContext,
             environment: .create(
                 with: environment,
-                log: loggerPhase.logger
+                log: loggerPhase.logger,
+                queuesMonitor: queuesMonitor
             )
         )
 
