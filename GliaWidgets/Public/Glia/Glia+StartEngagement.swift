@@ -187,7 +187,8 @@ extension Glia {
                 loggerPhase: loggerPhase,
                 maximumUploads: { self.maximumUploads },
                 viewFactory: viewFactory,
-                alertManager: alertManager
+                alertManager: alertManager,
+                queuesMonitor: queuesMonitor
             )
         )
         rootCoordinator?.delegate = { [weak self] event in self?.handleCoordinatorEvent(event) }
