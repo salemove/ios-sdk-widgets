@@ -65,6 +65,7 @@ private extension QueuesMonitor {
                 return
             }
             if let error {
+                environment.logger.error("Setting up queues. Failed to get site queues: \(error)")
                 self.state = .failed(error)
                 completion(.failure(error))
                 return
@@ -79,17 +80,24 @@ private extension QueuesMonitor {
     }
 
     func evaluateQueues(queuesIds: [String], fetchedQueues: [Queue]?) -> [Queue] {
-        guard let queues = fetchedQueues else {
+        guard let queues = fetchedQueues, !queues.isEmpty else {
+            environment.logger.warning("Setting up queues. Site has no queues.")
             return []
         }
+        environment.logger.debug("Setting up queues. Site has \(queues.count) queues.")
 
-        let matchedQueues = queues.filter { queuesIds.contains($0.id) }
-
+        let matchedQueues = queues.filter {
+            queuesIds.contains($0.id)
+        }
+        environment.logger.info(
+            "Setting up queues. \(matchedQueues.count) out of \(queuesIds.count) queues provided by an integrator match with site queues."
+        )
         guard !matchedQueues.isEmpty else {
+            environment.logger.info("Setting up queues. Integrator specified an empty list of queues.")
             // If no passed queueId is matched with fetched queues,
             // then check default queues instead
             let defaultQueues = queues.filter(\.isDefault)
-
+            environment.logger.info("Setting up queues. Using \(defaultQueues.count) default queues.")
             return defaultQueues
         }
 
