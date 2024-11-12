@@ -9,7 +9,8 @@ extension QueuesMonitor {
             environment: .init(
                 listQueues: listQueues ?? QueuesMonitor.Environment.mock.listQueues,
                 subscribeForQueuesUpdates: subscribeForQueuesUpdates ?? QueuesMonitor.Environment.mock.subscribeForQueuesUpdates,
-                unsubscribeFromUpdates: unsubscribeFromUpdates ?? QueuesMonitor.Environment.mock.unsubscribeFromUpdates
+                unsubscribeFromUpdates: unsubscribeFromUpdates ?? QueuesMonitor.Environment.mock.unsubscribeFromUpdates,
+                logger: .mock
             )
         )
     }

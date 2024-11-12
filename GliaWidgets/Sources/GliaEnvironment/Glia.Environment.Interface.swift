@@ -53,7 +53,6 @@ extension Glia {
         var snackBar: SnackBar
         var processInfo: ProcessInfoHandling
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
-        var queuesMonitor: QueuesMonitor
         var isAuthenticated: () -> Bool
     }
 }

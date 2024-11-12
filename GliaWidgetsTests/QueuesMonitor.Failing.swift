@@ -5,7 +5,8 @@ extension QueuesMonitor {
         environment: .init(
             listQueues: CoreSdkClient.failing.listQueues,
             subscribeForQueuesUpdates: CoreSdkClient.failing.subscribeForQueuesUpdates,
-            unsubscribeFromUpdates: CoreSdkClient.failing.unsubscribeFromUpdates
+            unsubscribeFromUpdates: CoreSdkClient.failing.unsubscribeFromUpdates,
+            logger: .failing
         )
     )
 }
