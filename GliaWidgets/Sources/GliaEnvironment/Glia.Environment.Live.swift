@@ -43,13 +43,6 @@ extension Glia.Environment {
         snackBar: .live,
         processInfo: .live,
         cameraDeviceManager: { try CoreSdkClient.live.getCameraDeviceManageable() },
-        queuesMonitor: .init(
-            environment: .init(
-                listQueues: CoreSdkClient.live.listQueues,
-                subscribeForQueuesUpdates: CoreSdkClient.live.subscribeForQueuesUpdates,
-                unsubscribeFromUpdates: CoreSdkClient.live.unsubscribeFromUpdates
-            )
-        ),
         // This logic was moved here from EngagementCoordinator.Environment
         // Because it will be used for EntryWidget as well. This is as of now
         // The simplest way to determine if visitor is authenticated or not

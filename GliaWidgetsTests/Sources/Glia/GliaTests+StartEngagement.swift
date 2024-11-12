@@ -27,12 +27,11 @@ extension GliaTests {
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
-        sdkEnv.queuesMonitor = .mock()
         let window = UIWindow(frame: .zero)
         window.makeKeyAndVisible()
         sdkEnv.uiApplication.windows = { [window] }
         let sdk = Glia(environment: sdkEnv)
-
+        sdk.queuesMonitor = .mock()
         sdk.rootCoordinator = rootCoordinator
         try sdk.configure(
             with: .mock(),
@@ -61,7 +60,6 @@ extension GliaTests {
         }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        environment.queuesMonitor = .mock()
 
         let rootCoordinator = EngagementCoordinator.mock(
             engagementKind: .chat,
@@ -76,6 +74,7 @@ extension GliaTests {
         window.makeKeyAndVisible()
         environment.uiApplication.windows = { [window] }
         let sdk = Glia(environment: environment)
+        sdk.queuesMonitor = .mock()
         sdk.rootCoordinator = rootCoordinator
         try sdk.configure(with: .mock(), features: .bubbleView) { _ in }
         XCTAssertEqual(sdk.features, .bubbleView)
@@ -99,12 +98,13 @@ extension GliaTests {
         gliaEnv.coreSdk.createLogger = { _ in logger }
         gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
         let sdk = Glia(environment: gliaEnv)
+        sdk.queuesMonitor = .mock()
         sdk.environment.conditionalCompilation.isDebug = { true }
         sdk.environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
-        sdk.environment.queuesMonitor = .mock()
+
         try sdk.configure(
             with: .mock(),
             theme: .mock()
@@ -138,8 +138,8 @@ extension GliaTests {
         }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.queuesMonitor = .mock()
         let sdk = Glia(environment: environment)
+        sdk.queuesMonitor = .mock()
         try sdk.configure(
             with: .mock(),
             theme: .mock()
@@ -179,8 +179,8 @@ extension GliaTests {
         environment.createRootCoordinator = { _, _, _, _, _, _, _ in
             .mock(environment: .engagementCoordEnvironmentWithKeyWindow)
         }
-        environment.queuesMonitor = .mock()
         let sdk = Glia(environment: environment)
+        sdk.queuesMonitor = .mock()
         try sdk.start(.chat, configuration: .mock(), queueID: "queueId", theme: .mock())
 
         XCTAssertTrue(sdk.isConfigured)
@@ -219,10 +219,9 @@ extension GliaTests {
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        environment.queuesMonitor = .mock()
 
         let sdk = Glia(environment: environment)
-
+        sdk.queuesMonitor = .mock()
         let theme = Theme()
         theme.call.connect.queue.firstText = "Glia 1"
         theme.chat.connect.queue.firstText = "Glia 2"
@@ -267,7 +266,7 @@ extension GliaTests {
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.queuesMonitor = .mock()
+
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
         logger.configureRemoteLogLevelClosure = { _ in }
@@ -276,7 +275,7 @@ extension GliaTests {
         environment.coreSdk.createLogger = { _ in logger }
 
         let sdk = Glia(environment: environment)
-
+        sdk.queuesMonitor = .mock()
         // Even if theme is set, the remote string takes priority.
         let theme = Theme()
         theme.call.connect.queue.firstText = "Glia 1"
@@ -308,7 +307,6 @@ extension GliaTests {
         logger.infoClosure = { _, _, _, _ in }
         logger.prefixedClosure = { _ in logger }
         environment.coreSdk.createLogger = { _ in logger }
-        environment.queuesMonitor = .mock()
 
         var resultingViewFactory: ViewFactory?
 
@@ -332,7 +330,7 @@ extension GliaTests {
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
 
         let sdk = Glia(environment: environment)
-
+        sdk.queuesMonitor = .mock()
         try sdk.configure(
             with: .mock(companyName: "Glia"),
             theme: .mock()
@@ -360,7 +358,6 @@ extension GliaTests {
         logger.prefixedClosure = { _ in logger }
         environment.coreSdk.createLogger = { _ in logger }
         environment.print = .mock
-        environment.queuesMonitor = .mock()
         var resultingViewFactory: ViewFactory?
 
         environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in
@@ -383,7 +380,7 @@ extension GliaTests {
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
 
         let sdk = Glia(environment: environment)
-
+        sdk.queuesMonitor = .mock()
         try sdk.configure(
             with: .mock(),
             theme: .mock()
@@ -410,7 +407,6 @@ extension GliaTests {
         environment.coreSdk.createLogger = { _ in logger }
         environment.print = .mock
         environment.conditionalCompilation.isDebug = { true }
-        environment.queuesMonitor = .mock()
 
         var resultingViewFactory: ViewFactory?
 
@@ -434,10 +430,9 @@ extension GliaTests {
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.queuesMonitor = .mock()
 
         let sdk = Glia(environment: environment)
-
+        sdk.queuesMonitor = .mock()
         let theme = Theme()
         theme.call.connect.queue.firstText = "Glia 1"
         theme.chat.connect.queue.firstText = "Glia 2"
@@ -468,7 +463,6 @@ extension GliaTests {
         environment.coreSdk.createLogger = { _ in logger }
         environment.print = .mock
         environment.conditionalCompilation.isDebug = { true }
-        environment.queuesMonitor = .mock()
 
         var resultingViewFactory: ViewFactory?
 
@@ -494,6 +488,7 @@ extension GliaTests {
         environment.coreSdk.getCurrentEngagement = { nil }
 
         let sdk = Glia(environment: environment)
+        sdk.queuesMonitor = .mock()
         try sdk.configure(
             with: .mock(),
             theme: .mock()
