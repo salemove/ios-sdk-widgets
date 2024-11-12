@@ -62,7 +62,7 @@ extension GliaTests {
     
     func test_startSecureConversationUsingEngagementLauncherWithCorrectConfiguration() throws {
         let sdk = makeConfigurableSDK()
-        
+
         try sdk.configure(
             with: .mock(),
             theme: .mock()
@@ -96,12 +96,11 @@ private extension GliaTests {
             completion(.success(()))
         }
         sdkEnv.coreSdk.getCurrentEngagement = { nil }
-        sdkEnv.queuesMonitor = .mock()
         let window = UIWindow(frame: .zero)
         window.makeKeyAndVisible()
         sdkEnv.uiApplication.windows = { [window] }
         let sdk = Glia(environment: sdkEnv)
-        
+        sdk.queuesMonitor = .mock()
         return sdk
     }
 }
