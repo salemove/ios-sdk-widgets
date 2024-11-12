@@ -10,11 +10,12 @@ extension Interactor {
 extension Interactor.Environment {
     static func create(
         with environment: Glia.Environment,
-        log: CoreSdkClient.Logger
+        log: CoreSdkClient.Logger,
+        queuesMonitor: QueuesMonitor
     ) -> Self {
         .init(
             coreSdk: environment.coreSdk,
-            queuesMonitor: environment.queuesMonitor,
+            queuesMonitor: queuesMonitor,
             gcd: environment.gcd,
             log: log
         )

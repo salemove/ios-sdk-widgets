@@ -53,7 +53,8 @@ extension EngagementCoordinator.Environment {
         loggerPhase: Glia.LoggerPhase,
         maximumUploads: @escaping () -> Int,
         viewFactory: ViewFactory,
-        alertManager: AlertManager
+        alertManager: AlertManager,
+        queuesMonitor: QueuesMonitor
     ) -> Self {
         .init(
             fetchFile: environment.coreSdk.fetchFile,
@@ -97,7 +98,7 @@ extension EngagementCoordinator.Environment {
             cameraDeviceManager: environment.cameraDeviceManager,
             flipCameraButtonStyle: viewFactory.theme.call.flipCameraButtonStyle,
             alertManager: alertManager,
-            queuesMonitor: environment.queuesMonitor
+            queuesMonitor: queuesMonitor
         )
     }
 }
