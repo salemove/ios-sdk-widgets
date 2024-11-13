@@ -476,7 +476,7 @@ internal enum Localization {
         /// For the texter in all of us
         internal static var description: String { Localization.tr("Localizable", "entry_widget.live_chat.button.description", fallback: "For the texter in all of us") }
         /// Live Chat
-        internal static var label: String { Localization.tr("Localizable", "entry_widget.live_chat.button.label", fallback: "Live Chat") }
+        internal static var label: String { Localization.tr("Localizable", "entry_widget.live_chat.button.label", fallback: "Chat") }
         internal enum Accessibility {
           /// Starts a chat
           internal static var hint: String { Localization.tr("Localizable", "entry_widget.live_chat.button.accessibility.hint", fallback: "Starts a chat") }
