@@ -250,7 +250,7 @@
 "secure_messaging.chat.leave_current_conversation.button.positive" = "Stay";
 "secure_messaging.chat.leave_current_conversation.button.negative" = "Leave";
 
-"entry_widget.live_chat.button.label" = "Live Chat";
+"entry_widget.live_chat.button.label" = "Chat";
 "entry_widget.live_chat.button.description" = "For the texter in all of us";
 "entry_widget.live_chat.button.accessibility.hint" = "Starts a chat";
 "entry_widget.audio.button.label" = "Audio";
