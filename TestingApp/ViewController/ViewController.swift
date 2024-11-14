@@ -46,6 +46,7 @@ class ViewController: UIViewController {
     var authentication: Authentication?
     var authTimer: Timer?
     var entryWidget: EntryWidget?
+    var engagementLauncher: EngagementLauncher?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -278,18 +279,7 @@ extension ViewController {
 
         let startEngagement = {
             self.catchingError {
-                if let startEngagementFeatures = self.startEngagementFeatures {
-                    try Glia.sharedInstance.startEngagement(
-                        engagementKind: engagementKind,
-                        in: [self.queueId],
-                        features: startEngagementFeatures
-                    )
-                } else {
-                    try Glia.sharedInstance.startEngagement(
-                        of: engagementKind,
-                        in: [self.queueId]
-                    )
-                }
+                try self.startEngagement(engagementKind)
             }
         }
 
@@ -337,7 +327,8 @@ extension ViewController {
                 switch result {
                 case .success:
                     self.catchingError {
-                        self.entryWidget = try? Glia.sharedInstance.getEntryWidget(queueIds: [self.queueId])
+                        self.entryWidget = try Glia.sharedInstance.getEntryWidget(queueIds: [self.queueId])
+                        self.engagementLauncher = try Glia.sharedInstance.getEngagementLauncher(queueIds: [self.queueId])
                     }
                     completionBlock("SDK has been configured")
                     completion?(.success(()))
@@ -396,18 +387,7 @@ extension ViewController {
     private func startEngagement(with kind: EngagementKind) {
         let startEngagement = {
             self.catchingError {
-                if let startEngagementFeatures = self.startEngagementFeatures {
-                    try Glia.sharedInstance.startEngagement(
-                        engagementKind: kind,
-                        in: [self.queueId],
-                        features: startEngagementFeatures
-                    )
-                } else {
-                    try Glia.sharedInstance.startEngagement(
-                        of: kind,
-                        in: [self.queueId]
-                    )
-                }
+                try self.startEngagement(kind)
             }
         }
 
@@ -815,6 +795,23 @@ extension ViewController {
             self.alert(message: "The operation couldn't be completed. '\(error)'.")
         } catch {
             self.alert(message: error.localizedDescription)
+        }
+    }
+    
+    func startEngagement(_ kind: EngagementKind) throws {
+        switch kind {
+        case .chat:
+            try engagementLauncher?.startChat()
+        case .audioCall:
+            try engagementLauncher?.startAudioCall()
+        case .videoCall:
+            try engagementLauncher?.startVideoCall()
+        case .messaging:
+            try engagementLauncher?.startSecureMessaging()
+        case .none:
+            return
+        @unknown default:
+            return
         }
     }
 
