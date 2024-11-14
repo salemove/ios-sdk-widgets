@@ -52,87 +52,6 @@ final class GliaTests: XCTestCase {
         XCTAssertNil(sdk.rootCoordinator)
     }
 
-    func test__deprecated_start_passes_all_arguments_to_interactor() throws {
-        var gliaEnv = Glia.Environment.failing
-        var logger = CoreSdkClient.Logger.failing
-        logger.configureLocalLogLevelClosure = { _ in }
-        logger.configureRemoteLogLevelClosure = { _ in }
-        logger.infoClosure = { _, _, _, _ in }
-        logger.prefixedClosure = { _ in logger }
-        logger.reportDeprecatedMethodClosure = { _, _, _, _ in }
-        logger.remoteLoggerClosure = { logger }
-        logger.oneTimeClosure = { logger }
-        gliaEnv.coreSdk.createLogger = { _ in logger }
-        gliaEnv.conditionalCompilation.isDebug = { true }
-        gliaEnv.print = .mock
-        gliaEnv.processInfo.info = { [:] } 
-        var proximityManagerEnv = ProximityManager.Environment.failing
-        proximityManagerEnv.uiDevice.isProximityMonitoringEnabled = { _ in }
-        proximityManagerEnv.uiApplication.isIdleTimerDisabled = { _ in }
-        gliaEnv.proximityManager = .init(environment: proximityManagerEnv)
-        gliaEnv.notificationCenter.removeObserverClosure = { _ in }
-        gliaEnv.notificationCenter.removeObserverWithNameAndObject = { _, _, _ in }
-        gliaEnv.notificationCenter.addObserverClosure = { _, _, _, _ in }
-        var fileManager = FoundationBased.FileManager.failing
-        fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
-        fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
-        gliaEnv.fileManager = fileManager
-        gliaEnv.coreSdk.configureWithInteractor = { _ in }
-        gliaEnv.createFileUploadListModel = { _ in .mock() }
-        gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        gliaEnv.coreSdk.authentication = { _ in .mock }
-        gliaEnv.coreSdk.queueForEngagement = { _, callback in
-            callback(.success(.mock))
-        }
-        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
-        gliaEnv.isAuthenticated = { return false }
-        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
-        gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
-        gliaEnv.uuid = { .mock }
-        gliaEnv.gcd.mainQueue.async = { callback in callback() }
-
-        let expectedTheme = Theme.mock(
-            colorStyle: .custom(.init()),
-            fontStyle: .default,
-            showsPoweredBy: true
-        )
-        let expectedFeatures: Features = [Features.bubbleView]
-        var receivedTheme: Theme?
-        var receivedFeatures = Features.init()
-
-        let expectedSceneProvider = MockedSceneProvider()
-        var receivedSceneProvider: SceneProvider?
-        gliaEnv.createRootCoordinator = { interactor, viewFactory, sceneProvider, _, screenShareHandler, features, environment in
-            receivedTheme = viewFactory.theme
-            receivedFeatures = features
-            receivedSceneProvider = sceneProvider
-            return .mock(
-                interactor: interactor,
-                viewFactory: viewFactory,
-                sceneProvider: sceneProvider,
-                screenShareHandler: screenShareHandler,
-                environment: environment
-            )
-        }
-
-        let sdk = Glia(environment: gliaEnv)
-        sdk.queuesMonitor = .mock()
-        try sdk.start(
-            .audioCall,
-            configuration: .mock(),
-            queueID: "queueId",
-            theme: expectedTheme,
-            features: .all,
-            sceneProvider: expectedSceneProvider
-        )
-
-        XCTAssertTrue(try XCTUnwrap(receivedTheme) === expectedTheme)
-        XCTAssertEqual(receivedFeatures, expectedFeatures)
-        XCTAssertTrue(try XCTUnwrap(receivedSceneProvider as? MockedSceneProvider) === expectedSceneProvider)
-    }
-
     func test__messageRenderer() throws {
         var environment = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
@@ -616,10 +535,8 @@ final class GliaTests: XCTestCase {
         ) { _ in
             calls.append(.configureWithConfiguration)
         }
-        try sdk.startEngagement(
-            engagementKind: .chat,
-            in: ["mockedQueueId"]
-        )
+        let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["mockedQueueId"])
+        try engagementLauncher.startChat()
         weak var rootCoordinator = sdk.rootCoordinator
         XCTAssertNotNil(rootCoordinator)
         var endEngagementResult: Result<Void, Error>?
