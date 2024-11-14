@@ -2,41 +2,6 @@ import Foundation
 import GliaCoreSDK
 
 extension Glia {
-    /// Starts the engagement.
-    ///
-    /// - Parameters:
-    ///   - engagementKind: Engagement media type.
-    ///   - in: Queue identifiers
-    ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to
-    ///     the first active foreground scene.
-    ///
-    /// - throws:
-    ///   - `GliaCoreSDK.ConfigurationError.invalidSite`
-    ///   - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
-    ///   - `GliaError.engagementExists
-    ///   - `GliaError.sdkIsNotConfigured`
-    ///
-    /// - Important: Note, that `configure(with:uiConfig:assetsBuilder:completion:)` must be called
-    ///   initially prior to this method, because `GliaError.sdkIsNotConfigured` will occur otherwise.
-    ///
-    public func startEngagement(
-        of engagementKind: EngagementKind, // To help compiler to avoid ambiguity, change signature of `engagementKind` parameter.
-        in queueIds: [String] = [],
-        sceneProvider: SceneProvider? = nil
-    ) throws {
-        let parameters = try getEngagementParameters(in: queueIds)
-
-        try resolveEngangementState(
-            engagementKind: engagementKind,
-            sceneProvider: sceneProvider,
-            configuration: parameters.configuration,
-            interactor: parameters.interactor,
-            features: parameters.features,
-            viewFactory: parameters.viewFactory,
-            ongoingEngagementMediaStreams: parameters.ongoingEngagementMediaStreams
-        )
-    }
-
     /// Set up and returns parameters needed to start or restore engagement
     func getEngagementParameters(in queueIds: [String] = []) throws -> EngagementParameters {
         // In order to align behaviour between platforms,
