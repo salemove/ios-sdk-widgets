@@ -6,7 +6,15 @@ extension ChatMessageEntryStyle {
         disabledConfiguration: RemoteConfiguration.Input?,
         assetsBuilder: RemoteConfiguration.AssetsBuilder
     ) {
-        enabled.apply(configuration: configuration, assetsBuilder: assetsBuilder)
-        // TODO: Add Unified customization (MOB-3762)
+        enabled.apply(
+            configuration: configuration,
+            disabledConfiguration: disabledConfiguration,
+            assetsBuilder: assetsBuilder
+        )
+        disabled.apply(
+            configuration: configuration,
+            disabledConfiguration: disabledConfiguration,
+            assetsBuilder: assetsBuilder
+        )
     }
 }
