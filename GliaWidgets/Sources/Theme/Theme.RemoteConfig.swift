@@ -53,5 +53,9 @@ extension Theme {
             configuration: configuration.webBrowserScreen,
             assetsBuilder: assetsBuilder
         )
+        entryWidget.apply(
+            configuration: configuration.entryWidget,
+            assetsBuilder: assetsBuilder
+        )
     }
 }
