@@ -8,6 +8,7 @@ extension RemoteConfiguration {
         let operatorMessage: MessageBalloon?
         let visitorMessage: MessageBalloon?
         let input: Input?
+        let inputDisabled: Input?
         let responseCard: ResponseCard?
         let audioUpgrade: Upgrade?
         let videoUpgrade: Upgrade?
