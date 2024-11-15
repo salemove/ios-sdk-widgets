@@ -2,8 +2,8 @@ import UIKit
 
 extension MessageCenterFileUploadStyle {
     mutating func apply(
-        // TODO: provide configuration for disabled state MOB-3762.
         configuration: RemoteConfiguration.FileUploadBar?,
+        disabledConfiguration: RemoteConfiguration.FileUploadBar?,
         assetsBuilder: RemoteConfiguration.AssetsBuilder
     ) {
         enabled.filePreview.apply(
@@ -20,6 +20,22 @@ extension MessageCenterFileUploadStyle {
         )
         enabled.error.apply(
             configuration: configuration?.error,
+            assetsBuilder: assetsBuilder
+        )
+        disabled.filePreview.apply(
+            configuration: disabledConfiguration?.filePreview,
+            assetsBuilder: assetsBuilder
+        )
+        disabled.uploading.apply(
+            configuration: disabledConfiguration?.uploading,
+            assetsBuilder: assetsBuilder
+        )
+        disabled.uploaded.apply(
+            configuration: disabledConfiguration?.uploaded,
+            assetsBuilder: assetsBuilder
+        )
+        disabled.error.apply(
+            configuration: disabledConfiguration?.error,
             assetsBuilder: assetsBuilder
         )
 
