@@ -3,6 +3,7 @@ import UIKit
 extension ChatMessageEntryStateStyle {
     mutating func apply(
         configuration: RemoteConfiguration.Input?,
+        disabledConfiguration: RemoteConfiguration.Input?,
         assetsBuilder: RemoteConfiguration.AssetsBuilder
     ) {
         configuration?.background?.color?.value
@@ -34,19 +35,26 @@ extension ChatMessageEntryStateStyle {
             .map { UIColor(hex: $0) }
             .first
             .unwrap { separatorColor = $0 }
-        // TODO: Add Unified customization (MOB-3762)
         configuration?.mediaButton?.tintColor?.value
             .map { UIColor(hex: $0) }
             .first
             .unwrap { mediaButton.enabled.color = $0 }
-        // TODO: Add Unified customization (MOB-3762)
+        disabledConfiguration?.mediaButton?.tintColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { mediaButton.disabled.color = $0 }
         configuration?.sendButton?.tintColor?.value
             .map { UIColor(hex: $0) }
             .first
             .unwrap { sendButton.enabled.color = $0 }
+        disabledConfiguration?.sendButton?.tintColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { sendButton.disabled.color = $0 }
 
         uploadList.apply(
             configuration: configuration?.fileUploadBar,
+            disabledConfiguration: disabledConfiguration?.fileUploadBar,
             assetsBuilder: assetsBuilder
         )
     }
