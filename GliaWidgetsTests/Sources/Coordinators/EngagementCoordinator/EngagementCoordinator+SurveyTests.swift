@@ -29,7 +29,7 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
             interactor: interactor,
             viewFactory: ViewFactory.mock(),
             sceneProvider: nil,
-            engagementKind: .audioCall,
+            engagementLaunching: .direct(kind: .audioCall),
             screenShareHandler: .mock,
             features: [],
             environment: engagementCoordinatorEnv

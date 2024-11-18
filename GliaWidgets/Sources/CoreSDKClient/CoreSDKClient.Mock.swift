@@ -40,7 +40,8 @@ extension CoreSdkClient {
         getCameraDeviceManageable: { .mock },
         subscribeForQueuesUpdates: { _, _ in UUID.mock.uuidString },
         unsubscribeFromUpdates: { _, _ in },
-        subscribeForUnreadSCMessageCount: { _ in UUID.mock.uuidString }
+        subscribeForUnreadSCMessageCount: { _ in UUID.mock.uuidString },
+        pendingSecureConversationStatusUpdates: { $0(false) }
     )
 }
 

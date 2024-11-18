@@ -52,7 +52,7 @@ extension Glia {
         )
     }
 
-    func resolveEngangementState(
+    func resolveEngagementState(
         engagementKind: EngagementKind,
         sceneProvider: SceneProvider?,
         configuration: Configuration,
@@ -140,11 +140,35 @@ extension Glia {
         features: Features,
         maximize: Bool = true
     ) {
+        var pendingConversationExists = false
+        environment.coreSdk.pendingSecureConversationStatusUpdates { hasPendingConversation in
+            pendingConversationExists = hasPendingConversation
+        }
+
+        let engagementLaunching: EngagementCoordinator.EngagementLaunching
+
+        switch (pendingConversationExists, engagementKind) {
+        case (false, _):
+            // if there is no pending Secure Conversation, open regular flow.
+            engagementLaunching = .direct(kind: engagementKind)
+
+        case (true, .messaging(.welcome)):
+            // if there is pending Secure Conversation and requested `EngagementKind` is messaging,
+            // then open ChatTranscript screen.
+            engagementLaunching = .direct(kind: .messaging(.chatTranscript))
+
+        case (true, _):
+            // if there is pending Secure Conversation and requested `EngagementKind` is not messaging,
+            // then open ChatTranscript screen and present Leave Current Conversation dialog.
+            // If user presses Leave button, then ChatTranscript screen will be replaced with proper Chat/Call screen.
+            engagementLaunching = .indirect(kind: .messaging(.chatTranscript), initialKind: engagementKind)
+        }
+
         rootCoordinator = self.environment.rootCoordinator(
             interactor: interactor,
             viewFactory: viewFactory,
             sceneProvider: sceneProvider,
-            engagementKind: engagementKind,
+            engagementLaunching: engagementLaunching,
             screenShareHandler: environment.screenShareHandler,
             features: features,
             environment: .create(

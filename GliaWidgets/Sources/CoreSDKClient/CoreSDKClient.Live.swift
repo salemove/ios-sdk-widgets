@@ -63,7 +63,8 @@ extension CoreSdkClient {
             },
             subscribeForQueuesUpdates: GliaCore.sharedInstance.subscribeForQueuesUpdates(forQueues:completion:),
             unsubscribeFromUpdates: GliaCore.sharedInstance.unsubscribeFromUpdates(queueCallbackId:onError:),
-            subscribeForUnreadSCMessageCount: GliaCore.sharedInstance.secureConversations.subscribeToUnreadMessageCount(completion:)
+            subscribeForUnreadSCMessageCount: GliaCore.sharedInstance.secureConversations.subscribeToUnreadMessageCount(completion:),
+            pendingSecureConversationStatusUpdates: GliaCore.sharedInstance.secureConversations.pendingSecureConversationStatus
         )
     }()
 }
