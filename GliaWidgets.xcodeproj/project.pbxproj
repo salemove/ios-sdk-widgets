@@ -430,6 +430,7 @@
 		847956402ADED7A2004EF60C /* CallVisualizer.Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8479563F2ADED7A2004EF60C /* CallVisualizer.Action.swift */; };
 		847A7643285A1914004044D1 /* FileUploadListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */; };
 		847D7FAE2CDE0F3A00EA5C2D /* AlertTypeComposerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7FAD2CDE0F3A00EA5C2D /* AlertTypeComposerTests.swift */; };
+		847D7FB42CE648AE00EA5C2D /* SecureConversations.TranscriptModel.LeaveConversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7FB32CE648AE00EA5C2D /* SecureConversations.TranscriptModel.LeaveConversation.swift */; };
 		8485704F2BEE3A0800CEBCC5 /* ChatViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8485704E2BEE3A0800CEBCC5 /* ChatViewTest.swift */; };
 		848570512BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848570502BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift */; };
 		848B8ADC2C0759C500E990E6 /* Theme.CustomCardContainerStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848B8ADB2C0759C500E990E6 /* Theme.CustomCardContainerStyle.swift */; };
@@ -1489,6 +1490,7 @@
 		8479563F2ADED7A2004EF60C /* CallVisualizer.Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizer.Action.swift; sourceTree = "<group>"; };
 		847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadListViewModelTests.swift; sourceTree = "<group>"; };
 		847D7FAD2CDE0F3A00EA5C2D /* AlertTypeComposerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTypeComposerTests.swift; sourceTree = "<group>"; };
+		847D7FB32CE648AE00EA5C2D /* SecureConversations.TranscriptModel.LeaveConversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.TranscriptModel.LeaveConversation.swift; sourceTree = "<group>"; };
 		8485704E2BEE3A0800CEBCC5 /* ChatViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewTest.swift; sourceTree = "<group>"; };
 		848570502BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStyle.Mock.swift; sourceTree = "<group>"; };
 		848B8ADB2C0759C500E990E6 /* Theme.CustomCardContainerStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.CustomCardContainerStyle.swift; sourceTree = "<group>"; };
@@ -3453,6 +3455,7 @@
 				8491AF4D2A9CB3A400CC3E72 /* SecureConversations.TranscriptModel.GVA.swift */,
 				31DD41642A57105400F92612 /* SecureConversations.TranscriptModel.Environment.swift */,
 				8491AF512A9F813200CC3E72 /* SecureConversations.TranscriptModel.swift */,
+				847D7FB32CE648AE00EA5C2D /* SecureConversations.TranscriptModel.LeaveConversation.swift */,
 			);
 			path = ChatTranscript;
 			sourceTree = "<group>";
@@ -5830,6 +5833,7 @@
 				846429802A45A1F200943BD6 /* OfferPresenter.swift in Sources */,
 				C0D6CA4D2C19B86000D4709B /* OnHoldOverlayView.Environment.swift in Sources */,
 				1A4AF5D325AEF543002CD0F4 /* AlertViewController+Confirmation.swift in Sources */,
+				847D7FB42CE648AE00EA5C2D /* SecureConversations.TranscriptModel.LeaveConversation.swift in Sources */,
 				755D187B29A6A7180009F5E8 /* WelcomeStyle.TitleImageStyle.swift in Sources */,
 				8491AF232A8A3EA800CC3E72 /* ChatStyle.Deprecated.swift in Sources */,
 				C09046B72B7D0A8B003C437C /* WelcomeStyle.MessageWarningStyle.RemoteConfig.swift in Sources */,

@@ -81,8 +81,11 @@ private extension GliaTests {
         var sdkEnv = Glia.Environment.failing
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         sdkEnv.coreSdk.localeProvider = .mock
-        sdkEnv.createRootCoordinator = { _, _, _, engagementKind, _, _, _ in
-            .mock(engagementKind: engagementKind, environment: .engagementCoordEnvironmentWithKeyWindow)
+        sdkEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _, _ in
+                .mock(
+                    engagementLaunching: engagementLaunching,
+                    environment: .engagementCoordEnvironmentWithKeyWindow
+                )
         }
         sdkEnv.print.printClosure = { _, _, _ in }
         var logger = CoreSdkClient.Logger.failing
@@ -96,6 +99,7 @@ private extension GliaTests {
             completion(.success(()))
         }
         sdkEnv.coreSdk.getCurrentEngagement = { nil }
+        sdkEnv.coreSdk.pendingSecureConversationStatusUpdates = { _ in }
         let window = UIWindow(frame: .zero)
         window.makeKeyAndVisible()
         sdkEnv.uiApplication.windows = { [window] }
