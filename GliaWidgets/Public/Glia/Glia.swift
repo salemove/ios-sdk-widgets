@@ -28,6 +28,15 @@ extension EngagementKind {
             self = .chat
         }
     }
+
+    var isMessaging: Bool {
+        switch self {
+        case .messaging:
+            return true
+        case .none, .chat, .audioCall, .videoCall:
+            return false
+        }
+    }
 }
 
 extension SecureConversations {
@@ -72,7 +81,7 @@ public class Glia {
     public static let sharedInstance = Glia(environment: .live)
 
     /// Current engagement media type.
-    public var engagement: EngagementKind { return rootCoordinator?.engagementKind ?? .none }
+    public var engagement: EngagementKind { return rootCoordinator?.engagementLaunching.currentKind ?? .none }
 
     /// Used to monitor engagement state changes.
     public var onEvent: ((GliaEvent) -> Void)?

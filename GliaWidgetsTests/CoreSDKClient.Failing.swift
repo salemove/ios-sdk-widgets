@@ -78,6 +78,9 @@ extension CoreSdkClient {
         subscribeForUnreadSCMessageCount: { _ in
             fail("\(Self.self).subscribeForUnreadSCMessageCount")
             return ""
+        }, 
+        pendingSecureConversationStatusUpdates: { _ in
+            fail("\(Self.self).pendingSecureConversationStatusUpdates")
         }
     )
 }

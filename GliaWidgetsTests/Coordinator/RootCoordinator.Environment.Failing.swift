@@ -96,6 +96,9 @@ extension EngagementCoordinator.Environment {
         cameraDeviceManager: { .failing },
         flipCameraButtonStyle: .nop,
         alertManager: .failing(viewFactory: .mock()),
-        queuesMonitor: .failing
+        queuesMonitor: .failing, 
+        pendingSecureConversationStatusUpdates: { _ in
+            fail("\(Self.self).pendingSecureConversationStatusUpdates")
+        }
     )
 }
