@@ -31,6 +31,8 @@ extension SecureConversations.TranscriptModel {
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var log: CoreSdkClient.Logger
         var maximumUploads: () -> Int
+        var shouldShowLeaveSecureConversationDialog: Bool
+        var leaveCurrentSecureConversation: Cmd
     }
 }
 
@@ -69,7 +71,9 @@ extension SecureConversations.TranscriptModel.Environment {
             stopSocketObservation: environment.stopSocketObservation,
             createSendMessagePayload: environment.createSendMessagePayload,
             log: environment.log,
-            maximumUploads: environment.maximumUploads
+            maximumUploads: environment.maximumUploads,
+            shouldShowLeaveSecureConversationDialog: environment.shouldShowLeaveSecureConversationDialog,
+            leaveCurrentSecureConversation: environment.leaveCurrentSecureConversation
        )
     }
 }

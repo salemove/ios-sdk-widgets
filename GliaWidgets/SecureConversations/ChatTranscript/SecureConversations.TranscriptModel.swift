@@ -221,7 +221,9 @@ extension SecureConversations {
         func start() {
             environment.startSocketObservation()
             fetchSiteConfigurations()
-            loadHistory { _ in }
+            loadHistory { [weak self] _ in
+                self?.showLeaveConversationDialogIfNeeded()
+            }
         }
 
         deinit {

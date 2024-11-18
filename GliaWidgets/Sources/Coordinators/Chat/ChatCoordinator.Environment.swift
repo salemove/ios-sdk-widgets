@@ -42,13 +42,17 @@ extension ChatCoordinator {
         var flipCameraButtonStyle: FlipCameraButtonStyle
         var alertManager: AlertManager
         var queuesMonitor: QueuesMonitor
+        var shouldShowLeaveSecureConversationDialog: Bool
+        var leaveCurrentSecureConversation: Cmd
     }
 }
 
 extension ChatCoordinator.Environment {
     static func create(
         with environment: EngagementCoordinator.Environment,
-        interactor: Interactor
+        interactor: Interactor,
+        shouldShowLeaveSecureConversationDialog: Bool,
+        leaveCurrentSecureConversation: Cmd
     ) -> Self {
         .init(
             fetchFile: environment.fetchFile,
@@ -90,7 +94,9 @@ extension ChatCoordinator.Environment {
             cameraDeviceManager: environment.cameraDeviceManager,
             flipCameraButtonStyle: environment.flipCameraButtonStyle,
             alertManager: environment.alertManager,
-            queuesMonitor: environment.queuesMonitor
+            queuesMonitor: environment.queuesMonitor,
+            shouldShowLeaveSecureConversationDialog: shouldShowLeaveSecureConversationDialog,
+            leaveCurrentSecureConversation: leaveCurrentSecureConversation
         )
     }
 
@@ -135,7 +141,9 @@ extension ChatCoordinator.Environment {
             cameraDeviceManager: environment.cameraDeviceManager,
             flipCameraButtonStyle: environment.flipCameraButtonStyle,
             alertManager: environment.alertManager,
-            queuesMonitor: environment.queuesMonitor
+            queuesMonitor: environment.queuesMonitor,
+            shouldShowLeaveSecureConversationDialog: environment.shouldShowLeaveSecureConversationDialog,
+            leaveCurrentSecureConversation: environment.leaveCurrentSecureConversation
         )
     }
 }
