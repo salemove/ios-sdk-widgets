@@ -20,7 +20,7 @@ extension Glia.Environment {
         uiDevice: .live,
         notificationCenter: .live,
         createRootCoordinator: EngagementCoordinator.init(
-            interactor:viewFactory:sceneProvider:engagementKind:screenShareHandler:features:environment:
+            interactor:viewFactory:sceneProvider:engagementLaunching:screenShareHandler:features:environment:
         ),
         callVisualizerPresenter: .topViewController(application: .live),
         bundleManaging: .live,

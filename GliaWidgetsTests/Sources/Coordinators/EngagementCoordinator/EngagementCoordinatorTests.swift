@@ -25,11 +25,17 @@ final class EngagementCoordinatorTests: XCTestCase {
     func createCoordinator(
         withKind engagementKind: EngagementKind = .chat
     ) -> EngagementCoordinator {
+        return createCoordinator(with: .direct(kind: engagementKind))
+    }
+
+    func createCoordinator(
+        with engagementLaunching: EngagementCoordinator.EngagementLaunching
+    ) -> EngagementCoordinator {
         return EngagementCoordinator(
             interactor: .mock(),
             viewFactory: .mock(),
             sceneProvider: MockedSceneProvider(),
-            engagementKind: engagementKind,
+            engagementLaunching: engagementLaunching,
             screenShareHandler: .mock,
             features: [],
             environment: .mock
@@ -160,7 +166,7 @@ final class EngagementCoordinatorTests: XCTestCase {
 
         callAfterTimeout {
             XCTAssertEqual(self.coordinator.navigationPresenter.viewControllers.count, 0)
-            XCTAssertEqual(self.coordinator.engagementKind, .none)
+            XCTAssertEqual(self.coordinator.engagementLaunching.currentKind, .none)
             XCTAssertTrue(calledEvents.contains(.ended))
         }
     }

@@ -69,4 +69,22 @@ extension EngagementCoordinatorTests {
             XCTAssertTrue(calledEvents.contains(.minimized))
         }
     }
+
+    // MARK: - Leave Conversation
+    func test_leaveCurrentConversationChangesEngagementKindToInitialOne() throws {
+        coordinator = createCoordinator(with: .indirect(
+            kind: .messaging(.chatTranscript),
+            initialKind: .videoCall
+        ))
+        coordinator.start()
+
+        let subCoordinator = try XCTUnwrap(coordinator.coordinators.first as? SecureConversations.Coordinator)
+
+        XCTAssertEqual(coordinator.engagementLaunching.currentKind, .messaging(.chatTranscript))
+        XCTAssertEqual(coordinator.engagementLaunching.initialKind, .videoCall)
+
+        subCoordinator.coordinatorEnvironment.leaveCurrentSecureConversation()
+
+        XCTAssertEqual(coordinator.engagementLaunching.currentKind, .videoCall)
+    }
 }
