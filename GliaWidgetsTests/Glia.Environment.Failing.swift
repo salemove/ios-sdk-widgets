@@ -32,7 +32,7 @@ extension Glia.Environment {
                 interactor: .mock(environment: .failing),
                 viewFactory: .mock(environment: .failing),
                 sceneProvider: nil,
-                engagementKind: .none,
+                engagementLaunching: .direct(kind: .none),
                 screenShareHandler: .mock,
                 features: [],
                 environment: .failing
