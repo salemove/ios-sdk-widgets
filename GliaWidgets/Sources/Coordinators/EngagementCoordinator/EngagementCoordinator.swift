@@ -1,12 +1,41 @@
 import UIKit
 import Foundation
 
+extension EngagementCoordinator {
+    /// `EngagementLaunching` is used to start one of two possible flows:
+    /// - `direct` case is used to start regular engagement flow with single `EngagementKind`. 
+    /// In this case `EngagementCoordinator` starts regular engagement.
+    /// - `indirect` case is used to temporarily save initial `EngagementKind` and replace it with necessary kind.
+    /// Use case is if there is pending secure conversation, but requested `EngagementKind` is
+    /// one of `[.chat, . audioCall, .videoCall]`, then `EngagementCoordinator` opens
+    /// ChatTranscript screen and shows Leave Engagement Dialog. Then if user presses "Leave" button,
+    /// `EngagementCoordinator` replaces current screen with the one corresponding to initial `EngagementKind`.
+    enum EngagementLaunching {
+        case direct(kind: EngagementKind)
+        case indirect(kind: EngagementKind, initialKind: EngagementKind)
+
+        var currentKind: EngagementKind {
+            switch self {
+            case let .direct(engagementKind), let .indirect(engagementKind, _):
+                return engagementKind
+            }
+        }
+
+        var initialKind: EngagementKind {
+            switch self {
+            case let .direct(engagementKind), let .indirect(_, engagementKind):
+                return engagementKind
+            }
+        }
+    }
+}
+
 class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     var delegate: ((DelegateEvent) -> Void)?
 
-    var engagementKind: EngagementKind {
+    var engagementLaunching: EngagementLaunching {
         didSet {
-            delegate?(.engagementChanged(engagementKind))
+            delegate?(.engagementChanged(engagementLaunching.currentKind))
         }
     }
 
@@ -31,7 +60,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         interactor: Interactor,
         viewFactory: ViewFactory,
         sceneProvider: SceneProvider?,
-        engagementKind: EngagementKind,
+        engagementLaunching: EngagementLaunching,
         screenShareHandler: ScreenShareHandler,
         features: Features,
         environment: Environment
@@ -39,7 +68,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.interactor = interactor
         self.viewFactory = viewFactory
         self.sceneProvider = sceneProvider
-        self.engagementKind = engagementKind
+        self.engagementLaunching = engagementLaunching
         self.gliaPresenter = GliaPresenter(
             environment: .create(
                 with: environment,
@@ -54,12 +83,31 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         navigationController.isNavigationBarHidden = true
     }
 
-    // swiftlint:disable function_body_length
     func start() {
         start(maximize: true)
     }
 
     func start(maximize: Bool) {
+        setupEngagementController()
+
+        let bubbleView = viewFactory.makeBubbleView()
+        unreadMessages.addObserver(self) { unreadCount, _ in
+            bubbleView.setBadge(itemCount: unreadCount)
+        }
+
+        gliaViewController = makeGliaView(
+            bubbleView: bubbleView,
+            features: features
+        )
+        gliaViewController?.insertChild(navigationController)
+        if maximize {
+            event(.maximized)
+        }
+        delegate?(.started)
+    }
+
+    func setupEngagementController(animated: Bool = false) {
+        let engagementKind = engagementLaunching.currentKind
         switch engagementKind {
         case .none:
             break
@@ -71,7 +119,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
             engagement = .chat(chatViewController)
             navigationPresenter.setViewControllers(
                 [chatViewController],
-                animated: false
+                animated: animated
             )
         case .audioCall, .videoCall:
             let kind: CallKind = engagementKind == .audioCall
@@ -86,7 +134,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
                 environment: .create(with: environment)
             )
             call.kind.addObserver(self) { [weak self] _, _ in
-                self?.engagementKind = EngagementKind(with: call.kind.value)
+                self?.engagementLaunching = .direct(kind: EngagementKind(with: call.kind.value))
             }
             let callViewController = startCall(
                 call,
@@ -107,33 +155,20 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
 
             navigationPresenter.setViewControllers(
                 [callViewController],
-                animated: false
+                animated: animated
             )
         case .messaging(let messagingInitialScreen):
-            let secureConversationsWelcomeViewController = startSecureConversations(using: messagingInitialScreen)
+            let secureConversationsWelcomeViewController = startSecureConversations(
+                using: messagingInitialScreen,
+                requestedEngagementKind: engagementLaunching.initialKind
+            )
             engagement = .secureConversations(secureConversationsWelcomeViewController)
             navigationPresenter.setViewControllers(
                 [secureConversationsWelcomeViewController],
-                animated: false
+                animated: animated
             )
         }
-
-        let bubbleView = viewFactory.makeBubbleView()
-        unreadMessages.addObserver(self) { unreadCount, _ in
-            bubbleView.setBadge(itemCount: unreadCount)
-        }
-
-        gliaViewController = makeGliaView(
-            bubbleView: bubbleView,
-            features: features
-        )
-        gliaViewController?.insertChild(navigationController)
-        if maximize {
-            event(.maximized)
-        }
-        delegate?(.started)
     }
-    // swiftlint:enable function_body_length
 
     deinit {
         print("\(Self.self) is deallocated.")
@@ -159,7 +194,7 @@ extension EngagementCoordinator {
                 self?.engagement = .none
                 self?.navigationPresenter.setViewControllers([], animated: false)
                 self?.removeAllCoordinators()
-                self?.engagementKind = .none
+                self?.engagementLaunching = .direct(kind: .none)
                 self?.delegate?(.ended)
             }
         }
@@ -267,7 +302,9 @@ extension EngagementCoordinator {
             startAction: startAction,
             environment: .create(
                 with: environment,
-                interactor: interactor
+                interactor: interactor,
+                shouldShowLeaveSecureConversationDialog: false,
+                leaveCurrentSecureConversation: .nop
             ),
             startWithSecureTranscriptFlow: false
         )
@@ -444,8 +481,13 @@ extension EngagementCoordinator {
     }
 
     private func startSecureConversations(
-        using messagingInitialScreen: SecureConversations.InitialScreen
+        using messagingInitialScreen: SecureConversations.InitialScreen,
+        requestedEngagementKind: EngagementKind
     ) -> UIViewController {
+        let leaveCurrentSecureConversation = Cmd { [weak self] in
+            self?.engagementLaunching = .direct(kind: requestedEngagementKind)
+            self?.setupEngagementController(animated: true)
+        }
         let coordinator = SecureConversations.Coordinator(
             messagingInitialScreen: messagingInitialScreen,
             viewFactory: viewFactory,
@@ -459,7 +501,9 @@ extension EngagementCoordinator {
                 showCallBubble: false,
                 screenShareHandler: screenShareHandler,
                 isWindowVisible: isWindowVisible,
-                interactor: interactor
+                interactor: interactor,
+                shouldShowLeaveSecureConversationDialog: !requestedEngagementKind.isMessaging,
+                leaveCurrentSecureConversation: leaveCurrentSecureConversation
             )
         )
 
@@ -516,7 +560,7 @@ extension EngagementCoordinator {
                 environment: .create(with: environment)
             )
             call.kind.addObserver(self) { [weak self] _, _ in
-                self?.engagementKind = EngagementKind(with: call.kind.value)
+                self?.engagementLaunching = .direct(kind: EngagementKind(with: call.kind.value))
             }
             let callViewController = startCall(
                 call,

@@ -198,6 +198,10 @@ struct CoreSdkClient {
     ) -> String?
 
     var subscribeForUnreadSCMessageCount: SubscribeForUnreadSCMessageCount
+
+    typealias PendingSecureConversationStatusUpdates = (_ callback: @escaping (Bool) -> Void) -> Void
+
+    var pendingSecureConversationStatusUpdates: PendingSecureConversationStatusUpdates
 }
 
 extension CoreSdkClient {

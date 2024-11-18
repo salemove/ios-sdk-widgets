@@ -44,6 +44,7 @@ extension EngagementCoordinator {
         var flipCameraButtonStyle: FlipCameraButtonStyle
         var alertManager: AlertManager
         var queuesMonitor: QueuesMonitor
+        var pendingSecureConversationStatusUpdates: CoreSdkClient.PendingSecureConversationStatusUpdates
     }
 }
 
@@ -98,7 +99,8 @@ extension EngagementCoordinator.Environment {
             cameraDeviceManager: environment.cameraDeviceManager,
             flipCameraButtonStyle: viewFactory.theme.call.flipCameraButtonStyle,
             alertManager: alertManager,
-            queuesMonitor: queuesMonitor
+            queuesMonitor: queuesMonitor,
+            pendingSecureConversationStatusUpdates: environment.coreSdk.pendingSecureConversationStatusUpdates
         )
     }
 }
