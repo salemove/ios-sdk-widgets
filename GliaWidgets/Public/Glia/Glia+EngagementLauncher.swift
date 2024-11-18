@@ -12,7 +12,7 @@ extension Glia {
         let parameters = try getEngagementParameters(in: queueIds)
         loggerPhase.logger.info("Returning an Engagement Launcher")
         return try EngagementLauncher { [weak self] engagementKind, sceneProvider in
-            try self?.resolveEngangementState(
+            try self?.resolveEngagementState(
                 engagementKind: engagementKind,
                 sceneProvider: sceneProvider,
                 configuration: parameters.configuration,

@@ -50,6 +50,8 @@ extension SecureConversations.Coordinator {
         var flipCameraButtonStyle: FlipCameraButtonStyle
         var alertManager: AlertManager
         var queuesMonitor: QueuesMonitor
+        var shouldShowLeaveSecureConversationDialog: Bool
+        var leaveCurrentSecureConversation: Cmd
     }
 }
 
@@ -63,7 +65,9 @@ extension SecureConversations.Coordinator.Environment {
         showCallBubble: Bool,
         screenShareHandler: ScreenShareHandler,
         isWindowVisible: ObservableValue<Bool>,
-        interactor: Interactor
+        interactor: Interactor,
+        shouldShowLeaveSecureConversationDialog: Bool,
+        leaveCurrentSecureConversation: Cmd
     ) -> Self {
         .init(
             queueIds: queueIds,
@@ -113,7 +117,9 @@ extension SecureConversations.Coordinator.Environment {
             cameraDeviceManager: environment.cameraDeviceManager,
             flipCameraButtonStyle: environment.flipCameraButtonStyle,
             alertManager: environment.alertManager,
-            queuesMonitor: environment.queuesMonitor
+            queuesMonitor: environment.queuesMonitor,
+            shouldShowLeaveSecureConversationDialog: shouldShowLeaveSecureConversationDialog,
+            leaveCurrentSecureConversation: leaveCurrentSecureConversation
         )
     }
 }
