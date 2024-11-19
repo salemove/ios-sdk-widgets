@@ -5,8 +5,9 @@ import GliaCoreSDK
 @testable import GliaWidgets
 
 class EntryWidgetTests: XCTestCase {
-    private enum Call {
+    private enum Call: Equatable {
         case observeSecureUnreadMessageCount
+        case start(EngagementKind)
     }
 
     func test_secureMessagingIsHiddenWhenUserIsNotAuthenticated() {
@@ -21,22 +22,13 @@ class EntryWidgetTests: XCTestCase {
             completion(.success(mockQueue))
             return UUID.mock.uuidString
         }
-        let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
-
-        let engagementLauncher = EngagementLauncher { _, _ in }
-        let isAuthenticated: () -> Bool = { false }
+        var environment = EntryWidget.Environment.mock()
+        environment.isAuthenticated = { false }
+        environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
 
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
-            environment: .init(
-                observeSecureUnreadMessageCount: { _ in UUID.mock.uuidString },
-                unsubscribeFromUpdates: { _, _ in },
-                queuesMonitor: queuesMonitor,
-                engagementLauncher: engagementLauncher,
-                theme: .mock(),
-                log: .mock,
-                isAuthenticated: isAuthenticated
-            )
+            environment: environment
         )
 
         entryWidget.show(in: .init())
@@ -60,21 +52,12 @@ class EntryWidgetTests: XCTestCase {
             completion(.success(mockQueue))
             return UUID.mock.uuidString
         }
-        let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
-        let engagementLauncher = EngagementLauncher { _, _ in }
-        let isAuthenticated: () -> Bool = { true }
+        var environment = EntryWidget.Environment.mock()
+        environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
 
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
-            environment: .init(
-                observeSecureUnreadMessageCount: { _ in UUID.mock.uuidString },
-                unsubscribeFromUpdates: { _, _ in },
-                queuesMonitor: queuesMonitor,
-                engagementLauncher: engagementLauncher,
-                theme: .mock(),
-                log: .mock,
-                isAuthenticated: isAuthenticated
-            )
+            environment: environment
         )
 
         entryWidget.show(in: .init())
@@ -97,27 +80,18 @@ class EntryWidgetTests: XCTestCase {
             completion(.success(mockQueue))
             return UUID.mock.uuidString
         }
-        let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
-
-        let engagementLauncher = EngagementLauncher { _, _ in }
-        let isAuthenticated: () -> Bool = { true }
-        
         let observeMessageCount: (_ completion: @escaping (Result<Int?, Error>) -> Void) -> String? = { completion in
             completion(.success(5))
             return UUID.mock.uuidString
         }
 
+        var environment = EntryWidget.Environment.mock()
+        environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
+        environment.observeSecureUnreadMessageCount = observeMessageCount
+
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
-            environment: .init(
-                observeSecureUnreadMessageCount: observeMessageCount,
-                unsubscribeFromUpdates: { _, _ in },
-                queuesMonitor: queuesMonitor,
-                engagementLauncher: engagementLauncher,
-                theme: .mock(),
-                log: .mock,
-                isAuthenticated: isAuthenticated
-            )
+            environment: environment
         )
         
         entryWidget.show(in: .init())
@@ -138,20 +112,35 @@ class EntryWidgetTests: XCTestCase {
             return mockSubscriptionId
         }
         
+        var environment = EntryWidget.Environment.mock()
+        environment.observeSecureUnreadMessageCount = observeMessageCount
+
         let entryWidget = EntryWidget(
             queueIds: [UUID.mock.uuidString],
-            environment: .init(
-                observeSecureUnreadMessageCount: observeMessageCount,
-                unsubscribeFromUpdates: { _, _ in },
-                queuesMonitor: .mock(),
-                engagementLauncher: EngagementLauncher { _, _ in },
-                theme: .mock(),
-                log: .mock,
-                isAuthenticated: { true }
-            )
+            environment: environment
         )
         
         XCTAssertEqual(envCalls, [.observeSecureUnreadMessageCount])
         XCTAssertEqual(entryWidget.unreadSecureMessageSubscriptionId, mockSubscriptionId)
+    }
+
+    func test_secureMessagingIsOpenedIfPendingSecureConversationExists() {
+        var envCalls: [Call] = []
+
+        let engagementLauncher = EngagementLauncher { engagementKind, _ in
+            envCalls.append(.start(engagementKind))
+        }
+        var environment = EntryWidget.Environment.mock()
+        environment.pendingSecureConversationStatusUpdates = { $0(true) }
+        environment.engagementLauncher = engagementLauncher
+
+        let entryWidget = EntryWidget(
+            queueIds: [UUID.mock.uuidString],
+            environment: environment
+        )
+
+        entryWidget.show(in: .init())
+
+        XCTAssertEqual(envCalls, [.start(.messaging(.welcome))])
     }
 }
