@@ -14,6 +14,8 @@ public struct SecureMessagingBottomBannerViewStyle: Equatable {
     public var backgroundColor: ColorType
     /// Color of the banner divider.
     public var dividerColor: UIColor
+    /// Accessibility properties for SecureMessagingBottomBannerViewStyle.
+    public var accessibility: Accessibility
 
     /// - Parameters:
     ///   - message: Text of the banner message.
@@ -22,13 +24,15 @@ public struct SecureMessagingBottomBannerViewStyle: Equatable {
     ///   - textColor: Color of the text of the  banner message.
     ///   - backgroundColor: Color of the banner background.
     ///   - dividerColor: Color of the banner divider.
+    ///   - accessibility: Accessibility properties for SecureMessagingBottomBannerViewStyle.
     public init(
         message: String,
         font: UIFont,
         textStyle: UIFont.TextStyle,
         textColor: UIColor,
         backgroundColor: ColorType,
-        dividerColor: UIColor
+        dividerColor: UIColor,
+        accessibility: Accessibility
     ) {
         self.message = message
         self.font = font
@@ -36,6 +40,7 @@ public struct SecureMessagingBottomBannerViewStyle: Equatable {
         self.backgroundColor = backgroundColor
         self.dividerColor = dividerColor
         self.textStyle = textStyle
+        self.accessibility = accessibility
     }
 }
 
@@ -46,6 +51,7 @@ extension SecureMessagingBottomBannerViewStyle {
         textStyle: .caption1,
         textColor: .label,
         backgroundColor: .fill(color: .red),
-        dividerColor: .yellow
+        dividerColor: .yellow,
+        accessibility: .init(isFontScalingEnabled: true)
     )
 }

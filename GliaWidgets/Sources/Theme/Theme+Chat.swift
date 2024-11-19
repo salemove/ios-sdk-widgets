@@ -445,7 +445,8 @@ extension Theme {
             textStyle: .caption1,
             textColor: color.baseNormal,
             backgroundColor: .fill(color: color.baseNeutral),
-            dividerColor: color.baseShade
+            dividerColor: color.baseShade,
+            accessibility: .init(isFontScalingEnabled: true)
         )
 
         let sendingMessageUnavailableBannerViewStyle = SendingMessageUnavailableBannerViewStyle(
