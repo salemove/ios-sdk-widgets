@@ -85,6 +85,7 @@ final class SecureMessagingBottomBannerView: UIView {
         label.font = props.style.font
         isHidden = props.isHidden
         divider.backgroundColor = props.style.dividerColor
+        setFontScalingEnabled(props.style.accessibility.isFontScalingEnabled, for: label)
     }
 }
 
