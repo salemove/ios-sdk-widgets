@@ -61,11 +61,23 @@ public final class EntryWidget: NSObject {
 
 // MARK: - Public methods
 public extension EntryWidget {
-    /// Displays the widget as a modal sheet in the given view controller.
+    /// Displays the widget as a modal sheet in the given view controller. If there is an ongoing secure conversation, the Chat Transcript screen will be opened instead.
     ///
     /// - Parameter viewController: The `UIViewController` in which the widget will be shown as a sheet.
     func show(in viewController: UIViewController) {
-        showSheet(in: viewController)
+        var pendingSecureConversationExists = false
+        environment.pendingSecureConversationStatusUpdates { hasPendingSecureConversation in
+            pendingSecureConversationExists = hasPendingSecureConversation
+        }
+        if pendingSecureConversationExists {
+            do {
+                try environment.engagementLauncher.startSecureMessaging()
+            } catch {
+                viewState = .error
+            }
+        } else {
+            showSheet(in: viewController)
+        }
     }
 
     /// Embeds the widget as a view in the given parent view.
