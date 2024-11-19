@@ -65,4 +65,10 @@ final class ChatViewControllerVoiceOverTests: SnapshotTestCase {
         view.collectionView.heightAnchor.constraint(equalToConstant: 200).isActive = true
         view.assertSnapshot(as: .accessibilityImage)
     }
+
+    func test_secureMessagingBottomBanner() {
+        let viewController = ChatViewController.mockSecureMessagingBottomBannerView()
+        viewController.updateViewConstraints()
+        viewController.assertSnapshot(as: .accessibilityImage)
+    }
 }

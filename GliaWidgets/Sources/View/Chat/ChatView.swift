@@ -151,15 +151,15 @@ class ChatView: EngagementView {
 
         addSubview(secureMessagingBottomBannerView)
         constraints += [
-            secureMessagingBottomBannerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            secureMessagingBottomBannerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            secureMessagingBottomBannerView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            secureMessagingBottomBannerView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             secureMessagingBottomBannerView.topAnchor.constraint(equalTo: quickReplyView.bottomAnchor)
         ]
 
         addSubview(sendingMessageUnavailabilityBannerView)
         constraints += [
-            sendingMessageUnavailabilityBannerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            sendingMessageUnavailabilityBannerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            sendingMessageUnavailabilityBannerView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            sendingMessageUnavailabilityBannerView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             sendingMessageUnavailabilityBannerView.topAnchor.constraint(equalTo: secureMessagingBottomBannerView.bottomAnchor)
         ]
 
