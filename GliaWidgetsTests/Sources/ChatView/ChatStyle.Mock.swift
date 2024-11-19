@@ -570,7 +570,8 @@ extension SecureMessagingBottomBannerViewStyle {
         textStyle: UIFont.TextStyle = Theme().chat.secureMessagingBottomBannerStyle.textStyle,
         textColor: UIColor = Theme().chat.secureMessagingBottomBannerStyle.textColor,
         backgroundColor: ColorType = Theme().chat.secureMessagingBottomBannerStyle.backgroundColor,
-        dividerColor: UIColor = Theme().chat.secureMessagingBottomBannerStyle.dividerColor
+        dividerColor: UIColor = Theme().chat.secureMessagingBottomBannerStyle.dividerColor,
+        accessibility: SecureMessagingBottomBannerViewStyle.Accessibility = Theme().chat.secureMessagingBottomBannerStyle.accessibility
     ) -> Self {
         .init(
             message: message,
@@ -578,7 +579,8 @@ extension SecureMessagingBottomBannerViewStyle {
             textStyle: textStyle,
             textColor: textColor,
             backgroundColor: backgroundColor,
-            dividerColor: dividerColor
+            dividerColor: dividerColor, 
+            accessibility: accessibility
         )
     }
 }
