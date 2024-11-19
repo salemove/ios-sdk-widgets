@@ -114,3 +114,29 @@ extension SecureConversations.Availability.Environment {
         )
     }
 }
+
+#if DEBUG
+extension SecureConversations.Availability {
+    static func mock(
+        environment: Environment = .mock()
+    ) -> SecureConversations.Availability {
+        .init(environment: environment)
+    }
+}
+
+extension SecureConversations.Availability.Environment {
+    static func mock(
+        listQueues: @escaping CoreSdkClient.ListQueues = { _ in },
+        isAuthenticated: @escaping () -> Bool = { false },
+        log: CoreSdkClient.Logger = .mock,
+        queuesMonitor: QueuesMonitor = .mock()
+    ) -> Self {
+        .init(
+            listQueues: listQueues,
+            isAuthenticated: isAuthenticated,
+            log: log,
+            queuesMonitor: queuesMonitor
+        )
+    }
+}
+#endif

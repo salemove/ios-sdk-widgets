@@ -741,6 +741,24 @@ extension SecureConversations.TranscriptModel {
     func setIsSecureConversationsAvailable(_ available: Bool) {
         self.isSecureConversationsAvailable = available
     }
+
+    static func mock(
+        isCustomCardSupported: Bool = false,
+        environment: Environment = .mock(),
+        availability: SecureConversations.Availability,
+        deliveredStatusText: String,
+        failedToDeliverStatusText: String,
+        interactor: Interactor
+    ) -> SecureConversations.TranscriptModel {
+        .init(
+            isCustomCardSupported: isCustomCardSupported,
+            environment: environment,
+            availability: availability,
+            deliveredStatusText: deliveredStatusText,
+            failedToDeliverStatusText: failedToDeliverStatusText,
+            interactor: interactor
+        )
+    }
 }
 #endif
 // MARK: View Appeared
