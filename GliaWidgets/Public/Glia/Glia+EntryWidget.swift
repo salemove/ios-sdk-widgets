@@ -18,7 +18,8 @@ extension Glia {
                 engagementLauncher: try getEngagementLauncher(queueIds: queueIds),
                 theme: theme,
                 log: loggerPhase.logger,
-                isAuthenticated: environment.isAuthenticated
+                isAuthenticated: environment.isAuthenticated,
+                pendingSecureConversationStatusUpdates: environment.coreSdk.pendingSecureConversationStatusUpdates
             )
         )
     }
