@@ -9,6 +9,7 @@ extension EntryWidget {
         var theme: Theme
         var log: CoreSdkClient.Logger
         var isAuthenticated: () -> Bool
+        var pendingSecureConversationStatusUpdates: CoreSdkClient.PendingSecureConversationStatusUpdates
     }
 }
 
@@ -23,7 +24,8 @@ extension EntryWidget.Environment {
             engagementLauncher: engagementLauncher,
             theme: .mock(),
             log: .mock,
-            isAuthenticated: { true }
+            isAuthenticated: { true },
+            pendingSecureConversationStatusUpdates: { _ in }
         )
     }
 }
