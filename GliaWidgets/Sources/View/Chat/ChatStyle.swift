@@ -53,6 +53,9 @@ public class ChatStyle: EngagementStyle {
     /// Style of the Glia Virtual Assistant
     public var gliaVirtualAssistant: GliaVirtualAssistantStyle
 
+    /// Style of the secure messaging top banner view.
+    public var secureMessagingTopBannerStyle: SecureMessagingTopBannerViewStyle
+
     /// Style of the secure messaging bottom banner view.
     public var secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle
 
@@ -105,6 +108,7 @@ public class ChatStyle: EngagementStyle {
         unreadMessageDivider: UnreadMessageDividerStyle,
         systemMessageStyle: Theme.SystemMessageStyle,
         gliaVirtualAssistant: GliaVirtualAssistantStyle,
+        secureMessagingTopBannerStyle: SecureMessagingTopBannerViewStyle,
         secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle,
         sendingMessageUnavailableBannerViewStyle: SendingMessageUnavailableBannerViewStyle
     ) {
@@ -125,6 +129,7 @@ public class ChatStyle: EngagementStyle {
         self.unreadMessageDivider = unreadMessageDivider
         self.systemMessageStyle = systemMessageStyle
         self.gliaVirtualAssistant = gliaVirtualAssistant
+        self.secureMessagingTopBannerStyle = secureMessagingTopBannerStyle
         self.secureMessagingBottomBannerStyle = secureMessagingBottomBannerStyle
         self.sendingMessageUnavailableBannerViewStyle = sendingMessageUnavailableBannerViewStyle
 

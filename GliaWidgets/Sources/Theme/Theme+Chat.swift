@@ -449,6 +449,18 @@ extension Theme {
             accessibility: .init(isFontScalingEnabled: true)
         )
 
+        let secureMessagingTopBannerStyle = SecureMessagingTopBannerViewStyle(
+            message: Localization.SecureMessaging.Chat.Banner.top,
+            font: font.bodyText,
+            textStyle: .body,
+            textColor: color.baseDark,
+            backgroundColor: .fill(color: color.baseLight),
+            dividerColor: color.baseShade,
+            buttonImage: Asset.chevronDownIcon.image,
+            buttonImageColor: color.baseShade,
+            accessibility: .init(isFontScalingEnabled: true)
+        )
+
         let sendingMessageUnavailableBannerViewStyle = SendingMessageUnavailableBannerViewStyle(
             message: Localization.SecureMessaging.Chat.Unavailable.message,
             font: font.caption,
@@ -484,6 +496,7 @@ extension Theme {
             unreadMessageDivider: unreadMessageDivider,
             systemMessageStyle: systemMessage,
             gliaVirtualAssistant: gliaVirtualAssistantStyle,
+            secureMessagingTopBannerStyle: secureMessagingTopBannerStyle,
             secureMessagingBottomBannerStyle: secureMessagingBottomBannerStyle,
             sendingMessageUnavailableBannerViewStyle: sendingMessageUnavailableBannerViewStyle
         )
