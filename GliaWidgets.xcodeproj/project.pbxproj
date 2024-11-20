@@ -431,6 +431,10 @@
 		847A7643285A1914004044D1 /* FileUploadListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */; };
 		847D7FAE2CDE0F3A00EA5C2D /* AlertTypeComposerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7FAD2CDE0F3A00EA5C2D /* AlertTypeComposerTests.swift */; };
 		847D7FB42CE648AE00EA5C2D /* SecureConversations.TranscriptModel.LeaveConversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7FB32CE648AE00EA5C2D /* SecureConversations.TranscriptModel.LeaveConversation.swift */; };
+		847D7FB62CEE00A400EA5C2D /* ViewController+Configure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7FB52CEE00A400EA5C2D /* ViewController+Configure.swift */; };
+		847D7FB82CEE019C00EA5C2D /* ViewController+ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7FB72CEE019C00EA5C2D /* ViewController+ErrorHandling.swift */; };
+		847D7FBA2CEE022200EA5C2D /* ViewController+Playbook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7FB92CEE022200EA5C2D /* ViewController+Playbook.swift */; };
+		847D7FBC2CEE038E00EA5C2D /* ViewController+UnifiedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7FBB2CEE038E00EA5C2D /* ViewController+UnifiedUI.swift */; };
 		8485704F2BEE3A0800CEBCC5 /* ChatViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8485704E2BEE3A0800CEBCC5 /* ChatViewTest.swift */; };
 		848570512BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848570502BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift */; };
 		848B8ADC2C0759C500E990E6 /* Theme.CustomCardContainerStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848B8ADB2C0759C500E990E6 /* Theme.CustomCardContainerStyle.swift */; };
@@ -914,7 +918,7 @@
 		C0D2F08B29A4E95700803B47 /* ConnectView.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F08929A4E92D00803B47 /* ConnectView.Mock.swift */; };
 		C0D2F08C29A4EBA900803B47 /* VIdeoCallView.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F06F29A4DB5C00803B47 /* VIdeoCallView.Environment.Mock.swift */; };
 		C0D2F08F29A61A8D00803B47 /* VideoCallViewController.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F08D29A61A7800803B47 /* VideoCallViewController.Mock.swift */; };
-		C0D6C9E62BFB695E00D4709B /* ViewController+AuthTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6C9E52BFB695E00D4709B /* ViewController+AuthTimer.swift */; };
+		C0D6C9E62BFB695E00D4709B /* ViewController+Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6C9E52BFB695E00D4709B /* ViewController+Authentication.swift */; };
 		C0D6C9EA2C09C87E00D4709B /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6C9E82C09C71600D4709B /* AlertManager.swift */; };
 		C0D6C9F02C09D29700D4709B /* AlertManager.mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6C9EE2C09D27E00D4709B /* AlertManager.mock.swift */; };
 		C0D6C9F32C0D293B00D4709B /* AlertTypeComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6C9F12C0D28EA00D4709B /* AlertTypeComposer.swift */; };
@@ -1492,6 +1496,10 @@
 		847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadListViewModelTests.swift; sourceTree = "<group>"; };
 		847D7FAD2CDE0F3A00EA5C2D /* AlertTypeComposerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTypeComposerTests.swift; sourceTree = "<group>"; };
 		847D7FB32CE648AE00EA5C2D /* SecureConversations.TranscriptModel.LeaveConversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.TranscriptModel.LeaveConversation.swift; sourceTree = "<group>"; };
+		847D7FB52CEE00A400EA5C2D /* ViewController+Configure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Configure.swift"; sourceTree = "<group>"; };
+		847D7FB72CEE019C00EA5C2D /* ViewController+ErrorHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+ErrorHandling.swift"; sourceTree = "<group>"; };
+		847D7FB92CEE022200EA5C2D /* ViewController+Playbook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Playbook.swift"; sourceTree = "<group>"; };
+		847D7FBB2CEE038E00EA5C2D /* ViewController+UnifiedUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+UnifiedUI.swift"; sourceTree = "<group>"; };
 		8485704E2BEE3A0800CEBCC5 /* ChatViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewTest.swift; sourceTree = "<group>"; };
 		848570502BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatStyle.Mock.swift; sourceTree = "<group>"; };
 		848B8ADB2C0759C500E990E6 /* Theme.CustomCardContainerStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.CustomCardContainerStyle.swift; sourceTree = "<group>"; };
@@ -1983,7 +1991,7 @@
 		C0D2F08629A4E8AE00803B47 /* CallButtonBar.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallButtonBar.Mock.swift; sourceTree = "<group>"; };
 		C0D2F08929A4E92D00803B47 /* ConnectView.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectView.Mock.swift; sourceTree = "<group>"; };
 		C0D2F08D29A61A7800803B47 /* VideoCallViewController.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallViewController.Mock.swift; sourceTree = "<group>"; };
-		C0D6C9E52BFB695E00D4709B /* ViewController+AuthTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+AuthTimer.swift"; sourceTree = "<group>"; };
+		C0D6C9E52BFB695E00D4709B /* ViewController+Authentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Authentication.swift"; sourceTree = "<group>"; };
 		C0D6C9E82C09C71600D4709B /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		C0D6C9EE2C09D27E00D4709B /* AlertManager.mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.mock.swift; sourceTree = "<group>"; };
 		C0D6C9F12C0D28EA00D4709B /* AlertTypeComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTypeComposer.swift; sourceTree = "<group>"; };
@@ -4027,8 +4035,12 @@
 			isa = PBXGroup;
 			children = (
 				1A205D7E25655CEC003AA3CD /* ViewController.swift */,
-				C0D6C9E52BFB695E00D4709B /* ViewController+AuthTimer.swift */,
+				C0D6C9E52BFB695E00D4709B /* ViewController+Authentication.swift */,
 				84265E6D29914DDA00D65842 /* ViewController+CallVisualizer.swift */,
+				847D7FB52CEE00A400EA5C2D /* ViewController+Configure.swift */,
+				847D7FB72CEE019C00EA5C2D /* ViewController+ErrorHandling.swift */,
+				847D7FB92CEE022200EA5C2D /* ViewController+Playbook.swift */,
+				847D7FBB2CEE038E00EA5C2D /* ViewController+UnifiedUI.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -6676,14 +6688,17 @@
 				AFD3C52C2A472B7500BC37A9 /* VisitorInfoModel.swift in Sources */,
 				AF75601C2A78146600871E36 /* CustomSegmentedControl.swift in Sources */,
 				1A4AD3D6256FE7F800468BFB /* UIColor+Extensions.swift in Sources */,
+				847D7FB82CEE019C00EA5C2D /* ViewController+ErrorHandling.swift in Sources */,
+				847D7FBC2CEE038E00EA5C2D /* ViewController+UnifiedUI.swift in Sources */,
 				AF11F30728BE6F0C002ACEB4 /* UIAlertController+Extensions.swift in Sources */,
 				7552DFA82A683A2C0093519B /* UIStackView.Extensions.swift in Sources */,
-				C0D6C9E62BFB695E00D4709B /* ViewController+AuthTimer.swift in Sources */,
+				C0D6C9E62BFB695E00D4709B /* ViewController+Authentication.swift in Sources */,
 				AF3BD1DF2A42026D00A7713E /* Command.swift in Sources */,
 				84CD035F2B56DEE300E7A1DC /* SensitiveDataViewController.swift in Sources */,
 				8491AF2E2A93975100CC3E72 /* ConfigurationDeeplinkHandler.swift in Sources */,
 				754313CD2870B1C400C9C1C6 /* UserDefaultsStored.swift in Sources */,
 				1A205D7B25655CEC003AA3CD /* AppDelegate.swift in Sources */,
+				847D7FBA2CEE022200EA5C2D /* ViewController+Playbook.swift in Sources */,
 				AF35DFF32A507D3E0038BCA7 /* UIView+Extensions.swift in Sources */,
 				C0D2F060299F93EC00803B47 /* PlaybookViewController.swift in Sources */,
 				754313CB2870A65400C9C1C6 /* SettingsViewController.Props.swift in Sources */,
@@ -6695,6 +6710,7 @@
 				AF35DFF12A507CA70038BCA7 /* VisitorInfoViewController.Cells.swift in Sources */,
 				AF3BD1DD2A41D09100A7713E /* VisitorInfoViewController.swift in Sources */,
 				1A4AD3D1256E92F300468BFB /* SettingsColorCell.swift in Sources */,
+				847D7FB62CEE00A400EA5C2D /* ViewController+Configure.swift in Sources */,
 				1A4AD3CE256E8F5500468BFB /* SettingsCell.swift in Sources */,
 				7552DFA72A683A2C0093519B /* NSLayoutConstraint+Extensions.swift in Sources */,
 				6B2BFCE2274297F100B68506 /* SettingsSwitchCell.swift in Sources */,
