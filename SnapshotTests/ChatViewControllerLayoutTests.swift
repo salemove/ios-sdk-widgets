@@ -79,7 +79,7 @@ final class ChatViewControllerLayoutTests: SnapshotTestCase {
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
-    func test_secureMessagingBottomBanner() {
+    func test_secureMessagingTopAndBottomBanner() {
         let viewController = ChatViewController.mockSecureMessagingBottomBannerView()
         viewController.updateViewConstraints()
         viewController.assertSnapshot(as: .image, in: .portrait)

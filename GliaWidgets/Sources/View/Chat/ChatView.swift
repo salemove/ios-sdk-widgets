@@ -25,6 +25,7 @@ class ChatView: EngagementView {
     var selectCustomCardOption: ((HtmlMetadata.Option, MessageRenderer.Message.Identifier) -> Void)?
     var gvaButtonTapped: ((GvaOption) -> Void)?
     var retryMessageTapped: ((OutgoingMessage) -> Void)?
+    let secureMessagingTopBannerView = SecureMessagingTopBannerView().makeView()
     let secureMessagingBottomBannerView = SecureMessagingBottomBannerView().makeView()
     let sendingMessageUnavailabilityBannerView = SendingMessageUnavailableBannerView().makeView()
 
@@ -118,9 +119,11 @@ class ChatView: EngagementView {
         typingIndicatorContainer.isHidden = true
         // Hide secure conversation bottom banner unavailability banner initially.
         setSecureMessagingBottomBannerHidden(true)
+        setSecureMessagingTopBannerHidden(true)
         setSendingMessageUnavailabilityBannerHidden(true)
     }
 
+    // swiftlint:disable:next function_body_length
     override func defineLayout() {
         super.defineLayout()
         addSubview(header)
@@ -134,7 +137,6 @@ class ChatView: EngagementView {
         tableAndIndicatorStack.addArrangedSubviews([tableView, typingIndicatorContainer])
         addSubview(tableAndIndicatorStack)
         tableAndIndicatorStack.translatesAutoresizingMaskIntoConstraints = false
-        constraints += tableAndIndicatorStack.topAnchor.constraint(equalTo: header.bottomAnchor)
         constraints += tableAndIndicatorStack.layoutInSuperview(edges: .horizontal)
 
         constraints += [
@@ -143,6 +145,13 @@ class ChatView: EngagementView {
             typingIndicatorView.bottomAnchor.constraint(equalTo: typingIndicatorContainer.bottomAnchor, constant: -8),
             typingIndicatorView.widthAnchor.constraint(equalToConstant: 28),
             typingIndicatorView.heightAnchor.constraint(equalToConstant: 10)
+        ]
+
+        addSubview(secureMessagingTopBannerView)
+        constraints += secureMessagingTopBannerView.layoutIn(safeAreaLayoutGuide, edges: .horizontal)
+        constraints += [
+            secureMessagingTopBannerView.topAnchor.constraint(equalTo: header.bottomAnchor),
+            secureMessagingTopBannerView.bottomAnchor.constraint(equalTo: tableAndIndicatorStack.topAnchor)
         ]
 
         addSubview(quickReplyView)
@@ -196,6 +205,17 @@ extension ChatView {
     func setSendingMessageUnavailabilityBannerHidden(_ isHidden: Bool) {
         sendingMessageUnavailabilityBannerView.props = .init(
             style: style.sendingMessageUnavailableBannerViewStyle,
+            isHidden: isHidden
+        )
+    }
+
+    func setSecureMessagingTopBannerHidden(_ isHidden: Bool) {
+        secureMessagingTopBannerView.props = .init(
+            style: style.secureMessagingTopBannerStyle,
+            buttonTap: .init {
+                // TODO: Integrate Entry Widget presentation MB-3816
+                print("Secure messaging top banner button tap")
+            },
             isHidden: isHidden
         )
     }
