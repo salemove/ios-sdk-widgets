@@ -25,6 +25,7 @@ extension ChatStyle {
         systemMessageStyle: Theme.SystemMessageStyle = .mock(),
         gliaVirtualAssistant: GliaVirtualAssistantStyle = .mock(),
         secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle = .mock(),
+        secureMessagingTopBannerStyle: SecureMessagingTopBannerViewStyle = .mock(),
         sendingMessageUnavailableBannerViewStyle: SendingMessageUnavailableBannerViewStyle = .mock()
     ) -> ChatStyle {
         ChatStyle.init(
@@ -48,6 +49,7 @@ extension ChatStyle {
             unreadMessageDivider: unreadMessageDivider,
             systemMessageStyle: systemMessageStyle,
             gliaVirtualAssistant: gliaVirtualAssistant,
+            secureMessagingTopBannerStyle: secureMessagingTopBannerStyle,
             secureMessagingBottomBannerStyle: secureMessagingBottomBannerStyle,
             sendingMessageUnavailableBannerViewStyle: sendingMessageUnavailableBannerViewStyle
         )
@@ -580,6 +582,32 @@ extension SecureMessagingBottomBannerViewStyle {
             textColor: textColor,
             backgroundColor: backgroundColor,
             dividerColor: dividerColor, 
+            accessibility: accessibility
+        )
+    }
+}
+
+extension SecureMessagingTopBannerViewStyle {
+    static func mock(
+        message: String = Localization.SecureMessaging.Chat.Banner.bottom,
+        font: UIFont = Theme().chat.secureMessagingTopBannerStyle.font,
+        textStyle: UIFont.TextStyle = Theme().chat.secureMessagingTopBannerStyle.textStyle,
+        textColor: UIColor = Theme().chat.secureMessagingTopBannerStyle.textColor,
+        backgroundColor: ColorType = Theme().chat.secureMessagingTopBannerStyle.backgroundColor,
+        dividerColor: UIColor = Theme().chat.secureMessagingTopBannerStyle.dividerColor,
+        buttonImage: UIImage = Theme().chat.secureMessagingTopBannerStyle.buttonImage,
+        buttonImageColor: UIColor = Theme().chat.secureMessagingTopBannerStyle.buttonImageColor,
+        accessibility: SecureMessagingTopBannerViewStyle.Accessibility = Theme().chat.secureMessagingTopBannerStyle.accessibility
+    ) -> Self {
+        .init(
+            message: message,
+            font: font,
+            textStyle: textStyle,
+            textColor: textColor,
+            backgroundColor: backgroundColor,
+            dividerColor: dividerColor,
+            buttonImage: buttonImage,
+            buttonImageColor: buttonImageColor,
             accessibility: accessibility
         )
     }

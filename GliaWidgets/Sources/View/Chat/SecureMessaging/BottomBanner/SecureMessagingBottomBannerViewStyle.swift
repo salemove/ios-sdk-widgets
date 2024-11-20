@@ -6,9 +6,9 @@ public struct SecureMessagingBottomBannerViewStyle: Equatable {
     public var message: String
     /// Font of banner message.
     public var font: UIFont
-    /// Style of the text of the  banner message.
+    /// Style of the text of the banner message.
     public var textStyle: UIFont.TextStyle
-    /// Color of the text of the  banner message.
+    /// Color of the text of the banner message.
     public var textColor: UIColor
     /// Color of the banner background.
     public var backgroundColor: ColorType
@@ -20,8 +20,8 @@ public struct SecureMessagingBottomBannerViewStyle: Equatable {
     /// - Parameters:
     ///   - message: Text of the banner message.
     ///   - font: Font of banner message.
-    ///   - textStyle: Style of the text of the  banner message.
-    ///   - textColor: Color of the text of the  banner message.
+    ///   - textStyle: Style of the text of the banner message.
+    ///   - textColor: Color of the text of the banner message.
     ///   - backgroundColor: Color of the banner background.
     ///   - dividerColor: Color of the banner divider.
     ///   - accessibility: Accessibility properties for SecureMessagingBottomBannerViewStyle.

@@ -1,11 +1,11 @@
 import UIKit
 
-extension SecureMessagingBottomBannerViewStyle {
+extension SecureMessagingTopBannerViewStyle {
     mutating func apply(
         configuration: RemoteConfiguration.SecureConversations?,
         assetBuilder: RemoteConfiguration.AssetsBuilder
     ) {
-        configuration?.bottomBannerBackground?.color.unwrap {
+        configuration?.topBannerBackground?.color.unwrap {
             switch $0.type {
             case .fill:
                 $0.value
@@ -23,13 +23,18 @@ extension SecureMessagingBottomBannerViewStyle {
             .first
             .unwrap { dividerColor = $0 }
 
-        configuration?.bottomBannerText?.foreground?.value
+        configuration?.topBannerText?.foreground?.value
             .map { UIColor(hex: $0) }
             .first
             .unwrap { textColor = $0 }
 
+        configuration?.topBannerDropDownIconColor?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { buttonImageColor = $0 }
+
         UIFont.convertToFont(
-            uiFont: assetBuilder.fontBuilder(configuration?.bottomBannerText?.font),
+            uiFont: assetBuilder.fontBuilder(configuration?.topBannerText?.font),
             textStyle: textStyle
         )
         .unwrap { font = $0 }
