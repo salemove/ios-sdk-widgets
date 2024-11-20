@@ -66,6 +66,10 @@ extension ChatStyle {
         configuration: RemoteConfiguration.Chat?,
         assetsBuilder: RemoteConfiguration.AssetsBuilder
     ) {
+        secureTranscriptHeader.apply(
+            configuration: configuration?.header,
+            assetsBuilder: assetsBuilder
+        )
         systemMessageStyle.apply(
             configuration: configuration?.systemMessage,
             assetsBuilder: assetsBuilder
