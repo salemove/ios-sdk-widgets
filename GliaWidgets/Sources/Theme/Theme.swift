@@ -138,11 +138,11 @@ public class Theme {
             assetBuilder: assetsBuilder
         )
         secureConversationsWelcome.apply(
-            configuration: config.secureConversationsWelcomeScreen,
+            configuration: config.secureMessagingWelcomeScreen,
             assetsBuilder: assetsBuilder
         )
         secureConversationsConfirmation.apply(
-            configuration: config.secureConversationsConfirmationScreen,
+            configuration: config.secureMessagingConfirmationScreen,
             assetsBuilder: assetsBuilder
         )
         snackBar.apply(
