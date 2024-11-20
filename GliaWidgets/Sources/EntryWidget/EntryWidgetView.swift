@@ -31,7 +31,7 @@ private extension EntryWidgetView {
                     .setColor(model.style.errorTitleColor)
                 Text(model.style.errorMessage)
                     .setFont(model.style.errorMessageFont)
-                    .setColor(model.style.errorTitleColor)
+                    .setColor(model.style.errorMessageColor)
                 errorButton()
             }
             .maxHeight()
@@ -100,7 +100,7 @@ private extension EntryWidgetView {
                     .setColor(model.style.errorTitleColor)
                 Text(model.style.offlineMessage)
                     .setFont(model.style.errorMessageFont)
-                    .setColor(model.style.errorTitleColor)
+                    .setColor(model.style.errorMessageColor)
             }
             .maxHeight()
             if model.showPoweredBy {
