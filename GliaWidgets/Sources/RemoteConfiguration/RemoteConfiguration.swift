@@ -8,8 +8,8 @@ public struct RemoteConfiguration: Codable {
     let alert: Alert?
     let bubble: Bubble?
     let callVisualizer: CallVisualizer?
-    let secureConversationsWelcomeScreen: SecureConversationsWelcomeScreen?
-    let secureConversationsConfirmationScreen: SecureConversationsConfirmationScreen?
+    let secureMessagingWelcomeScreen: SecureConversationsWelcomeScreen?
+    let secureMessagingConfirmationScreen: SecureConversationsConfirmationScreen?
     let snackBar: SnackBar?
     let webBrowserScreen: WebView?
     let entryWidget: EntryWidget?
