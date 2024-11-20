@@ -614,8 +614,8 @@ final class GliaTests: XCTestCase {
             alert: nil,
             bubble: nil,
             callVisualizer: nil,
-            secureConversationsWelcomeScreen: nil,
-            secureConversationsConfirmationScreen: nil,
+            secureMessagingWelcomeScreen: nil,
+            secureMessagingConfirmationScreen: nil,
             snackBar: nil,
             webBrowserScreen: nil,
             entryWidget: nil
