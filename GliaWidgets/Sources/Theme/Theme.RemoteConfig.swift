@@ -38,11 +38,11 @@ extension Theme {
             assetBuilder: assetsBuilder
         )
         secureConversationsWelcome.apply(
-            configuration: configuration.secureConversationsWelcomeScreen,
+            configuration: configuration.secureMessagingWelcomeScreen,
             assetsBuilder: assetsBuilder
         )
         secureConversationsConfirmation.apply(
-            configuration: configuration.secureConversationsConfirmationScreen,
+            configuration: configuration.secureMessagingConfirmationScreen,
             assetsBuilder: assetsBuilder
         )
         snackBar.apply(
