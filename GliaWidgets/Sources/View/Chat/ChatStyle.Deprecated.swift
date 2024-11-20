@@ -89,6 +89,7 @@ extension ChatStyle {
         unreadMessageDivider: UnreadMessageDividerStyle,
         systemMessage: SystemMessageStyle,
         gliaVirtualAssistant: GliaVirtualAssistantStyle,
+        secureMessagingTopBannerStyle: SecureMessagingTopBannerViewStyle,
         secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle,
         sendingMessageUnavailableBannerViewStyle: SendingMessageUnavailableBannerViewStyle
     ) {
@@ -114,6 +115,7 @@ extension ChatStyle {
             unreadMessageDivider: unreadMessageDivider,
             systemMessageStyle: systemMessage.toNewSystemMessageStyle(),
             gliaVirtualAssistant: gliaVirtualAssistant,
+            secureMessagingTopBannerStyle: secureMessagingTopBannerStyle,
             secureMessagingBottomBannerStyle: secureMessagingBottomBannerStyle,
             sendingMessageUnavailableBannerViewStyle: sendingMessageUnavailableBannerViewStyle
         )

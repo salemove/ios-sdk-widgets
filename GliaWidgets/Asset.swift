@@ -71,6 +71,7 @@ public enum Asset {
     public static let close = ImageAsset(name: "close")
     public static let browseIcon = ImageAsset(name: "browseIcon")
     public static let cameraIcon = ImageAsset(name: "cameraIcon")
+    public static let chevronDownIcon = ImageAsset(name: "chevronDownIcon")
     public static let photoLibraryIcon = ImageAsset(name: "photoLibraryIcon")
     public static let gliaLogo = ImageAsset(name: "gliaLogo")
     public static let startScreenShare = ImageAsset(name: "startScreenShare")
@@ -116,6 +117,7 @@ public enum Asset {
       close,
       browseIcon,
       cameraIcon,
+      chevronDownIcon,
       photoLibraryIcon,
       gliaLogo,
       startScreenShare,
