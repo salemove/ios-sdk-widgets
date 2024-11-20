@@ -66,7 +66,7 @@ final class ChatViewControllerVoiceOverTests: SnapshotTestCase {
         view.assertSnapshot(as: .accessibilityImage)
     }
 
-    func test_secureMessagingBottomBanner() {
+    func test_secureMessagingTopAndBottomBanner() {
         let viewController = ChatViewController.mockSecureMessagingBottomBannerView()
         viewController.updateViewConstraints()
         viewController.assertSnapshot(as: .accessibilityImage)
