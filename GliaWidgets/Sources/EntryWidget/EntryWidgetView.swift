@@ -29,6 +29,7 @@ private extension EntryWidgetView {
                 Text(model.style.errorTitle)
                     .setFont(model.style.errorTitleFont)
                     .setColor(model.style.errorTitleColor)
+                    .accessibilityIdentifier("entryWidget_error_title")
                 Text(model.style.errorMessage)
                     .setFont(model.style.errorMessageFont)
                     .setColor(model.style.errorMessageColor)
@@ -70,6 +71,7 @@ private extension EntryWidgetView {
         .maxSize()
         .padding(.horizontal)
         .applyColorTypeBackground(model.style.backgroundColor)
+        .accessibilityIdentifier("entryWidget_loading")
     }
 
     @ViewBuilder
@@ -98,6 +100,7 @@ private extension EntryWidgetView {
                 Text(model.style.offlineTitle)
                     .setFont(model.style.errorTitleFont)
                     .setColor(model.style.errorTitleColor)
+                    .accessibilityIdentifier("entryWidget_offline_title")
                 Text(model.style.offlineMessage)
                     .setFont(model.style.errorMessageFont)
                     .setColor(model.style.errorMessageColor)
@@ -172,6 +175,7 @@ private extension EntryWidgetView {
         .accessibilityElement(children: .combine)
         .accessibility(addTraits: .isButton)
         .accessibilityHint(model.style.mediaTypeItem.accessibility.hint(for: mediaType))
+        .accessibilityIdentifier("entryWidget_\(mediaType.type)_item")
         .onTapGesture {
             model.selectMediaType(mediaType)
         }
@@ -258,6 +262,7 @@ private extension EntryWidgetView {
             .contentShape(.rect)
             .onTapGesture(perform: model.onTryAgainTapped)
             .accessibility(addTraits: .isButton)
+            .accessibilityIdentifier("entryWidget_error_button")
     }
 
     @ViewBuilder
