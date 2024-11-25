@@ -22,7 +22,8 @@ extension GliaTests {
         sdkEnv.coreSdk.createLogger = { _ in logger }
         let siteMock = try CoreSdkClient.Site.mock()
         sdkEnv.coreSdk.fetchSiteConfigurations = { callback in callback(.success(siteMock)) }
-        sdkEnv.coreSdk.pendingSecureConversationStatusUpdates = { _ in } 
+        sdkEnv.coreSdk.pendingSecureConversationStatusUpdates = { _ in }
+        sdkEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))

@@ -19,7 +19,9 @@ extension Glia {
                 theme: theme,
                 log: loggerPhase.logger,
                 isAuthenticated: environment.isAuthenticated,
-                pendingSecureConversationStatusUpdates: environment.coreSdk.pendingSecureConversationStatusUpdates
+                hasPendingInteraction: { [weak self] in
+                    self?.hasPendingInteraction ?? false
+                }
             )
         )
     }
