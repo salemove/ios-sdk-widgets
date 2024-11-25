@@ -68,11 +68,20 @@ extension EntryWidget {
         }
     }
 
-    enum EngagementType: Int {
+    enum EngagementType: Int, CustomStringConvertible {
         case video
         case audio
         case chat
         case secureMessaging
+
+        var description: String {
+            switch self {
+            case .video: return "video"
+            case .audio: return "audio"
+            case .chat: return "chat"
+            case .secureMessaging: return "secureMessaging"
+            }
+        }
     }
 }
 
