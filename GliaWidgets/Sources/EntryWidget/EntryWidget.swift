@@ -65,11 +65,7 @@ public extension EntryWidget {
     ///
     /// - Parameter viewController: The `UIViewController` in which the widget will be shown as a sheet.
     func show(in viewController: UIViewController) {
-        var pendingSecureConversationExists = false
-        environment.pendingSecureConversationStatusUpdates { hasPendingSecureConversation in
-            pendingSecureConversationExists = hasPendingSecureConversation
-        }
-        if pendingSecureConversationExists {
+        if environment.hasPendingInteraction() {
             do {
                 try environment.engagementLauncher.startSecureMessaging()
             } catch {

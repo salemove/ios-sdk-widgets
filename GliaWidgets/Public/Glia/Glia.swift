@@ -129,6 +129,26 @@ public class Glia {
 
     private(set) var configuration: Configuration?
 
+    // Indicates whether at least one of two conditions is correct:
+    // - pending secure conversation exists;
+    // - unread message count > 0.
+    //
+    // Currently it's used to know if we have to force a visitor to SecureMessaging screen,
+    // once they try to start an engagement with media type other than `messaging`.
+    var hasPendingInteraction: Bool {
+        var pendingConversationExists = false
+        environment.coreSdk.pendingSecureConversationStatusUpdates { hasPendingConversation in
+            pendingConversationExists = hasPendingConversation
+        }
+
+        var unreadMessageCount = 0
+        environment.coreSdk.getSecureUnreadMessageCount {
+            unreadMessageCount = (try? $0.get()) ?? 0
+        }
+
+        return unreadMessageCount > 0 || pendingConversationExists
+    }
+
     init(environment: Environment) {
         self.environment = environment
         self.theme = Theme()
