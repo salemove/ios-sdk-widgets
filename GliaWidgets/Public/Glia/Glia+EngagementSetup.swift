@@ -140,14 +140,9 @@ extension Glia {
         features: Features,
         maximize: Bool = true
     ) {
-        var pendingConversationExists = false
-        environment.coreSdk.pendingSecureConversationStatusUpdates { hasPendingConversation in
-            pendingConversationExists = hasPendingConversation
-        }
-
         let engagementLaunching: EngagementCoordinator.EngagementLaunching
 
-        switch (pendingConversationExists, engagementKind) {
+        switch (hasPendingInteraction, engagementKind) {
         case (false, _):
             // if there is no pending Secure Conversation, open regular flow.
             engagementLaunching = .direct(kind: engagementKind)
