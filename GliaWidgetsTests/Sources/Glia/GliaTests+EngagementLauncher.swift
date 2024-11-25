@@ -99,6 +99,7 @@ private extension GliaTests {
             completion(.success(()))
         }
         sdkEnv.coreSdk.getCurrentEngagement = { nil }
+        sdkEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
         sdkEnv.coreSdk.pendingSecureConversationStatusUpdates = { _ in }
         let window = UIWindow(frame: .zero)
         window.makeKeyAndVisible()

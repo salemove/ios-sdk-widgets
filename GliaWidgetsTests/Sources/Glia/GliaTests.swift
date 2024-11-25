@@ -520,6 +520,7 @@ final class GliaTests: XCTestCase {
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.pendingSecureConversationStatusUpdates = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
+        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
         var engCoordEnvironment = EngagementCoordinator.Environment.engagementCoordEnvironmentWithKeyWindow
         engCoordEnvironment.fileManager = .mock
         environment.createRootCoordinator = { _, _, _, _, _, _, _ in EngagementCoordinator.mock(environment: engCoordEnvironment) }
@@ -661,5 +662,50 @@ final class GliaTests: XCTestCase {
         XCTAssertEqual(systemNegativeHex, "#00FF00")
         XCTAssertEqual(prefixes, ["Glia", "Glia"])
         XCTAssertEqual(messages, ["Initialize Glia Widgets SDK", "Setting Unified UI Config"])
+    }
+
+    func test_hasPendingInteractionIfPendingSecureConversationExists() {
+        var gliaEnv = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        gliaEnv.coreSdk.createLogger = { _ in logger }
+        gliaEnv.coreSdk.pendingSecureConversationStatusUpdates = { $0(true) }
+        gliaEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
+        gliaEnv.conditionalCompilation.isDebug = { true }
+
+        let sdk = Glia(environment: gliaEnv)
+
+        XCTAssertTrue(sdk.hasPendingInteraction)
+    }
+
+    func test_hasPendingInteractionIfUnreadMessagesExist() {
+        var gliaEnv = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        gliaEnv.coreSdk.createLogger = { _ in logger }
+        gliaEnv.coreSdk.pendingSecureConversationStatusUpdates = { $0(false) }
+        gliaEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(3)) }
+        gliaEnv.conditionalCompilation.isDebug = { true }
+
+        let sdk = Glia(environment: gliaEnv)
+
+        XCTAssertTrue(sdk.hasPendingInteraction)
+    }
+
+    func test_hasPendingInteractionIfNoUnreadMessageAndPendingSecureConversationExist() {
+        var gliaEnv = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        gliaEnv.coreSdk.createLogger = { _ in logger }
+        gliaEnv.coreSdk.pendingSecureConversationStatusUpdates = { $0(false) }
+        gliaEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
+        gliaEnv.conditionalCompilation.isDebug = { true }
+
+        let sdk = Glia(environment: gliaEnv)
+
+        XCTAssertFalse(sdk.hasPendingInteraction)
     }
 }

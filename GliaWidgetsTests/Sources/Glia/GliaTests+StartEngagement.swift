@@ -24,6 +24,7 @@ extension GliaTests {
         logger.infoClosure = { _, _, _, _ in }
         sdkEnv.coreSdk.createLogger = { _ in logger }
         sdkEnv.coreSdk.pendingSecureConversationStatusUpdates = { _ in }
+        sdkEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
@@ -94,6 +95,7 @@ extension GliaTests {
         }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
         environment.coreSdk.getCurrentEngagement = { nil }
+        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
         try sdk.configure(
@@ -140,6 +142,7 @@ extension GliaTests {
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.pendingSecureConversationStatusUpdates = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
+        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -189,6 +192,7 @@ extension GliaTests {
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.pendingSecureConversationStatusUpdates = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
+        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
 
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
@@ -253,6 +257,7 @@ extension GliaTests {
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
         environment.coreSdk.pendingSecureConversationStatusUpdates = { _ in }
+        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -305,6 +310,7 @@ extension GliaTests {
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
         environment.coreSdk.pendingSecureConversationStatusUpdates = { _ in }
+        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -359,6 +365,7 @@ extension GliaTests {
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
+        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -417,6 +424,7 @@ extension GliaTests {
             completion(.success(()))
         }
         environment.coreSdk.getCurrentEngagement = { nil }
+        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -459,6 +467,7 @@ extension GliaTests {
             completion(.success(()))
         }
         environment.coreSdk.getCurrentEngagement = { nil }
+        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -499,6 +508,7 @@ extension GliaTests {
             completion(.success(()))
         }
         environment.coreSdk.getCurrentEngagement = { nil }
+        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -538,6 +548,7 @@ extension GliaTests {
             completion(.success(()))
         }
         environment.coreSdk.getCurrentEngagement = { nil }
+        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()

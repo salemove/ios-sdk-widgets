@@ -124,14 +124,14 @@ class EntryWidgetTests: XCTestCase {
         XCTAssertEqual(entryWidget.unreadSecureMessageSubscriptionId, mockSubscriptionId)
     }
 
-    func test_secureMessagingIsOpenedIfPendingSecureConversationExists() {
+    func test_secureMessagingIsOpenedIfPendingInteractionExists() {
         var envCalls: [Call] = []
 
         let engagementLauncher = EngagementLauncher { engagementKind, _ in
             envCalls.append(.start(engagementKind))
         }
         var environment = EntryWidget.Environment.mock()
-        environment.pendingSecureConversationStatusUpdates = { $0(true) }
+        environment.hasPendingInteraction = { true }
         environment.engagementLauncher = engagementLauncher
 
         let entryWidget = EntryWidget(
