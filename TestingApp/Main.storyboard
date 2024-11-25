@@ -177,6 +177,7 @@
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3hO-Oq-9Lh" userLabel="Contact Us">
                                                         <rect key="frame" x="0.0" y="0.0" width="107" height="34.5"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="main_entryWidget_sheet_button"/>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="plain" title="Sheet"/>
                                                         <connections>
@@ -185,6 +186,7 @@
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HPY-ni-LES">
                                                         <rect key="frame" x="107" y="0.0" width="107" height="34.5"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="main_entryWidget_embbeded_button"/>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="plain" title="Embbeded"/>
                                                         <connections>
