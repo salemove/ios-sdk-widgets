@@ -56,6 +56,7 @@ extension ChatViewModel: ViewModel {
         case quickReplyPropsUpdated(QuickReplyView.Props)
         case transcript(TranscriptAction)
         case showSnackBarView
+        case switchToEngagement
     }
 
     enum DelegateEvent {

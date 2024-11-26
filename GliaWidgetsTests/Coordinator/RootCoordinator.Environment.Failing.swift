@@ -99,6 +99,10 @@ extension EngagementCoordinator.Environment {
         queuesMonitor: .failing, 
         pendingSecureConversationStatusUpdates: { _ in
             fail("\(Self.self).pendingSecureConversationStatusUpdates")
+        },
+        createEntryWidget: { _ in
+            fail("\(Self.self).createEntryWidget")
+            return .mock()
         }
     )
 }
