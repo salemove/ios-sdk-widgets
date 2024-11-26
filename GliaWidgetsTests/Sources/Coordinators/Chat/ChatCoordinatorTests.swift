@@ -51,8 +51,10 @@ final class ChatCoordinatorTests: XCTestCase {
             .start()
 
         switch viewController.viewModel {
-        case .transcript: XCTAssertTrue(true)
-        default: XCTFail()
+        case .transcript:
+            XCTAssertTrue(true)
+        default: 
+            XCTFail()
         }
     }
 
