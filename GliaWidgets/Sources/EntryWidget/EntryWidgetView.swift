@@ -69,7 +69,6 @@ private extension EntryWidgetView {
             }
         }
         .maxSize()
-        .padding(.horizontal)
         .applyColorTypeBackground(model.style.backgroundColor)
         .accessibilityIdentifier("entryWidget_loading")
     }
@@ -79,14 +78,15 @@ private extension EntryWidgetView {
         VStack(spacing: 0) {
             if model.showHeader {
                 headerView()
+                    .padding(.horizontal)
             }
             mediaTypes(types)
             if model.showPoweredBy {
                 poweredByView()
+                    .padding(.horizontal)
             }
         }
         .maxSize()
-        .padding(.horizontal)
         .applyColorTypeBackground(model.style.backgroundColor)
     }
 
@@ -125,15 +125,19 @@ private extension EntryWidgetView {
     ) -> some View {
         VStack(spacing: 0) {
             ForEach(types.indices, id: \.self) { index in
-                if isPlaceholder {
-                    placeholderMediaTypeCell(mediaType: types[index])
-                } else {
-                    mediaTypeCell(mediaType: types[index])
+                Group {
+                    if isPlaceholder {
+                        placeholderMediaTypeCell(mediaType: types[index])
+                    } else {
+                        mediaTypeCell(mediaType: types[index])
+                    }
                 }
+                .padding(.horizontal)
 
                 Divider()
-                    .height(model.sizeConstraints.dividerHeight)
+                    .height(model.configuration.sizeConstraints.dividerHeight)
                     .setColor(model.style.dividerColor)
+                    .padding(.horizontal, model.configuration.sizeConstraints.dividerHorizontalPadding)
             }
         }
     }
@@ -142,7 +146,7 @@ private extension EntryWidgetView {
     func poweredByView() -> some View {
         PoweredByView(
             style: model.style.poweredBy,
-            containerHeight: model.sizeConstraints.poweredByContainerHeight
+            containerHeight: model.configuration.sizeConstraints.poweredByContainerHeight
         )
     }
 
@@ -151,11 +155,11 @@ private extension EntryWidgetView {
         VStack {
             Capsule(style: .continuous)
                 .fill(model.style.dividerColor.swiftUIColor())
-                .width(model.sizeConstraints.sheetHeaderDraggerWidth)
-                .height(model.sizeConstraints.sheetHeaderDraggerHeight)
+                .width(model.configuration.sizeConstraints.sheetHeaderDraggerWidth)
+                .height(model.configuration.sizeConstraints.sheetHeaderDraggerHeight)
         }
         .maxWidth()
-        .height(model.sizeConstraints.sheetHeaderHeight)
+        .height(model.configuration.sizeConstraints.sheetHeaderHeight)
     }
 
     @ViewBuilder
@@ -169,7 +173,7 @@ private extension EntryWidgetView {
             unreadMessageCountView(for: mediaType)
         }
         .maxWidth(alignment: .leading)
-        .height(model.sizeConstraints.singleCellHeight)
+        .height(model.configuration.sizeConstraints.singleCellHeight)
         .applyColorTypeBackground(model.style.mediaTypeItem.backgroundColor)
         .contentShape(.rect)
         .accessibilityElement(children: .combine)
@@ -186,8 +190,8 @@ private extension EntryWidgetView {
         HStack(spacing: 16) {
             Circle()
                 .applyColorTypeForeground(model.style.mediaTypeItem.loading.loadingTintColor)
-                .width(model.sizeConstraints.singleCellIconSize)
-                .height(model.sizeConstraints.singleCellIconSize)
+                .width(model.configuration.sizeConstraints.singleCellIconSize)
+                .height(model.configuration.sizeConstraints.singleCellIconSize)
             VStack(alignment: .leading, spacing: 2) {
                 Text(model.style.mediaTypeItem.title(for: mediaType))
                     .setFont(model.style.mediaTypeItem.titleFont)
@@ -204,7 +208,7 @@ private extension EntryWidgetView {
             }
         }
         .maxWidth(alignment: .leading)
-        .height(model.sizeConstraints.singleCellHeight)
+        .height(model.configuration.sizeConstraints.singleCellHeight)
         .applyColorTypeBackground(model.style.mediaTypeItem.backgroundColor)
         .contentShape(.rect)
         .disabled(true)
@@ -215,8 +219,8 @@ private extension EntryWidgetView {
         image.asSwiftUIImage()
             .resizable()
             .fit()
-            .width(model.sizeConstraints.singleCellIconSize)
-            .height(model.sizeConstraints.singleCellIconSize)
+            .width(model.configuration.sizeConstraints.singleCellIconSize)
+            .height(model.configuration.sizeConstraints.singleCellIconSize)
             .applyColorTypeForeground(model.style.mediaTypeItem.iconColor)
             .accessibilityHidden(true)
     }

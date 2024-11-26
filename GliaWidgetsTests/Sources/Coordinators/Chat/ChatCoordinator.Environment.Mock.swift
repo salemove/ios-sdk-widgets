@@ -42,8 +42,10 @@ extension ChatCoordinator.Environment {
         cameraDeviceManager: { .mock }, 
         flipCameraButtonStyle: .nop,
         alertManager: .mock(),
-        queuesMonitor: .mock(),
+        queuesMonitor: .mock(), 
+        createEntryWidget: { _ in .mock() },
         shouldShowLeaveSecureConversationDialog: false,
-        leaveCurrentSecureConversation: .nop
+        leaveCurrentSecureConversation: .nop,
+        switchToEngagement: .nop
     )
 }
