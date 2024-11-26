@@ -55,6 +55,8 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
 
     // swiftlint:disable function_body_length
     private func bind(viewModel: SecureConversations.ChatWithTranscriptModel, to view: ChatView) {
+        view.entryWidget = viewModel.entryWidget
+
         view.header.showBackButton()
         view.header.showCloseButton()
 
@@ -191,6 +193,8 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                     gcd: self.environment.gcd,
                     notificationCenter: self.environment.notificationCenter
                 )
+            case .switchToEngagement:
+                view?.hideEntryWidget()
             }
             self.renderProps()
         }
@@ -261,6 +265,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             chatView.props = .init(header: props.chat)
             // For regular chat engagement bottom banner is hidden.
             chatView.setSecureMessagingBottomBannerHidden(true)
+            chatView.setSecureMessagingTopBannerHidden(true)
         case let .secureTranscript(needsTextInputEnabled):
             chatView.props = .init(header: props.secureTranscript)
             // Instead of hiding text input, we need to disable it and corresponding buttons.
