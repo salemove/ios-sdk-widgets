@@ -33,6 +33,8 @@ extension SecureConversations.TranscriptModel {
         var maximumUploads: () -> Int
         var shouldShowLeaveSecureConversationDialog: Bool
         var leaveCurrentSecureConversation: Cmd
+        var createEntryWidget: EntryWidgetBuilder
+        var switchToEngagement: Command<EngagementKind>
     }
 }
 
@@ -73,7 +75,9 @@ extension SecureConversations.TranscriptModel.Environment {
             log: environment.log,
             maximumUploads: environment.maximumUploads,
             shouldShowLeaveSecureConversationDialog: environment.shouldShowLeaveSecureConversationDialog,
-            leaveCurrentSecureConversation: environment.leaveCurrentSecureConversation
+            leaveCurrentSecureConversation: environment.leaveCurrentSecureConversation,
+            createEntryWidget: environment.createEntryWidget,
+            switchToEngagement: environment.switchToEngagement
        )
     }
 }
@@ -111,7 +115,9 @@ extension SecureConversations.TranscriptModel.Environment {
         log: CoreSdkClient.Logger = .mock,
         maximumUploads: @escaping () -> Int = { .zero },
         shouldShowLeaveSecureConversationDialog: Bool = false,
-        leaveCurrentSecureConversation: Cmd = .nop
+        leaveCurrentSecureConversation: Cmd = .nop,
+        createEntryWidget: @escaping EntryWidgetBuilder = { _ in .mock() },
+        switchToEngagement: Command<EngagementKind> = .nop
     ) -> Self {
         Self(
             fetchFile: fetchFile,
@@ -144,7 +150,9 @@ extension SecureConversations.TranscriptModel.Environment {
             log: log,
             maximumUploads: maximumUploads,
             shouldShowLeaveSecureConversationDialog: shouldShowLeaveSecureConversationDialog,
-            leaveCurrentSecureConversation: leaveCurrentSecureConversation
+            leaveCurrentSecureConversation: leaveCurrentSecureConversation,
+            createEntryWidget: createEntryWidget,
+            switchToEngagement: switchToEngagement
         )
     }
 }

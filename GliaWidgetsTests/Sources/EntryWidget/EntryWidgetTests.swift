@@ -28,6 +28,7 @@ class EntryWidgetTests: XCTestCase {
 
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
+            configuration: .default,
             environment: environment
         )
 
@@ -57,6 +58,7 @@ class EntryWidgetTests: XCTestCase {
 
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
+            configuration: .default,
             environment: environment
         )
 
@@ -91,6 +93,7 @@ class EntryWidgetTests: XCTestCase {
 
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
+            configuration: .default,
             environment: environment
         )
         
@@ -117,6 +120,7 @@ class EntryWidgetTests: XCTestCase {
 
         let entryWidget = EntryWidget(
             queueIds: [UUID.mock.uuidString],
+            configuration: .default,
             environment: environment
         )
         
@@ -136,6 +140,7 @@ class EntryWidgetTests: XCTestCase {
 
         let entryWidget = EntryWidget(
             queueIds: [UUID.mock.uuidString],
+            configuration: .default,
             environment: environment
         )
 

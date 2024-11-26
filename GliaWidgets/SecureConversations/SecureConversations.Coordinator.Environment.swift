@@ -50,8 +50,10 @@ extension SecureConversations.Coordinator {
         var flipCameraButtonStyle: FlipCameraButtonStyle
         var alertManager: AlertManager
         var queuesMonitor: QueuesMonitor
+        var createEntryWidget: EntryWidgetBuilder
         var shouldShowLeaveSecureConversationDialog: Bool
         var leaveCurrentSecureConversation: Cmd
+        var switchToEngagement: Command<EngagementKind>
     }
 }
 
@@ -67,7 +69,8 @@ extension SecureConversations.Coordinator.Environment {
         isWindowVisible: ObservableValue<Bool>,
         interactor: Interactor,
         shouldShowLeaveSecureConversationDialog: Bool,
-        leaveCurrentSecureConversation: Cmd
+        leaveCurrentSecureConversation: Cmd,
+        switchToEngagement: Command<EngagementKind>
     ) -> Self {
         .init(
             queueIds: queueIds,
@@ -118,8 +121,10 @@ extension SecureConversations.Coordinator.Environment {
             flipCameraButtonStyle: environment.flipCameraButtonStyle,
             alertManager: environment.alertManager,
             queuesMonitor: environment.queuesMonitor,
+            createEntryWidget: environment.createEntryWidget,
             shouldShowLeaveSecureConversationDialog: shouldShowLeaveSecureConversationDialog,
-            leaveCurrentSecureConversation: leaveCurrentSecureConversation
+            leaveCurrentSecureConversation: leaveCurrentSecureConversation,
+            switchToEngagement: switchToEngagement
         )
     }
 }
