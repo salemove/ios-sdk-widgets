@@ -471,6 +471,7 @@ class ChatViewModelTests: XCTestCase {
         var transcriptModelEnv = TranscriptModel.Environment.failing
         transcriptModelEnv.fileManager = fileManager
         transcriptModelEnv.maximumUploads = { 2 }
+        transcriptModelEnv.createEntryWidget = { _ in .mock() }
         var uploaderEnv = FileUploader.Environment.failing
         uploaderEnv.fileManager = fileManager
         let transcriptFileUploadListModelEnv = FileUploadListViewModel.Environment.failing(

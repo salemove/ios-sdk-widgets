@@ -80,6 +80,13 @@ extension SecureConversations.TranscriptModel.Environment {
         shouldShowLeaveSecureConversationDialog: false,
         leaveCurrentSecureConversation: .init {
             fail("\(Self.self).leaveCurrentSecureConversation")
+        },
+        createEntryWidget: { _ in
+            fail("\(Self.self).createEntryWidget")
+            return .mock()
+        },
+        switchToEngagement: .init { _ in
+            fail("\(Self.self).switchToEngagement")
         }
     )
 }

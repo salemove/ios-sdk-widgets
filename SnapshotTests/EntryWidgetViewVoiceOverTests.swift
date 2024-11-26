@@ -15,7 +15,7 @@ final class EntryWidgetViewVoiceOverTests: SnapshotTestCase {
     }
 
     func testEntryWidgetEmbeddedWhenLoading() {
-        let entryWidget: EntryWidget = .init(queueIds: [], environment: .mock())
+        let entryWidget: EntryWidget = .init(queueIds: [], configuration: .default, environment: .mock())
         let view = UIView()
         entryWidget.embed(in: view)
         entryWidget.viewState = .loading
@@ -35,7 +35,7 @@ final class EntryWidgetViewVoiceOverTests: SnapshotTestCase {
     }
 
     func testEntryWidgetEmbeddedWhenError() {
-        let entryWidget: EntryWidget = .init(queueIds: [], environment: .mock())
+        let entryWidget: EntryWidget = .init(queueIds: [], configuration: .default, environment: .mock())
         let view = UIView()
         entryWidget.embed(in: view)
         entryWidget.viewState = .error
@@ -55,7 +55,7 @@ final class EntryWidgetViewVoiceOverTests: SnapshotTestCase {
     }
 
     func testEntryWidgetEmbeddedWhenOffline() {
-        let entryWidget: EntryWidget = .init(queueIds: [], environment: .mock())
+        let entryWidget: EntryWidget = .init(queueIds: [], configuration: .default, environment: .mock())
         let view = UIView()
         entryWidget.embed(in: view)
         entryWidget.viewState = .offline
@@ -77,7 +77,7 @@ final class EntryWidgetViewVoiceOverTests: SnapshotTestCase {
     }
 
     func testEntryWidgetEmbeddedWhenFourMediaTypes() {
-        let entryWidget: EntryWidget = .init(queueIds: [], environment: .mock())
+        let entryWidget: EntryWidget = .init(queueIds: [], configuration: .default, environment: .mock())
         let view = UIView()
         entryWidget.embed(in: view)
         entryWidget.viewState = .mediaTypes(
@@ -99,7 +99,7 @@ final class EntryWidgetViewVoiceOverTests: SnapshotTestCase {
     }
 
     func testEntryWidgetEmbeddedWhenThreeMediaTypes() {
-        let entryWidget: EntryWidget = .init(queueIds: [], environment: .mock())
+        let entryWidget: EntryWidget = .init(queueIds: [], configuration: .default, environment: .mock())
         let view = UIView()
         entryWidget.embed(in: view)
         entryWidget.viewState = .mediaTypes([.init(type: .video), .init(type: .audio), .init(type: .chat)])
@@ -119,7 +119,7 @@ final class EntryWidgetViewVoiceOverTests: SnapshotTestCase {
     }
 
     func testEntryWidgetEmbeddedWhenTwoMediaTypes() {
-        let entryWidget: EntryWidget = .init(queueIds: [], environment: .mock())
+        let entryWidget: EntryWidget = .init(queueIds: [], configuration: .default, environment: .mock())
         let view = UIView()
         entryWidget.embed(in: view)
         entryWidget.viewState = .mediaTypes([.init(type: .video), .init(type: .audio)])
@@ -139,7 +139,7 @@ final class EntryWidgetViewVoiceOverTests: SnapshotTestCase {
     }
 
     func testEntryWidgetEmbeddedWhenOneMediaTypes() {
-        let entryWidget: EntryWidget = .init(queueIds: [], environment: .mock())
+        let entryWidget: EntryWidget = .init(queueIds: [], configuration: .default, environment: .mock())
         let view = UIView()
         entryWidget.embed(in: view)
         entryWidget.viewState = .mediaTypes([.init(type: .video)])
