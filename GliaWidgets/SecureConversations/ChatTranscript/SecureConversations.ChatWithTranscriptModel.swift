@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 extension SecureConversations.ChatWithTranscriptModel {
     typealias Action = Chat.Action
@@ -84,6 +85,16 @@ extension SecureConversations.ChatWithTranscriptModel {
             return model.numberOfSections
         case let .transcript(model):
             return model.numberOfSections
+        }
+    }
+
+    // TODO: Unit test to be added in  MOB-3840
+    var entryWidget: EntryWidget? {
+        switch self {
+        case .chat:
+            return nil
+        case let .transcript(model):
+            return model.entryWidget
         }
     }
 

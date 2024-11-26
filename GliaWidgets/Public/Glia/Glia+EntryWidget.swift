@@ -9,8 +9,13 @@ extension Glia {
     /// - Returns:
     ///   - `EntryWidget` instance.
     public func getEntryWidget(queueIds: [String]) throws -> EntryWidget {
+        try getEntryWidget(queueIds: queueIds, configuration: .default)
+    }
+
+    func getEntryWidget(queueIds: [String], configuration: EntryWidget.Configuration) throws -> EntryWidget {
         EntryWidget(
             queueIds: queueIds,
+            configuration: configuration,
             environment: .init(
                 observeSecureUnreadMessageCount: environment.coreSdk.subscribeForUnreadSCMessageCount,
                 unsubscribeFromUpdates: environment.coreSdk.unsubscribeFromUpdates,
