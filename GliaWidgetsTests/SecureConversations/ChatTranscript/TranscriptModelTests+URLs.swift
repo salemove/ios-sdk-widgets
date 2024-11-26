@@ -106,6 +106,7 @@ private extension SecureConversationsTranscriptModelTests {
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.listQueues = { callback in callback([], nil) }
         modelEnv.maximumUploads = { 2 }
+        modelEnv.createEntryWidget = { _ in .mock() }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },

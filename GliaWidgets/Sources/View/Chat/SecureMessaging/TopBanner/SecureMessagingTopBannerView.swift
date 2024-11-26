@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 final class SecureMessagingTopBannerView: UIView {
     private static let horizontalMargins = 16.0
@@ -41,7 +42,9 @@ final class SecureMessagingTopBannerView: UIView {
         }
     }
 
-    private var isExpanded = false
+    @Published private var isExpanded = false
+
+    private var cancelBag = CancelBag()
 
     private lazy var visibleStackViewConstraints: [NSLayoutConstraint] = [
         stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Self.horizontalMargins),
@@ -80,8 +83,20 @@ final class SecureMessagingTopBannerView: UIView {
         }
     }
 
-    init() {
+    init(isExpanded: Published<Bool>.Publisher) {
         super.init(frame: .zero)
+
+        isExpanded.assign(to: &self.$isExpanded)
+
+        $isExpanded
+            .sink { isExpanded in
+                let angle = isExpanded ? .pi : 0
+                UIView.animate(withDuration: Self.rotationDuration) {
+                    self.button.imageView?.transform = CGAffineTransform(rotationAngle: angle)
+                }
+            }
+            .store(in: &cancelBag)
+
         setup()
     }
 
@@ -137,19 +152,15 @@ private extension SecureMessagingTopBannerView {
     }
 
     @objc func buttonTap() {
-        props.buttonTap()
-        let angle = isExpanded ? 0 : .pi
-        UIView.animate(withDuration: Self.rotationDuration) {
-            self.button.imageView?.transform = CGAffineTransform(rotationAngle: angle)
-        }
         isExpanded.toggle()
+        props.buttonTap(isExpanded)
     }
 }
 
 extension SecureMessagingTopBannerView {
     struct Props: Equatable {
         let style: SecureMessagingTopBannerViewStyle
-        let buttonTap: Cmd
+        let buttonTap: Command<Bool>
         let isHidden: Bool
     }
 }

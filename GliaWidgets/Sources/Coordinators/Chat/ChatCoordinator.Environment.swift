@@ -42,8 +42,10 @@ extension ChatCoordinator {
         var flipCameraButtonStyle: FlipCameraButtonStyle
         var alertManager: AlertManager
         var queuesMonitor: QueuesMonitor
+        var createEntryWidget: EntryWidgetBuilder
         var shouldShowLeaveSecureConversationDialog: Bool
         var leaveCurrentSecureConversation: Cmd
+        var switchToEngagement: Command<EngagementKind>
     }
 }
 
@@ -52,7 +54,8 @@ extension ChatCoordinator.Environment {
         with environment: EngagementCoordinator.Environment,
         interactor: Interactor,
         shouldShowLeaveSecureConversationDialog: Bool,
-        leaveCurrentSecureConversation: Cmd
+        leaveCurrentSecureConversation: Cmd,
+        switchToEngagement: Command<EngagementKind>
     ) -> Self {
         .init(
             fetchFile: environment.fetchFile,
@@ -95,8 +98,10 @@ extension ChatCoordinator.Environment {
             flipCameraButtonStyle: environment.flipCameraButtonStyle,
             alertManager: environment.alertManager,
             queuesMonitor: environment.queuesMonitor,
+            createEntryWidget: environment.createEntryWidget,
             shouldShowLeaveSecureConversationDialog: shouldShowLeaveSecureConversationDialog,
-            leaveCurrentSecureConversation: leaveCurrentSecureConversation
+            leaveCurrentSecureConversation: leaveCurrentSecureConversation,
+            switchToEngagement: switchToEngagement
         )
     }
 
@@ -142,8 +147,10 @@ extension ChatCoordinator.Environment {
             flipCameraButtonStyle: environment.flipCameraButtonStyle,
             alertManager: environment.alertManager,
             queuesMonitor: environment.queuesMonitor,
+            createEntryWidget: environment.createEntryWidget,
             shouldShowLeaveSecureConversationDialog: environment.shouldShowLeaveSecureConversationDialog,
-            leaveCurrentSecureConversation: environment.leaveCurrentSecureConversation
+            leaveCurrentSecureConversation: environment.leaveCurrentSecureConversation,
+            switchToEngagement: environment.switchToEngagement
         )
     }
 }

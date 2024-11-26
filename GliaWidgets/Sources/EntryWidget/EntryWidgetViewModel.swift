@@ -5,31 +5,28 @@ extension EntryWidgetView {
         @Published var viewState: EntryWidget.ViewState = .loading
         let theme: Theme
         let mediaTypeSelected: (EntryWidget.MediaTypeItem) -> Void
-        let sizeConstraints: EntryWidget.SizeConstraints
+        let configuration: EntryWidget.Configuration
         let showHeader: Bool
         var retryMonitoring: (() -> Void)?
         var style: EntryWidgetStyle {
             theme.entryWidget
         }
 
+        // TODO: Unit test to be added in  MOB-3840
         var showPoweredBy: Bool {
-            // Once EntryWidget will be displayed in Secure
-            // Conversations, additional checks will be added here
-            guard theme.showsPoweredBy else { return false }
-
-            return true
+            theme.showsPoweredBy && configuration.showPoweredBy
         }
 
         init(
             theme: Theme,
             showHeader: Bool,
-            sizeConstraints: EntryWidget.SizeConstraints,
+            configuration: EntryWidget.Configuration,
             viewStatePublisher: Published<EntryWidget.ViewState>.Publisher,
             mediaTypeSelected: @escaping (EntryWidget.MediaTypeItem) -> Void
         ) {
             self.theme = theme
             self.showHeader = showHeader
-            self.sizeConstraints = sizeConstraints
+            self.configuration = configuration
             self.mediaTypeSelected = mediaTypeSelected
 
             viewStatePublisher.assign(to: &$viewState)

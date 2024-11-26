@@ -12,22 +12,14 @@ public final class EntryWidget: NSObject {
     private(set) var hostedViewController: UIViewController?
     private var embeddedView: UIView?
     private var queueIds: [String]
+    private let configuration: Configuration
     private var cancellables = CancelBag()
     private let environment: Environment
     @Published private var unreadSecureMessageCount: Int?
     private(set) var unreadSecureMessageSubscriptionId: String?
 
     @Published var viewState: ViewState = .loading
-
-    static let sizeConstraints: SizeConstraints = .init(
-        singleCellHeight: 72,
-        singleCellIconSize: 24,
-        poweredByContainerHeight: 40,
-        sheetHeaderHeight: 36,
-        sheetHeaderDraggerWidth: 32,
-        sheetHeaderDraggerHeight: 4,
-        dividerHeight: 1
-    )
+    @Published private(set) var availableEngagementTypes: [EntryWidget.EngagementType] = []
 
     // MARK: - Initialization
 
@@ -36,8 +28,13 @@ public final class EntryWidget: NSObject {
     /// - Parameters:
     ///   - queueIds: An array of strings representing the queue identifiers.
     ///   - environment: An `Environment` object containing external dependencies.
-    init(queueIds: [String], environment: Environment) {
+    init(
+        queueIds: [String],
+        configuration: Configuration,
+        environment: Environment
+    ) {
         self.queueIds = queueIds
+        self.configuration = configuration
         self.environment = environment
         super.init()
 
@@ -101,9 +98,9 @@ extension EntryWidget {
             mediaTypesCount = 4
         }
         var appliedHeight: CGFloat = 0
-        appliedHeight += EntryWidget.sizeConstraints.sheetHeaderHeight
-        appliedHeight += CGFloat(mediaTypesCount) * (EntryWidget.sizeConstraints.singleCellHeight + EntryWidget.sizeConstraints.dividerHeight)
-        appliedHeight += EntryWidget.sizeConstraints.poweredByContainerHeight
+        appliedHeight += configuration.sizeConstraints.sheetHeaderHeight
+        appliedHeight += CGFloat(mediaTypesCount) * (configuration.sizeConstraints.singleCellHeight + configuration.sizeConstraints.dividerHeight)
+        appliedHeight += configuration.sizeConstraints.poweredByContainerHeight
 
         return appliedHeight
     }
@@ -129,9 +126,9 @@ private extension EntryWidget {
                     }
                     return EntryWidget.MediaTypeItem(type: type)
                 }
-
                 viewState = .mediaTypes(mediaTypes)
             }
+            self.availableEngagementTypes = availableEngagementTypes
         case .failed(let error):
             viewState = .error
             environment.log.prefixed(Self.self).error("Setting up queues. Failed to get site queues \(error)")
@@ -158,7 +155,8 @@ private extension EntryWidget {
                 }
             }
         }
-        if !environment.isAuthenticated() {
+        // TODO: Unit test to be added in  MOB-3840
+        if !environment.isAuthenticated() || configuration.filterSecureConversation {
             availableMediaTypes.remove(.secureMessaging)
         }
 
@@ -166,6 +164,10 @@ private extension EntryWidget {
     }
 
     func mediaTypeSelected(_ mediaTypeItem: MediaTypeItem) {
+        if let configurationAction = configuration.mediaTypeSelected {
+            configurationAction(mediaTypeItem)
+            return
+        }
         hideViewIfNecessary {
             do {
                 switch mediaTypeItem.type {
@@ -197,7 +199,7 @@ private extension EntryWidget {
         let viewModel = EntryWidgetView.Model(
             theme: environment.theme,
             showHeader: showHeader,
-            sizeConstraints: EntryWidget.sizeConstraints,
+            configuration: configuration,
             viewStatePublisher: $viewState,
             mediaTypeSelected: mediaTypeSelected(_:)
         )
@@ -218,14 +220,21 @@ private extension EntryWidget {
         let hostingController = UIHostingController(rootView: view)
 
         parentView.addSubview(hostingController.view)
+        hostingController.view.clipsToBounds = true
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+
+        let heightConstraint = hostingController.view.heightAnchor.constraint(equalTo: parentView.heightAnchor)
 
         NSLayoutConstraint.activate([
             hostingController.view.widthAnchor.constraint(equalTo: parentView.widthAnchor),
-            hostingController.view.heightAnchor.constraint(equalTo: parentView.heightAnchor),
+            heightConstraint,
             hostingController.view.centerXAnchor.constraint(equalTo: parentView.centerXAnchor),
             hostingController.view.centerYAnchor.constraint(equalTo: parentView.centerYAnchor)
         ])
+
+        observeViewState { _ in
+            hostingController.view.setNeedsUpdateConstraints()
+        }
 
         embeddedView = hostingController.view
     }
@@ -271,19 +280,17 @@ private extension EntryWidget {
         parentViewController.present(hostingController, animated: true, completion: nil)
         hostedViewController = hostingController
 
-        observeViewState()
+        observeViewState(updateSheetWithStateChange)
     }
 
-    func observeViewState() {
+    func observeViewState(_ receiveValue: @escaping (ViewState) -> Void) {
         $viewState
             .receive(on: RunLoop.main)
-            .sink { [weak self] state in
-                self?.viewStateDidChange(state)
-            }
+            .sink(receiveValue: receiveValue)
             .store(in: &cancellables)
     }
 
-    func viewStateDidChange(_ state: ViewState) {
+    func updateSheetWithStateChange(_ state: ViewState) {
         let newHeight = calculateHeight()
 
         if #available(iOS 16.0, *) {
@@ -338,7 +345,7 @@ extension EntryWidget: UIViewControllerTransitioningDelegate {
 #if DEBUG
 extension EntryWidget {
     static func mock() -> Self {
-        .init(queueIds: [], environment: .mock())
+        .init(queueIds: [], configuration: .default, environment: .mock())
     }
 }
 

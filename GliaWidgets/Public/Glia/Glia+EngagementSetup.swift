@@ -172,7 +172,16 @@ extension Glia {
                 maximumUploads: { self.maximumUploads },
                 viewFactory: viewFactory,
                 alertManager: alertManager,
-                queuesMonitor: queuesMonitor
+                queuesMonitor: queuesMonitor,
+                createEntryWidget: { [weak self] configuration in
+                    guard let self else {
+                        throw GliaError.internalError
+                    }
+                    return try self.getEntryWidget(
+                        queueIds: interactor.queueIds ?? [],
+                        configuration: configuration
+                    )
+                }
             )
         )
         rootCoordinator?.delegate = { [weak self] event in self?.handleCoordinatorEvent(event) }

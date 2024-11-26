@@ -50,6 +50,7 @@ extension SecureConversations {
         var environment: Environment
         var availability: Availability
         var interactor: Interactor
+        var entryWidget: EntryWidget?
 
         private(set) var isSecureConversationsAvailable: Bool = true {
             didSet {
@@ -97,7 +98,6 @@ extension SecureConversations {
             self.isCustomCardSupported = isCustomCardSupported
             self.environment = environment
             self.downloader = FileDownloader(environment: .create(with: environment))
-
             self.availability = availability
             self.deliveredStatusText = deliveredStatusText
             self.failedToDeliverStatusText = failedToDeliverStatusText
@@ -117,6 +117,13 @@ extension SecureConversations {
             )
 
             self.transcriptMessageLoader = .init(environment: .create(with: environment))
+            do {
+                self.entryWidget = try environment.createEntryWidget(makeEntryWidgetConfiguration())
+            } catch {
+                // Creating an entry widget may fail if the SDK is not configured.
+                // This assumes that the SDK is configured by accessing Secure Conversations.
+                environment.log.warning("Could not create EntryWidget on Secure Conversation")
+            }
 
             self.fileUploadListModel.delegate = { [weak self] event in
                 switch event {
@@ -735,6 +742,47 @@ extension SecureConversations.TranscriptModel {
                 in: self.pendingSection
             )
         }
+    }
+}
+
+// MARK: Entry Widget
+extension SecureConversations.TranscriptModel {
+    // Set up the Entry Widget configuration inside TranscriptModel,
+    // since it requires passing view model logic to the configuration.
+    private func makeEntryWidgetConfiguration() -> EntryWidget.Configuration {
+        .init(
+            sizeConstraints: .init(
+                singleCellHeight: 56,
+                singleCellIconSize: 24,
+                poweredByContainerHeight: 40,
+                sheetHeaderHeight: 36,
+                sheetHeaderDraggerWidth: 32,
+                sheetHeaderDraggerHeight: 4,
+                dividerHeight: 1,
+                dividerHorizontalPadding: 0
+            ),
+            showPoweredBy: false,
+            filterSecureConversation: true,
+            mediaTypeSelected: .init(closure: entryWidgetMediaTypeSelected)
+        )
+    }
+
+    private func entryWidgetMediaTypeSelected(_ item: EntryWidget.MediaTypeItem) {
+        action?(.switchToEngagement)
+        engagementAction?(.showAlert(.leaveCurrentConversation { [weak self] in
+            let kind: EngagementKind
+            switch item.type {
+            case .video:
+                kind = .videoCall
+            case .audio:
+                kind = .audioCall
+            case .chat:
+                kind = .chat
+            case .secureMessaging:
+                kind = .messaging(.welcome)
+            }
+            self?.environment.switchToEngagement(kind)
+        }))
     }
 }
 
