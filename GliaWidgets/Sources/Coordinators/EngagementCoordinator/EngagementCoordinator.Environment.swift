@@ -45,6 +45,7 @@ extension EngagementCoordinator {
         var alertManager: AlertManager
         var queuesMonitor: QueuesMonitor
         var pendingSecureConversationStatusUpdates: CoreSdkClient.PendingSecureConversationStatusUpdates
+        var createEntryWidget: EntryWidgetBuilder
     }
 }
 
@@ -55,7 +56,8 @@ extension EngagementCoordinator.Environment {
         maximumUploads: @escaping () -> Int,
         viewFactory: ViewFactory,
         alertManager: AlertManager,
-        queuesMonitor: QueuesMonitor
+        queuesMonitor: QueuesMonitor,
+        createEntryWidget: @escaping EntryWidgetBuilder
     ) -> Self {
         .init(
             fetchFile: environment.coreSdk.fetchFile,
@@ -100,7 +102,8 @@ extension EngagementCoordinator.Environment {
             flipCameraButtonStyle: viewFactory.theme.call.flipCameraButtonStyle,
             alertManager: alertManager,
             queuesMonitor: queuesMonitor,
-            pendingSecureConversationStatusUpdates: environment.coreSdk.pendingSecureConversationStatusUpdates
+            pendingSecureConversationStatusUpdates: environment.coreSdk.pendingSecureConversationStatusUpdates,
+            createEntryWidget: createEntryWidget
         )
     }
 }
