@@ -54,7 +54,9 @@ extension SecureConversations.Coordinator.Environment {
         flipCameraButtonStyle: .nop,
         alertManager: .mock(),
         queuesMonitor: .mock(),
+        createEntryWidget: { _ in .mock() },
         shouldShowLeaveSecureConversationDialog: false,
-        leaveCurrentSecureConversation: .nop
+        leaveCurrentSecureConversation: .nop,
+        switchToEngagement: .nop
     )
 }

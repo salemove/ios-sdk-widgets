@@ -304,7 +304,8 @@ extension EngagementCoordinator {
                 with: environment,
                 interactor: interactor,
                 shouldShowLeaveSecureConversationDialog: false,
-                leaveCurrentSecureConversation: .nop
+                leaveCurrentSecureConversation: .nop,
+                switchToEngagement: .nop
             ),
             startWithSecureTranscriptFlow: false
         )
@@ -503,7 +504,8 @@ extension EngagementCoordinator {
                 isWindowVisible: isWindowVisible,
                 interactor: interactor,
                 shouldShowLeaveSecureConversationDialog: !requestedEngagementKind.isMessaging,
-                leaveCurrentSecureConversation: leaveCurrentSecureConversation
+                leaveCurrentSecureConversation: leaveCurrentSecureConversation,
+                switchToEngagement: .init(closure: switchToEngagementKind)
             )
         )
 
@@ -526,6 +528,11 @@ extension EngagementCoordinator {
         case let .chat(chatEvent):
             self.handleChatCoordinatorEvent(event: chatEvent)
         }
+    }
+
+    private func switchToEngagementKind(_ kind: EngagementKind) {
+        engagementLaunching = .direct(kind: kind)
+        setupEngagementController(animated: true)
     }
 }
 
