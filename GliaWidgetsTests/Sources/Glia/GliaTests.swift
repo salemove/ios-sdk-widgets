@@ -17,7 +17,6 @@ final class GliaTests: XCTestCase {
 
         let sdk = Glia(environment: environment)
         sdk.endEngagement { result in
-
             guard case .failure(let error) = result, let gliaError = error as? GliaError else {
                 XCTFail("GliaError.sdkIsNotConfigured expected.")
                 return
@@ -670,7 +669,7 @@ final class GliaTests: XCTestCase {
         logger.configureLocalLogLevelClosure = { _ in }
         logger.configureRemoteLogLevelClosure = { _ in }
         gliaEnv.coreSdk.createLogger = { _ in logger }
-        gliaEnv.coreSdk.pendingSecureConversationStatusUpdates = { $0(true) }
+        gliaEnv.coreSdk.pendingSecureConversationStatusUpdates = { $0(.success(true)) }
         gliaEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
         gliaEnv.conditionalCompilation.isDebug = { true }
 
@@ -685,7 +684,7 @@ final class GliaTests: XCTestCase {
         logger.configureLocalLogLevelClosure = { _ in }
         logger.configureRemoteLogLevelClosure = { _ in }
         gliaEnv.coreSdk.createLogger = { _ in logger }
-        gliaEnv.coreSdk.pendingSecureConversationStatusUpdates = { $0(false) }
+        gliaEnv.coreSdk.pendingSecureConversationStatusUpdates = { $0(.success(false)) }
         gliaEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(3)) }
         gliaEnv.conditionalCompilation.isDebug = { true }
 
@@ -700,7 +699,7 @@ final class GliaTests: XCTestCase {
         logger.configureLocalLogLevelClosure = { _ in }
         logger.configureRemoteLogLevelClosure = { _ in }
         gliaEnv.coreSdk.createLogger = { _ in logger }
-        gliaEnv.coreSdk.pendingSecureConversationStatusUpdates = { $0(false) }
+        gliaEnv.coreSdk.pendingSecureConversationStatusUpdates = { $0(.success(false)) }
         gliaEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
         gliaEnv.conditionalCompilation.isDebug = { true }
 
