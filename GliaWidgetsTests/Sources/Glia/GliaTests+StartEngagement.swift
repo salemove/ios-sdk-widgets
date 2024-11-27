@@ -461,7 +461,7 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.pendingSecureConversationStatusUpdates = { $0(true) }
+        environment.coreSdk.pendingSecureConversationStatusUpdates = { $0(.success(true)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
@@ -477,7 +477,7 @@ extension GliaTests {
         ) { _ in }
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
         try engagementLauncher.startChat()
-        
+
         XCTAssertEqual(engagementLaunching.currentKind, .messaging(.chatTranscript))
         XCTAssertEqual(engagementLaunching.initialKind, engagementKind)
     }
@@ -502,7 +502,7 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.pendingSecureConversationStatusUpdates = { $0(false) }
+        environment.coreSdk.pendingSecureConversationStatusUpdates = { $0(.success(false)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
@@ -542,7 +542,7 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.pendingSecureConversationStatusUpdates = { $0(true) }
+        environment.coreSdk.pendingSecureConversationStatusUpdates = { $0(.success(true)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))

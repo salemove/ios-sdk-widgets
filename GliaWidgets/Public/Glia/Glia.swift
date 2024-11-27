@@ -137,8 +137,8 @@ public class Glia {
     // once they try to start an engagement with media type other than `messaging`.
     var hasPendingInteraction: Bool {
         var pendingConversationExists = false
-        environment.coreSdk.pendingSecureConversationStatusUpdates { hasPendingConversation in
-            pendingConversationExists = hasPendingConversation
+        environment.coreSdk.pendingSecureConversationStatusUpdates { hasPendingConversationResult in
+            pendingConversationExists = (try? hasPendingConversationResult.get()) ?? false
         }
 
         var unreadMessageCount = 0
