@@ -41,7 +41,7 @@ extension CoreSdkClient {
         subscribeForQueuesUpdates: { _, _ in UUID.mock.uuidString },
         unsubscribeFromUpdates: { _, _ in },
         subscribeForUnreadSCMessageCount: { _ in UUID.mock.uuidString },
-        pendingSecureConversationStatusUpdates: { $0(false) }
+        pendingSecureConversationStatusUpdates: { $0(.success(false)) }
     )
 }
 
