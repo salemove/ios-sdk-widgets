@@ -155,7 +155,6 @@ private extension EntryWidget {
                 }
             }
         }
-        // TODO: Unit test to be added in  MOB-3840
         if !environment.isAuthenticated() || configuration.filterSecureConversation {
             availableMediaTypes.remove(.secureMessaging)
         }
@@ -223,11 +222,9 @@ private extension EntryWidget {
         hostingController.view.clipsToBounds = true
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
 
-        let heightConstraint = hostingController.view.heightAnchor.constraint(equalTo: parentView.heightAnchor)
-
         NSLayoutConstraint.activate([
             hostingController.view.widthAnchor.constraint(equalTo: parentView.widthAnchor),
-            heightConstraint,
+            hostingController.view.heightAnchor.constraint(equalTo: parentView.heightAnchor),
             hostingController.view.centerXAnchor.constraint(equalTo: parentView.centerXAnchor),
             hostingController.view.centerYAnchor.constraint(equalTo: parentView.centerYAnchor)
         ])
@@ -344,8 +341,8 @@ extension EntryWidget: UIViewControllerTransitioningDelegate {
 
 #if DEBUG
 extension EntryWidget {
-    static func mock() -> Self {
-        .init(queueIds: [], configuration: .default, environment: .mock())
+    static func mock(configuration: EntryWidget.Configuration? = nil) -> Self {
+        .init(queueIds: [], configuration: configuration ?? .default, environment: .mock())
     }
 }
 
