@@ -46,6 +46,7 @@ extension EngagementCoordinator {
         var queuesMonitor: QueuesMonitor
         var pendingSecureConversationStatusUpdates: CoreSdkClient.PendingSecureConversationStatusUpdates
         var createEntryWidget: EntryWidgetBuilder
+        var dismissManager: GliaPresenter.DismissManager
     }
 }
 
@@ -103,7 +104,8 @@ extension EngagementCoordinator.Environment {
             alertManager: alertManager,
             queuesMonitor: queuesMonitor,
             pendingSecureConversationStatusUpdates: environment.coreSdk.pendingSecureConversationStatusUpdates,
-            createEntryWidget: createEntryWidget
+            createEntryWidget: createEntryWidget,
+            dismissManager: environment.dismissManager
         )
     }
 }
