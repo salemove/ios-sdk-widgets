@@ -82,21 +82,32 @@ final class GliaPresenter {
             completion?()
             return
         }
-        presentingViewController.dismiss(
+        environment.dismissManager.dismiss(
+            presentingViewController,
             animated: animated,
             completion: completion
         )
     }
 }
 
-#if DEBUG
-extension GliaPresenter.Environment {
-    static let mock = Self(
-        appWindowsProvider: .mock,
-        log: .mock
-    )
+extension GliaPresenter {
+    // DismissManaged is used to control dismiss completion delayed by CoreAnimation.
+    struct DismissManager {
+        var dismissViewControllerAnimateWithCompletion: (
+            _ viewController: UIViewController,
+            _ animated: Bool,
+            _ completion: (() -> Void)?
+        ) -> Void
+
+        func dismiss(
+            _ viewController: UIViewController,
+            animated: Bool,
+            completion: (() -> Void)? = nil
+        ) {
+            dismissViewControllerAnimateWithCompletion(viewController, animated, completion)
+        }
+    }
 }
-#endif
 
 extension GliaPresenter {
     struct AppWindowsProvider {
@@ -111,6 +122,14 @@ extension GliaPresenter.AppWindowsProvider {
 }
 
 #if DEBUG
+extension GliaPresenter.Environment {
+    static let mock = Self(
+        appWindowsProvider: .mock,
+        log: .mock,
+        dismissManager: .init { _, _, _ in }
+    )
+}
+
 extension GliaPresenter.AppWindowsProvider {
     static let mock = Self(windows: { [] })
 }
