@@ -26,10 +26,8 @@ extension EngagementCoordinatorTests {
 
         let flowCoordinator = coordinator.coordinators.last
 
-        callAfterTimeout {
-            XCTAssertNil(flowCoordinator)
-            XCTAssertEqual(coordinator.coordinators.count, 0)
-        }
+        XCTAssertNil(flowCoordinator)
+        XCTAssertEqual(coordinator.coordinators.count, 0)
     }
 
     func test_secureConversationsDelegateBackTapped() throws {
@@ -45,9 +43,7 @@ extension EngagementCoordinatorTests {
         let secureConversationsCoordinator = coordinator.coordinators.first as? SecureConversations.Coordinator
         secureConversationsCoordinator?.delegate?(.backTapped)
 
-        callAfterTimeout {
-            XCTAssertTrue(calledEvents.contains(.minimized))
-        }
+        XCTAssertTrue(calledEvents.contains(.minimized))
     }
 
     func test_secureConversationsDelegateChat() throws {
@@ -60,14 +56,11 @@ extension EngagementCoordinatorTests {
         }
 
         coordinator.start()
-        try showGliaViewController()
 
         let secureConversationsCoordinator = coordinator.coordinators.first as? SecureConversations.Coordinator
         secureConversationsCoordinator?.delegate?(.chat(.back))
 
-        callAfterTimeout {
-            XCTAssertTrue(calledEvents.contains(.minimized))
-        }
+        XCTAssertTrue(calledEvents.contains(.minimized))
     }
 
     // MARK: - Leave Conversation
