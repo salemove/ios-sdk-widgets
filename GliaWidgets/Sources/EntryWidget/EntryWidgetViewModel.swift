@@ -12,7 +12,6 @@ extension EntryWidgetView {
             theme.entryWidget
         }
 
-        // TODO: Unit test to be added in  MOB-3840
         var showPoweredBy: Bool {
             theme.showsPoweredBy && configuration.showPoweredBy
         }

@@ -57,7 +57,8 @@ class ChatView: EngagementView {
         return CGRect(x: x, y: y, width: width, height: height)
     }
 
-    @Published private var isTopBannerExpanded = false
+    // Made internal for Snapshot test purposes
+    @Published var isTopBannerExpanded = false
     @Published private var isTopBannerHidden = true
 
     var props: Props {

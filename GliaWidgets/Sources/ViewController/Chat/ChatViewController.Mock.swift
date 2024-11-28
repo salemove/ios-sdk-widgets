@@ -655,6 +655,28 @@ extension ChatViewController {
 
         return .init(viewModel: .transcript(transcriptModel), environment: .mock())
     }
+
+    static func mockSecureMessagingTopAndBottomBannerView(
+        entryWidgetViewState: EntryWidget.ViewState = .loading
+    ) -> ChatViewController {
+        var chatViewModelEnv = ChatViewModel.Environment.mock
+        chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+
+        let transcriptModel = SecureConversations.TranscriptModel.init(
+            isCustomCardSupported: false,
+            environment: .mock(createEntryWidget: { configuration in
+                let entryWidget = EntryWidget.mock(configuration: configuration)
+                entryWidget.viewState = entryWidgetViewState
+                return entryWidget
+            }),
+            availability: .mock(),
+            deliveredStatusText: "deliveredStatusText",
+            failedToDeliverStatusText: "failedToDeliverStatusText",
+            interactor: .mock()
+        )
+
+        return .init(viewModel: .transcript(transcriptModel), environment: .mock())
+    }
 }
 
 /// Defines wrapper structure for getting decoding container.
