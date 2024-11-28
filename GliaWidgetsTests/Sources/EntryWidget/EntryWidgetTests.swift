@@ -148,4 +148,87 @@ class EntryWidgetTests: XCTestCase {
 
         XCTAssertEqual(envCalls, [.start(.messaging(.welcome))])
     }
+    
+    func test_availableEngagementTypesSortedWithNoFilters() {
+        let mockQueueId = "mockQueueId"
+        let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio, .video, .text])
+        var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
+        queueMonitorEnvironment.listQueues = { completion in
+            completion([mockQueue], nil)
+        }
+        let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
+        queuesMonitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        
+        var environment = EntryWidget.Environment.mock()
+        environment.queuesMonitor = queuesMonitor
+        environment.observeSecureUnreadMessageCount = { result in
+            result(.success(5))
+            return UUID.mock.uuidString
+        }
+        
+        
+        let entryWidget = EntryWidget(
+            queueIds: [mockQueueId],
+            configuration: .default,
+            environment: environment
+        )
+
+        XCTAssertEqual(entryWidget.availableEngagementTypes, [.video, .audio, .chat, .secureMessaging])
+    }
+    
+    func test_availableEngagementTypesSortedAndFilteredIfUserNotAuthenticated() {
+        let mockQueueId = "mockQueueId"
+        let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio, .video, .text])
+        var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
+        queueMonitorEnvironment.listQueues = { completion in
+            completion([mockQueue], nil)
+        }
+        let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
+        queuesMonitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        
+        var environment = EntryWidget.Environment.mock()
+        environment.queuesMonitor = queuesMonitor
+        environment.observeSecureUnreadMessageCount = { result in
+            result(.success(5))
+            return UUID.mock.uuidString
+        }
+        environment.isAuthenticated = {
+            false
+        }
+        
+        
+        let entryWidget = EntryWidget(
+            queueIds: [mockQueueId],
+            configuration: .default,
+            environment: environment
+        )
+
+        XCTAssertEqual(entryWidget.availableEngagementTypes, [.video, .audio, .chat])
+    }
+    
+    func test_availableEngagementTypesSortedAndFilteredSecureConversation() {
+        let mockQueueId = "mockQueueId"
+        let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio, .video, .text])
+        var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
+        queueMonitorEnvironment.listQueues = { completion in
+            completion([mockQueue], nil)
+        }
+        let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
+        queuesMonitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        
+        var environment = EntryWidget.Environment.mock()
+        environment.queuesMonitor = queuesMonitor
+        environment.observeSecureUnreadMessageCount = { result in
+            result(.success(5))
+            return UUID.mock.uuidString
+        }
+        var configuration = EntryWidget.Configuration.mock(filterSecureConversation: true)
+        let entryWidget = EntryWidget(
+            queueIds: [mockQueueId],
+            configuration: configuration,
+            environment: environment
+        )
+
+        XCTAssertEqual(entryWidget.availableEngagementTypes, [.video, .audio, .chat])
+    }
 }
