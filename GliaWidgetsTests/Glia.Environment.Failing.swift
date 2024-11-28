@@ -69,6 +69,9 @@ extension Glia.Environment {
         isAuthenticated: {
             fail("\(Self.self).isAuthenticated")
             return false
+        },
+        dismissManager: .init { _, _, _ in
+            fail("\(Self.self).dismissManager")
         }
     )
 }

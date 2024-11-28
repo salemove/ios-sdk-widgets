@@ -103,6 +103,7 @@ extension EngagementCoordinator.Environment {
         createEntryWidget: { _ in
             fail("\(Self.self).createEntryWidget")
             return .mock()
-        }
+        },
+        dismissManager: .failing
     )
 }
