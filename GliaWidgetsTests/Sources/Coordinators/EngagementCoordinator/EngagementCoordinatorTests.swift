@@ -4,42 +4,14 @@ import XCTest
 
 final class EngagementCoordinatorTests: XCTestCase {
     var coordinator: EngagementCoordinator!
-    var closuresForTearDown: [() -> Void] = []
 
     override func setUp() {
-        UIView.setAnimationsEnabled(false)
         coordinator = createCoordinator()
     }
 
     override func tearDown() {
-        for closure in closuresForTearDown {
-            closure()
-        }
-
         coordinator.end()
         coordinator = nil
-
-        UIView.setAnimationsEnabled(true)
-    }
-
-    func createCoordinator(
-        withKind engagementKind: EngagementKind = .chat
-    ) -> EngagementCoordinator {
-        return createCoordinator(with: .direct(kind: engagementKind))
-    }
-
-    func createCoordinator(
-        with engagementLaunching: EngagementCoordinator.EngagementLaunching
-    ) -> EngagementCoordinator {
-        return EngagementCoordinator(
-            interactor: .mock(),
-            viewFactory: .mock(),
-            sceneProvider: MockedSceneProvider(),
-            engagementLaunching: engagementLaunching,
-            screenShareHandler: .mock,
-            features: [],
-            environment: .mock
-        )
     }
 
     // Start
@@ -159,16 +131,12 @@ final class EngagementCoordinatorTests: XCTestCase {
         let survey: CoreSdkClient.Survey = try .mock()
         coordinator.start()
 
-        try showGliaViewController()
-
         coordinator.interactor.currentEngagement = .mock(fetchSurvey: { _, completion in completion(.success(survey)) })
         coordinator.end(surveyPresentation: .doNotPresentSurvey)
 
-        callAfterTimeout {
-            XCTAssertEqual(self.coordinator.navigationPresenter.viewControllers.count, 0)
-            XCTAssertEqual(self.coordinator.engagementLaunching.currentKind, .none)
-            XCTAssertTrue(calledEvents.contains(.ended))
-        }
+        XCTAssertEqual(coordinator.navigationPresenter.viewControllers.count, 0)
+        XCTAssertEqual(coordinator.engagementLaunching.currentKind, .none)
+        XCTAssertTrue(calledEvents.contains(.ended))
     }
 
     // Chat coordinator delegate events
@@ -199,10 +167,8 @@ final class EngagementCoordinatorTests: XCTestCase {
 
         let chatCoordinator = coordinator.coordinators.last as? ChatCoordinator
         chatCoordinator?.delegate?(.back)
-        
-        callAfterTimeout {
-            XCTAssertEqual(calledEvents.last, .minimized)
-        }
+
+        XCTAssertEqual(calledEvents.last, .minimized)
     }
 
     func test_chatCoordinatorBackCall() {
@@ -218,9 +184,7 @@ final class EngagementCoordinatorTests: XCTestCase {
         let chatCoordinator = coordinator.coordinators.last as? ChatCoordinator
         chatCoordinator?.delegate?(.back)
 
-        callAfterTimeout {
-            XCTAssertNotNil(coordinator.navigationPresenter.viewControllers.first as? EngagementViewController)
-        }
+        XCTAssertNotNil(coordinator.navigationPresenter.viewControllers.first as? EngagementViewController)
     }
 
     func test_chatCoordinatorBackCallFromChat() throws {
@@ -243,15 +207,12 @@ final class EngagementCoordinatorTests: XCTestCase {
         )
         chatCoordinator?.delegate?(.back)
 
-        callAfterTimeout {
-            XCTAssertEqual(calledEvents.last, .minimized)
-        }
+        XCTAssertEqual(calledEvents.last, .minimized)
     }
 
     func test_chatCoordinatorEngaged() throws {
         coordinator.start()
 
-        try showGliaViewController()
         let chatCoordinator = coordinator.coordinators.last as? ChatCoordinator
         chatCoordinator?.delegate?(.engaged(operatorImageUrl: URL.mock.absoluteString))
 
@@ -271,46 +232,41 @@ final class EngagementCoordinatorTests: XCTestCase {
 
         coordinator.start()
 
-        try showGliaViewController()
         let chatCoordinator = coordinator.coordinators.last as? ChatCoordinator
         chatCoordinator?.delegate?(.finished)
 
         let flowCoordinator = coordinator.coordinators.last
 
-        callAfterTimeout {
-            XCTAssertNil(flowCoordinator)
-        }
+        XCTAssertNil(flowCoordinator)
     }
 }
 
 extension EngagementCoordinatorTests {
-    var currentWindow: UIWindow? {
-        get throws {
-            let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.first as? UIWindowScene)
-            return scene.windows.first { !($0 is BubbleWindow) }
-        }
-    }
-    // Some actions in the coordinator require the view controller to be
-    // present in the window hierarchy to work. Also restores the old
-    // view controller on tearDown.
-    func showGliaViewController() throws {
-        let window = try currentWindow
-        let oldRootViewController = window?.rootViewController
-        window?.rootViewController = coordinator.gliaViewController
-
-        closuresForTearDown.append {
-            window?.rootViewController = oldRootViewController
-        }
+    func createCoordinator(
+        withKind engagementKind: EngagementKind = .chat
+    ) -> EngagementCoordinator {
+        return createCoordinator(with: .direct(kind: engagementKind))
     }
 
-    // Some of the actions in these tests include waiting for animations or dismissals
-    // of view controllers. These fail if the asserts are done right away.
-    func callAfterTimeout(_ callback: () -> Void) {
-        let expectation = expectation(description: "Wait")
-        let result = XCTWaiter.wait(for: [expectation], timeout: 0.5)
-
-        if result == .timedOut {
-            callback()
+    func createCoordinator(
+        with engagementLaunching: EngagementCoordinator.EngagementLaunching
+    ) -> EngagementCoordinator {
+        var env = EngagementCoordinator.Environment.mock
+        env.dismissManager.dismissViewControllerAnimateWithCompletion = { _, _, completion in
+            completion?()
         }
+        let window = UIWindow(frame: .zero)
+        window.rootViewController = .init()
+        window.makeKeyAndVisible()
+        env.uiApplication.windows = { [window] }
+        return EngagementCoordinator(
+            interactor: .mock(),
+            viewFactory: .mock(),
+            sceneProvider: MockedSceneProvider(),
+            engagementLaunching: engagementLaunching,
+            screenShareHandler: .mock,
+            features: [],
+            environment: env
+        )
     }
 }

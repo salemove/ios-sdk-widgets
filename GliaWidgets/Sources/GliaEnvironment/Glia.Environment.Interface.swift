@@ -54,6 +54,7 @@ extension Glia {
         var processInfo: ProcessInfoHandling
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var isAuthenticated: () -> Bool
+        var dismissManager: GliaPresenter.DismissManager
     }
 }
 

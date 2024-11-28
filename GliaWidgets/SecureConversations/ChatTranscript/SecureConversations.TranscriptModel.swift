@@ -563,7 +563,7 @@ extension SecureConversations.TranscriptModel {
                 }
 
                 if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
-                    let props = button.options.map { self.quickReplyOption($0) }
+                    let props = button.options.compactMap { [weak self] in self?.quickReplyOption($0) }
                     self.action?(.quickReplyPropsUpdated(.shown(props)))
                 }
 
