@@ -88,7 +88,6 @@ extension SecureConversations.ChatWithTranscriptModel {
         }
     }
 
-    // TODO: Unit test to be added in  MOB-3840
     var entryWidget: EntryWidget? {
         switch self {
         case .chat:
