@@ -551,8 +551,8 @@ extension ChatView: WebMessageCardViewDelegate {
     }
 
     private func isLastMessage(_ messageId: MessageRenderer.Message.Identifier) -> Bool {
-        let numberOfSections = { self.numberOfSections?() ?? 0 }
-        let numberOfRows = { section in self.numberOfRows?(section) ?? 0 }
+        let numberOfSections = { [weak self] in self?.numberOfSections?() ?? 0 }
+        let numberOfRows = { [weak self] section in self?.numberOfRows?(section) ?? 0 }
         let sections = (0 ..< numberOfSections()).reversed()
 
         guard let section = sections.first(where: { numberOfRows($0) > 0 }) else { return false }
@@ -722,7 +722,7 @@ extension ChatView {
         let choiceCard = ChoiceCard(with: message, isActive: isActive)
         view.showsOperatorImage = showsImage
         view.setOperatorImage(fromUrl: imageUrl, animated: false)
-        view.onOptionTapped = { self.choiceOptionSelected($0, message.id) }
+        view.onOptionTapped = { [weak self] in self?.choiceOptionSelected($0, message.id) }
         view.appendContent(.choiceCard(choiceCard), animated: false)
         return .choiceCard(view)
     }
