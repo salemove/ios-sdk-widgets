@@ -4,6 +4,7 @@ extension GliaPresenter {
     struct Environment {
         var appWindowsProvider: AppWindowsProvider
         var log: CoreSdkClient.Logger
+        var dismissManager: DismissManager
     }
 }
 
@@ -17,7 +18,8 @@ extension GliaPresenter.Environment {
                 uiApplication: environment.uiApplication,
                 sceneProvider: sceneProvider
             ),
-            log: environment.log
+            log: environment.log,
+            dismissManager: environment.dismissManager
         )
     }
 
@@ -31,7 +33,8 @@ extension GliaPresenter.Environment {
                     uiApplication: environment.uiApplication,
                     sceneProvider: sceneProvider
                 ),
-                log: log
+                log: log,
+                dismissManager: environment.dismissManager
             )
     }
 }

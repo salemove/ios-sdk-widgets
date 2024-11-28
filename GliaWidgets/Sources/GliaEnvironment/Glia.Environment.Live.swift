@@ -53,6 +53,9 @@ extension Glia.Environment {
                 debugPrint(#function, "isAuthenticated:", error.localizedDescription)
                 return false
             }
+        },
+        dismissManager: .init { viewController, animated, completion in
+            viewController.dismiss(animated: animated, completion: completion)
         }
     )
 }
