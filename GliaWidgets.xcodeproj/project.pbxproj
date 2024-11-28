@@ -180,6 +180,8 @@
 		216D31052CF4D3590019CA9E /* ChatView.DefineLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216D31042CF4D3590019CA9E /* ChatView.DefineLayout.swift */; };
 		216D31072CF5DA050019CA9E /* ChatView.Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216D31062CF5DA050019CA9E /* ChatView.Constants.swift */; };
 		216D31092CF5DC080019CA9E /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216D31082CF5DC080019CA9E /* OverlayView.swift */; };
+		216D310B2CF790980019CA9E /* EntryWidget.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216D310A2CF790980019CA9E /* EntryWidget.Mock.swift */; };
+		216D310D2CF795380019CA9E /* EntryWidgetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216D310C2CF795380019CA9E /* EntryWidgetViewModelTests.swift */; };
 		2188DED22CECC3D400FA3BEF /* SecureMessagingTopBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2188DED12CECC3D400FA3BEF /* SecureMessagingTopBannerView.swift */; };
 		2188DED42CECE15800FA3BEF /* SecureMessagingTopBannerViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2188DED32CECE15800FA3BEF /* SecureMessagingTopBannerViewStyle.swift */; };
 		2188DEDD2CEE2C3F00FA3BEF /* SecureMessagingBottomBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2188DED92CEE2C3F00FA3BEF /* SecureMessagingBottomBannerView.swift */; };
@@ -1265,6 +1267,8 @@
 		216D31042CF4D3590019CA9E /* ChatView.DefineLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.DefineLayout.swift; sourceTree = "<group>"; };
 		216D31062CF5DA050019CA9E /* ChatView.Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.Constants.swift; sourceTree = "<group>"; };
 		216D31082CF5DC080019CA9E /* OverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
+		216D310A2CF790980019CA9E /* EntryWidget.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidget.Mock.swift; sourceTree = "<group>"; };
+		216D310C2CF795380019CA9E /* EntryWidgetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetViewModelTests.swift; sourceTree = "<group>"; };
 		2188DED12CECC3D400FA3BEF /* SecureMessagingTopBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureMessagingTopBannerView.swift; sourceTree = "<group>"; };
 		2188DED32CECE15800FA3BEF /* SecureMessagingTopBannerViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureMessagingTopBannerViewStyle.swift; sourceTree = "<group>"; };
 		2188DED92CEE2C3F00FA3BEF /* SecureMessagingBottomBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureMessagingBottomBannerView.swift; sourceTree = "<group>"; };
@@ -4815,6 +4819,8 @@
 			isa = PBXGroup;
 			children = (
 				C06B6D4B2CCB917600A66D8A /* EntryWidgetTests.swift */,
+				216D310C2CF795380019CA9E /* EntryWidgetViewModelTests.swift */,
+				216D310A2CF790980019CA9E /* EntryWidget.Mock.swift */,
 			);
 			path = EntryWidget;
 			sourceTree = "<group>";
@@ -6652,6 +6658,7 @@
 				9ACC25D427B474E800BC5335 /* Glia.Environment.Failing.swift in Sources */,
 				9A8130C227D9095200220BBD /* FileDownload.Failing.swift in Sources */,
 				3189DD9429DEFAC600D68E9F /* SecureConversations.WelcomeViewModelSpec.swift in Sources */,
+				216D310D2CF795380019CA9E /* EntryWidgetViewModelTests.swift in Sources */,
 				AF4D821C29D6E572007763F8 /* TranscriptModel.DividedChatItemsForUnreadCountTests.swift in Sources */,
 				84520BF62B20936F00F97617 /* SnackBar.Failing.swift in Sources */,
 				AF1C19802B14FE9F00F8810F /* ConditionalCompilationClient.Failing.swift in Sources */,
@@ -6722,6 +6729,7 @@
 				3115EFBA2BC960B500B24D5A /* (null) in Sources */,
 				31CCE3E62BCE8F3A00F92535 /* ScreenSharingCoordinatorTests.swift in Sources */,
 				846A5C3929D18D400049B29F /* ScreenShareHandlerTests.swift in Sources */,
+				216D310B2CF790980019CA9E /* EntryWidget.Mock.swift in Sources */,
 				9AE05CB62805D2CB00871321 /* Interactor.Environment.Failing.swift in Sources */,
 				846429862A45DB4100943BD6 /* AlertViewController.Kind+Mock.swift in Sources */,
 				AF29811229E42F3C0005BD55 /* AvailabilityTests.swift in Sources */,

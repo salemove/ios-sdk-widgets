@@ -38,9 +38,29 @@ final class ChatViewControllerDynamicTypeFontTests: SnapshotTestCase {
         viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
-    func test_secureMessagingTopAndBottomBanner_extra3Large() {
+    func test_secureMessagingBottomAndCollapsedTopBanner_extra3Large() {
         let viewController = ChatViewController.mockSecureMessagingBottomBannerView()
         viewController.updateViewConstraints()
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+        viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
+    }
+    
+    func test_secureMessagingBottomAndExpandedTopBanner_extra3Large() {
+        let mockEntryWidgetViewState = EntryWidget.ViewState.mediaTypes(
+            [.init(type: .chat), .init(type: .video), .init(type: .audio)]
+        )
+        let viewController = ChatViewController.mockSecureMessagingTopAndBottomBannerView(
+            entryWidgetViewState: mockEntryWidgetViewState
+        )
+        viewController.updateViewConstraints()
+        
+        (viewController.view as? ChatView)?.isTopBannerExpanded = true
+        viewController.updateViewConstraints()
+        
+        viewController.view.frame = UIScreen.main.bounds
+        viewController.view.setNeedsLayout()
+        viewController.view.layoutIfNeeded()
+        
         viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }

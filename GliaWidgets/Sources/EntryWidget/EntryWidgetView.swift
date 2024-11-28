@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct EntryWidgetView: View {
+    @SwiftUI.Environment(\.sizeCategory) var sizeCategory
+
     @StateObject var model: Model
 
     var body: some View {
@@ -168,7 +170,9 @@ private extension EntryWidgetView {
             icon(mediaType.image)
             VStack(alignment: .leading, spacing: 2) {
                 headlineText(model.style.mediaTypeItem.title(for: mediaType))
-                subheadlineText(model.style.mediaTypeItem.message(for: mediaType))
+                if !sizeCategory.isAccessibilityCategory {
+                    subheadlineText(model.style.mediaTypeItem.message(for: mediaType))
+                }
             }
             unreadMessageCountView(for: mediaType)
         }
