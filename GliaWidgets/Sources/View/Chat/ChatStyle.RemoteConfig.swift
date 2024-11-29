@@ -78,6 +78,14 @@ extension ChatStyle {
             configuration: configuration?.gva,
             assetBuilder: assetsBuilder
         )
+        secureMessagingTopBannerStyle.apply(
+            configuration: configuration?.secureMessaging,
+            assetBuilder: assetsBuilder
+        )
+        secureMessagingExpandedTopBannerItemsStyle.apply(
+            configuration: configuration?.secureMessaging?.mediaTypeItems,
+            assetBuilder: assetsBuilder
+        )
         secureMessagingBottomBannerStyle.apply(
             configuration: configuration?.secureMessaging,
             assetBuilder: assetsBuilder

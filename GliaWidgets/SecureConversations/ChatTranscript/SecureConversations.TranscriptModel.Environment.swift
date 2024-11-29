@@ -35,6 +35,7 @@ extension SecureConversations.TranscriptModel {
         var leaveCurrentSecureConversation: Cmd
         var createEntryWidget: EntryWidgetBuilder
         var switchToEngagement: Command<EngagementKind>
+        var topBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle
     }
 }
 
@@ -77,7 +78,8 @@ extension SecureConversations.TranscriptModel.Environment {
             shouldShowLeaveSecureConversationDialog: environment.shouldShowLeaveSecureConversationDialog,
             leaveCurrentSecureConversation: environment.leaveCurrentSecureConversation,
             createEntryWidget: environment.createEntryWidget,
-            switchToEngagement: environment.switchToEngagement
+            switchToEngagement: environment.switchToEngagement,
+            topBannerItemsStyle: viewFactory.theme.chat.secureMessagingExpandedTopBannerItemsStyle
        )
     }
 }
@@ -117,7 +119,9 @@ extension SecureConversations.TranscriptModel.Environment {
         shouldShowLeaveSecureConversationDialog: Bool = false,
         leaveCurrentSecureConversation: Cmd = .nop,
         createEntryWidget: @escaping EntryWidgetBuilder = { _ in .mock() },
-        switchToEngagement: Command<EngagementKind> = .nop
+        switchToEngagement: Command<EngagementKind> = .nop,
+        // swiftlint:disable:next line_length
+        secureMessagingExpandedTopBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle = Theme().chatStyle.secureMessagingExpandedTopBannerItemsStyle
     ) -> Self {
         Self(
             fetchFile: fetchFile,
@@ -152,7 +156,8 @@ extension SecureConversations.TranscriptModel.Environment {
             shouldShowLeaveSecureConversationDialog: shouldShowLeaveSecureConversationDialog,
             leaveCurrentSecureConversation: leaveCurrentSecureConversation,
             createEntryWidget: createEntryWidget,
-            switchToEngagement: switchToEngagement
+            switchToEngagement: switchToEngagement,
+            topBannerItemsStyle: secureMessagingExpandedTopBannerItemsStyle
         )
     }
 }
