@@ -8,8 +8,16 @@ extension EntryWidgetView {
         let configuration: EntryWidget.Configuration
         let showHeader: Bool
         var retryMonitoring: (() -> Void)?
+
         var style: EntryWidgetStyle {
-            theme.entryWidget
+            if let mediaTypeItemsStyle = configuration.mediaTypeItemsStyle {
+                var widgetStyle = theme.entryWidgetStyle
+                widgetStyle.mediaTypeItem = mediaTypeItemsStyle.mediaItemStyle
+                widgetStyle.dividerColor = mediaTypeItemsStyle.dividerColor
+                return widgetStyle
+            } else {
+                return theme.entryWidgetStyle
+            }
         }
 
         var showPoweredBy: Bool {
