@@ -59,6 +59,9 @@ public class ChatStyle: EngagementStyle {
     /// Style of the secure messaging bottom banner view.
     public var secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle
 
+    /// Style of the secure messaging expanded top banner view.
+    public var secureMessagingExpandedTopBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle
+
     /// Style for unavailability to send messages banner view.
     public var sendingMessageUnavailableBannerViewStyle: SendingMessageUnavailableBannerViewStyle
 
@@ -110,7 +113,8 @@ public class ChatStyle: EngagementStyle {
         gliaVirtualAssistant: GliaVirtualAssistantStyle,
         secureMessagingTopBannerStyle: SecureMessagingTopBannerViewStyle,
         secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle,
-        sendingMessageUnavailableBannerViewStyle: SendingMessageUnavailableBannerViewStyle
+        sendingMessageUnavailableBannerViewStyle: SendingMessageUnavailableBannerViewStyle,
+        secureMessagingExpandedTopBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle
     ) {
         self.title = title
         self.visitorMessageStyle = visitorMessageStyle
@@ -132,6 +136,7 @@ public class ChatStyle: EngagementStyle {
         self.secureMessagingTopBannerStyle = secureMessagingTopBannerStyle
         self.secureMessagingBottomBannerStyle = secureMessagingBottomBannerStyle
         self.sendingMessageUnavailableBannerViewStyle = sendingMessageUnavailableBannerViewStyle
+        self.secureMessagingExpandedTopBannerItemsStyle = secureMessagingExpandedTopBannerItemsStyle
 
         super.init(
             header: header,
