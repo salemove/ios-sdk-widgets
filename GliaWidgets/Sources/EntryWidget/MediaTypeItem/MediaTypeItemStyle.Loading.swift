@@ -2,7 +2,7 @@ import Foundation
 
 extension EntryWidgetStyle.MediaTypeItemStyle {
     /// The style of a media type item when it is loading.
-    public struct LoadingStyle {
+    public struct LoadingStyle: Equatable {
         /// The color of the placeholders during the loading state.
         public var loadingTintColor: ColorType
 

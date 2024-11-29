@@ -26,7 +26,8 @@ extension ChatStyle {
         gliaVirtualAssistant: GliaVirtualAssistantStyle = .mock(),
         secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle = .mock(),
         secureMessagingTopBannerStyle: SecureMessagingTopBannerViewStyle = .mock(),
-        sendingMessageUnavailableBannerViewStyle: SendingMessageUnavailableBannerViewStyle = .mock()
+        sendingMessageUnavailableBannerViewStyle: SendingMessageUnavailableBannerViewStyle = .mock(),
+        secureMessagingExpandedTopBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle = .mock()
     ) -> ChatStyle {
         ChatStyle.init(
             header: header,
@@ -51,7 +52,8 @@ extension ChatStyle {
             gliaVirtualAssistant: gliaVirtualAssistant,
             secureMessagingTopBannerStyle: secureMessagingTopBannerStyle,
             secureMessagingBottomBannerStyle: secureMessagingBottomBannerStyle,
-            sendingMessageUnavailableBannerViewStyle: sendingMessageUnavailableBannerViewStyle
+            sendingMessageUnavailableBannerViewStyle: sendingMessageUnavailableBannerViewStyle,
+            secureMessagingExpandedTopBannerItemsStyle: secureMessagingExpandedTopBannerItemsStyle
         )
     }
 }
