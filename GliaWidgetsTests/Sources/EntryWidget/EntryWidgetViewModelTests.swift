@@ -46,4 +46,49 @@ class EntryWidgetViewModelTests: XCTestCase {
         
         XCTAssertFalse(viewModel.showPoweredBy)
     }
+    
+    func test_viewModelUsesDefaultStyleFromTheme() {
+        let entryWidget = EntryWidget.mock()
+        let theme = Theme.mock()
+        let viewModel = EntryWidgetView.Model(
+            theme: theme,
+            showHeader: true,
+            configuration: .mock(showPoweredBy: true),
+            viewStatePublisher: entryWidget.$viewState,
+            mediaTypeSelected: { _ in }
+        )
+        
+        XCTAssertEqual(
+            viewModel.style.mediaTypeItem,
+            theme.chatStyle.secureMessagingExpandedTopBannerItemsStyle.mediaItemStyle
+        )
+        XCTAssertEqual(
+            viewModel.style.dividerColor,
+            theme.chatStyle.secureMessagingExpandedTopBannerItemsStyle.dividerColor
+        )
+    }
+    
+    func test_viewModelUsesConfiguredMediaTypeItemsStyle() {
+        let entryWidget = EntryWidget.mock()
+        let theme = Theme.mock()
+        let mockStyle = EntryWidgetStyle.MediaTypeItemsStyle.mock()
+        let viewModel = EntryWidgetView.Model(
+            theme: theme,
+            showHeader: true,
+            configuration: .mock(showPoweredBy: true, mediaTypeItemsStyle: mockStyle),
+            viewStatePublisher: entryWidget.$viewState,
+            mediaTypeSelected: { _ in }
+        )
+        
+        XCTAssertEqual(viewModel.style.mediaTypeItem, mockStyle.mediaItemStyle)
+        XCTAssertEqual(viewModel.style.dividerColor, mockStyle.dividerColor)
+        XCTAssertNotEqual(
+            viewModel.style.mediaTypeItem,
+            theme.chatStyle.secureMessagingExpandedTopBannerItemsStyle.mediaItemStyle
+        )
+        XCTAssertNotEqual(
+            viewModel.style.dividerColor,
+            theme.chatStyle.secureMessagingExpandedTopBannerItemsStyle.dividerColor
+        )
+    }
 }

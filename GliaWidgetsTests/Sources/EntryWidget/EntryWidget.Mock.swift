@@ -5,7 +5,8 @@ extension EntryWidget.Configuration {
         sizeConstraint: EntryWidget.SizeConstraints? = nil,
         showPoweredBy: Bool? = nil,
         filterSecureConversation: Bool? = nil,
-        mediaTypeSelected: Command<EntryWidget.MediaTypeItem>? = nil
+        mediaTypeSelected: Command<EntryWidget.MediaTypeItem>? = nil,
+        mediaTypeItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle? = nil
     ) -> Self {
         Self(
             sizeConstraints: sizeConstraint ?? .init(
@@ -20,7 +21,8 @@ extension EntryWidget.Configuration {
             ),
             showPoweredBy: showPoweredBy ?? true,
             filterSecureConversation: filterSecureConversation ?? false,
-            mediaTypeSelected: mediaTypeSelected
+            mediaTypeSelected: mediaTypeSelected,
+            mediaTypeItemsStyle: mediaTypeItemsStyle
         )
     }
 }
