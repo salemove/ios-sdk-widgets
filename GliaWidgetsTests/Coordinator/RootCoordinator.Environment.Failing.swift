@@ -52,7 +52,6 @@ extension EngagementCoordinator.Environment {
         createFileUploadListModel: { _ in
             fail("\(Self.self).createFileUploadListModel")
             return .mock()
-
         },
         uploadSecureFile: { _, _, _ in
             fail("\(Self.self).uploadSecureFile")
@@ -96,9 +95,9 @@ extension EngagementCoordinator.Environment {
         cameraDeviceManager: { .failing },
         flipCameraButtonStyle: .nop,
         alertManager: .failing(viewFactory: .mock()),
-        queuesMonitor: .failing, 
-        pendingSecureConversationStatusUpdates: { _ in
-            fail("\(Self.self).pendingSecureConversationStatusUpdates")
+        queuesMonitor: .failing,
+        pendingSecureConversationStatus: { _ in
+            fail("\(Self.self).pendingSecureConversationStatus")
         },
         createEntryWidget: { _ in
             fail("\(Self.self).createEntryWidget")

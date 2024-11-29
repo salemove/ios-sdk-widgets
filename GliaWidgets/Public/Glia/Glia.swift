@@ -135,19 +135,7 @@ public class Glia {
     //
     // Currently it's used to know if we have to force a visitor to SecureMessaging screen,
     // once they try to start an engagement with media type other than `messaging`.
-    var hasPendingInteraction: Bool {
-        var pendingConversationExists = false
-        environment.coreSdk.pendingSecureConversationStatusUpdates { hasPendingConversationResult in
-            pendingConversationExists = (try? hasPendingConversationResult.get()) ?? false
-        }
-
-        var unreadMessageCount = 0
-        environment.coreSdk.getSecureUnreadMessageCount {
-            unreadMessageCount = (try? $0.get()) ?? 0
-        }
-
-        return unreadMessageCount > 0 || pendingConversationExists
-    }
+    let pendingInteraction: SecureConversations.PendingInteraction
 
     init(environment: Environment) {
         self.environment = environment
@@ -191,6 +179,7 @@ public class Glia {
                 viewFactory: viewFactory
             )
         )
+        pendingInteraction = .init(environment: .init(with: environment.coreSdk))
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
