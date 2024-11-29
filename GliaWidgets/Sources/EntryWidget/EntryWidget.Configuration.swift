@@ -20,6 +20,7 @@ extension EntryWidget {
         let showPoweredBy: Bool
         let filterSecureConversation: Bool
         let mediaTypeSelected: Command<EntryWidget.MediaTypeItem>?
+        let mediaTypeItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle?
     }
 }
 
@@ -37,6 +38,7 @@ extension EntryWidget.Configuration {
         ),
         showPoweredBy: true,
         filterSecureConversation: false,
-        mediaTypeSelected: nil
+        mediaTypeSelected: nil,
+        mediaTypeItemsStyle: nil
     )
 }

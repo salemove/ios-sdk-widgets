@@ -470,6 +470,11 @@ extension Theme {
             iconColor: color.baseLight
         )
 
+        let secureMessagingExpandedTopBannerItemsStyle = EntryWidgetStyle.MediaTypeItemsStyle(
+            mediaItemStyle: entryWidgetStyle.mediaTypeItem,
+            dividerColor: entryWidgetStyle.dividerColor
+        )
+
         return ChatStyle(
             header: header,
             connect: connect,
@@ -498,7 +503,8 @@ extension Theme {
             gliaVirtualAssistant: gliaVirtualAssistantStyle,
             secureMessagingTopBannerStyle: secureMessagingTopBannerStyle,
             secureMessagingBottomBannerStyle: secureMessagingBottomBannerStyle,
-            sendingMessageUnavailableBannerViewStyle: sendingMessageUnavailableBannerViewStyle
+            sendingMessageUnavailableBannerViewStyle: sendingMessageUnavailableBannerViewStyle,
+            secureMessagingExpandedTopBannerItemsStyle: secureMessagingExpandedTopBannerItemsStyle
         )
     }
 
