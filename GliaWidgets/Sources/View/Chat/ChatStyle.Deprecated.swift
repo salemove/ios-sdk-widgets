@@ -91,7 +91,8 @@ extension ChatStyle {
         gliaVirtualAssistant: GliaVirtualAssistantStyle,
         secureMessagingTopBannerStyle: SecureMessagingTopBannerViewStyle,
         secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle,
-        sendingMessageUnavailableBannerViewStyle: SendingMessageUnavailableBannerViewStyle
+        sendingMessageUnavailableBannerViewStyle: SendingMessageUnavailableBannerViewStyle,
+        secureMessagingExpandedTopBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle
     ) {
         self.init(
             header: header,
@@ -117,7 +118,8 @@ extension ChatStyle {
             gliaVirtualAssistant: gliaVirtualAssistant,
             secureMessagingTopBannerStyle: secureMessagingTopBannerStyle,
             secureMessagingBottomBannerStyle: secureMessagingBottomBannerStyle,
-            sendingMessageUnavailableBannerViewStyle: sendingMessageUnavailableBannerViewStyle
+            sendingMessageUnavailableBannerViewStyle: sendingMessageUnavailableBannerViewStyle,
+            secureMessagingExpandedTopBannerItemsStyle: secureMessagingExpandedTopBannerItemsStyle
         )
     }
 }

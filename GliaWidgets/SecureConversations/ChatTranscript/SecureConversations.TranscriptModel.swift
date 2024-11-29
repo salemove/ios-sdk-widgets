@@ -763,7 +763,8 @@ extension SecureConversations.TranscriptModel {
             ),
             showPoweredBy: false,
             filterSecureConversation: true,
-            mediaTypeSelected: .init(closure: entryWidgetMediaTypeSelected)
+            mediaTypeSelected: .init(closure: entryWidgetMediaTypeSelected),
+            mediaTypeItemsStyle: environment.topBannerItemsStyle
         )
     }
 

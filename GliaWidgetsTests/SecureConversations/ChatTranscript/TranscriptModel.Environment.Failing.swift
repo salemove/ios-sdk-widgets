@@ -87,6 +87,7 @@ extension SecureConversations.TranscriptModel.Environment {
         },
         switchToEngagement: .init { _ in
             fail("\(Self.self).switchToEngagement")
-        }
+        },
+        topBannerItemsStyle: .mock()
     )
 }
