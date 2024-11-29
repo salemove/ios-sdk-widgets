@@ -4,7 +4,7 @@ import XCTest
 extension GliaTests {
     func test_getEngagementLauncherDoesNotThrowErrorWithCorrectConfiguration() throws {
         let sdk = makeConfigurableSDK()
-        
+
         try sdk.configure(
             with: .mock(),
             theme: .mock()
@@ -14,25 +14,25 @@ extension GliaTests {
             try sdk.getEngagementLauncher(queueIds: [])
         )
     }
-    
+
     func test_startChatUsingEngagementLauncherWithCorrectConfiguration() throws {
         let sdk = makeConfigurableSDK()
-        
+
         try sdk.configure(
             with: .mock(),
             theme: .mock()
         ) { _ in }
-        
+
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: [])
-        
+
         try engagementLauncher.startChat()
 
         XCTAssertEqual(sdk.engagement, .chat)
     }
-    
+
     func test_startAudioCallUsingEngagementLauncherWithCorrectConfiguration() throws {
         let sdk = makeConfigurableSDK()
-        
+
         try sdk.configure(
             with: .mock(),
             theme: .mock()
@@ -47,14 +47,14 @@ extension GliaTests {
     
     func test_startVideoCallUsingEngagementLauncherWithCorrectConfiguration() throws {
         let sdk = makeConfigurableSDK()
-        
+
         try sdk.configure(
             with: .mock(),
             theme: .mock()
         ) { _ in }
-        
+
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: [])
-        
+
         try engagementLauncher.startVideoCall()
 
         XCTAssertEqual(sdk.engagement, .videoCall)
@@ -67,9 +67,9 @@ extension GliaTests {
             with: .mock(),
             theme: .mock()
         ) { _ in }
-        
+
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: [])
-        
+
         try engagementLauncher.startSecureMessaging()
 
         XCTAssertEqual(sdk.engagement, .messaging(.welcome))
@@ -100,7 +100,11 @@ private extension GliaTests {
         }
         sdkEnv.coreSdk.getCurrentEngagement = { nil }
         sdkEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
-        sdkEnv.coreSdk.pendingSecureConversationStatusUpdates = { _ in }
+        sdkEnv.coreSdk.pendingSecureConversationStatus = { _ in }
+        sdkEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        sdkEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        sdkEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        sdkEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let window = UIWindow(frame: .zero)
         window.makeKeyAndVisible()
         sdkEnv.uiApplication.windows = { [window] }
