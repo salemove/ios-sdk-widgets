@@ -1,7 +1,7 @@
 import UIKit
 
 extension EntryWidgetStyle {
-    public struct MediaTypeItemStyle {
+    public struct MediaTypeItemStyle: Equatable {
         /// The title for chat media type.
         public var chatTitle: String
 
