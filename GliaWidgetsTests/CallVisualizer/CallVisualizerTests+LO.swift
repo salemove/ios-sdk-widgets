@@ -30,6 +30,10 @@ extension CallVisualizerTests {
         gliaEnv.snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
+        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: gliaEnv)
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
 
@@ -66,6 +70,10 @@ extension CallVisualizerTests {
         gliaEnv.snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
+        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: gliaEnv)
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
 
@@ -102,6 +110,10 @@ extension CallVisualizerTests {
         gliaEnv.snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
+        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: gliaEnv)
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
 
@@ -132,6 +144,10 @@ extension CallVisualizerTests {
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: gliaEnv)
         sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             sdk.environment.coreSdk.getCurrentEngagement = {
@@ -165,6 +181,10 @@ extension CallVisualizerTests {
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: gliaEnv)
         sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             sdk.environment.coreSdk.getCurrentEngagement = {
@@ -198,6 +218,10 @@ extension CallVisualizerTests {
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: gliaEnv)
         sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             sdk.environment.coreSdk.getCurrentEngagement = {
