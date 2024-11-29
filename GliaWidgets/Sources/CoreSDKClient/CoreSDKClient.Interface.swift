@@ -199,9 +199,21 @@ struct CoreSdkClient {
 
     var subscribeForUnreadSCMessageCount: SubscribeForUnreadSCMessageCount
 
-    typealias PendingSecureConversationStatusUpdates = (_ callback: @escaping (Result<Bool, Error>) -> Void) -> Void
+    typealias PendingSecureConversationStatus = (_ callback: @escaping (Result<Bool, Error>) -> Void) -> Void
 
-    var pendingSecureConversationStatusUpdates: PendingSecureConversationStatusUpdates
+    var pendingSecureConversationStatus: PendingSecureConversationStatus
+
+    typealias ObservePendingSecureConversationStatus = (_ callback: @escaping (Result<Bool, Error>) -> Void) -> String?
+
+    var observePendingSecureConversationStatus: ObservePendingSecureConversationStatus
+
+    typealias UnsubscribeFromPendingSCStatus = (String) -> Void
+
+    var unsubscribeFromPendingSecureConversationStatus: UnsubscribeFromPendingSCStatus
+
+    typealias UnsubscribeFromUnreadCount = (String) -> Void
+
+    var unsubscribeFromUnreadCount: UnsubscribeFromUnreadCount
 }
 
 extension CoreSdkClient {
