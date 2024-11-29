@@ -44,7 +44,7 @@ extension EngagementCoordinator {
         var flipCameraButtonStyle: FlipCameraButtonStyle
         var alertManager: AlertManager
         var queuesMonitor: QueuesMonitor
-        var pendingSecureConversationStatusUpdates: CoreSdkClient.PendingSecureConversationStatusUpdates
+        var pendingSecureConversationStatus: CoreSdkClient.PendingSecureConversationStatus
         var createEntryWidget: EntryWidgetBuilder
         var dismissManager: GliaPresenter.DismissManager
     }
@@ -103,7 +103,7 @@ extension EngagementCoordinator.Environment {
             flipCameraButtonStyle: viewFactory.theme.call.flipCameraButtonStyle,
             alertManager: alertManager,
             queuesMonitor: queuesMonitor,
-            pendingSecureConversationStatusUpdates: environment.coreSdk.pendingSecureConversationStatusUpdates,
+            pendingSecureConversationStatus: environment.coreSdk.pendingSecureConversationStatus,
             createEntryWidget: createEntryWidget,
             dismissManager: environment.dismissManager
         )
