@@ -25,7 +25,8 @@ extension Glia {
                 log: loggerPhase.logger,
                 isAuthenticated: environment.isAuthenticated,
                 hasPendingInteraction: { [weak self] in
-                    self?.hasPendingInteraction ?? false
+                    guard let self else { return false }
+                    return pendingInteraction.hasPendingInteraction
                 }
             )
         )
