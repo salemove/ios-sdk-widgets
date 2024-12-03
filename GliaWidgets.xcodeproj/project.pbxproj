@@ -389,6 +389,7 @@
 		845E2F98283FC9A900C04D56 /* Theme.Survey.OptionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F97283FC9A900C04D56 /* Theme.Survey.OptionButton.swift */; };
 		845E2F9B283FCA9000C04D56 /* Theme.Survey.Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F9A283FCA9000C04D56 /* Theme.Survey.Checkbox.swift */; };
 		845E2F9D283FCB1400C04D56 /* Theme.Survey.Checkbox.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845E2F9C283FCB1400C04D56 /* Theme.Survey.Checkbox.Accessibility.swift */; };
+		845FC97C2CFF4392001E9E38 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 845FC97B2CFF4392001E9E38 /* LICENSE */; };
 		84602A742AE94DE50031E606 /* ProximityManager.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84602A732AE94DE50031E606 /* ProximityManager.Mock.swift */; };
 		84602A772AEA5BEA0031E606 /* ProximityManager.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84602A762AEA5BEA0031E606 /* ProximityManager.Failing.swift */; };
 		84602A792AEAB7CA0031E606 /* Survey.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84602A782AEAB7CA0031E606 /* Survey.Mock.swift */; };
@@ -1401,6 +1402,7 @@
 		845E2F97283FC9A900C04D56 /* Theme.Survey.OptionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.OptionButton.swift; sourceTree = "<group>"; };
 		845E2F9A283FCA9000C04D56 /* Theme.Survey.Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.Checkbox.swift; sourceTree = "<group>"; };
 		845E2F9C283FCB1400C04D56 /* Theme.Survey.Checkbox.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.Checkbox.Accessibility.swift; sourceTree = "<group>"; };
+		845FC97B2CFF4392001E9E38 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		84602A732AE94DE50031E606 /* ProximityManager.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProximityManager.Mock.swift; sourceTree = "<group>"; };
 		84602A762AEA5BEA0031E606 /* ProximityManager.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProximityManager.Failing.swift; sourceTree = "<group>"; };
 		84602A782AEAB7CA0031E606 /* Survey.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.Mock.swift; sourceTree = "<group>"; };
@@ -2237,6 +2239,7 @@
 		1A205D4E25655CB1003AA3CD = {
 			isa = PBXGroup;
 			children = (
+				845FC97B2CFF4392001E9E38 /* LICENSE */,
 				1A205D7925655CEC003AA3CD /* TestingApp */,
 				1A205D5A25655CB1003AA3CD /* GliaWidgets */,
 				1A205D6525655CB2003AA3CD /* GliaWidgetsTests */,
@@ -5277,6 +5280,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				845FC97C2CFF4392001E9E38 /* LICENSE in Resources */,
 				1A205D8725655CEE003AA3CD /* LaunchScreen.storyboard in Resources */,
 				756979C52A1E5E3C002ED254 /* Assets.xcassets in Resources */,
 				C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */,
