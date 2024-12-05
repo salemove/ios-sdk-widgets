@@ -18,7 +18,7 @@ target 'TestingApp' do
 end
 
 target 'GliaWidgets' do
-  pod 'GliaCoreSDK', '1.5.6'
+  pod 'GliaCoreSDK'
   swiftlint
 end
 
