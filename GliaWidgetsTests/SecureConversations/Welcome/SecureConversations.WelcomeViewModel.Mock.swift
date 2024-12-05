@@ -53,7 +53,8 @@ extension SecureConversations.Availability {
             listQueues: { _ in },
             isAuthenticated: { true },
             log: .mock,
-            queuesMonitor: .mock()
+            queuesMonitor: .mock(),
+            getCurrentEngagement: { .mock() }
         )
     )
 }

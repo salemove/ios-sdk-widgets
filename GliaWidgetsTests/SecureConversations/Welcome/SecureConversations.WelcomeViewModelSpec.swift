@@ -265,7 +265,7 @@ extension SecureConversationsWelcomeViewModelTests {
         }
 
         viewModel = .init(environment: environment, availability: .mock)
-        viewModel.availabilityStatus = .available()
+        viewModel.availabilityStatus = .available(.queues(queueIds: []))
 
         if case .welcome(let props) = viewModel.props() {
             XCTAssertNotNil(props.filePickerButton)
@@ -335,7 +335,7 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 
     func testSendMessageButtonStateFileUploads() {
-        viewModel.availabilityStatus = .available()
+        viewModel.availabilityStatus = .available(.queues(queueIds: []))
         let uploadFile: FileUpload.Environment.UploadFile = .toSecureMessaging { file, progress, completion in
             completion(.failure(CoreSdkClient.GliaCoreError(reason: "")))
             return .mock
@@ -354,7 +354,7 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 
     func testSendMessageButtonStateInProgressFileUpload() {
-        viewModel.availabilityStatus = .available()
+        viewModel.availabilityStatus = .available(.queues(queueIds: []))
         let fileUpload: FileUpload = .mock()
         fileUpload.startUpload()
         viewModel.fileUploadListModel.environment.uploader.uploads = [fileUpload]
@@ -367,7 +367,7 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 
     func testSendMessageButtonStateEmptyText() {
-        viewModel.availabilityStatus = .available()
+        viewModel.availabilityStatus = .available(.queues(queueIds: []))
         viewModel.messageText = ""
 
         if case .welcome(let props) = viewModel.props() {
@@ -378,7 +378,7 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 
     func testSendMessageButtonStateSuccessfulUpload() {
-        viewModel.availabilityStatus = .available()
+        viewModel.availabilityStatus = .available(.queues(queueIds: []))
         viewModel.fileUploadListModel.environment.uploader = FileUploader(maximumUploads: 100, environment: .mock)
         viewModel.messageText = ""
 
@@ -390,7 +390,7 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 
     func testSendMessageButtonStateNoQueues() {
-        viewModel.availabilityStatus = .available()
+        viewModel.availabilityStatus = .available(.queues(queueIds: []))
         viewModel.messageText = "text"
         viewModel.fileUploadListModel.environment.uploader = FileUploader(maximumUploads: 100, environment: .mock)
         viewModel.environment.queueIds = []
@@ -403,7 +403,7 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 
     func testSendMessageButtonStateLoadingMessageRequestState() {
-        viewModel.availabilityStatus = .available()
+        viewModel.availabilityStatus = .available(.queues(queueIds: []))
         viewModel.messageText = "text"
         viewModel.fileUploadListModel.environment.uploader = FileUploader(maximumUploads: 100, environment: .mock)
         viewModel.environment.queueIds = [""]
@@ -417,7 +417,7 @@ extension SecureConversationsWelcomeViewModelTests {
     }
 
     func testSendMessageButtonStateWaitingMessageRequestState() {
-        viewModel.availabilityStatus = .available()
+        viewModel.availabilityStatus = .available(.queues(queueIds: []))
         viewModel.messageText = "text"
         viewModel.fileUploadListModel.environment.uploader = FileUploader(maximumUploads: 100, environment: .mock)
         viewModel.environment.queueIds = [""]
@@ -623,7 +623,7 @@ extension SecureConversationsWelcomeViewModelTests {
 
         viewModel = .init(environment: .mock(queueIds: [uuid]), availability: availability)
 
-        XCTAssertEqual(viewModel.availabilityStatus, .available())
+        XCTAssertEqual(viewModel.availabilityStatus, .available(.queues(queueIds: [])))
     }
 
     func testAvailabilityUnavailableEmptyQueues() {
