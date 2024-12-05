@@ -140,7 +140,8 @@ private extension SecureConversationsTranscriptModelTests {
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
             log: logger,
-            queuesMonitor: .mock()
+            queuesMonitor: .mock(),
+            getCurrentEngagement: { .mock() }
         )
 
         return TranscriptModel(
