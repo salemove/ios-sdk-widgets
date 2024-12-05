@@ -215,14 +215,14 @@ class EntryWidgetTests: XCTestCase {
         }
         let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
         queuesMonitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
-        
+
         var environment = EntryWidget.Environment.mock()
         environment.queuesMonitor = queuesMonitor
         environment.observeSecureUnreadMessageCount = { result in
             result(.success(5))
             return UUID.mock.uuidString
         }
-        var configuration = EntryWidget.Configuration.mock(filterSecureConversation: true)
+        let configuration = EntryWidget.Configuration.mock(filterSecureConversation: true)
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
             configuration: configuration,
