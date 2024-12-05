@@ -33,7 +33,7 @@ enum AlertInputType: Equatable {
         declined: (() -> Void)? = nil,
         answer: CoreSdkClient.AnswerBlock
     )
-    case leaveCurrentConversation(confirmed: () -> Void)
+    case leaveCurrentConversation(confirmed: () -> Void, declined: (() -> Void)? = nil)
 
     static func == (lhs: AlertInputType, rhs: AlertInputType) -> Bool {
         switch (lhs, rhs) {
