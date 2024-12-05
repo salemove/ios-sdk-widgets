@@ -467,7 +467,8 @@ class ChatViewModelTests: XCTestCase {
             listQueues: transcriptModelEnv.listQueues,
             isAuthenticated: { true },
             log: logger,
-            queuesMonitor: .mock()
+            queuesMonitor: .mock(),
+            getCurrentEngagement: { .mock() }
         )
         let transcriptModel = TranscriptModel(
             isCustomCardSupported: false,

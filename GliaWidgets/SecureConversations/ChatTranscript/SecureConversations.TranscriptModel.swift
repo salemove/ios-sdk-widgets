@@ -146,8 +146,12 @@ extension SecureConversations {
             availability.checkSecureConversationsAvailability(for: environment.queueIds) { [weak self] result in
                 guard let self else { return }
                 switch result {
-                case let .success(.available(queueIds)):
+                case let .success(.available(.queues(queueIds))):
                     self.environment.queueIds = queueIds
+                    self.isSecureConversationsAvailable = true
+                    self.fileUploadListModel.isEnabled = true
+                case .success(.available(.transferred)):
+                    self.environment.queueIds = []
                     self.isSecureConversationsAvailable = true
                     self.fileUploadListModel.isEnabled = true
                 case .failure, .success(.unavailable(.emptyQueue)), .success(.unavailable(.unauthenticated)):
