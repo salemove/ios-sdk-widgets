@@ -4,7 +4,8 @@ extension AlertViewController {
     func makeLeaveConversationAlertView(
         with conf: ConfirmationAlertConfiguration,
         accessibilityIdentifier: String,
-        confirmed: @escaping () -> Void
+        confirmed: @escaping () -> Void,
+        declined: (() -> Void)?
     ) -> AlertView {
         let alertView = makeAlertView(
             with: conf,
@@ -33,7 +34,7 @@ extension AlertViewController {
         let declineButton = ActionButton(
             props: ActionButton.Props(
                 style: positiveButtonStyle,
-                tap: .init { [weak self] in self?.dismiss(animated: true) },
+                tap: .init { [weak self] in self?.dismiss(animated: true) { declined?() } },
                 accessibilityIdentifier: "alert_positive_button"
             )
         )
