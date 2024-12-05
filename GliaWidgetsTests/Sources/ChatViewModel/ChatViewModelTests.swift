@@ -996,7 +996,7 @@ class ChatViewModelTests: XCTestCase {
 
         let upload = FileUpload.mock()
         upload.state.value = .uploaded(file: try .mock())
-        var fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
+        let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
         fileUploadListViewModelEnv.uploader.uploads = [upload]
         viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
         viewModelEnv.createSendMessagePayload = { .mock(content: $0, attachment: $1) }
