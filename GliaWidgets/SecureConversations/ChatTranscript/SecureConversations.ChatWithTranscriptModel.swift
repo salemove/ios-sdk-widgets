@@ -70,10 +70,10 @@ extension SecureConversations.ChatWithTranscriptModel {
         }
     }
 
-    var isSecureConversationsAvailable: Bool {
+    var isSendMessageAvailable: Bool {
         switch self {
         case .chat:
-            false
+            true
         case let .transcript(model):
             model.isSecureConversationsAvailable
         }
