@@ -80,6 +80,7 @@ extension SecureConversations {
 
         private let deliveredStatusText: String
         private let failedToDeliverStatusText: String
+        private(set) var hasUnreadMessages = false
 
         var numberOfSections: Int {
             sections.count
@@ -557,13 +558,14 @@ extension SecureConversations.TranscriptModel {
                     divider: ChatItem(kind: .unreadMessageDivider)
                 )
 
+                self.hasUnreadMessages = messagesWithUnreadCount.unreadCount > 0
                 self.historySection.set(itemsWithDivider)
                 self.action?(.refreshSection(self.historySection.index))
                 self.action?(.scrollToBottom(animated: false))
                 completion(messagesWithUnreadCount.messages)
-                if messagesWithUnreadCount.unreadCount > 0 {
-                    self.markMessagesAsRead()
-                }
+                markMessagesAsRead(
+                    with: self.hasUnreadMessages && !environment.shouldShowLeaveSecureConversationDialog
+                )
 
                 if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
                     let props = button.options.compactMap { [weak self] in self?.quickReplyOption($0) }
@@ -592,18 +594,22 @@ extension SecureConversations.TranscriptModel {
             // We no longer need to listen to Interactor events,
             // so unsubscribe.
             self.environment.interactor.removeObserver(self)
-            markMessagesAsRead()
             delegate?(.upgradeToChatEngagement(self))
         case let .receivedMessage(message):
             receiveMessage(from: .socket(message))
+            markMessagesAsRead(delayed: false)
         default:
             break
         }
     }
 
-    func markMessagesAsRead() {
+    func markMessagesAsRead(delayed: Bool = true, with predicate: Bool = true) {
+        guard predicate else {
+            return
+        }
         let mainQueue = environment.gcd.mainQueue
-        let dispatchTime: DispatchTime = .now() + .seconds(Self.markUnreadMessagesDelaySeconds)
+        let delay = DispatchTimeInterval.seconds(delayed ? Self.markUnreadMessagesDelaySeconds : 0)
+        let dispatchTime: DispatchTime = .now() + delay
 
         mainQueue.asyncAfterDeadline(dispatchTime) { [environment, weak historySection, action, weak self] in
             _ = environment.secureMarkMessagesAsRead { result in

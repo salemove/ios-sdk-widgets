@@ -109,11 +109,12 @@ class AlertViewController: UIViewController, Replaceable {
                 accessibilityIdentifier: accessibilityIdentifier,
                 confirmed: confirmed
             )
-        case let .leaveConversation(conf, accessibilityIdentifier, confirmed):
+        case let .leaveConversation(conf, accessibilityIdentifier, confirmed, declined):
             return makeLeaveConversationAlertView(
                 with: conf,
                 accessibilityIdentifier: accessibilityIdentifier,
-                confirmed: confirmed
+                confirmed: confirmed,
+                declined: declined
             )
         case let .singleAction(conf, accessibilityIdentifier, actionTapped):
             return makeSingleActionAlertView(
