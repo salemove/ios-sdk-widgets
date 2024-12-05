@@ -19,7 +19,8 @@ enum AlertType {
     case leaveConversation(
         conf: ConfirmationAlertConfiguration,
         accessibilityIdentifier: String,
-        confirmed: () -> Void
+        confirmed: () -> Void,
+        declined: (() -> Void)?
     )
     case singleAction(
         conf: SingleActionAlertConfiguration,
