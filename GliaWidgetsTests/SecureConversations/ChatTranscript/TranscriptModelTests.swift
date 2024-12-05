@@ -21,7 +21,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
             log: logger,
-            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
         let viewModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -52,7 +53,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             listQueues: modelEnv.listQueues,
             isAuthenticated: { false },
             log: logger,
-            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
         let viewModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -87,7 +89,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
             log: .failing,
-            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let viewModel = TranscriptModel(
@@ -135,7 +138,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
             log: .failing,
-            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
         let viewModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -169,7 +173,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
             log: .failing,
-            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
         let viewModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -217,7 +222,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
             log: .failing,
-            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let viewModel = TranscriptModel(
@@ -260,7 +266,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
             log: .failing,
-            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let viewModel = TranscriptModel(
@@ -299,7 +306,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
             log: .failing,
-            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let viewModel = TranscriptModel(
@@ -344,7 +352,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
             log: .failing,
-            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let viewModel = TranscriptModel(
@@ -385,7 +394,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
             log: .failing,
-            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let viewModel = TranscriptModel(
@@ -429,7 +439,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
             log: .failing,
-            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let viewModel = TranscriptModel(
@@ -470,7 +481,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             callback(.success(0))
         }
         modelEnv.startSocketObservation = {}
-        modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, callback in }
+        modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, _ in }
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.createEntryWidget = { _ in .mock() }
         let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
@@ -480,7 +491,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
             log: .failing,
-            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let interactor: Interactor = .failing
@@ -547,7 +559,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
             log: .failing,
-            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let interactor: Interactor = .failing
@@ -611,6 +624,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         }
         availabilityEnv.isAuthenticated = { true }
         availabilityEnv.queuesMonitor = .mock(listQueues: availabilityEnv.listQueues)
+        availabilityEnv.getCurrentEngagement = { .mock() }
         let model = TranscriptModel(
             isCustomCardSupported: false,
             environment: modelEnvironment,
@@ -705,6 +719,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         }
         availabilityEnv.isAuthenticated = { true }
         availabilityEnv.queuesMonitor = .mock(listQueues: availabilityEnv.listQueues)
+        availabilityEnv.getCurrentEngagement = { .mock() }
         let model = TranscriptModel(
             isCustomCardSupported: false,
             environment: modelEnvironment,
@@ -729,7 +744,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnvironment.createFileUploadListModel = {
             .mock(environment: $0)
         }
-        modelEnvironment.createEntryWidget = { _ in .mock() } 
+        modelEnvironment.createEntryWidget = { _ in .mock() }
         var availabilityEnv = SecureConversations.Availability.Environment.failing
         availabilityEnv.log = logger
         availabilityEnv.listQueues = { callback in
@@ -737,6 +752,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         }
         availabilityEnv.isAuthenticated = { true }
         availabilityEnv.queuesMonitor = .mock(listQueues: availabilityEnv.listQueues)
+        availabilityEnv.getCurrentEngagement = { .mock() }
         let model = TranscriptModel(
             isCustomCardSupported: false,
             environment: modelEnvironment,
@@ -759,7 +775,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             XCTFail("Unexpected action: \(receivedAction)")
         }
     }
-    
+
     func testLoadHistoryAlsoInvokesSecureMarkMessagesAsReadIfShouldNotShowLeaveSecureConversationDialog() {
         var modelEnv = TranscriptModel.Environment.failing
         let fileUploadListModel = FileUploadListViewModel.mock()
@@ -790,7 +806,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
             log: .failing,
-            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let viewModel = TranscriptModel(
@@ -806,10 +823,10 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
         viewModel.start()
         scheduler.run()
-        
+
         XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
     }
-    
+
     func testLoadHistoryNotInvokesSecureMarkMessagesAsReadIfShouldShowLeaveSecureConversationDialog() {
         var modelEnv = TranscriptModel.Environment.failing
         let fileUploadListModel = FileUploadListViewModel.mock()
@@ -840,7 +857,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
             log: .failing,
-            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let viewModel = TranscriptModel(
@@ -856,7 +874,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
         viewModel.start()
         scheduler.run()
-        
+
         XCTAssertTrue(calls.isEmpty)
     }
 
@@ -890,7 +908,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
             log: .failing,
-            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let viewModel = TranscriptModel(
@@ -903,7 +922,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             failedToDeliverStatusText: "",
             interactor: .failing
         )
-        
+
         viewModel.engagementAction = { action in
             if case .showAlert(let type) = action, case let .leaveCurrentConversation(_, declined) = type {
                 declined?()
@@ -912,10 +931,10 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
         viewModel.start()
         scheduler.run()
-        
+
         XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
     }
-    
+
     func testReceiveMessageMarksMessagesAsRead() {
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
@@ -950,7 +969,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
             log: .failing,
-            queuesMonitor: .mock(listQueues: modelEnv.listQueues)
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let viewModel = TranscriptModel(
