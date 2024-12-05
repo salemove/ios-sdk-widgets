@@ -40,8 +40,16 @@ extension SecureConversations {
             let filteredQueues = fetchedQueues.filter(defaultPredicate)
 
             // Check if matched queues match support `messaging` and
-            // have status other than `closed`
+            // have status other than `closed`.
             guard !filteredQueues.isEmpty else {
+                // In case of "transferred SC" we should treat SC as available.
+                if let engagement = environment.getCurrentEngagement(),
+                   engagement.status == .transferring,
+                   engagement.capabilities?.text == true {
+                    completion(.success(.available(.transferred)))
+                    return
+                }
+
                 environment.log.warning("Provided queue IDs do not match with queues that have status other than closed and support messaging.")
                 completion(.success(.unavailable(.emptyQueue)))
                 return
@@ -49,7 +57,7 @@ extension SecureConversations {
             let queueIds = filteredQueues.map { $0.id }
 
             environment.log.info("Secure Messaging is available in queues with IDs: \(queueIds).")
-            completion(.success(.available(queueIds: queueIds)))
+            completion(.success(.available(.queues(queueIds: queueIds))))
         }
 
         private var defaultPredicate: (CoreSdkClient.Queue) -> Bool {
@@ -67,12 +75,17 @@ extension SecureConversations.Availability {
         var isAuthenticated: () -> Bool
         var log: CoreSdkClient.Logger
         var queuesMonitor: QueuesMonitor
+        var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
     }
 }
 
 extension SecureConversations.Availability {
     enum Status: Equatable {
-        case available(queueIds: [String] = [])
+        enum Available: Equatable {
+            case queues(queueIds: [String])
+            case transferred
+        }
+        case available(Available)
         case unavailable(UnavailabilityReason)
 
         static func == (lhs: Status, rhs: Status) -> Bool {
@@ -83,6 +96,15 @@ extension SecureConversations.Availability {
                 return lhsReason == rhsReason
             default:
                 return false
+            }
+        }
+
+        var isAvailable: Bool {
+            switch self {
+            case .available:
+                true
+            case .unavailable:
+                false
             }
         }
     }
@@ -101,7 +123,8 @@ extension SecureConversations.Availability.Environment {
             listQueues: environment.listQueues,
             isAuthenticated: environment.isAuthenticated,
             log: environment.log,
-            queuesMonitor: environment.queuesMonitor
+            queuesMonitor: environment.queuesMonitor,
+            getCurrentEngagement: environment.getCurrentEngagement
         )
     }
 
@@ -110,7 +133,8 @@ extension SecureConversations.Availability.Environment {
             listQueues: environment.listQueues,
             isAuthenticated: environment.isAuthenticated,
             log: environment.log,
-            queuesMonitor: environment.queuesMonitor
+            queuesMonitor: environment.queuesMonitor,
+            getCurrentEngagement: environment.getCurrentEngagement
         )
     }
 }
@@ -129,13 +153,15 @@ extension SecureConversations.Availability.Environment {
         listQueues: @escaping CoreSdkClient.ListQueues = { _ in },
         isAuthenticated: @escaping () -> Bool = { false },
         log: CoreSdkClient.Logger = .mock,
-        queuesMonitor: QueuesMonitor = .mock()
+        queuesMonitor: QueuesMonitor = .mock(),
+        getCurrentEngagement: @escaping CoreSdkClient.GetCurrentEngagement = { .mock() }
     ) -> Self {
         .init(
             listQueues: listQueues,
             isAuthenticated: isAuthenticated,
             log: log,
-            queuesMonitor: queuesMonitor
+            queuesMonitor: queuesMonitor,
+            getCurrentEngagement: getCurrentEngagement
         )
     }
 }

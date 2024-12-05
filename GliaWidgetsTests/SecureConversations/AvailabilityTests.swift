@@ -32,6 +32,7 @@ final class AvailabilityTests: XCTestCase {
         env.log = logger
         env.isAuthenticated = { true }
         env.queuesMonitor = .mock(listQueues: env.listQueues)
+        env.getCurrentEngagement = { .mock() }
         let queueIds = [UUID.mock.uuidString]
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
@@ -81,7 +82,7 @@ final class AvailabilityTests: XCTestCase {
         let result = try XCTUnwrap(receivedResult)
         switch result {
         case let .success(.available(queueIds)):
-            XCTAssertEqual(queueIds, [queueId])
+            XCTAssertEqual(queueIds, .queues(queueIds: [queueId]))
         default:
             XCTFail("Result should be `.success(.available)`")
         }
@@ -100,6 +101,7 @@ final class AvailabilityTests: XCTestCase {
         env.log = logger
         env.isAuthenticated = { true }
         env.queuesMonitor = .mock(listQueues: env.listQueues)
+        env.getCurrentEngagement = { .mock() }
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
         availability.checkSecureConversationsAvailability(for: queueIds) { result in
@@ -121,6 +123,7 @@ final class AvailabilityTests: XCTestCase {
         env.log = logger
         env.isAuthenticated = { true }
         env.queuesMonitor = .mock(listQueues: env.listQueues)
+        env.getCurrentEngagement = { .mock() }
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
         availability.checkSecureConversationsAvailability(for: [queueId]) { result in
@@ -136,6 +139,7 @@ final class AvailabilityTests: XCTestCase {
         env.listQueues = { callback in
             callback([.mock(id: queueId, status: .closed, media: [.text])], nil)
         }
+        env.getCurrentEngagement = { .mock() }
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.warningClosure = { _, _, _, _ in }
@@ -170,7 +174,7 @@ final class AvailabilityTests: XCTestCase {
         }
         let result = try XCTUnwrap(receivedResult)
         switch result {
-        case let .success(.available(queueIds)):
+        case let .success(.available(.queues(queueIds))):
             XCTAssertEqual(queueIds, [queueId])
         default:
             XCTFail("Result should be `.success(.available)`")
@@ -189,11 +193,41 @@ final class AvailabilityTests: XCTestCase {
         env.log = logger
         env.isAuthenticated = { true }
         env.queuesMonitor = .mock(listQueues: env.listQueues)
+        env.getCurrentEngagement = { .mock() }
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
         availability.checkSecureConversationsAvailability(for: []) { result in
             receivedResult = result
         }
         try XCTAssertEqual(XCTUnwrap(receivedResult), .success(.unavailable(.emptyQueue)))
+    }
+
+    func testAvailableStatusIfTransferredAndCapabilitiesTextTrue() throws {
+        var env = Availability.Environment.failing
+        env.getCurrentEngagement = {
+            .mock(status: .transferring, capabilities: .init(text: true))
+        }
+        env.listQueues = { callback in
+            callback([], nil)
+        }
+        var logger = CoreSdkClient.Logger.failing
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }
+        env.log = logger
+        env.isAuthenticated = { true }
+        env.queuesMonitor = .mock(listQueues: env.listQueues)
+        let availability = Availability(environment: env)
+        var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
+        availability.checkSecureConversationsAvailability(for: []) { result in
+            receivedResult = result
+        }
+        let result = try XCTUnwrap(receivedResult)
+        switch result {
+        case let .success(status):
+            XCTAssertEqual(status, .available(.transferred))
+        default:
+            XCTFail("Result should be `.success(.available)`. Got `\(result)` instead.")
+        }
     }
 }
