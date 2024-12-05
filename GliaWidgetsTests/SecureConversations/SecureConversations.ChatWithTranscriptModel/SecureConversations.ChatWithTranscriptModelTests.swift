@@ -81,8 +81,13 @@ final class SecureConversationsChatWithTranscriptModelTests: XCTestCase {
                 interactor: .mock()
             )
         )
-        
+    
         XCTAssertNil(chatViewModel.entryWidget)
         XCTAssertNotNil(transcriptViewModel.entryWidget)
+    }
+
+    func test_isSendMessageAvailableReturnsTrueForChatViewModel() {
+        let chatViewModel = Model.chat(.mock())
+        XCTAssertTrue(chatViewModel.isSendMessageAvailable)
     }
 }
