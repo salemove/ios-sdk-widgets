@@ -121,6 +121,7 @@ extension CallVisualizer {
     func startObservingInteractorEvents() {
         environment.interactorProviding()?.addObserver(self) { [weak self] event in
             if case .stateChanged(.ended(.byOperator)) = event {
+                self?.environment.interactorProviding()?.currentEngagement = nil
                 self?.endSession()
                 self?.environment.log.prefixed(Self.self).info("Call visualizer engagement ended")
             }
