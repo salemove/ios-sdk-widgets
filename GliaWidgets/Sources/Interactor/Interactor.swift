@@ -58,7 +58,7 @@ class Interactor {
     }
 
     let visitorContext: Configuration.VisitorContext?
-    var currentEngagement: CoreSdkClient.Engagement?
+    @Published var currentEngagement: CoreSdkClient.Engagement?
 
     private var observers = [() -> (AnyObject?, EventHandler)]()
 
@@ -329,20 +329,24 @@ extension Interactor: CoreSdkClient.Interactable {
 
     var onAudioStreamAdded: CoreSdkClient.AudioStreamAddedBlock {
         return { [weak self] stream, error in
+            guard let self else { return }
             if let stream = stream {
-                self?.notify(.audioStreamAdded(stream))
+                notify(.audioStreamAdded(stream))
+                currentEngagement = environment.coreSdk.getCurrentEngagement()
             } else if let error = error {
-                self?.notify(.audioStreamError(error))
+                notify(.audioStreamError(error))
             }
         }
     }
 
     var onVideoStreamAdded: CoreSdkClient.VideoStreamAddedBlock {
         return { [weak self] stream, error in
+            guard let self else { return }
             if let stream = stream {
-                self?.notify(.videoStreamAdded(stream))
+                notify(.videoStreamAdded(stream))
+                currentEngagement = environment.coreSdk.getCurrentEngagement()
             } else if let error = error {
-                self?.notify(.videoStreamError(error))
+                notify(.videoStreamError(error))
             }
         }
     }

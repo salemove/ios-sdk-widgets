@@ -453,6 +453,14 @@ internal enum Localization {
         }
       }
     }
+    internal enum CallVisualizer {
+      /// Screen sharing in progress
+      internal static var desciption: String { Localization.tr("Localizable", "entry_widget.call_visualizer.desciption", fallback: "Screen sharing in progress") }
+      internal enum Button {
+        /// Call Visualizer
+        internal static var label: String { Localization.tr("Localizable", "entry_widget.call_visualizer.button.label", fallback: "Call Visualizer") }
+      }
+    }
     internal enum EmptyState {
       /// We are here to assist you during our business hours.
       internal static var description: String { Localization.tr("Localizable", "entry_widget.empty_state.description", fallback: "We are here to assist you during our business hours.") }
@@ -487,6 +495,16 @@ internal enum Localization {
       internal enum Accessibility {
         /// Loading indicator. Waiting for available options.
         internal static var label: String { Localization.tr("Localizable", "entry_widget.loading.accessibility.label", fallback: "Loading indicator. Waiting for available options.") }
+      }
+    }
+    internal enum OngoingEngagement {
+      /// Ongoing • Tap to return
+      internal static var description: String { Localization.tr("Localizable", "entry_widget.ongoing_engagement.description", fallback: "Ongoing • Tap to return") }
+      internal enum Button {
+        internal enum Accessibility {
+          /// Returns to ongoing engagement
+          internal static var hint: String { Localization.tr("Localizable", "entry_widget.ongoing_engagement.button.accessibility.hint", fallback: "Returns to ongoing engagement") }
+        }
       }
     }
     internal enum SecureMessaging {
