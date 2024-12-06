@@ -10,6 +10,8 @@ extension EntryWidget {
         var log: CoreSdkClient.Logger
         var isAuthenticated: () -> Bool
         var hasPendingInteraction: () -> Bool
+//        var getCurrentEngagement: () -> CoreSdkClient.Engagement?
+        var currentInteractor: () -> Interactor?
     }
 }
 
@@ -25,7 +27,9 @@ extension EntryWidget.Environment {
             theme: .mock(),
             log: .mock,
             isAuthenticated: { true },
-            hasPendingInteraction: { false }
+            hasPendingInteraction: { false },
+//            getCurrentEngagement: { .mock() },
+            currentInteractor: { .mock() }
         )
     }
 }
