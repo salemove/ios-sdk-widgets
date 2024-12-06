@@ -108,7 +108,6 @@ class EngagementViewModel: CommonEngagementModel {
                 )
             )
             engagementDelegate?(.finished)
-
         case .ended(let reason) where reason == .byOperator:
             interactor.currentEngagement?.getSurvey(completion: { [weak self] result in
                 guard let self = self else { return }
