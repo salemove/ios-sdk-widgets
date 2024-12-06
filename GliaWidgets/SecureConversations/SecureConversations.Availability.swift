@@ -40,8 +40,16 @@ extension SecureConversations {
             let filteredQueues = fetchedQueues.filter(defaultPredicate)
 
             // Check if matched queues match support `messaging` and
-            // have status other than `closed`
+            // have status other than `closed`.
             guard !filteredQueues.isEmpty else {
+                // In case of "transferred SC" we should treat SC as available.
+                if let engagement = environment.getCurrentEngagement(),
+                   engagement.status == .transferring,
+                   engagement.capabilities?.text == true {
+                    completion(.success(.available(queueIds: [])))
+                    return
+                }
+
                 environment.log.warning("Provided queue IDs do not match with queues that have status other than closed and support messaging.")
                 completion(.success(.unavailable(.emptyQueue)))
                 return
@@ -67,6 +75,7 @@ extension SecureConversations.Availability {
         var isAuthenticated: () -> Bool
         var log: CoreSdkClient.Logger
         var queuesMonitor: QueuesMonitor
+        var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
     }
 }
 
@@ -101,7 +110,8 @@ extension SecureConversations.Availability.Environment {
             listQueues: environment.listQueues,
             isAuthenticated: environment.isAuthenticated,
             log: environment.log,
-            queuesMonitor: environment.queuesMonitor
+            queuesMonitor: environment.queuesMonitor,
+            getCurrentEngagement: environment.getCurrentEngagement
         )
     }
 
@@ -110,7 +120,8 @@ extension SecureConversations.Availability.Environment {
             listQueues: environment.listQueues,
             isAuthenticated: environment.isAuthenticated,
             log: environment.log,
-            queuesMonitor: environment.queuesMonitor
+            queuesMonitor: environment.queuesMonitor,
+            getCurrentEngagement: environment.getCurrentEngagement
         )
     }
 }
@@ -129,13 +140,15 @@ extension SecureConversations.Availability.Environment {
         listQueues: @escaping CoreSdkClient.ListQueues = { _ in },
         isAuthenticated: @escaping () -> Bool = { false },
         log: CoreSdkClient.Logger = .mock,
-        queuesMonitor: QueuesMonitor = .mock()
+        queuesMonitor: QueuesMonitor = .mock(),
+        getCurrentEngagement: @escaping CoreSdkClient.GetCurrentEngagement = { .mock() }
     ) -> Self {
         .init(
             listQueues: listQueues,
             isAuthenticated: isAuthenticated,
             log: log,
-            queuesMonitor: queuesMonitor
+            queuesMonitor: queuesMonitor,
+            getCurrentEngagement: getCurrentEngagement
         )
     }
 }
