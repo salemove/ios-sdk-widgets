@@ -11,7 +11,8 @@ extension Theme {
             chatHint: Localization.EntryWidget.LiveChat.Button.Accessibility.hint,
             audioHint: Localization.EntryWidget.Audio.Button.Accessibility.hint,
             videoHint: Localization.EntryWidget.Video.Button.Accessibility.hint,
-            secureMessagingHint: Localization.EntryWidget.SecureMessaging.Button.Accessibility.hint
+            secureMessagingHint: Localization.EntryWidget.SecureMessaging.Button.Accessibility.hint,
+            callVisualizerHint: Localization.EntryWidget.OngoingEngagement.Button.Accessibility.hint
         )
 
         let mediaTypeItem: EntryWidgetStyle.MediaTypeItemStyle = .init(
@@ -19,6 +20,7 @@ extension Theme {
             audioTitle: Localization.EntryWidget.Audio.Button.label,
             videoTitle: Localization.EntryWidget.Video.Button.label,
             secureMessagingTitle: Localization.EntryWidget.SecureMessaging.Button.label,
+            callVisualizerTitle: Localization.EntryWidget.CallVisualizer.Button.label,
             titleFont: font.bodyText,
             titleColor: color.baseDark,
             titleTextStyle: .body,
@@ -35,7 +37,11 @@ extension Theme {
             iconColor: .fill(color: color.primary),
             backgroundColor: .fill(color: color.baseLight),
             loading: loading,
-            accessibility: mediaTypeAccessibility
+            accessibility: mediaTypeAccessibility,
+            ongoingCoreEngagementMessage: Localization.EntryWidget.OngoingEngagement.description,
+            ongoingCallVisualizerMessage: Localization.EntryWidget.CallVisualizer.desciption,
+            ongoingEngagementMessageFont: font.mediumSubtitle2,
+            ongoingEngagementMessageColor: color.primary
         )
 
         let backgroundColor: ColorType = .fill(color: color.baseLight)
@@ -59,7 +65,7 @@ extension Theme {
             backgroundColor: backgroundColor,
             cornerRadius: 24,
             poweredBy: poweredBy,
-            dividerColor: color.baseNeutral,
+            dividerColor: color.baseNormal,
             errorTitle: Localization.EntryWidget.ErrorState.title,
             errorTitleFont: font.header3,
             errorTitleStyle: .body,

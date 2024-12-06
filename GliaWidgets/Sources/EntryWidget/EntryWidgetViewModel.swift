@@ -46,5 +46,14 @@ extension EntryWidgetView {
         func onTryAgainTapped() {
             retryMonitoring?()
         }
+
+        func ongoingEngagementLabel(for engagementType: EntryWidget.EngagementType) -> String {
+            switch engagementType {
+            case .video, .audio, .chat, .secureMessaging:
+                return style.mediaTypeItem.ongoingCoreEngagementMessage
+            case .callVisualizer:
+                return style.mediaTypeItem.ongoingCallVisualizerMessage
+            }
+        }
     }
 }

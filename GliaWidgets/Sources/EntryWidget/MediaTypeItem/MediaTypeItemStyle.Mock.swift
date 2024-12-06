@@ -7,6 +7,7 @@ extension EntryWidgetStyle.MediaTypeItemStyle {
         audioTitle: String = "Audio",
         videoTitle: String = "Video",
         secureMessagingTitle: String = "Secure messaging",
+        callVisualizerTitle: String = "Call visualizer",
         titleFont: UIFont = .systemFont(ofSize: 16),
         titleColor: UIColor = .black,
         titleTextStyle: UIFont.TextStyle = .body,
@@ -23,13 +24,18 @@ extension EntryWidgetStyle.MediaTypeItemStyle {
         iconColor: ColorType = .fill(color: .blue),
         backgroundColor: ColorType = .fill(color: .white),
         loading: LoadingStyle = .init(loadingTintColor: .fill(color: .gray)),
-        accessibility: Accessibility = .unsupported
+        accessibility: Accessibility = .unsupported,
+        ongoingCoreEngagementMessage: String = "Ongoing • Tap to return",
+        ongoingCallVisualizerMessage: String = "Screen sharing in progress",
+        ongoingEngagementMessageFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .medium),
+        ongoingEngagementMessageColor: UIColor = Color.primary
     ) -> Self {
         Self(
             chatTitle: chatTitle,
             audioTitle: audioTitle,
             videoTitle: videoTitle,
             secureMessagingTitle: secureMessagingTitle,
+            callVisualizerTitle: callVisualizerTitle,
             titleFont: titleFont,
             titleColor: titleColor,
             titleTextStyle: titleTextStyle,
@@ -46,7 +52,11 @@ extension EntryWidgetStyle.MediaTypeItemStyle {
             iconColor: iconColor,
             backgroundColor: backgroundColor,
             loading: loading,
-            accessibility: accessibility
+            accessibility: accessibility,
+            ongoingCoreEngagementMessage: ongoingCoreEngagementMessage,
+            ongoingCallVisualizerMessage: ongoingCallVisualizerMessage,
+            ongoingEngagementMessageFont: ongoingEngagementMessageFont,
+            ongoingEngagementMessageColor: ongoingEngagementMessageColor
         )
     }
 }
