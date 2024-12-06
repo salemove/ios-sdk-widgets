@@ -70,4 +70,24 @@ final class SecureConversationsChatWithTranscriptModelTests: XCTestCase {
         XCTAssertEqual(contains, false)
         XCTAssertEqual(section.itemCount, 2)
     }
+    
+    func testEntryWidget() {
+        let chatViewModel = Model.chat(.mock())
+        let transcriptViewModel = Model.transcript(
+            .mock(
+                availability: .mock,
+                deliveredStatusText: "Delivered",
+                failedToDeliverStatusText: "Failed to deliver",
+                interactor: .mock()
+            )
+        )
+    
+        XCTAssertNil(chatViewModel.entryWidget)
+        XCTAssertNotNil(transcriptViewModel.entryWidget)
+    }
+
+    func test_isSendMessageAvailableReturnsTrueForChatViewModel() {
+        let chatViewModel = Model.chat(.mock())
+        XCTAssertTrue(chatViewModel.isSendMessageAvailable)
+    }
 }

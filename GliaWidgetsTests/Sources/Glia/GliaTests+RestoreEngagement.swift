@@ -6,7 +6,7 @@ extension GliaTests {
         var sdkEnv = Glia.Environment.failing
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         let rootCoordinator = EngagementCoordinator.mock(
-            engagementKind: .chat,
+            engagementLaunching: .direct(kind: .chat),
             screenShareHandler: .mock,
             environment: .engagementCoordEnvironmentWithKeyWindow
         )
@@ -22,10 +22,16 @@ extension GliaTests {
         sdkEnv.coreSdk.createLogger = { _ in logger }
         let siteMock = try CoreSdkClient.Site.mock()
         sdkEnv.coreSdk.fetchSiteConfigurations = { callback in callback(.success(siteMock)) }
+        sdkEnv.coreSdk.pendingSecureConversationStatus = { _ in }
+        sdkEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
+        sdkEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        sdkEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        sdkEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        sdkEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
 
         let window = UIWindow(frame: .zero)
         window.rootViewController = .init()

@@ -32,7 +32,7 @@ extension ChatViewModel: ViewModel {
         case setMessageEntryEnabled(Bool)
         case setChoiceCardInputModeEnabled(Bool)
         case setMessageText(String)
-        case sendButtonHidden(Bool)
+        case sendButtonDisabled(Bool)
         case pickMediaButtonEnabled(Bool)
         case appendRows(Int, to: Int, animated: Bool)
         case refreshRow(Int, in: Int, animated: Bool)
@@ -51,11 +51,12 @@ extension ChatViewModel: ViewModel {
         case updateUnreadMessageIndicator(itemCount: Int)
         case setUnreadMessageIndicatorImage(imageUrl: String?)
         case setOperatorTypingIndicatorIsHiddenTo(Bool, _ isChatScrolledToBottom: Bool)
-        case setAttachmentButtonVisibility(MediaPickerButtonVisibility)
+        case setAttachmentButtonEnabling(MediaPickerButtonEnabling)
         case fileUploadListPropsUpdated(SecureConversations.FileUploadListView.Props)
         case quickReplyPropsUpdated(QuickReplyView.Props)
         case transcript(TranscriptAction)
         case showSnackBarView
+        case switchToEngagement
     }
 
     enum DelegateEvent {
@@ -77,8 +78,8 @@ extension ChatViewModel: ViewModel {
         case none
     }
 
-    enum ChatType {
-        case secureTranscript
+    enum ChatType: Equatable {
+        case secureTranscript(upgradedFromChat: Bool)
         case authenticated
         case nonAuthenticated
     }

@@ -65,11 +65,13 @@ public enum Asset {
       public static let uploadRemove = ImageAsset(name: "uploadRemove")
     public static let chatPickMedia = ImageAsset(name: "chatPickMedia")
     public static let chatSend = ImageAsset(name: "chatSend")
+    public static let sendMessageUnavailableInfo = ImageAsset(name: "send-message-unavailable-info")
     public static let unreadMessageIndicator = ImageAsset(name: "unreadMessageIndicator")
     public static let back = ImageAsset(name: "back")
     public static let close = ImageAsset(name: "close")
     public static let browseIcon = ImageAsset(name: "browseIcon")
     public static let cameraIcon = ImageAsset(name: "cameraIcon")
+    public static let chevronDownIcon = ImageAsset(name: "chevronDownIcon")
     public static let photoLibraryIcon = ImageAsset(name: "photoLibraryIcon")
     public static let gliaLogo = ImageAsset(name: "gliaLogo")
     public static let startScreenShare = ImageAsset(name: "startScreenShare")
@@ -109,11 +111,13 @@ public enum Asset {
       uploadRemove,
       chatPickMedia,
       chatSend,
+      sendMessageUnavailableInfo,
       unreadMessageIndicator,
       back,
       close,
       browseIcon,
       cameraIcon,
+      chevronDownIcon,
       photoLibraryIcon,
       gliaLogo,
       startScreenShare,

@@ -31,6 +31,7 @@ enum InteractorEvent {
     case error(CoreSdkClient.SalemoveError)
     case engagementTransferred(CoreSdkClient.Operator?)
     case engagementTransferring
+    case onLiveToSecureConversationsEngagementTransferring
     case onEngagementRequest(CoreSdkClient.Request, answer: Command<Bool>)
 }
 
@@ -109,6 +110,7 @@ class Interactor {
 extension Interactor {
     func setQueuesIds(_ queueIds: [String]) {
         self.queueIds = queueIds
+        environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds)
     }
 
     func enqueueForEngagement(
@@ -284,6 +286,16 @@ extension Interactor: CoreSdkClient.Interactable {
                 function: "\(\Interactor.onEngagementTransferring)"
             )
             self?.notify(.engagementTransferring)
+        }
+    }
+
+    var onLiveToSecureConversationsEngagementTransferring: CoreSdkClient.EngagementTransferringBlock {
+        return { [weak self, environment] in
+            environment.log.prefixed(Self.self).info(
+                "Live to Secure Conversations Engagement Transfer",
+                function: "\(\Interactor.onLiveToSecureConversationsEngagementTransferring)"
+            )
+            self?.notify(.onLiveToSecureConversationsEngagementTransferring)
         }
     }
 

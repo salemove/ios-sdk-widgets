@@ -23,6 +23,7 @@ extension ChatStyle {
         )
         messageEntry.apply(
             configuration: configuration?.input,
+            disabledConfiguration: configuration?.inputDisabled,
             assetsBuilder: assetsBuilder
         )
         choiceCardStyle.apply(
@@ -55,12 +56,42 @@ extension ChatStyle {
             text: configuration?.newMessagesDividerText,
             assetBuilder: assetsBuilder
         )
+        applyAdditionalStyles(
+            configuration: configuration,
+            assetsBuilder: assetsBuilder
+        )
+    }
+
+    private func applyAdditionalStyles(
+        configuration: RemoteConfiguration.Chat?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder
+    ) {
+        secureTranscriptHeader.apply(
+            configuration: configuration?.header,
+            assetsBuilder: assetsBuilder
+        )
         systemMessageStyle.apply(
             configuration: configuration?.systemMessage,
             assetsBuilder: assetsBuilder
         )
         gliaVirtualAssistant.apply(
             configuration: configuration?.gva,
+            assetBuilder: assetsBuilder
+        )
+        secureMessagingTopBannerStyle.apply(
+            configuration: configuration?.secureMessaging,
+            assetBuilder: assetsBuilder
+        )
+        secureMessagingExpandedTopBannerItemsStyle.apply(
+            configuration: configuration?.secureMessaging?.mediaTypeItems,
+            assetBuilder: assetsBuilder
+        )
+        secureMessagingBottomBannerStyle.apply(
+            configuration: configuration?.secureMessaging,
+            assetBuilder: assetsBuilder
+        )
+        sendingMessageUnavailableBannerViewStyle.apply(
+            configuration: configuration?.secureMessaging,
             assetBuilder: assetsBuilder
         )
         applyBackground(color: configuration?.background?.color)

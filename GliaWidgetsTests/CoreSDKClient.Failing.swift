@@ -67,6 +67,30 @@ extension CoreSdkClient {
         },
         getCameraDeviceManageable: {
             .failing
+        },
+        subscribeForQueuesUpdates: { _, _ in
+            fail("\(Self.self).subscribeForQueuesUpdates")
+            return ""
+        },
+        unsubscribeFromUpdates: { _, _ in
+            fail("\(Self.self).unsubscribeFromUpdates")
+        },
+        subscribeForUnreadSCMessageCount: { _ in
+            fail("\(Self.self).subscribeForUnreadSCMessageCount")
+            return ""
+        },
+        pendingSecureConversationStatus: { _ in
+            fail("\(Self.self).pendingSecureConversationStatus")
+        },
+        observePendingSecureConversationStatus: { _ in
+            fail("\(Self.self).observePendingSecureConversationStatus")
+            return nil
+        },
+        unsubscribeFromPendingSecureConversationStatus: { _ in
+            fail("\(Self.self).unsubscribeFromPendingSecureConversationStatus")
+        },
+        unsubscribeFromUnreadCount: { _ in
+            fail("\(Self.self).unsubscribeFromUnreadCount")
         }
     )
 }

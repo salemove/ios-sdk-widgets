@@ -77,7 +77,7 @@ class ChatViewModelTests: XCTestCase {
     }
 
     func test_secureTranscriptChatTypeCases() throws {
-        let viewModel: ChatViewModel = .mock(chatType: .secureTranscript)
+        let viewModel: ChatViewModel = .mock(chatType: .secureTranscript(upgradedFromChat: false))
         viewModel.update(for: .enqueueing(.text))
         XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 0)
         viewModel.handle(pendingMessage: .mock())
@@ -102,16 +102,25 @@ class ChatViewModelTests: XCTestCase {
 
     func test_chatTypeResponse() throws {
         var chatType = ChatCoordinator.chatType(
+            isTransferredToSecureConversations: false,
             startWithSecureTranscriptFlow: true,
             isAuthenticated: true
         )
-        XCTAssertEqual(chatType, .secureTranscript)
+        XCTAssertEqual(chatType, .secureTranscript(upgradedFromChat: false))
         chatType = ChatCoordinator.chatType(
+            isTransferredToSecureConversations: true,
+            startWithSecureTranscriptFlow: false,
+            isAuthenticated: false
+        )
+        XCTAssertEqual(chatType, .secureTranscript(upgradedFromChat: true))
+        chatType = ChatCoordinator.chatType(
+            isTransferredToSecureConversations: false,
             startWithSecureTranscriptFlow: false,
             isAuthenticated: true
         )
         XCTAssertEqual(chatType, .authenticated)
         chatType = ChatCoordinator.chatType(
+            isTransferredToSecureConversations: false,
             startWithSecureTranscriptFlow: false,
             isAuthenticated: false
         )
@@ -239,7 +248,7 @@ class ChatViewModelTests: XCTestCase {
         // Given
         enum Calls { case fetchSiteConfigurations }
         var calls: [Calls] = []
-        let interactorEnv = Interactor.Environment(coreSdk: .failing, gcd: .mock, log: .mock)
+        let interactorEnv = Interactor.Environment(coreSdk: .failing, queuesMonitor: .mock(), gcd: .mock, log: .mock)
         let interactor = Interactor.mock(environment: interactorEnv)
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
@@ -261,7 +270,7 @@ class ChatViewModelTests: XCTestCase {
         // Given
         enum Calls { case fetchSiteConfigurations }
         var calls: [Calls] = []
-        var interactorEnv = Interactor.Environment.init(coreSdk: .failing, gcd: .mock, log: .mock)
+        var interactorEnv = Interactor.Environment.init(coreSdk: .failing, queuesMonitor: .mock(), gcd: .mock, log: .mock)
         var interactorLog = CoreSdkClient.Logger.failing
         interactorLog.infoClosure = { _, _, _, _ in }
         interactorLog.prefixedClosure = { _ in interactorLog }
@@ -434,6 +443,7 @@ class ChatViewModelTests: XCTestCase {
         var transcriptModelEnv = TranscriptModel.Environment.failing
         transcriptModelEnv.fileManager = fileManager
         transcriptModelEnv.maximumUploads = { 2 }
+        transcriptModelEnv.createEntryWidget = { _ in .mock() }
         var uploaderEnv = FileUploader.Environment.failing
         uploaderEnv.fileManager = fileManager
         let transcriptFileUploadListModelEnv = FileUploadListViewModel.Environment.failing(
@@ -456,7 +466,8 @@ class ChatViewModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: transcriptModelEnv.listQueues,
             isAuthenticated: { true },
-            log: logger
+            log: logger,
+            queuesMonitor: .mock()
         )
         let transcriptModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -895,7 +906,7 @@ class ChatViewModelTests: XCTestCase {
     func test_quickReplyWillBeHiddenAfterMessageIsSent() throws {
         enum Calls { case quickReplyHidden }
         var calls: [Calls] = []
-        let interactorEnv = Interactor.Environment(coreSdk: .failing, gcd: .mock, log: .mock)
+        let interactorEnv = Interactor.Environment(coreSdk: .failing, queuesMonitor: .failing, gcd: .mock, log: .mock)
         let interactor = Interactor.mock(environment: interactorEnv)
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
@@ -920,7 +931,7 @@ class ChatViewModelTests: XCTestCase {
     }
 
     func test_pendingMessageGetsRemovedFromListWhenMessageIsSentSuccesfully() {
-        var interactorEnv = Interactor.Environment(coreSdk: .failing, gcd: .mock, log: .mock)
+        var interactorEnv = Interactor.Environment(coreSdk: .failing, queuesMonitor: .failing, gcd: .mock, log: .mock)
         interactorEnv.coreSdk.sendMessageWithMessagePayload = { payload, callback in
             callback(.success(.mock(id: payload.messageId.rawValue)))
         }
@@ -957,7 +968,7 @@ class ChatViewModelTests: XCTestCase {
 
         let upload = FileUpload.mock()
         upload.state.value = .uploaded(file: try .mock())
-        var fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
+        let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
         fileUploadListViewModelEnv.uploader.uploads = [upload]
         viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
         viewModelEnv.createSendMessagePayload = { .mock(content: $0, attachment: $1) }

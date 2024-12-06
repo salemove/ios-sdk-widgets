@@ -11,6 +11,7 @@ final class AvailabilityTests: XCTestCase {
             callback(nil, error)
         }
         env.isAuthenticated = { true }
+        env.queuesMonitor = .mock(listQueues: env.listQueues)
         let queueIds = [UUID.mock.uuidString]
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
@@ -30,6 +31,7 @@ final class AvailabilityTests: XCTestCase {
         logger.warningClosure = { _, _, _, _ in }
         env.log = logger
         env.isAuthenticated = { true }
+        env.queuesMonitor = .mock(listQueues: env.listQueues)
         let queueIds = [UUID.mock.uuidString]
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
@@ -49,6 +51,7 @@ final class AvailabilityTests: XCTestCase {
         logger.warningClosure = { _, _, _, _ in }
         env.log = logger
         env.isAuthenticated = { false }
+        env.queuesMonitor = .mock(listQueues: env.listQueues)
         let queueIds = [UUID.mock.uuidString]
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
@@ -69,6 +72,7 @@ final class AvailabilityTests: XCTestCase {
         logger.infoClosure = { _, _, _, _ in }
         env.log = logger
         env.isAuthenticated = { true }
+        env.queuesMonitor = .mock(listQueues: env.listQueues)
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
         availability.checkSecureConversationsAvailability(for: [queueId]) { result in
@@ -95,6 +99,7 @@ final class AvailabilityTests: XCTestCase {
         logger.warningClosure = { _, _, _, _ in }
         env.log = logger
         env.isAuthenticated = { true }
+        env.queuesMonitor = .mock(listQueues: env.listQueues)
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
         availability.checkSecureConversationsAvailability(for: queueIds) { result in
@@ -115,6 +120,7 @@ final class AvailabilityTests: XCTestCase {
         logger.warningClosure = { _, _, _, _ in }
         env.log = logger
         env.isAuthenticated = { true }
+        env.queuesMonitor = .mock(listQueues: env.listQueues)
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
         availability.checkSecureConversationsAvailability(for: [queueId]) { result in
@@ -135,6 +141,7 @@ final class AvailabilityTests: XCTestCase {
         logger.warningClosure = { _, _, _, _ in }
         env.log = logger
         env.isAuthenticated = { true }
+        env.queuesMonitor = .mock(listQueues: env.listQueues)
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
         availability.checkSecureConversationsAvailability(for: [queueId]) { result in
@@ -155,6 +162,7 @@ final class AvailabilityTests: XCTestCase {
         logger.warningClosure = { _, _, _, _ in }
         env.log = logger
         env.isAuthenticated = { true }
+        env.queuesMonitor = .mock(listQueues: env.listQueues)
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
         availability.checkSecureConversationsAvailability(for: []) { result in
@@ -180,6 +188,7 @@ final class AvailabilityTests: XCTestCase {
         logger.warningClosure = { _, _, _, _ in }
         env.log = logger
         env.isAuthenticated = { true }
+        env.queuesMonitor = .mock(listQueues: env.listQueues)
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
         availability.checkSecureConversationsAvailability(for: []) { result in

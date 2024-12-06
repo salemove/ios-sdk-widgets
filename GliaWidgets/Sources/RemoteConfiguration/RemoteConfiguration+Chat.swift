@@ -8,6 +8,7 @@ extension RemoteConfiguration {
         let operatorMessage: MessageBalloon?
         let visitorMessage: MessageBalloon?
         let input: Input?
+        let inputDisabled: Input?
         let responseCard: ResponseCard?
         let audioUpgrade: Upgrade?
         let videoUpgrade: Upgrade?
@@ -19,6 +20,7 @@ extension RemoteConfiguration {
         let newMessagesDividerText: Text?
         let systemMessage: MessageBalloon?
         let gva: Gva?
+        let secureMessaging: SecureConversations?
     }
 
     struct Gva: Codable {

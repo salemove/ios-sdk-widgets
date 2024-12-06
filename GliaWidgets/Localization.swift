@@ -432,12 +432,86 @@ internal enum Localization {
       internal static var message: String { Localization.tr("Localizable", "engagement.queue_wait.message", fallback: "You can continue browsing and we will connect you automatically.") }
     }
     internal enum SecureMessaging {
-      /// Messaging
-      internal static var title: String { Localization.tr("Localizable", "engagement.secure_messaging.title", fallback: "Messaging") }
+      /// Secure Messaging
+      internal static var title: String { Localization.tr("Localizable", "engagement.secure_messaging.title", fallback: "Secure Messaging") }
     }
     internal enum Video {
       /// Video
       internal static var title: String { Localization.tr("Localizable", "engagement.video.title", fallback: "Video") }
+    }
+  }
+  internal enum EntryWidget {
+    internal enum Audio {
+      internal enum Button {
+        /// Speak through your device
+        internal static var description: String { Localization.tr("Localizable", "entry_widget.audio.button.description", fallback: "Speak through your device") }
+        /// Audio
+        internal static var label: String { Localization.tr("Localizable", "entry_widget.audio.button.label", fallback: "Audio") }
+        internal enum Accessibility {
+          /// Starts a call
+          internal static var hint: String { Localization.tr("Localizable", "entry_widget.audio.button.accessibility.hint", fallback: "Starts a call") }
+        }
+      }
+    }
+    internal enum EmptyState {
+      /// We are here to assist you during our business hours.
+      internal static var description: String { Localization.tr("Localizable", "entry_widget.empty_state.description", fallback: "We are here to assist you during our business hours.") }
+      /// Support team is currently offline
+      internal static var title: String { Localization.tr("Localizable", "entry_widget.empty_state.title", fallback: "Support team is currently offline") }
+    }
+    internal enum ErrorState {
+      /// We could not load the contacts at this time. This may be due to a temporary syncing issue or network problem.
+      internal static var description: String { Localization.tr("Localizable", "entry_widget.error_state.description", fallback: "We could not load the contacts at this time. This may be due to a temporary syncing issue or network problem.") }
+      /// Could not load the contacts
+      internal static var title: String { Localization.tr("Localizable", "entry_widget.error_state.title", fallback: "Could not load the contacts") }
+      internal enum TryAgain {
+        internal enum Button {
+          /// Try again
+          internal static var label: String { Localization.tr("Localizable", "entry_widget.error_state.try_again.button.label", fallback: "Try again") }
+        }
+      }
+    }
+    internal enum LiveChat {
+      internal enum Button {
+        /// For the texter in all of us
+        internal static var description: String { Localization.tr("Localizable", "entry_widget.live_chat.button.description", fallback: "For the texter in all of us") }
+        /// Chat
+        internal static var label: String { Localization.tr("Localizable", "entry_widget.live_chat.button.label", fallback: "Chat") }
+        internal enum Accessibility {
+          /// Starts a chat
+          internal static var hint: String { Localization.tr("Localizable", "entry_widget.live_chat.button.accessibility.hint", fallback: "Starts a chat") }
+        }
+      }
+    }
+    internal enum Loading {
+      internal enum Accessibility {
+        /// Loading indicator. Waiting for available options.
+        internal static var label: String { Localization.tr("Localizable", "entry_widget.loading.accessibility.label", fallback: "Loading indicator. Waiting for available options.") }
+      }
+    }
+    internal enum SecureMessaging {
+      internal enum Button {
+        /// Start a conversation, we’ll get back to you
+        internal static var description: String { Localization.tr("Localizable", "entry_widget.secure_messaging.button.description", fallback: "Start a conversation, we’ll get back to you") }
+        /// Secure Messaging
+        internal static var label: String { Localization.tr("Localizable", "entry_widget.secure_messaging.button.label", fallback: "Secure Messaging") }
+        internal enum Accessibility {
+          /// Starts messaging with us
+          internal static var hint: String { Localization.tr("Localizable", "entry_widget.secure_messaging.button.accessibility.hint", fallback: "Starts messaging with us") }
+        }
+      }
+    }
+    internal enum Video {
+      internal enum Button {
+        /// Face-to-face, just like in person
+        internal static var description: String { Localization.tr("Localizable", "entry_widget.video.button.description", fallback: "Face-to-face, just like in person") }
+        /// Video
+        internal static var label: String { Localization.tr("Localizable", "entry_widget.video.button.label", fallback: "Video") }
+        internal enum Accessibility {
+          /// Starts a video call
+          internal static var hint: String { Localization.tr("Localizable", "entry_widget.video.button.accessibility.hint", fallback: "Starts a video call") }
+        }
+      }
     }
   }
   internal enum Error {
@@ -563,11 +637,11 @@ internal enum Localization {
     }
   }
   internal enum MessageCenter {
-    /// Messaging
-    internal static var header: String { Localization.tr("Localizable", "message_center.header", fallback: "Messaging") }
+    /// Secure Messaging
+    internal static var header: String { Localization.tr("Localizable", "message_center.header", fallback: "Secure Messaging") }
     internal enum Confirmation {
-      /// Your message has been sent. We will get back to you within 48 hours.
-      internal static var subtitle: String { Localization.tr("Localizable", "message_center.confirmation.subtitle", fallback: "Your message has been sent. We will get back to you within 48 hours.") }
+      /// Your message has been sent. We will get back to you within 1 business day.
+      internal static var subtitle: String { Localization.tr("Localizable", "message_center.confirmation.subtitle", fallback: "Your message has been sent. We will get back to you within 1 business day.") }
       internal enum CheckMessages {
         internal enum Accessibility {
           /// Navigates you to the chat transcript.
@@ -592,10 +666,10 @@ internal enum Localization {
       internal static var checkMessages: String { Localization.tr("Localizable", "message_center.welcome.check_messages", fallback: "Check messages") }
       /// Your message
       internal static var messageTitle: String { Localization.tr("Localizable", "message_center.welcome.message_title", fallback: "Your message") }
-      /// Send a message and we will get back to you within 48 hours.
-      internal static var subtitle: String { Localization.tr("Localizable", "message_center.welcome.subtitle", fallback: "Send a message and we will get back to you within 48 hours.") }
-      /// Welcome to Message Center
-      internal static var title: String { Localization.tr("Localizable", "message_center.welcome.title", fallback: "Welcome to Message Center") }
+      /// Send a message and we will get back to you within 1 business day.
+      internal static var subtitle: String { Localization.tr("Localizable", "message_center.welcome.subtitle", fallback: "Send a message and we will get back to you within 1 business day.") }
+      /// Welcome to Secure Messaging
+      internal static var title: String { Localization.tr("Localizable", "message_center.welcome.title", fallback: "Welcome to Secure Messaging") }
       internal enum CheckMessages {
         internal enum Accessibility {
           /// Navigates you to the chat transcript.
@@ -611,8 +685,8 @@ internal enum Localization {
         }
       }
       internal enum MessageInput {
-        /// Enter your message
-        internal static var placeholder: String { Localization.tr("Localizable", "message_center.welcome.message_input.placeholder", fallback: "Enter your message") }
+        /// Enter message
+        internal static var placeholder: String { Localization.tr("Localizable", "message_center.welcome.message_input.placeholder", fallback: "Enter message") }
       }
       internal enum MessageLength {
         /// The message cannot exceed 10,000 characters.
@@ -641,6 +715,32 @@ internal enum Localization {
           /// Ends screen sharing
           internal static var hint: String { Localization.tr("Localizable", "screen_sharing.visitor_screen.end.accessibility.hint", fallback: "Ends screen sharing") }
         }
+      }
+    }
+  }
+  internal enum SecureMessaging {
+    internal enum Chat {
+      internal enum Banner {
+        /// Secure messaging has an expected response time of 1 business day.
+        internal static var bottom: String { Localization.tr("Localizable", "secure_messaging.chat.banner.bottom", fallback: "Secure messaging has an expected response time of 1 business day.") }
+        /// Need live support?
+        internal static var top: String { Localization.tr("Localizable", "secure_messaging.chat.banner.top", fallback: "Need live support?") }
+      }
+      internal enum LeaveCurrentConversation {
+        /// You have an ongoing conversation. Starting a new conversation before ongoing ones are resolved may lead to our agents overlooking your current query.
+        internal static var message: String { Localization.tr("Localizable", "secure_messaging.chat.leave_current_conversation.message", fallback: "You have an ongoing conversation. Starting a new conversation before ongoing ones are resolved may lead to our agents overlooking your current query.") }
+        /// Leave Current Conversation?
+        internal static var title: String { Localization.tr("Localizable", "secure_messaging.chat.leave_current_conversation.title", fallback: "Leave Current Conversation?") }
+        internal enum Button {
+          /// Leave
+          internal static var negative: String { Localization.tr("Localizable", "secure_messaging.chat.leave_current_conversation.button.negative", fallback: "Leave") }
+          /// Stay
+          internal static var positive: String { Localization.tr("Localizable", "secure_messaging.chat.leave_current_conversation.button.positive", fallback: "Stay") }
+        }
+      }
+      internal enum Unavailable {
+        /// Sending messages is currently not available.
+        internal static var message: String { Localization.tr("Localizable", "secure_messaging.chat.unavailable.message", fallback: "Sending messages is currently not available.") }
       }
     }
   }

@@ -76,6 +76,18 @@ extension SecureConversations.TranscriptModel.Environment {
         maximumUploads: {
             fail("\(Self.self).maximumUploads")
             return 2
-        }
+        },
+        shouldShowLeaveSecureConversationDialog: false,
+        leaveCurrentSecureConversation: .init {
+            fail("\(Self.self).leaveCurrentSecureConversation")
+        },
+        createEntryWidget: { _ in
+            fail("\(Self.self).createEntryWidget")
+            return .mock()
+        },
+        switchToEngagement: .init { _ in
+            fail("\(Self.self).switchToEngagement")
+        },
+        topBannerItemsStyle: .mock()
     )
 }

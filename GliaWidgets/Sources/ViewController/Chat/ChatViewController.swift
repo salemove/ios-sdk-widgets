@@ -55,6 +55,8 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
 
     // swiftlint:disable function_body_length
     private func bind(viewModel: SecureConversations.ChatWithTranscriptModel, to view: ChatView) {
+        view.entryWidget = viewModel.entryWidget
+
         view.header.showBackButton()
         view.header.showCloseButton()
 
@@ -123,8 +125,8 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                 view?.messageEntryView.isChoiceCardModeEnabled = enabled
             case .setMessageText(let text):
                 view?.messageEntryView.messageText = text
-            case .sendButtonHidden(let hidden):
-                view?.messageEntryView.showsSendButton = !hidden
+            case .sendButtonDisabled(let isDisabled):
+                view?.messageEntryView.isSendButtonEnabled = !isDisabled
             case .pickMediaButtonEnabled(let enabled):
                 view?.messageEntryView.pickMediaButton.isEnabled = enabled
             case .appendRows(let count, let section, let animated):
@@ -166,7 +168,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                     view?.scrollToBottom(animated: true)
                 }
                 view?.setOperatorTypingIndicatorIsHidden(to: isHidden)
-            case let .setAttachmentButtonVisibility(visibility):
+            case let .setAttachmentButtonEnabling(visibility):
                 view?.messageEntryView.setPickMediaButtonVisibility(visibility)
             case .transferring:
                 view?.setConnectState(.transferring, animated: true)
@@ -191,6 +193,8 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                     gcd: self.environment.gcd,
                     notificationCenter: self.environment.notificationCenter
                 )
+            case .switchToEngagement:
+                view?.hideEntryWidget()
             }
             self.renderProps()
         }
@@ -259,9 +263,24 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         switch type {
         case .chat:
             chatView.props = .init(header: props.chat)
-        case let .secureTranscript(needsTextInput):
+            // For regular chat engagement bottom banner is hidden.
+            chatView.setSecureMessagingBottomBannerHidden(true)
+            chatView.setSecureMessagingTopBannerHidden(true)
+            chatView.setSendingMessageUnavailabilityBannerHidden(viewModel.isSendMessageAvailable)
+        case let .secureTranscript(needsTextInputEnabled):
             chatView.props = .init(header: props.secureTranscript)
-            chatView.messageEntryView.isHidden = !needsTextInput
+            // Instead of hiding text input, we need to disable it and corresponding buttons.
+            chatView.messageEntryView.isEnabled = needsTextInputEnabled
+            chatView.setSendingMessageUnavailabilityBannerHidden(viewModel.isSendMessageAvailable)
+            // For secure messaging bottom banner is visible.
+            chatView.setSecureMessagingBottomBannerHidden(false)
+            chatView.setSecureMessagingTopBannerHidden(false)
+        case .chatToSecureTranscript:
+            chatView.props = .init(header: props.secureTranscript)
+            chatView.messageEntryView.isEnabled = true
+            chatView.setSendingMessageUnavailabilityBannerHidden(true)
+            chatView.setSecureMessagingBottomBannerHidden(false)
+            chatView.setSecureMessagingTopBannerHidden(false)
         }
     }
 
@@ -279,7 +298,7 @@ extension ChatViewController {
         // Swap existing engagement transcript model
         // (though it is technically not for engagement)
         // with engagement chat model in superclass EngagementViewController.
-        swapAndBindEgagementViewModel(viewModel.engagementModel)
+        swapAndBindEngagementViewModel(viewModel.engagementModel)
         // Bind chat model to chat view for sending actions
         // and receiving events.
         bind(
@@ -296,15 +315,19 @@ extension ChatViewController {
             // Even though we are using the chat view model already,
             // if the engagement is not active, we still need to show
             // secure transcript UI.
-            if chatViewModel.chatType == .secureTranscript {
+            switch chatViewModel.chatType {
+            case let .secureTranscript(upgradedFromChat):
+                if upgradedFromChat {
+                    return .chatToSecureTranscript
+                }
                 return chatViewModel.activeEngagement != nil
                 ? .chat
-                : .secureTranscript(needsTextInput: true)
-            } else {
+                : .secureTranscript(needsTextInputEnabled: true)
+            case .authenticated, .nonAuthenticated:
                 return .chat
             }
         case .transcript(let transcriptModel):
-            return .secureTranscript(needsTextInput: transcriptModel.isSecureConversationsAvailable)
+            return .secureTranscript(needsTextInputEnabled: transcriptModel.isSecureConversationsAvailable)
         }
     }
 }
@@ -317,5 +340,6 @@ extension ChatViewController {
 }
 private enum CurrentChatModelType {
     case chat
-    case secureTranscript(needsTextInput: Bool)
+    case secureTranscript(needsTextInputEnabled: Bool)
+    case chatToSecureTranscript
 }

@@ -135,10 +135,12 @@ private extension SecureConversationsTranscriptModelTests {
         modelEnv.uiApplication.canOpenURL = { _ in true }
         modelEnv.maximumUploads = { 2 }
         modelEnv.sendSecureMessagePayload = { _, _, _ in .mock }
+        modelEnv.createEntryWidget = { _ in .mock() }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: logger
+            log: logger,
+            queuesMonitor: .mock()
         )
 
         return TranscriptModel(

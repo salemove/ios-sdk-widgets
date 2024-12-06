@@ -39,9 +39,7 @@ extension EngagementCoordinatorTests {
         let callCoordinator = coordinator.coordinators.first { $0 is CallCoordinator } as? CallCoordinator
         callCoordinator?.delegate?(.back)
 
-        callAfterTimeout {
-            XCTAssertTrue(calledEvents.contains(.minimized))
-        }
+        XCTAssertTrue(calledEvents.contains(.minimized))
     }
 
     func test_callDelegateBackCallFromChat() throws {
@@ -66,11 +64,9 @@ extension EngagementCoordinatorTests {
         let callCoordinator = coordinator.coordinators.first { $0 is CallCoordinator } as? CallCoordinator
         callCoordinator?.delegate?(.back)
 
-        callAfterTimeout {
-            let topmostViewController = coordinator.navigationPresenter.viewControllers.first as? ChatViewController
+        let topmostViewController = coordinator.navigationPresenter.viewControllers.first as? ChatViewController
 
-            XCTAssertNotNil(topmostViewController)
-        }
+        XCTAssertNotNil(topmostViewController)
     }
 
     func test_callDelegateEngaged() throws {
@@ -78,7 +74,6 @@ extension EngagementCoordinatorTests {
         
         coordinator.start()
 
-        try showGliaViewController()
         let callCoordinator =  try XCTUnwrap(coordinator.coordinators.first { $0 is CallCoordinator } as? CallCoordinator)
 
         callCoordinator.delegate?(.engaged(operatorImageUrl: URL.mock.absoluteString))
@@ -103,8 +98,6 @@ extension EngagementCoordinatorTests {
         let callCoordinator = coordinator.coordinators.first { $0 is CallCoordinator } as? CallCoordinator
         callCoordinator?.delegate?(.minimize)
 
-        callAfterTimeout {
-            XCTAssertEqual(calledEvents.last, .minimized)
-        }
+        XCTAssertEqual(calledEvents.last, .minimized)
     }
 }

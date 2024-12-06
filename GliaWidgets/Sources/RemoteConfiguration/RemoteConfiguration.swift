@@ -8,10 +8,11 @@ public struct RemoteConfiguration: Codable {
     let alert: Alert?
     let bubble: Bubble?
     let callVisualizer: CallVisualizer?
-    let secureConversationsWelcomeScreen: SecureConversationsWelcomeScreen?
-    let secureConversationsConfirmationScreen: SecureConversationsConfirmationScreen?
+    let secureMessagingWelcomeScreen: SecureConversationsWelcomeScreen?
+    let secureMessagingConfirmationScreen: SecureConversationsConfirmationScreen?
     let snackBar: SnackBar?
     let webBrowserScreen: WebView?
+    let entryWidget: EntryWidget?
 }
 
 extension RemoteConfiguration {
@@ -59,6 +60,7 @@ extension RemoteConfiguration {
         let linkButton: Button?
         let positiveButton: Button?
         let negativeButton: Button?
+        let negativeNeutralButton: Button?
         let buttonAxis: Axis?
     }
 
@@ -200,5 +202,39 @@ extension RemoteConfiguration {
         let option: Text?
         let tintColor: Color?
         let title: Text?
+    }
+
+    struct EntryWidget: Codable {
+        let background: Layer?
+        let mediaTypeItems: MediaTypeItems?
+        let errorTitle: Text?
+        let errorMessage: Text?
+        let errorButton: Button?
+    }
+
+    struct MediaTypeItems: Codable {
+        let mediaTypeItem: MediaTypeItem?
+        let dividerColor: Color?
+    }
+
+    struct MediaTypeItem: Codable {
+        let background: Layer?
+        let iconColor: Color?
+        let title: Text?
+        let message: Text?
+        let loadingTintColor: Color?
+    }
+
+    struct SecureConversations: Codable {
+        let unavailableStatusBackground: Layer?
+        let unavailableStatusText: Text?
+        let bottomBannerBackground: Layer?
+        let bottomBannerText: Text?
+        let bottomBannerDividerColor: Color?
+        let topBannerBackground: Layer?
+        let topBannerText: Text?
+        let topBannerDividerColor: Color?
+        let topBannerDropDownIconColor: Color?
+        let mediaTypeItems: MediaTypeItems
     }
 }

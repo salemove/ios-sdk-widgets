@@ -49,6 +49,11 @@ extension SecureConversations.Coordinator {
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var flipCameraButtonStyle: FlipCameraButtonStyle
         var alertManager: AlertManager
+        var queuesMonitor: QueuesMonitor
+        var createEntryWidget: EntryWidgetBuilder
+        var shouldShowLeaveSecureConversationDialog: Bool
+        var leaveCurrentSecureConversation: Cmd
+        var switchToEngagement: Command<EngagementKind>
     }
 }
 
@@ -62,7 +67,10 @@ extension SecureConversations.Coordinator.Environment {
         showCallBubble: Bool,
         screenShareHandler: ScreenShareHandler,
         isWindowVisible: ObservableValue<Bool>,
-        interactor: Interactor
+        interactor: Interactor,
+        shouldShowLeaveSecureConversationDialog: Bool,
+        leaveCurrentSecureConversation: Cmd,
+        switchToEngagement: Command<EngagementKind>
     ) -> Self {
         .init(
             queueIds: queueIds,
@@ -111,7 +119,12 @@ extension SecureConversations.Coordinator.Environment {
             maximumUploads: environment.maximumUploads,
             cameraDeviceManager: environment.cameraDeviceManager,
             flipCameraButtonStyle: environment.flipCameraButtonStyle,
-            alertManager: environment.alertManager
+            alertManager: environment.alertManager,
+            queuesMonitor: environment.queuesMonitor,
+            createEntryWidget: environment.createEntryWidget,
+            shouldShowLeaveSecureConversationDialog: shouldShowLeaveSecureConversationDialog,
+            leaveCurrentSecureConversation: leaveCurrentSecureConversation,
+            switchToEngagement: switchToEngagement
         )
     }
 }

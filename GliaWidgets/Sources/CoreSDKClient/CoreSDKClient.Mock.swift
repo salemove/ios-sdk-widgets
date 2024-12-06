@@ -37,7 +37,14 @@ extension CoreSdkClient {
         stopSocketObservation: {},
         createSendMessagePayload: { _, _ in .mock() },
         createLogger: { _ in Logger.mock },
-        getCameraDeviceManageable: { .mock }
+        getCameraDeviceManageable: { .mock },
+        subscribeForQueuesUpdates: { _, _ in UUID.mock.uuidString },
+        unsubscribeFromUpdates: { _, _ in },
+        subscribeForUnreadSCMessageCount: { _ in UUID.mock.uuidString },
+        pendingSecureConversationStatus: { $0(.success(false)) },
+        observePendingSecureConversationStatus: { _ in nil },
+        unsubscribeFromPendingSecureConversationStatus: { _ in },
+        unsubscribeFromUnreadCount: { _ in }
     )
 }
 
@@ -483,7 +490,9 @@ extension CoreSdkClient.Engagement {
         source: EngagementSource = .coreEngagement,
         fetchSurvey: @escaping FetchSurvey = { _, _ in },
         restartedFromEngagementId: String? = nil,
-        media: Engagement.Media = .init(audio: nil, video: nil)
+        media: Engagement.Media = .init(audio: nil, video: nil),
+        status: Status = .unknown("mock"),
+        capabilities: Capabilities = .init(text: false)
     ) -> CoreSdkClient.Engagement {
         .init(
             id: id,
@@ -491,7 +500,9 @@ extension CoreSdkClient.Engagement {
             source: source,
             fetchSurvey: fetchSurvey,
             restartedFromEngagementId: restartedFromEngagementId,
-            mediaStreams: media
+            mediaStreams: media,
+            status: status,
+            capabilities: capabilities
         )
     }
 }

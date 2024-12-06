@@ -52,7 +52,8 @@ extension SecureConversations.Availability {
         environment: .init(
             listQueues: { _ in },
             isAuthenticated: { true },
-            log: .mock
+            log: .mock,
+            queuesMonitor: .mock()
         )
     )
 }

@@ -45,4 +45,62 @@ final class ChatViewTest: XCTestCase {
             XCTFail("Content should be .choiceCard")
         }
     }
+
+    func test_viewIsReleasedOnceModuleIsClosedWithResponseCardsInTranscript() throws {
+        guard #available(iOS 17, *) else {
+            throw XCTSkip("""
+                This test does not pass on OS lower than iOS 17, but actual fix work well.
+                So it was decided to leave it for local usage and for future,
+                once target device version will be bumped.
+            """)
+        }
+        var coordinatorEnv = EngagementCoordinator.Environment.failing
+        coordinatorEnv.dismissManager.dismissViewControllerAnimateWithCompletion = { _, _, completion in
+            completion?()
+        }
+        coordinatorEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        coordinatorEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        coordinatorEnv.createFileUploadListModel = { _ in .mock() }
+        let window = UIWindow(frame: .zero)
+        window.rootViewController = .init()
+        window.makeKeyAndVisible()
+        coordinatorEnv.uiApplication.windows = { [window] }
+        coordinatorEnv.loadChatMessagesFromHistory = { true }
+        coordinatorEnv.getCurrentEngagement = { nil }
+        coordinatorEnv.isAuthenticated = { true }
+        coordinatorEnv.maximumUploads = { 1 }
+        var logger = CoreSdkClient.Logger.failing
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }
+        coordinatorEnv.log = logger
+
+        let options: [ChatChoiceCardOption] = [try .mock()]
+        coordinatorEnv.fetchChatHistory = {
+            $0(
+                .success(
+                    [
+                        .mock(attachment: .mock(
+                            type: .singleChoice,
+                            files: [],
+                            imageUrl: nil,
+                            options: options
+                        ))
+                    ]
+                )
+            )
+        }
+        let coordinator = EngagementCoordinator.mock(
+            engagementLaunching: .direct(kind: .chat),
+            environment: coordinatorEnv
+        )
+        coordinator.start()
+
+        weak var controller = try XCTUnwrap(coordinator.navigationPresenter.viewControllers.last as? ChatViewController)
+        weak var viewModel = try XCTUnwrap(controller?.viewModel.engagementModel as? ChatViewModel)
+        viewModel?.event(.closeTapped)
+        
+        XCTAssertNil(controller)
+        XCTAssertNil(viewModel)
+    }
 }
