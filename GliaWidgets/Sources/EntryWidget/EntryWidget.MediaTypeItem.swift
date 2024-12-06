@@ -64,6 +64,15 @@ extension EntryWidget {
                     hintline: Localization.EntryWidget.SecureMessaging.Button.Accessibility.hint,
                     image: Asset.mcEnvelope.image
                 )
+            case .callVisualizer:
+                self.init(
+                    type: type,
+                    badgeCount: 0,
+                    headline: "Call Visualizer",
+                    subheadline: "",
+                    hintline: "",
+                    image: Asset.screensharing.image
+                )
             }
         }
     }
@@ -73,6 +82,7 @@ extension EntryWidget {
         case audio
         case chat
         case secureMessaging
+        case callVisualizer
 
         var description: String {
             switch self {
@@ -80,6 +90,7 @@ extension EntryWidget {
             case .audio: return "audio"
             case .chat: return "chat"
             case .secureMessaging: return "secureMessaging"
+            case .callVisualizer: return "callVisualizer"
             }
         }
     }
