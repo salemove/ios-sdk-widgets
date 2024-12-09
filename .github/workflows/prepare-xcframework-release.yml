@@ -92,35 +92,35 @@ jobs:
           
         shell: bash
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          branch: "release/xcf/${{ steps.fetch_semver.outputs.semver}}"
-          title: 'GliaWidgets SDK Release ${{ steps.fetch_semver.outputs.semver}}'
-          commit-message: |
-            GliaWidgets SDK XCFramework Release ${{ steps.fetch_semver.outputs.semver}}
-          base: 'master'
-
-      - uses: actions/create-release@v1
-        id: create_release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.fetch_semver.outputs.semver}}
-          release_name: "GliaWidgetsSDK Release ${{ steps.fetch_semver.outputs.semver}}"
-          draft: true
-          prerelease: false
-          body: |
-            GliaWidgetsSDK Release
-            xcframework checksum: `${{ steps.calculate_xcf_checksum.outputs.checksum }}`
-
-      - uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: "xcf/GliaWidgetsXcf.xcframework.zip"
-          asset_name: "GliaWidgetsXcf.xcframework.zip"
-          asset_content_type: "application/zip"
+#      - name: Create Pull Request
+#        uses: peter-evans/create-pull-request@v6
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          branch: "release/xcf/${{ steps.fetch_semver.outputs.semver}}"
+#          title: 'GliaWidgets SDK Release ${{ steps.fetch_semver.outputs.semver}}'
+#          commit-message: |
+#            GliaWidgets SDK XCFramework Release ${{ steps.fetch_semver.outputs.semver}}
+#          base: 'master'
+#
+#      - uses: actions/create-release@v1
+#        id: create_release
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: ${{ steps.fetch_semver.outputs.semver}}
+#          release_name: "GliaWidgetsSDK Release ${{ steps.fetch_semver.outputs.semver}}"
+#          draft: true
+#          prerelease: false
+#          body: |
+#            GliaWidgetsSDK Release
+#            xcframework checksum: `${{ steps.calculate_xcf_checksum.outputs.checksum }}`
+#
+#      - uses: actions/upload-release-asset@v1.0.1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          upload_url: ${{ steps.create_release.outputs.upload_url }}
+#          asset_path: "xcf/GliaWidgetsXcf.xcframework.zip"
+#          asset_name: "GliaWidgetsXcf.xcframework.zip"
+#          asset_content_type: "application/zip"
