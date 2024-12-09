@@ -15,6 +15,8 @@ struct EntryWidgetView: View {
             mediaTypesView(types)
         case .offline:
             offilineView()
+        case let .ongoingEngagement(engagementType):
+            ongoingEngagementTypeView(engagementType)
         }
     }
 }
@@ -156,7 +158,7 @@ private extension EntryWidgetView {
     func headerView() -> some View {
         VStack {
             Capsule(style: .continuous)
-                .fill(model.style.dividerColor.swiftUIColor())
+                .fill(model.style.dividerColor.swiftUIColor().opacity(0.4))
                 .width(model.configuration.sizeConstraints.sheetHeaderDraggerWidth)
                 .height(model.configuration.sizeConstraints.sheetHeaderDraggerHeight)
         }
@@ -222,6 +224,7 @@ private extension EntryWidgetView {
     func icon(_ image: UIImage) -> some View {
         image.asSwiftUIImage()
             .resizable()
+            .renderingMode(.template)
             .fit()
             .width(model.configuration.sizeConstraints.singleCellIconSize)
             .height(model.configuration.sizeConstraints.singleCellIconSize)
@@ -285,5 +288,65 @@ private extension EntryWidgetView {
                 .applyColorTypeBackground(model.style.mediaTypeItem.unreadMessagesCounterBackgroundColor)
                 .clipShape(Circle())
         }
+    }
+}
+
+// Views related to ongoing engagement view state
+private extension EntryWidgetView {
+    @ViewBuilder
+    func ongoingEngagementMediaTypes(
+        mediaType: EntryWidget.MediaTypeItem,
+        engagementType: EntryWidget.EngagementType
+    ) -> some View {
+        VStack(spacing: 0) {
+            HStack(spacing: 16) {
+                icon(mediaType.image)
+                VStack(alignment: .leading, spacing: 2) {
+                    headlineText(model.style.mediaTypeItem.title(for: mediaType))
+                    if !sizeCategory.isAccessibilityCategory {
+                        Text(model.ongoingEngagementLabel(for: engagementType))
+                            .setFont(model.style.mediaTypeItem.ongoingEngagementMessageFont)
+                            .setColor(model.style.mediaTypeItem.ongoingEngagementMessageColor)
+                    }
+                }
+                unreadMessageCountView(for: mediaType)
+            }
+            .maxWidth(alignment: .leading)
+            .height(model.configuration.sizeConstraints.singleCellHeight)
+            .applyColorTypeBackground(model.style.mediaTypeItem.backgroundColor)
+            .contentShape(.rect)
+            .accessibilityElement(children: .combine)
+            .accessibility(addTraits: .isButton)
+            .accessibilityHint(model.style.mediaTypeItem.accessibility.hint(for: mediaType))
+            .accessibilityIdentifier("entryWidget_\(mediaType.type)_item")
+            .onTapGesture {
+                model.selectMediaType(mediaType)
+            }
+            .padding(.horizontal)
+            Divider()
+                .height(model.configuration.sizeConstraints.dividerHeight)
+                .setColor(model.style.dividerColor)
+                .padding(.horizontal, model.configuration.sizeConstraints.dividerHorizontalPadding)
+        }
+    }
+
+    @ViewBuilder
+    func ongoingEngagementTypeView(_ engagementType: EntryWidget.EngagementType) -> some View {
+        VStack(spacing: 0) {
+            if model.showHeader {
+                headerView()
+                    .padding(.horizontal)
+            }
+            ongoingEngagementMediaTypes(
+                mediaType: .init(type: engagementType),
+                engagementType: engagementType
+            )
+            if model.showPoweredBy {
+                poweredByView()
+                    .padding(.horizontal)
+            }
+        }
+        .maxSize()
+        .applyColorTypeBackground(model.style.backgroundColor)
     }
 }

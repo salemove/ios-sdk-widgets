@@ -27,7 +27,8 @@ extension Glia {
                 hasPendingInteraction: { [weak self] in
                     guard let self else { return false }
                     return pendingInteraction.hasPendingInteraction
-                }
+                },
+                currentInteractor: { self.interactor }
             )
         )
     }

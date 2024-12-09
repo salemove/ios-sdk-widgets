@@ -788,6 +788,8 @@ extension SecureConversations.TranscriptModel {
                 kind = .chat
             case .secureMessaging:
                 kind = .messaging(.welcome)
+            case .callVisualizer:
+                return
             }
             self?.environment.switchToEngagement(kind)
         }))
