@@ -1,29 +1,20 @@
-import UIKit
+import Foundation
 
-/// Style of a button shown to the right of the message input area. 
-/// Used for "Send message" and "Pick attachment" buttons.
+/// Style for the button shown to the right of the message input area.
 public struct MessageButtonStyle {
-    /// Image of the button.
-    public var image: UIImage
-
-    /// Color of the button's image.
-    public var color: UIColor
-
-    /// Accessibility related properties.
-    public var accessibility: Accessibility
+    /// Style for enabled state of the button.
+    public var enabled: MessageButtonStateStyle
+    /// Style for disabled state of the button.
+    public var disabled: MessageButtonStateStyle
 
     /// - Parameters:
-    ///   - image: Image of the button.
-    ///   - color: Color of the button's image.
-    ///   - accessibility: Accessibility related properties.
-    ///
+    ///   - enabled: Style for enabled state of the button.
+    ///   - disabled: Style for disabled state of the button.
     public init(
-        image: UIImage,
-        color: UIColor,
-        accessibility: Accessibility = .unsupported
+        enabled: MessageButtonStateStyle,
+        disabled: MessageButtonStateStyle
     ) {
-        self.image = image
-        self.color = color
-        self.accessibility = accessibility
+        self.enabled = enabled
+        self.disabled = disabled
     }
 }

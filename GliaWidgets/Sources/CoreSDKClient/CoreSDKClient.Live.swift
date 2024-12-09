@@ -60,7 +60,16 @@ extension CoreSdkClient {
                 try CameraDeviceManageableClient(
                     GliaCore.sharedInstance.cameraDeviceManageable()
                 )
-            }
+            },
+            subscribeForQueuesUpdates: GliaCore.sharedInstance.subscribeForQueuesUpdates(forQueues:completion:),
+            unsubscribeFromUpdates: GliaCore.sharedInstance.unsubscribeFromUpdates(queueCallbackId:onError:),
+            subscribeForUnreadSCMessageCount: GliaCore.sharedInstance.secureConversations.subscribeToUnreadMessageCount(completion:),
+            pendingSecureConversationStatus: GliaCore.sharedInstance.secureConversations.pendingSecureConversationStatus,
+            observePendingSecureConversationStatus: GliaCore.sharedInstance.secureConversations.subscribeToPendingSecureConversationStatus,
+            unsubscribeFromPendingSecureConversationStatus: {
+                GliaCore.sharedInstance.secureConversations.unsubscribeFromPendingSecureConversationStatus($0)
+            },
+            unsubscribeFromUnreadCount: GliaCore.sharedInstance.secureConversations.unsubscribeFromUnreadMessageCount
         )
     }()
 }

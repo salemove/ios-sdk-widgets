@@ -50,6 +50,7 @@ extension SecureConversations {
         var environment: Environment
         var availability: Availability
         var interactor: Interactor
+        var entryWidget: EntryWidget?
 
         private(set) var isSecureConversationsAvailable: Bool = true {
             didSet {
@@ -59,7 +60,7 @@ extension SecureConversations {
 
         var siteConfiguration: CoreSdkClient.Site?
 
-        var mediaPickerButtonVisibility: MediaPickerButtonVisibility {
+        var mediaPickerButtonEnabling: MediaPickerButtonEnabling {
             guard let site = siteConfiguration else { return .disabled }
             guard site.allowedFileSenders.visitor else { return .disabled }
             return .enabled(.secureMessaging)
@@ -79,6 +80,7 @@ extension SecureConversations {
 
         private let deliveredStatusText: String
         private let failedToDeliverStatusText: String
+        private(set) var hasUnreadMessages = false
 
         var numberOfSections: Int {
             sections.count
@@ -97,7 +99,6 @@ extension SecureConversations {
             self.isCustomCardSupported = isCustomCardSupported
             self.environment = environment
             self.downloader = FileDownloader(environment: .create(with: environment))
-
             self.availability = availability
             self.deliveredStatusText = deliveredStatusText
             self.failedToDeliverStatusText = failedToDeliverStatusText
@@ -117,6 +118,13 @@ extension SecureConversations {
             )
 
             self.transcriptMessageLoader = .init(environment: .create(with: environment))
+            do {
+                self.entryWidget = try environment.createEntryWidget(makeEntryWidgetConfiguration())
+            } catch {
+                // Creating an entry widget may fail if the SDK is not configured.
+                // This assumes that the SDK is configured by accessing Secure Conversations.
+                environment.log.warning("Could not create EntryWidget on Secure Conversation")
+            }
 
             self.fileUploadListModel.delegate = { [weak self] event in
                 switch event {
@@ -138,15 +146,18 @@ extension SecureConversations {
             availability.checkSecureConversationsAvailability(for: environment.queueIds) { [weak self] result in
                 guard let self else { return }
                 switch result {
-                case let .success(.available(queueIds)):
+                case let .success(.available(.queues(queueIds))):
                     self.environment.queueIds = queueIds
                     self.isSecureConversationsAvailable = true
-                case .failure, .success(.unavailable(.emptyQueue)):
+                    self.fileUploadListModel.isEnabled = true
+                case .success(.available(.transferred)):
+                    self.environment.queueIds = []
+                    self.isSecureConversationsAvailable = true
+                    self.fileUploadListModel.isEnabled = true
+                case .failure, .success(.unavailable(.emptyQueue)), .success(.unavailable(.unauthenticated)):
+                    // For chat screen we no longer show unavailability dialog, but unavailability banner instead.
                     self.isSecureConversationsAvailable = false
-                    self.engagementAction?(.showAlert(.unavailableMessageCenter()))
-                case .success(.unavailable(.unauthenticated)):
-                    self.engagementAction?(.showAlert(.unavailableMessageCenterForBeingUnauthenticated()))
-                    self.isSecureConversationsAvailable = false
+                    self.fileUploadListModel.isEnabled = false
                 }
             }
         }
@@ -222,7 +233,9 @@ extension SecureConversations {
         func start() {
             environment.startSocketObservation()
             fetchSiteConfigurations()
-            loadHistory { _ in }
+            loadHistory { [weak self] _ in
+                self?.showLeaveConversationDialogIfNeeded()
+            }
         }
 
         deinit {
@@ -246,7 +259,7 @@ extension SecureConversations.TranscriptModel {
         let hasAttachments = !fileUploadListModel.succeededUploads.isEmpty
 
         let isValid = canSendText || hasAttachments
-        action?(.sendButtonHidden(!isValid))
+        action?(.sendButtonDisabled(!isValid))
         return isValid
     }
 }
@@ -517,7 +530,7 @@ extension SecureConversations.TranscriptModel {
             switch result {
             case .success(let site):
                 self.siteConfiguration = site
-                self.action?(.setAttachmentButtonVisibility(self.mediaPickerButtonVisibility))
+                self.action?(.setAttachmentButtonEnabling(self.mediaPickerButtonEnabling))
             case let .failure(error):
                 self.engagementAction?(.showAlert(.error(error: error)))
             }
@@ -546,16 +559,17 @@ extension SecureConversations.TranscriptModel {
                     divider: ChatItem(kind: .unreadMessageDivider)
                 )
 
+                self.hasUnreadMessages = messagesWithUnreadCount.unreadCount > 0
                 self.historySection.set(itemsWithDivider)
                 self.action?(.refreshSection(self.historySection.index))
                 self.action?(.scrollToBottom(animated: false))
                 completion(messagesWithUnreadCount.messages)
-                if messagesWithUnreadCount.unreadCount > 0 {
-                    self.markMessagesAsRead()
-                }
+                markMessagesAsRead(
+                    with: self.hasUnreadMessages && !environment.shouldShowLeaveSecureConversationDialog
+                )
 
                 if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
-                    let props = button.options.map { self.quickReplyOption($0) }
+                    let props = button.options.compactMap { [weak self] in self?.quickReplyOption($0) }
                     self.action?(.quickReplyPropsUpdated(.shown(props)))
                 }
 
@@ -581,18 +595,22 @@ extension SecureConversations.TranscriptModel {
             // We no longer need to listen to Interactor events,
             // so unsubscribe.
             self.environment.interactor.removeObserver(self)
-            markMessagesAsRead()
             delegate?(.upgradeToChatEngagement(self))
         case let .receivedMessage(message):
             receiveMessage(from: .socket(message))
+            markMessagesAsRead(delayed: false)
         default:
             break
         }
     }
 
-    func markMessagesAsRead() {
+    func markMessagesAsRead(delayed: Bool = true, with predicate: Bool = true) {
+        guard predicate else {
+            return
+        }
         let mainQueue = environment.gcd.mainQueue
-        let dispatchTime: DispatchTime = .now() + .seconds(Self.markUnreadMessagesDelaySeconds)
+        let delay = DispatchTimeInterval.seconds(delayed ? Self.markUnreadMessagesDelaySeconds : 0)
+        let dispatchTime: DispatchTime = .now() + delay
 
         mainQueue.asyncAfterDeadline(dispatchTime) { [environment, weak historySection, action, weak self] in
             _ = environment.secureMarkMessagesAsRead { result in
@@ -734,11 +752,71 @@ extension SecureConversations.TranscriptModel {
     }
 }
 
+// MARK: Entry Widget
+extension SecureConversations.TranscriptModel {
+    // Set up the Entry Widget configuration inside TranscriptModel,
+    // since it requires passing view model logic to the configuration.
+    private func makeEntryWidgetConfiguration() -> EntryWidget.Configuration {
+        .init(
+            sizeConstraints: .init(
+                singleCellHeight: 56,
+                singleCellIconSize: 24,
+                poweredByContainerHeight: 40,
+                sheetHeaderHeight: 36,
+                sheetHeaderDraggerWidth: 32,
+                sheetHeaderDraggerHeight: 4,
+                dividerHeight: 1,
+                dividerHorizontalPadding: 0
+            ),
+            showPoweredBy: false,
+            filterSecureConversation: true,
+            mediaTypeSelected: .init(closure: entryWidgetMediaTypeSelected),
+            mediaTypeItemsStyle: environment.topBannerItemsStyle
+        )
+    }
+
+    private func entryWidgetMediaTypeSelected(_ item: EntryWidget.MediaTypeItem) {
+        action?(.switchToEngagement)
+        engagementAction?(.showAlert(.leaveCurrentConversation { [weak self] in
+            let kind: EngagementKind
+            switch item.type {
+            case .video:
+                kind = .videoCall
+            case .audio:
+                kind = .audioCall
+            case .chat:
+                kind = .chat
+            case .secureMessaging:
+                kind = .messaging(.welcome)
+            }
+            self?.environment.switchToEngagement(kind)
+        }))
+    }
+}
+
 #if DEBUG
 extension SecureConversations.TranscriptModel {
     /// Setter for `isSecureConversationsAvailable`. Used in unit tests.
     func setIsSecureConversationsAvailable(_ available: Bool) {
         self.isSecureConversationsAvailable = available
+    }
+
+    static func mock(
+        isCustomCardSupported: Bool = false,
+        environment: Environment = .mock(),
+        availability: SecureConversations.Availability,
+        deliveredStatusText: String,
+        failedToDeliverStatusText: String,
+        interactor: Interactor
+    ) -> SecureConversations.TranscriptModel {
+        .init(
+            isCustomCardSupported: isCustomCardSupported,
+            environment: environment,
+            availability: availability,
+            deliveredStatusText: deliveredStatusText,
+            failedToDeliverStatusText: failedToDeliverStatusText,
+            interactor: interactor
+        )
     }
 }
 #endif

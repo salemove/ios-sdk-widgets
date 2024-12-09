@@ -51,8 +51,10 @@ final class ChatCoordinatorTests: XCTestCase {
             .start()
 
         switch viewController.viewModel {
-        case .transcript: XCTAssertTrue(true)
-        default: XCTFail()
+        case .transcript:
+            XCTAssertTrue(true)
+        default: 
+            XCTFail()
         }
     }
 
@@ -386,15 +388,27 @@ final class ChatCoordinatorTests: XCTestCase {
 
     func test_chatTypeIsSecureTranscript() {
         let chatType = ChatCoordinator.chatType(
+            isTransferredToSecureConversations: false,
             startWithSecureTranscriptFlow: true,
             isAuthenticated: false
         )
 
-        XCTAssertEqual(chatType, .secureTranscript)
+        XCTAssertEqual(chatType, .secureTranscript(upgradedFromChat: false))
+    }
+
+    func test_chatTypeIsSecureTranscriptUpgradedFromChat() {
+        let chatType = ChatCoordinator.chatType(
+            isTransferredToSecureConversations: true,
+            startWithSecureTranscriptFlow: false,
+            isAuthenticated: false
+        )
+
+        XCTAssertEqual(chatType, .secureTranscript(upgradedFromChat: true))
     }
 
     func test_chatTypeIsAuthenticated() {
         let chatType = ChatCoordinator.chatType(
+            isTransferredToSecureConversations: false,
             startWithSecureTranscriptFlow: false,
             isAuthenticated: true
         )
@@ -404,6 +418,7 @@ final class ChatCoordinatorTests: XCTestCase {
 
     func test_chatTypeIsNonAuthenticated() {
         let chatType = ChatCoordinator.chatType(
+            isTransferredToSecureConversations: false,
             startWithSecureTranscriptFlow: false,
             isAuthenticated: false
         )

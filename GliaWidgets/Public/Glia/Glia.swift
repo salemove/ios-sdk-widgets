@@ -28,6 +28,15 @@ extension EngagementKind {
             self = .chat
         }
     }
+
+    var isMessaging: Bool {
+        switch self {
+        case .messaging:
+            return true
+        case .none, .chat, .audioCall, .videoCall:
+            return false
+        }
+    }
 }
 
 extension SecureConversations {
@@ -72,7 +81,7 @@ public class Glia {
     public static let sharedInstance = Glia(environment: .live)
 
     /// Current engagement media type.
-    public var engagement: EngagementKind { return rootCoordinator?.engagementKind ?? .none }
+    public var engagement: EngagementKind { return rootCoordinator?.engagementLaunching.currentKind ?? .none }
 
     /// Used to monitor engagement state changes.
     public var onEvent: ((GliaEvent) -> Void)?
@@ -112,12 +121,21 @@ public class Glia {
     var theme: Theme
     var assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard
     var loggerPhase: LoggerPhase
+    var queuesMonitor: QueuesMonitor
     var alertManager: AlertManager
     // We need to store `features` via `configure` or deprecated `startEngagement` methods
     // to use it when engagement gets restored for Direct ID authentication flow.
     var features: Features?
 
     private(set) var configuration: Configuration?
+
+    // Indicates whether at least one of two conditions is correct:
+    // - pending secure conversation exists;
+    // - unread message count > 0.
+    //
+    // Currently it's used to know if we have to force a visitor to SecureMessaging screen,
+    // once they try to start an engagement with media type other than `messaging`.
+    let pendingInteraction: SecureConversations.PendingInteraction
 
     init(environment: Environment) {
         self.environment = environment
@@ -134,7 +152,6 @@ public class Glia {
                 try logger.configureLocalLogLevel(.none)
                 try logger.configureRemoteLogLevel(.info)
             }
-
             loggerPhase = .configured(logger)
         } catch {
             environment.print("Unable to configure logger: '\(error)'.")
@@ -149,7 +166,12 @@ public class Glia {
                 loggerPhase: loggerPhase
             )
         )
-
+        queuesMonitor = .init(environment: .init(
+            listQueues: environment.coreSdk.listQueues,
+            subscribeForQueuesUpdates: environment.coreSdk.subscribeForQueuesUpdates,
+            unsubscribeFromUpdates: environment.coreSdk.unsubscribeFromUpdates,
+            logger: loggerPhase.logger
+        ))
         alertManager = .init(
             environment: .create(
                 with: environment,
@@ -157,6 +179,7 @@ public class Glia {
                 viewFactory: viewFactory
             )
         )
+        pendingInteraction = .init(environment: .init(with: environment.coreSdk))
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
@@ -446,7 +469,8 @@ extension Glia {
             visitorContext: configuration.visitorContext,
             environment: .create(
                 with: environment,
-                log: loggerPhase.logger
+                log: loggerPhase.logger,
+                queuesMonitor: queuesMonitor
             )
         )
 

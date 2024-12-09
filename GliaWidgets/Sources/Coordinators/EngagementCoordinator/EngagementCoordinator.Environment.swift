@@ -43,6 +43,10 @@ extension EngagementCoordinator {
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var flipCameraButtonStyle: FlipCameraButtonStyle
         var alertManager: AlertManager
+        var queuesMonitor: QueuesMonitor
+        var pendingSecureConversationStatus: CoreSdkClient.PendingSecureConversationStatus
+        var createEntryWidget: EntryWidgetBuilder
+        var dismissManager: GliaPresenter.DismissManager
     }
 }
 
@@ -52,7 +56,9 @@ extension EngagementCoordinator.Environment {
         loggerPhase: Glia.LoggerPhase,
         maximumUploads: @escaping () -> Int,
         viewFactory: ViewFactory,
-        alertManager: AlertManager
+        alertManager: AlertManager,
+        queuesMonitor: QueuesMonitor,
+        createEntryWidget: @escaping EntryWidgetBuilder
     ) -> Self {
         .init(
             fetchFile: environment.coreSdk.fetchFile,
@@ -83,14 +89,7 @@ extension EngagementCoordinator.Environment {
             messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
             secureMarkMessagesAsRead: environment.coreSdk.secureMarkMessagesAsRead,
             downloadSecureFile: environment.coreSdk.downloadSecureFile,
-            isAuthenticated: { [environment] in
-                do {
-                    return try environment.coreSdk.authentication(.forbiddenDuringEngagement).isAuthenticated
-                } catch {
-                    debugPrint(#function, "isAuthenticated:", error.localizedDescription)
-                    return false
-                }
-            },
+            isAuthenticated: environment.isAuthenticated,
             startSocketObservation: environment.coreSdk.startSocketObservation,
             stopSocketObservation: environment.coreSdk.stopSocketObservation,
             pushNotifications: environment.coreSdk.pushNotifications,
@@ -102,7 +101,11 @@ extension EngagementCoordinator.Environment {
             maximumUploads: maximumUploads,
             cameraDeviceManager: environment.cameraDeviceManager,
             flipCameraButtonStyle: viewFactory.theme.call.flipCameraButtonStyle,
-            alertManager: alertManager
+            alertManager: alertManager,
+            queuesMonitor: queuesMonitor,
+            pendingSecureConversationStatus: environment.coreSdk.pendingSecureConversationStatus,
+            createEntryWidget: createEntryWidget,
+            dismissManager: environment.dismissManager
         )
     }
 }

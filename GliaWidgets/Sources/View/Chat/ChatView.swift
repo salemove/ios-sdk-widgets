@@ -25,34 +25,47 @@ class ChatView: EngagementView {
     var selectCustomCardOption: ((HtmlMetadata.Option, MessageRenderer.Message.Identifier) -> Void)?
     var gvaButtonTapped: ((GvaOption) -> Void)?
     var retryMessageTapped: ((OutgoingMessage) -> Void)?
+    lazy var secureMessagingTopBannerView = SecureMessagingTopBannerView(isExpanded: $isTopBannerExpanded).makeView()
+    let entryWidgetContainerView = UIView().makeView()
+    let entryWidgetOverlayView = OverlayView().makeView()
+    let secureMessagingBottomBannerView = SecureMessagingBottomBannerView().makeView()
+    let sendingMessageUnavailabilityBannerView = SendingMessageUnavailableBannerView().makeView()
 
     let style: ChatStyle
     let environment: Environment
 
-    private lazy var quickReplyView = QuickReplyView(
+    var entryWidget: EntryWidget? {
+        didSet {
+            observeEntryWidget(entryWidget)
+        }
+    }
+    lazy var quickReplyView = QuickReplyView(
         style: style.gliaVirtualAssistant.quickReplyButton
     )
-    private var messageEntryViewBottomConstraint: NSLayoutConstraint?
+    var messageEntryViewBottomConstraint: NSLayoutConstraint?
+    var entryWidgetContainerViewHeightConstraint: NSLayoutConstraint?
     private var callBubble: BubbleView?
     private let keyboardObserver = KeyboardObserver()
-    private let kUnreadMessageIndicatorInset: CGFloat = -3
-    private let kCallBubbleEdgeInset: CGFloat = 10
-    private let kCallBubbleSize = CGSize(width: 60, height: 60)
-    private let kChatTableViewInsets = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+    private let messageRenderer: MessageRenderer?
+    private var heightCache: [String: CGFloat] = [:]
     private var callBubbleBounds: CGRect {
-        let x = safeAreaInsets.left + kCallBubbleEdgeInset
-        let y = safeAreaInsets.top + kCallBubbleEdgeInset
-        let width = frame.width - safeAreaInsets.left - safeAreaInsets.right - 2 * kCallBubbleEdgeInset
-        let height = messageEntryView.frame.maxY - safeAreaInsets.top - 2 * kCallBubbleEdgeInset
+        let x = safeAreaInsets.left + Constants.callBubbleEdgeInset
+        let y = safeAreaInsets.top + Constants.callBubbleEdgeInset
+        let width = frame.width - safeAreaInsets.left - safeAreaInsets.right - 2 * Constants.callBubbleEdgeInset
+        let height = messageEntryView.frame.maxY - safeAreaInsets.top - 2 * Constants.callBubbleEdgeInset
 
         return CGRect(x: x, y: y, width: width, height: height)
     }
-    private let messageRenderer: MessageRenderer?
-    private var heightCache: [String: CGFloat] = [:]
+
+    // Made internal for Snapshot test purposes
+    @Published var isTopBannerExpanded = false
+    @Published private var isTopBannerHidden = true
 
     var props: Props {
         didSet { renderHeaderProps() }
     }
+
+    private var cancelBag = CancelBag()
 
     init(
         with style: ChatStyle,
@@ -104,7 +117,7 @@ class ChatView: EngagementView {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
-        tableView.contentInset = kChatTableViewInsets
+        tableView.contentInset = Constants.chatTableViewInsets
         tableView.register(cell: ChatItemCell.self)
         unreadMessageIndicatorView.tapped = { [weak self] in
             self?.scrollToBottom(animated: true)
@@ -114,66 +127,42 @@ class ChatView: EngagementView {
         addKeyboardDismissalTapGesture()
         typingIndicatorView.accessibilityIdentifier = "chat_typingIndicator"
         typingIndicatorContainer.isHidden = true
+        bindTopBanner()
+        // Hide secure conversation bottom banner unavailability banner initially.
+        setSecureMessagingBottomBannerHidden(true)
+        setSecureMessagingTopBannerHidden(true)
+        setSendingMessageUnavailabilityBannerHidden(true)
     }
 
     override func defineLayout() {
         super.defineLayout()
-        addSubview(header)
-        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
-        constraints += header.layoutInSuperview(edges: .horizontal)
-        constraints += header.layoutInSuperview(edges: .top)
-
-        typingIndicatorContainer.addSubview(typingIndicatorView)
-        typingIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-
-        tableAndIndicatorStack.addArrangedSubviews([tableView, typingIndicatorContainer])
-        addSubview(tableAndIndicatorStack)
-        tableAndIndicatorStack.translatesAutoresizingMaskIntoConstraints = false
-        constraints += tableAndIndicatorStack.topAnchor.constraint(equalTo: header.bottomAnchor)
-        constraints += tableAndIndicatorStack.layoutInSuperview(edges: .horizontal)
-
-        constraints += [
-            typingIndicatorView.leadingAnchor.constraint(equalTo: typingIndicatorContainer.leadingAnchor, constant: 10),
-            typingIndicatorView.topAnchor.constraint(equalTo: typingIndicatorContainer.topAnchor, constant: 10),
-            typingIndicatorView.bottomAnchor.constraint(equalTo: typingIndicatorContainer.bottomAnchor, constant: -8),
-            typingIndicatorView.widthAnchor.constraint(equalToConstant: 28),
-            typingIndicatorView.heightAnchor.constraint(equalToConstant: 10)
-        ]
-
-        addSubview(quickReplyView)
-        constraints += quickReplyView.layoutIn(safeAreaLayoutGuide, edges: .horizontal)
-        constraints += quickReplyView.topAnchor.constraint(equalTo: tableAndIndicatorStack.bottomAnchor)
-
-        addSubview(messageEntryView)
-        let messageEntryInsets = UIEdgeInsets(
-            top: 0,
-            left: 0,
-            bottom: 4.5,
-            right: 0
-        )
-        messageEntryViewBottomConstraint = messageEntryView.layoutIn(
-            safeAreaLayoutGuide,
-            edges: .bottom,
-            insets: messageEntryInsets
-        ).first
-        if let messageEntryViewBottomConstraint {
-            constraints += messageEntryViewBottomConstraint
-        }
-
-        constraints += messageEntryView.layoutIn(safeAreaLayoutGuide, edges: .horizontal)
-        constraints += messageEntryView.topAnchor.constraint(equalTo: quickReplyView.bottomAnchor)
-
-        addSubview(unreadMessageIndicatorView)
-        unreadMessageIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        constraints += unreadMessageIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor)
-
-        constraints += unreadMessageIndicatorView.bottomAnchor.constraint(
-            equalTo: messageEntryView.topAnchor, constant: kUnreadMessageIndicatorInset
-        )
+        setupConstraints()
     }
 }
 
 extension ChatView {
+    func setSendingMessageUnavailabilityBannerHidden(_ isHidden: Bool) {
+        sendingMessageUnavailabilityBannerView.props = .init(
+            style: style.sendingMessageUnavailableBannerViewStyle,
+            isHidden: isHidden
+        )
+    }
+
+    func setSecureMessagingTopBannerHidden(_ isHidden: Bool) {
+        secureMessagingTopBannerView.props = .init(
+            style: style.secureMessagingTopBannerStyle,
+            buttonTap: topBannerViewButtonCommand(),
+            isHidden: isHidden
+        )
+    }
+
+    func setSecureMessagingBottomBannerHidden(_ isHidden: Bool) {
+        secureMessagingBottomBannerView.props = .init(
+            style: style.secureMessagingBottomBannerStyle,
+            isHidden: isHidden
+        )
+    }
+
     func setOperatorTypingIndicatorIsHidden(to isHidden: Bool) {
         typingIndicatorContainer.isHidden = isHidden
     }
@@ -437,6 +426,94 @@ extension ChatView {
 
         return currentPositionOffset >= chatBottomOffset
     }
+
+    private func bindTopBanner() {
+        $isTopBannerExpanded
+            .sink { [weak self] isExpanded in
+                self?.setEntryWidgetExpanded(isExpanded)
+            }
+            .store(in: &cancelBag)
+        $isTopBannerHidden
+            .sink { [weak self] isHidden in
+                self?.setSecureMessagingTopBannerHidden(isHidden)
+            }
+            .store(in: &cancelBag)
+    }
+
+    private func topBannerViewButtonCommand() -> Command<Bool> {
+        .init { [weak self] isExpanded in
+            self?.isTopBannerExpanded = isExpanded
+        }
+    }
+
+    private func setEntryWidgetExpanded(_ isExpanded: Bool) {
+        if isExpanded {
+            showEntryWidget()
+        } else {
+            hideEntryWidget()
+        }
+    }
+
+    private func showEntryWidget() {
+        guard let entryWidgetContainerViewHeightConstraint else {
+            return
+        }
+
+        entryWidget?.embed(in: entryWidgetContainerView)
+        layoutIfNeeded()
+
+        entryWidgetOverlayView.show()
+        NSLayoutConstraint.deactivate([entryWidgetContainerViewHeightConstraint])
+        UIView.animate(withDuration: Constants.topBannerViewAnimationDuration) { [weak self] in
+            self?.entryWidgetOverlayView.alpha = 1
+            self?.layoutIfNeeded()
+        }
+
+        let tapGesture = UITapGestureRecognizer(
+            target: self,
+            action: #selector(entryWidgetTapGestureAction)
+        )
+        addGestureRecognizer(tapGesture)
+    }
+
+    func hideEntryWidget() {
+        guard let entryWidgetContainerViewHeightConstraint else {
+            return
+        }
+
+        NSLayoutConstraint.activate([entryWidgetContainerViewHeightConstraint])
+        entryWidgetContainerView.subviews.forEach { $0.removeFromSuperview() }
+
+        UIView.animate(
+            withDuration: Constants.topBannerViewAnimationDuration,
+            animations: { [weak self] in
+                self?.entryWidgetOverlayView.alpha = 0
+                self?.layoutIfNeeded()
+            },
+            completion: { [weak self] _ in
+                self?.entryWidgetOverlayView.hide()
+            }
+        )
+    }
+
+    private func observeEntryWidget(_ entryWidget: EntryWidget?) {
+        guard let entryWidget else {
+            return
+        }
+        let isAnyEngagementTypeAvailable = entryWidget.$availableEngagementTypes
+            .map { !$0.isEmpty }
+        isAnyEngagementTypeAvailable
+            .filter { !$0 }
+            .assign(to: &$isTopBannerExpanded)
+        isAnyEngagementTypeAvailable
+            .map { !$0 }
+            .assign(to: &$isTopBannerHidden)
+    }
+
+    @objc private func entryWidgetTapGestureAction() {
+        hideEntryWidget()
+        isTopBannerExpanded = false
+    }
 }
 
 // MARK: - WebMessageCardViewDelegate
@@ -475,8 +552,8 @@ extension ChatView: WebMessageCardViewDelegate {
     }
 
     private func isLastMessage(_ messageId: MessageRenderer.Message.Identifier) -> Bool {
-        let numberOfSections = { self.numberOfSections?() ?? 0 }
-        let numberOfRows = { section in self.numberOfRows?(section) ?? 0 }
+        let numberOfSections = { [weak self] in self?.numberOfSections?() ?? 0 }
+        let numberOfRows = { [weak self] section in self?.numberOfRows?(section) ?? 0 }
         let sections = (0 ..< numberOfSections()).reversed()
 
         guard let section = sections.first(where: { numberOfRows($0) > 0 }) else { return false }
@@ -511,10 +588,10 @@ extension ChatView {
         callBubble.pan = { [weak self] in self?.moveCallBubble($0, animated: true) }
         callBubble.frame = CGRect(
             origin: CGPoint(
-                x: callBubbleBounds.maxX - kCallBubbleSize.width,
-                y: callBubbleBounds.maxY - kCallBubbleSize.height
+                x: callBubbleBounds.maxX - Constants.callBubbleSize.width,
+                y: callBubbleBounds.maxY - Constants.callBubbleSize.height
             ),
-            size: kCallBubbleSize
+            size: Constants.callBubbleSize
         )
         self.callBubble = callBubble
 
@@ -646,7 +723,7 @@ extension ChatView {
         let choiceCard = ChoiceCard(with: message, isActive: isActive)
         view.showsOperatorImage = showsImage
         view.setOperatorImage(fromUrl: imageUrl, animated: false)
-        view.onOptionTapped = { self.choiceOptionSelected($0, message.id) }
+        view.onOptionTapped = { [weak self] in self?.choiceOptionSelected($0, message.id) }
         view.appendContent(.choiceCard(choiceCard), animated: false)
         return .choiceCard(view)
     }

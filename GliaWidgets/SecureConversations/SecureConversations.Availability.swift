@@ -10,23 +10,25 @@ extension SecureConversations {
             for queueIds: [String],
             completion: @escaping CompletionResult
         ) {
-            environment.listQueues { queues, error in
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
+            // if provided queueIds array contains invalid ids,
+            // then log a warning message.
+            let invalidIds = queueIds.filter { UUID(uuidString: $0) == nil }
+            if !invalidIds.isEmpty {
+                environment.log.warning("Queue ID array for Secure Messaging contains invalid queue IDs: \(invalidIds).")
+            }
 
-                self.checkQueues(
-                    queueIds: queueIds,
-                    fetchedQueues: queues,
-                    completion: completion
-                )
+            environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds) { result in
+                switch result {
+                case .success(let queues):
+                    self.checkQueues(fetchedQueues: queues, completion: completion)
+                case .failure(let error):
+                    completion(.failure(error))
+                }
             }
         }
 
         private func checkQueues(
-            queueIds: [String],
-            fetchedQueues: [CoreSdkClient.Queue]?,
+            fetchedQueues: [CoreSdkClient.Queue],
             completion: (Result<Status, CoreSdkClient.SalemoveError>) -> Void
         ) {
             guard environment.isAuthenticated() else {
@@ -35,68 +37,34 @@ extension SecureConversations {
                 return
             }
 
-            guard let queues = fetchedQueues else {
-                // If no queue fetched from the server,
-                // return `.unavailable(.emptyQueue)`
-                completion(.success(.unavailable(.emptyQueue)))
-                return
-            }
+            let filteredQueues = fetchedQueues.filter(defaultPredicate)
 
-            // if provided queueIds array contains invalid ids,
-            // then log a warning message.
-            let invalidIds = queueIds.filter { UUID(uuidString: $0) == nil }
-            if !invalidIds.isEmpty {
-                environment.log.warning("Queue ID array for Secure Messaging contains invalid queue IDs: \(invalidIds).")
-            }
-
-            let matchedQueues = queues.filter { queueIds.contains($0.id) }
-
-            guard !matchedQueues.isEmpty else {
-                // if provided queue ids array is not empty, but ids do not
-                // match with any queue, then log a warning message
-                if !queueIds.isEmpty {
-                    environment.log.warning("Provided queue IDs do not match with any queue.")
-                }
-                // If no passed queueId is matched with fetched queues,
-                // then check default queues instead
-                let defaultQueues = queues.filter(\.isDefault)
-                // Filter queues supporting `messaging` and have status other than `closed`
-                let filteredQueues = defaultQueues.filter(defaultPredicate)
-
-                if filteredQueues.isEmpty {
-                    environment.log.warning("No default queues that have status other than closed and support messaging were found.")
-                    // if no default queue supports `messaging` and
-                    // have status other than `closed`, return `.unavailable(.emptyQueue)`
-                    completion(.success(.unavailable(.emptyQueue)))
+            // Check if matched queues match support `messaging` and
+            // have status other than `closed`.
+            guard !filteredQueues.isEmpty else {
+                // In case of "transferred SC" we should treat SC as available.
+                if let engagement = environment.getCurrentEngagement(),
+                   engagement.status == .transferring,
+                   engagement.capabilities?.text == true {
+                    completion(.success(.available(.transferred)))
                     return
                 }
 
-                // Otherwise, return default queue ids
-                let defaultQueueIds = defaultQueues.map(\.id)
-                environment.log.info("Secure Messaging is available using queues that are set as **Default**.")
-                completion(.success(.available(queueIds: defaultQueueIds)))
-                return
-            }
-
-            let filteredQueues = matchedQueues.filter(defaultPredicate)
-
-            // Check if matched queues match support `messaging` and
-            // have status other than `closed`
-            guard !filteredQueues.isEmpty else {
                 environment.log.warning("Provided queue IDs do not match with queues that have status other than closed and support messaging.")
                 completion(.success(.unavailable(.emptyQueue)))
                 return
             }
+            let queueIds = filteredQueues.map { $0.id }
 
             environment.log.info("Secure Messaging is available in queues with IDs: \(queueIds).")
-            completion(.success(.available(queueIds: queueIds)))
+            completion(.success(.available(.queues(queueIds: queueIds))))
         }
 
         private var defaultPredicate: (CoreSdkClient.Queue) -> Bool {
-          return {
-            $0.state.status != .closed &&
-            $0.state.media.contains(CoreSdkClient.MediaType.messaging)
-          }
+            {
+                $0.state.status != .closed &&
+                $0.state.media.contains(CoreSdkClient.MediaType.messaging)
+            }
         }
     }
 }
@@ -106,12 +74,18 @@ extension SecureConversations.Availability {
         var listQueues: CoreSdkClient.ListQueues
         var isAuthenticated: () -> Bool
         var log: CoreSdkClient.Logger
+        var queuesMonitor: QueuesMonitor
+        var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
     }
 }
 
 extension SecureConversations.Availability {
     enum Status: Equatable {
-        case available(queueIds: [String] = [])
+        enum Available: Equatable {
+            case queues(queueIds: [String])
+            case transferred
+        }
+        case available(Available)
         case unavailable(UnavailabilityReason)
 
         static func == (lhs: Status, rhs: Status) -> Bool {
@@ -122,6 +96,15 @@ extension SecureConversations.Availability {
                 return lhsReason == rhsReason
             default:
                 return false
+            }
+        }
+
+        var isAvailable: Bool {
+            switch self {
+            case .available:
+                true
+            case .unavailable:
+                false
             }
         }
     }
@@ -139,7 +122,9 @@ extension SecureConversations.Availability.Environment {
         .init(
             listQueues: environment.listQueues,
             isAuthenticated: environment.isAuthenticated,
-            log: environment.log
+            log: environment.log,
+            queuesMonitor: environment.queuesMonitor,
+            getCurrentEngagement: environment.getCurrentEngagement
         )
     }
 
@@ -147,7 +132,37 @@ extension SecureConversations.Availability.Environment {
         .init(
             listQueues: environment.listQueues,
             isAuthenticated: environment.isAuthenticated,
-            log: environment.log
+            log: environment.log,
+            queuesMonitor: environment.queuesMonitor,
+            getCurrentEngagement: environment.getCurrentEngagement
         )
     }
 }
+
+#if DEBUG
+extension SecureConversations.Availability {
+    static func mock(
+        environment: Environment = .mock()
+    ) -> SecureConversations.Availability {
+        .init(environment: environment)
+    }
+}
+
+extension SecureConversations.Availability.Environment {
+    static func mock(
+        listQueues: @escaping CoreSdkClient.ListQueues = { _ in },
+        isAuthenticated: @escaping () -> Bool = { false },
+        log: CoreSdkClient.Logger = .mock,
+        queuesMonitor: QueuesMonitor = .mock(),
+        getCurrentEngagement: @escaping CoreSdkClient.GetCurrentEngagement = { .mock() }
+    ) -> Self {
+        .init(
+            listQueues: listQueues,
+            isAuthenticated: isAuthenticated,
+            log: log,
+            queuesMonitor: queuesMonitor,
+            getCurrentEngagement: getCurrentEngagement
+        )
+    }
+}
+#endif

@@ -53,6 +53,18 @@ public class ChatStyle: EngagementStyle {
     /// Style of the Glia Virtual Assistant
     public var gliaVirtualAssistant: GliaVirtualAssistantStyle
 
+    /// Style of the secure messaging top banner view.
+    public var secureMessagingTopBannerStyle: SecureMessagingTopBannerViewStyle
+
+    /// Style of the secure messaging bottom banner view.
+    public var secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle
+
+    /// Style of the secure messaging expanded top banner view.
+    public var secureMessagingExpandedTopBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle
+
+    /// Style for unavailability to send messages banner view.
+    public var sendingMessageUnavailableBannerViewStyle: SendingMessageUnavailableBannerViewStyle
+
     /// - Parameters:
     ///   - header: Style of the view's header (navigation bar area) when the screen is displaying live chat.
     ///   - connect: Styles for different engagement connection states.
@@ -73,7 +85,10 @@ public class ChatStyle: EngagementStyle {
     ///   - secureTranscriptTitle: Header title for secure messaging transcript.
     ///   - secureTranscriptHeader: Style of the view's header (navigation bar area) when the screen is displaying secure conversations.
     ///   - unreadMessageDivider: Style for divider of unread messages in secure messaging transcript.
-    ///
+    ///   - systemMessageStyle: Style of a visitor's message.
+    ///   - gliaVirtualAssistant: Style of the GVA views.
+    ///   - secureMessagingBottomBannerStyle: Style of the secure messaging bottom banner view.
+    ///   - sendingMessageUnavailableBannerViewStyle: Style for unavailability to send messages banner view.
     public init(
         header: HeaderStyle,
         connect: ConnectStyle,
@@ -95,7 +110,11 @@ public class ChatStyle: EngagementStyle {
         secureTranscriptHeader: HeaderStyle,
         unreadMessageDivider: UnreadMessageDividerStyle,
         systemMessageStyle: Theme.SystemMessageStyle,
-        gliaVirtualAssistant: GliaVirtualAssistantStyle
+        gliaVirtualAssistant: GliaVirtualAssistantStyle,
+        secureMessagingTopBannerStyle: SecureMessagingTopBannerViewStyle,
+        secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle,
+        sendingMessageUnavailableBannerViewStyle: SendingMessageUnavailableBannerViewStyle,
+        secureMessagingExpandedTopBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle
     ) {
         self.title = title
         self.visitorMessageStyle = visitorMessageStyle
@@ -114,6 +133,10 @@ public class ChatStyle: EngagementStyle {
         self.unreadMessageDivider = unreadMessageDivider
         self.systemMessageStyle = systemMessageStyle
         self.gliaVirtualAssistant = gliaVirtualAssistant
+        self.secureMessagingTopBannerStyle = secureMessagingTopBannerStyle
+        self.secureMessagingBottomBannerStyle = secureMessagingBottomBannerStyle
+        self.sendingMessageUnavailableBannerViewStyle = sendingMessageUnavailableBannerViewStyle
+        self.secureMessagingExpandedTopBannerItemsStyle = secureMessagingExpandedTopBannerItemsStyle
 
         super.init(
             header: header,

@@ -4,6 +4,7 @@ import Foundation
 extension Interactor.Environment {
     static let failing = Self(
         coreSdk: .failing,
+        queuesMonitor: .failing,
         gcd: .failing,
         log: .failing
     )

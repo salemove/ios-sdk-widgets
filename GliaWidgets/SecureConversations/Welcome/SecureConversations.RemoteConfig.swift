@@ -54,6 +54,8 @@ extension SecureConversations.WelcomeStyle {
         )
         attachmentListStyle.apply(
             configuration: configuration?.attachmentList,
+            // no disabled style in the Welcome Screen configuration
+            disabledConfiguration: configuration?.attachmentList,
             assetsBuilder: assetsBuilder
         )
         pickMediaStyle.apply(

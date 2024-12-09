@@ -88,7 +88,11 @@ extension ChatStyle {
         secureTranscriptHeader: HeaderStyle,
         unreadMessageDivider: UnreadMessageDividerStyle,
         systemMessage: SystemMessageStyle,
-        gliaVirtualAssistant: GliaVirtualAssistantStyle
+        gliaVirtualAssistant: GliaVirtualAssistantStyle,
+        secureMessagingTopBannerStyle: SecureMessagingTopBannerViewStyle,
+        secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle,
+        sendingMessageUnavailableBannerViewStyle: SendingMessageUnavailableBannerViewStyle,
+        secureMessagingExpandedTopBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle
     ) {
         self.init(
             header: header,
@@ -111,7 +115,11 @@ extension ChatStyle {
             secureTranscriptHeader: secureTranscriptHeader,
             unreadMessageDivider: unreadMessageDivider,
             systemMessageStyle: systemMessage.toNewSystemMessageStyle(),
-            gliaVirtualAssistant: gliaVirtualAssistant
+            gliaVirtualAssistant: gliaVirtualAssistant,
+            secureMessagingTopBannerStyle: secureMessagingTopBannerStyle,
+            secureMessagingBottomBannerStyle: secureMessagingBottomBannerStyle,
+            sendingMessageUnavailableBannerViewStyle: sendingMessageUnavailableBannerViewStyle,
+            secureMessagingExpandedTopBannerItemsStyle: secureMessagingExpandedTopBannerItemsStyle
         )
     }
 }

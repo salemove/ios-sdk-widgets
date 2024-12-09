@@ -9,6 +9,11 @@ extension SecureConversations.Availability.Environment {
             fail("\(Self.self).isAuthenticated")
             return false
         },
-        log: .failing
+        log: .failing,
+        queuesMonitor: .failing,
+        getCurrentEngagement: {
+            fail("\(Self.self).getCurrentEngagement")
+            return .mock()
+        }
     )
 }

@@ -16,7 +16,7 @@ extension Glia {
             _ interactor: Interactor,
             _ viewFactory: ViewFactory,
             _ sceneProvider: SceneProvider?,
-            _ engagementKind: EngagementKind,
+            _ engagementLaunching: EngagementCoordinator.EngagementLaunching,
             _ screenShareHandler: ScreenShareHandler,
             _ features: Features,
             _ environment: EngagementCoordinator.Environment
@@ -53,6 +53,8 @@ extension Glia {
         var snackBar: SnackBar
         var processInfo: ProcessInfoHandling
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
+        var isAuthenticated: () -> Bool
+        var dismissManager: GliaPresenter.DismissManager
     }
 }
 
@@ -61,7 +63,7 @@ extension Glia.Environment {
         interactor: Interactor,
         viewFactory: ViewFactory,
         sceneProvider: SceneProvider?,
-        engagementKind: EngagementKind,
+        engagementLaunching: EngagementCoordinator.EngagementLaunching,
         screenShareHandler: ScreenShareHandler,
         features: Features,
         environment: EngagementCoordinator.Environment
@@ -70,7 +72,7 @@ extension Glia.Environment {
             interactor,
             viewFactory,
             sceneProvider,
-            engagementKind,
+            engagementLaunching,
             screenShareHandler,
             features,
             environment
