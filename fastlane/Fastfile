@@ -117,4 +117,19 @@ platform :ios do
 
     sh("bash ../scripts/update_core_sdk_version.sh '#{project_version}' '#{core_sdk_version}' '#{core_sdk_checksum}'")
   end
+
+  desc "Creates a pull request in the repository."
+  lane :create_pr do |options|
+    branch_name = options[:branch]
+    title = options[:title]
+    base = options[:base]
+
+    create_pull_request(
+      repo: 'salemove/ios-sdk-widgets',
+      title: title,
+      head: branch_name,
+      base: base,
+      team_reviewers: ["tm-mobile-ios"]
+    )
+  end
 end
