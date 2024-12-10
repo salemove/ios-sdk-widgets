@@ -12,7 +12,7 @@ extension Theme {
             audioHint: Localization.EntryWidget.Audio.Button.Accessibility.hint,
             videoHint: Localization.EntryWidget.Video.Button.Accessibility.hint,
             secureMessagingHint: Localization.EntryWidget.SecureMessaging.Button.Accessibility.hint,
-            callVisualizerHint: Localization.EntryWidget.CallVisualizer.Button.Accessibility.hint
+            callVisualizerHint: Localization.EntryWidget.OngoingEngagement.Button.Accessibility.hint
         )
 
         let mediaTypeItem: EntryWidgetStyle.MediaTypeItemStyle = .init(
@@ -38,8 +38,8 @@ extension Theme {
             backgroundColor: .fill(color: color.baseLight),
             loading: loading,
             accessibility: mediaTypeAccessibility,
-            ongoingCoreEngagementMessage: Localization.EntryWidget.OngoingEngagement.Core.message,
-            ongoingCallVisualizerMessage: Localization.EntryWidget.OngoingEngagement.CallVisualizer.message,
+            ongoingCoreEngagementMessage: Localization.EntryWidget.OngoingEngagement.description,
+            ongoingCallVisualizerMessage: Localization.EntryWidget.CallVisualizer.desciption,
             ongoingEngagementMessageFont: font.mediumSubtitle2,
             ongoingEngagementMessageColor: color.primary
         )

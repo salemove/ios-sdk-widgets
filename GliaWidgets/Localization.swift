@@ -454,13 +454,11 @@ internal enum Localization {
       }
     }
     internal enum CallVisualizer {
+      /// Screen sharing in progress
+      internal static var desciption: String { Localization.tr("Localizable", "entry_widget.call_visualizer.desciption", fallback: "Screen sharing in progress") }
       internal enum Button {
         /// Call Visualizer
         internal static var label: String { Localization.tr("Localizable", "entry_widget.call_visualizer.button.label", fallback: "Call Visualizer") }
-        internal enum Accessibility {
-          /// Starts call visualizer session
-          internal static var hint: String { Localization.tr("Localizable", "entry_widget.call_visualizer.button.accessibility.hint", fallback: "Starts call visualizer session") }
-        }
       }
     }
     internal enum EmptyState {
@@ -500,13 +498,13 @@ internal enum Localization {
       }
     }
     internal enum OngoingEngagement {
-      internal enum CallVisualizer {
-        /// Screen sharing in progress
-        internal static var message: String { Localization.tr("Localizable", "entry_widget.ongoing_engagement.call_visualizer.message", fallback: "Screen sharing in progress") }
-      }
-      internal enum Core {
-        /// Ongoing • Tap to return
-        internal static var message: String { Localization.tr("Localizable", "entry_widget.ongoing_engagement.core.message", fallback: "Ongoing • Tap to return") }
+      /// Ongoing • Tap to return
+      internal static var description: String { Localization.tr("Localizable", "entry_widget.ongoing_engagement.description", fallback: "Ongoing • Tap to return") }
+      internal enum Button {
+        internal enum Accessibility {
+          /// Returns to ongoing engagement
+          internal static var hint: String { Localization.tr("Localizable", "entry_widget.ongoing_engagement.button.accessibility.hint", fallback: "Returns to ongoing engagement") }
+        }
       }
     }
     internal enum SecureMessaging {
