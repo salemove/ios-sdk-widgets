@@ -20,7 +20,7 @@ extension SecureConversations.PendingInteraction.Environment {
 }
 
 extension SecureConversations.PendingInteraction {
-    static func failing() -> Self {
-        .init(environment: .failing)
+    static func failing() throws -> Self {
+        try .init(environment: .failing)
     }
 }
