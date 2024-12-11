@@ -17,9 +17,10 @@ public final class EntryWidget: NSObject {
     private let environment: Environment
     @Published private var unreadSecureMessageCount: Int?
     private(set) var unreadSecureMessageSubscriptionId: String?
-
+    private var engagementCancellable: AnyCancellable?
     @Published var viewState: ViewState = .loading
     @Published private(set) var availableEngagementTypes: [EntryWidget.EngagementType] = []
+    private var ongoingEngagement: Engagement?
 
     // MARK: - Initialization
 
@@ -43,6 +44,13 @@ public final class EntryWidget: NSObject {
         Publishers.CombineLatest(environment.queuesMonitor.$state, $unreadSecureMessageCount)
             .sink(receiveValue: handleQueuesMonitorUpdates(state:unreadSecureMessagesCount:))
             .store(in: &cancellables)
+
+        engagementCancellable = environment.currentInteractor()?.$currentEngagement
+            .sink { [weak self] engagement in
+                guard let self else { return }
+                ongoingEngagement = engagement
+                handleQueuesMonitorUpdates(state: environment.queuesMonitor.state, unreadSecureMessagesCount: unreadSecureMessageCount)
+            }
     }
 
     deinit {
@@ -96,6 +104,8 @@ extension EntryWidget {
         case .loading, .error, .offline:
             // 4 gives the desired fixed size
             mediaTypesCount = 4
+        case .ongoingEngagement:
+            mediaTypesCount = 1
         }
         var appliedHeight: CGFloat = 0
         appliedHeight += configuration.sizeConstraints.sheetHeaderHeight
@@ -108,30 +118,47 @@ extension EntryWidget {
 
 // MARK: - Private methods
 private extension EntryWidget {
-    func handleQueuesMonitorUpdates(state: QueuesMonitor.State, unreadSecureMessagesCount: Int?) {
-        switch state {
-        case .idle:
-            viewState = .loading
-        case .updated(let queues):
-            let availableEngagementTypes = resolveAvailableEngagementTypes(from: queues)
-            if availableEngagementTypes.isEmpty {
-                viewState = .offline
-            } else {
-                let mediaTypes = availableEngagementTypes.map { type in
-                    if type == .secureMessaging {
-                        return EntryWidget.MediaTypeItem(
-                            type: type,
-                            badgeCount: unreadSecureMessagesCount ?? 0
-                        )
-                    }
-                    return EntryWidget.MediaTypeItem(type: type)
+    func handleQueuesMonitorUpdates(
+        state: QueuesMonitor.State,
+        unreadSecureMessagesCount: Int?
+    ) {
+        if let ongoingEngagement {
+            if ongoingEngagement.source == .callVisualizer {
+                viewState = .ongoingEngagement(.callVisualizer)
+            } else if ongoingEngagement.source == .coreEngagement {
+                if ongoingEngagement.mediaStreams.video != nil {
+                    viewState = .ongoingEngagement(.video)
+                } else if ongoingEngagement.mediaStreams.audio != nil {
+                    viewState = .ongoingEngagement(.audio)
+                } else {
+                    viewState = .ongoingEngagement(.chat)
                 }
-                viewState = .mediaTypes(mediaTypes)
             }
-            self.availableEngagementTypes = availableEngagementTypes
-        case .failed(let error):
-            viewState = .error
-            environment.log.prefixed(Self.self).error("Setting up queues. Failed to get site queues \(error)")
+        } else {
+            switch state {
+            case .idle:
+                viewState = .loading
+            case .updated(let queues):
+                let availableEngagementTypes = resolveAvailableEngagementTypes(from: queues)
+                if availableEngagementTypes.isEmpty {
+                    viewState = .offline
+                } else {
+                    let mediaTypes = availableEngagementTypes.map { type in
+                        if type == .secureMessaging {
+                            return EntryWidget.MediaTypeItem(
+                                type: type,
+                                badgeCount: unreadSecureMessagesCount ?? 0
+                            )
+                        }
+                        return EntryWidget.MediaTypeItem(type: type)
+                    }
+                    viewState = .mediaTypes(mediaTypes)
+                }
+                self.availableEngagementTypes = availableEngagementTypes
+            case .failed(let error):
+                viewState = .error
+                environment.log.prefixed(Self.self).error("Setting up queues. Failed to get site queues \(error)")
+            }
         }
     }
 
@@ -178,6 +205,8 @@ private extension EntryWidget {
                     try self.environment.engagementLauncher.startVideoCall()
                 case .secureMessaging:
                     try self.environment.engagementLauncher.startSecureMessaging()
+                case .callVisualizer:
+                    break
                 }
             } catch {
                 self.viewState = .error
@@ -314,11 +343,12 @@ private extension EntryWidget {
 
 // MARK: - View State
 extension EntryWidget {
-    enum ViewState {
+    enum ViewState: Equatable {
         case loading
         case mediaTypes([MediaTypeItem])
         case offline
         case error
+        case ongoingEngagement(EngagementType)
     }
 }
 

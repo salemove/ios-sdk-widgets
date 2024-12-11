@@ -231,4 +231,124 @@ class EntryWidgetTests: XCTestCase {
 
         XCTAssertEqual(entryWidget.availableEngagementTypes, [.video, .audio, .chat])
     }
+
+    func test_ongoingEngagementViewStateIsShownWhenCoreEngagementIsChat() {
+        let mockQueueId = "mockQueueId"
+        let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
+
+        var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
+        queueMonitorEnvironment.listQueues = { completion in
+            completion([mockQueue], nil)
+        }
+        queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
+            completion(.success(mockQueue))
+            return UUID.mock.uuidString
+        }
+        var environment = EntryWidget.Environment.mock()
+        environment.isAuthenticated = { false }
+        environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
+        let interactor: Interactor = .mock()
+        interactor.currentEngagement = .mock()
+        environment.currentInteractor = { interactor }
+
+        let entryWidget = EntryWidget(
+            queueIds: [mockQueueId],
+            configuration: .default,
+            environment: environment
+        )
+
+        entryWidget.show(in: .init())
+
+        XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.chat))
+    }
+
+    func test_ongoingEngagementViewStateIsShownWhenCoreEngagementIsAudio() {
+        let mockQueueId = "mockQueueId"
+        let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
+
+        var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
+        queueMonitorEnvironment.listQueues = { completion in
+            completion([mockQueue], nil)
+        }
+        queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
+            completion(.success(mockQueue))
+            return UUID.mock.uuidString
+        }
+        var environment = EntryWidget.Environment.mock()
+        environment.isAuthenticated = { false }
+        environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
+        let interactor: Interactor = .mock()
+        interactor.currentEngagement = .mock(media: .init(audio: .twoWay, video: nil))
+        environment.currentInteractor = { interactor }
+
+        let entryWidget = EntryWidget(
+            queueIds: [mockQueueId],
+            configuration: .default,
+            environment: environment
+        )
+
+        entryWidget.show(in: .init())
+
+        XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.audio))
+    }
+
+    func test_ongoingEngagementViewStateIsShownWhenCoreEngagementIsVideo() {
+        let mockQueueId = "mockQueueId"
+        let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
+
+        var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
+        queueMonitorEnvironment.listQueues = { completion in
+            completion([mockQueue], nil)
+        }
+        queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
+            completion(.success(mockQueue))
+            return UUID.mock.uuidString
+        }
+        var environment = EntryWidget.Environment.mock()
+        environment.isAuthenticated = { false }
+        environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
+        let interactor: Interactor = .mock()
+        interactor.currentEngagement = .mock(media: .init(audio: .twoWay, video: .twoWay))
+        environment.currentInteractor = { interactor }
+
+        let entryWidget = EntryWidget(
+            queueIds: [mockQueueId],
+            configuration: .default,
+            environment: environment
+        )
+
+        entryWidget.show(in: .init())
+
+        XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.video))
+    }
+
+    func test_ongoingEngagementViewStateIsShownWhenCallVisualizer() {
+        let mockQueueId = "mockQueueId"
+        let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
+
+        var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
+        queueMonitorEnvironment.listQueues = { completion in
+            completion([mockQueue], nil)
+        }
+        queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
+            completion(.success(mockQueue))
+            return UUID.mock.uuidString
+        }
+        var environment = EntryWidget.Environment.mock()
+        environment.isAuthenticated = { false }
+        environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
+        let interactor: Interactor = .mock()
+        interactor.currentEngagement = .mock(source: .callVisualizer)
+        environment.currentInteractor = { interactor }
+
+        let entryWidget = EntryWidget(
+            queueIds: [mockQueueId],
+            configuration: .default,
+            environment: environment
+        )
+
+        entryWidget.show(in: .init())
+
+        XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.callVisualizer))
+    }
 }

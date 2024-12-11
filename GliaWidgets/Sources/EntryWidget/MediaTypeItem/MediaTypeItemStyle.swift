@@ -14,6 +14,9 @@ extension EntryWidgetStyle {
         /// The title for secure messaging media type.
         public var secureMessagingTitle: String
 
+        /// The title for call visualizer media type.
+        public var callVisualizerTitle: String
+
         /// Font of the headline text.
         public var titleFont: UIFont
 
@@ -65,6 +68,18 @@ extension EntryWidgetStyle {
         /// Accessibility properties for EntryWidget MediaType Item.
         public var accessibility: Accessibility
 
+        /// The ongoing core engagement message string
+        public var ongoingCoreEngagementMessage: String
+
+        /// The ongoing call visualizer message string
+        public var ongoingCallVisualizerMessage: String
+
+        /// The ongoing engagement message font
+        public var ongoingEngagementMessageFont: UIFont
+
+        /// The ongoing engagement message color
+        public var ongoingEngagementMessageColor: UIColor
+
         /// - Parameters:
         ///   - chatTitle: Title for chat media type.
         ///   - audioTitle: Title for audio media type.
@@ -92,6 +107,7 @@ extension EntryWidgetStyle {
             audioTitle: String,
             videoTitle: String,
             secureMessagingTitle: String,
+            callVisualizerTitle: String,
             titleFont: UIFont,
             titleColor: UIColor,
             titleTextStyle: UIFont.TextStyle,
@@ -108,12 +124,17 @@ extension EntryWidgetStyle {
             iconColor: ColorType,
             backgroundColor: ColorType,
             loading: LoadingStyle,
-            accessibility: Accessibility
+            accessibility: Accessibility,
+            ongoingCoreEngagementMessage: String,
+            ongoingCallVisualizerMessage: String,
+            ongoingEngagementMessageFont: UIFont,
+            ongoingEngagementMessageColor: UIColor
         ) {
             self.chatTitle = chatTitle
             self.audioTitle = audioTitle
             self.videoTitle = videoTitle
             self.secureMessagingTitle = secureMessagingTitle
+            self.callVisualizerTitle = callVisualizerTitle
             self.titleFont = titleFont
             self.titleColor = titleColor
             self.titleTextStyle = titleTextStyle
@@ -131,6 +152,10 @@ extension EntryWidgetStyle {
             self.backgroundColor = backgroundColor
             self.loading = loading
             self.accessibility = accessibility
+            self.ongoingCoreEngagementMessage = ongoingCoreEngagementMessage
+            self.ongoingCallVisualizerMessage = ongoingCallVisualizerMessage
+            self.ongoingEngagementMessageFont = ongoingEngagementMessageFont
+            self.ongoingEngagementMessageColor = ongoingEngagementMessageColor
         }
 
         func title(for item: EntryWidget.MediaTypeItem) -> String {
@@ -143,6 +168,8 @@ extension EntryWidgetStyle {
                 return videoTitle
             case .secureMessaging:
                 return secureMessagingTitle
+            case .callVisualizer:
+                return callVisualizerTitle
             }
         }
 
@@ -156,6 +183,10 @@ extension EntryWidgetStyle {
                 return videoMessage
             case .secureMessaging:
                 return secureMessagingMessage
+            case .callVisualizer:
+                // This will not be used, because EntryWidget will show
+                // ongoing engagement message there
+                return ""
             }
         }
     }
