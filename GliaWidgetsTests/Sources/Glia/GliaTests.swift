@@ -747,10 +747,12 @@ final class GliaTests: XCTestCase {
         XCTAssertEqual(messages, ["Initialize Glia Widgets SDK", "Setting Unified UI Config"])
     }
 
-    func test_hasPendingInteractionIfPendingSecureConversationExists() {
+    func test_hasPendingInteractionIfPendingSecureConversationExists() throws {
         var gliaEnv = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
         let uuidGen = UUID.incrementing
+        logger.infoClosure = { _, _, _, _ in }
+        logger.prefixedClosure = { _ in logger }
         logger.configureLocalLogLevelClosure = { _ in }
         logger.configureRemoteLogLevelClosure = { _ in }
         gliaEnv.coreSdk.createLogger = { _ in logger }
@@ -765,18 +767,28 @@ final class GliaTests: XCTestCase {
         }
         gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
         gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.success(()))
+        }
+        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
 
         let sdk = Glia(environment: gliaEnv)
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
 
-        XCTAssertTrue(sdk.pendingInteraction.hasPendingInteraction)
+        XCTAssertTrue(try XCTUnwrap(sdk.pendingInteraction).hasPendingInteraction)
     }
 
-    func test_hasPendingInteractionIfUnreadMessagesExist() {
+    func test_hasPendingInteractionIfUnreadMessagesExist() throws {
         var gliaEnv = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
         let uuidGen = UUID.incrementing
         logger.configureLocalLogLevelClosure = { _ in }
         logger.configureRemoteLogLevelClosure = { _ in }
+        logger.infoClosure = { _, _, _, _ in }
+        logger.prefixedClosure = { _ in logger }
         gliaEnv.coreSdk.createLogger = { _ in logger }
         gliaEnv.conditionalCompilation.isDebug = { true }
         gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { callback in
@@ -789,28 +801,50 @@ final class GliaTests: XCTestCase {
         }
         gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
         gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.success(()))
+        }
+        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
 
         let sdk = Glia(environment: gliaEnv)
 
-        XCTAssertTrue(sdk.pendingInteraction.hasPendingInteraction)
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+
+        XCTAssertTrue(try XCTUnwrap(sdk.pendingInteraction).hasPendingInteraction)
     }
 
-    func test_hasPendingInteractionIfNoUnreadMessageAndPendingSecureConversationExist() {
+    func test_hasPendingInteractionIfNoUnreadMessageAndPendingSecureConversationExist() throws {
+        var uuidGen = UUID.incrementing
         var gliaEnv = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
         logger.configureRemoteLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        logger.infoClosure = { _, _, _, _ in }
+        logger.prefixedClosure = { _ in logger }
         gliaEnv.coreSdk.createLogger = { _ in logger }
         gliaEnv.coreSdk.pendingSecureConversationStatus = { $0(.success(false)) }
         gliaEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
         gliaEnv.conditionalCompilation.isDebug = { true }
-        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
-        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in uuidGen().uuidString }
+        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in uuidGen().uuidString }
         gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
         gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.success(()))
+        }
+        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
 
         let sdk = Glia(environment: gliaEnv)
 
-        XCTAssertFalse(sdk.pendingInteraction.hasPendingInteraction)
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+
+        XCTAssertFalse(try XCTUnwrap(sdk.pendingInteraction).hasPendingInteraction)
     }
 }
