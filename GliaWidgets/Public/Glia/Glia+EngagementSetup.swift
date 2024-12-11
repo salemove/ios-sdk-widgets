@@ -142,7 +142,7 @@ extension Glia {
     ) {
         let engagementLaunching: EngagementCoordinator.EngagementLaunching
 
-        switch (pendingInteraction.hasPendingInteraction, engagementKind) {
+        switch (pendingInteraction?.hasPendingInteraction ?? false, engagementKind) {
         case (false, _):
             // if there is no pending Secure Conversation, open regular flow.
             engagementLaunching = .direct(kind: engagementKind)
