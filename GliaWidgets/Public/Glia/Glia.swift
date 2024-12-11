@@ -135,7 +135,7 @@ public class Glia {
     //
     // Currently it's used to know if we have to force a visitor to SecureMessaging screen,
     // once they try to start an engagement with media type other than `messaging`.
-    let pendingInteraction: SecureConversations.PendingInteraction
+    var pendingInteraction: SecureConversations.PendingInteraction?
 
     init(environment: Environment) {
         self.environment = environment
@@ -179,7 +179,6 @@ public class Glia {
                 viewFactory: viewFactory
             )
         )
-        pendingInteraction = .init(environment: .init(with: environment.coreSdk))
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
@@ -258,7 +257,10 @@ public class Glia {
 
                 // Configuration completion handler has to be called in any case,
                 // at the end of the scope, whether there's ongoing engagement or not.
-                defer { completion(.success(())) }
+                defer {
+                    pendingInteraction = .init(environment: .init(with: environment.coreSdk))
+                    completion(.success(()))
+                }
 
                 guard let currentEngagement = self.environment.coreSdk.getCurrentEngagement() else { return }
 

@@ -17,6 +17,7 @@ extension SecureConversations {
                 // so no need to handle error.
                 pendingStatus = (try? result.get()) ?? false
             }
+
             self.unreadMessageCountCancellationToken = environment.observeSecureConversationsUnreadMessageCount { [weak self] result in
                 guard let self else { return }
                 // At this point it is enough to know if there is an unread message count,
@@ -29,6 +30,14 @@ extension SecureConversations {
                     hasPending || unreadCount > 0
                 }
                 .assign(to: &$hasPendingInteraction)
+
+            if self.pendingStatusCancellationToken == nil {
+                print("Unable to subscribe to pending status updates")
+            }
+
+            if self.unreadMessageCountCancellationToken == nil {
+                print("Unable to subscribe to unread message count updates")
+            }
         }
 
         deinit {
