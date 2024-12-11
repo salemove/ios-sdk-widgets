@@ -47,8 +47,8 @@ public final class EntryWidget: NSObject {
 
         engagementCancellable = environment.currentInteractor()?.$currentEngagement
             .sink { [weak self] engagement in
-                guard let self = self else { return }
-                self.ongoingEngagement = engagement
+                guard let self else { return }
+                ongoingEngagement = engagement
                 handleQueuesMonitorUpdates(state: environment.queuesMonitor.state, unreadSecureMessagesCount: unreadSecureMessageCount)
             }
     }
