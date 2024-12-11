@@ -26,7 +26,7 @@ extension Glia {
                 isAuthenticated: environment.isAuthenticated,
                 hasPendingInteraction: { [weak self] in
                     guard let self else { return false }
-                    return pendingInteraction.hasPendingInteraction
+                    return pendingInteraction?.hasPendingInteraction ?? false
                 }
             )
         )

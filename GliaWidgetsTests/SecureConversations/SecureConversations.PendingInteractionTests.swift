@@ -18,7 +18,7 @@ final class SecureConversationsPendingInteractionTests: XCTestCase {
         environment.unsubscribeFromPendingStatus = { _ in }
         environment.unsubscribeFromUnreadCount = { _ in }
 
-        let pendingInteraction = SecureConversations.PendingInteraction(environment: environment)
+        let pendingInteraction = try SecureConversations.PendingInteraction(environment: environment)
         // Assert initial pending interaction is false.
         XCTAssertFalse(pendingInteraction.hasPendingInteraction)
         // Affect pending secure conversations value by setting it to `true` and assert `hasPendingInteraction`,
@@ -36,7 +36,7 @@ final class SecureConversationsPendingInteractionTests: XCTestCase {
         XCTAssertFalse(pendingInteraction.hasPendingInteraction)
     }
 
-    func test_unsubscribeIsCalledOnDeinit() {
+    func test_unsubscribeIsCalledOnDeinit() throws {
         enum Call {
             case unsubscribeFromPendingStatus
             case unsubscribeFromUnreadCount
@@ -52,8 +52,8 @@ final class SecureConversationsPendingInteractionTests: XCTestCase {
         environment.unsubscribeFromUnreadCount = { _ in
             calls.append(.unsubscribeFromUnreadCount)
         }
-        var pendingInteraction = SecureConversations.PendingInteraction(environment: environment)
-        pendingInteraction = .mock()
+        var pendingInteraction = try SecureConversations.PendingInteraction(environment: environment)
+        pendingInteraction = try .mock()
         _ = pendingInteraction
         XCTAssertEqual(calls, [.unsubscribeFromUnreadCount, .unsubscribeFromPendingStatus])
     }
