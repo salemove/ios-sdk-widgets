@@ -258,8 +258,19 @@ public class Glia {
                 // Configuration completion handler has to be called in any case,
                 // at the end of the scope, whether there's ongoing engagement or not.
                 defer {
-                    pendingInteraction = .init(environment: .init(with: environment.coreSdk))
-                    completion(.success(()))
+                    // PendingInteraction is essential part of SC flow, so it's not
+                    // valid to consider SDK configured if PI is not created.
+                    do {
+                        pendingInteraction = try .init(environment: .init(with: environment.coreSdk))
+                        completion(.success(()))
+                    } catch let error as SecureConversations.PendingInteraction.Error {
+                        switch error {
+                        case .subscriptionFailure:
+                            completion(.failure(GliaError.internalEventSubscriptionFailure))
+                        }
+                    } catch {
+                        completion(.failure(GliaError.internalError))
+                    }
                 }
 
                 guard let currentEngagement = self.environment.coreSdk.getCurrentEngagement() else { return }

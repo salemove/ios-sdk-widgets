@@ -9,35 +9,39 @@ extension SecureConversations {
         private(set) var pendingStatusCancellationToken: String?
         private(set) var unreadMessageCountCancellationToken: String?
 
-        init(environment: Environment) {
+        init(environment: Environment) throws {
             self.environment = environment
-            self.pendingStatusCancellationToken = environment.observePendingSecureConversationsStatus { [weak self] result in
+            let pendingStatusCancellationToken = environment.observePendingSecureConversationsStatus { [weak self] result in
                 guard let self else { return }
                 // At this point it is enough to know if there is a pending conversation,
                 // so no need to handle error.
                 pendingStatus = (try? result.get()) ?? false
             }
 
-            self.unreadMessageCountCancellationToken = environment.observeSecureConversationsUnreadMessageCount { [weak self] result in
+            guard pendingStatusCancellationToken != nil else {
+                throw Error.subscriptionFailure(.pendingStatus)
+            }
+
+            self.pendingStatusCancellationToken = pendingStatusCancellationToken
+
+            let unreadMessageCountCancellationToken = environment.observeSecureConversationsUnreadMessageCount { [weak self] result in
                 guard let self else { return }
                 // At this point it is enough to know if there is an unread message count,
                 // so no need to handle error.
                 unreadMessageCount = (try? result.get()) ?? 0
             }
 
+            guard unreadMessageCountCancellationToken != nil else {
+                throw Error.subscriptionFailure(.unreadMessageCount)
+            }
+
+            self.unreadMessageCountCancellationToken = unreadMessageCountCancellationToken
+
             $pendingStatus.combineLatest($unreadMessageCount)
                 .map { hasPending, unreadCount in
                     hasPending || unreadCount > 0
                 }
                 .assign(to: &$hasPendingInteraction)
-
-            if self.pendingStatusCancellationToken == nil {
-                print("Unable to subscribe to pending status updates")
-            }
-
-            if self.unreadMessageCountCancellationToken == nil {
-                print("Unable to subscribe to unread message count updates")
-            }
         }
 
         deinit {
@@ -61,6 +65,16 @@ extension SecureConversations.PendingInteraction {
     }
 }
 
+extension SecureConversations.PendingInteraction {
+    enum Error: Swift.Error {
+        enum Subscription {
+            case unreadMessageCount
+            case pendingStatus
+        }
+        case subscriptionFailure(Subscription)
+    }
+}
+
 extension SecureConversations.PendingInteraction.Environment {
     init(with client: CoreSdkClient) {
         self.observePendingSecureConversationsStatus = client.observePendingSecureConversationStatus
@@ -72,17 +86,20 @@ extension SecureConversations.PendingInteraction.Environment {
 
 #if DEBUG
 extension SecureConversations.PendingInteraction.Environment {
-    static let mock = Self(
-        observePendingSecureConversationsStatus: { _ in nil },
-        observeSecureConversationsUnreadMessageCount: { _ in nil },
-        unsubscribeFromUnreadCount: { _ in },
-        unsubscribeFromPendingStatus: { _ in }
-    )
+    static let mock: Self = {
+        let uuidGen = UUID.incrementing
+        return Self(
+            observePendingSecureConversationsStatus: { _ in uuidGen().uuidString },
+            observeSecureConversationsUnreadMessageCount: { _ in uuidGen().uuidString },
+            unsubscribeFromUnreadCount: { _ in },
+            unsubscribeFromPendingStatus: { _ in }
+        )
+    }()
 }
 
 extension SecureConversations.PendingInteraction {
-    static func mock(environment: Environment = .mock) -> Self {
-        .init(environment: environment)
+    static func mock(environment: Environment = .mock) throws -> Self {
+        try .init(environment: environment)
     }
 }
 #endif

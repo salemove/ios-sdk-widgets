@@ -817,6 +817,7 @@ final class GliaTests: XCTestCase {
     }
 
     func test_hasPendingInteractionIfNoUnreadMessageAndPendingSecureConversationExist() throws {
+        var uuidGen = UUID.incrementing
         var gliaEnv = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
@@ -828,8 +829,8 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSdk.pendingSecureConversationStatus = { $0(.success(false)) }
         gliaEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
         gliaEnv.conditionalCompilation.isDebug = { true }
-        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
-        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in uuidGen().uuidString }
+        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in uuidGen().uuidString }
         gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
         gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
