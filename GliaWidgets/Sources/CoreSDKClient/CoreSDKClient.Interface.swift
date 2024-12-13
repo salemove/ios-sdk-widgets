@@ -331,6 +331,7 @@ extension CoreSdkClient {
     typealias LoggingError = GliaCoreSDK.LoggingError
     typealias LogLevel = GliaCoreSDK.LogLevel
     typealias Request = GliaCoreSDK.Request
+    typealias EngagementChangedBlock = GliaCoreSDK.EngagementChangedBlock
 }
 
 extension CoreSdkClient {
