@@ -351,4 +351,39 @@ class EntryWidgetTests: XCTestCase {
 
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.callVisualizer))
     }
+
+    func test_callVisualizerResumeCallbackBeingCalled() {
+        enum Call {
+            case onCallVisualizerResume
+        }
+        var calls: [Call] = []
+        let mockQueueId = "mockQueueId"
+        let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
+
+        var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
+        queueMonitorEnvironment.listQueues = { completion in
+            completion([mockQueue], nil)
+        }
+        queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
+            completion(.success(mockQueue))
+            return UUID.mock.uuidString
+        }
+        var environment = EntryWidget.Environment.mock()
+        environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
+        let interactor: Interactor = .mock()
+        interactor.currentEngagement = .mock(source: .callVisualizer)
+        environment.currentInteractor = { interactor }
+        environment.onCallVisualizerResume = {
+            calls.append(.onCallVisualizerResume)
+        }
+        let entryWidget = EntryWidget(
+            queueIds: [mockQueueId],
+            configuration: .default,
+            environment: environment
+        )
+
+        entryWidget.mediaTypeSelected(.init(type: .callVisualizer))
+
+        XCTAssertEqual(calls, [.onCallVisualizerResume])
+    }
 }
