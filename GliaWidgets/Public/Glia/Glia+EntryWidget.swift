@@ -31,6 +31,10 @@ extension Glia {
                 currentInteractor: { [weak self] in
                     guard let self else { return nil }
                     return interactor
+                },
+                onCallVisualizerResume: { [weak self] in
+                    guard let self else { return }
+                    callVisualizer.resume()
                 }
             )
         )

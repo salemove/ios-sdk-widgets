@@ -114,6 +114,31 @@ extension EntryWidget {
 
         return appliedHeight
     }
+
+    func mediaTypeSelected(_ mediaTypeItem: MediaTypeItem) {
+        if let configurationAction = configuration.mediaTypeSelected {
+            configurationAction(mediaTypeItem)
+            return
+        }
+        hideViewIfNecessary {
+            do {
+                switch mediaTypeItem.type {
+                case .chat:
+                    try self.environment.engagementLauncher.startChat()
+                case .audio:
+                    try self.environment.engagementLauncher.startAudioCall()
+                case .video:
+                    try self.environment.engagementLauncher.startVideoCall()
+                case .secureMessaging:
+                    try self.environment.engagementLauncher.startSecureMessaging()
+                case .callVisualizer:
+                    self.environment.onCallVisualizerResume()
+                }
+            } catch {
+                self.viewState = .error
+            }
+        }
+    }
 }
 
 // MARK: - Private methods
@@ -187,31 +212,6 @@ private extension EntryWidget {
         }
 
         return Array(availableMediaTypes).sorted(by: { $0.rawValue < $1.rawValue })
-    }
-
-    func mediaTypeSelected(_ mediaTypeItem: MediaTypeItem) {
-        if let configurationAction = configuration.mediaTypeSelected {
-            configurationAction(mediaTypeItem)
-            return
-        }
-        hideViewIfNecessary {
-            do {
-                switch mediaTypeItem.type {
-                case .chat:
-                    try self.environment.engagementLauncher.startChat()
-                case .audio:
-                    try self.environment.engagementLauncher.startAudioCall()
-                case .video:
-                    try self.environment.engagementLauncher.startVideoCall()
-                case .secureMessaging:
-                    try self.environment.engagementLauncher.startSecureMessaging()
-                case .callVisualizer:
-                    break
-                }
-            } catch {
-                self.viewState = .error
-            }
-        }
     }
 
     func hideViewIfNecessary(completion: @escaping () -> Void) {
