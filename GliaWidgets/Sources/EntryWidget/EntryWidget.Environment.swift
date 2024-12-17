@@ -11,6 +11,7 @@ extension EntryWidget {
         var isAuthenticated: () -> Bool
         var hasPendingInteraction: () -> Bool
         var currentInteractor: () -> Interactor?
+        var onCallVisualizerResume: () -> Void
     }
 }
 
@@ -27,7 +28,8 @@ extension EntryWidget.Environment {
             log: .mock,
             isAuthenticated: { true },
             hasPendingInteraction: { false },
-            currentInteractor: { .mock() }
+            currentInteractor: { .mock() },
+            onCallVisualizerResume: {}
         )
     }
 }

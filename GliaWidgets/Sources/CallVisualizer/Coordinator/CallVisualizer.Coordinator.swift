@@ -10,17 +10,20 @@ extension CallVisualizer {
             self.bubbleView = environment.viewFactory.makeBubbleView()
 
             bubbleView.tap = { [weak self] in
-                guard let self = self else { return }
-                if self.videoCallCoordinator == nil {
-                    self.showEndScreenSharingViewController()
-                } else {
-                    self.resumeVideoCallViewController()
-                }
-                environment.eventHandler(.maximized)
+                self?.resume()
             }
             bubbleView.pan = { [weak self] translation in
                 self?.updateBubblePosition(translation: translation)
             }
+        }
+
+        func resume() {
+            if self.videoCallCoordinator == nil {
+                self.showEndScreenSharingViewController()
+            } else {
+                self.resumeVideoCallViewController()
+            }
+            environment.eventHandler(.maximized)
         }
 
         func showVisitorCodeViewController(by presentation: Presentation) {
