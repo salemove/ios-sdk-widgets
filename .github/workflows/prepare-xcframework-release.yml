@@ -93,12 +93,12 @@ jobs:
         shell: bash
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           branch: "release/xcf/${{ steps.fetch_semver.outputs.semver}}"
-          title: 'GliaWidgets SDK Release ${{ steps.fetch_semver.outputs.semver}}'
+          title: 'GliaWidgets SDK XCFramework Release ${{ steps.fetch_semver.outputs.semver}}'
           commit-message: |
             GliaWidgets SDK XCFramework Release ${{ steps.fetch_semver.outputs.semver}}
           base: 'master'
