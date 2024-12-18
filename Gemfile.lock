@@ -310,7 +310,7 @@ PLATFORMS
   x86_64-darwin-21
 
 DEPENDENCIES
-  cocoapods
+  cocoapods (= 1.15.2)
   cocoapods-no-autoimports
   fastlane (>= 2.221.0)
   jazzy (= 0.15.1)

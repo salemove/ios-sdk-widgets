@@ -22,12 +22,11 @@ DEPENDENCIES:
   - SwiftLint
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - SnapshotTesting
   trunk:
     - AccessibilitySnapshot
     - GliaCoreDependency
     - GliaCoreSDK
+    - SnapshotTesting
     - SwiftLint
     - TwilioVoice
     - WebRTC-lib
@@ -43,4 +42,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: ec1525da4ed0a0a005606e9a21137a0c576d13c5
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
