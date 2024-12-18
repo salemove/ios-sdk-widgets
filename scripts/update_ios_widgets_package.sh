@@ -3,6 +3,7 @@ CHECKSUM=$2
 BRANCH_NAME=$3
 
 git checkout -b "$BRANCH_NAME"
+git push origin "$BRANCH_NAME":"$BRANCH_NAME"
 
 # This script takes template file from templates/Package.swift
 # and replaces next placeholders:
@@ -39,5 +40,3 @@ sed -i '' "s/\${WIDGETS_SDK_CHECKSUM}/${CHECKSUM}/g" "Package.swift"
 
 # Commits and pushes the changes.
 git add .
-git commit -m "Update Widgets SDK xcframework version"
-git push origin "$BRANCH_NAME":"$BRANCH_NAME"
