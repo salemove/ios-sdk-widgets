@@ -31,6 +31,15 @@ class ChatView: EngagementView {
     let secureMessagingBottomBannerView = SecureMessagingBottomBannerView().makeView()
     let sendingMessageUnavailabilityBannerView = SendingMessageUnavailableBannerView().makeView()
 
+    // Instead of modifying message entry view's layout to resize, covering bottom safe area,
+    // thus affecting existing layout calculations, we add additional view just for that,
+    // keeping background color for it reactively in sync with message entry view's one.
+    lazy var messageEntryBottomArea = UIView().makeView { [weak messageEntryView] area in
+        messageEntryView?.publisher(for: \.backgroundColor).sink { [weak area] newColor in
+            area?.backgroundColor = newColor
+        }.store(in: &cancelBag)
+    }
+
     let style: ChatStyle
     let environment: Environment
 
