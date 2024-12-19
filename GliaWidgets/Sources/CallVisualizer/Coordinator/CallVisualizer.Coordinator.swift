@@ -8,7 +8,7 @@ extension CallVisualizer {
         init(environment: Environment) {
             self.environment = environment
             self.bubbleView = environment.viewFactory.makeBubbleView()
-
+            self.state = .initial
             bubbleView.tap = { [weak self] in
                 self?.resume()
             }
@@ -17,114 +17,11 @@ extension CallVisualizer {
             }
         }
 
-        func resume() {
-            if self.videoCallCoordinator == nil {
-                self.showEndScreenSharingViewController()
-            } else {
-                self.resumeVideoCallViewController()
-            }
-            environment.eventHandler(.maximized)
-        }
-
-        func showVisitorCodeViewController(by presentation: Presentation) {
-            let coordinator = VisitorCodeCoordinator(
-                theme: environment.viewFactory.theme,
-                environment: .create(with: environment),
-                presentation: presentation
-            )
-
-            coordinator.delegate = { [weak self] event in
-                switch event {
-                case .closeTap:
-                    self?.visitorCodeCoordinator = nil
-                    self?.environment.log.prefixed(Self.self).info("Dismiss Visitor Code Dialog")
-                case .engagementAccepted:
-                    switch coordinator.presentation {
-                    case let .embedded(_, onEngagementAccepted: callback):
-                        callback()
-                    case .alert:
-                        break
-                    }
-                }
-            }
-
-            coordinator.start()
-
-            self.visitorCodeCoordinator = coordinator
-        }
-
-        func handleAcceptedUpgrade() {
-            guard videoCallCoordinator == nil else { return }
-            showVideoCallViewController()
-        }
-
-        func handleEngagementRequest(
-            request: CoreSdkClient.Request,
-            answer: Command<Bool>
-        ) {
-            guard request.outcome == .timedOut else {
-                handleEngagementRequestOutcomeNil(answer: answer)
-                return
-            }
-            handleEngagementRequestOutcomeTimeout(answer: answer)
-        }
-
-        func handleEngagementRequestOutcomeTimeout(answer: Command<Bool>) {
-            environment.alertManager.dismissCurrentAlert()
-            environment.gcd.mainQueue.asyncAfterDeadline(.now() + 0.5) {
-                // Will be swapped for localized string
-                self.showSnackBarMessage(text: "Request has timed out")
-            }
-            answer(false)
-        }
-
-        func handleEngagementRequestOutcomeNil(answer: Command<Bool>) {
-            fetchSiteConfigurations { [weak self] site in
-                let showSnackBarIfNeeded: () -> Void = {
-                    guard site.mobileObservationEnabled == true else { return }
-                    guard site.mobileObservationIndicationEnabled == true else { return }
-                    guard let self else { return }
-                    self.showSnackBarMessage(text: self.environment.viewFactory.theme.snackBar.text)
-                }
-                let completion: Command<Bool> = .init { isAccepted in
-                    if isAccepted {
-                        showSnackBarIfNeeded()
-                    }
-                    answer(isAccepted)
-                }
-                self?.closeVisitorCode {
-                    if site.mobileConfirmDialogEnabled == true {
-                        self?.showConfirmationAlert(completion)
-                    } else {
-                        showSnackBarIfNeeded()
-                        answer(true)
-                    }
-                }
-            }
-        }
-
-        func end() {
-            removeBubbleView()
-            closeFlow()
-            stopObservingScreenSharingHandlerState()
-            videoCallCoordinator = nil
-            screenSharingCoordinator = nil
-        }
-
-        func addVideoStream(stream: CoreSdkClient.VideoStreamable) {
-            videoCallCoordinator?.call.updateVideoStream(with: stream)
-        }
-
-        func showSnackBarIfNeeded() {
-            fetchSiteConfigurations { [weak self] site in
-                guard site.mobileObservationEnabled == true else { return }
-                guard site.mobileObservationIndicationEnabled == true else { return }
-                guard let self else { return }
-                self.showSnackBarMessage(text: self.environment.viewFactory.theme.snackBar.text)
-            }
-        }
-
         // MARK: - Private
+        private var visitorCodeCoordinator: VisitorCodeCoordinator?
+        private var screenSharingCoordinator: ScreenSharingCoordinator?
+        private var videoCallCoordinator: VideoCallCoordinator?
+        private var state: State
         private let bubbleSize = CGSize(width: 60, height: 60)
         private let bubbleView: BubbleView
         private lazy var screensharingImageView: UIView = {
@@ -153,9 +50,118 @@ extension CallVisualizer {
 
             return icon
         }()
-        private var visitorCodeCoordinator: VisitorCodeCoordinator?
-        private var screenSharingCoordinator: ScreenSharingCoordinator?
-        private var videoCallCoordinator: VideoCallCoordinator?
+    }
+}
+
+extension CallVisualizer.Coordinator {
+    func resume() {
+        switch state {
+        case .initial:
+            return
+        case .screenSharing:
+            showEndScreenSharingViewController()
+        case .videoCall:
+            resumeVideoCallViewController()
+        }
+        environment.eventHandler(.maximized)
+    }
+
+    func showVisitorCodeViewController(by presentation: CallVisualizer.Presentation) {
+        let coordinator = CallVisualizer.VisitorCodeCoordinator(
+            theme: environment.viewFactory.theme,
+            environment: .create(with: environment),
+            presentation: presentation
+        )
+
+        coordinator.delegate = { [weak self] event in
+            switch event {
+            case .closeTap:
+                self?.visitorCodeCoordinator = nil
+                self?.environment.log.prefixed(Self.self).info("Dismiss Visitor Code Dialog")
+            case .engagementAccepted:
+                switch coordinator.presentation {
+                case let .embedded(_, onEngagementAccepted: callback):
+                    callback()
+                case .alert:
+                    break
+                }
+            }
+        }
+
+        coordinator.start()
+
+        self.visitorCodeCoordinator = coordinator
+    }
+
+    func handleAcceptedUpgrade() {
+        guard videoCallCoordinator == nil else { return }
+        showVideoCallViewController()
+    }
+
+    func handleEngagementRequest(
+        request: CoreSdkClient.Request,
+        answer: Command<Bool>
+    ) {
+        guard request.outcome == .timedOut else {
+            handleEngagementRequestOutcomeNil(answer: answer)
+            return
+        }
+        handleEngagementRequestOutcomeTimeout(answer: answer)
+    }
+
+    func handleEngagementRequestOutcomeTimeout(answer: Command<Bool>) {
+        environment.alertManager.dismissCurrentAlert()
+        environment.gcd.mainQueue.asyncAfterDeadline(.now() + 0.5) {
+            // Will be swapped for localized string in MOB-3894
+            self.showSnackBarMessage(text: "Request has timed out")
+        }
+        answer(false)
+    }
+
+    func handleEngagementRequestOutcomeNil(answer: Command<Bool>) {
+        fetchSiteConfigurations { [weak self] site in
+            let showSnackBarIfNeeded: () -> Void = {
+                guard site.mobileObservationEnabled == true else { return }
+                guard site.mobileObservationIndicationEnabled == true else { return }
+                guard let self else { return }
+                self.showSnackBarMessage(text: self.environment.viewFactory.theme.snackBar.text)
+            }
+            let completion: Command<Bool> = .init { isAccepted in
+                if isAccepted {
+                    showSnackBarIfNeeded()
+                }
+                answer(isAccepted)
+            }
+            self?.closeVisitorCode {
+                if site.mobileConfirmDialogEnabled == true {
+                    self?.showConfirmationAlert(completion)
+                } else {
+                    showSnackBarIfNeeded()
+                    answer(true)
+                }
+            }
+        }
+    }
+
+    func end() {
+        removeBubbleView()
+        closeFlow()
+        stopObservingScreenSharingHandlerState()
+        videoCallCoordinator = nil
+        screenSharingCoordinator = nil
+    }
+
+    func addVideoStream(stream: CoreSdkClient.VideoStreamable) {
+        videoCallCoordinator?.call.updateVideoStream(with: stream)
+    }
+
+    func showSnackBarIfNeeded() {
+        fetchSiteConfigurations { [weak self] site in
+            guard site.mobileObservationEnabled == true else { return }
+            guard site.mobileObservationIndicationEnabled == true else { return }
+            guard let self else { return }
+            self.showSnackBarMessage(text: self.environment.viewFactory.theme.snackBar.text)
+        }
     }
 }
 
@@ -163,6 +169,7 @@ extension CallVisualizer {
 
 extension CallVisualizer.Coordinator {
     func showVideoCallViewController() {
+        state = .videoCall
         createOperatorImageBubbleView()
         let viewController = buildVideoCallViewController()
         environment
@@ -259,14 +266,19 @@ extension CallVisualizer.Coordinator {
             .screenShareHandler
             .status()
             .addObserver(self) { [weak self] newStatus, _ in
-                guard self?.videoCallCoordinator == nil else { return }
+                guard self?.videoCallCoordinator == nil else {
+                    self?.state = .videoCall
+                    return
+                }
                 switch newStatus {
                 case .started:
                     self?.createScreenShareBubbleView()
+                    self?.state = .screenSharing
                 case .stopped:
                     self?.screenSharingCoordinator?.viewController?.dismiss(animated: true)
                     self?.screenSharingCoordinator = nil
                     self?.removeBubbleView()
+                    self?.state = .initial
                 }
             }
     }
@@ -470,5 +482,15 @@ private extension CallVisualizer.Coordinator {
         }
 
         return presenter
+    }
+}
+
+// MARK: - Objects
+
+extension CallVisualizer.Coordinator {
+    enum State {
+        case initial
+        case screenSharing
+        case videoCall
     }
 }
