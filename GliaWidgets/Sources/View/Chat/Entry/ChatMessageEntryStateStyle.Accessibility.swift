@@ -1,16 +1,16 @@
-extension ChatMessageEntryStyle {
-    /// Accessibility properties for ChatMessageEntryStyle.
+extension ChatMessageEntryStateStyle {
+    /// Accessibility properties for ChatMessageEntryStateStyle.
     public struct Accessibility: Equatable {
         /// Accessibility label for message text view.
         public var messageInputAccessibilityLabel: String
 
-        /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory` 
+        /// Flag that provides font dynamic type by setting `adjustsFontForContentSizeCategory`
         /// for component that supports it.
         public var isFontScalingEnabled: Bool
 
         /// - Parameters:
         ///   - messageInputAccessibilityLabel: Accessibility label for message text view.
-        ///   - isFontScalingEnabled: Flag that provides font dynamic type by setting 
+        ///   - isFontScalingEnabled: Flag that provides font dynamic type by setting
         ///    `adjustsFontForContentSizeCategory` for component that supports it.
         ///
         public init(
@@ -23,7 +23,7 @@ extension ChatMessageEntryStyle {
     }
 }
 
-extension ChatMessageEntryStyle.Accessibility {
+extension ChatMessageEntryStateStyle.Accessibility {
     /// Accessibility is not supported intentionally.
     public static let unsupported = Self(
         messageInputAccessibilityLabel: "",

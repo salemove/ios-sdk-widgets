@@ -178,6 +178,42 @@ struct CoreSdkClient {
     typealias GetCameraDeviceManageable = () throws -> CameraDeviceManageableClient
 
     var getCameraDeviceManageable: GetCameraDeviceManageable
+
+    typealias SubscribeForQueuesUpdates = (
+        _ queueIds: [String],
+        _ completion: @escaping (Result<GliaCoreSDK.Queue, GliaCoreSDK.GliaCoreError>) -> Void
+    ) -> String?
+
+    var subscribeForQueuesUpdates: SubscribeForQueuesUpdates
+
+    typealias UnsubscribeFromUpdates = (
+        _ queueCallbackId: String,
+        _ onError: @escaping (GliaCoreSDK.GliaCoreError) -> Void
+    ) -> Void
+
+    var unsubscribeFromUpdates: UnsubscribeFromUpdates
+
+    typealias SubscribeForUnreadSCMessageCount = (
+        _ completion: @escaping (Result<Int?, Error>) -> Void
+    ) -> String?
+
+    var subscribeForUnreadSCMessageCount: SubscribeForUnreadSCMessageCount
+
+    typealias PendingSecureConversationStatus = (_ callback: @escaping (Result<Bool, Error>) -> Void) -> Void
+
+    var pendingSecureConversationStatus: PendingSecureConversationStatus
+
+    typealias ObservePendingSecureConversationStatus = (_ callback: @escaping (Result<Bool, Error>) -> Void) -> String?
+
+    var observePendingSecureConversationStatus: ObservePendingSecureConversationStatus
+
+    typealias UnsubscribeFromPendingSCStatus = (String) -> Void
+
+    var unsubscribeFromPendingSecureConversationStatus: UnsubscribeFromPendingSCStatus
+
+    typealias UnsubscribeFromUnreadCount = (String) -> Void
+
+    var unsubscribeFromUnreadCount: UnsubscribeFromUnreadCount
 }
 
 extension CoreSdkClient {
@@ -295,6 +331,7 @@ extension CoreSdkClient {
     typealias LoggingError = GliaCoreSDK.LoggingError
     typealias LogLevel = GliaCoreSDK.LogLevel
     typealias Request = GliaCoreSDK.Request
+    typealias EngagementChangedBlock = GliaCoreSDK.EngagementChangedBlock
 }
 
 extension CoreSdkClient {

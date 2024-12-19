@@ -3,7 +3,7 @@ plugin 'cocoapods-no-autoimports'
 # cocoapods-no-autoimports__pods = ['Pods-GliaWidgets.debug']
 project 'GliaWidgets.xcodeproj'
 
-DEPLOYMENT_TARGET = '13.0'
+DEPLOYMENT_TARGET = '14.0'
 
 platform :ios, DEPLOYMENT_TARGET
 
@@ -18,7 +18,7 @@ target 'TestingApp' do
 end
 
 target 'GliaWidgets' do
-  pod 'GliaCoreSDK', '1.5.8'
+  pod 'GliaCoreSDK', '2.0.4'
   swiftlint
 end
 

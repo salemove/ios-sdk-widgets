@@ -266,11 +266,11 @@ extension ChatViewController {
         fileUploadListModel.environment.uploader.uploads.append(fileUploadWithError)
         fileUploadWithError.state.value = .error(FileUpload.Error.fileTooBig)
         chatViewModel.interactor.state = .enqueueing(.text)
-        chatViewModel.action?(.sendButtonHidden(false))
+        chatViewModel.action?(.sendButtonDisabled(false))
         chatViewModel.action?(.updateUnreadMessageIndicator(itemCount: 5))
         chatViewModel.action?(.setChoiceCardInputModeEnabled(false))
         chatViewModel.action?(.connected(name: "Mocked Operator Name", imageUrl: localFileURL.absoluteString))
-        chatViewModel.action?(.setAttachmentButtonVisibility(.enabled(.enagagementConnection(isConnected: true))))
+        chatViewModel.action?(.setAttachmentButtonEnabling(.enabled(.engagementConnection(isConnected: true))))
         chatViewModel.action?(.pickMediaButtonEnabled(true))
         chatViewModel.action?(.setOperatorTypingIndicatorIsHiddenTo(false, false))
 
@@ -637,6 +637,45 @@ extension ChatViewController {
         chatViewModel.invokeSetTextAndSendMessage(text: "mock mock")
         controller.view.updateConstraints()
         return controller
+    }
+
+    static func mockSecureMessagingBottomBannerView() -> ChatViewController {
+        var chatViewModelEnv = ChatViewModel.Environment.mock
+        chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
+
+        let transcriptModel = SecureConversations.TranscriptModel.init(
+            isCustomCardSupported: false,
+            environment: .mock(),
+            availability: .mock(),
+            deliveredStatusText: "deliveredStatusText",
+            failedToDeliverStatusText: "failedToDeliverStatusText",
+            interactor: .mock()
+        )
+
+        return .init(viewModel: .transcript(transcriptModel), environment: .mock())
+    }
+
+    static func mockSecureMessagingTopAndBottomBannerView(
+        entryWidgetViewState: EntryWidget.ViewState = .loading
+    ) -> ChatViewController {
+        var chatViewModelEnv = ChatViewModel.Environment.mock
+        chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+
+        let transcriptModel = SecureConversations.TranscriptModel.init(
+            isCustomCardSupported: false,
+            environment: .mock(createEntryWidget: { configuration in
+                let entryWidget = EntryWidget.mock(configuration: configuration)
+                entryWidget.viewState = entryWidgetViewState
+                return entryWidget
+            }),
+            availability: .mock(),
+            deliveredStatusText: "deliveredStatusText",
+            failedToDeliverStatusText: "failedToDeliverStatusText",
+            interactor: .mock()
+        )
+
+        return .init(viewModel: .transcript(transcriptModel), environment: .mock())
     }
 }
 

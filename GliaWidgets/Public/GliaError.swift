@@ -30,4 +30,7 @@ public enum GliaError: Error {
 
     /// Internal error.
     case internalError
+
+    /// Internal event subscription failure.
+    case internalEventSubscriptionFailure
 }

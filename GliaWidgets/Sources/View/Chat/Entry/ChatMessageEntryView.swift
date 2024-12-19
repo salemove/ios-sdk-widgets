@@ -17,7 +17,7 @@ class ChatMessageEntryView: BaseView {
 
     var isChoiceCardModeEnabled: Bool {
         didSet {
-            updatePickMediaButtonVisibility(mediaPickerButtonVisibility)
+            updatePickMediaButtonVisibility(mediaPickerButtonEnabling)
             updatePlaceholderText()
         }
     }
@@ -25,26 +25,36 @@ class ChatMessageEntryView: BaseView {
     var isConnected: Bool {
         didSet {
             updatePlaceholderText()
-            updatePickMediaButtonVisibility(mediaPickerButtonVisibility)
+            updatePickMediaButtonVisibility(mediaPickerButtonEnabling)
         }
     }
 
-    var showsSendButton: Bool {
-        get { return !sendButton.isHidden }
-        set { sendButton.isHidden = !newValue }
+    var isSendButtonEnabled: Bool {
+        get { sendButton.isEnabled && isEnabled }
+        set { sendButton.isEnabled = newValue && isEnabled }
     }
 
     var isEnabled: Bool {
         get { return isUserInteractionEnabled }
-        set { isUserInteractionEnabled = newValue }
+        set {
+            isUserInteractionEnabled = newValue
+            style = newValue ? .enabled(styleStates.enabled)
+                             : .disabled(styleStates.disabled)
+            updatePickMediaButtonVisibility(mediaPickerButtonEnabling)
+        }
     }
 
-    var mediaPickerButtonVisibility: MediaPickerButtonVisibility = .disabled
+    var mediaPickerButtonEnabling: MediaPickerButtonEnabling = .disabled
     var textViewHeightConstraint: NSLayoutConstraint?
 
     let textView = UITextView()
     let maxTextLines = 4
-    private let style: ChatMessageEntryStyle
+    private let styleStates: ChatMessageEntryStyle
+    private var style: StateStyle {
+        didSet {
+            renderStyle()
+        }
+    }
     private let separator = UIView()
     private let messageContainerView = UIView()
     private let placeholderLabel = UILabel()
@@ -56,10 +66,11 @@ class ChatMessageEntryView: BaseView {
     private let environment: Environment
 
     public init(
-        with style: ChatMessageEntryStyle,
+        with styleStates: ChatMessageEntryStyle,
         environment: Environment
     ) {
-        self.style = style
+        self.styleStates = styleStates
+        self.style = .enabled(styleStates.enabled)
         self.environment = environment
         uploadListView = .init(environment: .create(with: environment))
         pickMediaButton = MessageButton(with: style.mediaButton)
@@ -88,11 +99,6 @@ class ChatMessageEntryView: BaseView {
 
     override func setup() {
         super.setup()
-        backgroundColor = style.backgroundColor
-
-        separator.backgroundColor = style.separatorColor
-
-        messageContainerView.backgroundColor = style.backgroundColor
 
         let tapRecognizer = UITapGestureRecognizer(
             target: self,
@@ -106,31 +112,38 @@ class ChatMessageEntryView: BaseView {
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
         textView.autocapitalizationType = .sentences
-        textView.font = style.messageFont
-        textView.textColor = style.messageColor
         textView.backgroundColor = .clear
-        textView.accessibilityLabel = style.accessibility.messageInputAccessibilityLabel
-
         textView.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
 
-        placeholderLabel.font = style.placeholderFont
-        placeholderLabel.textColor = style.placeholderColor
         placeholderLabel.isUserInteractionEnabled = false
         placeholderLabel.accessibilityIdentifier = "chat_textEntryPlaceholderLabel"
-        updatePlaceholderText()
 
         pickMediaButton.tap = { [weak self] in self?.pickMediaTapped?() }
-        pickMediaButton.accessibilityLabel = style.mediaButton.accessibility.accessibilityLabel
+
         updatePickMediaButtonVisibility(.disabled)
 
         sendButton.accessibilityIdentifier = "chat_sendButton"
         sendButton.tap = { [weak self] in self?.sendTap() }
-        sendButton.accessibilityLabel = style.sendButton.accessibility.accessibilityLabel
-        showsSendButton = false
+
+        isSendButtonEnabled = false
 
         buttonsStackView.axis = .horizontal
         buttonsStackView.spacing = 16
         buttonsStackView.addArrangedSubviews([pickMediaButton, sendButton])
+
+        renderStyle()
+    }
+
+    func renderStyle() {
+        backgroundColor = style.backgroundColor
+
+        separator.backgroundColor = style.separatorColor
+
+        messageContainerView.backgroundColor = style.backgroundColor
+        textView.font = style.messageFont
+        textView.textColor = style.messageColor
+        textView.accessibilityLabel = style.accessibility.messageInputAccessibilityLabel
+
         setFontScalingEnabled(
             style.accessibility.isFontScalingEnabled,
             for: textView
@@ -139,6 +152,11 @@ class ChatMessageEntryView: BaseView {
             style.accessibility.isFontScalingEnabled,
             for: placeholderLabel
         )
+
+        placeholderLabel.font = style.placeholderFont
+        placeholderLabel.textColor = style.placeholderColor
+
+        updatePlaceholderText()
     }
 
     override func defineLayout() {
@@ -202,8 +220,8 @@ class ChatMessageEntryView: BaseView {
         placeholderLabel.text = text
     }
 
-    private func updatePickMediaButtonVisibility(_ visibility: MediaPickerButtonVisibility) {
-        pickMediaButton.isHidden = visibility.isHidden
+    private func updatePickMediaButtonVisibility(_ visibility: MediaPickerButtonEnabling) {
+        pickMediaButton.isEnabled = !visibility.isDisabled && isEnabled
     }
 
     private func updateTextViewHeight() {
@@ -269,27 +287,27 @@ extension ChatMessageEntryView: UITextViewDelegate {
 }
 
 extension ChatMessageEntryView {
-    func setPickMediaButtonVisibility(_ visibility: MediaPickerButtonVisibility) {
-        mediaPickerButtonVisibility = visibility
+    func setPickMediaButtonVisibility(_ visibility: MediaPickerButtonEnabling) {
+        mediaPickerButtonEnabling = visibility
         updatePickMediaButtonVisibility(visibility)
     }
 }
 
-enum MediaPickerButtonVisibility {
+enum MediaPickerButtonEnabling {
     enum ToggledBy {
-        case enagagementConnection(isConnected: Bool)
+        case engagementConnection(isConnected: Bool)
         case secureMessaging
     }
     case enabled(ToggledBy)
     case disabled
 }
 
-extension MediaPickerButtonVisibility {
-    var isHidden: Bool {
+extension MediaPickerButtonEnabling {
+    var isDisabled: Bool {
         switch self {
         case .disabled:
             return true
-        case let .enabled(.enagagementConnection(isConnected)):
+        case let .enabled(.engagementConnection(isConnected)):
             return !isConnected
         case .enabled(.secureMessaging):
             return false

@@ -52,6 +52,11 @@ extension SecureConversations.Coordinator.Environment {
         maximumUploads: { 2 },
         cameraDeviceManager: { .mock }, 
         flipCameraButtonStyle: .nop,
-        alertManager: .mock()
+        alertManager: .mock(),
+        queuesMonitor: .mock(),
+        createEntryWidget: { _ in .mock() },
+        shouldShowLeaveSecureConversationDialog: false,
+        leaveCurrentSecureConversation: .nop,
+        switchToEngagement: .nop
     )
 }

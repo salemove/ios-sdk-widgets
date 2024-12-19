@@ -78,4 +78,31 @@ final class ChatViewControllerLayoutTests: SnapshotTestCase {
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
+
+    func test_secureMessagingBottomAndCollapsedTopBanner() {
+        let viewController = ChatViewController.mockSecureMessagingBottomBannerView()
+        viewController.updateViewConstraints()
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
+    }
+    
+    func test_secureMessagingBottomAndExpandedTopBanner() {
+        let mockEntryWidgetViewState = EntryWidget.ViewState.mediaTypes(
+            [.init(type: .chat), .init(type: .video), .init(type: .audio)]
+        )
+        let viewController = ChatViewController.mockSecureMessagingTopAndBottomBannerView(
+            entryWidgetViewState: mockEntryWidgetViewState
+        )
+        viewController.updateViewConstraints()
+        
+        (viewController.view as? ChatView)?.isTopBannerExpanded = true
+        viewController.updateViewConstraints()
+        
+        viewController.view.frame = UIScreen.main.bounds
+        viewController.view.setNeedsLayout()
+        viewController.view.layoutIfNeeded()
+        
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
+    }
 }

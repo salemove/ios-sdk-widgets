@@ -20,7 +20,7 @@ extension Glia.Environment {
         uiDevice: .live,
         notificationCenter: .live,
         createRootCoordinator: EngagementCoordinator.init(
-            interactor:viewFactory:sceneProvider:engagementKind:screenShareHandler:features:environment:
+            interactor:viewFactory:sceneProvider:engagementLaunching:screenShareHandler:features:environment:
         ),
         callVisualizerPresenter: .topViewController(application: .live),
         bundleManaging: .live,
@@ -42,7 +42,21 @@ extension Glia.Environment {
         conditionalCompilation: .live,
         snackBar: .live,
         processInfo: .live,
-        cameraDeviceManager: { try CoreSdkClient.live.getCameraDeviceManageable() }
+        cameraDeviceManager: { try CoreSdkClient.live.getCameraDeviceManageable() },
+        // This logic was moved here from EngagementCoordinator.Environment
+        // Because it will be used for EntryWidget as well. This is as of now
+        // The simplest way to determine if visitor is authenticated or not
+        isAuthenticated: {
+            do {
+                return try CoreSdkClient.live.authentication(.forbiddenDuringEngagement).isAuthenticated
+            } catch {
+                debugPrint(#function, "isAuthenticated:", error.localizedDescription)
+                return false
+            }
+        },
+        dismissManager: .init { viewController, animated, completion in
+            viewController.dismiss(animated: animated, completion: completion)
+        }
     )
 }
 

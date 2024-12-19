@@ -32,7 +32,7 @@ extension Glia.Environment {
                 interactor: .mock(environment: .failing),
                 viewFactory: .mock(environment: .failing),
                 sceneProvider: nil,
-                engagementKind: .none,
+                engagementLaunching: .direct(kind: .none),
                 screenShareHandler: .mock,
                 features: [],
                 environment: .failing
@@ -65,6 +65,13 @@ extension Glia.Environment {
         cameraDeviceManager: {
             fail("\(Self.self).cameraDeviceManager")
             return .failing
+        },
+        isAuthenticated: {
+            fail("\(Self.self).isAuthenticated")
+            return false
+        },
+        dismissManager: .init { _, _, _ in
+            fail("\(Self.self).dismissManager")
         }
     )
 }

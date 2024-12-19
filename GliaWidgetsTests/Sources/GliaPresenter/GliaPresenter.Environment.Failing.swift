@@ -3,8 +3,15 @@
 extension GliaPresenter.Environment {
     static let failing = Self(
         appWindowsProvider: .failing,
-        log: .failing
+        log: .failing,
+        dismissManager: .failing
     )
+}
+
+extension GliaPresenter.DismissManager {
+    static let failing = Self.init { _, _, _ in
+        fail("\(Self.self).dismissManager")
+    }
 }
 
 extension GliaPresenter.AppWindowsProvider {

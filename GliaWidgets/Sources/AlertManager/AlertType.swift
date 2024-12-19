@@ -16,6 +16,12 @@ enum AlertType {
         accessibilityIdentifier: String,
         confirmed: () -> Void
     )
+    case leaveConversation(
+        conf: ConfirmationAlertConfiguration,
+        accessibilityIdentifier: String,
+        confirmed: () -> Void,
+        declined: (() -> Void)?
+    )
     case singleAction(
         conf: SingleActionAlertConfiguration,
         accessibilityIdentifier: String,
@@ -55,7 +61,7 @@ enum AlertType {
             return .highest
         case .confirmation, .liveObservationConfirmation:
             return .high
-        case .message, .systemAlert, .view:
+        case .message, .systemAlert, .view, .leaveConversation:
             return .regular
         }
     }

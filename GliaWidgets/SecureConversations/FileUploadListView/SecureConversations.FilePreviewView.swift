@@ -230,5 +230,5 @@ extension SecureConversations.FilePreviewView.Kind {
 }
 
 private extension FilePreviewStyle {
-    static let initial = FileUploadStyle.initial.filePreview
+    static let initial = FileUploadStyle.initial.enabled.filePreview
 }
