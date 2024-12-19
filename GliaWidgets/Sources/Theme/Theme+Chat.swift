@@ -350,7 +350,7 @@ extension Theme {
             placeholderFont: font.bodyText,
             placeholderColor: color.baseShade,
             separatorColor: color.baseShade,
-            backgroundColor: color.baseLight,
+            backgroundColor: color.baseNeutral,
             mediaButton: mediaButton,
             sendButton: sendButton,
             uploadList: uploadListStyle,

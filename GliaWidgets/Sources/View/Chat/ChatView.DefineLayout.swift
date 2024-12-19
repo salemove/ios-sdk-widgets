@@ -96,5 +96,13 @@ extension ChatView {
 
         bringSubviewToFront(entryWidgetOverlayView)
         bringSubviewToFront(entryWidgetContainerView)
+
+        constraints += [
+            messageEntryBottomArea.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            messageEntryBottomArea.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            messageEntryBottomArea.topAnchor.constraint(equalTo: messageEntryView.bottomAnchor),
+            messageEntryBottomArea.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor)
+        ]
+        insertSubview(messageEntryBottomArea, at: 0)
     }
 }
