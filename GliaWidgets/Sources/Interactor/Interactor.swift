@@ -31,6 +31,7 @@ enum InteractorEvent {
     case error(CoreSdkClient.SalemoveError)
     case engagementTransferred(CoreSdkClient.Operator?)
     case engagementTransferring
+    case onLiveToSecureConversationsEngagementTransferring
     case onEngagementRequest(CoreSdkClient.Request, answer: Command<Bool>)
 }
 
@@ -57,7 +58,7 @@ class Interactor {
     }
 
     let visitorContext: Configuration.VisitorContext?
-    var currentEngagement: CoreSdkClient.Engagement?
+    @Published var currentEngagement: CoreSdkClient.Engagement?
 
     private var observers = [() -> (AnyObject?, EventHandler)]()
 
@@ -109,6 +110,7 @@ class Interactor {
 extension Interactor {
     func setQueuesIds(_ queueIds: [String]) {
         self.queueIds = queueIds
+        environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds)
     }
 
     func enqueueForEngagement(
@@ -232,6 +234,12 @@ extension Interactor {
 }
 
 extension Interactor: CoreSdkClient.Interactable {
+    var onEngagementChanged: CoreSdkClient.EngagementChangedBlock {
+        return { [weak self] engagement in
+            self?.currentEngagement = engagement
+        }
+    }
+
     var onScreenSharingOffer: CoreSdkClient.ScreenshareOfferBlock {
         return { [weak self] answer in
             self?.notify(.screenShareOffer(answer: answer))
@@ -287,6 +295,16 @@ extension Interactor: CoreSdkClient.Interactable {
         }
     }
 
+    var onLiveToSecureConversationsEngagementTransferring: CoreSdkClient.EngagementTransferringBlock {
+        return { [weak self, environment] in
+            environment.log.prefixed(Self.self).info(
+                "Live to Secure Conversations Engagement Transfer",
+                function: "\(\Interactor.onLiveToSecureConversationsEngagementTransferring)"
+            )
+            self?.notify(.onLiveToSecureConversationsEngagementTransferring)
+        }
+    }
+
     var onOperatorTypingStatusUpdate: CoreSdkClient.OperatorTypingStatusUpdate {
         return { [weak self] operatorTypingStatus in
             self?.notify(.typingStatusUpdated(operatorTypingStatus))
@@ -311,20 +329,24 @@ extension Interactor: CoreSdkClient.Interactable {
 
     var onAudioStreamAdded: CoreSdkClient.AudioStreamAddedBlock {
         return { [weak self] stream, error in
+            guard let self else { return }
             if let stream = stream {
-                self?.notify(.audioStreamAdded(stream))
+                notify(.audioStreamAdded(stream))
+                currentEngagement = environment.coreSdk.getCurrentEngagement()
             } else if let error = error {
-                self?.notify(.audioStreamError(error))
+                notify(.audioStreamError(error))
             }
         }
     }
 
     var onVideoStreamAdded: CoreSdkClient.VideoStreamAddedBlock {
         return { [weak self] stream, error in
+            guard let self else { return }
             if let stream = stream {
-                self?.notify(.videoStreamAdded(stream))
+                notify(.videoStreamAdded(stream))
+                currentEngagement = environment.coreSdk.getCurrentEngagement()
             } else if let error = error {
-                self?.notify(.videoStreamError(error))
+                notify(.videoStreamError(error))
             }
         }
     }

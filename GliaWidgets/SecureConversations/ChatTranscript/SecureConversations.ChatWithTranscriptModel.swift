@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 extension SecureConversations.ChatWithTranscriptModel {
     typealias Action = Chat.Action
@@ -69,12 +70,30 @@ extension SecureConversations.ChatWithTranscriptModel {
         }
     }
 
+    var isSendMessageAvailable: Bool {
+        switch self {
+        case .chat:
+            true
+        case let .transcript(model):
+            model.isSecureConversationsAvailable
+        }
+    }
+
     var numberOfSections: Int {
         switch self {
         case let .chat(model):
             return model.numberOfSections
         case let .transcript(model):
             return model.numberOfSections
+        }
+    }
+
+    var entryWidget: EntryWidget? {
+        switch self {
+        case .chat:
+            return nil
+        case let .transcript(model):
+            return model.entryWidget
         }
     }
 

@@ -14,10 +14,13 @@ final class GliaTests: XCTestCase {
         environment.coreSdk.createLogger = { _ in logger }
         environment.print = .mock
         environment.conditionalCompilation.isDebug = { false }
+        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
 
         let sdk = Glia(environment: environment)
         sdk.endEngagement { result in
-
             guard case .failure(let error) = result, let gliaError = error as? GliaError else {
                 XCTFail("GliaError.sdkIsNotConfigured expected.")
                 return
@@ -40,6 +43,10 @@ final class GliaTests: XCTestCase {
         environment.coreSdk.createLogger = { _ in logger }
         environment.print = .mock
         environment.conditionalCompilation.isDebug = { false }
+        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
 
         let sdk = Glia(environment: environment)
         sdk.interactor = .mock()
@@ -52,86 +59,6 @@ final class GliaTests: XCTestCase {
         XCTAssertNil(sdk.rootCoordinator)
     }
 
-    func test__deprecated_start_passes_all_arguments_to_interactor() throws {
-        var gliaEnv = Glia.Environment.failing
-        var logger = CoreSdkClient.Logger.failing
-        logger.configureLocalLogLevelClosure = { _ in }
-        logger.configureRemoteLogLevelClosure = { _ in }
-        logger.infoClosure = { _, _, _, _ in }
-        logger.prefixedClosure = { _ in logger }
-        logger.reportDeprecatedMethodClosure = { _, _, _, _ in }
-        logger.remoteLoggerClosure = { logger }
-        logger.oneTimeClosure = { logger }
-        gliaEnv.coreSdk.createLogger = { _ in logger }
-        gliaEnv.conditionalCompilation.isDebug = { true }
-        gliaEnv.print = .mock
-        gliaEnv.processInfo.info = { [:] } 
-        var proximityManagerEnv = ProximityManager.Environment.failing
-        proximityManagerEnv.uiDevice.isProximityMonitoringEnabled = { _ in }
-        proximityManagerEnv.uiApplication.isIdleTimerDisabled = { _ in }
-        gliaEnv.proximityManager = .init(environment: proximityManagerEnv)
-        gliaEnv.notificationCenter.removeObserverClosure = { _ in }
-        gliaEnv.notificationCenter.removeObserverWithNameAndObject = { _, _, _ in }
-        gliaEnv.notificationCenter.addObserverClosure = { _, _, _, _ in }
-        var fileManager = FoundationBased.FileManager.failing
-        fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
-        fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
-        gliaEnv.fileManager = fileManager
-        gliaEnv.coreSdk.configureWithInteractor = { _ in }
-        gliaEnv.createFileUploadListModel = { _ in .mock() }
-        gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        gliaEnv.coreSdk.authentication = { _ in .mock }
-        gliaEnv.coreSdk.queueForEngagement = { _, callback in
-            callback(.success(.mock))
-        }
-        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
-        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
-        gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
-        gliaEnv.uuid = { .mock }
-        gliaEnv.gcd.mainQueue.async = { callback in callback() }
-
-        let expectedTheme = Theme.mock(
-            colorStyle: .custom(.init()),
-            fontStyle: .default,
-            showsPoweredBy: true
-        )
-        let expectedFeatures: Features = [Features.bubbleView]
-        var receivedTheme: Theme?
-        var receivedFeatures = Features.init()
-
-        let expectedSceneProvider = MockedSceneProvider()
-        var receivedSceneProvider: SceneProvider?
-        gliaEnv.createRootCoordinator = { interactor, viewFactory, sceneProvider, _, screenShareHandler, features, environment in
-            receivedTheme = viewFactory.theme
-            receivedFeatures = features
-            receivedSceneProvider = sceneProvider
-            return .mock(
-                interactor: interactor,
-                viewFactory: viewFactory,
-                sceneProvider: sceneProvider,
-                screenShareHandler: screenShareHandler,
-                environment: environment
-            )
-        }
-
-        let sdk = Glia(environment: gliaEnv)
-
-        try sdk.start(
-            .audioCall,
-            configuration: .mock(),
-            queueID: "queueId",
-            theme: expectedTheme,
-            features: .all,
-            sceneProvider: expectedSceneProvider
-        )
-
-        XCTAssertTrue(try XCTUnwrap(receivedTheme) === expectedTheme)
-        XCTAssertEqual(receivedFeatures, expectedFeatures)
-        XCTAssertTrue(try XCTUnwrap(receivedSceneProvider as? MockedSceneProvider) === expectedSceneProvider)
-    }
-
     func test__messageRenderer() throws {
         var environment = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
@@ -141,6 +68,11 @@ final class GliaTests: XCTestCase {
         logger.configureRemoteLogLevelClosure = { _ in }
         environment.coreSdk.createLogger = { _ in logger }
         environment.conditionalCompilation.isDebug = { false }
+        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
+
         let sdk = Glia(environment: environment)
         XCTAssertNotNil(sdk.messageRenderer)
 
@@ -170,6 +102,10 @@ final class GliaTests: XCTestCase {
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
+        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: gliaEnv)
         sdk.onEvent = {
             calls.append(.onEvent($0))
@@ -207,6 +143,10 @@ final class GliaTests: XCTestCase {
             completion(.success(()))
         }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
 
         let sdk = Glia(environment: gliaEnv)
         sdk.onEvent = {
@@ -244,6 +184,10 @@ final class GliaTests: XCTestCase {
             completion(.success(()))
         }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
 
         let sdk = Glia(environment: gliaEnv)
         sdk.onEvent = {
@@ -290,6 +234,10 @@ final class GliaTests: XCTestCase {
             completion(.success(()))
         }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
 
         let sdk = Glia(environment: gliaEnv)
         sdk.onEvent = {
@@ -334,6 +282,10 @@ final class GliaTests: XCTestCase {
             completion(.success(()))
         }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
 
         let sdk = Glia(environment: gliaEnv)
         sdk.onEvent = {
@@ -361,6 +313,10 @@ final class GliaTests: XCTestCase {
         environment.coreSdk.createLogger = { _ in logger }
         environment.conditionalCompilation.isDebug = { false }
         environment.coreSdk.getCurrentEngagement = { .mock() }
+        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: environment)
 
         XCTAssertThrowsError(try sdk.configure(
@@ -384,6 +340,10 @@ final class GliaTests: XCTestCase {
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
+        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: environment)
         try sdk.configure(
             with: .mock(),
@@ -413,6 +373,10 @@ final class GliaTests: XCTestCase {
         environment.coreSdk.getCurrentEngagement = { .mock() }
         environment.print = .mock
         environment.conditionalCompilation.isDebug = { false }
+        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: environment)
 
         var resultingError: Error?
@@ -436,6 +400,10 @@ final class GliaTests: XCTestCase {
         logger.configureRemoteLogLevelClosure = { _ in }
         environment.coreSdk.createLogger = { _ in logger }
         environment.conditionalCompilation.isDebug = { false }
+        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: environment)
         let coordinator = EngagementCoordinator.mock()
         let delegate = GliaViewControllerDelegateMock()
@@ -460,6 +428,10 @@ final class GliaTests: XCTestCase {
         logger.configureRemoteLogLevelClosure = { _ in }
         environment.coreSdk.createLogger = { _ in logger }
         environment.conditionalCompilation.isDebug = { false }
+        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: environment)
         let coordinator = EngagementCoordinator.mock()
         let delegate = GliaViewControllerDelegateMock()
@@ -484,6 +456,10 @@ final class GliaTests: XCTestCase {
         logger.configureRemoteLogLevelClosure = { _ in }
         environment.coreSdk.createLogger = { _ in logger }
         environment.conditionalCompilation.isDebug = { false }
+        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
 
         XCTAssertFalse(Glia(environment: environment).isConfigured)
     }
@@ -501,6 +477,10 @@ final class GliaTests: XCTestCase {
         }
         environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
+        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: environment)
         try sdk.configure(
             with: .mock(),
@@ -523,6 +503,10 @@ final class GliaTests: XCTestCase {
         }
         environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
+        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: environment)
         try sdk.configure(
             with: .mock(),
@@ -550,6 +534,10 @@ final class GliaTests: XCTestCase {
                 throw CoreSdkClient.GliaCoreError.mock()
             }
         }
+        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: environment)
 
         try sdk.configure(
@@ -577,6 +565,10 @@ final class GliaTests: XCTestCase {
         environment.coreSDKConfigurator.configureWithConfiguration = { _, _ in
             throw CoreSdkClient.GliaCoreError.mock()
         }
+        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: environment)
         try? sdk.configure(
             with: .mock(),
@@ -598,12 +590,18 @@ final class GliaTests: XCTestCase {
         }
         environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
+        environment.coreSdk.pendingSecureConversationStatus = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
+        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
         var engCoordEnvironment = EngagementCoordinator.Environment.engagementCoordEnvironmentWithKeyWindow
         engCoordEnvironment.fileManager = .mock
         environment.createRootCoordinator = { _, _, _, _, _, _, _ in EngagementCoordinator.mock(environment: engCoordEnvironment) }
-
+        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: environment)
+        sdk.queuesMonitor = .mock()
         enum Call {
             case configureWithConfiguration
         }
@@ -614,10 +612,8 @@ final class GliaTests: XCTestCase {
         ) { _ in
             calls.append(.configureWithConfiguration)
         }
-        try sdk.startEngagement(
-            engagementKind: .chat,
-            in: ["mockedQueueId"]
-        )
+        let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["mockedQueueId"])
+        try engagementLauncher.startChat()
         weak var rootCoordinator = sdk.rootCoordinator
         XCTAssertNotNil(rootCoordinator)
         var endEngagementResult: Result<Void, Error>?
@@ -649,6 +645,10 @@ final class GliaTests: XCTestCase {
             callback(.success(()))
         }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: gliaEnv)
         try sdk.configure(
             with: .mock(),
@@ -694,10 +694,11 @@ final class GliaTests: XCTestCase {
             alert: nil,
             bubble: nil,
             callVisualizer: nil,
-            secureConversationsWelcomeScreen: nil,
-            secureConversationsConfirmationScreen: nil,
+            secureMessagingWelcomeScreen: nil,
+            secureMessagingConfirmationScreen: nil,
             snackBar: nil,
-            webBrowserScreen: nil
+            webBrowserScreen: nil,
+            entryWidget: nil
         )
 
         let theme = Theme(colorStyle: .custom(themeColor))
@@ -725,6 +726,10 @@ final class GliaTests: XCTestCase {
             completion(.success(()))
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
+        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let sdk = Glia(environment: environment)
         let configuration = Configuration.mock()
 
@@ -740,5 +745,106 @@ final class GliaTests: XCTestCase {
         XCTAssertEqual(systemNegativeHex, "#00FF00")
         XCTAssertEqual(prefixes, ["Glia", "Glia"])
         XCTAssertEqual(messages, ["Initialize Glia Widgets SDK", "Setting Unified UI Config"])
+    }
+
+    func test_hasPendingInteractionIfPendingSecureConversationExists() throws {
+        var gliaEnv = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        let uuidGen = UUID.incrementing
+        logger.infoClosure = { _, _, _, _ in }
+        logger.prefixedClosure = { _ in logger }
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        gliaEnv.coreSdk.createLogger = { _ in logger }
+        gliaEnv.conditionalCompilation.isDebug = { true }
+        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { callback in
+            callback(.success(0))
+            return uuidGen().uuidString
+        }
+        gliaEnv.coreSdk.observePendingSecureConversationStatus = { callback in
+            callback(.success(true))
+            return uuidGen().uuidString
+        }
+        gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.success(()))
+        }
+        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+
+        let sdk = Glia(environment: gliaEnv)
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+
+        XCTAssertTrue(try XCTUnwrap(sdk.pendingInteraction).hasPendingInteraction)
+    }
+
+    func test_hasPendingInteractionIfUnreadMessagesExist() throws {
+        var gliaEnv = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        let uuidGen = UUID.incrementing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        logger.infoClosure = { _, _, _, _ in }
+        logger.prefixedClosure = { _ in logger }
+        gliaEnv.coreSdk.createLogger = { _ in logger }
+        gliaEnv.conditionalCompilation.isDebug = { true }
+        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { callback in
+            callback(.success(3))
+            return uuidGen().uuidString
+        }
+        gliaEnv.coreSdk.observePendingSecureConversationStatus = { callback in
+            callback(.success(false))
+            return uuidGen().uuidString
+        }
+        gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.success(()))
+        }
+        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+
+        let sdk = Glia(environment: gliaEnv)
+
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+
+        XCTAssertTrue(try XCTUnwrap(sdk.pendingInteraction).hasPendingInteraction)
+    }
+
+    func test_hasPendingInteractionIfNoUnreadMessageAndPendingSecureConversationExist() throws {
+        var uuidGen = UUID.incrementing
+        var gliaEnv = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        logger.infoClosure = { _, _, _, _ in }
+        logger.prefixedClosure = { _ in logger }
+        gliaEnv.coreSdk.createLogger = { _ in logger }
+        gliaEnv.coreSdk.pendingSecureConversationStatus = { $0(.success(false)) }
+        gliaEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
+        gliaEnv.conditionalCompilation.isDebug = { true }
+        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in uuidGen().uuidString }
+        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in uuidGen().uuidString }
+        gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.success(()))
+        }
+        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+
+        let sdk = Glia(environment: gliaEnv)
+
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+
+        XCTAssertFalse(try XCTUnwrap(sdk.pendingInteraction).hasPendingInteraction)
     }
 }

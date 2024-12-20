@@ -83,6 +83,10 @@ public final class CallVisualizer {
             by: .embedded(container, onEngagementAccepted: onEngagementAccepted)
         )
     }
+
+    public func resume() {
+        coordinator.resume()
+    }
 }
 
 // MARK: - Internal

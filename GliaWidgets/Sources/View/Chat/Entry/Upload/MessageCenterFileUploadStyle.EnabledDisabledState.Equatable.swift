@@ -1,7 +1,7 @@
 import Foundation
 
-extension MessageCenterFileUploadStyle {
-    public static func == (lhs: MessageCenterFileUploadStyle, rhs: MessageCenterFileUploadStyle) -> Bool {
+extension MessageCenterFileUploadStyle.EnabledDisabledState {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.filePreview == rhs.filePreview &&
         lhs.uploading == rhs.uploading &&
         lhs.uploaded == rhs.uploaded &&

@@ -5,7 +5,7 @@ let package = Package(
     name: "GliaWidgets",
     defaultLocalization: .init(stringLiteral: "en"),
     platforms: [
-        .iOS(.v13)
+        .iOS(.v14)
     ],
     products: [
         .library(
@@ -35,8 +35,8 @@ let package = Package(
         ),
         .binaryTarget(
             name: "GliaCoreSDK",
-            url: "https://github.com/salemove/ios-bundle/releases/download/1.5.8/GliaCoreSDK.xcframework.zip",
-            checksum: "ea56acef24af7016e35d58a03e07630d57f7950cabbbfee2f03059a9e6f7aec7"
+            url: "https://github.com/salemove/ios-bundle/releases/download/2.0.4/GliaCoreSDK.xcframework.zip",
+            checksum: "67eea14b995b29df2fffaedcb6a043f12a0f43ab27e8655b96f596cb4b3c6992"
         ),
         .binaryTarget(
             name: "GliaWidgetsSDKXcf",

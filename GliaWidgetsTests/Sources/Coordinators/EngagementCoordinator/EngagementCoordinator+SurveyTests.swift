@@ -4,16 +4,13 @@ import XCTest
 class EngagementCoordinatorSurveyTests: XCTestCase {
     func test_surveyCompletesWithUnexpectedError() {
         let coreSdkClient = CoreSdkClient.failing
-        let engagement = CoreSdkClient.Engagement(
-            id: "", 
-            engagedOperator: nil,
-            source: .coreEngagement,
+        let engagement = CoreSdkClient.Engagement.mock(
             fetchSurvey: { _, callback in
                 callback(.failure(.mock()))
             },
-            mediaStreams: .init(audio: .none, video: .oneWay)
+            media: .init(audio: .none, video: .oneWay)
         )
-        let interactor = Interactor.mock(environment: .init(coreSdk: coreSdkClient, gcd: .failing, log: .failing))
+        let interactor = Interactor.mock(environment: .init(coreSdk: coreSdkClient, queuesMonitor: .mock(), gcd: .failing, log: .failing))
         interactor.currentEngagement = engagement
         var alertManagerEnv = AlertManager.Environment.failing()
         var log = CoreSdkClient.Logger.failing
@@ -32,7 +29,7 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
             interactor: interactor,
             viewFactory: ViewFactory.mock(),
             sceneProvider: nil,
-            engagementKind: .audioCall,
+            engagementLaunching: .direct(kind: .audioCall),
             screenShareHandler: .mock,
             features: [],
             environment: engagementCoordinatorEnv

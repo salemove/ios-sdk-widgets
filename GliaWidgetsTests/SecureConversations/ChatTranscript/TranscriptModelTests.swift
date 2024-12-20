@@ -16,10 +16,13 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.listQueues = { callback in callback([], nil) }
         modelEnv.maximumUploads = { 2 }
+        modelEnv.createEntryWidget = { _ in .mock() }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: logger
+            log: logger,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
         let viewModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -27,7 +30,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             availability: .init(
                 environment: availabilityEnv
             ),
-            deliveredStatusText: "", 
+            deliveredStatusText: "",
             failedToDeliverStatusText: "",
             interactor: .failing
         )
@@ -45,10 +48,13 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.listQueues = { callback in callback(nil, .mock()) }
         modelEnv.maximumUploads = { 2 }
+        modelEnv.createEntryWidget = { _ in .mock() }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { false },
-            log: logger
+            log: logger,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
         let viewModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -64,7 +70,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isSecureConversationsAvailable)
     }
 
-    func testMediaPickerButtonVisibilityDependsOnSiteConfiguration() throws {
+    func testMediaPickerButtonEnablingDependsOnSiteConfiguration() throws {
         var modelEnv = TranscriptModel.Environment.failing
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
@@ -73,6 +79,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.getSecureUnreadMessageCount = { _ in }
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
+        modelEnv.createEntryWidget = { _ in .mock() }
         let site = try CoreSdkClient.Site.mock(allowedFileSenders: .mock(visitor: true))
         modelEnv.fetchSiteConfigurations = { callback in
             callback(.success(site))
@@ -81,7 +88,9 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let viewModel = TranscriptModel(
@@ -97,7 +106,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
         viewModel.start()
 
-        XCTAssertFalse(viewModel.mediaPickerButtonVisibility.isHidden)
+        XCTAssertFalse(viewModel.mediaPickerButtonEnabling.isDisabled)
     }
 
     func testStartLoadsConfigurationAndChatHistoryAndGetUnreadMessageCount() {
@@ -106,6 +115,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.listQueues = { _ in }
         modelEnv.maximumUploads = { 2 }
+        modelEnv.createEntryWidget = { _ in .mock() }
+        modelEnv.createEntryWidget = { _ in .mock() }
         enum Call: String, Equatable {
             case fetchChatHistory
             case loadSiteConfiguration
@@ -126,7 +137,9 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
         let viewModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -155,10 +168,13 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.getSecureUnreadMessageCount = { _ in }
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
+        modelEnv.createEntryWidget = { _ in .mock() }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
         let viewModel = TranscriptModel(
             isCustomCardSupported: false,
@@ -201,10 +217,13 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.getSecureUnreadMessageCount = { _ in }
         modelEnv.maximumUploads = { 2 }
+        modelEnv.createEntryWidget = { _ in .mock() }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let viewModel = TranscriptModel(
@@ -242,10 +261,13 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.getSecureUnreadMessageCount = { _ in }
         modelEnv.maximumUploads = { 2 }
+        modelEnv.createEntryWidget = { _ in .mock() }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let viewModel = TranscriptModel(
@@ -279,10 +301,13 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.getSecureUnreadMessageCount = { _ in }
         modelEnv.maximumUploads = { 2 }
+        modelEnv.createEntryWidget = { _ in .mock() }
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let viewModel = TranscriptModel(
@@ -316,6 +341,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             .mock(messageIdSuffix: "mock", content: $0, attachment: $1)
         }
         modelEnv.maximumUploads = { 2 }
+        modelEnv.createEntryWidget = { _ in .mock() }
         enum Call: Equatable { case sendSecureMessagePayload }
         var calls: [Call] = []
         modelEnv.sendSecureMessagePayload = { _, _, _ in
@@ -325,7 +351,9 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let viewModel = TranscriptModel(
@@ -355,6 +383,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
+        modelEnv.createEntryWidget = { _ in .mock() }
         enum Call: Equatable { case getSecureUnreadMessageCount }
         var calls: [Call] = []
         modelEnv.getSecureUnreadMessageCount = { _ in
@@ -364,7 +393,9 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let viewModel = TranscriptModel(
@@ -400,13 +431,16 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.startSocketObservation = {}
         modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, _ in }
         modelEnv.loadChatMessagesFromHistory = { true }
+        modelEnv.createEntryWidget = { _ in .mock() }
         let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
         modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let viewModel = TranscriptModel(
@@ -447,15 +481,18 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             callback(.success(0))
         }
         modelEnv.startSocketObservation = {}
-        modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, callback in }
+        modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, _ in }
         modelEnv.loadChatMessagesFromHistory = { true }
+        modelEnv.createEntryWidget = { _ in .mock() }
         let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
         modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let interactor: Interactor = .failing
@@ -514,13 +551,16 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.startSocketObservation = {}
         modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, _ in }
         modelEnv.loadChatMessagesFromHistory = { true }
+        modelEnv.createEntryWidget = { _ in .mock() }
         let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
         modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
             isAuthenticated: { true },
-            log: .failing
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
         )
 
         let interactor: Interactor = .failing
@@ -565,11 +605,13 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
     func testIsSecureConversationsAvailableIsFalseIsDueToEmptyQueue() {
         var modelEnvironment = TranscriptModel.Environment.failing
+        modelEnvironment.uiApplication = .mock
         modelEnvironment.fileManager = .mock
         modelEnvironment.maximumUploads = { 2 }
         modelEnvironment.createFileUploadListModel = {
             .mock(environment: $0)
         }
+        modelEnvironment.createEntryWidget = { _ in .mock() }
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
@@ -581,6 +623,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             callback([], nil)
         }
         availabilityEnv.isAuthenticated = { true }
+        availabilityEnv.queuesMonitor = .mock(listQueues: availabilityEnv.listQueues)
+        availabilityEnv.getCurrentEngagement = { .mock() }
         let model = TranscriptModel(
             isCustomCardSupported: false,
             environment: modelEnvironment,
@@ -598,18 +642,21 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
         logger.warningClosure = { _, _, _, _ in }
+        modelEnvironment.uiApplication = .mock
         modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
         modelEnvironment.maximumUploads = { 2 }
         modelEnvironment.createFileUploadListModel = {
             .mock(environment: $0)
         }
+        modelEnvironment.createEntryWidget = { _ in .mock() }
         var availabilityEnv = SecureConversations.Availability.Environment.failing
         availabilityEnv.log = logger
         availabilityEnv.listQueues = { callback in
             callback([.mock()], nil)
         }
         availabilityEnv.isAuthenticated = { false }
+        availabilityEnv.queuesMonitor = .mock(listQueues: availabilityEnv.listQueues)
         let model = TranscriptModel(
             isCustomCardSupported: false,
             environment: modelEnvironment,
@@ -626,17 +673,20 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
+        modelEnvironment.uiApplication = .mock
         modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
         modelEnvironment.maximumUploads = { 2 }
         modelEnvironment.createFileUploadListModel = {
             .mock(environment: $0)
         }
+        modelEnvironment.createEntryWidget = { _ in .mock() }
         var availabilityEnv = SecureConversations.Availability.Environment.failing
         availabilityEnv.listQueues = { callback in
             callback(nil, .mock())
         }
         availabilityEnv.isAuthenticated = { false }
+        availabilityEnv.queuesMonitor = .mock(listQueues: availabilityEnv.listQueues)
         let model = TranscriptModel(
             isCustomCardSupported: false,
             environment: modelEnvironment,
@@ -654,18 +704,22 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
         logger.warningClosure = { _, _, _, _ in }
+        modelEnvironment.uiApplication = .mock
         modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
         modelEnvironment.maximumUploads = { 2 }
         modelEnvironment.createFileUploadListModel = {
             .mock(environment: $0)
         }
+        modelEnvironment.createEntryWidget = { _ in .mock() }
         var availabilityEnv = SecureConversations.Availability.Environment.failing
         availabilityEnv.log = logger
         availabilityEnv.listQueues = { callback in
             callback([.mock()], nil)
         }
         availabilityEnv.isAuthenticated = { true }
+        availabilityEnv.queuesMonitor = .mock(listQueues: availabilityEnv.listQueues)
+        availabilityEnv.getCurrentEngagement = { .mock() }
         let model = TranscriptModel(
             isCustomCardSupported: false,
             environment: modelEnvironment,
@@ -683,18 +737,22 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
         logger.warningClosure = { _, _, _, _ in }
+        modelEnvironment.uiApplication = .mock
         modelEnvironment.log = logger
         modelEnvironment.fileManager = .mock
         modelEnvironment.maximumUploads = { 2 }
         modelEnvironment.createFileUploadListModel = {
             .mock(environment: $0)
         }
+        modelEnvironment.createEntryWidget = { _ in .mock() }
         var availabilityEnv = SecureConversations.Availability.Environment.failing
         availabilityEnv.log = logger
         availabilityEnv.listQueues = { callback in
             callback([.mock()], nil)
         }
         availabilityEnv.isAuthenticated = { true }
+        availabilityEnv.queuesMonitor = .mock(listQueues: availabilityEnv.listQueues)
+        availabilityEnv.getCurrentEngagement = { .mock() }
         let model = TranscriptModel(
             isCustomCardSupported: false,
             environment: modelEnvironment,
@@ -716,5 +774,228 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         default:
             XCTFail("Unexpected action: \(receivedAction)")
         }
+    }
+
+    func testLoadHistoryAlsoInvokesSecureMarkMessagesAsReadIfShouldNotShowLeaveSecureConversationDialog() {
+        var modelEnv = TranscriptModel.Environment.failing
+        let fileUploadListModel = FileUploadListViewModel.mock()
+        fileUploadListModel.environment.uploader.limitReached.value = false
+        modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, function in function() }
+        modelEnv.fileManager = .mock
+        modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
+        modelEnv.listQueues = { _ in }
+        modelEnv.loadChatMessagesFromHistory = { true }
+        modelEnv.fetchChatHistory = { $0(.success([.mock(), .mock(), .mock()])) }
+        modelEnv.getSecureUnreadMessageCount = { $0(.success(5)) }
+        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.startSocketObservation = {}
+        modelEnv.maximumUploads = { 2 }
+        modelEnv.createEntryWidget = { _ in .mock() }
+        let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
+        modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
+        enum Call: Equatable { case secureMarkMessagesAsRead }
+        var calls: [Call] = []
+        modelEnv.secureMarkMessagesAsRead = { completion in
+            calls.append(.secureMarkMessagesAsRead)
+            completion(.success(()))
+            return .mock
+        }
+        modelEnv.shouldShowLeaveSecureConversationDialog = false
+
+        let availabilityEnv = SecureConversations.Availability.Environment(
+            listQueues: modelEnv.listQueues,
+            isAuthenticated: { true },
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
+        )
+
+        let viewModel = TranscriptModel(
+            isCustomCardSupported: false,
+            environment: modelEnv,
+            availability: .init(
+                environment: availabilityEnv
+            ),
+            deliveredStatusText: "",
+            failedToDeliverStatusText: "",
+            interactor: .failing
+        )
+
+        viewModel.start()
+        scheduler.run()
+
+        XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
+    }
+
+    func testLoadHistoryNotInvokesSecureMarkMessagesAsReadIfShouldShowLeaveSecureConversationDialog() {
+        var modelEnv = TranscriptModel.Environment.failing
+        let fileUploadListModel = FileUploadListViewModel.mock()
+        fileUploadListModel.environment.uploader.limitReached.value = false
+        modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, function in function() }
+        modelEnv.fileManager = .mock
+        modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
+        modelEnv.listQueues = { _ in }
+        modelEnv.loadChatMessagesFromHistory = { true }
+        modelEnv.fetchChatHistory = { $0(.success([.mock(), .mock(), .mock()])) }
+        modelEnv.getSecureUnreadMessageCount = { $0(.success(5)) }
+        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.startSocketObservation = {}
+        modelEnv.maximumUploads = { 2 }
+        modelEnv.createEntryWidget = { _ in .mock() }
+        let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
+        modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
+        enum Call: Equatable { case secureMarkMessagesAsRead }
+        var calls: [Call] = []
+        modelEnv.secureMarkMessagesAsRead = { completion in
+            calls.append(.secureMarkMessagesAsRead)
+            completion(.success(()))
+            return .mock
+        }
+        modelEnv.shouldShowLeaveSecureConversationDialog = true
+
+        let availabilityEnv = SecureConversations.Availability.Environment(
+            listQueues: modelEnv.listQueues,
+            isAuthenticated: { true },
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
+        )
+
+        let viewModel = TranscriptModel(
+            isCustomCardSupported: false,
+            environment: modelEnv,
+            availability: .init(
+                environment: availabilityEnv
+            ),
+            deliveredStatusText: "",
+            failedToDeliverStatusText: "",
+            interactor: .failing
+        )
+
+        viewModel.start()
+        scheduler.run()
+
+        XCTAssertTrue(calls.isEmpty)
+    }
+
+    func testLeaveCurrentConversationAlertDeclineMarkMessagesAsRead() {
+        var modelEnv = TranscriptModel.Environment.failing
+        let fileUploadListModel = FileUploadListViewModel.mock()
+        fileUploadListModel.environment.uploader.limitReached.value = false
+        modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, function in function() }
+        modelEnv.fileManager = .mock
+        modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
+        modelEnv.listQueues = { _ in }
+        modelEnv.loadChatMessagesFromHistory = { true }
+        modelEnv.fetchChatHistory = { $0(.success([.mock(), .mock(), .mock()])) }
+        modelEnv.getSecureUnreadMessageCount = { $0(.success(5)) }
+        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.startSocketObservation = {}
+        modelEnv.maximumUploads = { 2 }
+        modelEnv.createEntryWidget = { _ in .mock() }
+        let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
+        modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
+        enum Call: Equatable { case secureMarkMessagesAsRead }
+        var calls: [Call] = []
+        modelEnv.secureMarkMessagesAsRead = { completion in
+            calls.append(.secureMarkMessagesAsRead)
+            completion(.success(()))
+            return .mock
+        }
+        modelEnv.shouldShowLeaveSecureConversationDialog = true
+
+        let availabilityEnv = SecureConversations.Availability.Environment(
+            listQueues: modelEnv.listQueues,
+            isAuthenticated: { true },
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
+        )
+
+        let viewModel = TranscriptModel(
+            isCustomCardSupported: false,
+            environment: modelEnv,
+            availability: .init(
+                environment: availabilityEnv
+            ),
+            deliveredStatusText: "",
+            failedToDeliverStatusText: "",
+            interactor: .failing
+        )
+
+        viewModel.engagementAction = { action in
+            if case .showAlert(let type) = action, case let .leaveCurrentConversation(_, declined) = type {
+                declined?()
+            }
+        }
+
+        viewModel.start()
+        scheduler.run()
+
+        XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
+    }
+
+    func testReceiveMessageMarksMessagesAsRead() {
+        enum Call: Equatable { case secureMarkMessagesAsRead }
+        var calls: [Call] = []
+        var modelEnv = TranscriptModel.Environment.failing
+        let interactor: Interactor = .mock()
+        let fileUploadListModel = FileUploadListViewModel.mock()
+        fileUploadListModel.environment.uploader.limitReached.value = false
+        modelEnv.fileManager = .mock
+        modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
+        modelEnv.listQueues = { _ in }
+        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.getSecureUnreadMessageCount = { $0(.success(5)) }
+        modelEnv.maximumUploads = { 2 }
+        modelEnv.startSocketObservation = {}
+        modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, callback in callback() }
+        modelEnv.loadChatMessagesFromHistory = { true }
+        modelEnv.createEntryWidget = { _ in .mock() }
+        modelEnv.secureMarkMessagesAsRead = { completion in
+            calls.append(.secureMarkMessagesAsRead)
+            completion(.success(()))
+            return .mock
+        }
+        modelEnv.fetchChatHistory = { completion in
+            completion(.success([.mock()]))
+        }
+        modelEnv.shouldShowLeaveSecureConversationDialog = true
+        let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
+        modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
+        modelEnv.interactor = interactor
+
+        let availabilityEnv = SecureConversations.Availability.Environment(
+            listQueues: modelEnv.listQueues,
+            isAuthenticated: { true },
+            log: .failing,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
+        )
+
+        let viewModel = TranscriptModel(
+            isCustomCardSupported: false,
+            environment: modelEnv,
+            availability: .init(
+                environment: availabilityEnv
+            ),
+            deliveredStatusText: "",
+            failedToDeliverStatusText: "",
+            interactor: interactor
+        )
+
+        viewModel.start()
+        scheduler.run()
+
+        let uuid = UUID.mock.uuidString
+        let message = CoreSdkClient.Message(
+            id: uuid,
+            content: "Test",
+            sender: .init(type: .system),
+            metadata: nil
+        )
+        interactor.receive(message: message)
+
+        XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
     }
 }

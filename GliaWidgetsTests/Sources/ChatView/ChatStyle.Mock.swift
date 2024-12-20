@@ -1,6 +1,7 @@
 import UIKit
 @testable import GliaWidgets
 
+#if DEBUG
 extension ChatStyle {
     static func mock(
         header: HeaderStyle = .mock(),
@@ -22,7 +23,11 @@ extension ChatStyle {
         secureTranscriptHeader: HeaderStyle = .mock(),
         unreadMessageDivider: UnreadMessageDividerStyle = .mock(),
         systemMessageStyle: Theme.SystemMessageStyle = .mock(),
-        gliaVirtualAssistant: GliaVirtualAssistantStyle = .mock()
+        gliaVirtualAssistant: GliaVirtualAssistantStyle = .mock(),
+        secureMessagingBottomBannerStyle: SecureMessagingBottomBannerViewStyle = .mock(),
+        secureMessagingTopBannerStyle: SecureMessagingTopBannerViewStyle = .mock(),
+        sendingMessageUnavailableBannerViewStyle: SendingMessageUnavailableBannerViewStyle = .mock(),
+        secureMessagingExpandedTopBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle = .mock()
     ) -> ChatStyle {
         ChatStyle.init(
             header: header,
@@ -44,7 +49,11 @@ extension ChatStyle {
             secureTranscriptHeader: secureTranscriptHeader,
             unreadMessageDivider: unreadMessageDivider,
             systemMessageStyle: systemMessageStyle,
-            gliaVirtualAssistant: gliaVirtualAssistant
+            gliaVirtualAssistant: gliaVirtualAssistant,
+            secureMessagingTopBannerStyle: secureMessagingTopBannerStyle,
+            secureMessagingBottomBannerStyle: secureMessagingBottomBannerStyle,
+            sendingMessageUnavailableBannerViewStyle: sendingMessageUnavailableBannerViewStyle,
+            secureMessagingExpandedTopBannerItemsStyle: secureMessagingExpandedTopBannerItemsStyle
         )
     }
 }
@@ -316,6 +325,18 @@ extension Theme.Button {
 
 extension ChatMessageEntryStyle {
     static func mock(
+        enabled: ChatMessageEntryStateStyle = .mock(),
+        disabled: ChatMessageEntryStateStyle = .mock()
+    ) -> Self {
+        .init(
+            enabled: enabled,
+            disabled: disabled
+        )
+    }
+}
+
+extension ChatMessageEntryStateStyle {
+    static func mock(
         messageFont: UIFont = .systemFont(ofSize: 16),
         messageColor: UIColor = .black,
         enterMessagePlaceholder: String = "",
@@ -328,7 +349,7 @@ extension ChatMessageEntryStyle {
         mediaButton: MessageButtonStyle = .mock(),
         sendButton: MessageButtonStyle = .mock(),
         uploadList: FileUploadListStyle = .mock
-    ) -> ChatMessageEntryStyle {
+    ) -> Self {
         return .init(
             messageFont: messageFont,
             messageColor: messageColor,
@@ -346,14 +367,26 @@ extension ChatMessageEntryStyle {
     }
 }
 
-extension MessageButtonStyle {
+extension MessageButtonStateStyle {
     static func mock(
         image: UIImage = .mock,
         color: UIColor = .black
-    ) -> MessageButtonStyle {
+    ) -> Self {
         return .init(
             image: image,
             color: color
+        )
+    }
+}
+
+extension MessageButtonStyle {
+    static func mock(
+        enabled: MessageButtonStateStyle = .mock(),
+        disabled: MessageButtonStateStyle = .mock()
+    ) -> Self {
+        self.init(
+            enabled: enabled,
+            disabled: disabled
         )
     }
 }
@@ -533,3 +566,72 @@ extension Theme.ChatTextContentStyle {
         )
     }
 }
+
+extension SecureMessagingBottomBannerViewStyle {
+    static func mock(
+        message: String = Localization.SecureMessaging.Chat.Banner.bottom,
+        font: UIFont = Theme().chat.secureMessagingBottomBannerStyle.font,
+        textStyle: UIFont.TextStyle = Theme().chat.secureMessagingBottomBannerStyle.textStyle,
+        textColor: UIColor = Theme().chat.secureMessagingBottomBannerStyle.textColor,
+        backgroundColor: ColorType = Theme().chat.secureMessagingBottomBannerStyle.backgroundColor,
+        dividerColor: UIColor = Theme().chat.secureMessagingBottomBannerStyle.dividerColor,
+        accessibility: SecureMessagingBottomBannerViewStyle.Accessibility = Theme().chat.secureMessagingBottomBannerStyle.accessibility
+    ) -> Self {
+        .init(
+            message: message,
+            font: font,
+            textStyle: textStyle,
+            textColor: textColor,
+            backgroundColor: backgroundColor,
+            dividerColor: dividerColor, 
+            accessibility: accessibility
+        )
+    }
+}
+
+extension SecureMessagingTopBannerViewStyle {
+    static func mock(
+        message: String = Localization.SecureMessaging.Chat.Banner.bottom,
+        font: UIFont = Theme().chat.secureMessagingTopBannerStyle.font,
+        textStyle: UIFont.TextStyle = Theme().chat.secureMessagingTopBannerStyle.textStyle,
+        textColor: UIColor = Theme().chat.secureMessagingTopBannerStyle.textColor,
+        backgroundColor: ColorType = Theme().chat.secureMessagingTopBannerStyle.backgroundColor,
+        dividerColor: UIColor = Theme().chat.secureMessagingTopBannerStyle.dividerColor,
+        buttonImage: UIImage = Theme().chat.secureMessagingTopBannerStyle.buttonImage,
+        buttonImageColor: UIColor = Theme().chat.secureMessagingTopBannerStyle.buttonImageColor,
+        accessibility: SecureMessagingTopBannerViewStyle.Accessibility = Theme().chat.secureMessagingTopBannerStyle.accessibility
+    ) -> Self {
+        .init(
+            message: message,
+            font: font,
+            textStyle: textStyle,
+            textColor: textColor,
+            backgroundColor: backgroundColor,
+            dividerColor: dividerColor,
+            buttonImage: buttonImage,
+            buttonImageColor: buttonImageColor,
+            accessibility: accessibility
+        )
+    }
+}
+
+extension SendingMessageUnavailableBannerViewStyle {
+    static func mock(
+        message: String = Localization.SecureMessaging.Chat.Unavailable.message,
+        font: UIFont = Theme().chat.sendingMessageUnavailableBannerViewStyle.font,
+        textStyle: UIFont.TextStyle = Theme().chat.sendingMessageUnavailableBannerViewStyle.textStyle,
+        textColor: UIColor = Theme().chat.sendingMessageUnavailableBannerViewStyle.textColor,
+        backgroundColor: ColorType = Theme().chat.sendingMessageUnavailableBannerViewStyle.backgroundColor,
+        iconColor: UIColor = Theme().chat.sendingMessageUnavailableBannerViewStyle.iconColor
+    ) -> Self {
+        .init(
+            message: message,
+            font: font,
+            textStyle: textStyle,
+            textColor: textColor,
+            backgroundColor: backgroundColor,
+            iconColor: iconColor
+        )
+    }
+}
+#endif

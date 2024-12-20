@@ -253,3 +253,11 @@ extension SecureConversations.Coordinator {
         case mediaPickerController(MediaPickerController)
     }
 }
+
+#if DEBUG
+extension SecureConversations.Coordinator {
+    var coordinatorEnvironment: Environment {
+        environment
+    }
+}
+#endif

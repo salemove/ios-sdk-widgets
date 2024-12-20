@@ -123,7 +123,7 @@ private extension SettingsViewController {
                 Glia.sharedInstance.listQueues { [weak self] result in
                     switch result {
                     case .success(let queues):
-                        queues.forEach { queue in
+                        queues.sorted(by: { $0.name < $1.name }).forEach { queue in
                             alert.addAction(.init(title: queue.name, style: .default) { _ in
                                 self?.queueIDCell.textField.text = queue.id
                                 self?.props.changeQueueId(queue.id)

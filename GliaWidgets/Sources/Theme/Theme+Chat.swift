@@ -293,17 +293,37 @@ extension Theme {
             choiceOption: choiceCardOption,
             accessibility: .init(imageLabel: Localization.Chat.ChoiceCard.Image.Accessibility.label)
         )
-        let mediaButton = MessageButtonStyle(
+        let mediaButtonEnabled = MessageButtonStateStyle(
             image: Asset.chatPickMedia.image,
             color: color.baseNormal,
             accessibility: .init(accessibilityLabel: Localization.Chat.attachFiles)
         )
-        let sendButton = MessageButtonStyle(
+        let mediaButtonDisabled = MessageButtonStateStyle(
+            image: Asset.chatPickMedia.image,
+            color: color.baseShade,
+            accessibility: .init(accessibilityLabel: Localization.Chat.attachFiles)
+        )
+        let mediaButton = MessageButtonStyle(
+            enabled: mediaButtonEnabled,
+            disabled: mediaButtonDisabled
+        )
+        let sendButtonEnabled = MessageButtonStateStyle(
             image: Asset.chatSend.image,
             color: color.primary,
             accessibility: .init(accessibilityLabel: Localization.General.send)
         )
-        let messageEntry = ChatMessageEntryStyle(
+
+        let sendButtonDisabled = MessageButtonStateStyle(
+            image: Asset.chatSend.image,
+            color: color.baseShade,
+            accessibility: .init(accessibilityLabel: Localization.General.send)
+        )
+
+        let sendButton = MessageButtonStyle(
+            enabled: sendButtonEnabled,
+            disabled: sendButtonDisabled
+        )
+        let messageEntryEnabled = ChatMessageEntryStateStyle(
             messageFont: font.bodyText,
             messageColor: color.baseDark,
             enterMessagePlaceholder: Localization.Chat.Input.placeholder,
@@ -321,6 +341,30 @@ extension Theme {
                 isFontScalingEnabled: true
             )
         )
+        let messageEntryDisabled = ChatMessageEntryStateStyle(
+            messageFont: font.bodyText,
+            messageColor: color.baseDark,
+            enterMessagePlaceholder: Localization.Chat.Input.placeholder,
+            startEngagementPlaceholder: Localization.Chat.Message.startEngagementPlaceholder,
+            choiceCardPlaceholder: Localization.Chat.ChoiceCard.placeholderMessage,
+            placeholderFont: font.bodyText,
+            placeholderColor: color.baseShade,
+            separatorColor: color.baseShade,
+            backgroundColor: color.baseNeutral,
+            mediaButton: mediaButton,
+            sendButton: sendButton,
+            uploadList: uploadListStyle,
+            accessibility: .init(
+                messageInputAccessibilityLabel: Localization.General.message,
+                isFontScalingEnabled: true
+            )
+        )
+
+        let messageEntry = ChatMessageEntryStyle(
+            enabled: messageEntryEnabled,
+            disabled: messageEntryDisabled
+        )
+
         let audioUpgrade = ChatCallUpgradeStyle(
             icon: Asset.upgradeAudio.image,
             iconColor: color.primary,
@@ -395,6 +439,42 @@ extension Theme {
             fileDownload: fileDownload
         )
 
+        let secureMessagingBottomBannerStyle = SecureMessagingBottomBannerViewStyle(
+            message: Localization.SecureMessaging.Chat.Banner.bottom,
+            font: font.caption,
+            textStyle: .caption1,
+            textColor: color.baseNormal,
+            backgroundColor: .fill(color: color.baseNeutral),
+            dividerColor: color.baseShade,
+            accessibility: .init(isFontScalingEnabled: true)
+        )
+
+        let secureMessagingTopBannerStyle = SecureMessagingTopBannerViewStyle(
+            message: Localization.SecureMessaging.Chat.Banner.top,
+            font: font.bodyText,
+            textStyle: .body,
+            textColor: color.baseDark,
+            backgroundColor: .fill(color: color.baseLight),
+            dividerColor: color.baseShade,
+            buttonImage: Asset.chevronDownIcon.image,
+            buttonImageColor: color.baseShade,
+            accessibility: .init(isFontScalingEnabled: true)
+        )
+
+        let sendingMessageUnavailableBannerViewStyle = SendingMessageUnavailableBannerViewStyle(
+            message: Localization.SecureMessaging.Chat.Unavailable.message,
+            font: font.caption,
+            textStyle: .caption1,
+            textColor: color.baseLight,
+            backgroundColor: .fill(color: color.systemNegative),
+            iconColor: color.baseLight
+        )
+
+        let secureMessagingExpandedTopBannerItemsStyle = EntryWidgetStyle.MediaTypeItemsStyle(
+            mediaItemStyle: entryWidgetStyle.mediaTypeItem,
+            dividerColor: entryWidgetStyle.dividerColor
+        )
+
         return ChatStyle(
             header: header,
             connect: connect,
@@ -420,12 +500,22 @@ extension Theme {
             secureTranscriptHeader: secureTranscriptHeader,
             unreadMessageDivider: unreadMessageDivider,
             systemMessageStyle: systemMessage,
-            gliaVirtualAssistant: gliaVirtualAssistantStyle
+            gliaVirtualAssistant: gliaVirtualAssistantStyle,
+            secureMessagingTopBannerStyle: secureMessagingTopBannerStyle,
+            secureMessagingBottomBannerStyle: secureMessagingBottomBannerStyle,
+            sendingMessageUnavailableBannerViewStyle: sendingMessageUnavailableBannerViewStyle,
+            secureMessagingExpandedTopBannerItemsStyle: secureMessagingExpandedTopBannerItemsStyle
         )
     }
 
     private var uploadListStyle: FileUploadListStyle {
-        let filePreview = FilePreviewStyle(
+        // For now all disabled styles are the same as enabled ones.
+        // Because there is no design for disabled state of file upload
+        // and visually we do not show disabled state of file upload.
+        // But since file upload is a part of the message entry, that
+        // has to have disabled state, we need to provide these styles
+        // for file upload as well.
+        let filePreviewEnabled = FilePreviewStyle(
             fileFont: font.subtitle,
             fileColor: color.baseLight,
             errorIcon: Asset.uploadError.image,
@@ -434,21 +524,44 @@ extension Theme {
             errorBackgroundColor: color.baseNeutral,
             accessibility: .init(isFontScalingEnabled: true)
         )
-        let uploading = FileUploadStateStyle(
+        let filePreviewDisabled = FilePreviewStyle(
+            fileFont: font.subtitle,
+            fileColor: color.baseLight,
+            errorIcon: Asset.uploadError.image,
+            errorIconColor: color.systemNegative,
+            backgroundColor: color.primary,
+            errorBackgroundColor: color.baseNeutral,
+            accessibility: .init(isFontScalingEnabled: true)
+        )
+        let uploadingEnabled = FileUploadStateStyle(
             text: Localization.Chat.File.Upload.inProgress,
             font: font.mediumSubtitle2,
             textColor: color.baseDark,
             infoFont: font.caption,
             infoColor: color.baseNormal
         )
-        let uploaded = FileUploadStateStyle(
+        let uploadingDisabled = FileUploadStateStyle(
+            text: Localization.Chat.File.Upload.inProgress,
+            font: font.mediumSubtitle2,
+            textColor: color.baseDark,
+            infoFont: font.caption,
+            infoColor: color.baseNormal
+        )
+        let uploadedEnabled = FileUploadStateStyle(
             text: Localization.Chat.File.Upload.success,
             font: font.mediumSubtitle2,
             textColor: color.baseDark,
             infoFont: font.caption,
             infoColor: color.baseNormal
         )
-        let error = FileUploadErrorStateStyle(
+        let uploadedDisabled = FileUploadStateStyle(
+            text: Localization.Chat.File.Upload.success,
+            font: font.mediumSubtitle2,
+            textColor: color.baseDark,
+            infoFont: font.caption,
+            infoColor: color.baseNormal
+        )
+        let errorEnabled = FileUploadErrorStateStyle(
             text: Localization.Chat.File.Upload.failed,
             font: font.mediumSubtitle2,
             textColor: color.baseDark,
@@ -460,11 +573,23 @@ extension Theme {
             infoNetworkError: Localization.Chat.File.Upload.networkError,
             infoGenericError: Localization.Chat.File.Upload.genericError
         )
-        let upload = FileUploadStyle(
-            filePreview: filePreview,
-            uploading: uploading,
-            uploaded: uploaded,
-            error: error,
+        let errorDisabled = FileUploadErrorStateStyle(
+            text: Localization.Chat.File.Upload.failed,
+            font: font.mediumSubtitle2,
+            textColor: color.baseDark,
+            infoFont: font.caption,
+            infoColor: color.systemNegative,
+            infoFileTooBig: Localization.Chat.File.SizeLimit.error,
+            infoUnsupportedFileType: Localization.Chat.Attachment.unsupportedFile,
+            infoSafetyCheckFailed: Localization.Chat.File.InfectedFile.error,
+            infoNetworkError: Localization.Chat.File.Upload.networkError,
+            infoGenericError: Localization.Chat.File.Upload.genericError
+        )
+        let uploadEnabled = FileUploadStyle.EnabledDisabledState(
+            filePreview: filePreviewEnabled,
+            uploading: uploadingEnabled,
+            uploaded: uploadedEnabled,
+            error: errorEnabled,
             progressColor: color.primary,
             errorProgressColor: color.systemNegative,
             progressBackgroundColor: color.baseNeutral,
@@ -476,6 +601,27 @@ extension Theme {
                 fileNameWithProgressValue: Localization.Templates.fileNameWithProgressValue,
                 isFontScalingEnabled: true
             )
+        )
+        let uploadDisabled = FileUploadStyle.EnabledDisabledState(
+            filePreview: filePreviewDisabled,
+            uploading: uploadingDisabled,
+            uploaded: uploadedDisabled,
+            error: errorDisabled,
+            progressColor: color.primary,
+            errorProgressColor: color.systemNegative,
+            progressBackgroundColor: color.baseNeutral,
+            removeButtonImage: Asset.uploadRemove.image,
+            removeButtonColor: color.baseNormal,
+            accessibility: .init(
+                removeButtonAccessibilityLabel: Localization.Chat.File.RemoveUpload.Accessibility.label,
+                progressPercentValue: Localization.Templates.percentValue,
+                fileNameWithProgressValue: Localization.Templates.fileNameWithProgressValue,
+                isFontScalingEnabled: true
+            )
+        )
+        let upload = FileUploadStyle(
+            enabled: uploadEnabled,
+            disabled: uploadDisabled
         )
 
         return FileUploadListStyle(item: upload)

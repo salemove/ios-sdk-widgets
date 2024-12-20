@@ -23,6 +23,10 @@ extension AlertStyle {
             configuration: configuration?.negativeButton,
             assetsBuilder: assetsBuilder
         )
+        negativeNeutralAction.apply(
+            configuration: configuration?.negativeNeutralButton,
+            assetsBuilder: assetsBuilder
+        )
         applyTitleConfiguration(
             configuration?.title,
             assetsBuilder: assetsBuilder
@@ -32,6 +36,7 @@ extension AlertStyle {
             configuration?.message,
             assetsBuilder: assetsBuilder
         )
+        applyButtonAxisConfiguration(configuration?.buttonAxis)
     }
 }
 
