@@ -248,7 +248,7 @@ class EntryWidgetTests: XCTestCase {
         environment.isAuthenticated = { false }
         environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
         let interactor: Interactor = .mock()
-        interactor.currentEngagement = .mock()
+        interactor.setCurrentEngagement(.mock())
         environment.currentInteractor = { interactor }
 
         let entryWidget = EntryWidget(
@@ -278,7 +278,7 @@ class EntryWidgetTests: XCTestCase {
         environment.isAuthenticated = { false }
         environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
         let interactor: Interactor = .mock()
-        interactor.currentEngagement = .mock(media: .init(audio: .twoWay, video: nil))
+        interactor.setCurrentEngagement(.mock(media: .init(audio: .twoWay, video: nil)))
         environment.currentInteractor = { interactor }
 
         let entryWidget = EntryWidget(
@@ -308,7 +308,7 @@ class EntryWidgetTests: XCTestCase {
         environment.isAuthenticated = { false }
         environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
         let interactor: Interactor = .mock()
-        interactor.currentEngagement = .mock(media: .init(audio: .twoWay, video: .twoWay))
+        interactor.setCurrentEngagement(.mock(media: .init(audio: .twoWay, video: .twoWay)))
         environment.currentInteractor = { interactor }
 
         let entryWidget = EntryWidget(
@@ -338,7 +338,7 @@ class EntryWidgetTests: XCTestCase {
         environment.isAuthenticated = { false }
         environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
         let interactor: Interactor = .mock()
-        interactor.currentEngagement = .mock(source: .callVisualizer)
+        interactor.setCurrentEngagement(.mock(source: .callVisualizer))
         environment.currentInteractor = { interactor }
 
         let entryWidget = EntryWidget(
@@ -371,7 +371,7 @@ class EntryWidgetTests: XCTestCase {
         var environment = EntryWidget.Environment.mock()
         environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
         let interactor: Interactor = .mock()
-        interactor.currentEngagement = .mock(source: .callVisualizer)
+        interactor.setCurrentEngagement(.mock(source: .callVisualizer))
         environment.currentInteractor = { interactor }
         environment.onCallVisualizerResume = {
             calls.append(.onCallVisualizerResume)
