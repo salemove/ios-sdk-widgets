@@ -114,7 +114,8 @@ final class EngagementCoordinatorTests: XCTestCase {
 
     func test_endChatWithSurvey() throws {
         let survey: CoreSdkClient.Survey = try .mock()
-        coordinator.interactor.currentEngagement = .mock(fetchSurvey: { _, completion in completion(.success(survey)) })
+        let engagement: CoreSdkClient.Engagement = .mock(fetchSurvey: { _, completion in completion(.success(survey)) })
+        coordinator.interactor.setCurrentEngagement(engagement)
         coordinator.end()
 
         let surveyViewController = coordinator.gliaPresenter.topMostViewController as? Survey.ViewController
@@ -131,7 +132,8 @@ final class EngagementCoordinatorTests: XCTestCase {
         let survey: CoreSdkClient.Survey = try .mock()
         coordinator.start()
 
-        coordinator.interactor.currentEngagement = .mock(fetchSurvey: { _, completion in completion(.success(survey)) })
+        let engagement: CoreSdkClient.Engagement = .mock(fetchSurvey: { _, completion in completion(.success(survey)) })
+        coordinator.interactor.setCurrentEngagement(engagement)
         coordinator.end(surveyPresentation: .doNotPresentSurvey)
 
         XCTAssertEqual(coordinator.navigationPresenter.viewControllers.count, 0)
