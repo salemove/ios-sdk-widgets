@@ -384,7 +384,7 @@ extension Interactor: CoreSdkClient.Interactable {
         switch reason {
         case .visitorHungUp:
             state = .ended(.byVisitor)
-        case .operatorHungUp:
+        case .operatorHungUp, .followUp:
             state = .ended(.byOperator)
         case .error:
             state = .ended(.byError)
