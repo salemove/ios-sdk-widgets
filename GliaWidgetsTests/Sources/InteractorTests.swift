@@ -395,7 +395,32 @@ class InteractorTests: XCTestCase {
 
         XCTAssertEqual(callbacks, [.ended])
     }
-    
+
+    func test_endWithFollowUpSetsStateToEnded() throws {
+        enum Callback: Equatable {
+            case ended
+        }
+
+        var callbacks: [Callback] = []
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.gcd = .mock
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.addObserver(self) { event in
+            switch event {
+            case .stateChanged(let state):
+                if case .ended = state {
+                    callbacks.append(.ended)
+                }
+            default:
+                return
+            }
+        }
+
+        interactor.end(with: .followUp)
+
+        XCTAssertEqual(callbacks, [.ended])
+    }
+
     func test_sendMessageCallsCoreSdkSendMessageWithAttachment() throws {
         enum Callback: Equatable {
             case sendMessageWithAttachment
