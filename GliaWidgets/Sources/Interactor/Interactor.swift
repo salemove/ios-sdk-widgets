@@ -58,7 +58,7 @@ class Interactor {
     }
 
     let visitorContext: Configuration.VisitorContext?
-    @Published var currentEngagement: CoreSdkClient.Engagement?
+    @Published private(set) var currentEngagement: CoreSdkClient.Engagement?
 
     private var observers = [() -> (AnyObject?, EventHandler)]()
 
@@ -417,3 +417,11 @@ extension InteractorState: Equatable {
         }
     }
 }
+
+#if DEBUG
+extension Interactor {
+    func setCurrentEngagement(_ engagement: CoreSdkClient.Engagement?) {
+        currentEngagement = engagement
+    }
+}
+#endif
