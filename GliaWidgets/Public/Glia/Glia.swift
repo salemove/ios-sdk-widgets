@@ -437,10 +437,7 @@ public class Glia {
             return
         }
 
-        interactor?.endSession(
-            success: { completion(.success(())) },
-            failure: { completion(.failure($0)) }
-        )
+        interactor?.endSession(completion: completion)
     }
 
     /// List all queues of the configured site. It is also possible to monitor queues changes with

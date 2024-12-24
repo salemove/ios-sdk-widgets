@@ -157,7 +157,7 @@ final class GliaTests: XCTestCase {
             theme: .mock()
         ) { _ in }
 
-        sdk.interactor?.setCurrentEngagement(.mock(source: .callVisualizer))
+        sdk.interactor?.setEndedEngagement(.mock(source: .callVisualizer))
         sdk.interactor?.state = .ended(.byOperator)
 
         XCTAssertEqual(calls, [.onEvent(.ended)])
@@ -202,7 +202,7 @@ final class GliaTests: XCTestCase {
 
         XCTAssertEqual(calls, [])
 
-        sdk.interactor?.setCurrentEngagement(.mock(source: .callVisualizer))
+        sdk.interactor?.setEndedEngagement(.mock(source: .callVisualizer))
         sdk.interactor?.state = .ended(.byOperator)
 
         /// Since interactor is created only after visitor code is requested, 
@@ -247,9 +247,9 @@ final class GliaTests: XCTestCase {
             with: .mock(),
             theme: .mock()
         ) { _ in }
-        sdk.interactor?.setCurrentEngagement(.mock(source: .callVisualizer))
 
         sdk.callVisualizer.coordinator.showEndScreenSharingViewController()
+        sdk.interactor?.setEndedEngagement(.mock(source: .callVisualizer))
         sdk.interactor?.state = .ended(.byOperator)
 
         XCTAssertEqual(calls, [.onEvent(.minimized), .onEvent(.ended)])
@@ -295,9 +295,9 @@ final class GliaTests: XCTestCase {
             with: .mock(),
             theme: .mock()
         ) { _ in }
-        sdk.interactor?.setCurrentEngagement(.mock(source: .callVisualizer))
 
         sdk.callVisualizer.coordinator.showVideoCallViewController()
+        sdk.interactor?.setEndedEngagement(.mock(source: .callVisualizer))
         sdk.interactor?.state = .ended(.byOperator)
 
         XCTAssertEqual(calls, [.onEvent(.maximized), .onEvent(.minimized), .onEvent(.ended)])
@@ -654,7 +654,7 @@ final class GliaTests: XCTestCase {
             with: .mock(),
             theme: .mock()
         ) { _ in }
-        sdk.interactor?.setCurrentEngagement(.mock(source: .callVisualizer))
+        sdk.interactor?.setEndedEngagement(.mock(source: .callVisualizer))
         sdk.onEvent = { event in
             switch event {
             case .ended:
