@@ -217,10 +217,7 @@ extension CallVisualizer.Coordinator {
 
 extension CallVisualizer.Coordinator {
     func declineEngagement() {
-        environment.interactorProviding?.endEngagement(
-            success: {},
-            failure: { _ in }
-        )
+        environment.interactorProviding?.endEngagement { _ in }
         end()
     }
 

@@ -214,11 +214,15 @@ class InteractorTests: XCTestCase {
         var callbacks: [Callback] = []
         let interactor = Interactor.mock(environment: .failing)
 
-        interactor.endSession(
-            success: { callbacks.append(.success) },
-            failure: { XCTFail($0.reason) }
-        )
-        
+        interactor.endSession { result in
+            switch result {
+            case .success:
+                callbacks.append(.success)
+            case let .failure(error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+
         XCTAssertEqual(callbacks, [.success])
     }
 
@@ -244,11 +248,15 @@ class InteractorTests: XCTestCase {
             }
         }
         
-        interactor.endSession(
-            success: { callbacks.append(.success) },
-            failure: { XCTFail($0.reason) }
-        )
-        
+        interactor.endSession { result in
+            switch result {
+            case .success:
+                callbacks.append(.success)
+            case let .failure(error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+
         XCTAssertEqual(callbacks, [.stateChangedToEnded, .success])
     }
 
@@ -268,11 +276,15 @@ class InteractorTests: XCTestCase {
         let interactor = Interactor.mock(environment: interactorEnv)
         
         interactor.state = .enqueued(.mock)
-        interactor.endSession(
-            success: {},
-            failure: { XCTFail($0.reason) }
-        )
-        
+        interactor.endSession { result in
+            switch result {
+            case .success:
+                break
+            case let .failure(error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+
         XCTAssertEqual(callbacks, [.cancelQueueCalled])
     }
     
@@ -291,11 +303,15 @@ class InteractorTests: XCTestCase {
         let interactor = Interactor.mock(environment: interactorEnv)
         
         interactor.state = .engaged(.mock())
-        interactor.endSession(
-            success: {},
-            failure: { XCTFail($0.reason) }
-        )
-        
+        interactor.endSession { result in
+            switch result {
+            case .success:
+                break
+            case let .failure(error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+
         XCTAssertEqual(callbacks, [.endEngagementCalled])
     }
     
@@ -316,8 +332,7 @@ class InteractorTests: XCTestCase {
 
         interactor.exitQueue(
             ticket: .mock,
-            success: {},
-            failure: { XCTFail($0.reason) }
+            completion: { _ in }
         )
 
         XCTAssertEqual(callbacks, [.cancelQueueTicket])
@@ -336,10 +351,14 @@ class InteractorTests: XCTestCase {
         interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }
         let interactor = Interactor.mock(environment: interactorEnv)
 
-        interactor.endEngagement(
-            success: {},
-            failure: { XCTFail($0.reason) }
-        )
+        interactor.endEngagement { result in
+            switch result {
+            case .success:
+                break
+            case let .failure(error):
+                XCTFail(error.localizedDescription)
+            }
+        }
 
         XCTAssertEqual(callbacks, [.endEngagement])
     }
@@ -541,7 +560,7 @@ class InteractorTests: XCTestCase {
         let interactor = Interactor.mock(environment: interactorEnv)
         interactor.state = .engaged(.mock())
 
-        interactor.endSession(success: {}, failure: { _ in })
+        interactor.endSession { _ in }
 
         XCTAssertEqual(interactor.state, .ended(.byVisitor))
     }
