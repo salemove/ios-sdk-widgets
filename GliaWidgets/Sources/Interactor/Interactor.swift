@@ -60,6 +60,9 @@ class Interactor {
     let visitorContext: Configuration.VisitorContext?
     @Published private(set) var currentEngagement: CoreSdkClient.Engagement?
 
+    // Used to save engagement ended by operator to fetch a survey
+    private(set) var endedEngagement: CoreSdkClient.Engagement?
+
     private var observers = [() -> (AnyObject?, EventHandler)]()
 
     var state: InteractorState = .none {
@@ -175,63 +178,62 @@ extension Interactor {
         environment.coreSdk.sendMessageWithMessagePayload(messagePayload, completion)
     }
 
-    func endSession(
-        success: @escaping () -> Void,
-        failure: @escaping (CoreSdkClient.SalemoveError) -> Void
-    ) {
+    func endSession(completion: @escaping (Result<Void, Error>) -> Void) {
         switch state {
         case .none:
-            success()
+            completion(.success(()))
         case .enqueueing:
             state = .ended(.byVisitor)
-            success()
+            completion(.success(()))
         case .enqueued(let ticket):
             exitQueue(
                 ticket: ticket,
-                success: success,
-                failure: failure
+                completion: completion
             )
         case .engaged:
-            endEngagement(
-                success: success,
-                failure: failure
-            )
-        case .ended(let reason):
-            state = .ended(reason)
-            success()
+            endEngagement(completion: completion)
+        case .ended:
+            completion(.success(()))
+
+            // `cleanup` is called once survey fetching is already initiated,
+            // so no need to store `endedEngagement` anymore.
+            cleanup()
         }
     }
 
     func exitQueue(
         ticket: CoreSdkClient.QueueTicket,
-        success: @escaping () -> Void,
-        failure: @escaping (CoreSdkClient.SalemoveError) -> Void
-    ) {
+        completion: @escaping (Result<Void, Error>) -> Void
+) {
         environment.log.prefixed(Self.self).info("Cancel queue ticket")
         environment.coreSdk.cancelQueueTicket(ticket) { [weak self] _, error in
             if let error = error {
-                failure(error)
+                completion(.failure(error))
             } else {
                 self?.state = .ended(.byVisitor)
-                success()
+                completion(.success(()))
             }
         }
     }
 
-    func endEngagement(
-        success: @escaping () -> Void,
-        failure: @escaping (CoreSdkClient.SalemoveError) -> Void
-    ) {
+    func endEngagement(completion: @escaping (Result<Void, Error>) -> Void) {
         environment.coreSdk.endEngagement { [weak self] _, error in
             if let error = error {
-                failure(error)
+                completion(.failure(error))
             } else {
                 self?.state = .ended(.byVisitor)
-                success()
+                completion(.success(()))
             }
         }
     }
+
+    func cleanup() {
+        state = .none
+        endedEngagement = nil
+    }
 }
+
+// MARK: - Interactable
 
 extension Interactor: CoreSdkClient.Interactable {
     var onEngagementChanged: CoreSdkClient.EngagementChangedBlock {
@@ -380,11 +382,12 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     func end(with reason: CoreSdkClient.EngagementEndingReason) {
-        currentEngagement = environment.coreSdk.getCurrentEngagement()
         switch reason {
         case .visitorHungUp:
             state = .ended(.byVisitor)
         case .operatorHungUp, .followUp:
+            // Save engagement ended by operator to fetch a survey
+            endedEngagement = environment.coreSdk.getCurrentEngagement()
             state = .ended(.byOperator)
         case .error:
             state = .ended(.byError)
@@ -422,6 +425,10 @@ extension InteractorState: Equatable {
 extension Interactor {
     func setCurrentEngagement(_ engagement: CoreSdkClient.Engagement?) {
         currentEngagement = engagement
+    }
+
+    func setEndedEngagement(_ engagement: CoreSdkClient.Engagement?) {
+        endedEngagement = engagement
     }
 }
 #endif

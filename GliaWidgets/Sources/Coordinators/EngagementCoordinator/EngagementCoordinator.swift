@@ -199,7 +199,7 @@ extension EngagementCoordinator {
             }
         }
 
-        guard let engagement = interactor.currentEngagement, surveyPresentation == .presentSurvey else {
+        guard let engagement = interactor.endedEngagement, surveyPresentation == .presentSurvey else {
             dismissGliaViewController()
             return
         }
