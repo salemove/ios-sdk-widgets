@@ -107,14 +107,8 @@ extension CallVisualizer {
 
     func endSession() {
         coordinator.end()
-        environment.interactorProviding()?.endSession(
-            success: { [weak self] in
-                self?.delegate?(.engagementEnded)
-            },
-            failure: { [weak self] _ in
-                self?.delegate?(.engagementEnded)
-            }
-        )
+        environment.interactorProviding()?.cleanup()
+        delegate?(.engagementEnded)
     }
 
     func handleRestoredEngagement() {
@@ -132,7 +126,7 @@ extension CallVisualizer {
     func startObservingInteractorEvents() {
         environment.interactorProviding()?.addObserver(self) { [weak self] event in
             if case .stateChanged(.ended(.byOperator)) = event,
-               let endedEngagement = self?.environment.interactorProviding()?.currentEngagement,
+               let endedEngagement = self?.environment.interactorProviding()?.endedEngagement,
                endedEngagement.source == .callVisualizer {
                 self?.endSession()
                 self?.environment.log.prefixed(Self.self).info("Call visualizer engagement ended")

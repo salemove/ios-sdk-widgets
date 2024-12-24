@@ -107,9 +107,8 @@ class EngagementViewModel: CommonEngagementModel {
                     operatorImageUrl: nil
                 )
             )
-            engagementDelegate?(.finished)
         case .ended(let reason) where reason == .byOperator:
-            interactor.currentEngagement?.getSurvey(completion: { [weak self] result in
+            interactor.endedEngagement?.getSurvey(completion: { [weak self] result in
                 guard let self = self else { return }
                 guard case .success(let survey) = result, survey == nil else {
                     self.endSession()
@@ -160,12 +159,10 @@ class EngagementViewModel: CommonEngagementModel {
     }
 
     func endSession() {
-        interactor.endSession { [weak self] in
-            self?.engagementDelegate?(.finished)
-        } failure: { [weak self] _ in
+        interactor.endSession { [weak self] _ in
             self?.engagementDelegate?(.finished)
         }
-        self.screenShareHandler.stop(nil)
+        screenShareHandler.stop(nil)
     }
 
     func conditionallyEndSession() {
