@@ -115,7 +115,7 @@ final class EngagementCoordinatorTests: XCTestCase {
     func test_endChatWithSurvey() throws {
         let survey: CoreSdkClient.Survey = try .mock()
         let engagement: CoreSdkClient.Engagement = .mock(fetchSurvey: { _, completion in completion(.success(survey)) })
-        coordinator.interactor.setCurrentEngagement(engagement)
+        coordinator.interactor.setEndedEngagement(engagement)
         coordinator.end()
 
         let surveyViewController = coordinator.gliaPresenter.topMostViewController as? Survey.ViewController

@@ -11,7 +11,7 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
             media: .init(audio: .none, video: .oneWay)
         )
         let interactor = Interactor.mock(environment: .init(coreSdk: coreSdkClient, queuesMonitor: .mock(), gcd: .failing, log: .failing))
-        interactor.setCurrentEngagement(engagement)
+        interactor.setEndedEngagement(engagement)
         var alertManagerEnv = AlertManager.Environment.failing()
         var log = CoreSdkClient.Logger.failing
         log.prefixedClosure = { _ in log }
