@@ -58,21 +58,7 @@ class EngagementViewModel: CommonEngagementModel {
 
     func viewDidAppear() {}
 
-    func viewWillAppear() {
-        if interactor.state == .ended(.byOperator) {
-            interactor.endedEngagement?.getSurvey { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                case .success(let survey) where survey != nil:
-                    return
-                default:
-                    self.engagementAction?(.showAlert(.operatorEndedEngagement(action: { [weak self] in
-                        self?.endSession()
-                    })))
-                }
-            }
-        }
-    }
+    func viewWillAppear() {}
 
     func start() {}
 
