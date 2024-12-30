@@ -62,9 +62,14 @@ class EngagementViewController: UIViewController {
                     accepted: accepted,
                     declined: declined
                 )
-            case let.showAlert(type):
+            case let .showAlert(type):
+                var placement: AlertPlacement = .root(self)
+                // Need to show Engagement Ended dialog even over integrator's screens.
+                if case .operatorEndedEngagement = type {
+                    placement = .global
+                }
                 self.environment.alertManager.present(
-                    in: .root(self),
+                    in: placement,
                     as: type
                 )
             }
