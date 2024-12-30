@@ -17,23 +17,6 @@ class ViewController: UIViewController {
     @UserDefaultsStored(key: "features", defaultValue: Features.all, coder: .rawRepresentable())
     private(set) var features: Features
 
-    // If not `nil`, this value will be passed to deprecated
-    // `Glia.sharedInstance.startEngagement(engagementKind:in:features:sceneProvider:)`
-    // overwriting `features` passed initially to `Glia.sharedInstance.configure` method.
-    // If not set, non-deprecated `startEngagement` will be called,
-    // using `features` passed to `configure` under the hood.
-    private var startEngagementFeatures: Features? {
-        switch (enablingOverwriteBubbleSwitch.isOn, togglingStartEngBubbleSwitch.isOn) {
-        case (false, _):
-            return nil
-        case (true, true):
-            var features = self.features
-            return features.insert(.bubbleView).memberAfterInsert
-        case (true, false):
-            return self.features.subtracting(.bubbleView)
-        }
-    }
-
     let visitorInfoModel = VisitorInfoModel(
         environment: .init(
             fetchVisitorInfo: GliaCore.sharedInstance.fetchVisitorInfo,
@@ -53,7 +36,6 @@ class ViewController: UIViewController {
         view.backgroundColor = .white
         setupPushHandler()
         configureAuthenticationBehaviorToggleAccessibility()
-        setupStartEngagementBubbleSwitches()
     }
 
     // MARK: - IBOutlets
@@ -70,14 +52,6 @@ class ViewController: UIViewController {
     var authenticationBehavior: Authentication.Behavior {
         authenticationBehaviorSegmentedControl.selectedSegmentIndex == 0 ? .forbiddenDuringEngagement : .allowedDuringEngagement
     }
-
-    // Switch control that enables call of deprecated
-    // `Glia.sharedInstance.startEngagement(engagementKind:in:features:sceneProvider:)`
-    // method with passed `startEngagementFeatures` as `features` parameter.
-    @IBOutlet weak var enablingOverwriteBubbleSwitch: UISwitch!
-    // Switch control that toggles bubble visibility via deprecated
-    // `Glia.sharedInstance.startEngagement(engagementKind:in:features:sceneProvider:)`
-    @IBOutlet weak var togglingStartEngBubbleSwitch: UISwitch!
 
     // MARK: - IBActions
 
@@ -213,33 +187,5 @@ private extension ViewController {
                 break
             }
         }
-    }
-
-    func renderStartEngagementBubbleSwitches() {
-        if let startEngagementFeatures {
-            self.enablingOverwriteBubbleSwitch.isOn = true
-            self.togglingStartEngBubbleSwitch.isEnabled = true
-            self.togglingStartEngBubbleSwitch.isOn = startEngagementFeatures.contains(.bubbleView)
-        } else {
-            self.enablingOverwriteBubbleSwitch.isOn = false
-            self.togglingStartEngBubbleSwitch.isEnabled = false
-        }
-    }
-
-    func setupStartEngagementBubbleSwitches() {
-        [self.enablingOverwriteBubbleSwitch, self.togglingStartEngBubbleSwitch]
-            .forEach { uiSwitch in
-                uiSwitch.addTarget(
-                    self,
-                    action: #selector(handleStartEngagementBubbleSwitchChange),
-                    for: .valueChanged
-                )
-            }
-        renderStartEngagementBubbleSwitches()
-    }
-
-    @objc
-    func handleStartEngagementBubbleSwitchChange(_: UISwitch) {
-        renderStartEngagementBubbleSwitches()
     }
 }
