@@ -232,4 +232,50 @@ class ChatViewControllerTests: XCTestCase {
         print(calls)
         XCTAssertFalse(calls.contains(.presentSnackBar))
     }
+
+    func testEngagementEndedDialogIsShown() throws {
+        enum Call: Equatable {
+            case presentEngagementEndedDialog
+        }
+        var calls: [Call] = []
+
+        var viewModelEnv = ChatViewModel.Environment.failing { completion in
+            completion(.success([]))
+        }
+
+        let site = try CoreSdkClient.Site.mock(
+            mobileObservationEnabled: true,
+            mobileConfirmDialogEnabled: true,
+            mobileObservationIndicationEnabled: true
+        )
+        viewModelEnv.fetchSiteConfigurations = { completion in
+            completion(.success(site))
+        }
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.log.prefixedClosure = { _ in return .mock }
+        let interactor = Interactor.failing
+        interactor.environment.gcd.mainQueue.async = { $0() }
+
+        let engagement: CoreSdkClient.Engagement = .mock(fetchSurvey: { _, completion in completion(.success(nil)) })
+        interactor.environment.coreSdk.getCurrentEngagement = { engagement }
+        let viewModel = ChatViewModel.mock(
+            interactor: interactor,
+            environment: viewModelEnv
+        )
+
+        viewModel.engagementAction = { action in
+            switch action {
+            case .showAlert:
+                calls.append(.presentEngagementEndedDialog)
+            default:
+                break
+            }
+        }
+
+        interactor.end(with: .operatorHungUp)
+
+        XCTAssertEqual(calls, [.presentEngagementEndedDialog])
+    }
 }
