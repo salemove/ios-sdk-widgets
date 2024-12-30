@@ -123,8 +123,8 @@ public class Glia {
     var loggerPhase: LoggerPhase
     var queuesMonitor: QueuesMonitor
     var alertManager: AlertManager
-    // We need to store `features` via `configure` or deprecated `startEngagement` methods
-    // to use it when engagement gets restored for Direct ID authentication flow.
+    // We need to store `features` via `configure` method to use it
+    // when engagement gets restored for Direct ID authentication flow.
     var features: Features?
 
     private(set) var configuration: Configuration?
