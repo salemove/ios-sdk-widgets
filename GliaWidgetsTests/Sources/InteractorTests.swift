@@ -583,4 +583,110 @@ class InteractorTests: XCTestCase {
 
         items.forEach(test)
     }
+    
+    func test_endAfterEnqueuedEngagementSetsEndedState() {
+        let mockQueueTicket = CoreSdkClient.QueueTicket.mock
+        let interactor = makeEnqueuingSetupInteractor(with: mockQueueTicket, mediaType: .audio)
+        
+        interactor.enqueueForEngagement(
+            mediaType: .audio,
+            success: {},
+            failure: { _ in }
+        )
+        XCTAssertEqual(interactor.state, .enqueued(mockQueueTicket))
+        
+        interactor.endEngagement { _ in }
+        XCTAssertEqual(interactor.state, .ended(.byVisitor))
+    }
+    
+    func test_endSessionMakesCleanupWhenEngagementEndedByOperator() {
+        let mockQueueTicket = CoreSdkClient.QueueTicket.mock
+        let mockEngagement = CoreSdkClient.Engagement.mock(id: UUID.mock.uuidString)
+        let interactor = makeEnqueuingSetupInteractor(with: mockQueueTicket, mediaType: .audio, engagement: mockEngagement)
+
+        interactor.enqueueForEngagement(
+            mediaType: .audio,
+            success: {},
+            failure: { _ in }
+        )
+        XCTAssertEqual(interactor.state, .enqueued(mockQueueTicket))
+        
+        interactor.end(with: .operatorHungUp)
+        XCTAssertEqual(interactor.state, .ended(.byOperator))
+        XCTAssertEqual(interactor.endedEngagement, mockEngagement)
+        
+        interactor.endSession { _ in }
+        XCTAssertEqual(interactor.state, .none)
+        XCTAssertEqual(interactor.endedEngagement, nil)
+    }
+    
+    func test_endSessionMakesCleanupWhenEngagementEndedForFollowUp() {
+        let mockQueueTicket = CoreSdkClient.QueueTicket.mock
+        let mockEngagement = CoreSdkClient.Engagement.mock(id: UUID.mock.uuidString)
+        let interactor = makeEnqueuingSetupInteractor(with: mockQueueTicket, mediaType: .audio, engagement: mockEngagement)
+
+        interactor.enqueueForEngagement(
+            mediaType: .audio,
+            success: {},
+            failure: { _ in }
+        )
+        XCTAssertEqual(interactor.state, .enqueued(mockQueueTicket))
+        
+        interactor.end(with: .followUp)
+        XCTAssertEqual(interactor.state, .ended(.byOperator))
+        XCTAssertEqual(interactor.endedEngagement, mockEngagement)
+        
+        interactor.endSession { _ in }
+        XCTAssertEqual(interactor.state, .none)
+        XCTAssertEqual(interactor.endedEngagement, nil)
+    }
+    
+    func test_cleanupResetesStateAndNilifyEndedEngagement() {
+        let mockQueueTicket = CoreSdkClient.QueueTicket.mock
+        let mockEngagement = CoreSdkClient.Engagement.mock(id: UUID.mock.uuidString)
+        let interactor = makeEnqueuingSetupInteractor(with: mockQueueTicket, mediaType: .audio, engagement: mockEngagement)
+        
+        interactor.enqueueForEngagement(
+            mediaType: .audio,
+            success: {},
+            failure: { _ in }
+        )
+        XCTAssertEqual(interactor.state, .enqueued(mockQueueTicket))
+        
+        interactor.end(with: .followUp)
+        XCTAssertEqual(interactor.state, .ended(.byOperator))
+        XCTAssertEqual(interactor.endedEngagement, mockEngagement)
+        
+        interactor.cleanup()
+        XCTAssertEqual(interactor.state, .none)
+        XCTAssertEqual(interactor.endedEngagement, nil)
+    }
+}
+
+extension InteractorTests {
+    func makeEnqueuingSetupInteractor(
+        with queueTicket: CoreSdkClient.QueueTicket,
+        mediaType: CoreSdkClient.MediaType,
+        engagement: CoreSdkClient.Engagement? = nil
+    ) -> Interactor {
+        var coreSdk = CoreSdkClient.failing
+        coreSdk.queueForEngagement = { _, completion in
+            completion(.success(queueTicket))
+        }
+        coreSdk.endEngagement = { completion in
+            completion(true, nil)
+        }
+        coreSdk.getCurrentEngagement = {
+            engagement
+        }
+
+        var interactorEnv = Interactor.Environment(coreSdk: coreSdk, queuesMonitor: .mock(), gcd: .failing, log: .failing)
+        interactorEnv.log.infoClosure = { _, _, _, _ in }
+        interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }
+        
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.state = .enqueueing(mediaType)
+        
+        return interactor
+    }
 }
