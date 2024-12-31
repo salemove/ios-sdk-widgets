@@ -148,6 +148,7 @@ private extension EntryWidget {
         unreadSecureMessagesCount: Int?
     ) {
         if let ongoingEngagement {
+            environment.log.info("Preparing items based on ongoing engagement")
             if ongoingEngagement.source == .callVisualizer {
                 viewState = .ongoingEngagement(.callVisualizer)
             } else if ongoingEngagement.source == .coreEngagement {

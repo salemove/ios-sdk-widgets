@@ -386,4 +386,40 @@ class EntryWidgetTests: XCTestCase {
 
         XCTAssertEqual(calls, [.onCallVisualizerResume])
     }
+
+    func test_ongoingEngagementLogMessageIsReceived() {
+        var logs: [String] = []
+        let expectedLogMessage = "Preparing items based on ongoing engagement"
+        let mockQueueId = "mockQueueId"
+        let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
+
+        var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
+        queueMonitorEnvironment.listQueues = { completion in
+            completion([mockQueue], nil)
+        }
+        queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
+            completion(.success(mockQueue))
+            return UUID.mock.uuidString
+        }
+        var environment = EntryWidget.Environment.mock()
+        environment.log.infoClosure = { logMessage, _, _, _ in
+            if let logMessageString = logMessage as? String {
+                logs.append(logMessageString)
+            }
+        }
+        environment.isAuthenticated = { false }
+        environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
+        let interactor: Interactor = .mock()
+        interactor.setCurrentEngagement(.mock(media: .init(audio: .twoWay, video: .twoWay)))
+        environment.currentInteractor = { interactor }
+
+        let entryWidget = EntryWidget(
+            queueIds: [mockQueueId],
+            configuration: .default,
+            environment: environment
+        )
+
+        entryWidget.show(in: .init())
+        XCTAssertTrue(logs.contains(expectedLogMessage))
+    }
 }
