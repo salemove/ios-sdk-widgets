@@ -172,10 +172,7 @@ extension SecureConversations {
         private func presentFilePickerController(with pickerEvent: Command<FilePickerEvent>) {
             let observable = ObservableValue<FilePickerEvent>(with: .none)
             observable.addObserver(self, update: { event, _ in pickerEvent(event) })
-            let viewModel = FilePickerViewModel(
-                pickerEvent: observable,
-                environment: .create(with: environment)
-            )
+            let viewModel = FilePickerViewModel(pickerEvent: observable)
             viewModel.delegate = { [weak self] event in
                 switch event {
                 case .finished:

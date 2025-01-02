@@ -5,6 +5,10 @@ final class QuickLookController: NSObject {
         let controller = QLPreviewController()
         controller.dataSource = self
         controller.delegate = self
+        viewModel.environment.log.prefixed(Self.self).info(
+            "Create Image Preview screen",
+            function: "\(\FilePickerController.viewController)"
+        )
         return controller
     }
 
@@ -12,6 +16,10 @@ final class QuickLookController: NSObject {
 
     init(viewModel: QuickLookViewModel) {
         self.viewModel = viewModel
+    }
+
+    deinit {
+        viewModel.environment.log.prefixed(Self.self).info("Destroy Image Preview screen")
     }
 }
 
