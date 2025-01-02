@@ -1,16 +1,12 @@
 import Foundation
 
-extension FilePickerViewModel {
+extension QuickLookViewModel {
     struct Environment {
         var log: CoreSdkClient.Logger
     }
 }
 
-extension FilePickerViewModel.Environment {
-    static func create(with environment: SecureConversations.Coordinator.Environment) -> Self {
-        .init(log: environment.log)
-    }
-
+extension QuickLookViewModel.Environment {
     static func create(with environment: ChatCoordinator.Environment) -> Self {
         .init(log: environment.log)
     }

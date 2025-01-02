@@ -45,16 +45,13 @@ class FilePickerViewModel: ViewModel {
     let allowedFiles: FileTypes
 
     private let pickerEvent: ObservableValue<FilePickerEvent>
-    var environment: Environment
 
     init(
         pickerEvent: ObservableValue<FilePickerEvent>,
-        allowedFiles: FileTypes = .default,
-        environment: Environment
+        allowedFiles: FileTypes = .default
     ) {
         self.pickerEvent = pickerEvent
         self.allowedFiles = allowedFiles
-        self.environment = environment
     }
 
     func event(_ event: Event) {
