@@ -8,10 +8,7 @@ final class FilePickerController: NSObject {
         documentPicker.modalPresentationStyle = .fullScreen
         let urls = environment.fileManager.urlsForDirectoryInDomainMask(.documentDirectory, .userDomainMask)
         documentPicker.directoryURL = urls.first
-        viewModel.environment.log.prefixed(Self.self).info(
-            "Create File Preview screen",
-            function: "\(\FilePickerController.viewController)"
-        )
+
         return documentPicker
     }
 
@@ -24,10 +21,6 @@ final class FilePickerController: NSObject {
     ) {
         self.viewModel = viewModel
         self.environment = environment
-    }
-
-    deinit {
-        viewModel.environment.log.prefixed(Self.self).info("Destroy File Preview screen")
     }
 }
 
