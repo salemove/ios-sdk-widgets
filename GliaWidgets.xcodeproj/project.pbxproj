@@ -985,7 +985,7 @@
 		C0D6CA512C19BB5600D4709B /* SurveyViewController.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA502C19BB5600D4709B /* SurveyViewController.Environment.swift */; };
 		C0D6CA532C19BC0300D4709B /* FilePreviewView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA522C19BC0300D4709B /* FilePreviewView.Environment.swift */; };
 		C0D6CA552C19BCDB00D4709B /* SecureConversations.FilePreviewView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA542C19BCDB00D4709B /* SecureConversations.FilePreviewView.Environment.swift */; };
-		C0D6CA572C19BDCD00D4709B /* FilePickerViewModel.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA562C19BDCD00D4709B /* FilePickerViewModel.Environment.swift */; };
+		C0D6CA572C19BDCD00D4709B /* QuickLookViewModel.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA562C19BDCD00D4709B /* QuickLookViewModel.Environment.swift */; };
 		C0D6CA592C19BE9D00D4709B /* FilePickerController.Envrionment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA582C19BE9D00D4709B /* FilePickerController.Envrionment.swift */; };
 		C0D6CA5B2C19BF1D00D4709B /* SecureConversations.ConfirmationViewModel.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA5A2C19BF1D00D4709B /* SecureConversations.ConfirmationViewModel.Environment.swift */; };
 		C0D6CA5D2C19C07200D4709B /* ConnectOperatorView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6CA5C2C19C07200D4709B /* ConnectOperatorView.Environment.swift */; };
@@ -2076,7 +2076,7 @@
 		C0D6CA502C19BB5600D4709B /* SurveyViewController.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewController.Environment.swift; sourceTree = "<group>"; };
 		C0D6CA522C19BC0300D4709B /* FilePreviewView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewView.Environment.swift; sourceTree = "<group>"; };
 		C0D6CA542C19BCDB00D4709B /* SecureConversations.FilePreviewView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.FilePreviewView.Environment.swift; sourceTree = "<group>"; };
-		C0D6CA562C19BDCD00D4709B /* FilePickerViewModel.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePickerViewModel.Environment.swift; sourceTree = "<group>"; };
+		C0D6CA562C19BDCD00D4709B /* QuickLookViewModel.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookViewModel.Environment.swift; sourceTree = "<group>"; };
 		C0D6CA582C19BE9D00D4709B /* FilePickerController.Envrionment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePickerController.Envrionment.swift; sourceTree = "<group>"; };
 		C0D6CA5A2C19BF1D00D4709B /* SecureConversations.ConfirmationViewModel.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.ConfirmationViewModel.Environment.swift; sourceTree = "<group>"; };
 		C0D6CA5C2C19C07200D4709B /* ConnectOperatorView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectOperatorView.Environment.swift; sourceTree = "<group>"; };
@@ -2497,7 +2497,6 @@
 			isa = PBXGroup;
 			children = (
 				1A2DA71E25EF720400032611 /* FilePickerViewModel.swift */,
-				C0D6CA562C19BDCD00D4709B /* FilePickerViewModel.Environment.swift */,
 			);
 			path = FilePicker;
 			sourceTree = "<group>";
@@ -5342,6 +5341,7 @@
 			isa = PBXGroup;
 			children = (
 				C49A29DA2614A22600819269 /* QuickLookViewModel.swift */,
+				C0D6CA562C19BDCD00D4709B /* QuickLookViewModel.Environment.swift */,
 			);
 			path = QuickLook;
 			sourceTree = "<group>";
@@ -6640,7 +6640,7 @@
 				7594093D298D376B008B173A /* RemoteConfiguration+AssetsBuilder.swift in Sources */,
 				AF552ED72BECDCDF00FD5653 /* UIButton+Extensions.swift in Sources */,
 				9A3E1D9B27B73246005634EB /* FoundationBased.Mock.swift in Sources */,
-				C0D6CA572C19BDCD00D4709B /* FilePickerViewModel.Environment.swift in Sources */,
+				C0D6CA572C19BDCD00D4709B /* QuickLookViewModel.Environment.swift in Sources */,
 				75FF151427F3A2D600FE7BE2 /* Theme.Survey.swift in Sources */,
 				C0D6CA272C18743E00D4709B /* CallDurationCounter.Environment.swift in Sources */,
 				84681AA32A66D90000DD7406 /* AdjustedTouchAreaButton.swift in Sources */,
