@@ -112,10 +112,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
 
     private func presentFilePickerController(with pickerEvent: ObservableValue<FilePickerEvent>) {
-        let viewModel = FilePickerViewModel(
-            pickerEvent: pickerEvent,
-            environment: .create(with: environment)
-        )
+        let viewModel = FilePickerViewModel(pickerEvent: pickerEvent)
         viewModel.delegate = { [weak self] event in
             switch event {
             case .finished:
@@ -132,7 +129,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
 
     private func presentQuickLookController(with file: LocalFile) {
-        let viewModel = QuickLookViewModel(file: file)
+        let viewModel = QuickLookViewModel(file: file, environment: .create(with: environment))
         viewModel.delegate = { [weak self] event in
             switch event {
             case .finished:
