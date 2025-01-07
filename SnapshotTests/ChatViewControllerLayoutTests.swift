@@ -105,4 +105,42 @@ final class ChatViewControllerLayoutTests: SnapshotTestCase {
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
+
+    func test_secureMessagingBottomAndCollapsedTopBannerWithUnifiedUI() {
+        guard let config = retrieveRemoteConfiguration() else {
+            XCTFail("Could not find MockConfiguration json")
+            return
+        }
+        let theme = Theme(uiConfig: config, assetsBuilder: .standard)
+        let viewController = ChatViewController.mockSecureMessagingBottomBannerView(theme: theme)
+        viewController.updateViewConstraints()
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
+    }
+
+    func test_secureMessagingBottomAndExpandedTopBannerWithUnifiedUI() {
+        guard let config = retrieveRemoteConfiguration() else {
+            XCTFail("Could not find MockConfiguration json")
+            return
+        }
+        let theme = Theme(uiConfig: config, assetsBuilder: .standard)
+        let mockEntryWidgetViewState = EntryWidget.ViewState.mediaTypes(
+            [.init(type: .chat), .init(type: .video), .init(type: .audio)]
+        )
+        let viewController = ChatViewController.mockSecureMessagingTopAndBottomBannerView(
+            entryWidgetViewState: mockEntryWidgetViewState,
+            theme: theme
+        )
+        viewController.updateViewConstraints()
+        
+        (viewController.view as? ChatView)?.isTopBannerExpanded = true
+        viewController.updateViewConstraints()
+        
+        viewController.view.frame = UIScreen.main.bounds
+        viewController.view.setNeedsLayout()
+        viewController.view.layoutIfNeeded()
+        
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
+    }
 }
