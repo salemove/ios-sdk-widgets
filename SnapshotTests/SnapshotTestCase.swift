@@ -93,6 +93,24 @@ extension SnapshotTestCase {
     }
 }
 
+extension SnapshotTestCase {
+    /// Retrieves local configuration file for testing Unified Customization. Uses `json` file extension.
+    ///
+    /// - parameter fileName: Name of the file that should be retrieved
+    ///
+    /// - Returns: Parsed `RemoteConfiguration` object if file exists locally and `nil` if it does not.
+    func retrieveRemoteConfigurationForUnifiedCustomization(_ fileName: String? = "MockConfiguration") -> RemoteConfiguration? {
+        guard
+            let url = Bundle(for: Self.self).url(forResource: fileName, withExtension: "json"),
+            let jsonData = try? Data(contentsOf: url),
+            let config = try? JSONDecoder().decode(RemoteConfiguration.self, from: .init(jsonData))
+        else {
+            return nil
+        }
+        return config
+    }
+}
+
 extension Snapshotting where Value == UIView, Format == UIImage {
     /// Snapshots the current view with colored overlays of each accessibility element it contains, as well as an
     /// approximation of the description that VoiceOver will read for each element.
