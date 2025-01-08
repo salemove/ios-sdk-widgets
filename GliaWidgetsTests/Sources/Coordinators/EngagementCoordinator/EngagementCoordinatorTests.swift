@@ -44,7 +44,7 @@ final class EngagementCoordinatorTests: XCTestCase {
 
         coordinator.start()
 
-        XCTAssertEqual(coordinator.interactor.state, .enqueueing(.audio))
+        XCTAssertEqual(coordinator.interactor.state, .enqueueing(.audioCall))
         let viewController = coordinator.navigationPresenter.viewControllers.first as? CallViewController
         XCTAssertNotNil(viewController)
         XCTAssertNotNil(coordinator.gliaViewController)
@@ -63,7 +63,7 @@ final class EngagementCoordinatorTests: XCTestCase {
 
         coordinator.start()
 
-        XCTAssertEqual(coordinator.interactor.state, .enqueueing(.video))
+        XCTAssertEqual(coordinator.interactor.state, .enqueueing(.videoCall))
         let viewController = coordinator.navigationPresenter.viewControllers.first as? CallViewController
         XCTAssertNotNil(viewController)
         XCTAssertNotNil(coordinator.gliaViewController)
@@ -165,7 +165,7 @@ final class EngagementCoordinatorTests: XCTestCase {
 
         coordinator.start()
 
-        coordinator.interactor.state = .enqueueing(.text)
+        coordinator.interactor.state = .enqueueing(.chat)
 
         let chatCoordinator = coordinator.coordinators.last as? ChatCoordinator
         chatCoordinator?.delegate?(.back)

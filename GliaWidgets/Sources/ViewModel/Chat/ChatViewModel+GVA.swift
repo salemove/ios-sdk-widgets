@@ -60,7 +60,7 @@ extension ChatViewModel {
 
             case .enqueueing, .ended, .none:
                 self.handle(pendingMessage: outgoingMessage)
-                self.enqueue(mediaType: .text)
+                self.enqueue(engagementKind: .chat)
             }
         }
     }

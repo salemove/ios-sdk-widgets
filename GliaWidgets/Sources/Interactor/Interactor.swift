@@ -2,8 +2,8 @@ import Foundation
 
 enum InteractorState {
     case none
-    case enqueueing(CoreSdkClient.MediaType)
-    case enqueued(CoreSdkClient.QueueTicket)
+    case enqueueing(EngagementKind)
+    case enqueued(CoreSdkClient.QueueTicket, EngagementKind)
     case engaged(CoreSdkClient.Operator?)
     case ended(EndEngagementReason)
 }
@@ -117,22 +117,20 @@ extension Interactor {
     }
 
     func enqueueForEngagement(
-        mediaType: CoreSdkClient.MediaType,
+        engagementKind: EngagementKind,
         success: @escaping () -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
-        switch mediaType {
-        case .text:
+        switch engagementKind {
+        case .chat:
              environment.log.prefixed(Self.self).info("Start queueing for chat engagement")
-        case .audio, .video:
+        case .audioCall, .videoCall:
             environment.log.prefixed(Self.self).info("Start queueing for media engagement")
-        case .unknown, .phone, .messaging:
-            break
-        @unknown default:
+        case .messaging, .none:
             break
         }
 
-        let options = mediaType == .audio || mediaType == .video
+        let options = engagementKind == .audioCall || engagementKind == .videoCall
         ? CoreSdkClient.EngagementOptions(mediaDirection: .twoWay)
         : nil
 
@@ -148,7 +146,7 @@ extension Interactor {
                 // shouldCloseAllQueues is `true` by default core sdk,
                 // here it is passed explicitly
                 shouldCloseAllQueues: true,
-                mediaType: mediaType,
+                mediaType: engagementKind.mediaType,
                 engagementOptions: options
             )
         ) { [weak self] result in
@@ -160,7 +158,7 @@ extension Interactor {
             case .success(let ticket):
 
                 if case .enqueueing = self?.state {
-                    self?.state = .enqueued(ticket)
+                    self?.state = .enqueued(ticket, engagementKind)
                 }
                 success()
             }
@@ -185,7 +183,7 @@ extension Interactor {
         case .enqueueing:
             state = .ended(.byVisitor)
             completion(.success(()))
-        case .enqueued(let ticket):
+        case let .enqueued(ticket, _):
             exitQueue(
                 ticket: ticket,
                 completion: completion
