@@ -11,7 +11,7 @@ extension EngagementCoordinatorTests {
         let viewController = coordinator.navigationPresenter.viewControllers.first as? CallViewController
 
         XCTAssertNotNil(viewController)
-        XCTAssertEqual(coordinator.interactor.state, .enqueueing(.audio))
+        XCTAssertEqual(coordinator.interactor.state, .enqueueing(.audioCall))
     }
 
     func test_video() {
@@ -21,7 +21,7 @@ extension EngagementCoordinatorTests {
         let viewController = coordinator.navigationPresenter.viewControllers.first as? CallViewController
 
         XCTAssertNotNil(viewController)
-        XCTAssertEqual(coordinator.interactor.state, .enqueueing(.video))
+        XCTAssertEqual(coordinator.interactor.state, .enqueueing(.videoCall))
     }
 
     // MARK: - Delegate
