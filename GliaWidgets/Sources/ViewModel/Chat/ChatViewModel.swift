@@ -153,7 +153,7 @@ class ChatViewModel: EngagementViewModel {
             // or in case if engagement has been restored.
 
             if history.isEmpty || self.environment.getCurrentEngagement() != nil {
-                self.interactor.state = .enqueueing(.text)
+                self.interactor.state = .enqueueing(.chat)
             }
         }
     }
@@ -478,7 +478,7 @@ extension ChatViewModel {
 
         case .enqueueing, .ended, .none:
             handle(pendingMessage: outgoingMessage)
-            interactor.state = .enqueueing(.text)
+            interactor.state = .enqueueing(.chat)
         }
 
         messageText = ""

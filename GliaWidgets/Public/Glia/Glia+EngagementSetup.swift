@@ -61,6 +61,14 @@ extension Glia {
         viewFactory: ViewFactory,
         ongoingEngagementMediaStreams: Engagement.Media?
     ) throws {
+        /// If during enqueued state the visitor initiates another engagement, we avoid cancelling the queue
+        /// ticket and adding a new one, by monitoring the new engagement kind. If the engagement kind matches
+        /// the current enqueued engagement kind, then we resume the old, and do not start a new one
+        if case let .enqueued(_, enqueudEngagementKind) = interactor.state, enqueudEngagementKind == engagementKind, let rootCoordinator {
+            rootCoordinator.maximize()
+            return
+        }
+
         if let engagement = environment.coreSdk.getCurrentEngagement() {
             if engagement.source == .callVisualizer {
                 throw GliaError.callVisualizerEngagementExists

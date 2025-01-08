@@ -74,6 +74,46 @@ extension GliaTests {
 
         XCTAssertEqual(sdk.engagement, .messaging(.welcome))
     }
+
+    func test_testEnqueuingToChatWhenAlreadyEnqueuedToChat() throws {
+        enum Call {
+            case maximaize
+        }
+        var calls: [Call] = []
+
+        let sdk = makeConfigurableSDK()
+
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+
+        let interactor: Interactor = .mock()
+        interactor.state = .enqueued(.mock, .chat)
+
+        sdk.interactor = interactor
+        sdk.rootCoordinator = .mock(interactor: interactor)
+        sdk.rootCoordinator?.gliaViewController = GliaViewController.mock(delegate: { event in
+            switch event {
+            case .maximized:
+                calls.append(.maximaize)
+            default:
+                break
+            }
+        })
+
+        try sdk.resolveEngagementState(
+            engagementKind: .chat,
+            sceneProvider: .none,
+            configuration: .mock(),
+            interactor: interactor,
+            features: .all,
+            viewFactory: .mock(),
+            ongoingEngagementMediaStreams: .none
+        )
+
+        XCTAssertEqual(calls, [.maximaize])
+    }
 }
 
 private extension GliaTests {

@@ -265,7 +265,7 @@ extension ChatViewController {
 
         fileUploadListModel.environment.uploader.uploads.append(fileUploadWithError)
         fileUploadWithError.state.value = .error(FileUpload.Error.fileTooBig)
-        chatViewModel.interactor.state = .enqueueing(.text)
+        chatViewModel.interactor.state = .enqueueing(.chat)
         chatViewModel.action?(.sendButtonDisabled(false))
         chatViewModel.action?(.updateUnreadMessageIndicator(itemCount: 5))
         chatViewModel.action?(.setChoiceCardInputModeEnabled(false))

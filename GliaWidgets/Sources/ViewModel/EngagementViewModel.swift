@@ -62,9 +62,9 @@ class EngagementViewModel: CommonEngagementModel {
 
     func start() {}
 
-    func enqueue(mediaType: CoreSdkClient.MediaType) {
+    func enqueue(engagementKind: EngagementKind) {
         interactor.enqueueForEngagement(
-            mediaType: mediaType,
+            engagementKind: engagementKind,
             success: {},
             failure: { [weak self] error in
                 self?.handleError(error)
@@ -123,15 +123,15 @@ class EngagementViewModel: CommonEngagementModel {
                     )
                 })))
             })
-        case let .enqueueing(mediaType):
+        case let .enqueueing(engagementKind):
             environment.fetchSiteConfigurations { [weak self] result in
                 guard let self else { return }
                 switch result {
                 case let .success(site):
                     if site.mobileConfirmDialogEnabled == false || self.interactor.skipLiveObservationConfirmations {
-                        self.enqueue(mediaType: mediaType)
+                        self.enqueue(engagementKind: engagementKind)
                     } else {
-                        self.showLiveObservationConfirmation(in: mediaType)
+                        self.showLiveObservationConfirmation(in: engagementKind)
                     }
                 case let .failure(error):
                     self.engagementAction?(.showAlert(.error(
@@ -226,13 +226,13 @@ private extension EngagementViewModel {
 // MARK: Live Observation
 
 extension EngagementViewModel {
-    private func showLiveObservationConfirmation(in mediaType: CoreSdkClient.MediaType) {
+    private func showLiveObservationConfirmation(in engagementKind: EngagementKind) {
         engagementAction?(.showLiveObservationConfirmation(
             link: { [weak self] link in
                 self?.engagementDelegate?(.openLink(link))
             },
             accepted: { [weak self] in
-                self?.enqueue(mediaType: mediaType)
+                self?.enqueue(engagementKind: engagementKind)
             },
             declined: { [weak self] in
                 self?.endSession()

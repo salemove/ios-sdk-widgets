@@ -101,7 +101,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         )
         gliaViewController?.insertChild(navigationController)
         if maximize {
-            event(.maximized)
+            delegateEvent(.maximized)
         }
         delegate?(.started)
     }
@@ -140,7 +140,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
                 call,
                 withAction: .engagement(mediaType: mediaType)
             )
-            interactor.state = .enqueueing(mediaType)
+            interactor.state = .enqueueing(engagementKind)
             let chatViewController = startChat(
                 withAction: .none,
                 showsCallBubble: true
@@ -190,7 +190,7 @@ extension EngagementCoordinator {
 
         let dismissGliaViewController: () -> Void = { [weak self] in
             self?.dismissGliaViewController(animated: true) { [weak self] in
-                self?.event(.minimized)
+                self?.delegateEvent(.minimized)
                 self?.engagement = .none
                 self?.navigationPresenter.setViewControllers([], animated: false)
                 self?.removeAllCoordinators()
@@ -445,33 +445,24 @@ extension EngagementCoordinator {
             )
         }
 
-        if #available(iOS 13.0, *) {
-            if let sceneProvider = sceneProvider {
-                return GliaViewController(
-                    bubbleView: bubbleView,
-                    delegate: self,
-                    sceneProvider: sceneProvider,
-                    features: features,
-                    environment: .create(
-                        with: environment,
-                        animate: animate
-                    )
+        if let sceneProvider = sceneProvider {
+            return GliaViewController(
+                bubbleView: bubbleView,
+                delegate: { [weak self] event in
+                    self?.delegateEvent(event)
+                },
+                features: features,
+                environment: .create(
+                    with: environment,
+                    animate: animate
                 )
-            } else {
-                return GliaViewController(
-                    bubbleView: bubbleView,
-                    delegate: self,
-                    features: features,
-                    environment: .create(
-                        with: environment,
-                        animate: animate
-                    )
-                )
-            }
+            )
         } else {
             return GliaViewController(
                 bubbleView: bubbleView,
-                delegate: self,
+                delegate: { [weak self] event in
+                    self?.delegateEvent(event)
+                },
                 features: features,
                 environment: .create(
                     with: environment,
@@ -654,8 +645,8 @@ extension EngagementCoordinator {
     }
 }
 
-extension EngagementCoordinator: GliaViewControllerDelegate {
-    func event(_ event: GliaViewControllerEvent) {
+extension EngagementCoordinator {
+    func delegateEvent(_ event: GliaViewControllerEvent) {
         switch event {
         case .minimized:
             dismissGliaViewController(animated: true) { [weak self] in
