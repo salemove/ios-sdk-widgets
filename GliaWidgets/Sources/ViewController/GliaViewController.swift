@@ -9,16 +9,12 @@ public enum GliaViewControllerEvent {
     case maximized
 }
 
-public protocol GliaViewControllerDelegate: AnyObject {
-    func event(_ event: GliaViewControllerEvent)
-}
-
 class GliaViewController: UIViewController {
     var bubbleKind: BubbleKind = .userImage(url: nil) {
         didSet { bubbleWindow?.bubbleKind = bubbleKind }
     }
 
-    private weak var delegate: GliaViewControllerDelegate?
+    private var delegate: ((GliaViewControllerEvent) -> Void)?
     private let bubbleView: BubbleView?
     private var bubbleWindow: BubbleWindow?
     private var sceneProvider: SceneProvider?
@@ -27,24 +23,9 @@ class GliaViewController: UIViewController {
     private let environment: Environment
 
     init(
-        bubbleView: BubbleView,
-        delegate: GliaViewControllerDelegate?,
-        features: Features,
-        environment: Environment
-    ) {
-        self.bubbleView = bubbleView
-        self.delegate = delegate
-        self.features = features
-        self.environment = environment
-        super.init(nibName: nil, bundle: nil)
-        setup()
-    }
-
-    @available(iOS 13.0, *)
-    init(
         bubbleView: BubbleView?,
-        delegate: GliaViewControllerDelegate?,
-        sceneProvider: SceneProvider,
+        delegate: ((GliaViewControllerEvent) -> Void)?,
+        sceneProvider: SceneProvider? = .none,
         features: Features,
         environment: Environment
     ) {
@@ -75,7 +56,7 @@ class GliaViewController: UIViewController {
             },
             completion: { [weak self] _ in
                 self?.bubbleWindow = nil
-                self?.delegate?.event(.maximized)
+                self?.delegate?(.maximized)
             }
         )
     }
@@ -87,7 +68,7 @@ class GliaViewController: UIViewController {
 
     func minimize(animated: Bool) {
         environment.log.prefixed(Self.self).info("Bubble: show application-only bubble")
-        defer { delegate?.event(.minimized) }
+        defer { delegate?(.minimized) }
         guard let bubbleView = bubbleView else {
             return
         }
@@ -132,7 +113,6 @@ class GliaViewController: UIViewController {
         }
     }
 
-    @available(iOS 13.0, *)
     private func windowScene() -> UIWindowScene? {
         if let windowScene = sceneProvider?.windowScene() {
             return windowScene

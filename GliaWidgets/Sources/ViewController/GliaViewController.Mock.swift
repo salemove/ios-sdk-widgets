@@ -2,12 +2,14 @@
 extension GliaViewController {
     static func mock(
         bubbleView: BubbleView = .mock(),
-        delegate: GliaViewControllerDelegate? = nil,
+        delegate: ((GliaViewControllerEvent) -> Void)? = nil,
+        sceneProvider: SceneProvider? = .none,
         features: Features = .all
     ) -> GliaViewController {
         .init(
             bubbleView: bubbleView,
             delegate: delegate,
+            sceneProvider: sceneProvider,
             features: features,
             environment: .init(
                 uiApplication: .mock,

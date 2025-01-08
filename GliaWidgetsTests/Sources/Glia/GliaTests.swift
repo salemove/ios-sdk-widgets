@@ -407,7 +407,9 @@ final class GliaTests: XCTestCase {
         let sdk = Glia(environment: environment)
         let coordinator = EngagementCoordinator.mock()
         let delegate = GliaViewControllerDelegateMock()
-        let gliaVC = GliaViewController.mock(delegate: delegate)
+        let gliaVC = GliaViewController.mock(delegate: { event in
+            delegate.event(event)
+        })
         coordinator.gliaViewController = gliaVC
         sdk.rootCoordinator = coordinator
 
@@ -435,7 +437,9 @@ final class GliaTests: XCTestCase {
         let sdk = Glia(environment: environment)
         let coordinator = EngagementCoordinator.mock()
         let delegate = GliaViewControllerDelegateMock()
-        let gliaVC = GliaViewController.mock(delegate: delegate)
+        let gliaVC = GliaViewController.mock(delegate: { event in
+            delegate.event(event)
+        })
         coordinator.gliaViewController = gliaVC
         sdk.rootCoordinator = coordinator
 

@@ -430,7 +430,7 @@ class CallViewModelTests: XCTestCase {
                 XCTFail()
             }
         }
-        interactor.state = .enqueueing(.audio)
+        interactor.state = .enqueueing(.audioCall)
         XCTAssertEqual(calls, [.showLiveObservationAlert])
     }
 
@@ -464,9 +464,9 @@ class CallViewModelTests: XCTestCase {
                 XCTFail()
             }
         }
-        interactor.state = .enqueueing(.audio)
+        interactor.state = .enqueueing(.audioCall)
         alertConfig?.accepted()
-        XCTAssertEqual(interactor.state, .enqueued(.mock))
+        XCTAssertEqual(interactor.state, .enqueued(.mock, .audioCall))
     }
 
     func test_liveObservationDeclineTriggersNone() throws {
@@ -503,7 +503,7 @@ class CallViewModelTests: XCTestCase {
                 XCTFail()
             }
         }
-        interactor.state = .enqueueing(.audio)
+        interactor.state = .enqueueing(.audioCall)
         alertConfig?.declined()
         XCTAssertEqual(interactor.state, .ended(.byVisitor))
         XCTAssertTrue(calls.isEmpty)

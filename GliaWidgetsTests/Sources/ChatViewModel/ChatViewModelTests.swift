@@ -78,7 +78,7 @@ class ChatViewModelTests: XCTestCase {
 
     func test_secureTranscriptChatTypeCases() throws {
         let viewModel: ChatViewModel = .mock(chatType: .secureTranscript(upgradedFromChat: false))
-        viewModel.update(for: .enqueueing(.text))
+        viewModel.update(for: .enqueueing(.chat))
         XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 0)
         viewModel.handle(pendingMessage: .mock())
         XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 1)
@@ -86,7 +86,7 @@ class ChatViewModelTests: XCTestCase {
 
     func test_authenticatedChatTypeCases() throws {
         let viewModel: ChatViewModel = .mock(chatType: .authenticated)
-        viewModel.update(for: .enqueueing(.text))
+        viewModel.update(for: .enqueueing(.chat))
         XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 1)
         viewModel.handle(pendingMessage: .mock())
         XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 1)
@@ -94,7 +94,7 @@ class ChatViewModelTests: XCTestCase {
 
     func test_nonAuthenticatedChatTypeCases() throws {
         let viewModel: ChatViewModel = .mock(chatType: .nonAuthenticated)
-        viewModel.update(for: .enqueueing(.text))
+        viewModel.update(for: .enqueueing(.chat))
         XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 1)
         viewModel.handle(pendingMessage: .mock())
         XCTAssertEqual(viewModel.queueOperatorSection.itemCount, 1)
@@ -141,7 +141,7 @@ class ChatViewModelTests: XCTestCase {
         let mockOperator: CoreSdkClient.Operator = .mock()
 
         XCTAssertEqual(0, viewModel.numberOfItems(in: queueSectionIndex))
-        viewModel.update(for: .enqueueing(.text))
+        viewModel.update(for: .enqueueing(.chat))
         XCTAssertEqual(1, viewModel.numberOfItems(in: queueSectionIndex))
         viewModel.update(for: .engaged(mockOperator))
         XCTAssertEqual(0, viewModel.numberOfItems(in: queueSectionIndex))
@@ -260,7 +260,7 @@ class ChatViewModelTests: XCTestCase {
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         // When
-        viewModel.update(for: .enqueueing(.text))
+        viewModel.update(for: .enqueueing(.chat))
 
         // Then
         XCTAssertEqual(calls, [])
@@ -722,7 +722,7 @@ class ChatViewModelTests: XCTestCase {
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
         viewModel.isViewLoaded = true
         viewModel.start()
-        viewModel.interactor.state = .enqueueing(.text)
+        viewModel.interactor.state = .enqueueing(.chat)
         interactor.state = .engaged(.mock())
         viewModel.invokeSetTextAndSendMessage(text: "Mock send message.")
         viewModel.interactorEvent(.receivedMessage(.mock(id: expectedMessageId)))
@@ -789,7 +789,7 @@ class ChatViewModelTests: XCTestCase {
                 XCTFail()
             }
         }
-        interactor.state = .enqueueing(.audio)
+        interactor.state = .enqueueing(.audioCall)
         XCTAssertEqual(calls, [.showLiveObservationAlert])
     }
 
@@ -824,9 +824,9 @@ class ChatViewModelTests: XCTestCase {
                 XCTFail()
             }
         }
-        interactor.state = .enqueueing(.audio)
+        interactor.state = .enqueueing(.audioCall)
         alertConfig?.accepted()
-        XCTAssertEqual(interactor.state, .enqueued(.mock))
+        XCTAssertEqual(interactor.state, .enqueued(.mock, .audioCall))
     }
 
     func test_liveObservationDeclineTriggersNone() throws {
@@ -863,7 +863,7 @@ class ChatViewModelTests: XCTestCase {
                 XCTFail()
             }
         }
-        interactor.state = .enqueueing(.audio)
+        interactor.state = .enqueueing(.audioCall)
         alertConfig?.declined()
         XCTAssertEqual(interactor.state, .ended(.byVisitor))
         XCTAssertTrue(calls.isEmpty)

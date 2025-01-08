@@ -37,6 +37,10 @@ extension EngagementKind {
             return false
         }
     }
+
+    var mediaType: CoreSdkClient.MediaType {
+        .init(engagementKind: self)
+    }
 }
 
 extension SecureConversations {

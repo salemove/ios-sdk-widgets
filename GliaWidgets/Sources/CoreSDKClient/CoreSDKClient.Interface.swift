@@ -341,3 +341,20 @@ extension CoreSdkClient {
         var currentCameraDevice: () -> GliaCoreSDK.CameraDevice?
     }
 }
+
+extension CoreSdkClient.MediaType {
+    init(engagementKind: EngagementKind) {
+        switch engagementKind {
+        case .none:
+            self = .unknown
+        case .chat:
+            self = .text
+        case .audioCall:
+            self = .audio
+        case .videoCall:
+            self = .video
+        case .messaging:
+            self = .messaging
+        }
+    }
+}

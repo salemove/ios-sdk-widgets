@@ -127,8 +127,8 @@ extension ChatViewModelTests {
         env.createSendMessagePayload = { _, _ in .mock() }
         viewModel = .mock(interactor: interactorMock, environment: env)
         viewModel.gvaOptionAction(for: option)()
-        viewModel.interactor.state = .enqueueing(.text)
-        XCTAssertEqual(interactorMock.state, .enqueueing(.text))
+        viewModel.interactor.state = .enqueueing(.chat)
+        XCTAssertEqual(interactorMock.state, .enqueueing(.chat))
     }
 
     func test_broadcastEventAction() {

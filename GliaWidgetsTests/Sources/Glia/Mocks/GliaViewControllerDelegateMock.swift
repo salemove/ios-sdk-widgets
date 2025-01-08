@@ -1,7 +1,7 @@
 @testable import GliaWidgets
 import Foundation
 
-final class GliaViewControllerDelegateMock: GliaViewControllerDelegate {
+final class GliaViewControllerDelegateMock {
     var invokedEventCall = false
     var invokedEventCallCount = 0
     var invokedEventCallParameter: GliaViewControllerEvent?
