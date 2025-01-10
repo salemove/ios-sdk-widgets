@@ -399,7 +399,10 @@ extension SecureConversations.TranscriptModel {
     }
 
     func linkTapped(_ url: URL) {
-        guard environment.uiApplication.canOpenURL(url) else { return }
+        guard environment.uiApplication.canOpenURL(url) else {
+            environment.log.prefixed(Self.self).error("No dialer uri - \(url)")
+            return
+        }
         environment.uiApplication.open(url)
     }
 
