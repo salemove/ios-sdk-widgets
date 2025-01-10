@@ -349,6 +349,34 @@ class ChatViewModelTests: XCTestCase {
 
         XCTAssertEqual(calls, [.canOpen(linkUrl), .open(linkUrl)])
     }
+    
+    func test_handleUrlThatCanNotBeOpenedShouldLog() throws {
+        enum Call: Equatable { case canOpen(URL), log }
+        var calls: [Call] = []
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.uiApplication.canOpenURL = { url in
+            calls.append(.canOpen(url))
+            return false
+        }
+        viewModelEnv.uiApplication.open = { _ in
+        }
+        viewModelEnv.log.prefixedClosure = { prefix in
+            calls.append(.log)
+            return .mock
+        }
+        let viewModel: ChatViewModel = .mock(
+            interactor: .mock(),
+            environment: viewModelEnv
+        )
+
+        let linkUrl = try XCTUnwrap(URL(string: "https://mock.mock"))
+        viewModel.linkTapped(linkUrl)
+
+        XCTAssertEqual(calls, [.canOpen(linkUrl), .log])
+    }
 
     func test_handleUrlWithRandomScheme() throws {
         enum Call: Equatable { case canOpen(URL), open(URL) }
