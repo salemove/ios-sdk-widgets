@@ -95,7 +95,6 @@
 		1A60AF96256675C400E53F53 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AF95256675C400E53F53 /* UIColor+Extensions.swift */; };
 		1A60AFA325667EA300E53F53 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A60AFA225667EA300E53F53 /* Assets.xcassets */; };
 		1A60AFAA2566806000E53F53 /* Deprecated.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A60AFAC2566806000E53F53 /* Deprecated.strings */; };
-		1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFAE256680EF00E53F53 /* L10n.swift */; };
 		1A60AFB22566821B00E53F53 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFB12566821B00E53F53 /* Asset.swift */; };
 		1A60AFB62566825400E53F53 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFB52566825400E53F53 /* ViewModel.swift */; };
 		1A60AFB9256682AF00E53F53 /* FlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A60AFB8256682AF00E53F53 /* FlowCoordinator.swift */; };
@@ -1181,7 +1180,6 @@
 		1A60AF95256675C400E53F53 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		1A60AFA225667EA300E53F53 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A60AFAB2566806000E53F53 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Deprecated.strings; sourceTree = "<group>"; };
-		1A60AFAE256680EF00E53F53 /* L10n.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
 		1A60AFB12566821B00E53F53 /* Asset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		1A60AFB52566825400E53F53 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		1A60AFB8256682AF00E53F53 /* FlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCoordinator.swift; sourceTree = "<group>"; };
@@ -2404,7 +2402,6 @@
 				C08D776128F58A18000461E5 /* ColorType.swift */,
 				1A205D5B25655CB1003AA3CD /* GliaWidgets.h */,
 				1A205D5C25655CB1003AA3CD /* Info.plist */,
-				1A60AFAE256680EF00E53F53 /* L10n.swift */,
 				31E35AB92A8648E9006EC7FB /* Localization.swift */,
 				3146C9482AB18AC70047D8CC /* Localization+StringProviding.swift */,
 				31882C9A2AA21B71009DE4BD /* Localization+Templates.swift */,
@@ -6204,7 +6201,6 @@
 				C0175A282A67D470001FACDE /* GvaPersistentButtonStyle.swift in Sources */,
 				C49A29F22614A85E00819269 /* ChoiceCard.swift in Sources */,
 				1A0C9A6D25C16EED00815406 /* Theme+Call.swift in Sources */,
-				1A60AFAF256680EF00E53F53 /* L10n.swift in Sources */,
 				9A1992DD27D6254800161AAE /* ImageView.Cache.Live.swift in Sources */,
 				845E2F9B283FCA9000C04D56 /* Theme.Survey.Checkbox.swift in Sources */,
 				C0D2F07F29A4E59200803B47 /* CallButtonBarStyle.Mock.swift in Sources */,

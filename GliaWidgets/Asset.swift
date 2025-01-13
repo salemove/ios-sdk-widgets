@@ -15,8 +15,6 @@ private let bundleManaging: BundleManaging = .live
 // swiftlint:disable superfluous_disable_command
 // swiftlint:disable file_length
 
-@available(*, deprecated, renamed: "ImageAsset")
-public typealias AssetType = ImageAsset
 
 public struct ImageAsset {
   public fileprivate(set) var name: String
@@ -138,26 +136,8 @@ public enum Asset {
       spinner,
     ]
     // swiftlint:enable trailing_comma
-    @available(*, deprecated, renamed: "allImages")
-    public static let allValues: [AssetType] = allImages
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
-
-public extension Image {
-  @available(iOS 1.0, tvOS 1.0, watchOS 1.0, *)
-  @available(OSX, deprecated,
-    message: "This initializer is unsafe on macOS, please use the ImageAsset.image property")
-  convenience init!(asset: ImageAsset) {
-    #if os(iOS) || os(tvOS)
-    let bundle = bundleManaging.current()
-    self.init(named: asset.name, in: bundle, compatibleWith: nil)
-    #elseif os(OSX)
-    self.init(named: NSImage.Name(asset.name))
-    #elseif os(watchOS)
-    self.init(named: asset.name)
-    #endif
-  }
-}
 
 public extension AssetColorTypeAlias {
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, OSX 10.13, *)
@@ -172,4 +152,3 @@ public extension AssetColorTypeAlias {
     #endif
   }
 }
-
