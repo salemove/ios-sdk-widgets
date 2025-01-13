@@ -12,8 +12,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return .init(window: window, handlers: deepLinksHandlers)
     }()
 
-
     func applicationDidFinishLaunching(_ application: UIApplication) {
+        GliaCore.sharedInstance.configureLogLevel(level: .none)
         handleProcessInfo()
         handleSetAnimationsEnabled()
     }

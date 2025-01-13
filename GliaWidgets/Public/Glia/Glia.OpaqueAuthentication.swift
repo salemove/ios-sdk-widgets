@@ -92,7 +92,10 @@ extension Glia {
                     // Wait for possible engagement (if there is one)
                     // to get restored along with `rootCoordinator`
                     // and bubble view.
-                    self?.environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(1)) {
+                    self?.environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(1)) { [weak self] in
+                        // After authentication we need to re-setup pending interaction model,
+                        // to have relevant data in it.
+                        self?.setupPendingInteraction()
                         switch result {
                         case .success:
                             // Attempt to restore ongoing engagement after configuration.
@@ -126,11 +129,17 @@ extension Glia {
             },
             deauthenticateWithCallback: { [weak self] callback in
                 self?.loggerPhase.logger.prefixed(Self.self).info("Unauthenticate")
-                auth.deauthenticate { result in
+                auth.deauthenticate { [weak self] result in
                     switch result {
                     case .success:
-                        // Cleanup navigation and views.
-                        self?.closeRootCoordinator()
+                        // After un-authentication we need to re-setup pending interaction model,
+                        // to have relevant data in it, but we also need to wait for socket to reconnect,
+                        // because pubsub is recreated with new (not-authenticated visitor).
+                        self?.environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(1)) { [weak self] in
+                            self?.setupPendingInteraction()
+                            // Cleanup navigation and views.
+                            self?.closeRootCoordinator()
+                        }
                     case .failure:
                         break
                     }
@@ -267,5 +276,22 @@ extension Glia.Authentication {
 extension Glia.Authentication.Error {
     init(error: CoreSdkClient.SalemoveError) {
         self.reason = error.reason
+    }
+}
+
+extension Glia {
+    @discardableResult
+    func setupPendingInteraction() -> Result<Void, GliaError> {
+        do {
+            pendingInteraction = try .init(environment: .init(with: environment.coreSdk))
+            return .success(())
+        } catch let error as SecureConversations.PendingInteraction.Error {
+            switch error {
+            case .subscriptionFailure:
+                return .failure(GliaError.internalEventSubscriptionFailure)
+            }
+        } catch {
+            return .failure(GliaError.internalError)
+        }
     }
 }

@@ -38,10 +38,15 @@ extension SecureConversations {
             self.unreadMessageCountCancellationToken = unreadMessageCountCancellationToken
 
             $pendingStatus.combineLatest($unreadMessageCount)
-                .map { hasPending, unreadCount in
-                    hasPending || unreadCount > 0
+                .map { [weak self] hasPending, unreadCount in
+                    if let self {
+                        print(PendingInteraction.self, ObjectIdentifier(self), "hasPending:", hasPending, "unreadCount:", unreadCount)
+                    }
+                    return hasPending || unreadCount > 0
                 }
                 .assign(to: &$hasPendingInteraction)
+
+            print("😎", PendingInteraction.self, ObjectIdentifier(self))
         }
 
         deinit {
@@ -52,6 +57,8 @@ extension SecureConversations {
             if let pendingStatusCancellationToken {
                 environment.unsubscribeFromPendingStatus(pendingStatusCancellationToken)
             }
+            print("🏴‍☠️", PendingInteraction.self, ObjectIdentifier(self))
+
         }
     }
 }
