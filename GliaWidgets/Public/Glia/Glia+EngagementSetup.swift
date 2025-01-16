@@ -71,6 +71,10 @@ extension Glia {
 
         if let engagement = environment.coreSdk.getCurrentEngagement() {
             if engagement.source == .callVisualizer {
+                showSnackBar(
+                    with: Localization.EntryWidget.CallVisualizer.description,
+                    style: viewFactory.theme.snackBar
+                )
                 throw GliaError.callVisualizerEngagementExists
             } else {
                 if let rootCoordinator {

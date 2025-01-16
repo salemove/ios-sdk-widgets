@@ -42,12 +42,12 @@ extension SnackBar {
             hostingController.view.backgroundColor = .clear
 
             hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-             NSLayoutConstraint.activate([
+            NSLayoutConstraint.activate([
                 hostingController.view.topAnchor.constraint(greaterThanOrEqualTo: parent.view.topAnchor),
                 hostingController.view.bottomAnchor.constraint(equalTo: parent.view.bottomAnchor, constant: 64),
                 hostingController.view.leadingAnchor.constraint(equalTo: parent.view.leadingAnchor),
                 hostingController.view.trailingAnchor.constraint(equalTo: parent.view.trailingAnchor)
-             ])
+            ])
         }
 
         func remove() {
@@ -62,19 +62,21 @@ extension SnackBar {
         ) {
             serialQueue.addOperation(
                 .init { [weak self] done in
-                    self?.hostingController.rootView.offset = offset
-                    self?.updatePublisher.send(.appear(text))
+                    guard let self else {
+                        done()
+                        return
+                    }
+                    self.hostingController.rootView.offset = offset
+                    self.updatePublisher.send(.appear(text))
 
-                    self?.timer?.invalidate()
+                    self.timer?.invalidate()
 
-                    self?.timer = self?.environment.timerProviding.scheduledTimer(
+                    self.timer = self.environment.timerProviding.scheduledTimer(
                         withTimeInterval: 3,
                         repeats: false
-                    ) { [weak self] _ in
-                        self?.updatePublisher.send(.disappear)
-                        self?.environment.gcd.mainQueue.asyncAfterDeadline(.now() + 0.5) { [weak self] in
-                            self?.remove()
-                        }
+                    ) { _ in
+                        self.updatePublisher.send(.disappear)
+                        self.environment.gcd.mainQueue.asyncAfterDeadline(.now() + 0.5, self.remove)
                         done()
                     }
                 }
