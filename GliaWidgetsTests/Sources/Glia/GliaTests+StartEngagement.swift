@@ -49,6 +49,11 @@ extension GliaTests {
     }
 
     func testStartEngagementThrowsErrorDuringActiveCallVisualizerEngagement() throws {
+        enum Call {
+            case presentSnackBar
+        }
+        var calls: [Call] = []
+        var snackBarMessage: String?
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
         logger.configureRemoteLogLevelClosure = { _ in }
@@ -69,6 +74,14 @@ extension GliaTests {
         sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
+        let window = UIWindow(frame: .zero)
+        window.rootViewController = UIViewController()
+        window.makeKeyAndVisible()
+        sdk.environment.uiApplication.windows = { [window] }
+        sdk.environment.snackBar.present = { message, _, _, _, _, _, _ in
+            snackBarMessage = message
+            calls.append(.presentSnackBar)
+        }
 
         try sdk.configure(
             with: .mock(),
@@ -82,6 +95,8 @@ extension GliaTests {
         ) { error in
             XCTAssertEqual(error as? GliaError, GliaError.callVisualizerEngagementExists)
         }
+        XCTAssertEqual(calls, [.presentSnackBar])
+        XCTAssertEqual(snackBarMessage, Localization.EntryWidget.CallVisualizer.description)
     }
 
     func testStartEngagementWithNoQueueIds() throws {

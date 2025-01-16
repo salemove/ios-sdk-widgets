@@ -39,7 +39,7 @@ extension Theme {
             loading: loading,
             accessibility: mediaTypeAccessibility,
             ongoingCoreEngagementMessage: Localization.EntryWidget.OngoingEngagement.description,
-            ongoingCallVisualizerMessage: Localization.EntryWidget.CallVisualizer.desciption,
+            ongoingCallVisualizerMessage: Localization.EntryWidget.CallVisualizer.description,
             ongoingEngagementMessageFont: font.mediumSubtitle2,
             ongoingEngagementMessageColor: color.primary
         )
