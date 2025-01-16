@@ -270,5 +270,6 @@
 "entry_widget.error_state.try_again.button.label" = "Try again";
 "entry_widget.loading.accessibility.label" = "Loading indicator. Waiting for available options.";
 "entry_widget.ongoing_engagement.description" = "Ongoing • Tap to return";
-"entry_widget.call_visualizer.desciption" = "The support team can provide interactive assistance";
 "entry_widget.ongoing_engagement.button.accessibility.hint" = "Returns to ongoing engagement";
+"entry_widget.call_visualizer.description" = "You are already in contact with the support team";
+"entry_widget.call_visualizer.button.label" = "Call Visualizer";
