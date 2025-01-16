@@ -195,6 +195,7 @@
 		2198B7AC2CAEB14D002C442B /* QueuesMonitor.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2198B7AB2CAEB14D002C442B /* QueuesMonitor.Live.swift */; };
 		2198B7AE2CB035A6002C442B /* QueuesMonitor.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2198B7AD2CB035A6002C442B /* QueuesMonitor.Environment.swift */; };
 		21BADEBB2D2D7F94000AD9CF /* MockConfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 21BADEBA2D2D7F94000AD9CF /* MockConfiguration.json */; };
+		21C07F7A2D39095F00AEBE3E /* Glia+SnackBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C07F792D39095F00AEBE3E /* Glia+SnackBar.swift */; };
 		23D69155F4F4C5043173EF05 /* Pods_GliaWidgets.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7A5CDD05FB57D55971AA68A /* Pods_GliaWidgets.framework */; };
 		3100D929296E946600DEC9CE /* SecureConversations.ConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100D924296E946600DEC9CE /* SecureConversations.ConfirmationView.swift */; };
 		3100D92A296E946600DEC9CE /* Theme+SecureConversationsConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100D925296E946600DEC9CE /* Theme+SecureConversationsConfirmation.swift */; };
@@ -1281,6 +1282,7 @@
 		2198B7AB2CAEB14D002C442B /* QueuesMonitor.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueuesMonitor.Live.swift; sourceTree = "<group>"; };
 		2198B7AD2CB035A6002C442B /* QueuesMonitor.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueuesMonitor.Environment.swift; sourceTree = "<group>"; };
 		21BADEBA2D2D7F94000AD9CF /* MockConfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MockConfiguration.json; sourceTree = "<group>"; };
+		21C07F792D39095F00AEBE3E /* Glia+SnackBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Glia+SnackBar.swift"; sourceTree = "<group>"; };
 		235300A49A5836A51EB1C4E8 /* Pods-GliaWidgets.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.release.xcconfig"; sourceTree = "<group>"; };
 		2797F86D83B9055FAD6E596E /* Pods-SnapshotTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapshotTests.debug.xcconfig"; path = "Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests.debug.xcconfig"; sourceTree = "<group>"; };
 		3100D924296E946600DEC9CE /* SecureConversations.ConfirmationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureConversations.ConfirmationView.swift; sourceTree = "<group>"; };
@@ -3850,6 +3852,7 @@
 				AFC7ABB72C2D93A0006F15AA /* Glia+RestoreEngagement.swift */,
 				215A258F2CA44D8A0013023E /* Glia+EngagementLauncher.swift */,
 				C0F7EA3B2CA581E70038019C /* Glia+EntryWidget.swift */,
+				21C07F792D39095F00AEBE3E /* Glia+SnackBar.swift */,
 			);
 			path = Glia;
 			sourceTree = "<group>";
@@ -6506,6 +6509,7 @@
 				9A8130BF27D7AEF700220BBD /* FileUpload.Mock.swift in Sources */,
 				C0175A1D2A5D4226001FACDE /* ChatView.TableView.swift in Sources */,
 				9A8130BD27D7A53300220BBD /* FileUpload.Environment.Mock.swift in Sources */,
+				21C07F7A2D39095F00AEBE3E /* Glia+SnackBar.swift in Sources */,
 				1A60AFB22566821B00E53F53 /* Asset.swift in Sources */,
 				C05AB01C295F416700AA381F /* VisitorCodeCloseButtonProperties.swift in Sources */,
 				C09047862B7E2CC9003C437C /* QuickReplyButtonStyle.RemoteConfig.swift in Sources */,

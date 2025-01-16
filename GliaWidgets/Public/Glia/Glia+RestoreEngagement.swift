@@ -47,29 +47,15 @@ extension Glia {
             self.rootCoordinator?.minimize()
         }
 
-        func showSnackBarMessage() {
-            environment.snackBar.showSnackBarMessage(
-                text: viewFactory.theme.snackBar.text,
-                style: viewFactory.theme.snackBar,
-                topMostViewController: GliaPresenter(
-                    environment: .create(
-                        with: self.environment,
-                        log: self.loggerPhase.logger,
-                        sceneProvider: nil
-                    )
-                ).topMostViewController,
-                timerProviding: environment.timerProviding,
-                gcd: environment.gcd,
-                notificationCenter: environment.notificationCenter
-            )
-        }
-
         func showSnackBarIfNeeded() {
-            environment.coreSdk.fetchSiteConfigurations { result in
+            environment.coreSdk.fetchSiteConfigurations { [weak self] result in
                 guard case let .success(site) = result else { return }
                 guard site.mobileObservationEnabled == true else { return }
                 guard site.mobileObservationIndicationEnabled == true else { return }
-                showSnackBarMessage()
+                self?.showSnackBar(
+                    with: viewFactory.theme.snackBar.text,
+                    style: viewFactory.theme.snackBar
+                )
             }
         }
 
