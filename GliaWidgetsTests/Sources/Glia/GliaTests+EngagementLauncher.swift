@@ -77,7 +77,7 @@ extension GliaTests {
 
     func test_testEnqueuingToChatWhenAlreadyEnqueuedToChat() throws {
         enum Call {
-            case maximaize
+            case maximize
         }
         var calls: [Call] = []
 
@@ -96,7 +96,7 @@ extension GliaTests {
         sdk.rootCoordinator?.gliaViewController = GliaViewController.mock(delegate: { event in
             switch event {
             case .maximized:
-                calls.append(.maximaize)
+                calls.append(.maximize)
             default:
                 break
             }
@@ -112,7 +112,51 @@ extension GliaTests {
             ongoingEngagementMediaStreams: .none
         )
 
-        XCTAssertEqual(calls, [.maximaize])
+        XCTAssertEqual(calls, [.maximize])
+    }
+    
+    func test_testEnqueuingWhenCallVisualizaerIsActive() throws {
+        enum Call {
+            case presentSnackBar
+        }
+        var calls: [Call] = []
+        var snackBarMessage: String?
+
+        let sdk = makeConfigurableSDK()
+
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+
+        let interactor: Interactor = .mock()
+
+        sdk.interactor = interactor
+        sdk.environment.coreSdk.getCurrentEngagement = {
+            return .mock(source: .callVisualizer)
+        }
+        sdk.rootCoordinator = .mock(interactor: interactor)
+        sdk.rootCoordinator?.gliaViewController = .mock()
+        sdk.environment.snackBar.present = { message, _, _, _, _, _, _ in
+            snackBarMessage = message
+            calls.append(.presentSnackBar)
+        }
+
+        XCTAssertThrowsError(
+            try sdk.resolveEngagementState(
+                engagementKind: .chat,
+                sceneProvider: .none,
+                configuration: .mock(),
+                interactor: interactor,
+                features: .all,
+                viewFactory: .mock(),
+                ongoingEngagementMediaStreams: .none
+            )
+        ) { error in
+            XCTAssertEqual(error as? GliaError, GliaError.callVisualizerEngagementExists)
+        }
+        XCTAssertEqual(calls, [.presentSnackBar])
+        XCTAssertEqual(snackBarMessage, Localization.EntryWidget.CallVisualizer.description)
     }
 }
 
@@ -146,6 +190,7 @@ private extension GliaTests {
         sdkEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
         sdkEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
         let window = UIWindow(frame: .zero)
+        window.rootViewController = UIViewController()
         window.makeKeyAndVisible()
         sdkEnv.uiApplication.windows = { [window] }
         let sdk = Glia(environment: sdkEnv)

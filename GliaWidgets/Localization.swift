@@ -454,8 +454,8 @@ internal enum Localization {
       }
     }
     internal enum CallVisualizer {
-      /// Screen sharing in progress
-      internal static var desciption: String { Localization.tr("Localizable", "entry_widget.call_visualizer.desciption", fallback: "Screen sharing in progress") }
+      /// You are already in contact with the support team
+      internal static var description: String { Localization.tr("Localizable", "entry_widget.call_visualizer.description", fallback: "You are already in contact with the support team") }
       internal enum Button {
         /// Call Visualizer
         internal static var label: String { Localization.tr("Localizable", "entry_widget.call_visualizer.button.label", fallback: "Call Visualizer") }
