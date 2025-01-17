@@ -13,14 +13,13 @@ public final class EntryWidget: NSObject {
     private var embeddedView: UIView?
     private var queueIds: [String]
     private let configuration: Configuration
-    private var cancellables = CancelBag()
     private let environment: Environment
     @Published private var unreadSecureMessageCount: Int?
     private(set) var unreadSecureMessageSubscriptionId: String?
-    private var engagementCancellable: AnyCancellable?
     @Published var viewState: ViewState = .loading
-    @Published private(set) var availableEngagementTypes: [EntryWidget.EngagementType] = []
     private var ongoingEngagement: Engagement?
+    private var interactorState: InteractorState = .none
+    private var cancellables = CancelBag()
 
     // MARK: - Initialization
 
@@ -45,12 +44,21 @@ public final class EntryWidget: NSObject {
             .sink(receiveValue: handleQueuesMonitorUpdates(state:unreadSecureMessagesCount:))
             .store(in: &cancellables)
 
-        engagementCancellable = environment.currentInteractor()?.$currentEngagement
+        environment.currentInteractor()?.$currentEngagement
             .sink { [weak self] engagement in
                 guard let self else { return }
                 ongoingEngagement = engagement
                 handleQueuesMonitorUpdates(state: environment.queuesMonitor.state, unreadSecureMessagesCount: unreadSecureMessageCount)
             }
+            .store(in: &cancellables)
+
+        environment.currentInteractor()?.$state
+            .sink { [weak self] state in
+                guard let self else { return }
+                interactorState = state
+                handleQueuesMonitorUpdates(state: environment.queuesMonitor.state, unreadSecureMessagesCount: unreadSecureMessageCount)
+            }
+            .store(in: &cancellables)
     }
 
     deinit {
@@ -143,51 +151,6 @@ extension EntryWidget {
 
 // MARK: - Private methods
 private extension EntryWidget {
-    func handleQueuesMonitorUpdates(
-        state: QueuesMonitor.State,
-        unreadSecureMessagesCount: Int?
-    ) {
-        if let ongoingEngagement {
-            environment.log.info("Preparing items based on ongoing engagement")
-            if ongoingEngagement.source == .callVisualizer {
-                viewState = .ongoingEngagement(.callVisualizer)
-            } else if ongoingEngagement.source == .coreEngagement {
-                if ongoingEngagement.mediaStreams.video != nil {
-                    viewState = .ongoingEngagement(.video)
-                } else if ongoingEngagement.mediaStreams.audio != nil {
-                    viewState = .ongoingEngagement(.audio)
-                } else {
-                    viewState = .ongoingEngagement(.chat)
-                }
-            }
-        } else {
-            switch state {
-            case .idle:
-                viewState = .loading
-            case .updated(let queues):
-                let availableEngagementTypes = resolveAvailableEngagementTypes(from: queues)
-                if availableEngagementTypes.isEmpty {
-                    viewState = .offline
-                } else {
-                    let mediaTypes = availableEngagementTypes.map { type in
-                        if type == .secureMessaging {
-                            return EntryWidget.MediaTypeItem(
-                                type: type,
-                                badgeCount: unreadSecureMessagesCount ?? 0
-                            )
-                        }
-                        return EntryWidget.MediaTypeItem(type: type)
-                    }
-                    viewState = .mediaTypes(mediaTypes)
-                }
-                self.availableEngagementTypes = availableEngagementTypes
-            case .failed(let error):
-                viewState = .error
-                environment.log.prefixed(Self.self).error("Setting up queues. Failed to get site queues \(error)")
-            }
-        }
-    }
-
     func observeSecureUnreadMessageCount() {
         self.unreadSecureMessageSubscriptionId = environment.observeSecureUnreadMessageCount { [weak self] result in
             guard let self else {
@@ -342,6 +305,94 @@ private extension EntryWidget {
     }
 }
 
+// MARK: Queue Updates handling
+private extension EntryWidget {
+    func handleQueuesMonitorUpdates(
+        state: QueuesMonitor.State,
+        unreadSecureMessagesCount: Int?
+    ) {
+        if let ongoingState = resolveViewState(for: ongoingEngagement) {
+            environment.log.info("Preparing items based on ongoing engagement")
+            viewState = ongoingState
+        } else if let enqueuedState = resolveViewState(for: interactorState) {
+            environment.log.info("Preparing items based on ongoing engagement")
+            viewState = enqueuedState
+        } else {
+            viewState = resolveViewState(
+                for: state,
+                unreadSecureMessagesCount: unreadSecureMessagesCount
+            )
+        }
+    }
+
+    func resolveViewState(for ongoingEngagement: Engagement?) -> EntryWidget.ViewState? {
+        guard let ongoingEngagement else {
+            return nil
+        }
+
+        if ongoingEngagement.source == .callVisualizer {
+            return .ongoingEngagement(.callVisualizer)
+        } else if ongoingEngagement.source == .coreEngagement {
+            if ongoingEngagement.mediaStreams.video != nil {
+                return .ongoingEngagement(.video)
+            } else if ongoingEngagement.mediaStreams.audio != nil {
+                return .ongoingEngagement(.audio)
+            } else {
+                return .ongoingEngagement(.chat)
+            }
+        }
+        return nil
+    }
+
+    func resolveViewState(for interactorState: InteractorState) -> EntryWidget.ViewState? {
+        guard let engagementKind = interactorState.enqueiengEngagementKind else {
+            return nil
+        }
+
+        switch engagementKind {
+        case .none:
+            return nil
+        case .chat:
+            return .ongoingEngagement(.chat)
+        case .audioCall:
+            return .ongoingEngagement(.audio)
+        case .videoCall:
+            return .ongoingEngagement(.video)
+        case .messaging:
+            return .ongoingEngagement(.secureMessaging)
+        }
+    }
+
+    func resolveViewState(
+        for queuesMonitorState: QueuesMonitor.State,
+        unreadSecureMessagesCount: Int?
+    ) -> EntryWidget.ViewState {
+        switch queuesMonitorState {
+        case .idle:
+            return .loading
+        case .updated(let queues):
+            let availableEngagementTypes = resolveAvailableEngagementTypes(from: queues)
+            if availableEngagementTypes.isEmpty {
+                return .offline
+            } else {
+                let mediaTypes = availableEngagementTypes.map { type in
+                    if type == .secureMessaging {
+                        return EntryWidget.MediaTypeItem(
+                            type: type,
+                            badgeCount: unreadSecureMessagesCount ?? 0
+                        )
+                    }
+                    return EntryWidget.MediaTypeItem(type: type)
+                }
+                return .mediaTypes(mediaTypes)
+            }
+        case .failed(let error):
+            environment.log.prefixed(Self.self).error("Setting up queues. Failed to get site queues \(error)")
+            return .error
+        }
+    }
+}
+
 // MARK: - View State
 extension EntryWidget {
     enum ViewState: Equatable {
@@ -350,6 +401,17 @@ extension EntryWidget {
         case offline
         case error
         case ongoingEngagement(EngagementType)
+    }
+}
+
+private extension InteractorState {
+    var enqueiengEngagementKind: EngagementKind? {
+        switch self {
+        case .enqueued(_, let engagementKind), .enqueueing(let engagementKind):
+            return engagementKind
+        case .none, .engaged, .ended:
+            return nil
+        }
     }
 }
 
