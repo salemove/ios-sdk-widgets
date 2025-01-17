@@ -149,7 +149,7 @@ class EntryWidgetTests: XCTestCase {
         XCTAssertEqual(envCalls, [.start(.messaging(.welcome))])
     }
     
-    func test_availableEngagementTypesSortedWithNoFilters() {
+    func test_mediaTypesSortedWithNoFilters() {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio, .video, .text])
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
@@ -173,10 +173,13 @@ class EntryWidgetTests: XCTestCase {
             environment: environment
         )
 
-        XCTAssertEqual(entryWidget.availableEngagementTypes, [.video, .audio, .chat, .secureMessaging])
+        XCTAssertEqual(
+            entryWidget.viewState,
+            .mediaTypes([.init(type: .video), .init(type: .audio), .init(type: .chat), .init(type: .secureMessaging, badgeCount: 5)])
+        )
     }
     
-    func test_availableEngagementTypesSortedAndFilteredIfUserNotAuthenticated() {
+    func test_mediaTypesSortedAndFilteredIfUserNotAuthenticated() {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio, .video, .text])
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
@@ -203,10 +206,13 @@ class EntryWidgetTests: XCTestCase {
             environment: environment
         )
 
-        XCTAssertEqual(entryWidget.availableEngagementTypes, [.video, .audio, .chat])
+        XCTAssertEqual(
+            entryWidget.viewState,
+            .mediaTypes([.init(type: .video), .init(type: .audio), .init(type: .chat)])
+        )
     }
     
-    func test_availableEngagementTypesSortedAndFilteredSecureConversation() {
+    func test_mediaTypesSortedAndFilteredSecureConversation() {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio, .video, .text])
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
@@ -229,7 +235,10 @@ class EntryWidgetTests: XCTestCase {
             environment: environment
         )
 
-        XCTAssertEqual(entryWidget.availableEngagementTypes, [.video, .audio, .chat])
+        XCTAssertEqual(
+            entryWidget.viewState,
+            .mediaTypes([.init(type: .video), .init(type: .audio), .init(type: .chat)])
+        )
     }
 
     func test_ongoingEngagementViewStateIsShownWhenCoreEngagementIsChat() {
@@ -350,6 +359,108 @@ class EntryWidgetTests: XCTestCase {
         entryWidget.show(in: .init())
 
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.callVisualizer))
+    }
+
+    func test_ongoingEngagementViewStateIsShownWhenEnqueuedToChat() {
+        var environment = EntryWidget.Environment.mock()
+        let interactor: Interactor = .mock()
+        interactor.state = .enqueued(.mock, .chat)
+        environment.currentInteractor = { interactor }
+
+        let entryWidget = EntryWidget(
+            queueIds: [],
+            configuration: .default,
+            environment: environment
+        )
+
+        entryWidget.show(in: .init())
+
+        XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.chat))
+    }
+
+    func test_ongoingEngagementViewStateIsShownWhenEnqueuedToAudio() {
+        var environment = EntryWidget.Environment.mock()
+        let interactor: Interactor = .mock()
+        interactor.state = .enqueued(.mock, .audioCall)
+        environment.currentInteractor = { interactor }
+
+        let entryWidget = EntryWidget(
+            queueIds: [],
+            configuration: .default,
+            environment: environment
+        )
+
+        entryWidget.show(in: .init())
+
+        XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.audio))
+    }
+
+    func test_ongoingEngagementViewStateIsShownWhenEnqueuedToVideo() {
+        var environment = EntryWidget.Environment.mock()
+        let interactor: Interactor = .mock()
+        interactor.state = .enqueued(.mock, .videoCall)
+        environment.currentInteractor = { interactor }
+
+        let entryWidget = EntryWidget(
+            queueIds: [],
+            configuration: .default,
+            environment: environment
+        )
+
+        entryWidget.show(in: .init())
+
+        XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.video))
+    }
+    
+    func test_ongoingEngagementViewStateIsShownWhenEnqueueingToChat() {
+        var environment = EntryWidget.Environment.mock()
+        let interactor: Interactor = .mock()
+        interactor.state = .enqueueing(.chat)
+        environment.currentInteractor = { interactor }
+
+        let entryWidget = EntryWidget(
+            queueIds: [],
+            configuration: .default,
+            environment: environment
+        )
+
+        entryWidget.show(in: .init())
+
+        XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.chat))
+    }
+
+    func test_ongoingEngagementViewStateIsShownWhenEnqueueingToAudio() {
+        var environment = EntryWidget.Environment.mock()
+        let interactor: Interactor = .mock()
+        interactor.state = .enqueueing(.audioCall)
+        environment.currentInteractor = { interactor }
+
+        let entryWidget = EntryWidget(
+            queueIds: [],
+            configuration: .default,
+            environment: environment
+        )
+
+        entryWidget.show(in: .init())
+
+        XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.audio))
+    }
+
+    func test_ongoingEngagementViewStateIsShownWhenEnqueueingToVideo() {
+        var environment = EntryWidget.Environment.mock()
+        let interactor: Interactor = .mock()
+        interactor.state = .enqueueing(.videoCall)
+        environment.currentInteractor = { interactor }
+
+        let entryWidget = EntryWidget(
+            queueIds: [],
+            configuration: .default,
+            environment: environment
+        )
+
+        entryWidget.show(in: .init())
+
+        XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.video))
     }
 
     func test_callVisualizerResumeCallbackBeingCalled() {
