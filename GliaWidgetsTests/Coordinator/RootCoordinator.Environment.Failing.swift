@@ -69,6 +69,10 @@ extension EngagementCoordinator.Environment {
             fail("\(Self.self).secureMarkMessagesAsRead")
             return .mock
         },
+        markUnreadMessagesDelay: {
+            fail("\(Self.self).markUnreadMessagesDelay")
+            return .mock
+        },
         downloadSecureFile: { _, _, _ in
             fail("\(Self.self).downloadSecureFile")
             return .mock
@@ -107,6 +111,7 @@ extension EngagementCoordinator.Environment {
             fail("\(Self.self).createEntryWidget")
             return .mock()
         },
-        dismissManager: .failing
+        dismissManager: .failing,
+        combineScheduler: .failing
     )
 }

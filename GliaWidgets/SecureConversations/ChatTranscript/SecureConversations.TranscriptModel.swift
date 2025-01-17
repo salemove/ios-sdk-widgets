@@ -6,8 +6,6 @@ extension SecureConversations {
         typealias DelegateCallback = (DelegateEvent) -> Void
         typealias Action = ChatViewModel.Action
 
-        static let markUnreadMessagesDelaySeconds = 6
-
         enum DelegateEvent {
             case showFile(LocalFile)
             case pickMedia(ObservableValue<MediaPickerEvent>)
@@ -87,6 +85,8 @@ extension SecureConversations {
         }
 
         let transcriptMessageLoader: SecureConversations.MessagesWithUnreadCountLoader
+
+        private var markMessagesAsReadCancellables = CancelBag()
 
         init(
             isCustomCardSupported: Bool,
@@ -596,43 +596,9 @@ extension SecureConversations.TranscriptModel {
             delegate?(.upgradeToChatEngagement(self))
         case let .receivedMessage(message):
             receiveMessage(from: .socket(message))
-            markMessagesAsRead(delayed: false)
+            markMessagesAsRead(with: message.sender.type != .visitor)
         default:
             break
-        }
-    }
-
-    func markMessagesAsRead(delayed: Bool = true, with predicate: Bool = true) {
-        guard predicate else {
-            return
-        }
-        let mainQueue = environment.gcd.mainQueue
-        let delay = DispatchTimeInterval.seconds(delayed ? Self.markUnreadMessagesDelaySeconds : 0)
-        let dispatchTime: DispatchTime = .now() + delay
-
-        mainQueue.asyncAfterDeadline(dispatchTime) { [environment, weak historySection, action, weak self] in
-            _ = environment.secureMarkMessagesAsRead { result in
-                switch result {
-                case .success:
-                    guard let historySection = historySection else { return }
-
-                    historySection.removeAll(where: {
-                        if case .unreadMessageDivider = $0.kind {
-                            return true
-                        }
-
-                        return false
-                    })
-
-                    action?(.refreshSection(historySection.index, animated: true))
-
-                    if self?.isChatScrolledToBottom.value ?? false {
-                        action?(.scrollToBottom(animated: true))
-                    }
-                case .failure:
-                    break
-                }
-            }
         }
     }
 
@@ -793,6 +759,55 @@ extension SecureConversations.TranscriptModel {
             }
             self?.environment.switchToEngagement(kind)
         }))
+    }
+}
+
+// MARK: Mark messages as read
+extension SecureConversations.TranscriptModel: ApplicationVisibilityTracker {
+    // The method is used to mark messages as read with delay
+    // when the app is visible or becomes visible.
+    // - Parameters:
+    //   - predicate: A boolean value that determines whether messages should be marked as read.
+    func markMessagesAsRead(with predicate: Bool = true) {
+        guard predicate else {
+            return
+        }
+        markMessagesAsReadCancellables.removeAll()
+        isAppVisiblePublisher(
+            for: environment.uiApplication.applicationState(),
+            notificationCenter: environment.notificationCenter,
+            resumeToForegroundDelay: environment.markUnreadMessagesDelay(),
+            delayScheduler: environment.combineScheduler.global()
+        )
+            .sink { [weak self] _ in
+                self?.performMarkMessagesAsReadRequest()
+            }
+            .store(in: &markMessagesAsReadCancellables)
+    }
+
+    fileprivate func performMarkMessagesAsReadRequest() {
+        _ = environment.secureMarkMessagesAsRead { [weak self] result in
+            guard let self else { return }
+
+            switch result {
+            case .success:
+                historySection.removeAll(where: {
+                    if case .unreadMessageDivider = $0.kind {
+                        return true
+                    }
+
+                    return false
+                })
+
+                action?(.refreshSection(self.historySection.index, animated: true))
+
+                if isChatScrolledToBottom.value {
+                    action?(.scrollToBottom(animated: true))
+                }
+            case .failure:
+                break
+            }
+        }
     }
 }
 

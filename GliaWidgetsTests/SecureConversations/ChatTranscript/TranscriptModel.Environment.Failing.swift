@@ -88,6 +88,12 @@ extension SecureConversations.TranscriptModel.Environment {
         switchToEngagement: .init { _ in
             fail("\(Self.self).switchToEngagement")
         },
-        topBannerItemsStyle: .mock()
+        topBannerItemsStyle: .mock(),
+        notificationCenter: .failing,
+        markUnreadMessagesDelay: {
+            fail("\(Self.self).markUnreadMessagesDelay")
+            return .mock
+        },
+        combineScheduler: .failing
     )
 }

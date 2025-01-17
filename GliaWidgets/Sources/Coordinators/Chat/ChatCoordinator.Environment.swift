@@ -47,6 +47,8 @@ extension ChatCoordinator {
         var shouldShowLeaveSecureConversationDialog: Bool
         var leaveCurrentSecureConversation: Cmd
         var switchToEngagement: Command<EngagementKind>
+        var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
+        var combineScheduler: CombineBased.CombineScheduler
     }
 }
 
@@ -103,7 +105,9 @@ extension ChatCoordinator.Environment {
             createEntryWidget: environment.createEntryWidget,
             shouldShowLeaveSecureConversationDialog: shouldShowLeaveSecureConversationDialog,
             leaveCurrentSecureConversation: leaveCurrentSecureConversation,
-            switchToEngagement: switchToEngagement
+            switchToEngagement: switchToEngagement,
+            markUnreadMessagesDelay: environment.markUnreadMessagesDelay,
+            combineScheduler: environment.combineScheduler
         )
     }
 
@@ -153,7 +157,9 @@ extension ChatCoordinator.Environment {
             createEntryWidget: environment.createEntryWidget,
             shouldShowLeaveSecureConversationDialog: environment.shouldShowLeaveSecureConversationDialog,
             leaveCurrentSecureConversation: environment.leaveCurrentSecureConversation,
-            switchToEngagement: environment.switchToEngagement
+            switchToEngagement: environment.switchToEngagement,
+            markUnreadMessagesDelay: environment.markUnreadMessagesDelay,
+            combineScheduler: environment.combineScheduler
         )
     }
 }

@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 class ChatViewModel: EngagementViewModel {
     typealias ActionCallback = (Action) -> Void
@@ -61,6 +62,8 @@ class ChatViewModel: EngagementViewModel {
     }
 
     private(set) var chatType: ChatType
+
+    private var markMessagesAsReadCancellables = CancelBag()
 
     init(
         interactor: Interactor,
@@ -702,6 +705,10 @@ extension ChatViewModel {
             // there is a new message from the user or GVA
             action?(.quickReplyPropsUpdated(.hidden))
         }
+
+        markMessagesAsRead(
+            with: message.sender.type != .visitor && environment.getCurrentEngagement()?.actionOnEnd == .retain
+        )
     }
 
     private func messagesUpdated(_ messages: [CoreSdkClient.Message]) {
@@ -981,6 +988,31 @@ extension ChatViewModel {
         case .authenticated: return false
         case .nonAuthenticated: return false
         }
+    }
+}
+
+// MARK: Mark messages as read
+extension ChatViewModel: ApplicationVisibilityTracker {
+    // The method is used to mark messages as read with delay
+    // when the app and screen are visible or become visible.
+    // - Parameters:
+    //   - predicate: A boolean value that determines whether messages should be marked as read.
+    func markMessagesAsRead(with predicate: Bool = true) {
+        guard predicate else {
+            return
+        }
+        markMessagesAsReadCancellables.removeAll()
+        isViewVisiblePublisher(
+            for: environment.uiApplication.applicationState(),
+            notificationCenter: environment.notificationCenter,
+            isViewVisiblePublisher: isViewActive.toCombinePublisher(),
+            resumeToForegroundDelay: environment.markUnreadMessagesDelay(),
+            delayScheduler: environment.combineScheduler.global()
+        )
+            .sink { [weak self] _ in
+                _ = self?.environment.secureMarkMessagesAsRead { _ in }
+            }
+            .store(in: &markMessagesAsReadCancellables)
     }
 }
 
