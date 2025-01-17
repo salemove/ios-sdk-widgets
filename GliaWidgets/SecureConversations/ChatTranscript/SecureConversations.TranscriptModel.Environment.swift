@@ -36,6 +36,9 @@ extension SecureConversations.TranscriptModel {
         var createEntryWidget: EntryWidgetBuilder
         var switchToEngagement: Command<EngagementKind>
         var topBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle
+        var notificationCenter: FoundationBased.NotificationCenter
+        var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
+        var combineScheduler: CombineBased.CombineScheduler
     }
 }
 
@@ -79,7 +82,10 @@ extension SecureConversations.TranscriptModel.Environment {
             leaveCurrentSecureConversation: environment.leaveCurrentSecureConversation,
             createEntryWidget: environment.createEntryWidget,
             switchToEngagement: environment.switchToEngagement,
-            topBannerItemsStyle: viewFactory.theme.chat.secureMessagingExpandedTopBannerItemsStyle
+            topBannerItemsStyle: viewFactory.theme.chat.secureMessagingExpandedTopBannerItemsStyle,
+            notificationCenter: environment.notificationCenter,
+            markUnreadMessagesDelay: environment.markUnreadMessagesDelay,
+            combineScheduler: environment.combineScheduler
        )
     }
 }
@@ -121,7 +127,10 @@ extension SecureConversations.TranscriptModel.Environment {
         createEntryWidget: @escaping EntryWidgetBuilder = { _ in .mock() },
         switchToEngagement: Command<EngagementKind> = .nop,
         // swiftlint:disable:next line_length
-        secureMessagingExpandedTopBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle = Theme().chatStyle.secureMessagingExpandedTopBannerItemsStyle
+        secureMessagingExpandedTopBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle = Theme().chatStyle.secureMessagingExpandedTopBannerItemsStyle,
+        notificationCenter: FoundationBased.NotificationCenter = .mock,
+        markUnreadMessagesDelay: @escaping () -> DispatchQueue.SchedulerTimeType.Stride = { .mock },
+        combineScheduler: CombineBased.CombineScheduler = .mock
     ) -> Self {
         Self(
             fetchFile: fetchFile,
@@ -157,7 +166,10 @@ extension SecureConversations.TranscriptModel.Environment {
             leaveCurrentSecureConversation: leaveCurrentSecureConversation,
             createEntryWidget: createEntryWidget,
             switchToEngagement: switchToEngagement,
-            topBannerItemsStyle: secureMessagingExpandedTopBannerItemsStyle
+            topBannerItemsStyle: secureMessagingExpandedTopBannerItemsStyle,
+            notificationCenter: notificationCenter,
+            markUnreadMessagesDelay: markUnreadMessagesDelay,
+            combineScheduler: combineScheduler
         )
     }
 }

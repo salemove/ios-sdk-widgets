@@ -35,7 +35,8 @@ extension Glia.Environment {
         processInfo: .mock(),
         cameraDeviceManager: { .mock },
         isAuthenticated: { false },
-        dismissManager: .init { _, _, _ in }
+        dismissManager: .init { _, _, _ in },
+        combineScheduler: .mock
     )
 }
 

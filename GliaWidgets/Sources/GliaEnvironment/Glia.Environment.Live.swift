@@ -56,7 +56,8 @@ extension Glia.Environment {
         },
         dismissManager: .init { viewController, animated, completion in
             viewController.dismiss(animated: animated, completion: completion)
-        }
+        },
+        combineScheduler: .live
     )
 }
 

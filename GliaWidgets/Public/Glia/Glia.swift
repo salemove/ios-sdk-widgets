@@ -78,6 +78,7 @@ public protocol SceneProvider: AnyObject {
 
 private extension Glia {
     static let maximumUploads = 25
+    static let markUnreadMessagesDelaySeconds = 6
 }
 
 /// Glia's engagement interface.
@@ -104,6 +105,8 @@ public class Glia {
         }
         return value
     }()
+
+    lazy var markUnreadMessagesDelay: DispatchQueue.SchedulerTimeType.Stride = .seconds(Self.markUnreadMessagesDelaySeconds)
 
     public lazy var callVisualizer = CallVisualizer(
         environment: .create(

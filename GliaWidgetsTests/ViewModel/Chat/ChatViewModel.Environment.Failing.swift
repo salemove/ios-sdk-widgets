@@ -63,7 +63,11 @@ extension ChatViewModel.Environment {
             isAuthenticated: {
                 fail("\(Self.self).isAuthenticated")
                 return false
-            }
+            },
+            notificationCenter: .mock,
+            secureMarkMessagesAsRead: { _ in .mock },
+            markUnreadMessagesDelay: { .mock },
+            combineScheduler: .failing
         )
     }
 }
