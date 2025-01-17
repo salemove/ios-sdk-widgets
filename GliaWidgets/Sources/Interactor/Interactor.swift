@@ -70,7 +70,7 @@ class Interactor {
 
     private var observers = [() -> (AnyObject?, EventHandler)]()
 
-    var state: InteractorState = .none {
+    @Published var state: InteractorState = .none {
         didSet {
             if oldValue != state {
                 notify(.stateChanged(state))

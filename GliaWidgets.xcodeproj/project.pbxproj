@@ -5244,19 +5244,19 @@
 		C0F3DE352C69F4A700DE6D7B /* EntryWidget */ = {
 			isa = PBXGroup;
 			children = (
-				216D31192CFE25630019CA9E /* MediaTypeItems */,
-				216D31182CFE25570019CA9E /* MediaTypeItem */,
 				C0F7EA372CA1D6D40038019C /* CustomPresentationController.swift */,
 				216D31022CEF83A90019CA9E /* EntryWidget.Builder.swift */,
-				C0F3DE362C69F51D00DE6D7B /* EntryWidget.swift */,
+				C0F7EA392CA1D7050038019C /* EntryWidget.Configuration.swift */,
 				2100B47B2CB66B6500AC7527 /* EntryWidget.Environment.swift */,
 				C0F3DE3E2C6E176A00DE6D7B /* EntryWidget.MediaTypeItem.swift */,
 				C0F3DE382C69FC2100DE6D7B /* EntryWidget.Presentation.swift */,
-				C0F7EA392CA1D7050038019C /* EntryWidget.Configuration.swift */,
-				C0F3DE442C6E3D7C00DE6D7B /* EntryWidgetStyle.swift */,
+				C0F3DE362C69F51D00DE6D7B /* EntryWidget.swift */,
 				C034EEEC2CAAB525002650B8 /* EntryWidgetStyle.RemoteConfig.swift */,
+				C0F3DE442C6E3D7C00DE6D7B /* EntryWidgetStyle.swift */,
 				C0F3DE3A2C6E0DD900DE6D7B /* EntryWidgetView.swift */,
 				C0F3DE3C2C6E170600DE6D7B /* EntryWidgetViewModel.swift */,
+				216D31182CFE25570019CA9E /* MediaTypeItem */,
+				216D31192CFE25630019CA9E /* MediaTypeItems */,
 			);
 			path = EntryWidget;
 			sourceTree = "<group>";
