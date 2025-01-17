@@ -72,7 +72,8 @@ extension Glia.Environment {
         },
         dismissManager: .init { _, _, _ in
             fail("\(Self.self).dismissManager")
-        }
+        },
+        combineScheduler: .failing
     )
 }
 

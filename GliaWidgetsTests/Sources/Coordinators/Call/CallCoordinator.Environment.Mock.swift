@@ -31,6 +31,9 @@ extension CallCoordinator.Environment {
         cameraDeviceManager: { .mock },
         flipCameraButtonStyle: .nop,
         alertManager: .mock(),
-        isAuthenticated: { false }
+        isAuthenticated: { false },
+        secureMarkMessagesAsRead: { _ in .mock },
+        markUnreadMessagesDelay: { .mock },
+        combineScheduler: .mock
     )
 }

@@ -29,6 +29,10 @@ extension EngagementViewModel {
         var flipCameraButtonStyle: FlipCameraButtonStyle
         var alertManager: AlertManager
         var isAuthenticated: () -> Bool
+        var notificationCenter: FoundationBased.NotificationCenter
+        var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
+        var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
+        var combineScheduler: CombineBased.CombineScheduler
     }
 }
 
@@ -64,7 +68,11 @@ extension EngagementViewModel.Environment {
             cameraDeviceManager: environment.cameraDeviceManager,
             flipCameraButtonStyle: environment.flipCameraButtonStyle,
             alertManager: environment.alertManager,
-            isAuthenticated: environment.isAuthenticated
+            isAuthenticated: environment.isAuthenticated,
+            notificationCenter: environment.notificationCenter,
+            secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
+            markUnreadMessagesDelay: environment.markUnreadMessagesDelay,
+            combineScheduler: environment.combineScheduler
         )
     }
 
@@ -99,7 +107,11 @@ extension EngagementViewModel.Environment {
             cameraDeviceManager: environment.cameraDeviceManager,
             flipCameraButtonStyle: environment.flipCameraButtonStyle,
             alertManager: environment.alertManager,
-            isAuthenticated: environment.isAuthenticated
+            isAuthenticated: environment.isAuthenticated,
+            notificationCenter: environment.notificationCenter,
+            secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
+            markUnreadMessagesDelay: environment.markUnreadMessagesDelay,
+            combineScheduler: environment.combineScheduler
         )
     }
 }

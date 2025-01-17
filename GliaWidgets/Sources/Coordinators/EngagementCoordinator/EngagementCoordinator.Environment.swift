@@ -30,6 +30,7 @@ extension EngagementCoordinator {
         var getSecureUnreadMessageCount: CoreSdkClient.GetSecureUnreadMessageCount
         var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
         var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
+        var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
         var downloadSecureFile: CoreSdkClient.DownloadSecureFile
         var isAuthenticated: () -> Bool
         var startSocketObservation: CoreSdkClient.StartSocketObservation
@@ -48,6 +49,7 @@ extension EngagementCoordinator {
         var pendingSecureConversationStatus: CoreSdkClient.PendingSecureConversationStatus
         var createEntryWidget: EntryWidgetBuilder
         var dismissManager: GliaPresenter.DismissManager
+        var combineScheduler: CombineBased.CombineScheduler
     }
 }
 
@@ -55,6 +57,7 @@ extension EngagementCoordinator.Environment {
     static func create(
         with environment: Glia.Environment,
         loggerPhase: Glia.LoggerPhase,
+        markUnreadMessagesDelay: @escaping () -> DispatchQueue.SchedulerTimeType.Stride,
         maximumUploads: @escaping () -> Int,
         viewFactory: ViewFactory,
         alertManager: AlertManager,
@@ -90,6 +93,7 @@ extension EngagementCoordinator.Environment {
             getSecureUnreadMessageCount: environment.coreSdk.getSecureUnreadMessageCount,
             messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
             secureMarkMessagesAsRead: environment.coreSdk.secureMarkMessagesAsRead,
+            markUnreadMessagesDelay: markUnreadMessagesDelay,
             downloadSecureFile: environment.coreSdk.downloadSecureFile,
             isAuthenticated: environment.isAuthenticated,
             startSocketObservation: environment.coreSdk.startSocketObservation,
@@ -107,7 +111,8 @@ extension EngagementCoordinator.Environment {
             queuesMonitor: queuesMonitor,
             pendingSecureConversationStatus: environment.coreSdk.pendingSecureConversationStatus,
             createEntryWidget: createEntryWidget,
-            dismissManager: environment.dismissManager
+            dismissManager: environment.dismissManager,
+            combineScheduler: environment.combineScheduler
         )
     }
 }

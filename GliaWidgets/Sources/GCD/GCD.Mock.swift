@@ -29,3 +29,7 @@ extension GCD.MainQueue {
         }
     )
 }
+
+extension DispatchQueue.SchedulerTimeType.Stride {
+    static let mock = Self.zero
+}

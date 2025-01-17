@@ -31,6 +31,9 @@ extension CallCoordinator {
         var flipCameraButtonStyle: FlipCameraButtonStyle
         var alertManager: AlertManager
         var isAuthenticated: () -> Bool
+        var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
+        var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
+        var combineScheduler: CombineBased.CombineScheduler
     }
 }
 
@@ -65,7 +68,10 @@ extension CallCoordinator.Environment {
             cameraDeviceManager: environment.cameraDeviceManager,
             flipCameraButtonStyle: environment.flipCameraButtonStyle,
             alertManager: environment.alertManager,
-            isAuthenticated: environment.isAuthenticated
+            isAuthenticated: environment.isAuthenticated,
+            secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
+            markUnreadMessagesDelay: environment.markUnreadMessagesDelay,
+            combineScheduler: environment.combineScheduler
         )
     }
 }

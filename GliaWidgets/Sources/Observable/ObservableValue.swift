@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 class ObservableValue<T: Any> {
     typealias Update = (_ new: T, _ old: T) -> Void
@@ -22,6 +23,26 @@ class ObservableValue<T: Any> {
 
     func removeObserver(_ observer: AnyObject) {
         observers.removeAll(where: { $0().0 === observer })
+    }
+
+    func toCombinePublisher() -> AnyPublisher<T, Never> {
+        // Create a publisher with current value
+        let publisher = CurrentValueSubject<T, Never>(aValue)
+
+        // Unique object to identify the subscription
+        let uniqObject = NSObject()
+
+        // Subscribe to get updates
+        addObserver(uniqObject) { new, _ in
+            publisher.send(new)
+        }
+
+        return publisher
+            .handleEvents(receiveCancel: { [weak self] in
+                // Remove observer when publisher is cancelled
+                self?.removeObserver(uniqObject)
+            })
+            .eraseToAnyPublisher()
     }
 
     private func set(_ new: T) {

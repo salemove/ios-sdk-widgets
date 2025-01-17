@@ -36,7 +36,11 @@ extension ChatViewModel.Environment {
         cameraDeviceManager: { .mock },
         flipCameraButtonStyle: .nop,
         alertManager: .mock(),
-        isAuthenticated: { false }
+        isAuthenticated: { false },
+        notificationCenter: .mock,
+        secureMarkMessagesAsRead: { _ in .mock },
+        markUnreadMessagesDelay: { .mock },
+        combineScheduler: .mock
     )
 }
 #endif

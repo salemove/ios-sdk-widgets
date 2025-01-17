@@ -195,6 +195,7 @@ extension Glia {
             environment: .create(
                 with: environment,
                 loggerPhase: loggerPhase,
+                markUnreadMessagesDelay: { self.markUnreadMessagesDelay },
                 maximumUploads: { self.maximumUploads },
                 viewFactory: viewFactory,
                 alertManager: alertManager,
