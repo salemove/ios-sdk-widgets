@@ -6,6 +6,7 @@ extension ChatView {
     }
 }
 
+// swiftlint:disable file_length
 class ChatView: EngagementView {
     let tableAndIndicatorStack = UIStackView()
     let tableView = UITableView()
@@ -509,7 +510,13 @@ extension ChatView {
         guard let entryWidget else {
             return
         }
-        let isAnyEngagementTypeAvailable = entryWidget.$availableEngagementTypes
+        let isAnyEngagementTypeAvailable = entryWidget.$viewState
+            .map {
+                if case let .mediaTypes(availableMediaTypes) = $0 {
+                    return availableMediaTypes
+                }
+                return []
+            }
             .map { !$0.isEmpty }
         isAnyEngagementTypeAvailable
             .filter { !$0 }
@@ -1001,3 +1008,4 @@ extension ChatView {
         return .gvaPersistentButton(view)
     }
 }
+// swiftlint:enable file_length
