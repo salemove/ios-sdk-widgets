@@ -58,6 +58,8 @@ extension SecureConversations.Coordinator.Environment {
         createEntryWidget: { _ in .mock() },
         shouldShowLeaveSecureConversationDialog: false,
         leaveCurrentSecureConversation: .nop,
-        switchToEngagement: .nop
+        switchToEngagement: .nop,
+        markUnreadMessagesDelay: { .mock },
+        combineScheduler: .mock
     )
 }
