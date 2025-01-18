@@ -188,6 +188,8 @@ extension EngagementCoordinator {
             break
         }
 
+        let engagementEnded = interactor.state.isEnded
+
         let dismissGliaViewController: () -> Void = { [weak self] in
             self?.dismissGliaViewController(animated: true) { [weak self] in
                 self?.delegateEvent(.minimized)
@@ -195,7 +197,15 @@ extension EngagementCoordinator {
                 self?.navigationPresenter.setViewControllers([], animated: false)
                 self?.removeAllCoordinators()
                 self?.engagementLaunching = .direct(kind: .none)
-                self?.delegate?(.ended)
+                // If engagement was ended then pass `ended` event. This
+                // initiates sending `ended` event to integrators.
+                // Otherwise, pass `closed` meaning that Glia screen was closed
+                // without having an engagement. This does not send `ended` event to integrators.
+                if engagementEnded {
+                    self?.delegate?(.ended)
+                } else {
+                    self?.delegate?(.closed)
+                }
             }
         }
 
@@ -687,7 +697,10 @@ extension EngagementCoordinator {
     enum DelegateEvent: Equatable {
         case started
         case engagementChanged(EngagementKind)
+        // Glia screen is closed after once an engagement is ended
         case ended
+        // Glia screen is closed without having an engagement
+        case closed
         case minimized
         case maximized
     }

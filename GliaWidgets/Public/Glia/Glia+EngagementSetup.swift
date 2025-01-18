@@ -214,6 +214,11 @@ extension Glia {
         case .ended:
             rootCoordinator = nil
             onEvent?(.ended)
+        case .closed:
+            rootCoordinator = nil
+            // If engagement was started/restored while visitor was
+            // on SecureConversation Confirmation screen, we need to restore the bubble.
+            restoreOngoingEngagementIfPresent()
         case .minimized:
             onEvent?(.minimized)
         case .maximized:

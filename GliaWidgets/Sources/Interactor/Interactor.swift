@@ -6,6 +6,11 @@ enum InteractorState {
     case enqueued(CoreSdkClient.QueueTicket, EngagementKind)
     case engaged(CoreSdkClient.Operator?)
     case ended(EndEngagementReason)
+
+    var isEnded: Bool {
+        guard case .ended = self else { return false }
+        return true
+    }
 }
 
 enum EndEngagementReason {

@@ -9,11 +9,6 @@ final class EngagementCoordinatorTests: XCTestCase {
         coordinator = createCoordinator()
     }
 
-    override func tearDown() {
-        coordinator.end()
-        coordinator = nil
-    }
-
     // Start
 
     func test_startText() throws {
@@ -134,6 +129,7 @@ final class EngagementCoordinatorTests: XCTestCase {
 
         let engagement: CoreSdkClient.Engagement = .mock(fetchSurvey: { _, completion in completion(.success(survey)) })
         coordinator.interactor.setCurrentEngagement(engagement)
+        coordinator.interactor.state = .ended(.byVisitor)
         coordinator.end(surveyPresentation: .doNotPresentSurvey)
 
         XCTAssertEqual(coordinator.navigationPresenter.viewControllers.count, 0)
@@ -240,6 +236,21 @@ final class EngagementCoordinatorTests: XCTestCase {
         let flowCoordinator = coordinator.coordinators.last
 
         XCTAssertNil(flowCoordinator)
+    }
+
+    func test_closeCoordinatorWithoutHavingEngagement() throws {
+        var calledEvents: [EngagementCoordinator.DelegateEvent] = []
+
+        coordinator.delegate = { event in
+            calledEvents.append(event)
+        }
+
+        coordinator.start()
+
+        let chatCoordinator = coordinator.coordinators.last as? ChatCoordinator
+        chatCoordinator?.delegate?(.finished)
+
+        XCTAssertEqual(calledEvents.last, .closed)
     }
 }
 
