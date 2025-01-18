@@ -770,7 +770,9 @@ extension SecureConversations.TranscriptModel {
             ),
             showPoweredBy: false,
             filterSecureConversation: true,
-            mediaTypeSelected: .init(closure: entryWidgetMediaTypeSelected),
+            mediaTypeSelected: .init { [weak self] mediaType in
+                self?.entryWidgetMediaTypeSelected(mediaType)
+            },
             mediaTypeItemsStyle: environment.topBannerItemsStyle
         )
     }
