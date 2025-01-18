@@ -93,6 +93,11 @@ extension Glia {
             }
         }
 
+        // This value can be set to `true` if engagement restoring happened.
+        // To prevent missing Live Observation Confirmation dialog to be shown
+        // for further engagements, we need to default this value again.
+        interactor.skipLiveObservationConfirmations = false
+
         startRootCoordinator(
             with: interactor,
             viewFactory: viewFactory,

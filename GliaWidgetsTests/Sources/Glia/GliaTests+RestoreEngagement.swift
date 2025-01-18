@@ -1,8 +1,9 @@
 @testable import GliaWidgets
+import GliaCoreSDK
 import XCTest
 
 extension GliaTests {
-    func test_restoreOngoingEngagementSetsSkipLiveObservationConfirmationsToTrueAndPresentsSnackbar() throws {
+    func test_skipLiveObservationConfirmations() throws {
         var sdkEnv = Glia.Environment.failing
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         let rootCoordinator = EngagementCoordinator.mock(
@@ -19,7 +20,9 @@ extension GliaTests {
         logger.configureRemoteLogLevelClosure = { _ in }
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }
         sdkEnv.coreSdk.createLogger = { _ in logger }
+        sdkEnv.gcd.mainQueue.async = { $0() }
         let siteMock = try CoreSdkClient.Site.mock()
         sdkEnv.coreSdk.fetchSiteConfigurations = { callback in callback(.success(siteMock)) }
         sdkEnv.coreSdk.pendingSecureConversationStatus = { _ in }
@@ -46,6 +49,11 @@ extension GliaTests {
             calls.append(.snackBarPresent)
         }
 
+        sdkEnv.coreSdk.listQueues = { callback in callback([], nil) }
+        sdkEnv.coreSdk.subscribeForQueuesUpdates = { _, _ in
+            return UUID.mock.uuidString
+        }
+
         let sdk = Glia(environment: sdkEnv)
         sdk.rootCoordinator = rootCoordinator
 
@@ -67,5 +75,13 @@ extension GliaTests {
 
         try XCTAssertTrue(XCTUnwrap(sdk.interactor?.skipLiveObservationConfirmations))
         XCTAssertEqual(calls, [.snackBarPresent])
+
+        // end restored engagement
+        sdk.interactor?.end(with: .visitorHungUp)
+        
+        let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
+        try engagementLauncher.startChat()
+
+        try XCTAssertFalse(XCTUnwrap(sdk.interactor?.skipLiveObservationConfirmations))
     }
 }
