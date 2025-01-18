@@ -266,6 +266,7 @@ public class Glia {
                     // valid to consider SDK configured if PI is not created.
                     do {
                         pendingInteraction = try .init(environment: .init(with: environment.coreSdk))
+                        startObservingInteractorEvents()
                         completion(.success(()))
                     } catch let error as SecureConversations.PendingInteraction.Error {
                         switch error {
@@ -496,6 +497,26 @@ extension Glia {
         self.interactor = interactor
 
         return interactor
+    }
+
+    /// Used to restore a bubble for Secure Conversation engagement:
+    /// - started by accepting engagement request;
+    /// - started by Outbound message;
+    /// - restored from Follow Up.
+    func startObservingInteractorEvents() {
+        interactor?.addObserver(self) { [weak self] event in
+            // We need to handle `engaged` state only to restore an engagement.
+            guard
+                case let .stateChanged(interactorState) = event,
+                case .engaged = interactorState
+            else { return }
+
+            self?.restoreOngoingEngagementIfPresent()
+        }
+    }
+
+    func stopObservingInteractorEvents() {
+        interactor?.removeObserver(self)
     }
 }
 

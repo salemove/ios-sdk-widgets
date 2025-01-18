@@ -85,6 +85,11 @@ extension Glia {
 
                 let prevEngagementIsNotPresent = self?.environment.coreSdk.getCurrentEngagement() == nil
 
+                // We need to unsubscribe from listening to Interactor events
+                // until authentication is finished to avoid
+                // calling engagement restoration twice.
+                self?.stopObservingInteractorEvents()
+
                 auth.authenticate(
                     with: .init(rawValue: idToken),
                     externalAccessToken: accessToken.map { .init(rawValue: $0) }
@@ -116,6 +121,9 @@ extension Glia {
                                     features: self?.features
                                 )
                             }
+                            // We need to subscribe on Interactor events
+                            // once authentication if finished.
+                            self?.startObservingInteractorEvents()
                         case .failure:
                             break
                         }

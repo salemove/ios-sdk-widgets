@@ -1,6 +1,31 @@
 import Foundation
 
 extension Glia {
+    /// Used to restore a bubble for Secure Conversation engagement:
+    /// - started by accepting engagement request;
+    /// - started by Outbound message;
+    /// - restored from Follow Up.
+    func restoreOngoingEngagementIfPresent() {
+        guard let interactor, let configuration else { return }
+
+        guard
+            let currentEngagement = self.environment.coreSdk.getCurrentEngagement(),
+            currentEngagement.source == .coreEngagement
+        else { return }
+
+        // Restore only if rootCoordinator is `nil`, meaning Glia screen is not set up.
+        guard rootCoordinator == nil else { return }
+
+        restoreOngoingEngagement(
+            configuration: configuration,
+            currentEngagement: currentEngagement,
+            interactor: interactor,
+            features: features ?? [],
+            maximize: false
+        )
+        loggerPhase.logger.prefixed(Self.self).info("Engagement was restored")
+    }
+
     func restoreOngoingEngagement(
         configuration: Configuration,
         currentEngagement: CoreSdkClient.Engagement,
