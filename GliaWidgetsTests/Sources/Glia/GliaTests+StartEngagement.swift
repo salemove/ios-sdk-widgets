@@ -635,6 +635,60 @@ extension GliaTests {
 
         XCTAssertEqual(engagementLaunching.currentKind, .messaging(.chatTranscript))
     }
+
+    func testEngagementParamsDoNotLeakThroughEngagements() throws {
+        var environment = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        logger.infoClosure = { _, _, _, _ in }
+        logger.prefixedClosure = { _ in logger }
+        environment.coreSdk.createLogger = { _ in logger }
+        environment.print = .mock
+        environment.conditionalCompilation.isDebug = { true }
+        environment.gcd.mainQueue.async = { $0() }
+
+        var engagementLaunching: EngagementCoordinator.EngagementLaunching = .direct(kind: .audioCall)
+
+        environment.createRootCoordinator = { _, _, _, launching, _, _, _ in
+            engagementLaunching = launching
+            return .mock(environment: .engagementCoordEnvironmentWithKeyWindow)
+        }
+
+        environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
+        environment.coreSdk.pendingSecureConversationStatus = { $0(.success(false)) }
+        environment.coreSDKConfigurator.configureWithInteractor = { _ in }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.success(()))
+        }
+        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        environment.coreSdk.fetchSiteConfigurations = { _ in }
+
+        let sdk = Glia(environment: environment)
+        sdk.queuesMonitor = .mock()
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+        // Mock ongoing Audio engagement
+        sdk.environment.coreSdk.getCurrentEngagement = { .mock(media: .init(audio: .twoWay, video: nil)) }
+
+        let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
+        try engagementLauncher.startChat()
+        XCTAssertEqual(engagementLaunching.currentKind, .audioCall)
+
+        // End audio engagement
+        sdk.environment.coreSdk.getCurrentEngagement = { nil }
+        sdk.interactor?.end(with: .operatorHungUp)
+
+        try engagementLauncher.startChat()
+
+        XCTAssertEqual(engagementLaunching.currentKind, .chat)
+    }
 }
 
 extension EngagementCoordinator.Environment: Transformable {

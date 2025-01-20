@@ -8,7 +8,7 @@ public final class EngagementLauncher {
 
     private var startEngagement: StartEngagementAction
 
-    init(startEngagement: @escaping StartEngagementAction) rethrows {
+    init(startEngagement: @escaping StartEngagementAction) {
         self.startEngagement = startEngagement
     }
 
