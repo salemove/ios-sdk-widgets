@@ -41,7 +41,7 @@ extension Glia {
                 interactor: getInteractor(),
                 queueIds: queueIds
             )
-            try self.resolveEngagementState(
+            self.resolveEngagementState(
                 engagementKind: engagementKind,
                 sceneProvider: sceneProvider,
                 configuration: parameters.configuration,

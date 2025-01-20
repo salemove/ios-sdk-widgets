@@ -118,6 +118,13 @@ extension CallVisualizer {
     func observeScreenSharingHandlerState() {
         coordinator.observeScreenSharingHandlerState()
     }
+
+    func restoreVideoIfPossible() {
+        guard let engagement = environment.getCurrentEngagement(), engagement.source == .callVisualizer && engagement.mediaStreams.video != nil else {
+            return
+        }
+        coordinator.restoreVideoCall()
+    }
 }
 
 // MARK: - Interactor Events

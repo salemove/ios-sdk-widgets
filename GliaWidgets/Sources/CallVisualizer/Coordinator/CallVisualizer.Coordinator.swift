@@ -163,6 +163,14 @@ extension CallVisualizer.Coordinator {
             self.showSnackBarMessage(text: self.environment.viewFactory.theme.snackBar.text)
         }
     }
+
+    func restoreVideoCall() {
+        if videoCallCoordinator != nil {
+            resumeVideoCallViewController()
+        } else {
+            showVideoCallViewController()
+        }
+    }
 }
 
 // MARK: - Video screen

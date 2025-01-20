@@ -48,7 +48,7 @@ extension GliaTests {
         XCTAssertNoThrow(try engagementLauncher.startChat())
     }
 
-    func testStartEngagementThrowsErrorDuringActiveCallVisualizerEngagement() throws {
+    func testStartEngagementShowsSnackBarDuringActiveCallVisualizerEngagement() throws {
         enum Call {
             case presentSnackBar
         }
@@ -89,12 +89,9 @@ extension GliaTests {
         ) { _ in }
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueID"])
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
+ 
+        try engagementLauncher.startChat()
 
-        XCTAssertThrowsError(
-            try engagementLauncher.startChat()
-        ) { error in
-            XCTAssertEqual(error as? GliaError, GliaError.callVisualizerEngagementExists)
-        }
         XCTAssertEqual(calls, [.presentSnackBar])
         XCTAssertEqual(snackBarMessage, Localization.EntryWidget.CallVisualizer.description)
     }

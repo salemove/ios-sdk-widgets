@@ -102,7 +102,7 @@ extension GliaTests {
             }
         })
 
-        try sdk.resolveEngagementState(
+        sdk.resolveEngagementState(
             engagementKind: .chat,
             sceneProvider: .none,
             configuration: .mock(),
@@ -115,7 +115,7 @@ extension GliaTests {
         XCTAssertEqual(calls, [.maximize])
     }
     
-    func test_testEnqueuingWhenCallVisualizaerIsActive() throws {
+    func test_testEnqueuingChatWhenCallVisualizerIsActiveShouldShowSnackbar() throws {
         enum Call {
             case presentSnackBar
         }
@@ -133,7 +133,7 @@ extension GliaTests {
 
         sdk.interactor = interactor
         sdk.environment.coreSdk.getCurrentEngagement = {
-            return .mock(source: .callVisualizer)
+            .mock(source: .callVisualizer)
         }
         sdk.rootCoordinator = .mock(interactor: interactor)
         sdk.rootCoordinator?.gliaViewController = .mock()
@@ -142,21 +142,221 @@ extension GliaTests {
             calls.append(.presentSnackBar)
         }
 
-        XCTAssertThrowsError(
-            try sdk.resolveEngagementState(
-                engagementKind: .chat,
-                sceneProvider: .none,
-                configuration: .mock(),
-                interactor: interactor,
-                features: .all,
-                viewFactory: .mock(),
-                ongoingEngagementMediaStreams: .none
-            )
-        ) { error in
-            XCTAssertEqual(error as? GliaError, GliaError.callVisualizerEngagementExists)
-        }
+        sdk.resolveEngagementState(
+            engagementKind: .chat,
+            sceneProvider: .none,
+            configuration: .mock(),
+            interactor: interactor,
+            features: .all,
+            viewFactory: .mock(),
+            ongoingEngagementMediaStreams: .none
+        )
+
         XCTAssertEqual(calls, [.presentSnackBar])
         XCTAssertEqual(snackBarMessage, Localization.EntryWidget.CallVisualizer.description)
+    }
+    
+    func test_testEnqueuingAudioWhenCallVisualizerIsActiveShouldShowSnackbar() throws {
+        enum Call {
+            case presentSnackBar
+        }
+        var calls: [Call] = []
+        var snackBarMessage: String?
+
+        let sdk = makeConfigurableSDK()
+
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+
+        let interactor: Interactor = .mock()
+
+        sdk.interactor = interactor
+        sdk.environment.coreSdk.getCurrentEngagement = {
+            .mock(source: .callVisualizer)
+        }
+        sdk.rootCoordinator = .mock(interactor: interactor)
+        sdk.rootCoordinator?.gliaViewController = .mock()
+        sdk.environment.snackBar.present = { message, _, _, _, _, _, _ in
+            snackBarMessage = message
+            calls.append(.presentSnackBar)
+        }
+
+        sdk.resolveEngagementState(
+            engagementKind: .audioCall,
+            sceneProvider: .none,
+            configuration: .mock(),
+            interactor: interactor,
+            features: .all,
+            viewFactory: .mock(),
+            ongoingEngagementMediaStreams: .none
+        )
+
+        XCTAssertEqual(calls, [.presentSnackBar])
+        XCTAssertEqual(snackBarMessage, Localization.EntryWidget.CallVisualizer.description)
+    }
+    
+    func test_testEnqueuingVideoWhenCallVisualizerIsActiveShouldShowSnackbar() throws {
+        enum Call {
+            case presentSnackBar
+        }
+        var calls: [Call] = []
+        var snackBarMessage: String?
+
+        let sdk = makeConfigurableSDK()
+
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+
+        let interactor: Interactor = .mock()
+
+        sdk.interactor = interactor
+        sdk.environment.coreSdk.getCurrentEngagement = {
+            .mock(source: .callVisualizer)
+        }
+        sdk.rootCoordinator = .mock(interactor: interactor)
+        sdk.rootCoordinator?.gliaViewController = .mock()
+        sdk.environment.snackBar.present = { message, _, _, _, _, _, _ in
+            snackBarMessage = message
+            calls.append(.presentSnackBar)
+        }
+
+        sdk.resolveEngagementState(
+            engagementKind: .videoCall,
+            sceneProvider: .none,
+            configuration: .mock(),
+            interactor: interactor,
+            features: .all,
+            viewFactory: .mock(),
+            ongoingEngagementMediaStreams: .none
+        )
+
+        XCTAssertEqual(calls, [.presentSnackBar])
+        XCTAssertEqual(snackBarMessage, Localization.EntryWidget.CallVisualizer.description)
+    }
+    
+    func test_testEnqueuingChatWhenVideoCallVisualizerIsActiveShouldRestoreVideo() throws {
+        enum Call {
+            case presentSnackBar
+        }
+        var calls: [Call] = []
+        var snackBarMessage: String?
+
+        let sdk = makeConfigurableSDK()
+
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+
+        let interactor: Interactor = .mock()
+
+        sdk.interactor = interactor
+        sdk.environment.coreSdk.getCurrentEngagement = {
+            .mock(source: .callVisualizer, media: .init(audio: nil, video: .oneWay))
+        }
+        sdk.rootCoordinator = .mock(interactor: interactor)
+        sdk.rootCoordinator?.gliaViewController = .mock()
+        sdk.environment.snackBar.present = { message, _, _, _, _, _, _ in
+            snackBarMessage = message
+            calls.append(.presentSnackBar)
+        }
+
+        sdk.resolveEngagementState(
+            engagementKind: .chat,
+            sceneProvider: .none,
+            configuration: .mock(),
+            interactor: interactor,
+            features: .all,
+            viewFactory: .mock(),
+            ongoingEngagementMediaStreams: .none
+        )
+
+        XCTAssertEqual(calls, [.presentSnackBar])
+        XCTAssertEqual(snackBarMessage, Localization.EntryWidget.CallVisualizer.description)
+    }
+    
+    func test_testEnqueuingAudioWhenVideoCallVisualizerIsActiveShouldRestoreVideo() throws {
+        enum Call {
+            case presentSnackBar
+        }
+        var calls: [Call] = []
+        var snackBarMessage: String?
+
+        let sdk = makeConfigurableSDK()
+
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+
+        let interactor: Interactor = .mock()
+
+        sdk.interactor = interactor
+        sdk.environment.coreSdk.getCurrentEngagement = {
+            .mock(source: .callVisualizer, media: .init(audio: nil, video: .oneWay))
+        }
+        sdk.rootCoordinator = .mock(interactor: interactor)
+        sdk.rootCoordinator?.gliaViewController = .mock()
+        sdk.environment.snackBar.present = { message, _, _, _, _, _, _ in
+            snackBarMessage = message
+            calls.append(.presentSnackBar)
+        }
+
+        sdk.resolveEngagementState(
+            engagementKind: .audioCall,
+            sceneProvider: .none,
+            configuration: .mock(),
+            interactor: interactor,
+            features: .all,
+            viewFactory: .mock(),
+            ongoingEngagementMediaStreams: .none
+        )
+
+        XCTAssertEqual(calls, [.presentSnackBar])
+        XCTAssertEqual(snackBarMessage, Localization.EntryWidget.CallVisualizer.description)
+    }
+    
+    func test_testEnqueuingVideoWhenVideoCallVisualizerIsActiveShouldRestoreVideo() throws {
+        let sdk = makeConfigurableSDK()
+
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+
+        let interactor: Interactor = .mock()
+
+        sdk.interactor = interactor
+        sdk.environment.coreSdk.getCurrentEngagement = {
+            .mock(source: .callVisualizer, media: .init(audio: nil, video: .oneWay))
+        }
+        sdk.rootCoordinator = .mock(interactor: interactor)
+        sdk.rootCoordinator?.gliaViewController = .mock()
+        sdk.environment.snackBar.present = { _, _, _, _, _, _, _ in
+        }
+        var callVisualizerEnv = CallVisualizer.Environment.mock
+        callVisualizerEnv.getCurrentEngagement = {
+            .mock(source: .callVisualizer, media: .init(audio: nil, video: .oneWay))
+        }
+        sdk.callVisualizer = .init(environment: callVisualizerEnv)
+        var calledEvents: [CallVisualizer.Coordinator.DelegateEvent] = []
+        sdk.callVisualizer.coordinator.environment.eventHandler = { calledEvents.append($0) }
+
+        sdk.resolveEngagementState(
+            engagementKind: .videoCall,
+            sceneProvider: .none,
+            configuration: .mock(),
+            interactor: interactor,
+            features: .all,
+            viewFactory: .mock(),
+            ongoingEngagementMediaStreams: .none
+        )
+
+        XCTAssertTrue(calledEvents.contains(.maximized))
     }
 }
 

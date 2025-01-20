@@ -52,7 +52,7 @@ extension Glia {
         features: Features,
         viewFactory: ViewFactory,
         ongoingEngagementMediaStreams: Engagement.Media?
-    ) throws {
+    ) {
         /// If during enqueued state the visitor initiates another engagement, we avoid cancelling the queue
         /// ticket and adding a new one, by monitoring the new engagement kind. If the engagement kind matches
         /// the current enqueued engagement kind, then we resume the old, and do not start a new one
@@ -63,11 +63,11 @@ extension Glia {
 
         if let engagement = environment.coreSdk.getCurrentEngagement() {
             if engagement.source == .callVisualizer {
-                showSnackBar(
-                    with: Localization.EntryWidget.CallVisualizer.description,
-                    style: viewFactory.theme.snackBar
+                handleOngoingCallVisualizer(
+                    from: engagementKind,
+                    engagement: engagement,
+                    snackBarStyle: viewFactory.theme.snackBar
                 )
-                throw GliaError.callVisualizerEngagementExists
             } else {
                 if let rootCoordinator {
                     rootCoordinator.maximize()
@@ -81,8 +81,8 @@ extension Glia {
                     )
                 }
                 loggerPhase.logger.prefixed(Self.self).info("Engagement was restored")
-                return
             }
+            return
         }
 
         // This value can be set to `true` if engagement restoring happened.
@@ -215,6 +215,21 @@ extension Glia {
             onEvent?(.minimized)
         case .maximized:
             onEvent?(.maximized)
+        }
+    }
+
+    private func handleOngoingCallVisualizer(
+        from engagementKind: EngagementKind,
+        engagement: Engagement,
+        snackBarStyle: Theme.SnackBarStyle
+    ) {
+        if engagementKind == .videoCall && engagement.mediaStreams.video != nil {
+            callVisualizer.restoreVideoIfPossible()
+        } else {
+            showSnackBar(
+                with: Localization.EntryWidget.CallVisualizer.description,
+                style: snackBarStyle
+            )
         }
     }
 
