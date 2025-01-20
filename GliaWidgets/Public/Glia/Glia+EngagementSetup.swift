@@ -3,19 +3,11 @@ import GliaCoreSDK
 
 extension Glia {
     /// Set up and returns parameters needed to start or restore engagement
-    func getEngagementParameters(in queueIds: [String] = []) throws -> EngagementParameters {
-        // In order to align behaviour between platforms,
-        // `GliaError.engagementExists` is no longer thrown,
-        // instead engagement is getting restored.
-        guard let configuration else {
-            throw GliaError.sdkIsNotConfigured
-        }
-
-        guard let interactor else {
-            loggerPhase.logger.prefixed(Self.self).warning("Interactor is missing")
-            throw GliaError.sdkIsNotConfigured
-        }
-
+    func getEngagementParameters(
+        configuration: Configuration,
+        interactor: Interactor,
+        queueIds: [String] = []
+    ) -> EngagementParameters {
         // Interactor is initialized during configuration, which means that queueIds need
         // to be set in interactor when startEngagement is called.
         interactor.setQueuesIds(queueIds)
