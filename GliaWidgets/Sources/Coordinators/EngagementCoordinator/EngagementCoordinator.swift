@@ -177,7 +177,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
 
 extension EngagementCoordinator {
     func end(
-        surveyPresentation: SecureConversations.Coordinator.DelegateEvent.SurveyPresentation = .presentSurvey
+        surveyPresentation: SecureConversations.Coordinator.DelegateEvent.SurveyPresentation
     ) {
         switch engagement {
         case let .call(_, _, _, call):
@@ -209,7 +209,9 @@ extension EngagementCoordinator {
             }
         }
 
-        guard let engagement = interactor.endedEngagement, surveyPresentation == .presentSurvey else {
+        guard let engagement = interactor.endedEngagement,
+                engagement.actionOnEnd == .showSurvey,
+                surveyPresentation == .presentSurvey else {
             dismissGliaViewController()
             return
         }
@@ -334,7 +336,7 @@ extension EngagementCoordinator {
             case .chat:
                 if case .none = interactor.state {
                     popCoordinator()
-                    end()
+                    end(surveyPresentation: .presentSurvey)
                 } else {
                     gliaViewController?.minimize(animated: true)
                 }
@@ -346,7 +348,7 @@ extension EngagementCoordinator {
                 }
             default:
                 popCoordinator()
-                end()
+                end(surveyPresentation: .presentSurvey)
             }
         case let .openLink(link):
             presentSafariViewController(for: link)
@@ -370,7 +372,7 @@ extension EngagementCoordinator {
             }
         case .finished:
             popCoordinator()
-            self.end()
+            self.end(surveyPresentation: .presentSurvey)
         case .minimize:
             minimize()
         }
@@ -423,7 +425,7 @@ extension EngagementCoordinator {
                 self.gliaViewController?.minimize(animated: true)
             case .finished:
                 self.popCoordinator()
-                self.end()
+                self.end(surveyPresentation: .presentSurvey)
             case .visitorOnHoldUpdated(let isOnHold):
                 self.gliaViewController?.setVisitorHoldState(isOnHold: isOnHold)
             }
