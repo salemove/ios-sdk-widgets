@@ -101,28 +101,16 @@ class EngagementViewModel: CommonEngagementModel {
             )
             activeEngagement = environment.getCurrentEngagement()
 
-        case .ended(let reason) where reason == .byVisitor:
-            engagementDelegate?(
-                .engaged(
-                    operatorImageUrl: nil
-                )
-            )
-        case .ended(let reason) where reason == .byOperator:
-            interactor.endedEngagement?.getSurvey(completion: { [weak self] result in
-                guard let self = self else { return }
-                guard case .success(let survey) = result, survey == nil else {
-                    self.endSession()
-                    return
-                }
-                self.engagementAction?(.showAlert(.operatorEndedEngagement(action: { [weak self] in
-                    self?.endSession()
-                    self?.engagementDelegate?(
-                          .engaged(
-                              operatorImageUrl: nil
-                           )
-                    )
-                })))
-            })
+        case .ended:
+            // We no longer perform any checks in `EngagementViewModel`, regarding
+            // survey, because these checks were performed several times at once
+            // (because of inheritance from `EngagementViewModel`):
+            // in `CallViewModel` and `ChatViewModel` when both are instantiated.
+            // That resulted in conflicting view presentation attempts.
+            // So this logic was moved to `ChatViewModel`, since it is always a part
+            // of any engagement, where it will be performed only once.
+            break
+
         case let .enqueueing(engagementKind):
             environment.fetchSiteConfigurations { [weak self] result in
                 guard let self else { return }
