@@ -8,7 +8,8 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
             fetchSurvey: { _, callback in
                 callback(.failure(.mock()))
             },
-            media: .init(audio: .none, video: .oneWay)
+            media: .init(audio: .none, video: .oneWay),
+            actionOnEnd: .showSurvey
         )
         let interactor = Interactor.mock(environment: .init(coreSdk: coreSdkClient, queuesMonitor: .mock(), gcd: .failing, log: .failing))
         interactor.setEndedEngagement(engagement)

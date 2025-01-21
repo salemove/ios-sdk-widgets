@@ -109,9 +109,12 @@ final class EngagementCoordinatorTests: XCTestCase {
 
     func test_endChatWithSurvey() throws {
         let survey: CoreSdkClient.Survey = try .mock()
-        let engagement: CoreSdkClient.Engagement = .mock(fetchSurvey: { _, completion in completion(.success(survey)) })
+        let engagement: CoreSdkClient.Engagement = .mock(
+            fetchSurvey: { _, completion in completion(.success(survey)) },
+            actionOnEnd: .showSurvey
+        )
         coordinator.interactor.setEndedEngagement(engagement)
-        coordinator.end()
+        coordinator.end(surveyPresentation: .presentSurvey)
 
         let surveyViewController = coordinator.gliaPresenter.topMostViewController as? Survey.ViewController
         XCTAssertNotNil(surveyViewController)
@@ -141,7 +144,7 @@ final class EngagementCoordinatorTests: XCTestCase {
 
     func test_chatCoordinatorBackOnInteractorStateNone() {
         coordinator.start()
-        
+
         XCTAssertNotEqual(coordinator.coordinators.count, 0)
 
         let chatCoordinator = coordinator.coordinators.last as? ChatCoordinator
@@ -196,11 +199,16 @@ final class EngagementCoordinatorTests: XCTestCase {
 
         let chatCoordinator = coordinator.coordinators.last as? ChatCoordinator
 
-        let mediaUpgradeOffer = try! CoreSdkClient.MediaUpgradeOffer(type: .audio, direction: .twoWay)
+        let mediaUpgradeOffer = try XCTUnwrap(
+            CoreSdkClient.MediaUpgradeOffer(
+                type: .audio,
+                direction: .twoWay
+            )
+        )
         chatCoordinator?.delegate?(
             .mediaUpgradeAccepted(
                 offer: mediaUpgradeOffer,
-                answer: { answer, success in success?(true, nil) }
+                answer: { _, success in success?(true, nil) }
             )
         )
         chatCoordinator?.delegate?(.back)
@@ -214,10 +222,10 @@ final class EngagementCoordinatorTests: XCTestCase {
         let chatCoordinator = coordinator.coordinators.last as? ChatCoordinator
         chatCoordinator?.delegate?(.engaged(operatorImageUrl: URL.mock.absoluteString))
 
-        switch coordinator.gliaViewController!.bubbleKind {
+        switch try XCTUnwrap(coordinator.gliaViewController).bubbleKind {
         case .userImage(let url):
             XCTAssertEqual(url, URL.mock.absoluteString)
-        default: XCTFail()
+        default: XCTFail("Unexpected case")
         }
     }
 

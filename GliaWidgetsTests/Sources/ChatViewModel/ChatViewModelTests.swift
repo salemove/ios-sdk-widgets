@@ -1014,6 +1014,53 @@ class ChatViewModelTests: XCTestCase {
             XCTFail("message kind should be `visitorMessage`")
         }
     }
+
+    func test_engagementEndedByOperatorCallsEngagementAndDelegateActions() {
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.gcd.mainQueue = .mock
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.state = .ended(.byOperator)
+
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
+        fileUploadListViewModelEnv.uploader.uploads = []
+        viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
+        let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
+        enum Call {
+            case engagementActionShowAlertWithOperatorEndedEngagement
+            case engagementDelegateFinished
+        }
+        var calls: [Call] = []
+        viewModel.engagementAction = { action in
+            switch action {
+            case .showAlert(.operatorEndedEngagement):
+                calls.append(.engagementActionShowAlertWithOperatorEndedEngagement)
+            default:
+                break
+            }
+        }
+        viewModel.engagementDelegate = { action in
+            switch action {
+            case .finished:
+                calls.append(.engagementDelegateFinished)
+            default:
+                break
+            }
+        }
+
+        viewModel.interactorEvent(.stateChanged(.ended(.byOperator)))
+        XCTAssertEqual(calls, [.engagementActionShowAlertWithOperatorEndedEngagement])
+        interactor.setEndedEngagement(.mock(actionOnEnd: .showSurvey))
+        viewModel.interactorEvent(.stateChanged(.ended(.byOperator)))
+        XCTAssertEqual(
+            calls, [
+                .engagementActionShowAlertWithOperatorEndedEngagement,
+                .engagementDelegateFinished
+            ]
+        )
+    }
 }
 
 extension ChatChoiceCardOption {

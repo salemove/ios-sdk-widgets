@@ -249,8 +249,8 @@ class ChatViewModel: EngagementViewModel {
             action?(.refreshAll)
         case .engagementTransferred:
             onEngagementTransferred()
-        case .stateChanged(.engaged):
-            environment.log.prefixed(Self.self).info("New engagement loaded")
+        case let .stateChanged(state):
+            handleInteractorStateChanged(state)
         default:
             break
         }
