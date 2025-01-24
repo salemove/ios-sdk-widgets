@@ -851,4 +851,60 @@ final class GliaTests: XCTestCase {
 
         XCTAssertFalse(try XCTUnwrap(sdk.pendingInteraction).hasPendingInteraction)
     }
+
+    func test_deauthenticateErasesInteractorState() throws {
+        var uuidGen = UUID.incrementing
+        var gliaEnv = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        logger.infoClosure = { _, _, _, _ in }
+        logger.prefixedClosure = { _ in logger }
+        gliaEnv.coreSdk.createLogger = { _ in logger }
+        gliaEnv.coreSdk.pendingSecureConversationStatus = { $0(.success(false)) }
+        gliaEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
+        gliaEnv.conditionalCompilation.isDebug = { true }
+        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in uuidGen().uuidString }
+        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in uuidGen().uuidString }
+        gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+        let authentication = CoreSdkClient.Authentication(deauthenticateWithCallback: { callback in
+            callback(.success(()))
+        })
+        gliaEnv.coreSdk.authentication = { _ in authentication }
+        gliaEnv.coreSdk.requestEngagedOperator = { $0([], nil) }
+        gliaEnv.gcd.mainQueue.async = { $0() }
+        gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
+        gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
+        gliaEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _, _ in
+            EngagementCoordinator.mock(
+                engagementLaunching: engagementLaunching,
+                screenShareHandler: .mock,
+                environment: .engagementCoordEnvironmentWithKeyWindow
+            )
+        }
+
+        let sdk = Glia(environment: gliaEnv)
+
+        sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            sdk.environment.coreSdk.getCurrentEngagement = { .mock() }
+            completion(.success(()))
+        }
+
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+
+        sdk.interactor?.start()
+
+        XCTAssertEqual(sdk.interactor?.state, .engaged(nil))
+
+        try sdk.authentication(with: .allowedDuringEngagement)
+            .deauthenticate { _ in }
+
+        XCTAssertEqual(try XCTUnwrap(sdk.interactor?.state), .none)
+    }
 }
