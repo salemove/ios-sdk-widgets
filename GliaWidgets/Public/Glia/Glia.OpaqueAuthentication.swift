@@ -137,6 +137,8 @@ extension Glia {
                 auth.deauthenticate { result in
                     switch result {
                     case .success:
+                        // Erase interactor state.
+                        self?.interactor?.cleanup()
                         // Cleanup navigation and views.
                         self?.closeRootCoordinator()
                     case .failure:
