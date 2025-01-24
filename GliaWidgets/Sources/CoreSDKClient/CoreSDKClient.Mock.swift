@@ -492,7 +492,8 @@ extension CoreSdkClient.Engagement {
         restartedFromEngagementId: String? = nil,
         media: Engagement.Media = .init(audio: nil, video: nil),
         status: Status = .unknown("mock"),
-        capabilities: Capabilities = .init(text: false)
+        capabilities: Capabilities = .init(text: false),
+        actionOnEnd: Engagement.ActionOnEnd = .showEndedNotification
     ) -> CoreSdkClient.Engagement {
         .init(
             id: id,
@@ -502,7 +503,8 @@ extension CoreSdkClient.Engagement {
             restartedFromEngagementId: restartedFromEngagementId,
             mediaStreams: media,
             status: status,
-            capabilities: capabilities
+            capabilities: capabilities,
+            actionOnEnd: actionOnEnd
         )
     }
 }
