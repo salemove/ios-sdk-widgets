@@ -15,6 +15,10 @@ extension SecureConversations.PendingInteraction.Environment {
         },
         unsubscribeFromPendingStatus: { _ in
             fail("\(Self.self).unsubscribeFromPendingStatus")
+        }, 
+        interactorProviding: {
+            fail("\(Self.self).interactorProviding")
+            return .failing
         }
     )
 }

@@ -2,7 +2,7 @@
 import XCTest
 
 final class SecureConversationsPendingInteractionTests: XCTestCase {
-    func test_hasPendingInteractionGetChangedBasedOnUnreadCountAndPendingStatus() throws {
+    func test_hasPendingInteractionGetChanged() throws {
         var environment = SecureConversations.PendingInteraction.Environment.failing
         let uuidGen = UUID.incrementing
         var pendingCallback: ((Result<Bool, Error>) -> Void)?
@@ -17,6 +17,8 @@ final class SecureConversationsPendingInteractionTests: XCTestCase {
         }
         environment.unsubscribeFromPendingStatus = { _ in }
         environment.unsubscribeFromUnreadCount = { _ in }
+        let interactor = Interactor.mock()
+        environment.interactorProviding = { interactor }
 
         let pendingInteraction = try SecureConversations.PendingInteraction(environment: environment)
         // Assert initial pending interaction is false.
@@ -33,6 +35,12 @@ final class SecureConversationsPendingInteractionTests: XCTestCase {
         XCTAssertTrue(pendingInteraction.hasPendingInteraction)
         try XCTUnwrap(unreadCountCallback)(.success(0))
         try XCTUnwrap(unreadCountCallback)(.success(nil))
+        XCTAssertFalse(pendingInteraction.hasPendingInteraction)
+        // Affect hasTransferredSC value by setting current engagement and assert `hasPendingInteraction`,
+        // then set it back to `nil` and assert again.
+        interactor.setCurrentEngagement(.mock(status: .transferring, capabilities: .init(text: true)))
+        XCTAssertTrue(pendingInteraction.hasPendingInteraction)
+        interactor.setCurrentEngagement(nil)
         XCTAssertFalse(pendingInteraction.hasPendingInteraction)
     }
 
@@ -52,6 +60,7 @@ final class SecureConversationsPendingInteractionTests: XCTestCase {
         environment.unsubscribeFromUnreadCount = { _ in
             calls.append(.unsubscribeFromUnreadCount)
         }
+        environment.interactorProviding = { .mock() }
         var pendingInteraction = try SecureConversations.PendingInteraction(environment: environment)
         pendingInteraction = try .mock()
         _ = pendingInteraction
