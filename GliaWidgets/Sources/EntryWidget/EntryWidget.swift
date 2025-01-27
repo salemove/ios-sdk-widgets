@@ -44,19 +44,37 @@ public final class EntryWidget: NSObject {
             .sink(receiveValue: handleQueuesMonitorUpdates(state:unreadSecureMessagesCount:))
             .store(in: &cancellables)
 
-        environment.currentInteractor()?.$currentEngagement
+        environment.interactorPublisher
+            .flatMap { interactor -> AnyPublisher<Engagement?, Never> in
+                guard let interactor = interactor else {
+                    return Just(nil).eraseToAnyPublisher()
+                }
+                return interactor.$currentEngagement.eraseToAnyPublisher()
+            }
             .sink { [weak self] engagement in
-                guard let self else { return }
-                ongoingEngagement = engagement
-                handleQueuesMonitorUpdates(state: environment.queuesMonitor.state, unreadSecureMessagesCount: unreadSecureMessageCount)
+                guard let self = self else { return }
+                self.ongoingEngagement = engagement
+                self.handleQueuesMonitorUpdates(
+                    state: self.environment.queuesMonitor.state,
+                    unreadSecureMessagesCount: self.unreadSecureMessageCount
+                )
             }
             .store(in: &cancellables)
 
-        environment.currentInteractor()?.$state
+        environment.interactorPublisher
+            .flatMap { interactor -> AnyPublisher<InteractorState, Never> in
+                guard let interactor = interactor else {
+                    return Just(.none).eraseToAnyPublisher()
+                }
+                return interactor.$state.eraseToAnyPublisher()
+            }
             .sink { [weak self] state in
-                guard let self else { return }
-                interactorState = state
-                handleQueuesMonitorUpdates(state: environment.queuesMonitor.state, unreadSecureMessagesCount: unreadSecureMessageCount)
+                guard let self = self else { return }
+                self.interactorState = state
+                self.handleQueuesMonitorUpdates(
+                    state: self.environment.queuesMonitor.state,
+                    unreadSecureMessagesCount: self.unreadSecureMessageCount
+                )
             }
             .store(in: &cancellables)
     }
