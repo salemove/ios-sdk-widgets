@@ -118,7 +118,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             case .connected(let name, let imageUrl):
                 view?.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
                 view?.unreadMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)
-                view?.messageEntryView.isConnected = true
+                self.viewModel.action?(.setMessageEntryConnected(true))
             case .setMessageEntryEnabled(let enabled):
                 view?.messageEntryView.isEnabled = enabled
             case .setChoiceCardInputModeEnabled(let enabled):
@@ -195,6 +195,8 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                 )
             case .switchToEngagement:
                 view?.hideEntryWidget()
+            case let .setMessageEntryConnected(isConnected):
+                view?.messageEntryView.isConnected = isConnected
             }
             self.renderProps()
         }

@@ -251,6 +251,7 @@ extension EngagementViewModel {
 
     enum Action {
         case showEndButton
+        case showCloseButton
         case showEndScreenShareButton
         case showLiveObservationConfirmation(
             link: (WebViewController.Link) -> Void,

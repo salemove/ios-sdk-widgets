@@ -54,6 +54,8 @@ class EngagementViewController: UIViewController {
             switch action {
             case .showEndButton:
                 view?.header.showEndButton()
+            case .showCloseButton:
+                view?.header.showCloseButton()
             case .showEndScreenShareButton:
                 view?.header.showEndScreenSharingButton()
             case let .showLiveObservationConfirmation(link, accepted, declined):
