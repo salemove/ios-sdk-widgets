@@ -258,7 +258,7 @@ class EntryWidgetTests: XCTestCase {
         environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
         let interactor: Interactor = .mock()
         interactor.setCurrentEngagement(.mock())
-        environment.currentInteractor = { interactor }
+        environment.interactorPublisher = Just(interactor).eraseToAnyPublisher()
 
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
@@ -288,7 +288,7 @@ class EntryWidgetTests: XCTestCase {
         environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
         let interactor: Interactor = .mock()
         interactor.setCurrentEngagement(.mock(media: .init(audio: .twoWay, video: nil)))
-        environment.currentInteractor = { interactor }
+        environment.interactorPublisher = Just(interactor).eraseToAnyPublisher()
 
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
@@ -318,7 +318,7 @@ class EntryWidgetTests: XCTestCase {
         environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
         let interactor: Interactor = .mock()
         interactor.setCurrentEngagement(.mock(media: .init(audio: .twoWay, video: .twoWay)))
-        environment.currentInteractor = { interactor }
+        environment.interactorPublisher = Just(interactor).eraseToAnyPublisher()
 
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
@@ -348,7 +348,7 @@ class EntryWidgetTests: XCTestCase {
         environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
         let interactor: Interactor = .mock()
         interactor.setCurrentEngagement(.mock(source: .callVisualizer))
-        environment.currentInteractor = { interactor }
+        environment.interactorPublisher = Just(interactor).eraseToAnyPublisher()
 
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
@@ -365,7 +365,7 @@ class EntryWidgetTests: XCTestCase {
         var environment = EntryWidget.Environment.mock()
         let interactor: Interactor = .mock()
         interactor.state = .enqueued(.mock, .chat)
-        environment.currentInteractor = { interactor }
+        environment.interactorPublisher = Just(interactor).eraseToAnyPublisher()
 
         let entryWidget = EntryWidget(
             queueIds: [],
@@ -382,7 +382,7 @@ class EntryWidgetTests: XCTestCase {
         var environment = EntryWidget.Environment.mock()
         let interactor: Interactor = .mock()
         interactor.state = .enqueued(.mock, .audioCall)
-        environment.currentInteractor = { interactor }
+        environment.interactorPublisher = Just(interactor).eraseToAnyPublisher()
 
         let entryWidget = EntryWidget(
             queueIds: [],
@@ -399,7 +399,7 @@ class EntryWidgetTests: XCTestCase {
         var environment = EntryWidget.Environment.mock()
         let interactor: Interactor = .mock()
         interactor.state = .enqueued(.mock, .videoCall)
-        environment.currentInteractor = { interactor }
+        environment.interactorPublisher = Just(interactor).eraseToAnyPublisher()
 
         let entryWidget = EntryWidget(
             queueIds: [],
@@ -416,7 +416,7 @@ class EntryWidgetTests: XCTestCase {
         var environment = EntryWidget.Environment.mock()
         let interactor: Interactor = .mock()
         interactor.state = .enqueueing(.chat)
-        environment.currentInteractor = { interactor }
+        environment.interactorPublisher = Just(interactor).eraseToAnyPublisher()
 
         let entryWidget = EntryWidget(
             queueIds: [],
@@ -433,7 +433,7 @@ class EntryWidgetTests: XCTestCase {
         var environment = EntryWidget.Environment.mock()
         let interactor: Interactor = .mock()
         interactor.state = .enqueueing(.audioCall)
-        environment.currentInteractor = { interactor }
+        environment.interactorPublisher = Just(interactor).eraseToAnyPublisher()
 
         let entryWidget = EntryWidget(
             queueIds: [],
@@ -450,7 +450,7 @@ class EntryWidgetTests: XCTestCase {
         var environment = EntryWidget.Environment.mock()
         let interactor: Interactor = .mock()
         interactor.state = .enqueueing(.videoCall)
-        environment.currentInteractor = { interactor }
+        environment.interactorPublisher = Just(interactor).eraseToAnyPublisher()
 
         let entryWidget = EntryWidget(
             queueIds: [],
@@ -483,7 +483,7 @@ class EntryWidgetTests: XCTestCase {
         environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
         let interactor: Interactor = .mock()
         interactor.setCurrentEngagement(.mock(source: .callVisualizer))
-        environment.currentInteractor = { interactor }
+        environment.interactorPublisher = Just(interactor).eraseToAnyPublisher()
         environment.onCallVisualizerResume = {
             calls.append(.onCallVisualizerResume)
         }
@@ -522,7 +522,7 @@ class EntryWidgetTests: XCTestCase {
         environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
         let interactor: Interactor = .mock()
         interactor.setCurrentEngagement(.mock(media: .init(audio: .twoWay, video: .twoWay)))
-        environment.currentInteractor = { interactor }
+        environment.interactorPublisher = Just(interactor).eraseToAnyPublisher()
 
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
@@ -533,4 +533,40 @@ class EntryWidgetTests: XCTestCase {
         entryWidget.show(in: .init())
         XCTAssertTrue(logs.contains(expectedLogMessage))
     }
+
+    func test_widgetUpdatesWhenInteractorChanges() {
+        let interactorSubject = CurrentValueSubject<Interactor?, Never>(nil)
+        var environment = EntryWidget.Environment.mock()
+        environment.interactorPublisher = interactorSubject.eraseToAnyPublisher()
+        let mockQueueId = "mockQueueId"
+        let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
+        var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
+        queueMonitorEnvironment.listQueues = { completion in
+            completion([mockQueue], nil)
+        }
+        queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
+            completion(.success(mockQueue))
+            return UUID.mock.uuidString
+        }
+        environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
+
+        let entryWidget = EntryWidget(
+            queueIds: [mockQueueId],
+            configuration: .default,
+            environment: environment
+        )
+        entryWidget.show(in: .init())
+        let oldInteractor = Interactor.mock()
+        oldInteractor.setCurrentEngagement(.mock())
+        interactorSubject.send(oldInteractor)
+
+        XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.chat))
+
+        let newInteractor = Interactor.mock()
+        newInteractor.setCurrentEngagement(.mock(media: .init(audio: .twoWay, video: nil)))
+        interactorSubject.send(newInteractor)
+
+        XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.audio))
+    }
+
 }

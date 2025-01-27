@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 extension EntryWidget {
     struct Environment {
@@ -10,7 +11,7 @@ extension EntryWidget {
         var log: CoreSdkClient.Logger
         var isAuthenticated: () -> Bool
         var hasPendingInteraction: () -> Bool
-        var currentInteractor: () -> Interactor?
+        var interactorPublisher: AnyPublisher<Interactor?, Never>
         var onCallVisualizerResume: () -> Void
     }
 }
@@ -28,7 +29,7 @@ extension EntryWidget.Environment {
             log: .mock,
             isAuthenticated: { true },
             hasPendingInteraction: { false },
-            currentInteractor: { .mock() },
+            interactorPublisher: Just(nil).eraseToAnyPublisher(),
             onCallVisualizerResume: {}
         )
     }

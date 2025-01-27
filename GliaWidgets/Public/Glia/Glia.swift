@@ -119,7 +119,7 @@ public class Glia {
         )
     )
     var rootCoordinator: EngagementCoordinator?
-    var interactor: Interactor?
+    @Published var interactor: Interactor?
     var environment: Environment
     var messageRenderer: MessageRenderer? = .webRenderer
     var theme: Theme

@@ -28,10 +28,7 @@ extension Glia {
                     guard let self else { return false }
                     return pendingInteraction?.hasPendingInteraction ?? false
                 },
-                currentInteractor: { [weak self] in
-                    guard let self else { return nil }
-                    return interactor
-                },
+                interactorPublisher: Glia.sharedInstance.$interactor.eraseToAnyPublisher(),
                 onCallVisualizerResume: { [weak self] in
                     guard let self else { return }
                     callVisualizer.resume()
