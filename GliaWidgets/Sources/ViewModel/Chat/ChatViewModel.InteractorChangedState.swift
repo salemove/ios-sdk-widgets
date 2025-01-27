@@ -25,8 +25,9 @@ extension ChatViewModel {
             switch endedEngagement.actionOnEnd {
             case .showSurvey:
                 endSession()
-            // TODO: review '.retain' case in context of SC 2 transfer MOB-3978.
-            case .retain, .showEndedNotification:
+            case .retain:
+                delegate?(.liveChatEngagementUpgradedToSecureMessaging(self))
+            case .showEndedNotification:
                 handleOperatorEndedEngagement()
             case let .unknown(unhandledCase):
                 // TODO: log unhandled case MOB-3971

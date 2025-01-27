@@ -57,6 +57,7 @@ extension ChatViewModel: ViewModel {
         case transcript(TranscriptAction)
         case showSnackBarView
         case switchToEngagement
+        case setMessageEntryConnected(Bool)
     }
 
     enum DelegateEvent {
@@ -71,6 +72,7 @@ extension ChatViewModel: ViewModel {
         case showFile(LocalFile)
         case call
         case minimize
+        case liveChatEngagementUpgradedToSecureMessaging(ChatViewModel)
     }
 
     enum StartAction {
