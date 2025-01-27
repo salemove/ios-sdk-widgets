@@ -667,6 +667,11 @@ extension GliaTests {
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
+        let window = UIWindow(frame: .zero)
+        window.rootViewController = UIViewController()
+        window.makeKeyAndVisible()
+        sdk.environment.uiApplication.windows = { [window] }
+        sdk.environment.snackBar.present = { _, _, _, _, _, _, _ in }
         try sdk.configure(
             with: .mock(),
             theme: .mock()
