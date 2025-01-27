@@ -61,42 +61,52 @@ extension Glia {
             return
         }
 
-        if let engagement = environment.coreSdk.getCurrentEngagement() {
-            if engagement.source == .callVisualizer {
-                handleOngoingCallVisualizer(
-                    from: engagementKind,
-                    engagement: engagement,
-                    snackBarStyle: viewFactory.theme.snackBar
-                )
-            } else {
-                if let rootCoordinator {
-                    rootCoordinator.maximize()
-                } else {
-                    self.restoreOngoingEngagement(
-                        configuration: configuration,
-                        currentEngagement: engagement,
-                        interactor: interactor,
-                        features: features,
-                        maximize: true
-                    )
-                }
-                loggerPhase.logger.prefixed(Self.self).info("Engagement was restored")
-            }
+        guard let currentEngagement = environment.coreSdk.getCurrentEngagement() else {
+            // This value can be set to `true` if engagement restoring happened.
+            // To prevent missing Live Observation Confirmation dialog to be shown
+            // for further engagements, we need to default this value again.
+            interactor.skipLiveObservationConfirmations = false
+
+            startRootCoordinator(
+                with: interactor,
+                viewFactory: viewFactory,
+                sceneProvider: sceneProvider,
+                engagementKind: ongoingEngagementMediaStreams.map { EngagementKind(media: $0) } ?? engagementKind,
+                features: features
+            )
             return
         }
 
-        // This value can be set to `true` if engagement restoring happened.
-        // To prevent missing Live Observation Confirmation dialog to be shown
-        // for further engagements, we need to default this value again.
-        interactor.skipLiveObservationConfirmations = false
-
-        startRootCoordinator(
-            with: interactor,
-            viewFactory: viewFactory,
-            sceneProvider: sceneProvider,
-            engagementKind: ongoingEngagementMediaStreams.map { EngagementKind(media: $0) } ?? engagementKind,
-            features: features
-        )
+        if currentEngagement.source == .callVisualizer {
+            handleOngoingCallVisualizer(
+                from: engagementKind,
+                ongoingEngagement: currentEngagement,
+                snackBarStyle: viewFactory.theme.snackBar
+            )
+        } else {
+            switch engagementKind {
+            case .chat, .messaging:
+                handleOngoingEngagement(
+                    shoulShowSnackBar: currentEngagement.mediaStreams.containsMediaDirection,
+                    ongoingEngagement: currentEngagement,
+                    snackBarStyle: viewFactory.theme.snackBar,
+                    configuration: configuration,
+                    interactor: interactor,
+                    features: features
+                )
+            case .audioCall, .videoCall:
+                handleOngoingEngagement(
+                    shoulShowSnackBar: !currentEngagement.mediaStreams.containsMediaDirection,
+                    ongoingEngagement: currentEngagement,
+                    snackBarStyle: viewFactory.theme.snackBar,
+                    configuration: configuration,
+                    interactor: interactor,
+                    features: features
+                )
+            case .none:
+                break
+            }
+        }
     }
 
     func companyName(
@@ -220,16 +230,44 @@ extension Glia {
 
     private func handleOngoingCallVisualizer(
         from engagementKind: EngagementKind,
-        engagement: Engagement,
+        ongoingEngagement: Engagement,
         snackBarStyle: Theme.SnackBarStyle
     ) {
-        if engagementKind == .videoCall && engagement.mediaStreams.video != nil {
+        if engagementKind == .videoCall && ongoingEngagement.mediaStreams.video != nil {
             callVisualizer.restoreVideoIfPossible()
         } else {
             showSnackBar(
                 with: Localization.EntryWidget.CallVisualizer.description,
                 style: snackBarStyle
             )
+        }
+    }
+
+    private func handleOngoingEngagement(
+        shoulShowSnackBar: Bool,
+        ongoingEngagement: Engagement,
+        snackBarStyle: Theme.SnackBarStyle,
+        configuration: Configuration,
+        interactor: Interactor,
+        features: Features
+    ) {
+        if shoulShowSnackBar {
+            showSnackBar(
+                with: Localization.EntryWidget.CallVisualizer.description,
+                style: snackBarStyle
+            )
+        } else {
+            if let rootCoordinator {
+                rootCoordinator.maximize()
+            } else {
+                self.restoreOngoingEngagement(
+                    configuration: configuration,
+                    currentEngagement: ongoingEngagement,
+                    interactor: interactor,
+                    features: features,
+                    maximize: true
+                )
+            }
         }
     }
 
@@ -240,5 +278,12 @@ extension Glia {
         let ongoingEngagementMediaStreams: Engagement.Media?
         let features: Features
         let configuration: Configuration
+    }
+}
+
+
+extension GliaCoreSDK.Engagement.Media {
+    var containsMediaDirection: Bool {
+        audio != nil || video != nil
     }
 }
