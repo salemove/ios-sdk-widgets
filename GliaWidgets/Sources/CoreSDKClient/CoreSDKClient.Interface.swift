@@ -358,3 +358,21 @@ extension CoreSdkClient.MediaType {
         }
     }
 }
+
+extension CoreSdkClient {
+    // Used to get current engagement except the case,
+    // when engagement is transferred Secure Conversation,
+    // which nature is similar to a Queue Ticket.
+    var getNonTransferredSecureConversationEngagement: GetCurrentEngagement {
+      {
+        let engagement = getCurrentEngagement()
+        return engagement?.isTransferredSecureConversation == true ? nil : engagement
+      }
+    }
+}
+
+extension CoreSdkClient.Engagement {
+    var isTransferredSecureConversation: Bool {
+        Self.isTransferredSecureConversation(self)
+    }
+}
