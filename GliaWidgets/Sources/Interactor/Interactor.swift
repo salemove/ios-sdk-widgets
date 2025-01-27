@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 enum InteractorState {
     case none
@@ -69,14 +70,8 @@ class Interactor {
     private(set) var endedEngagement: CoreSdkClient.Engagement?
 
     private var observers = [() -> (AnyObject?, EventHandler)]()
-
-    @Published var state: InteractorState = .none {
-        didSet {
-            if oldValue != state {
-                notify(.stateChanged(state))
-            }
-        }
-    }
+    private var cancellables = Set<AnyCancellable>()
+    @Published var state: InteractorState = .none
     var environment: Environment
 
     /// Skips Live Observation confirmation alerts/snackbars in
@@ -90,6 +85,13 @@ class Interactor {
     ) {
         self.visitorContext = visitorContext
         self.environment = environment
+
+        $state
+            .removeDuplicates()
+            .sink { [weak self] newState in
+                self?.notify(.stateChanged(newState))
+            }
+            .store(in: &cancellables)
     }
 
     func addObserver(_ observer: AnyObject, handler: @escaping EventHandler) {
