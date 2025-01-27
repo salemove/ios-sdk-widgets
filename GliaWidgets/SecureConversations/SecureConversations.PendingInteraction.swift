@@ -5,6 +5,7 @@ extension SecureConversations {
         @Published private(set) var pendingStatus = false
         @Published private(set) var unreadMessageCount = 0
         @Published private(set) var hasPendingInteraction = false
+        @Published private(set) var hasTransferredSecureConversation = false
         private let environment: Environment
         private(set) var pendingStatusCancellationToken: String?
         private(set) var unreadMessageCountCancellationToken: String?
@@ -37,9 +38,13 @@ extension SecureConversations {
 
             self.unreadMessageCountCancellationToken = unreadMessageCountCancellationToken
 
-            $pendingStatus.combineLatest($unreadMessageCount)
-                .map { hasPending, unreadCount in
-                    hasPending || unreadCount > 0
+            environment.interactorProviding()?.$currentEngagement
+                .map { $0?.isTransferredSecureConversation ?? false }
+                .assign(to: &$hasTransferredSecureConversation)
+
+            $pendingStatus.combineLatest($unreadMessageCount, $hasTransferredSecureConversation)
+                .map { hasPending, unreadCount, hasTransferredSecureConversation in
+                    hasPending || unreadCount > 0 || hasTransferredSecureConversation
                 }
                 .assign(to: &$hasPendingInteraction)
         }
@@ -62,6 +67,7 @@ extension SecureConversations.PendingInteraction {
         var observeSecureConversationsUnreadMessageCount: CoreSdkClient.SubscribeForUnreadSCMessageCount
         var unsubscribeFromUnreadCount: CoreSdkClient.UnsubscribeFromUnreadCount
         var unsubscribeFromPendingStatus: CoreSdkClient.UnsubscribeFromPendingSCStatus
+        var interactorProviding: () -> Interactor?
     }
 }
 
@@ -76,11 +82,15 @@ extension SecureConversations.PendingInteraction {
 }
 
 extension SecureConversations.PendingInteraction.Environment {
-    init(with client: CoreSdkClient) {
+    init(
+        client: CoreSdkClient,
+        interactorProviding: @escaping () -> Interactor?
+    ) {
         self.observePendingSecureConversationsStatus = client.observePendingSecureConversationStatus
         self.observeSecureConversationsUnreadMessageCount = client.subscribeForUnreadSCMessageCount
         self.unsubscribeFromPendingStatus = client.unsubscribeFromPendingSecureConversationStatus
         self.unsubscribeFromUnreadCount = client.unsubscribeFromUnreadCount
+        self.interactorProviding = interactorProviding
     }
 }
 
@@ -92,7 +102,8 @@ extension SecureConversations.PendingInteraction.Environment {
             observePendingSecureConversationsStatus: { _ in uuidGen().uuidString },
             observeSecureConversationsUnreadMessageCount: { _ in uuidGen().uuidString },
             unsubscribeFromUnreadCount: { _ in },
-            unsubscribeFromPendingStatus: { _ in }
+            unsubscribeFromPendingStatus: { _ in },
+            interactorProviding: { nil }
         )
     }()
 }

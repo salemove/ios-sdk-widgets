@@ -392,6 +392,7 @@
 		84520BF12B208D7800F97617 /* SnackBar.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BF02B208D7800F97617 /* SnackBar.Mock.swift */; };
 		84520BF32B208DE200F97617 /* SnackBar.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BF22B208DE200F97617 /* SnackBar.Interface.swift */; };
 		84520BF62B20936F00F97617 /* SnackBar.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BF52B20936F00F97617 /* SnackBar.Failing.swift */; };
+		84551A952D478BD800C55DA2 /* CoreSdkClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84551A942D478BD800C55DA2 /* CoreSdkClientTests.swift */; };
 		8458769F2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */; };
 		845876A22823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876A12823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift */; };
 		845876A5282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876A4282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift */; };
@@ -1468,6 +1469,7 @@
 		84520BF02B208D7800F97617 /* SnackBar.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBar.Mock.swift; sourceTree = "<group>"; };
 		84520BF22B208DE200F97617 /* SnackBar.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBar.Interface.swift; sourceTree = "<group>"; };
 		84520BF52B20936F00F97617 /* SnackBar.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBar.Failing.swift; sourceTree = "<group>"; };
+		84551A942D478BD800C55DA2 /* CoreSdkClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSdkClientTests.swift; sourceTree = "<group>"; };
 		8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewControllerVoiceOverTests.swift; sourceTree = "<group>"; };
 		845876A12823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ViewController.Props.Mock.swift; sourceTree = "<group>"; };
 		845876A4282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleQuestionView.Props.Accessibility.swift; sourceTree = "<group>"; };
@@ -2427,7 +2429,6 @@
 				7512A57827BF9FB800319DF1 /* Sources */,
 				9A3E1D8527B6B668005634EB /* Lib */,
 				1A205D6825655CB2003AA3CD /* Info.plist */,
-				9ACC25D127B4727500BC5335 /* CoreSDKClient.Failing.swift */,
 				AF9DB22F2890599700A0C442 /* Factory */,
 				AF9DB22C289056F600A0C442 /* Coordinator */,
 				9ACC25D327B474E800BC5335 /* Glia.Environment.Failing.swift */,
@@ -3709,6 +3710,7 @@
 		7512A57827BF9FB800319DF1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				84551A932D478BAD00C55DA2 /* CoreSdkClient */,
 				C06B6D4A2CCB916300A66D8A /* EntryWidget */,
 				210150722CC13E7300294BA4 /* QueuesMonitor */,
 				215A25962CABC7C50013023E /* EngagementLauncher */,
@@ -4157,6 +4159,15 @@
 				84520BF52B20936F00F97617 /* SnackBar.Failing.swift */,
 			);
 			path = LiveObservations;
+			sourceTree = "<group>";
+		};
+		84551A932D478BAD00C55DA2 /* CoreSdkClient */ = {
+			isa = PBXGroup;
+			children = (
+				9ACC25D127B4727500BC5335 /* CoreSDKClient.Failing.swift */,
+				84551A942D478BD800C55DA2 /* CoreSdkClientTests.swift */,
+			);
+			path = CoreSdkClient;
 			sourceTree = "<group>";
 		};
 		845876A02823FF21007AC3DF /* Mocks */ = {
@@ -6759,6 +6770,7 @@
 				AF29811229E42F3C0005BD55 /* AvailabilityTests.swift in Sources */,
 				AF993B3C2C8F5E7000DC5E69 /* EngagementCoordinatorSecureConversationsTests.swift in Sources */,
 				31758EC12B5E9E22007BBD9F /* CallVisualizer.VideoCallCoordinator.Environment.Mock.swift in Sources */,
+				84551A952D478BD800C55DA2 /* CoreSdkClientTests.swift in Sources */,
 				31758EC02B5E9E22007BBD9F /* VideoCallCoordinatorTests.swift in Sources */,
 				9AE05CB32805C9D900871321 /* ChatViewModel.Environment.Failing.swift in Sources */,
 				7552DFB12A6FB7DF0093519B /* ChatMessageTests.swift in Sources */,
