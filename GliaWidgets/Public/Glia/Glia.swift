@@ -265,7 +265,10 @@ public class Glia {
                     // PendingInteraction is essential part of SC flow, so it's not
                     // valid to consider SDK configured if PI is not created.
                     do {
-                        pendingInteraction = try .init(environment: .init(with: environment.coreSdk))
+                        pendingInteraction = try .init(environment: .init(
+                            client: environment.coreSdk,
+                            interactorProviding: { [weak self] in self?.interactor }
+                        ))
                         startObservingInteractorEvents()
                         completion(.success(()))
                     } catch let error as SecureConversations.PendingInteraction.Error {
