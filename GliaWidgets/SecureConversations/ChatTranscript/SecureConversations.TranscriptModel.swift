@@ -66,7 +66,7 @@ extension SecureConversations {
             return .enabled(.secureMessaging)
         }
 
-        let sections = [
+        var sections = [
             Section<ChatItem>(0),
             Section<ChatItem>(1),
             Section<ChatItem>(2),
@@ -831,5 +831,36 @@ extension SecureConversations.TranscriptModel {
 extension SecureConversations.TranscriptModel {
     func setViewAppeared() {
         hasViewAppeared = true
+    }
+}
+
+extension SecureConversations.TranscriptModel {
+    // TODO: Cover with unit tests MOB-3989
+    func migrate(from chatModel: ChatViewModel) {
+        sections = chatModel.sections
+        // There's a possibility where migration to SC (this actually doesn't seem to work ATM, needs checking (MOB-3988)).
+        // happens when there are awaiting uploads.
+        // For that case we need to make sure that theses uploads
+        // have also migrated to use engagement based API.
+        fileUploadListModel.environment.uploader.uploads = chatModel
+            .fileUploadListModel
+            .environment
+            .uploader
+            .uploads
+            .map { [environment] upload in
+                upload.environment.uploadFile = .toSecureMessaging(environment.secureUploadFile)
+                return upload
+            }
+        event(.messageTextChanged(chatModel.messageText))
+        // Since we have modified file upload list view model,
+        // we need to report about this change manually
+        // to keep UI in sync with data.
+        fileUploadListModel.reportChange()
+        isViewLoaded = chatModel.isViewLoaded
+        action?(.scrollToBottom(animated: true))
+        // Return chat message entry to `isConnected = false`
+        // to display corresponding placeholder.
+        action?(.setMessageEntryConnected(false))
+        engagementAction?(.showCloseButton)
     }
 }
