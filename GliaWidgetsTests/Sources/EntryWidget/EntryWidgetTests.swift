@@ -463,6 +463,42 @@ class EntryWidgetTests: XCTestCase {
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.video))
     }
 
+    func test_ongoingEngagementViewStateIgnoresExistingTransferredSC() {
+        var environment = EntryWidget.Environment.mock()
+        let interactor: Interactor = .mock()
+        interactor.state = .engaged(nil)
+        interactor.setCurrentEngagement(.mock(
+            source: .coreEngagement,
+            status: .transferring,
+            capabilities: .init(text: true)
+        ))
+        environment.interactorPublisher = Just(interactor).eraseToAnyPublisher()
+
+        let mockQueueId = "mockQueueId"
+        let mockQueue = Queue.mock(id: mockQueueId, media: [.text, .audio])
+
+        var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
+        queueMonitorEnvironment.listQueues = { completion in
+            completion([mockQueue], nil)
+        }
+        queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
+            completion(.success(mockQueue))
+            return UUID.mock.uuidString
+        }
+        environment.isAuthenticated = { false }
+        environment.queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
+
+        let entryWidget = EntryWidget(
+            queueIds: [],
+            configuration: .default,
+            environment: environment
+        )
+
+        entryWidget.show(in: .init())
+
+        XCTAssertEqual(entryWidget.viewState, .mediaTypes([.init(type: .audio), .init(type: .chat)]))
+    }
+
     func test_callVisualizerResumeCallbackBeingCalled() {
         enum Call {
             case onCallVisualizerResume
