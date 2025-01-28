@@ -350,7 +350,8 @@ private extension EntryWidget {
 
         if ongoingEngagement.source == .callVisualizer {
             return .ongoingEngagement(.callVisualizer)
-        } else if ongoingEngagement.source == .coreEngagement {
+        } else if ongoingEngagement.source == .coreEngagement,
+                  ongoingEngagement.isTransferredSecureConversation == false {
             if ongoingEngagement.mediaStreams.video != nil {
                 return .ongoingEngagement(.video)
             } else if ongoingEngagement.mediaStreams.audio != nil {
