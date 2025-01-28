@@ -208,7 +208,6 @@ extension ChatCoordinator {
             delegate?(.call)
         case .minimize:
             delegate?(.minimize)
-        // TODO: Cover with unit tests MOB-3989
         case let .liveChatEngagementUpgradedToSecureMessaging(chatModel):
             let transcriptModel = self.transcriptModel(with: { [weak controller] in controller })
             controller?.swapAndBindViewModel(.transcript(transcriptModel))

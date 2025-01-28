@@ -835,7 +835,6 @@ extension SecureConversations.TranscriptModel {
 }
 
 extension SecureConversations.TranscriptModel {
-    // TODO: Cover with unit tests MOB-3989
     func migrate(from chatModel: ChatViewModel) {
         sections = chatModel.sections
         // There's a possibility where migration to SC (this actually doesn't seem to work ATM, needs checking (MOB-3988)).
