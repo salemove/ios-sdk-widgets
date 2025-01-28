@@ -900,6 +900,7 @@
 		C090478A2B7E5C66003C437C /* AttachmentSourceListStyle.Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09047892B7E5C66003C437C /* AttachmentSourceListStyle.Equatable.swift */; };
 		C090478C2B7E5C8F003C437C /* FilePreviewStyle.Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C090478B2B7E5C8F003C437C /* FilePreviewStyle.Equatable.swift */; };
 		C096B40B297EBDE400F0C552 /* VisitorCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C096B40A297EBDE400F0C552 /* VisitorCodeTests.swift */; };
+		C0AF097D2D4B748300699E83 /* AnyPublisher.mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AF097C2D4B747700699E83 /* AnyPublisher.mock.swift */; };
 		C0B325E72AC5A8FA006BC430 /* AlertViewController+LiveObservationConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B325E62AC5A8FA006BC430 /* AlertViewController+LiveObservationConfirmation.swift */; };
 		C0C5BB772CAD4278001B2025 /* MediaTypeItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C5BB762CAD4259001B2025 /* MediaTypeItemStyle.swift */; };
 		C0C5BB792CAD42FD001B2025 /* MediaTypeItemStyle.RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C5BB782CAD42FD001B2025 /* MediaTypeItemStyle.RemoteConfig.swift */; };
@@ -1987,6 +1988,7 @@
 		C09047892B7E5C66003C437C /* AttachmentSourceListStyle.Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentSourceListStyle.Equatable.swift; sourceTree = "<group>"; };
 		C090478B2B7E5C8F003C437C /* FilePreviewStyle.Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewStyle.Equatable.swift; sourceTree = "<group>"; };
 		C096B40A297EBDE400F0C552 /* VisitorCodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorCodeTests.swift; sourceTree = "<group>"; };
+		C0AF097C2D4B747700699E83 /* AnyPublisher.mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyPublisher.mock.swift; sourceTree = "<group>"; };
 		C0B325E62AC5A8FA006BC430 /* AlertViewController+LiveObservationConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+LiveObservationConfirmation.swift"; sourceTree = "<group>"; };
 		C0C5BB762CAD4259001B2025 /* MediaTypeItemStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaTypeItemStyle.swift; sourceTree = "<group>"; };
 		C0C5BB782CAD42FD001B2025 /* MediaTypeItemStyle.RemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaTypeItemStyle.RemoteConfig.swift; sourceTree = "<group>"; };
@@ -2825,6 +2827,7 @@
 		1A60AFC12566857200E53F53 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C0AF097B2D4B746E00699E83 /* Combine */,
 				2198B7AA2CAEB13E002C442B /* QueuesMonitor */,
 				215A25922CA44D900013023E /* EngagementLauncher */,
 				C0F3DE352C69F4A700DE6D7B /* EntryWidget */,
@@ -5099,6 +5102,14 @@
 			path = CallVisualizer;
 			sourceTree = "<group>";
 		};
+		C0AF097B2D4B746E00699E83 /* Combine */ = {
+			isa = PBXGroup;
+			children = (
+				C0AF097C2D4B747700699E83 /* AnyPublisher.mock.swift */,
+			);
+			path = Combine;
+			sourceTree = "<group>";
+		};
 		C0D2F0292991213B00803B47 /* VideoCall */ = {
 			isa = PBXGroup;
 			children = (
@@ -6193,6 +6204,7 @@
 				C0D6CA212C185F1000D4709B /* AlertTypeComposer.Environment.swift in Sources */,
 				75940982298D38C2008B173A /* VisitorCodeCoordinator+Environment.swift in Sources */,
 				C09047682B7E23EC003C437C /* ChatFileDownloadErrorStateStyle.RemoteConfig.swift in Sources */,
+				C0AF097D2D4B748300699E83 /* AnyPublisher.mock.swift in Sources */,
 				75CF8D6129B3F1E400CB1524 /* Configuration.Mock.swift in Sources */,
 				84EFB05D28AA992D0005E270 /* WebMessageCardView.swift in Sources */,
 				315BAB1E29ADFED800FF284B /* ConfirmationStyle.CheckMessagesButtonStyle.swift in Sources */,

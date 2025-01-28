@@ -1,4 +1,5 @@
 @testable import GliaWidgets
+import Combine
 import XCTest
 
 final class SecureConversationsPendingInteractionTests: XCTestCase {
@@ -6,6 +7,8 @@ final class SecureConversationsPendingInteractionTests: XCTestCase {
         var environment = SecureConversations.PendingInteraction.Environment.failing
         let uuidGen = UUID.incrementing
         var pendingCallback: ((Result<Bool, Error>) -> Void)?
+        let interactor = Interactor.mock()
+        environment.interactorPublisher = Just(interactor).eraseToAnyPublisher()
         environment.observePendingSecureConversationsStatus = { callback in
             pendingCallback = callback
             return uuidGen().uuidString
@@ -17,8 +20,7 @@ final class SecureConversationsPendingInteractionTests: XCTestCase {
         }
         environment.unsubscribeFromPendingStatus = { _ in }
         environment.unsubscribeFromUnreadCount = { _ in }
-        let interactor = Interactor.mock()
-        environment.interactorProviding = { interactor }
+
 
         let pendingInteraction = try SecureConversations.PendingInteraction(environment: environment)
         // Assert initial pending interaction is false.
@@ -60,7 +62,7 @@ final class SecureConversationsPendingInteractionTests: XCTestCase {
         environment.unsubscribeFromUnreadCount = { _ in
             calls.append(.unsubscribeFromUnreadCount)
         }
-        environment.interactorProviding = { .mock() }
+        environment.interactorPublisher = .mock(.mock())
         var pendingInteraction = try SecureConversations.PendingInteraction(environment: environment)
         pendingInteraction = try .mock()
         _ = pendingInteraction

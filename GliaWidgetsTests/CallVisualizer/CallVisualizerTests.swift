@@ -1,4 +1,5 @@
 import XCTest
+import Combine
 import GliaCoreSDK
 @testable import GliaWidgets
 
@@ -22,7 +23,7 @@ final class CallVisualizerTests: XCTestCase {
             .mock(source: .callVisualizer)
         }
         let interactorMock = Interactor.mock()
-        environmentMock.interactorProviding = { interactorMock }
+        environmentMock.interactorPublisher = Just(interactorMock).eraseToAnyPublisher()
         let callVisualizer = CallVisualizer(environment: environmentMock)
         callVisualizer.startObservingInteractorEvents()
 
@@ -46,7 +47,9 @@ final class CallVisualizerTests: XCTestCase {
         let callVisualizer = CallVisualizer(environment: environmentMock)
         callVisualizer.startObservingInteractorEvents()
 
-        environmentMock.interactorProviding()?.onVisitorScreenSharingStateChange(
+        let interactorMock = Interactor.mock()
+        environmentMock.interactorPublisher = Just(interactorMock).eraseToAnyPublisher()
+        interactorMock.onVisitorScreenSharingStateChange(
             screenSharingState(status: .sharing),
             nil
         )
@@ -68,12 +71,56 @@ final class CallVisualizerTests: XCTestCase {
         let callVisualizer = CallVisualizer(environment: environmentMock)
         callVisualizer.startObservingInteractorEvents()
 
-        environmentMock.interactorProviding()?.onVisitorScreenSharingStateChange(
+        let interactorMock = Interactor.mock()
+        environmentMock.interactorPublisher = Just(interactorMock).eraseToAnyPublisher()
+        interactorMock.onVisitorScreenSharingStateChange(
             screenSharingState(status: .sharing),
             nil
         )
 
         XCTAssertEqual(calls, [])
+    }
+
+    func test_coordinatorUpdatesWhenInteractorChanges() {
+        let interactorSubject = CurrentValueSubject<Interactor?, Never>(nil)
+
+        var environmentMock = CallVisualizer.Environment.mock
+        environmentMock.interactorPublisher = interactorSubject.eraseToAnyPublisher()
+
+        let callVisualizer = CallVisualizer(environment: environmentMock)
+        callVisualizer.startObservingInteractorEvents()
+
+        let oldInteractor = Interactor.mock()
+        interactorSubject.send(oldInteractor)
+        let engagement: CoreSdkClient.Engagement = .mock()
+
+        oldInteractor.setCurrentEngagement(engagement)
+        XCTAssertEqual(callVisualizer.coordinator.activeInteractor?.currentEngagement, engagement)
+
+        let newInteractor = Interactor.mock()
+        interactorSubject.send(newInteractor)
+        XCTAssertEqual(callVisualizer.coordinator.activeInteractor?.currentEngagement, .none)
+    }
+
+    func test_CallVisualizerUpdatesWhenInteractorChanges() {
+        let interactorSubject = CurrentValueSubject<Interactor?, Never>(nil)
+
+        var environmentMock = CallVisualizer.Environment.mock
+        environmentMock.interactorPublisher = interactorSubject.eraseToAnyPublisher()
+
+        let callVisualizer = CallVisualizer(environment: environmentMock)
+        callVisualizer.startObservingInteractorEvents()
+
+        let oldInteractor = Interactor.mock()
+        interactorSubject.send(oldInteractor)
+
+        let engagement: CoreSdkClient.Engagement = .mock()
+        oldInteractor.setCurrentEngagement(engagement)
+        XCTAssertEqual(callVisualizer.activeInteractor?.currentEngagement, engagement)
+
+        let newInteractor = Interactor.mock()
+        interactorSubject.send(newInteractor)
+        XCTAssertEqual(callVisualizer.activeInteractor?.currentEngagement, .none)
     }
 
     // MARK: - Private
