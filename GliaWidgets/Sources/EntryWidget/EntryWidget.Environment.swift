@@ -29,7 +29,7 @@ extension EntryWidget.Environment {
             log: .mock,
             isAuthenticated: { true },
             hasPendingInteraction: { false },
-            interactorPublisher: Just(nil).eraseToAnyPublisher(),
+            interactorPublisher: .mock(nil),
             onCallVisualizerResume: {}
         )
     }

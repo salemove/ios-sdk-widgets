@@ -12,7 +12,7 @@ extension CallVisualizer.Environment {
         uiDevice: .mock,
         notificationCenter: .mock,
         requestVisitorCode: { _ in .init() },
-        interactorProviding: { .mock() },
+        interactorPublisher: .mock(.mock()),
         callVisualizerPresenter: .init(presenter: { nil }),
         bundleManaging: .init { .main },
         screenShareHandler: .mock,

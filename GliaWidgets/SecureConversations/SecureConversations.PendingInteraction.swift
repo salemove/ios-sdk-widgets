@@ -38,7 +38,13 @@ extension SecureConversations {
 
             self.unreadMessageCountCancellationToken = unreadMessageCountCancellationToken
 
-            environment.interactorProviding()?.$currentEngagement
+            environment.interactorPublisher
+                .flatMap { interactor -> AnyPublisher<CoreSdkClient.Engagement?, Never> in
+                    guard let interactor else {
+                        return Just(nil).eraseToAnyPublisher()
+                    }
+                    return interactor.$currentEngagement.eraseToAnyPublisher()
+                }
                 .map { $0?.isTransferredSecureConversation ?? false }
                 .assign(to: &$hasTransferredSecureConversation)
 
@@ -67,7 +73,7 @@ extension SecureConversations.PendingInteraction {
         var observeSecureConversationsUnreadMessageCount: CoreSdkClient.SubscribeForUnreadSCMessageCount
         var unsubscribeFromUnreadCount: CoreSdkClient.UnsubscribeFromUnreadCount
         var unsubscribeFromPendingStatus: CoreSdkClient.UnsubscribeFromPendingSCStatus
-        var interactorProviding: () -> Interactor?
+        var interactorPublisher: AnyPublisher<Interactor?, Never>
     }
 }
 
@@ -84,13 +90,13 @@ extension SecureConversations.PendingInteraction {
 extension SecureConversations.PendingInteraction.Environment {
     init(
         client: CoreSdkClient,
-        interactorProviding: @escaping () -> Interactor?
+        interactorPublisher: AnyPublisher<Interactor?, Never>
     ) {
         self.observePendingSecureConversationsStatus = client.observePendingSecureConversationStatus
         self.observeSecureConversationsUnreadMessageCount = client.subscribeForUnreadSCMessageCount
         self.unsubscribeFromPendingStatus = client.unsubscribeFromPendingSecureConversationStatus
         self.unsubscribeFromUnreadCount = client.unsubscribeFromUnreadCount
-        self.interactorProviding = interactorProviding
+        self.interactorPublisher = interactorPublisher
     }
 }
 
@@ -103,7 +109,7 @@ extension SecureConversations.PendingInteraction.Environment {
             observeSecureConversationsUnreadMessageCount: { _ in uuidGen().uuidString },
             unsubscribeFromUnreadCount: { _ in },
             unsubscribeFromPendingStatus: { _ in },
-            interactorProviding: { nil }
+            interactorPublisher: .mock(.mock())
         )
     }()
 }

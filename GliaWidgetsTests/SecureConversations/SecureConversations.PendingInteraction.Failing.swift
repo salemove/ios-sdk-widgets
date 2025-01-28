@@ -1,4 +1,5 @@
 @testable import GliaWidgets
+import Combine
 
 extension SecureConversations.PendingInteraction.Environment {
     static let failing = Self(
@@ -15,11 +16,13 @@ extension SecureConversations.PendingInteraction.Environment {
         },
         unsubscribeFromPendingStatus: { _ in
             fail("\(Self.self).unsubscribeFromPendingStatus")
-        }, 
-        interactorProviding: {
-            fail("\(Self.self).interactorProviding")
-            return .failing
-        }
+        },
+        // InteractorPublisher cannot call fail because it is a
+        // computed property and will fail immediately upon
+        // initialization, meaning that it fails before the override.
+        // Instead we return a do-nothing publisher.
+        interactorPublisher: Empty<Interactor?, Never>(completeImmediately: false)
+            .eraseToAnyPublisher()
     )
 }
 
