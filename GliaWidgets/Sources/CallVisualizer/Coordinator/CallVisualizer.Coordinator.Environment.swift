@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 extension CallVisualizer.Coordinator {
     struct Environment {
@@ -23,7 +24,7 @@ extension CallVisualizer.Coordinator {
         var orientationManager: OrientationManager
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
-        var interactorProviding: Interactor?
+        var interactorPublisher: AnyPublisher<Interactor?, Never>
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
         var snackBar: SnackBar
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
@@ -59,7 +60,7 @@ extension CallVisualizer.Coordinator.Environment {
             orientationManager: environment.orientationManager,
             proximityManager: environment.proximityManager,
             log: environment.log,
-            interactorProviding: environment.interactorProviding(),
+            interactorPublisher: environment.interactorPublisher,
             fetchSiteConfigurations: environment.fetchSiteConfigurations,
             snackBar: environment.snackBar,
             cameraDeviceManager: environment.cameraDeviceManager,

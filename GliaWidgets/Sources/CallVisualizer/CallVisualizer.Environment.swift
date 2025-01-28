@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 extension CallVisualizer {
     struct Environment {
@@ -12,7 +13,7 @@ extension CallVisualizer {
         var uiDevice: UIKitBased.UIDevice
         var notificationCenter: FoundationBased.NotificationCenter
         var requestVisitorCode: CoreSdkClient.RequestVisitorCode
-        var interactorProviding: () -> Interactor?
+        var interactorPublisher: AnyPublisher<Interactor?, Never>
         var callVisualizerPresenter: CallVisualizer.Presenter
         var bundleManaging: BundleManaging
         var screenShareHandler: ScreenShareHandler
@@ -37,7 +38,7 @@ extension CallVisualizer {
 extension CallVisualizer.Environment {
     static func create(
         with environment: Glia.Environment,
-        interactorProviding: @escaping () -> Interactor?,
+        interactorPublisher: AnyPublisher<Interactor?, Never>,
         engagedOperator: @escaping () -> CoreSdkClient.Operator?,
         theme: Theme,
         assetBuilder: @escaping () -> RemoteConfiguration.AssetsBuilder,
@@ -56,7 +57,7 @@ extension CallVisualizer.Environment {
             uiDevice: environment.uiDevice,
             notificationCenter: environment.notificationCenter,
             requestVisitorCode: environment.coreSdk.requestVisitorCode,
-            interactorProviding: interactorProviding,
+            interactorPublisher: interactorPublisher,
             callVisualizerPresenter: environment.callVisualizerPresenter,
             bundleManaging: environment.bundleManaging,
             screenShareHandler: environment.screenShareHandler,
