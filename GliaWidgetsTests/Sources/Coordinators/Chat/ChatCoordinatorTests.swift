@@ -425,4 +425,49 @@ final class ChatCoordinatorTests: XCTestCase {
 
         XCTAssertEqual(chatType, .nonAuthenticated)
     }
+
+    func test_delegateEventUpgradesChatToSC() {
+        let coordinator = createCoordinator(startWithSecureTranscriptFlow: false)
+        let controller = coordinator.start()
+        let chatModel: ChatViewModel
+        switch controller.viewModel {
+        case let .chat(model):
+            chatModel = model
+        case let .transcript(model):
+            XCTFail("Unexpected model of type \(type(of: model))")
+            return
+        }
+
+        // Place some visitor message into chat model to 
+        // make sure that all section are migrated from chat
+        // to transcript model.
+        let visitorMessage = ChatItem(kind: .mock(kind: .visitorMessage))
+        chatModel.pendingSection.append(visitorMessage)
+
+        chatModel.delegate?(.liveChatEngagementUpgradedToSecureMessaging(chatModel))
+
+        let transcriptModel: SecureConversations.TranscriptModel
+
+        switch controller.viewModel {
+        case let .transcript(model):
+            transcriptModel = model
+        case let .chat(model):
+            XCTFail("Unexpected model of type \(type(of: model)). Expected \(SecureConversations.TranscriptModel.self)")
+            return
+        }
+
+        // Since `Section` does not conform to `Equatable`,
+        // some extra checks are required to make sure
+        // that migration happens as expected.
+        XCTAssertFalse(chatModel.sections.isEmpty)
+        XCTAssertEqual(chatModel.pendingSection.itemCount, 1)
+        XCTAssertEqual(transcriptModel.pendingSection.itemCount, chatModel.pendingSection.itemCount)
+        for sectionIdx in chatModel.sections.indices {
+            XCTAssertTrue(transcriptModel.sections[sectionIdx] === transcriptModel.sections[sectionIdx])
+            for idx in chatModel.sections[sectionIdx].items.indices {
+                XCTAssertTrue(chatModel.sections[sectionIdx].items[idx] === transcriptModel.sections[sectionIdx].items[idx])
+            }
+        }
+        XCTAssertEqual(chatModel.isViewLoaded, transcriptModel.isViewLoaded)
+    }
 }
