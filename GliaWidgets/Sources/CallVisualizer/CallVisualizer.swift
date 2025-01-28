@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 import UIKit
 import GliaCoreSDK
 
@@ -14,6 +15,8 @@ import GliaCoreSDK
 public final class CallVisualizer {
     private var environment: Environment
     var delegate: ((Action) -> Void)?
+    private var interactorSubscription: AnyCancellable?
+    private(set) var activeInteractor: Interactor?
     lazy var coordinator: Coordinator = {
         let viewFactory = ViewFactory(
             with: environment.theme,
@@ -107,7 +110,7 @@ extension CallVisualizer {
 
     func endSession() {
         coordinator.end()
-        environment.interactorProviding()?.cleanup()
+        activeInteractor?.cleanup()
         delegate?(.engagementEnded)
     }
 
@@ -131,31 +134,41 @@ extension CallVisualizer {
 
 extension CallVisualizer {
     func startObservingInteractorEvents() {
-        environment.interactorProviding()?.addObserver(self) { [weak self] event in
+        interactorSubscription = environment.interactorPublisher
+            .sink { [weak self] newInteractor in
+                guard let self else { return }
+                handleInteractorEvents(newInteractor)
+            }
+    }
+
+    func handleInteractorEvents(_ newInteractor: Interactor?) {
+        self.activeInteractor?.removeObserver(self)
+        self.activeInteractor = newInteractor
+        newInteractor?.addObserver(self) { [weak self] event in
+            guard let self else { return }
             if case .stateChanged(.ended(.byOperator)) = event,
-               let endedEngagement = self?.environment.interactorProviding()?.endedEngagement,
+               let endedEngagement = activeInteractor?.endedEngagement,
                endedEngagement.source == .callVisualizer {
-                self?.endSession()
-                self?.environment.log.prefixed(Self.self).info("Call visualizer engagement ended")
+                endSession()
+                environment.log.prefixed(Self.self).info("Call visualizer engagement ended")
                 return
             }
-
             guard
-                let engagement = self?.environment.getCurrentEngagement(),
+                let engagement = self.environment.getCurrentEngagement(),
                 engagement.source == .callVisualizer
             else {
                 switch event {
                 case let .onEngagementRequest(request, answer):
-                    self?.handleEngagementRequest(request: request, answer: answer)
-                default: return
+                    handleEngagementRequest(request: request, answer: answer)
+                default:
+                    break
                 }
                 return
             }
-
             switch event {
             case .screenShareOffer(answer: let answer):
-                self?.environment.coreSdk.requestEngagedOperator { operators, _ in
-                    self?.environment.alertManager.present(
+                environment.coreSdk.requestEngagedOperator { operators, _ in
+                    self.environment.alertManager.present(
                         in: .global,
                         as: .screenSharing(
                             operators: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
@@ -167,8 +180,8 @@ extension CallVisualizer {
                     )
                 }
             case let .upgradeOffer(offer, answer):
-                self?.environment.coreSdk.requestEngagedOperator { operators, _ in
-                    self?.environment.alertManager.present(
+                environment.coreSdk.requestEngagedOperator { operators, _ in
+                    self.environment.alertManager.present(
                         in: .global,
                         as: .mediaUpgrade(
                             operators: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
@@ -181,15 +194,15 @@ extension CallVisualizer {
                     )
                 }
             case let .videoStreamAdded(stream):
-                self?.addVideoStream(stream: stream)
+                addVideoStream(stream: stream)
             case let .stateChanged(state):
                 if case .engaged = state {
-                    self?.environment.log.prefixed(Self.self).info("New Call visualizer engagement loaded")
-                    self?.delegate?(.engagementStarted)
-                    self?.environment.log.prefixed(Self.self).info("Engagement started")
+                    environment.log.prefixed(Self.self).info("New Call visualizer engagement loaded")
+                    delegate?(.engagementStarted)
+                    environment.log.prefixed(Self.self).info("Engagement started")
                 }
             case let .screenSharingStateChanged(state):
-                self?.environment.screenShareHandler.updateState(state)
+                environment.screenShareHandler.updateState(state)
             default:
                 break
             }

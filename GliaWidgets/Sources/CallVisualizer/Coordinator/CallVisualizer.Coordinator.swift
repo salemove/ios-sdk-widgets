@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import Combine
 
 extension CallVisualizer {
     final class Coordinator {
@@ -15,12 +16,19 @@ extension CallVisualizer {
             bubbleView.pan = { [weak self] translation in
                 self?.updateBubblePosition(translation: translation)
             }
+
+            interactorSubscription = environment.interactorPublisher
+                .sink { [weak self] newInteractor in
+                    self?.activeInteractor = newInteractor
+                }
         }
 
         // MARK: - Private
         private var visitorCodeCoordinator: VisitorCodeCoordinator?
         private var screenSharingCoordinator: ScreenSharingCoordinator?
         private var videoCallCoordinator: VideoCallCoordinator?
+        private var interactorSubscription: AnyCancellable?
+        private(set) var activeInteractor: Interactor?
         private var state: State
         private let bubbleSize = CGSize(width: 60, height: 60)
         private let bubbleView: BubbleView
@@ -225,7 +233,7 @@ extension CallVisualizer.Coordinator {
 
 extension CallVisualizer.Coordinator {
     func declineEngagement() {
-        environment.interactorProviding?.endEngagement { _ in }
+        activeInteractor?.endEngagement { _ in }
         end()
     }
 

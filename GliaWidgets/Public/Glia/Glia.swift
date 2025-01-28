@@ -1,4 +1,5 @@
 import GliaCoreSDK
+import Combine
 import UIKit
 
 /// Engagement media type.
@@ -107,7 +108,7 @@ public class Glia {
     public lazy var callVisualizer = CallVisualizer(
         environment: .create(
             with: environment,
-            interactorProviding: { [weak self] in self?.interactor },
+            interactorPublisher: $interactor.eraseToAnyPublisher(),
             engagedOperator: { [weak self] in
                 self?.environment.coreSdk.getNonTransferredSecureConversationEngagement()?.engagedOperator
             },
@@ -267,7 +268,7 @@ public class Glia {
                     do {
                         pendingInteraction = try .init(environment: .init(
                             client: environment.coreSdk,
-                            interactorProviding: { [weak self] in self?.interactor }
+                            interactorPublisher: Just(interactor).eraseToAnyPublisher()
                         ))
                         startObservingInteractorEvents()
                         completion(.success(()))
