@@ -59,7 +59,11 @@ extension ChatViewModel.Environment {
             log: .failing,
             cameraDeviceManager: { .failing },
             flipCameraButtonStyle: .nop,
-            alertManager: .mock()
+            alertManager: .mock(),
+            isAuthenticated: {
+                fail("\(Self.self).isAuthenticated")
+                return false
+            }
         )
     }
 }

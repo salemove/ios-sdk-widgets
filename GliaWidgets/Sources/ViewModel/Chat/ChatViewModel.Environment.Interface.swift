@@ -28,6 +28,7 @@ extension EngagementViewModel {
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var flipCameraButtonStyle: FlipCameraButtonStyle
         var alertManager: AlertManager
+        var isAuthenticated: () -> Bool
     }
 }
 
@@ -62,7 +63,8 @@ extension EngagementViewModel.Environment {
             log: environment.log,
             cameraDeviceManager: environment.cameraDeviceManager,
             flipCameraButtonStyle: environment.flipCameraButtonStyle,
-            alertManager: environment.alertManager
+            alertManager: environment.alertManager,
+            isAuthenticated: environment.isAuthenticated
         )
     }
 
@@ -96,7 +98,8 @@ extension EngagementViewModel.Environment {
             log: environment.log,
             cameraDeviceManager: environment.cameraDeviceManager,
             flipCameraButtonStyle: environment.flipCameraButtonStyle,
-            alertManager: environment.alertManager
+            alertManager: environment.alertManager,
+            isAuthenticated: environment.isAuthenticated
         )
     }
 }

@@ -30,6 +30,7 @@ extension CallCoordinator {
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var flipCameraButtonStyle: FlipCameraButtonStyle
         var alertManager: AlertManager
+        var isAuthenticated: () -> Bool
     }
 }
 
@@ -63,7 +64,8 @@ extension CallCoordinator.Environment {
             snackBar: environment.snackBar,
             cameraDeviceManager: environment.cameraDeviceManager,
             flipCameraButtonStyle: environment.flipCameraButtonStyle,
-            alertManager: environment.alertManager
+            alertManager: environment.alertManager,
+            isAuthenticated: environment.isAuthenticated
         )
     }
 }

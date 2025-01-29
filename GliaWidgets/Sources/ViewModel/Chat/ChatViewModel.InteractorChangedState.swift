@@ -7,6 +7,18 @@ extension ChatViewModel {
             break
         case .engaged:
             environment.log.prefixed(Self.self).info("New engagement loaded")
+            // Engaged state for non-transferred SC engagement when
+            // ChatType is `.secureTranscript(upgradedFromChat: true)` means
+            // that SC QueueTicket is accepted by operator. In this case we need to
+            // switch ChatType to authenticated. For better reliability `isAuthenticated` check was added.
+            if interactor.currentEngagement?.isTransferredSecureConversation == false,
+               case .secureTranscript(let upgradedFromChat) = chatType,
+               upgradedFromChat == true {
+                let chatType: ChatType = environment.isAuthenticated() ? .authenticated : .nonAuthenticated
+                setChatType(chatType)
+                action?(.refreshAll)
+            }
+
         case .ended(.byOperator):
             func handleOperatorEndedEngagement() {
                 engagementAction?(.showAlert(.operatorEndedEngagement(action: { [weak self] in

@@ -208,7 +208,8 @@ extension SecureConversations.Coordinator {
             isWindowVisible: environment.isWindowVisible,
             startAction: .startEngagement,
             environment: .create(with: environment),
-            startWithSecureTranscriptFlow: true
+            startWithSecureTranscriptFlow: true,
+            skipTransferredSCHandling: false
         )
 
         coordinator.delegate = { [weak self] event in
