@@ -194,12 +194,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     }
 
     private func showConnected() {
-        switch screenShareHandler.status().value {
-        case .started:
-            engagementAction?(.showEndScreenShareButton)
-        case .stopped:
-            engagementAction?(.showEndButton)
-        }
+        handleScreenSharingStatus(screenShareHandler.status().value)
 
         action?(
             .connected(

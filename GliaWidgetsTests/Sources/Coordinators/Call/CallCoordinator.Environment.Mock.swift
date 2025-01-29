@@ -15,6 +15,7 @@ extension CallCoordinator.Environment {
         fromHistory: { false },
         fetchSiteConfigurations: { completion in },
         getCurrentEngagement: { .mock() },
+        getNonTransferredSecureConversationEngagement: { .mock() },
         timerProviding: .mock,
         submitSurveyAnswer: { answers, surveyId, engagementId, completion in },
         uuid: { .mock },

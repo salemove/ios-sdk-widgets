@@ -30,6 +30,7 @@ extension SecureConversations.Coordinator {
         var isWindowVisible: ObservableValue<Bool>
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
+        var getNonTransferredSecureConversationEngagement: CoreSdkClient.GetCurrentEngagement
         var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
         var interactor: Interactor
         var getSecureUnreadMessageCount: CoreSdkClient.GetSecureUnreadMessageCount
@@ -101,6 +102,7 @@ extension SecureConversations.Coordinator.Environment {
             isWindowVisible: isWindowVisible,
             uploadFileToEngagement: environment.uploadFileToEngagement,
             getCurrentEngagement: environment.getCurrentEngagement,
+            getNonTransferredSecureConversationEngagement: environment.getNonTransferredSecureConversationEngagement,
             submitSurveyAnswer: environment.submitSurveyAnswer,
             interactor: interactor,
             getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,

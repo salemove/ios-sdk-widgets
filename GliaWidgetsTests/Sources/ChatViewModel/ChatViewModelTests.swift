@@ -47,6 +47,7 @@ class ChatViewModelTests: XCTestCase {
                 loadChatMessagesFromHistory: { true },
                 fetchSiteConfigurations: { _ in },
                 getCurrentEngagement: { nil },
+                getNonTransferredSecureConversationEngagement: { nil },
                 timerProviding: .mock,
                 uuid: { .mock },
                 uiApplication: .mock,
@@ -1060,6 +1061,48 @@ class ChatViewModelTests: XCTestCase {
                 .engagementDelegateFinished
             ]
         )
+    }
+
+    func test_closeActionDoesNotShowConfirmationIfThereIsTransferredSC() throws {
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.gcd.mainQueue = .mock
+        interactorEnv.coreSdk.endEngagement = { _ in
+            XCTFail("End engagement should not be called")
+        }
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.setCurrentEngagement(.mock(status: .transferring, capabilities: .init(text: true)))
+        interactor.state = .engaged(nil)
+
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
+        fileUploadListViewModelEnv.uploader.uploads = []
+        viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
+        let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
+        enum Call {
+            case engagementDelegateFinished
+        }
+        var calls: [Call] = []
+        viewModel.engagementAction = { action in
+            switch action {
+            case .showAlert(.endEngagement(_)):
+                XCTFail("End engagement dialog should not be shown")
+            default:
+                break
+            }
+        }
+        viewModel.engagementDelegate = { action in
+            switch action {
+            case .finished:
+                calls.append(.engagementDelegateFinished)
+            default:
+                break
+            }
+        }
+
+        viewModel.event(.closeTapped)
+        XCTAssertEqual(calls, [.engagementDelegateFinished])
     }
 }
 

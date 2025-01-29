@@ -9,7 +9,7 @@ extension Glia {
         guard let interactor, let configuration else { return }
 
         guard
-            let currentEngagement = self.environment.coreSdk.getCurrentEngagement(),
+            let currentEngagement = self.environment.coreSdk.getNonTransferredSecureConversationEngagement(),
             currentEngagement.source == .coreEngagement
         else { return }
 

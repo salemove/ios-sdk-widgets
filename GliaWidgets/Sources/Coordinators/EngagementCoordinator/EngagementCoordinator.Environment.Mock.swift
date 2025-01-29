@@ -15,6 +15,7 @@ extension EngagementCoordinator.Environment {
         timerProviding: .mock,
         fetchSiteConfigurations: { _ in },
         getCurrentEngagement: { nil },
+        getNonTransferredSecureConversationEngagement: { return nil },
         submitSurveyAnswer: { _, _, _, _ in },
         uiApplication: .mock,
         uiScreen: .mock,

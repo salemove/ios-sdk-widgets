@@ -29,7 +29,7 @@ extension Glia {
 
         // If ongoing engagement exists on Core SDK side the engagement kind should be corrected
         // to correct one before restoring it.
-        var ongoingEngagementMediaStreams = environment.coreSdk.getCurrentEngagement()?.mediaStreams
+        var ongoingEngagementMediaStreams = environment.coreSdk.getNonTransferredSecureConversationEngagement()?.mediaStreams
         // Currently, CoreSDK can't restore video stream
         if let media = ongoingEngagementMediaStreams {
             ongoingEngagementMediaStreams = .init(audio: media.audio, video: nil)
@@ -61,7 +61,7 @@ extension Glia {
             return
         }
 
-        guard let currentEngagement = environment.coreSdk.getCurrentEngagement() else {
+        guard let currentEngagement = environment.coreSdk.getNonTransferredSecureConversationEngagement() else {
             // This value can be set to `true` if engagement restoring happened.
             // To prevent missing Live Observation Confirmation dialog to be shown
             // for further engagements, we need to default this value again.

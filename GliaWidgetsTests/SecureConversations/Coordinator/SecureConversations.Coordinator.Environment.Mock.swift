@@ -31,6 +31,7 @@ extension SecureConversations.Coordinator.Environment {
         isWindowVisible: .init(with: true),
         uploadFileToEngagement: { file, progress, completion in },
         getCurrentEngagement: { .mock() },
+        getNonTransferredSecureConversationEngagement: { .mock() },
         submitSurveyAnswer: { answers, surveyId, engagementId, completion in },
         interactor: .mock(),
         getSecureUnreadMessageCount: { callback in },
