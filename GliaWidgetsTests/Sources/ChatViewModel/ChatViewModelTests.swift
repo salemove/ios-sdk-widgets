@@ -67,7 +67,8 @@ class ChatViewModelTests: XCTestCase {
                 log: .mock,
                 cameraDeviceManager: { .mock },
                 flipCameraButtonStyle: .nop,
-                alertManager: .mock()
+                alertManager: .mock(),
+                isAuthenticated: { false }
             ),
             maximumUploads: { 2 }
         )
@@ -1103,6 +1104,90 @@ class ChatViewModelTests: XCTestCase {
 
         viewModel.event(.closeTapped)
         XCTAssertEqual(calls, [.engagementDelegateFinished])
+    }
+
+    func testShouldForceEnqueueingReturnsFalse() throws {
+        let interactor = Interactor.mock(environment: .failing)
+        interactor.setCurrentEngagement(.mock())
+        interactor.state = .engaged(nil)
+
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
+        fileUploadListViewModelEnv.uploader.uploads = []
+        viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
+
+        let viewModel = ChatViewModel.mock(
+            interactor: interactor,
+            chatType: .authenticated,
+            environment: viewModelEnv
+        )
+
+        XCTAssertFalse(viewModel.shouldForceEnqueueing)
+    }
+
+    func testShouldForceEnqueueingReturnsTrue() throws {
+        let interactor = Interactor.mock(environment: .failing)
+        interactor.setCurrentEngagement(.mock(status: .transferring, capabilities: .init(text: true)))
+        interactor.state = .engaged(nil)
+
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
+        fileUploadListViewModelEnv.uploader.uploads = []
+        viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
+
+        let viewModel = ChatViewModel.mock(
+            interactor: interactor,
+            chatType: .authenticated,
+            environment: viewModelEnv
+        )
+
+        XCTAssertTrue(viewModel.shouldForceEnqueueing)
+    }
+
+    func testTransferredScSwitchesChatTypeToAuthenticatedOnEngagedState() throws {
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.gcd.mainQueue.async = { $0() }
+
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.setCurrentEngagement(.mock(status: .transferring, capabilities: .init(text: true)))
+
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
+        fileUploadListViewModelEnv.uploader.uploads = []
+        viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
+        viewModelEnv.log.prefixedClosure = { _ in viewModelEnv.log }
+        viewModelEnv.log.infoClosure = { _, _, _, _ in }
+        viewModelEnv.fetchSiteConfigurations = { _ in }
+        viewModelEnv.isAuthenticated = { true }
+
+        let viewModel = ChatViewModel.mock(
+            interactor: interactor,
+            chatType: .secureTranscript(upgradedFromChat: true),
+            environment: viewModelEnv
+        )
+        
+        enum Call { case refreshAll, showEndButton }
+        var calls: [Call] = []
+        viewModel.engagementAction = { action in
+            guard case .showEndButton = action else { return }
+            calls.append(.showEndButton)
+        }
+        viewModel.action = { action in
+            guard case .refreshAll = action else { return }
+            calls.append(.refreshAll)
+        }
+
+        interactor.setCurrentEngagement(.mock())
+        interactor.state = .engaged(nil)
+
+        XCTAssertEqual(viewModel.chatType, .authenticated)
+        XCTAssertEqual(calls, [.refreshAll, .showEndButton, .refreshAll])
     }
 }
 

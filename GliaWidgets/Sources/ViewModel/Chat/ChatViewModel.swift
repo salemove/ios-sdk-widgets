@@ -417,6 +417,15 @@ extension ChatViewModel {
 // MARK: Message
 
 extension ChatViewModel {
+    // In case when Tranferred SC exists and `chatType` is `.authenticated`
+    // that means visitor decided to Leave Current Conversation and
+    // then authenticated Chat was opened.
+    // In this case we need to force enqueueing process instead of sending a message.
+    var shouldForceEnqueueing: Bool {
+        let hasTransferredSecureConversation = interactor.currentEngagement?.isTransferredSecureConversation == true
+        return hasTransferredSecureConversation && chatType == .authenticated
+    }
+
     func registerReceivedMessage(messageId: ChatMessage.MessageId) {
         self.receivedMessageIds.insert(messageId.uppercased())
     }
@@ -444,6 +453,9 @@ extension ChatViewModel {
         )
 
         switch interactor.state {
+        case .engaged where shouldForceEnqueueing, .enqueueing, .ended, .none:
+            handle(pendingMessage: outgoingMessage)
+            interactor.state = .enqueueing(.chat)
         case .engaged:
             let item = ChatItem(with: outgoingMessage)
             appendItem(item, to: messagesSection, animated: true)
@@ -476,10 +488,6 @@ extension ChatViewModel {
             }
         case .enqueued:
             handle(pendingMessage: outgoingMessage)
-
-        case .enqueueing, .ended, .none:
-            handle(pendingMessage: outgoingMessage)
-            interactor.state = .enqueueing(.chat)
         }
 
         messageText = ""
@@ -487,8 +495,7 @@ extension ChatViewModel {
 
     func handle(pendingMessage: OutgoingMessage) {
         switch interactor.state {
-        case .engaged: return
-        case .enqueueing, .enqueued, .ended, .none:
+        case .engaged where shouldForceEnqueueing, .enqueueing, .enqueued, .ended, .none:
             let messageItem = ChatItem(with: pendingMessage)
             appendItem(messageItem, to: pendingSection, animated: true)
 
@@ -506,6 +513,7 @@ extension ChatViewModel {
             }
 
             action?(.scrollToBottom(animated: true))
+        case .engaged: return
         }
     }
 

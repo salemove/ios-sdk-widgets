@@ -52,15 +52,15 @@ extension ChatViewModel {
             let outgoingMessage = OutgoingMessage(payload: payload)
 
             switch self.interactor.state {
-            case .engaged:
-                self.sendMessage(outgoingMessage)
-
             case .enqueued:
                 self.handle(pendingMessage: outgoingMessage)
 
-            case .enqueueing, .ended, .none:
+            case .engaged where shouldForceEnqueueing, .enqueueing, .ended, .none:
                 self.handle(pendingMessage: outgoingMessage)
                 self.enqueue(engagementKind: .chat)
+
+            case .engaged:
+                self.sendMessage(outgoingMessage)
             }
         }
     }
