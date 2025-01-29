@@ -14,6 +14,7 @@ extension ChatCoordinator {
         var fromHistory: () -> Bool
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
+        var getNonTransferredSecureConversationEngagement: CoreSdkClient.GetCurrentEngagement
         var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
         var uuid: () -> UUID
         var uiApplication: UIKitBased.UIApplication
@@ -70,6 +71,7 @@ extension ChatCoordinator.Environment {
             fromHistory: environment.loadChatMessagesFromHistory,
             fetchSiteConfigurations: environment.fetchSiteConfigurations,
             getCurrentEngagement: environment.getCurrentEngagement,
+            getNonTransferredSecureConversationEngagement: environment.getNonTransferredSecureConversationEngagement,
             submitSurveyAnswer: environment.submitSurveyAnswer,
             uuid: environment.uuid,
             uiApplication: environment.uiApplication,
@@ -119,6 +121,7 @@ extension ChatCoordinator.Environment {
             fromHistory: environment.loadChatMessagesFromHistory,
             fetchSiteConfigurations: environment.fetchSiteConfigurations,
             getCurrentEngagement: environment.getCurrentEngagement,
+            getNonTransferredSecureConversationEngagement: environment.getNonTransferredSecureConversationEngagement,
             submitSurveyAnswer: environment.submitSurveyAnswer,
             uuid: environment.uuid,
             uiApplication: environment.uiApplication,

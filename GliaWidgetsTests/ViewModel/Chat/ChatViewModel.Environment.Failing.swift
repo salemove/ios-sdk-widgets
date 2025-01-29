@@ -36,6 +36,7 @@ extension ChatViewModel.Environment {
                 fail("\(Self.self).fetchSiteConfigurations")
             },
             getCurrentEngagement: { nil },
+            getNonTransferredSecureConversationEngagement: { nil },
             timerProviding: .mock,
             uuid: {
                 fail("\(Self.self).uuid")

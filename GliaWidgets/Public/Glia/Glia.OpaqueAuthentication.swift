@@ -83,7 +83,7 @@ extension Glia {
                 let viewFactory = self?.rootCoordinator?.viewFactory
                 let sceneProvider = self?.rootCoordinator?.sceneProvider
 
-                let prevEngagementIsNotPresent = self?.environment.coreSdk.getCurrentEngagement() == nil
+                let prevEngagementIsNotPresent = self?.environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil
 
                 // We need to unsubscribe from listening to Interactor events
                 // until authentication is finished to avoid
@@ -101,7 +101,8 @@ extension Glia {
                         switch result {
                         case .success:
                             // Attempt to restore ongoing engagement after configuration.
-                            if let ongoingEngagement = self?.environment.coreSdk.getCurrentEngagement(),
+                            // Skip restoring transferred Secure Conversation.
+                            if let ongoingEngagement = self?.environment.coreSdk.getNonTransferredSecureConversationEngagement(),
                                 let configuration = self?.configuration, prevEngagementIsNotPresent,
                                 let interactor {
                                 self?.closeRootCoordinator()
@@ -181,7 +182,9 @@ extension Glia {
         // Waits for while for establishing socket connection, connection to channels, and
         // receive necessary information about engagement.
         environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(2)) { [weak self] in
-            if let restartedEngagement = self?.interactor?.currentEngagement, restartedEngagement.restartedFromEngagementId != nil {
+            if let restartedEngagement = self?.interactor?.currentEngagement,
+               !restartedEngagement.isTransferredSecureConversation,
+                restartedEngagement.restartedFromEngagementId != nil {
                 // In case engagement should be restarted, LO ack should not
                 // be appeared again.
                 interactor.skipLiveObservationConfirmations = true

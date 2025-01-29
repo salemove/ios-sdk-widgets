@@ -23,6 +23,7 @@ extension ChatViewModel.Environment {
         loadChatMessagesFromHistory: { true },
         fetchSiteConfigurations: { _ in },
         getCurrentEngagement: { return nil },
+        getNonTransferredSecureConversationEngagement: { return nil },
         timerProviding: .mock,
         uuid: { UUID.mock },
         uiApplication: .mock,

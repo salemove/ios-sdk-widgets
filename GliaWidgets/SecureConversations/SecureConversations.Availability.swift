@@ -44,8 +44,7 @@ extension SecureConversations {
             guard !filteredQueues.isEmpty else {
                 // In case of "transferred SC" we should treat SC as available.
                 if let engagement = environment.getCurrentEngagement(),
-                   engagement.status == .transferring,
-                   engagement.capabilities?.text == true {
+                   engagement.isTransferredSecureConversation {
                     completion(.success(.available(.transferred)))
                     return
                 }

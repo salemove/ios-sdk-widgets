@@ -152,7 +152,7 @@ class ChatViewModel: EngagementViewModel {
             // We enqueue eagerly in case if this is the first engagement for visitor (by  evaluating previous chat history)
             // or in case if engagement has been restored.
 
-            if history.isEmpty || self.environment.getCurrentEngagement() != nil {
+            if history.isEmpty || self.environment.getNonTransferredSecureConversationEngagement() != nil {
                 self.interactor.state = .enqueueing(.chat)
             }
         }
@@ -191,12 +191,8 @@ class ChatViewModel: EngagementViewModel {
             action?(.scrollToBottom(animated: false))
             action?(.setMessageEntryEnabled(true))
 
-            switch screenShareHandler.status().value {
-            case .started:
-                engagementAction?(.showEndScreenShareButton)
-            case .stopped:
-                engagementAction?(.showEndButton)
-            }
+            handleScreenSharingStatus(screenShareHandler.status().value)
+
             fetchSiteConfigurations()
 
             pendingMessages.forEach { [weak self] outgoingMessage in
@@ -245,7 +241,8 @@ class ChatViewModel: EngagementViewModel {
         case .engagementTransferring:
             onEngagementTransferring()
         case .onLiveToSecureConversationsEngagementTransferring:
-            chatType = .secureTranscript(upgradedFromChat: true)
+            setChatType(.secureTranscript(upgradedFromChat: true))
+            handleScreenSharingStatus(screenShareHandler.status().value)
             action?(.refreshAll)
         case .engagementTransferred:
             onEngagementTransferred()
@@ -291,6 +288,10 @@ extension ChatViewModel {
         case .retryMessageTapped(let message):
             retryMessageSending(message)
         }
+    }
+
+    func setChatType(_ chatType: ChatType) {
+        self.chatType = chatType
     }
 }
 

@@ -393,6 +393,7 @@
 		84520BF32B208DE200F97617 /* SnackBar.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BF22B208DE200F97617 /* SnackBar.Interface.swift */; };
 		84520BF62B20936F00F97617 /* SnackBar.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84520BF52B20936F00F97617 /* SnackBar.Failing.swift */; };
 		84551A952D478BD800C55DA2 /* CoreSdkClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84551A942D478BD800C55DA2 /* CoreSdkClientTests.swift */; };
+		84551A982D4A5B0F00C55DA2 /* EngagementViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84551A972D4A5B0F00C55DA2 /* EngagementViewModelTests.swift */; };
 		8458769F2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */; };
 		845876A22823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876A12823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift */; };
 		845876A5282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845876A4282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift */; };
@@ -1471,6 +1472,7 @@
 		84520BF22B208DE200F97617 /* SnackBar.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBar.Interface.swift; sourceTree = "<group>"; };
 		84520BF52B20936F00F97617 /* SnackBar.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBar.Failing.swift; sourceTree = "<group>"; };
 		84551A942D478BD800C55DA2 /* CoreSdkClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSdkClientTests.swift; sourceTree = "<group>"; };
+		84551A972D4A5B0F00C55DA2 /* EngagementViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementViewModelTests.swift; sourceTree = "<group>"; };
 		8458769E2823FD18007AC3DF /* SurveyViewControllerVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewControllerVoiceOverTests.swift; sourceTree = "<group>"; };
 		845876A12823FF34007AC3DF /* Survey.ViewController.Props.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Survey.ViewController.Props.Mock.swift; sourceTree = "<group>"; };
 		845876A4282A9015007AC3DF /* ScaleQuestionView.Props.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleQuestionView.Props.Accessibility.swift; sourceTree = "<group>"; };
@@ -3713,6 +3715,7 @@
 		7512A57827BF9FB800319DF1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				84551A962D4A5AFC00C55DA2 /* EngagementViewModel */,
 				84551A932D478BAD00C55DA2 /* CoreSdkClient */,
 				C06B6D4A2CCB916300A66D8A /* EntryWidget */,
 				210150722CC13E7300294BA4 /* QueuesMonitor */,
@@ -4171,6 +4174,14 @@
 				84551A942D478BD800C55DA2 /* CoreSdkClientTests.swift */,
 			);
 			path = CoreSdkClient;
+			sourceTree = "<group>";
+		};
+		84551A962D4A5AFC00C55DA2 /* EngagementViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				84551A972D4A5B0F00C55DA2 /* EngagementViewModelTests.swift */,
+			);
+			path = EngagementViewModel;
 			sourceTree = "<group>";
 		};
 		845876A02823FF21007AC3DF /* Mocks */ = {
@@ -6699,6 +6710,7 @@
 				216D310D2CF795380019CA9E /* EntryWidgetViewModelTests.swift in Sources */,
 				AF4D821C29D6E572007763F8 /* TranscriptModel.DividedChatItemsForUnreadCountTests.swift in Sources */,
 				84520BF62B20936F00F97617 /* SnackBar.Failing.swift in Sources */,
+				84551A982D4A5B0F00C55DA2 /* EngagementViewModelTests.swift in Sources */,
 				AF1C19802B14FE9F00F8810F /* ConditionalCompilationClient.Failing.swift in Sources */,
 				84520BED2B19FD3000F97617 /* CallVisualizerTests+LO.swift in Sources */,
 				9A19927027D3BCAE00161AAE /* GCD.Failing.swift in Sources */,

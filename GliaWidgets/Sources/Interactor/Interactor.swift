@@ -193,6 +193,8 @@ extension Interactor {
                 ticket: ticket,
                 completion: completion
             )
+        case .engaged where currentEngagement?.isTransferredSecureConversation == true:
+            completion(.success(()))
         case .engaged:
             endEngagement(completion: completion)
         case .ended:
