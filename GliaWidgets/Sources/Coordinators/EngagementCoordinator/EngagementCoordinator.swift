@@ -88,7 +88,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
 
     func start(maximize: Bool) {
-        setupEngagementController()
+        setupEngagementController(skipTransferredSCHandling: false)
 
         let bubbleView = viewFactory.makeBubbleView()
         unreadMessages.addObserver(self) { unreadCount, _ in
@@ -106,7 +106,10 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         delegate?(.started)
     }
 
-    func setupEngagementController(animated: Bool = false) {
+    func setupEngagementController(
+        skipTransferredSCHandling: Bool,
+        animated: Bool = false
+    ) {
         let engagementKind = engagementLaunching.currentKind
         switch engagementKind {
         case .none:
@@ -114,7 +117,8 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         case .chat:
             let chatViewController = startChat(
                 withAction: .startEngagement,
-                showsCallBubble: false
+                showsCallBubble: false,
+                skipTransferredSCHandling: skipTransferredSCHandling
             )
             engagement = .chat(chatViewController)
             navigationPresenter.setViewControllers(
@@ -143,7 +147,8 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
             interactor.state = .enqueueing(engagementKind)
             let chatViewController = startChat(
                 withAction: .none,
-                showsCallBubble: true
+                showsCallBubble: true,
+                skipTransferredSCHandling: skipTransferredSCHandling
             )
 
             engagement = .call(
@@ -300,7 +305,8 @@ extension EngagementCoordinator {
 
     private func startChat(
         withAction startAction: ChatViewModel.StartAction,
-        showsCallBubble: Bool
+        showsCallBubble: Bool,
+        skipTransferredSCHandling: Bool
     ) -> ChatViewController {
         let coordinator = ChatCoordinator(
             interactor: interactor,
@@ -319,7 +325,8 @@ extension EngagementCoordinator {
                 leaveCurrentSecureConversation: .nop,
                 switchToEngagement: .nop
             ),
-            startWithSecureTranscriptFlow: false
+            startWithSecureTranscriptFlow: false,
+            skipTransferredSCHandling: skipTransferredSCHandling
         )
         coordinator.delegate = { [weak self] event in
             self?.handleChatCoordinatorEvent(event: event)
@@ -489,8 +496,7 @@ extension EngagementCoordinator {
         requestedEngagementKind: EngagementKind
     ) -> UIViewController {
         let leaveCurrentSecureConversation = Cmd { [weak self] in
-            self?.engagementLaunching = .direct(kind: requestedEngagementKind)
-            self?.setupEngagementController(animated: true)
+            self?.switchToEngagementKind(requestedEngagementKind)
         }
         let coordinator = SecureConversations.Coordinator(
             messagingInitialScreen: messagingInitialScreen,
@@ -535,7 +541,10 @@ extension EngagementCoordinator {
 
     private func switchToEngagementKind(_ kind: EngagementKind) {
         engagementLaunching = .direct(kind: kind)
-        setupEngagementController(animated: true)
+        setupEngagementController(
+            skipTransferredSCHandling: true,
+            animated: true
+        )
     }
 }
 

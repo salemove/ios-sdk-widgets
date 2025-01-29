@@ -12,7 +12,9 @@ final class ChatCoordinatorTests: XCTestCase {
     }
 
     func createCoordinator(
-        startWithSecureTranscriptFlow: Bool = false
+        environment: ChatCoordinator.Environment = .mock,
+        startWithSecureTranscriptFlow: Bool = false,
+        skipTransferredSCHandling: Bool = false
     ) -> ChatCoordinator {
         return ChatCoordinator(
             interactor: .mock(),
@@ -24,8 +26,9 @@ final class ChatCoordinatorTests: XCTestCase {
             screenShareHandler: .mock,
             isWindowVisible: .init(with: true),
             startAction: .startEngagement,
-            environment: .mock,
-            startWithSecureTranscriptFlow: startWithSecureTranscriptFlow
+            environment: environment,
+            startWithSecureTranscriptFlow: startWithSecureTranscriptFlow,
+            skipTransferredSCHandling: skipTransferredSCHandling
         )
     }
 
@@ -469,5 +472,72 @@ final class ChatCoordinatorTests: XCTestCase {
             }
         }
         XCTAssertEqual(chatModel.isViewLoaded, transcriptModel.isViewLoaded)
+    }
+
+    func test_chatTypeWhenSkipTransferredSCHandlingIsFalseAndTransferredScExists() {
+        var environment = ChatCoordinator.Environment.mock
+        environment.getCurrentEngagement = {
+            .mock(status: .transferring, capabilities: .init(text: true))
+        }
+        environment.isAuthenticated = { true }
+        let coordinator = createCoordinator(
+            environment: environment,
+            skipTransferredSCHandling: false
+        )
+        let controller = coordinator.start()
+        let chatModel: ChatViewModel
+        switch controller.viewModel {
+        case let .chat(model):
+            chatModel = model
+        case let .transcript(model):
+            XCTFail("Unexpected model of type \(type(of: model))")
+            return
+        }
+
+        XCTAssertEqual(chatModel.chatType, .secureTranscript(upgradedFromChat: true))
+    }
+
+    func test_chatTypeWhenSkipTransferredSCHandlingIsTrueAndTransferredScExists() {
+        var environment = ChatCoordinator.Environment.mock
+        environment.getCurrentEngagement = {
+            .mock(status: .transferring, capabilities: .init(text: true))
+        }
+        environment.isAuthenticated = { true }
+        let coordinator = createCoordinator(
+            environment: environment,
+            skipTransferredSCHandling: true
+        )
+        let controller = coordinator.start()
+        let chatModel: ChatViewModel
+        switch controller.viewModel {
+        case let .chat(model):
+            chatModel = model
+        case let .transcript(model):
+            XCTFail("Unexpected model of type \(type(of: model))")
+            return
+        }
+
+        XCTAssertEqual(chatModel.chatType, .authenticated)
+    }
+
+    func test_chatTypeWhenSkipTransferredSCHandlingIsFalseAndNoOngoingEngagement() {
+        var environment = ChatCoordinator.Environment.mock
+        environment.getCurrentEngagement = { nil }
+        environment.isAuthenticated = { true }
+        let coordinator = createCoordinator(
+            environment: environment,
+            skipTransferredSCHandling: true
+        )
+        let controller = coordinator.start()
+        let chatModel: ChatViewModel
+        switch controller.viewModel {
+        case let .chat(model):
+            chatModel = model
+        case let .transcript(model):
+            XCTFail("Unexpected model of type \(type(of: model))")
+            return
+        }
+
+        XCTAssertEqual(chatModel.chatType, .authenticated)
     }
 }

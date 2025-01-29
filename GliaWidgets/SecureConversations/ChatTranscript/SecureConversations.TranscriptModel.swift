@@ -575,17 +575,6 @@ extension SecureConversations.TranscriptModel {
                     let props = button.options.compactMap { [weak self] in self?.quickReplyOption($0) }
                     self.action?(.quickReplyPropsUpdated(.shown(props)))
                 }
-
-                switch self.environment.interactor.state {
-                    // If engagement has been started
-                    // we signal perform upgrade.
-                case .engaged:
-                    self.delegate?(.upgradeToChatEngagement(self))
-                case .none, .enqueueing, .ended, .enqueued:
-                    self.environment.interactor.addObserver(self) { [weak self] event in
-                        self?.handleInteractorEvent(event)
-                    }
-                }
             case .failure:
                 completion([])
             }
