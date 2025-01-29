@@ -109,7 +109,7 @@ public class Glia {
             with: environment,
             interactorProviding: { [weak self] in self?.interactor },
             engagedOperator: { [weak self] in
-                self?.environment.coreSdk.getCurrentEngagement()?.engagedOperator
+                self?.environment.coreSdk.getNonTransferredSecureConversationEngagement()?.engagedOperator
             },
             theme: theme,
             assetBuilder: { [weak self] in self?.assetsBuilder ?? .standard },
@@ -207,7 +207,7 @@ public class Glia {
         features: Features = .all,
         completion: @escaping (Result<Void, Error>) -> Void
     ) throws {
-        guard environment.coreSdk.getCurrentEngagement() == nil else {
+        guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
             throw GliaError.configuringDuringEngagementIsNotAllowed
         }
 
@@ -281,7 +281,7 @@ public class Glia {
                     }
                 }
 
-                guard let currentEngagement = self.environment.coreSdk.getCurrentEngagement() else { return }
+                guard let currentEngagement = self.environment.coreSdk.getNonTransferredSecureConversationEngagement() else { return }
 
                 if currentEngagement.source == .callVisualizer {
                     self.callVisualizer.handleRestoredEngagement()
@@ -354,7 +354,7 @@ public class Glia {
     ///
     public func clearVisitorSession(_ completion: @escaping (Result<Void, Error>) -> Void) {
         loggerPhase.logger.prefixed(Self.self).info("Clear visitor session")
-        guard environment.coreSdk.getCurrentEngagement() == nil else {
+        guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
             completion(.failure(GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed))
             return
         }
@@ -493,7 +493,7 @@ extension Glia {
         )
 
         interactor.state = environment.coreSdk
-            .getCurrentEngagement()?.engagedOperator
+            .getNonTransferredSecureConversationEngagement()?.engagedOperator
             .map(InteractorState.engaged) ?? interactor.state
 
         environment.coreSDKConfigurator.configureWithInteractor(interactor)

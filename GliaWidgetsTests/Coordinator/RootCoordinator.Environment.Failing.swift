@@ -34,6 +34,10 @@ extension EngagementCoordinator.Environment {
             fail("\(Self.self).getCurrentEngagement")
             return nil
         },
+        getNonTransferredSecureConversationEngagement: {
+            fail("\(Self.self).getNonTransferredSecureConversationEngagement")
+            return nil
+        },
         submitSurveyAnswer: { _, _, _, _ in
             fail("\(Self.self).submitSurveyAnswer")
         },

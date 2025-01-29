@@ -494,6 +494,33 @@ final class GliaTests: XCTestCase {
         XCTAssertNotNil(sdk.interactor)
     }
 
+    func test_isConfiguredIsTrueWhenConfigurationPerformedDuringTransferredSC() throws {
+        var environment = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.infoClosure = { _, _, _, _ in }
+        logger.prefixedClosure = { _ in logger }
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        environment.coreSdk.createLogger = { _ in logger }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.success(()))
+        }
+        environment.conditionalCompilation.isDebug = { true }
+        environment.coreSDKConfigurator.configureWithInteractor = { _ in }
+        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
+        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
+        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
+        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        environment.coreSdk.getCurrentEngagement = { .mock(status: .transferring, capabilities: .init(text: true)) }
+        let sdk = Glia(environment: environment)
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+        XCTAssertTrue(sdk.isConfigured)
+        XCTAssertNotNil(sdk.interactor)
+    }
+
     func test_interactorIsInitializedAfterConfiguration() throws {
         var environment = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing

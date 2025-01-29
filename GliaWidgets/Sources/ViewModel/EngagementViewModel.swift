@@ -28,7 +28,7 @@ class EngagementViewModel: CommonEngagementModel {
             self?.interactorEvent(event)
         }
         screenShareHandler.status().addObserver(self) { [weak self] status, _ in
-            self?.onScreenSharingStatusChange(status)
+            self?.handleScreenSharingStatus(status)
         }
     }
 
@@ -165,6 +165,17 @@ class EngagementViewModel: CommonEngagementModel {
     func setViewAppeared() {
         hasViewAppeared = true
     }
+
+    func handleScreenSharingStatus(_ status: ScreenSharingStatus) {
+        switch status {
+        case .started:
+            engagementAction?(.showEndScreenShareButton)
+        case .stopped where interactor.currentEngagement?.isTransferredSecureConversation == true:
+            engagementAction?(.showCloseButton)
+        case .stopped:
+            engagementAction?(.showEndButton)
+        }
+    }
 }
 
 // MARK: - Private
@@ -185,7 +196,7 @@ private extension EngagementViewModel {
             engagementAction?(.showAlert(.leaveQueue(confirmed: { [weak self] in
                 self?.endSession()
             })))
-        case .engaged:
+        case .engaged where interactor.currentEngagement?.isTransferredSecureConversation == false:
             engagementAction?(.showAlert(.endEngagement(confirmed: { [weak self] in
                 self?.endSession()
             })))
@@ -199,15 +210,6 @@ private extension EngagementViewModel {
             error: error.error,
             dismissed: endSession
         )))
-    }
-
-    private func onScreenSharingStatusChange(_ status: ScreenSharingStatus) {
-        switch status {
-        case .started:
-            engagementAction?(.showEndScreenShareButton)
-        case .stopped:
-            engagementAction?(.showEndButton)
-        }
     }
 }
 

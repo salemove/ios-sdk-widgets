@@ -946,7 +946,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.listQueues = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.getSecureUnreadMessageCount = { $0(.success(5)) }
+        modelEnv.getSecureUnreadMessageCount = { $0(.success(0)) }
         modelEnv.maximumUploads = { 2 }
         modelEnv.startSocketObservation = {}
         modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, callback in callback() }
@@ -960,7 +960,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fetchChatHistory = { completion in
             completion(.success([.mock()]))
         }
-        modelEnv.shouldShowLeaveSecureConversationDialog = true
+        modelEnv.shouldShowLeaveSecureConversationDialog = false
         let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
         modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
         modelEnv.interactor = interactor

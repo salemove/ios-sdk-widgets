@@ -15,6 +15,7 @@ extension EngagementViewModel {
         var loadChatMessagesFromHistory: () -> Bool
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
+        var getNonTransferredSecureConversationEngagement: CoreSdkClient.GetCurrentEngagement
         var timerProviding: FoundationBased.Timer.Providing
         var uuid: () -> UUID
         var uiApplication: UIKitBased.UIApplication
@@ -49,6 +50,7 @@ extension EngagementViewModel.Environment {
             loadChatMessagesFromHistory: environment.fromHistory,
             fetchSiteConfigurations: environment.fetchSiteConfigurations,
             getCurrentEngagement: environment.getCurrentEngagement,
+            getNonTransferredSecureConversationEngagement: environment.getNonTransferredSecureConversationEngagement,
             timerProviding: environment.timerProviding,
             uuid: environment.uuid,
             uiApplication: environment.uiApplication,
@@ -82,6 +84,7 @@ extension EngagementViewModel.Environment {
             loadChatMessagesFromHistory: environment.fromHistory,
             fetchSiteConfigurations: environment.fetchSiteConfigurations,
             getCurrentEngagement: environment.getCurrentEngagement,
+            getNonTransferredSecureConversationEngagement: environment.getNonTransferredSecureConversationEngagement,
             timerProviding: environment.timerProviding,
             uuid: environment.uuid,
             uiApplication: environment.uiApplication,
