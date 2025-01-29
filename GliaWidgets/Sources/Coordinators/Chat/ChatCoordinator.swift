@@ -32,6 +32,13 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private(set) var quickLookController: QuickLookController?
     private let environment: Environment
     private let startWithSecureTranscriptFlow: Bool
+
+    /// Used to determine if handling Transferred SC should be skipped.
+    /// - has `true` in cases when visitor left conversation using either Leave Current Conversation dialog
+    /// or Chat top banner and get navigated to Live Chat.
+    /// - has `false` in case when Chat screen was opened directly, for example
+    /// when Chat engagement initiated and there is `hasPendingInteraction` returns `false`.
+    private let skipTransferredSCHandling: Bool
     private weak var controller: ChatViewController?
 
     init(
@@ -45,7 +52,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         isWindowVisible: ObservableValue<Bool>,
         startAction: ChatViewModel.StartAction,
         environment: Environment,
-        startWithSecureTranscriptFlow: Bool
+        startWithSecureTranscriptFlow: Bool,
+        skipTransferredSCHandling: Bool
     ) {
         self.interactor = interactor
         self.viewFactory = viewFactory
@@ -58,6 +66,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.startAction = startAction
         self.environment = environment
         self.startWithSecureTranscriptFlow = startWithSecureTranscriptFlow
+        self.skipTransferredSCHandling = skipTransferredSCHandling
     }
 
     func start() -> ChatViewController {
@@ -145,10 +154,11 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 // MARK: Chat model
 extension ChatCoordinator {
     private func chatModel() -> ChatViewModel {
-        let engagement = environment.getCurrentEngagement()
-        let isTransferredToSecureConversations = engagement?.status == .transferring && engagement?.capabilities?.isTextMessageAllowed == true
+        let isTransferredSecureConversation = !skipTransferredSCHandling &&
+        environment.getCurrentEngagement()?.isTransferredSecureConversation == true
+
         let chatType = Self.chatType(
-            isTransferredToSecureConversations: isTransferredToSecureConversations,
+            isTransferredToSecureConversations: isTransferredSecureConversation,
             startWithSecureTranscriptFlow: startWithSecureTranscriptFlow,
             isAuthenticated: environment.isAuthenticated()
         )

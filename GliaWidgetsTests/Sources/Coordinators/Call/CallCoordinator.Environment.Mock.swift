@@ -30,6 +30,7 @@ extension CallCoordinator.Environment {
         snackBar: .mock,
         cameraDeviceManager: { .mock },
         flipCameraButtonStyle: .nop,
-        alertManager: .mock()
+        alertManager: .mock(),
+        isAuthenticated: { false }
     )
 }
