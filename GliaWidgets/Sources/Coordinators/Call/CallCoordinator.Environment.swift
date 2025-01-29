@@ -14,6 +14,7 @@ extension CallCoordinator {
         var fromHistory: () -> Bool
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
+        var getNonTransferredSecureConversationEngagement: CoreSdkClient.GetCurrentEngagement
         var timerProviding: FoundationBased.Timer.Providing
         var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
         var uuid: () -> UUID
@@ -47,6 +48,7 @@ extension CallCoordinator.Environment {
             fromHistory: environment.loadChatMessagesFromHistory,
             fetchSiteConfigurations: environment.fetchSiteConfigurations,
             getCurrentEngagement: environment.getCurrentEngagement,
+            getNonTransferredSecureConversationEngagement: environment.getNonTransferredSecureConversationEngagement,
             timerProviding: environment.timerProviding,
             submitSurveyAnswer: environment.submitSurveyAnswer,
             uuid: environment.uuid,

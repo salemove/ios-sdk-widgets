@@ -16,6 +16,7 @@ extension EngagementCoordinator {
         var timerProviding: FoundationBased.Timer.Providing
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
+        var getNonTransferredSecureConversationEngagement: CoreSdkClient.GetCurrentEngagement
         var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
         var uiApplication: UIKitBased.UIApplication
         var uiScreen: UIKitBased.UIScreen
@@ -75,6 +76,7 @@ extension EngagementCoordinator.Environment {
             timerProviding: environment.timerProviding,
             fetchSiteConfigurations: environment.coreSdk.fetchSiteConfigurations,
             getCurrentEngagement: environment.coreSdk.getCurrentEngagement,
+            getNonTransferredSecureConversationEngagement: environment.coreSdk.getNonTransferredSecureConversationEngagement,
             submitSurveyAnswer: environment.coreSdk.submitSurveyAnswer,
             uiApplication: environment.uiApplication,
             uiScreen: environment.uiScreen,
