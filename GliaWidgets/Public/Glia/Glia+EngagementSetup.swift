@@ -56,8 +56,12 @@ extension Glia {
         /// If during enqueued state the visitor initiates another engagement, we avoid cancelling the queue
         /// ticket and adding a new one, by monitoring the new engagement kind. If the engagement kind matches
         /// the current enqueued engagement kind, then we resume the old, and do not start a new one
-        if case let .enqueued(_, enqueudEngagementKind) = interactor.state, enqueudEngagementKind == engagementKind, let rootCoordinator {
-            rootCoordinator.maximize()
+        if let enqueueingEngagementKind = interactor.state.enqueueingEngagementKind {
+            handleEnqueueingEngagement(
+                from: engagementKind,
+                enqueueingEngagementKind: enqueueingEngagementKind,
+                snackBarStyle: viewFactory.theme.snackBar
+            )
             return
         }
 
@@ -271,6 +275,35 @@ extension Glia {
         }
     }
 
+    private func handleEnqueueingEngagement(
+        from engagementKind: EngagementKind,
+        enqueueingEngagementKind: EngagementKind,
+        snackBarStyle: Theme.SnackBarStyle
+    ) {
+        switch engagementKind {
+        case .chat, .messaging:
+            if enqueueingEngagementKind == .chat || enqueueingEngagementKind.isMessaging {
+                rootCoordinator?.maximize()
+            } else {
+                showSnackBar(
+                    with: Localization.EntryWidget.CallVisualizer.description,
+                    style: snackBarStyle
+                )
+            }
+        case .audioCall, .videoCall:
+            if enqueueingEngagementKind == .audioCall || enqueueingEngagementKind == .videoCall {
+                rootCoordinator?.maximize()
+            } else {
+                showSnackBar(
+                    with: Localization.EntryWidget.CallVisualizer.description,
+                    style: snackBarStyle
+                )
+            }
+        case .none:
+            break
+        }
+    }
+
     /// The `EngagementParameters` encapsulates all parameters required to initiate or restore the coordinator
     struct EngagementParameters {
         let viewFactory: ViewFactory
@@ -280,7 +313,6 @@ extension Glia {
         let configuration: Configuration
     }
 }
-
 
 extension GliaCoreSDK.Engagement.Media {
     var containsMediaDirection: Bool {
