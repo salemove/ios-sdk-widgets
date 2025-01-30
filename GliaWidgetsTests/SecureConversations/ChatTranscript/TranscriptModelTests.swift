@@ -104,7 +104,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             interactor: .failing
         )
 
-        viewModel.start()
+        viewModel.start(isTranscriptFetchNeeded: true)
 
         XCTAssertFalse(viewModel.mediaPickerButtonEnabling.isDisabled)
     }
@@ -151,7 +151,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             failedToDeliverStatusText: "",
             interactor: .failing
         )
-        viewModel.start()
+        viewModel.start(isTranscriptFetchNeeded: true)
         XCTAssertEqual(
             calls.map(\.rawValue),
             [Call.loadSiteConfiguration, .getSecureUnreadMessageCount, .fetchChatHistory].map(\.rawValue)
@@ -186,7 +186,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             failedToDeliverStatusText: "",
             interactor: .failing
         )
-        viewModel.start()
+        viewModel.start(isTranscriptFetchNeeded: true)
         let text = "Test text"
         viewModel.event(.messageTextChanged(text))
         XCTAssertEqual(viewModel.messageText, text)
@@ -409,7 +409,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             interactor: .failing
         )
 
-        viewModel.start()
+        viewModel.start(isTranscriptFetchNeeded: true)
         XCTAssertEqual(calls, [.getSecureUnreadMessageCount])
     }
 
@@ -454,7 +454,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             interactor: .failing
         )
 
-        viewModel.start()
+        viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
 
         XCTAssertTrue(viewModel.historySection.items.contains(where: { item in
@@ -531,7 +531,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             }
         }
 
-        viewModel.start()
+        viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
     }
 
@@ -599,7 +599,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             }
         }
 
-        viewModel.start()
+        viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
     }
 
@@ -821,9 +821,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             interactor: .failing
         )
 
-        viewModel.start()
+        viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
-
         XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
     }
 
@@ -872,9 +871,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             interactor: .failing
         )
 
-        viewModel.start()
+        viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
-
         XCTAssertTrue(calls.isEmpty)
     }
 
@@ -929,9 +927,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             }
         }
 
-        viewModel.start()
+        viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
-
         XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
     }
 
@@ -984,7 +981,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             interactor: interactor
         )
 
-        viewModel.start()
+        viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
 
         let uuid = UUID.mock.uuidString
@@ -995,7 +992,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             metadata: nil
         )
         interactor.receive(message: message)
-
         XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
     }
 }
