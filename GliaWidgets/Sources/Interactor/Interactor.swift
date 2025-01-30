@@ -12,6 +12,15 @@ enum InteractorState {
         guard case .ended = self else { return false }
         return true
     }
+
+    var enqueueingEngagementKind: EngagementKind? {
+        switch self {
+        case .enqueued(_, let engagementKind), .enqueueing(let engagementKind):
+            return engagementKind
+        case .none, .engaged, .ended:
+            return nil
+        }
+    }
 }
 
 enum EndEngagementReason {
