@@ -171,6 +171,9 @@ extension Glia {
             // then open ChatTranscript screen.
             engagementLaunching = .direct(kind: .messaging(.chatTranscript))
 
+        case (true, .messaging(.chatTranscript)):
+            engagementLaunching = .direct(kind: .messaging(.chatTranscript))
+
         case (true, _):
             // if there is pending Secure Conversation and requested `EngagementKind` is not messaging,
             // then open ChatTranscript screen and present Leave Current Conversation dialog.

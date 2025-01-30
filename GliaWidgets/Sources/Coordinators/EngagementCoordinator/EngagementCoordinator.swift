@@ -10,7 +10,7 @@ extension EngagementCoordinator {
     /// one of `[.chat, . audioCall, .videoCall]`, then `EngagementCoordinator` opens
     /// ChatTranscript screen and shows Leave Engagement Dialog. Then if user presses "Leave" button,
     /// `EngagementCoordinator` replaces current screen with the one corresponding to initial `EngagementKind`.
-    enum EngagementLaunching {
+    enum EngagementLaunching: Equatable {
         case direct(kind: EngagementKind)
         case indirect(kind: EngagementKind, initialKind: EngagementKind)
 
