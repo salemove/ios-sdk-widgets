@@ -364,7 +364,7 @@ private extension EntryWidget {
     }
 
     func resolveViewState(for interactorState: InteractorState) -> EntryWidget.ViewState? {
-        guard let engagementKind = interactorState.enqueiengEngagementKind else {
+        guard let engagementKind = interactorState.enqueueingEngagementKind else {
             return nil
         }
 
@@ -420,17 +420,6 @@ extension EntryWidget {
         case offline
         case error
         case ongoingEngagement(EngagementType)
-    }
-}
-
-private extension InteractorState {
-    var enqueiengEngagementKind: EngagementKind? {
-        switch self {
-        case .enqueued(_, let engagementKind), .enqueueing(let engagementKind):
-            return engagementKind
-        case .none, .engaged, .ended:
-            return nil
-        }
     }
 }
 
