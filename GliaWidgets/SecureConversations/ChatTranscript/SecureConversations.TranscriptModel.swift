@@ -196,7 +196,6 @@ extension SecureConversations {
         func event(_ event: Event) {
             switch event {
             case .viewDidLoad:
-                start()
                 isViewLoaded = true
             case .messageTextChanged(let text):
                 messageText = text
@@ -230,9 +229,16 @@ extension SecureConversations {
             }
         }
 
-        func start() {
+        /// Starts socket observation, fetches site configuration and loads chat history if needed.
+        /// - Parameter isTranscriptFetchNeeded: A flag indicating whether chat history will be loaded.
+        func start(isTranscriptFetchNeeded: Bool) {
             environment.startSocketObservation()
             fetchSiteConfigurations()
+
+            guard isTranscriptFetchNeeded else {
+                return
+            }
+
             loadHistory { [weak self] _ in
                 self?.showLeaveConversationDialogIfNeeded()
             }
@@ -824,7 +830,9 @@ extension SecureConversations.TranscriptModel {
 }
 
 extension SecureConversations.TranscriptModel {
-    func migrate(from chatModel: ChatViewModel) {
+    func migrate(
+        from chatModel: ChatViewModel
+    ) {
         sections = chatModel.sections
         // There's a possibility where migration to SC (this actually doesn't seem to work ATM, needs checking (MOB-3988)).
         // happens when there are awaiting uploads.
@@ -850,5 +858,8 @@ extension SecureConversations.TranscriptModel {
         // to display corresponding placeholder.
         action?(.setMessageEntryConnected(false))
         engagementAction?(.showCloseButton)
+        // Since we only need to start socket observation,
+        // we skip chat transcript loading.
+        start(isTranscriptFetchNeeded: false)
     }
 }

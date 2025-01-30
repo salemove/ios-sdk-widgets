@@ -79,9 +79,26 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         // because model will use it later, however controller
         // can not be created without model, that is why
         // we are to store it in coordinator and return in when needed.
-        let model: SecureConversations.ChatWithTranscriptModel = startWithSecureTranscriptFlow
-        ? .transcript(transcriptModel(with: { [weak self] in self?.controller }))
-            : .chat(chatModel())
+        let model: SecureConversations.ChatWithTranscriptModel
+
+        let start: () -> Void
+
+        defer {
+            start()
+        }
+
+        if startWithSecureTranscriptFlow {
+            let transcriptModel = transcriptModel(with: { [weak self] in self?.controller })
+            model = .transcript(transcriptModel)
+            // For initial SC flow (when it is started), start method was called
+            // from view did load initiating socket events observation and loading
+            // chat transcript. Now, because of migration back from chat to SC is
+            // possible we need to call `start` here.
+            start = { transcriptModel.start(isTranscriptFetchNeeded: true) }
+        } else {
+            model = .chat(chatModel())
+            start = {}
+        }
 
         environment.log.prefixed(Self.self).info("Create Chat screen")
 

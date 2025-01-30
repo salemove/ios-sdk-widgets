@@ -650,6 +650,7 @@
 		AF552ED92BECDCF700FD5653 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF552ED82BECDCF700FD5653 /* UIImage+Extensions.swift */; };
 		AF552EDB2BEE783500FD5653 /* FlipCameraButtonStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF552EDA2BEE783500FD5653 /* FlipCameraButtonStyle.Accessibility.swift */; };
 		AF552EDD2BEE954500FD5653 /* FlipCameraButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF552EDC2BEE954500FD5653 /* FlipCameraButtonStyle.swift */; };
+		AF5DD9E72D4BEE3B00AFEBDB /* TranscriptModel.MigrateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF5DD9E62D4BEE3B00AFEBDB /* TranscriptModel.MigrateTests.swift */; };
 		AF6291112B0813B000D3D76B /* SwiftBased.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF62910E2B0813B000D3D76B /* SwiftBased.Live.swift */; };
 		AF6291122B0813B000D3D76B /* SwiftBased.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF62910F2B0813B000D3D76B /* SwiftBased.Interface.swift */; };
 		AF6291132B0813B000D3D76B /* SwiftBased.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF6291102B0813B000D3D76B /* SwiftBased.Mock.swift */; };
@@ -1737,6 +1738,7 @@
 		AF552ED82BECDCF700FD5653 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		AF552EDA2BEE783500FD5653 /* FlipCameraButtonStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipCameraButtonStyle.Accessibility.swift; sourceTree = "<group>"; };
 		AF552EDC2BEE954500FD5653 /* FlipCameraButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipCameraButtonStyle.swift; sourceTree = "<group>"; };
+		AF5DD9E62D4BEE3B00AFEBDB /* TranscriptModel.MigrateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptModel.MigrateTests.swift; sourceTree = "<group>"; };
 		AF62910E2B0813B000D3D76B /* SwiftBased.Live.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftBased.Live.swift; sourceTree = "<group>"; };
 		AF62910F2B0813B000D3D76B /* SwiftBased.Interface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftBased.Interface.swift; sourceTree = "<group>"; };
 		AF6291102B0813B000D3D76B /* SwiftBased.Mock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftBased.Mock.swift; sourceTree = "<group>"; };
@@ -3511,6 +3513,7 @@
 				8491AF5F2AA1EBB600CC3E72 /* TranscriptModelTests+URLs.swift */,
 				8492F9162CAD2F2000242691 /* TranscriptModelTests+ResponseCard.swift */,
 				8492F9182CAD329800242691 /* TranscriptModelTests+MessageRetry.swift */,
+				AF5DD9E62D4BEE3B00AFEBDB /* TranscriptModel.MigrateTests.swift */,
 			);
 			path = ChatTranscript;
 			sourceTree = "<group>";
@@ -6780,6 +6783,7 @@
 				8491AF572AA0964800CC3E72 /* ChatItem.Kind.Mock.swift in Sources */,
 				84C24CFF2B8357BB0089A388 /* ProcessInfoHandling.Failing.swift in Sources */,
 				AFFA99822C57D658004A2825 /* GliaTests+RestoreEngagement.swift in Sources */,
+				AF5DD9E72D4BEE3B00AFEBDB /* TranscriptModel.MigrateTests.swift in Sources */,
 				8491AF632AA20F9D00CC3E72 /* GliaViewControllerDelegateMock.swift in Sources */,
 				AF9C0C462BC5A3FB00C25E47 /* GliaPresenter.Environment.Failing.swift in Sources */,
 				84681A952A61844000DD7406 /* ChatViewModelTests+Gva.swift in Sources */,
