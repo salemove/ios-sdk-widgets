@@ -169,7 +169,7 @@ extension SecureConversationsTranscriptModelTests {
             guard case .quickReplyPropsUpdated = action else { return }
             calls.append(.quickReply)
         }
-        viewModel.start()
+        viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
 
         XCTAssertEqual(calls, [.quickReply])
