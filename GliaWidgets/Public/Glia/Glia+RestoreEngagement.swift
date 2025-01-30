@@ -58,11 +58,16 @@ extension Glia {
             video: nil
         )
 
+        var engagementKind = EngagementKind(media: ongoingEngagementMediaStreams)
+        if pendingInteraction?.hasPendingInteraction == true {
+            engagementKind = .messaging(.chatTranscript)
+        }
+
         startRootCoordinator(
             with: interactor,
             viewFactory: viewFactory,
             sceneProvider: nil,
-            engagementKind: EngagementKind(media: ongoingEngagementMediaStreams),
+            engagementKind: engagementKind,
             features: features,
             maximize: maximize
         )
