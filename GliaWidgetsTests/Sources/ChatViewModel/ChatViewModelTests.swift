@@ -1063,6 +1063,44 @@ class ChatViewModelTests: XCTestCase {
             ]
         )
     }
+    
+    func test_engagementEndedByOperatorWithUnknownOnEndActionLogsWarning() {
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.gcd.mainQueue = .mock
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.state = .ended(.byOperator)
+        var warnings: [String] = []
+        let mockUnknownAction = "Unknown reason"
+
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
+        fileUploadListViewModelEnv.uploader.uploads = []
+        viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
+        viewModelEnv.log = .mock
+        viewModelEnv.log.warningClosure = { message, _, _, _ in
+            warnings.append("\(message)")
+        }
+        let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
+        enum Call {
+            case engagementActionShowAlertWithOperatorEndedEngagement
+        }
+        var calls: [Call] = []
+        viewModel.engagementAction = { action in
+            switch action {
+            case .showAlert(.operatorEndedEngagement):
+                calls.append(.engagementActionShowAlertWithOperatorEndedEngagement)
+            default:
+                break
+            }
+        }
+
+        interactor.setEndedEngagement(.mock(actionOnEnd: .unknown(mockUnknownAction)))
+        viewModel.interactorEvent(.stateChanged(.ended(.byOperator)))
+        XCTAssertEqual(calls, [.engagementActionShowAlertWithOperatorEndedEngagement])
+        XCTAssertEqual(warnings, ["Engagement ended with unknown case '\(mockUnknownAction)'."])
+    }
 
     func test_closeActionDoesNotShowConfirmationIfThereIsTransferredSC() throws {
         var interactorEnv = Interactor.Environment.failing
