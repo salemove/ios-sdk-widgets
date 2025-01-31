@@ -42,10 +42,10 @@ extension ChatViewModel {
             case .showEndedNotification:
                 handleOperatorEndedEngagement()
             case let .unknown(unhandledCase):
-                // TODO: log unhandled case MOB-3971
+                environment.log.warning("Engagement ended with unknown case '\(unhandledCase)'.")
                 handleOperatorEndedEngagement()
             @unknown default:
-                // TODO: log unhandled case MOB-3971
+                environment.log.warning("Engagement ended with unknown case.")
                 handleOperatorEndedEngagement()
             }
         // There's no need for nilling-out operator image in the bubble via
