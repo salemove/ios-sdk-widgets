@@ -514,6 +514,38 @@ final class ChatCoordinatorTests: XCTestCase {
         }
 
         XCTAssertEqual(chatModel.isViewLoaded, transcriptModel.isViewLoaded)
+        enum Call {
+            case setChoiceCardInputModeEnabled
+            case appendRows
+            case refreshAll
+            case scrollToBottom
+            case updateItemsUserImage
+        }
+
+        var calls: [Call] = []
+
+        // Check if TranscriptModel subscribed on interactor events
+        transcriptModel.action = { action in
+            switch action {
+            case .appendRows:
+                calls.append(.appendRows)
+            case .refreshAll:
+                calls.append(.refreshAll)
+            case .updateItemsUserImage:
+                calls.append(.updateItemsUserImage)
+            case .setChoiceCardInputModeEnabled:
+                calls.append(.setChoiceCardInputModeEnabled)
+            case .scrollToBottom:
+                calls.append(.scrollToBottom)
+            default:
+                XCTFail("Unexpected action \(action)")
+            }
+        }
+        transcriptModel.environment.interactor.receive(message: .mock(sender: .init(type: .operator)))
+
+        XCTAssertEqual(calls, [
+            .appendRows, .updateItemsUserImage, .setChoiceCardInputModeEnabled, .scrollToBottom
+        ])
     }
 
     func test_chatTypeWhenSkipTransferredSCHandlingIsFalseAndTransferredScExists() {

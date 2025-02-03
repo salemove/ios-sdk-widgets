@@ -44,8 +44,12 @@ extension ChatCoordinator {
         var alertManager: AlertManager
         var queuesMonitor: QueuesMonitor
         var createEntryWidget: EntryWidgetBuilder
-        var shouldShowLeaveSecureConversationDialog: Bool
-        var leaveCurrentSecureConversation: Cmd
+        var shouldShowLeaveSecureConversationDialog: () -> Bool
+        /// The value returning by the command corresponds to decision made by visitor
+        /// whether to leave current conversation:
+        /// - `true` - visitor decided to leave the conversation;
+        /// - `false` - visitor decided to stay;
+        var leaveCurrentSecureConversation: Command<Bool>
         var switchToEngagement: Command<EngagementKind>
         var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
         var combineScheduler: CombineBased.CombineScheduler
@@ -56,8 +60,8 @@ extension ChatCoordinator.Environment {
     static func create(
         with environment: EngagementCoordinator.Environment,
         interactor: Interactor,
-        shouldShowLeaveSecureConversationDialog: Bool,
-        leaveCurrentSecureConversation: Cmd,
+        shouldShowLeaveSecureConversationDialog: @escaping () -> Bool,
+        leaveCurrentSecureConversation: Command<Bool>,
         switchToEngagement: Command<EngagementKind>
     ) -> Self {
         .init(

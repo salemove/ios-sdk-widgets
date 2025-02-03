@@ -811,7 +811,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             expectation.fulfill()
             return .mock
         }
-        modelEnv.shouldShowLeaveSecureConversationDialog = false
+        modelEnv.shouldShowLeaveSecureConversationDialog = { false }
         modelEnv.markUnreadMessagesDelay = { .zero }
         modelEnv.notificationCenter.publisherForNotification = { _ in
             Empty<Notification, Never>().eraseToAnyPublisher()
@@ -872,7 +872,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             expectation.fulfill()
             return .mock
         }
-        modelEnv.shouldShowLeaveSecureConversationDialog = true
+        modelEnv.shouldShowLeaveSecureConversationDialog = { true }
         modelEnv.markUnreadMessagesDelay = { .zero }
 
         let availabilityEnv = SecureConversations.Availability.Environment(
@@ -929,7 +929,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             expectation.fulfill()
             return .mock
         }
-        modelEnv.shouldShowLeaveSecureConversationDialog = true
+        modelEnv.shouldShowLeaveSecureConversationDialog = { true }
+        modelEnv.leaveCurrentSecureConversation = .nop
         modelEnv.markUnreadMessagesDelay = { .zero }
         modelEnv.notificationCenter.publisherForNotification = { _ in
             Empty<Notification, Never>().eraseToAnyPublisher()
@@ -998,7 +999,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fetchChatHistory = { completion in
             completion(.success([.mock()]))
         }
-        modelEnv.shouldShowLeaveSecureConversationDialog = false
+        modelEnv.shouldShowLeaveSecureConversationDialog = { false }
         let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
         modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
         modelEnv.interactor = interactor
