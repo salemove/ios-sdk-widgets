@@ -321,7 +321,7 @@ extension EngagementCoordinator {
             environment: .create(
                 with: environment,
                 interactor: interactor,
-                shouldShowLeaveSecureConversationDialog: false,
+                shouldShowLeaveSecureConversationDialog: { false },
                 leaveCurrentSecureConversation: .nop,
                 switchToEngagement: .nop
             ),
@@ -495,8 +495,12 @@ extension EngagementCoordinator {
         using messagingInitialScreen: SecureConversations.InitialScreen,
         requestedEngagementKind: EngagementKind
     ) -> UIViewController {
-        let leaveCurrentSecureConversation = Cmd { [weak self] in
-            self?.switchToEngagementKind(requestedEngagementKind)
+        let leaveCurrentSecureConversation = Command<Bool> { [weak self] accepted in
+            if accepted {
+                self?.switchToEngagementKind(requestedEngagementKind)
+            } else {
+                self?.engagementLaunching = .direct(kind: .messaging(.chatTranscript))
+            }
         }
         let coordinator = SecureConversations.Coordinator(
             messagingInitialScreen: messagingInitialScreen,
@@ -512,9 +516,14 @@ extension EngagementCoordinator {
                 screenShareHandler: screenShareHandler,
                 isWindowVisible: isWindowVisible,
                 interactor: interactor,
-                shouldShowLeaveSecureConversationDialog: !requestedEngagementKind.isMessaging,
+                shouldShowLeaveSecureConversationDialog: { [weak self] in
+                    guard let self, case .indirect = engagementLaunching else { return false }
+                    return true
+                },
                 leaveCurrentSecureConversation: leaveCurrentSecureConversation,
-                switchToEngagement: .init(closure: switchToEngagementKind)
+                switchToEngagement: .init { [weak self] kind in
+                    self?.switchToEngagementKind(kind)
+                }
             )
         )
 
