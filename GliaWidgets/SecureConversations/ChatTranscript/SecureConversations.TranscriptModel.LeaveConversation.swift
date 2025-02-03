@@ -14,16 +14,17 @@ extension SecureConversations.TranscriptModel {
                 }
             }
         }
-        guard environment.shouldShowLeaveSecureConversationDialog else {
+        guard environment.shouldShowLeaveSecureConversationDialog() else {
             handleInteractorState()
             return
         }
         let action = EngagementViewModel.Action.showAlert(
             .leaveCurrentConversation(
                 confirmed: { [weak self] in
-                    self?.environment.leaveCurrentSecureConversation()
+                    self?.environment.leaveCurrentSecureConversation(true)
                 }, declined: { [weak self] in
                     guard let self else { return }
+                    environment.leaveCurrentSecureConversation(false)
                     handleInteractorState()
                     markMessagesAsRead(with: self.hasUnreadMessages)
                 }

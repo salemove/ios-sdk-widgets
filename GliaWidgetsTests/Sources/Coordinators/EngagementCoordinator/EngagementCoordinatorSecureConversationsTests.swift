@@ -75,9 +75,31 @@ extension EngagementCoordinatorTests {
 
         XCTAssertEqual(coordinator.engagementLaunching.currentKind, .messaging(.chatTranscript))
         XCTAssertEqual(coordinator.engagementLaunching.initialKind, .videoCall)
+        XCTAssertTrue(subCoordinator.coordinatorEnvironment.shouldShowLeaveSecureConversationDialog())
 
-        subCoordinator.coordinatorEnvironment.leaveCurrentSecureConversation()
+        subCoordinator.coordinatorEnvironment.leaveCurrentSecureConversation(true)
 
         XCTAssertEqual(coordinator.engagementLaunching.currentKind, .videoCall)
+        XCTAssertFalse(subCoordinator.coordinatorEnvironment.shouldShowLeaveSecureConversationDialog())
+    }
+
+    // MARK: - Leave Conversation
+    func test_leaveCurrentConversationDeclineSetsEngagementKindToMessaging() throws {
+        coordinator = createCoordinator(with: .indirect(
+            kind: .messaging(.chatTranscript),
+            initialKind: .videoCall
+        ))
+        coordinator.start()
+
+        let subCoordinator = try XCTUnwrap(coordinator.coordinators.first as? SecureConversations.Coordinator)
+
+        XCTAssertEqual(coordinator.engagementLaunching.currentKind, .messaging(.chatTranscript))
+        XCTAssertEqual(coordinator.engagementLaunching.initialKind, .videoCall)
+        XCTAssertTrue(subCoordinator.coordinatorEnvironment.shouldShowLeaveSecureConversationDialog())
+
+        subCoordinator.coordinatorEnvironment.leaveCurrentSecureConversation(false)
+
+        XCTAssertEqual(coordinator.engagementLaunching.currentKind, .messaging(.chatTranscript))
+        XCTAssertFalse(subCoordinator.coordinatorEnvironment.shouldShowLeaveSecureConversationDialog())
     }
 }
