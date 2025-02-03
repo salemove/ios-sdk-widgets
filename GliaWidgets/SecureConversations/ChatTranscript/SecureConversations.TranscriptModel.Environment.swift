@@ -31,8 +31,12 @@ extension SecureConversations.TranscriptModel {
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var log: CoreSdkClient.Logger
         var maximumUploads: () -> Int
-        var shouldShowLeaveSecureConversationDialog: Bool
-        var leaveCurrentSecureConversation: Cmd
+        var shouldShowLeaveSecureConversationDialog: () -> Bool
+        /// The value returning by the command corresponds to decision made by visitor
+        /// whether to leave current conversation:
+        /// - `true` - visitor decided to leave the conversation;
+        /// - `false` - visitor decided to stay;
+        var leaveCurrentSecureConversation: Command<Bool>
         var createEntryWidget: EntryWidgetBuilder
         var switchToEngagement: Command<EngagementKind>
         var topBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle
@@ -122,8 +126,8 @@ extension SecureConversations.TranscriptModel.Environment {
         createSendMessagePayload: @escaping CoreSdkClient.CreateSendMessagePayload = { _, _ in .mock() },
         log: CoreSdkClient.Logger = .mock,
         maximumUploads: @escaping () -> Int = { .zero },
-        shouldShowLeaveSecureConversationDialog: Bool = false,
-        leaveCurrentSecureConversation: Cmd = .nop,
+        shouldShowLeaveSecureConversationDialog: @escaping () -> Bool = { false },
+        leaveCurrentSecureConversation: Command<Bool> = .nop,
         createEntryWidget: @escaping EntryWidgetBuilder = { _ in .mock() },
         switchToEngagement: Command<EngagementKind> = .nop,
         // swiftlint:disable:next line_length

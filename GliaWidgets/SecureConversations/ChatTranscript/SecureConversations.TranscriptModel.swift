@@ -574,7 +574,7 @@ extension SecureConversations.TranscriptModel {
                 self.action?(.scrollToBottom(animated: false))
                 completion(messagesWithUnreadCount.messages)
                 markMessagesAsRead(
-                    with: self.hasUnreadMessages && !environment.shouldShowLeaveSecureConversationDialog
+                    with: self.hasUnreadMessages && !environment.shouldShowLeaveSecureConversationDialog()
                 )
 
                 if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
@@ -901,6 +901,7 @@ extension SecureConversations.TranscriptModel {
         // Since we only need to start socket observation,
         // we skip chat transcript loading.
         start(isTranscriptFetchNeeded: false)
+        showLeaveConversationDialogIfNeeded()
     }
 
     func clearSections(_ sections: [Section<ChatItem>]) {
