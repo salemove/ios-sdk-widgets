@@ -441,11 +441,37 @@ final class ChatCoordinatorTests: XCTestCase {
             return
         }
 
-        // Place some visitor message into chat model to 
+        // Place some messages into chat model to
         // make sure that all section are migrated from chat
         // to transcript model.
         let visitorMessage = ChatItem(kind: .mock(kind: .visitorMessage))
         chatModel.pendingSection.append(visitorMessage)
+
+        let operatorMessage = ChatItem(kind: .mock(kind: .operatorMessage))
+        chatModel.messagesSection.append(operatorMessage)
+        let choiceCard = ChatItem(kind: .mock(kind: .choiceCard))
+        chatModel.messagesSection.append(choiceCard)
+        let customCard = ChatItem(kind: .mock(kind: .customCard))
+        chatModel.messagesSection.append(customCard)
+        let gvaGallery = ChatItem(kind: .mock(kind: .gvaGallery))
+        chatModel.messagesSection.append(gvaGallery)
+        let gvaPersistentButton = ChatItem(kind: .mock(kind: .gvaPersistentButton))
+        chatModel.messagesSection.append(gvaPersistentButton)
+        let gvaQuickReply = ChatItem(kind: .mock(kind: .gvaQuickReply))
+        chatModel.messagesSection.append(gvaQuickReply)
+        let gvaResponseText = ChatItem(kind: .mock(kind: .gvaResponseText))
+        chatModel.messagesSection.append(gvaResponseText)
+        let outgoingMessage = ChatItem(kind: .mock(kind: .outgoingMessage))
+        chatModel.messagesSection.append(outgoingMessage)
+        let systemMessage = ChatItem(kind: .mock(kind: .systemMessage))
+        chatModel.messagesSection.append(systemMessage)
+
+        // Append items that will not be migrated
+        chatModel.queueOperatorSection.append(.init(kind: .mock(kind: .operatorConnected)))
+        chatModel.messagesSection.append(.init(kind: .mock(kind: .callUpgrade)))
+        chatModel.messagesSection.append(.init(kind: .mock(kind: .queueOperator)))
+        chatModel.messagesSection.append(.init(kind: .mock(kind: .transferring)))
+        chatModel.messagesSection.append(.init(kind: .mock(kind: .unreadMessageDivider)))
 
         chatModel.delegate?(.liveChatEngagementUpgradedToSecureMessaging(chatModel))
 
@@ -463,14 +489,30 @@ final class ChatCoordinatorTests: XCTestCase {
         // some extra checks are required to make sure
         // that migration happens as expected.
         XCTAssertFalse(chatModel.sections.isEmpty)
-        XCTAssertEqual(chatModel.pendingSection.itemCount, 1)
-        XCTAssertEqual(transcriptModel.pendingSection.itemCount, chatModel.pendingSection.itemCount)
-        for sectionIdx in chatModel.sections.indices {
-            XCTAssertTrue(transcriptModel.sections[sectionIdx] === transcriptModel.sections[sectionIdx])
-            for idx in chatModel.sections[sectionIdx].items.indices {
-                XCTAssertTrue(chatModel.sections[sectionIdx].items[idx] === transcriptModel.sections[sectionIdx].items[idx])
-            }
+
+        let expectedSectionItems = [
+            visitorMessage,
+            operatorMessage,
+            choiceCard,
+            customCard,
+            gvaGallery,
+            gvaPersistentButton,
+            gvaQuickReply,
+            gvaResponseText,
+            outgoingMessage,
+            systemMessage
+        ]
+
+        // Check whether sections except historySection are empty.
+        for section in transcriptModel.sections where section !== transcriptModel.historySection {
+            XCTAssertTrue(section.items.isEmpty)
         }
+
+        // Check whether historySection contains only items reflected in chat transcript.
+        for idx in transcriptModel.historySection.items.indices {
+            XCTAssertTrue(transcriptModel.historySection.items[idx] === expectedSectionItems[idx])
+        }
+
         XCTAssertEqual(chatModel.isViewLoaded, transcriptModel.isViewLoaded)
     }
 
