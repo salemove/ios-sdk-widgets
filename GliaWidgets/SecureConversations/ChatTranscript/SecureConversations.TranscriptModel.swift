@@ -833,7 +833,32 @@ extension SecureConversations.TranscriptModel {
     func migrate(
         from chatModel: ChatViewModel
     ) {
-        sections = chatModel.sections
+        clearSections(sections)
+        // Filter out items that are not reflected in transcript
+        let items = chatModel.sections.flatMap(\.items).filter {
+            switch $0.kind {
+            case .callUpgrade,
+                    .operatorConnected,
+                    .queueOperator,
+                    .transferring,
+                    .unreadMessageDivider:
+                return false
+            case .outgoingMessage,
+                    .visitorMessage,
+                    .choiceCard,
+                    .customCard,
+                    .gvaGallery,
+                    .gvaPersistentButton,
+                    .gvaQuickReply,
+                    .gvaResponseText,
+                    .operatorMessage,
+                    .systemMessage:
+                return true
+            }
+        }
+        historySection.set(items)
+        action?(.refreshAll)
+
         // There's a possibility where migration to SC (this actually doesn't seem to work ATM, needs checking (MOB-3988)).
         // happens when there are awaiting uploads.
         // For that case we need to make sure that theses uploads
@@ -861,5 +886,9 @@ extension SecureConversations.TranscriptModel {
         // Since we only need to start socket observation,
         // we skip chat transcript loading.
         start(isTranscriptFetchNeeded: false)
+    }
+
+    func clearSections(_ sections: [Section<ChatItem>]) {
+        sections.forEach { $0.set([]) }
     }
 }
