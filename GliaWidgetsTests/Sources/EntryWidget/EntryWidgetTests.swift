@@ -135,7 +135,7 @@ class EntryWidgetTests: XCTestCase {
             envCalls.append(.start(engagementKind))
         }
         var environment = EntryWidget.Environment.mock()
-        environment.hasPendingInteraction = { true }
+        environment.hasPendingInteractionPublisher = Just(true).eraseToAnyPublisher()
         environment.engagementLauncher = engagementLauncher
 
         let entryWidget = EntryWidget(
@@ -238,6 +238,36 @@ class EntryWidgetTests: XCTestCase {
         XCTAssertEqual(
             entryWidget.viewState,
             .mediaTypes([.init(type: .video), .init(type: .audio), .init(type: .chat)])
+        )
+    }
+
+    func test_messagingIsShownWhenHasPendingInteractionIsTrueAndQueueDoesNotSupportMessaging() {
+        let mockQueueId = "mockQueueId"
+        let mockQueue = Queue.mock(id: mockQueueId, media: [.audio, .video, .text])
+        var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
+        queueMonitorEnvironment.listQueues = { completion in
+            completion([mockQueue], nil)
+        }
+        let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
+        queuesMonitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+
+        var environment = EntryWidget.Environment.mock()
+        environment.hasPendingInteractionPublisher = Just(true).eraseToAnyPublisher()
+        environment.queuesMonitor = queuesMonitor
+        environment.observeSecureUnreadMessageCount = { result in
+            result(.success(5))
+            return UUID.mock.uuidString
+        }
+        let configuration = EntryWidget.Configuration.mock(filterSecureConversation: false)
+        let entryWidget = EntryWidget(
+            queueIds: [mockQueueId],
+            configuration: configuration,
+            environment: environment
+        )
+
+        XCTAssertEqual(
+            entryWidget.viewState,
+            .mediaTypes([.init(type: .video), .init(type: .audio), .init(type: .chat), .init(type: .secureMessaging, badgeCount: 5)])
         )
     }
 

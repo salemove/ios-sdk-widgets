@@ -10,7 +10,7 @@ extension EntryWidget {
         var theme: Theme
         var log: CoreSdkClient.Logger
         var isAuthenticated: () -> Bool
-        var hasPendingInteraction: () -> Bool
+        var hasPendingInteractionPublisher: AnyPublisher<Bool, Never>
         var interactorPublisher: AnyPublisher<Interactor?, Never>
         var onCallVisualizerResume: () -> Void
     }
@@ -28,7 +28,7 @@ extension EntryWidget.Environment {
             theme: .mock(),
             log: .mock,
             isAuthenticated: { true },
-            hasPendingInteraction: { false },
+            hasPendingInteractionPublisher: .mock(false),
             interactorPublisher: .mock(nil),
             onCallVisualizerResume: {}
         )
