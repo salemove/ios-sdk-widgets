@@ -16,6 +16,7 @@ public final class EntryWidget: NSObject {
     private let environment: Environment
     @Published private var unreadSecureMessageCount: Int?
     private(set) var unreadSecureMessageSubscriptionId: String?
+    @Published private var hasPendingInteraction: Bool = false
     @Published var viewState: ViewState = .loading
     private var ongoingEngagement: Engagement?
     private var interactorState: InteractorState = .none
@@ -46,37 +47,46 @@ public final class EntryWidget: NSObject {
 
         environment.interactorPublisher
             .flatMap { interactor -> AnyPublisher<Engagement?, Never> in
-                guard let interactor = interactor else {
+                guard let interactor else {
                     return Just(nil).eraseToAnyPublisher()
                 }
                 return interactor.$currentEngagement.eraseToAnyPublisher()
             }
             .sink { [weak self] engagement in
-                guard let self = self else { return }
-                self.ongoingEngagement = engagement
-                self.handleQueuesMonitorUpdates(
-                    state: self.environment.queuesMonitor.state,
-                    unreadSecureMessagesCount: self.unreadSecureMessageCount
+                guard let self else { return }
+                ongoingEngagement = engagement
+                handleQueuesMonitorUpdates(
+                    state: environment.queuesMonitor.state,
+                    unreadSecureMessagesCount: unreadSecureMessageCount
                 )
             }
             .store(in: &cancellables)
 
         environment.interactorPublisher
             .flatMap { interactor -> AnyPublisher<InteractorState, Never> in
-                guard let interactor = interactor else {
+                guard let interactor else {
                     return Just(.none).eraseToAnyPublisher()
                 }
                 return interactor.$state.eraseToAnyPublisher()
             }
             .sink { [weak self] state in
-                guard let self = self else { return }
-                self.interactorState = state
-                self.handleQueuesMonitorUpdates(
-                    state: self.environment.queuesMonitor.state,
-                    unreadSecureMessagesCount: self.unreadSecureMessageCount
+                guard let self else { return }
+                interactorState = state
+                handleQueuesMonitorUpdates(
+                    state: environment.queuesMonitor.state,
+                    unreadSecureMessagesCount: unreadSecureMessageCount
                 )
             }
             .store(in: &cancellables)
+        environment.hasPendingInteractionPublisher.assign(to: &$hasPendingInteraction)
+        $hasPendingInteraction.sink { [weak self] _ in
+            guard let self else { return }
+            handleQueuesMonitorUpdates(
+                state: environment.queuesMonitor.state,
+                unreadSecureMessagesCount: unreadSecureMessageCount
+            )
+        }
+        .store(in: &cancellables)
     }
 
     deinit {
@@ -96,7 +106,7 @@ public extension EntryWidget {
     ///
     /// - Parameter viewController: The `UIViewController` in which the widget will be shown as a sheet.
     func show(in viewController: UIViewController) {
-        if environment.hasPendingInteraction() {
+        if hasPendingInteraction {
             do {
                 try environment.engagementLauncher.startSecureMessaging()
             } catch {
@@ -189,6 +199,10 @@ private extension EntryWidget {
                 }
             }
         }
+        if hasPendingInteraction {
+            availableMediaTypes.insert(.secureMessaging)
+        }
+
         if !environment.isAuthenticated() || configuration.filterSecureConversation {
             availableMediaTypes.remove(.secureMessaging)
         }
