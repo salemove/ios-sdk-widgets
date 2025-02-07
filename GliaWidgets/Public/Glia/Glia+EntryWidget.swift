@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 extension Glia {
     /// Retrieves an instance of `EntryWidget`.
@@ -24,10 +25,12 @@ extension Glia {
                 theme: theme,
                 log: loggerPhase.logger,
                 isAuthenticated: environment.isAuthenticated,
-                hasPendingInteraction: { [weak self] in
-                    guard let self else { return false }
-                    return pendingInteraction?.hasPendingInteraction ?? false
-                },
+                hasPendingInteractionPublisher: { [weak self] in
+                    guard let self, let pendingInteraction else {
+                        return Just(false).eraseToAnyPublisher()
+                    }
+                    return pendingInteraction.$hasPendingInteraction.eraseToAnyPublisher()
+                }(),
                 interactorPublisher: $interactor.eraseToAnyPublisher(),
                 onCallVisualizerResume: { [weak self] in
                     guard let self else { return }
