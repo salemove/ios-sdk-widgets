@@ -20,7 +20,10 @@ extension CoreSdkClient {
                     mediaType: options.mediaType,
                     engagementOptions: options.engagementOptions
                 )
-                GliaCore.sharedInstance.queueForEngagement(using: options, completion: completion)
+                GliaCore.sharedInstance.queueForEngagement(
+                    // TODO: - Passing correct value will be implemented in MOB-4016
+                    using: options, replaceExisting: false, completion: completion
+                )
             },
             requestMediaUpgradeWithOffer: GliaCore.sharedInstance.requestMediaUpgrade(offer:completion:),
             sendMessagePreview: GliaCore.sharedInstance.sendMessagePreview(message:completion:),
