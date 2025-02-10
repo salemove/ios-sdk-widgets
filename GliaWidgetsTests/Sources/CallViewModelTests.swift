@@ -25,7 +25,8 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video)
+            startWith: .engagement(mediaType: .video),
+            replaceExistingEnqueueing: false
         )
 
         viewModel.action = {
@@ -117,7 +118,8 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video)
+            startWith: .engagement(mediaType: .video), 
+            replaceExistingEnqueueing: false
         )
 
         let remoteVideoStream = CoreSdkClient.MockVideoStreamable.mock(
@@ -174,7 +176,8 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video)
+            startWith: .engagement(mediaType: .video), 
+            replaceExistingEnqueueing: false
         )
 
         let remoteAudioStream = CoreSdkClient.MockAudioStreamable.mock(
@@ -259,7 +262,8 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video)
+            startWith: .engagement(mediaType: .video), 
+            replaceExistingEnqueueing: false
         )
 
         viewModel.action = { action in
@@ -338,7 +342,8 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video)
+            startWith: .engagement(mediaType: .video), 
+            replaceExistingEnqueueing: false
         )
 
         call.updateVideoStream(with: localVideoStream)
@@ -378,7 +383,8 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video)
+            startWith: .engagement(mediaType: .video), 
+            replaceExistingEnqueueing: false
         )
 
         XCTAssertEqual(call.kind.value, .video(direction: .twoWay))
@@ -427,7 +433,7 @@ class CallViewModelTests: XCTestCase {
             case .showLiveObservationConfirmation:
                 calls.append(.showLiveObservationAlert)
             default:
-                XCTFail()
+                XCTFail("Unexpected action: \(action)")
             }
         }
         interactor.state = .enqueueing(.audioCall)
@@ -436,7 +442,7 @@ class CallViewModelTests: XCTestCase {
 
     func test_liveObservationAllowTriggersEnqueue() throws {
         var interactorEnv: Interactor.Environment = .mock
-        interactorEnv.coreSdk.queueForEngagement = { _, completion in
+        interactorEnv.coreSdk.queueForEngagement = { _, _, completion in
             completion(.success(.mock))
         }
 
@@ -461,7 +467,7 @@ class CallViewModelTests: XCTestCase {
                     declined: declined
                 )
             default:
-                XCTFail()
+                XCTFail("Unexpected action \(action).")
             }
         }
         interactor.state = .enqueueing(.audioCall)
@@ -475,7 +481,7 @@ class CallViewModelTests: XCTestCase {
         }
         var calls: [Call] = []
         var interactorEnv: Interactor.Environment = .mock
-        interactorEnv.coreSdk.queueForEngagement = { _, _ in
+        interactorEnv.coreSdk.queueForEngagement = { _, _, _ in
             calls.append(.queueForEngagement)
         }
 
@@ -500,7 +506,7 @@ class CallViewModelTests: XCTestCase {
                     declined: declined
                 )
             default:
-                XCTFail()
+                XCTFail("Unexpected action \(action).")
             }
         }
         interactor.state = .enqueueing(.audioCall)
@@ -527,7 +533,8 @@ class CallViewModelTests: XCTestCase {
             environment: env,
             call: .mock(),
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video)
+            startWith: .engagement(mediaType: .video), 
+            replaceExistingEnqueueing: false
         )
 
         viewModel.event(.viewDidLoad)
@@ -569,7 +576,8 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .audio)
+            startWith: .engagement(mediaType: .audio), 
+            replaceExistingEnqueueing: false
         )
 
         let remoteAudioStream = CoreSdkClient.MockAudioStreamable.mock(
@@ -631,7 +639,8 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video)
+            startWith: .engagement(mediaType: .video), 
+            replaceExistingEnqueueing: false
         )
 
         let localVideoStream = CoreSdkClient.MockVideoStreamable.mock(
@@ -682,7 +691,8 @@ class CallViewModelTests: XCTestCase {
             flipCameraButtonStyle: .nop,
             callback: { _ in
                 calls.append(.callback)
-            })
+            }
+        )
 
         XCTAssertEqual(calls, [.callback])
     }
@@ -721,7 +731,8 @@ class CallViewModelTests: XCTestCase {
                 if let accessibility = $0?.accessibility {
                     accessibilities.append(accessibility)
                 }
-            })
+            }
+        )
 
         let backCameraExpectedAccessibility = FlipCameraButton.Props.Accessibility(
             accessibilityLabel: style.accessibility.switchToFrontCameraAccessibilityLabel,
@@ -739,7 +750,8 @@ class CallViewModelTests: XCTestCase {
                 if let accessibility = $0?.accessibility {
                     accessibilities.append(accessibility)
                 }
-            })
+            }
+        )
 
         let frontCameraExpectedAccessibility = FlipCameraButton.Props.Accessibility(
             accessibilityLabel: style.accessibility.switchToBackCameraAccessibilityLabel,
@@ -772,7 +784,6 @@ class CallViewModelTests: XCTestCase {
 
         cameraDeviceManager.currentCameraDevice = { backCamera }
 
-
         var receivedAccessibilitiesWithCallbacks: [VideoStreamView.FlipCameraAccLabelWithTap?] = []
 
         CallViewModel.setFlipCameraButtonVisible(
@@ -782,7 +793,8 @@ class CallViewModelTests: XCTestCase {
             flipCameraButtonStyle: style,
             callback: {
                 receivedAccessibilitiesWithCallbacks.append($0)
-            })
+            }
+        )
 
         XCTAssertEqual(receivedAccessibilitiesWithCallbacks[0]?.tapCallback, nil)
         XCTAssertEqual(receivedAccessibilitiesWithCallbacks[0]?.accessibility, nil)
@@ -807,7 +819,8 @@ class CallViewModelTests: XCTestCase {
             flipCameraButtonStyle: style,
             callback: {
                 receivedAccessibilitiesWithCallbacks.append($0)
-            })
+            }
+        )
 
         XCTAssertEqual(receivedAccessibilitiesWithCallbacks[0]?.tapCallback, nil)
         XCTAssertEqual(receivedAccessibilitiesWithCallbacks[0]?.accessibility, nil)

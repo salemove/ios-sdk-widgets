@@ -141,6 +141,7 @@ extension Interactor {
 
     func enqueueForEngagement(
         engagementKind: EngagementKind,
+        replaceExisting: Bool,
         success: @escaping () -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
@@ -171,7 +172,8 @@ extension Interactor {
                 shouldCloseAllQueues: true,
                 mediaType: engagementKind.mediaType,
                 engagementOptions: options
-            )
+            ),
+            replaceExisting
         ) { [weak self] result in
             switch result {
             case .failure(let error):

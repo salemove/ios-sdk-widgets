@@ -25,9 +25,10 @@ class ChatViewModelTests: XCTestCase {
             isCustomCardSupported: false,
             isWindowVisible: .init(with: true),
             startAction: .none,
-            deliveredStatusText: "Delivered", 
+            deliveredStatusText: "Delivered",
             failedToDeliverStatusText: "Failed",
             chatType: .nonAuthenticated,
+            replaceExistingEnqueueing: false,
             environment: .init(
                 fetchFile: { _, _, _ in },
                 downloadSecureFile: { _, _, _ in .mock },
@@ -690,7 +691,7 @@ class ChatViewModelTests: XCTestCase {
         interactor.environment.coreSdk.sendMessageWithMessagePayload = { _, completion in
             completion(.success(.mock(id: expectedMessageId)))
         }
-        interactor.environment.coreSdk.queueForEngagement = { _, completion in
+        interactor.environment.coreSdk.queueForEngagement = { _, _, completion in
             completion(.success(.mock))
         }
 
@@ -750,7 +751,7 @@ class ChatViewModelTests: XCTestCase {
             viewModel?.interactorEvent(.receivedMessage(.mock(id: expectedMessageId)))
             completion(.success(.mock(id: expectedMessageId)))
         }
-        interactor.environment.coreSdk.queueForEngagement = { _, completion in
+        interactor.environment.coreSdk.queueForEngagement = { _, _, completion in
             completion(.success(.mock))
         }
 
@@ -830,7 +831,7 @@ class ChatViewModelTests: XCTestCase {
 
     func test_liveObservationAllowTriggersEnqueue() throws {
         var interactorEnv: Interactor.Environment = .mock
-        interactorEnv.coreSdk.queueForEngagement = { _, completion in
+        interactorEnv.coreSdk.queueForEngagement = { _, _, completion in
             completion(.success(.mock))
         }
 
@@ -870,7 +871,7 @@ class ChatViewModelTests: XCTestCase {
         }
         var calls: [Call] = []
         var interactorEnv: Interactor.Environment = .mock
-        interactorEnv.coreSdk.queueForEngagement = { _, _ in
+        interactorEnv.coreSdk.queueForEngagement = { _, _, _ in
             calls.append(.queueForEngagement)
         }
 
