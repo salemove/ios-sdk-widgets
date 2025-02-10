@@ -14,16 +14,21 @@ class EngagementViewModel: CommonEngagementModel {
     var activeEngagement: CoreSdkClient.Engagement?
     private(set) var hasViewAppeared: Bool
     private(set) var isViewActive = ObservableValue<Bool>(with: false)
+    /// A flag indicating where enqueue will replace existing one.
+    /// Used when 'Leave Current Conversation?' dialog is closed with 'Leave' button.
+    let replaceExistingEnqueueing: Bool
 
     init(
         interactor: Interactor,
         screenShareHandler: ScreenShareHandler,
+        replaceExistingEnqueueing: Bool,
         environment: Environment
     ) {
         self.interactor = interactor
         self.screenShareHandler = screenShareHandler
         self.environment = environment
         self.hasViewAppeared = false
+        self.replaceExistingEnqueueing = replaceExistingEnqueueing
         self.interactor.addObserver(self) { [weak self] event in
             self?.interactorEvent(event)
         }
@@ -62,9 +67,10 @@ class EngagementViewModel: CommonEngagementModel {
 
     func start() {}
 
-    func enqueue(engagementKind: EngagementKind) {
+    func enqueue(engagementKind: EngagementKind, replaceExisting: Bool) {
         interactor.enqueueForEngagement(
             engagementKind: engagementKind,
+            replaceExisting: replaceExisting,
             success: {},
             failure: { [weak self] error in
                 self?.handleError(error)
@@ -117,7 +123,10 @@ class EngagementViewModel: CommonEngagementModel {
                 switch result {
                 case let .success(site):
                     if site.mobileConfirmDialogEnabled == false || self.interactor.skipLiveObservationConfirmations {
-                        self.enqueue(engagementKind: engagementKind)
+                        self.enqueue(
+                            engagementKind: engagementKind,
+                            replaceExisting: replaceExistingEnqueueing
+                        )
                     } else {
                         self.showLiveObservationConfirmation(in: engagementKind)
                     }
@@ -222,7 +231,11 @@ extension EngagementViewModel {
                 self?.engagementDelegate?(.openLink(link))
             },
             accepted: { [weak self] in
-                self?.enqueue(engagementKind: engagementKind)
+                guard let self else { return }
+                enqueue(
+                    engagementKind: engagementKind,
+                    replaceExisting: replaceExistingEnqueueing
+                )
             },
             declined: { [weak self] in
                 self?.endSession()

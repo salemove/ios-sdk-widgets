@@ -13,7 +13,7 @@ extension CoreSdkClient {
         configureWithConfiguration: { _, _ in },
         configureWithInteractor: { _ in },
         listQueues: { _ in },
-        queueForEngagement: { _, _ in },
+        queueForEngagement: { _, _, _ in },
         requestMediaUpgradeWithOffer: { _, _ in },
         sendMessagePreview: { _, _ in },
         sendMessageWithMessagePayload: { _, _ in },

@@ -5,7 +5,8 @@ final class EngagementViewModelTests: XCTestCase {
     func testHandleScreenSharingStatusShowsEndScreenSharingButton() {
         let viewModel = EngagementViewModel(
             interactor: .failing,
-            screenShareHandler: .mock,
+            screenShareHandler: .mock, 
+            replaceExistingEnqueueing: false,
             environment: .mock
         )
         enum Call { case showEndScreenShareButton }
@@ -26,7 +27,8 @@ final class EngagementViewModelTests: XCTestCase {
     func testHandleScreenSharingStatusShowsEndButton() {
         let viewModel = EngagementViewModel(
             interactor: .failing,
-            screenShareHandler: .mock,
+            screenShareHandler: .mock, 
+            replaceExistingEnqueueing: false,
             environment: .mock
         )
         enum Call { case showEndButton }
@@ -50,6 +52,7 @@ final class EngagementViewModelTests: XCTestCase {
         let viewModel = EngagementViewModel(
             interactor: interactor,
             screenShareHandler: .mock,
+            replaceExistingEnqueueing: false,
             environment: .mock
         )
         enum Call { case showCloseButton }

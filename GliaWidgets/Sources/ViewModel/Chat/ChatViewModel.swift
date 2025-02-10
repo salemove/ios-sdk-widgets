@@ -77,6 +77,7 @@ class ChatViewModel: EngagementViewModel {
         deliveredStatusText: String,
         failedToDeliverStatusText: String,
         chatType: ChatType,
+        replaceExistingEnqueueing: Bool,
         environment: Environment,
         maximumUploads: () -> Int
     ) {
@@ -115,6 +116,7 @@ class ChatViewModel: EngagementViewModel {
         super.init(
             interactor: interactor,
             screenShareHandler: screenShareHandler,
+            replaceExistingEnqueueing: replaceExistingEnqueueing,
             environment: environment
         )
         unreadMessages.addObserver(self) { [weak self] unreadCount, _ in

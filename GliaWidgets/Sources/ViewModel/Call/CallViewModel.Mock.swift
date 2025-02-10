@@ -6,6 +6,7 @@ extension CallViewModel {
         call: Call = .init(.audio, environment: .mock),
         unreadMessages: ObservableValue<Int> = .init(with: .zero),
         startWith: StartAction = .engagement(mediaType: .audio),
+        replaceExistingEnqueueing: Bool = false,
         environment: CallViewModel.Environment = .mock
     ) -> CallViewModel {
         .init(
@@ -14,7 +15,8 @@ extension CallViewModel {
             environment: environment,
             call: call,
             unreadMessages: unreadMessages,
-            startWith: startWith
+            startWith: startWith,
+            replaceExistingEnqueueing: replaceExistingEnqueueing
         )
     }
 }

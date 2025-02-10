@@ -12,7 +12,7 @@ extension CoreSdkClient {
             configureWithConfiguration: GliaCore.sharedInstance.configure(with:completion:),
             configureWithInteractor: GliaCore.sharedInstance.configure(interactor:),
             listQueues: GliaCore.sharedInstance.listQueues(completion:),
-            queueForEngagement: { options, completion in
+            queueForEngagement: { options, replaceExisting, completion in
                 let options = QueueForEngagementOptions(
                     queueIds: options.queueIds,
                     visitorContext: options.visitorContext,
@@ -21,8 +21,7 @@ extension CoreSdkClient {
                     engagementOptions: options.engagementOptions
                 )
                 GliaCore.sharedInstance.queueForEngagement(
-                    // TODO: - Passing correct value will be implemented in MOB-4016
-                    using: options, replaceExisting: false, completion: completion
+                    using: options, replaceExisting: replaceExisting, completion: completion
                 )
             },
             requestMediaUpgradeWithOffer: GliaCore.sharedInstance.requestMediaUpgrade(offer:completion:),

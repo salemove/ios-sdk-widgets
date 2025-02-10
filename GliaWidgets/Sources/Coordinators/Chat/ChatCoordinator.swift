@@ -70,11 +70,17 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
 
     func start() -> ChatViewController {
-        let viewController = makeChatViewController()
+        start(replaceExistingEnqueueing: false)
+    }
+
+    func start(replaceExistingEnqueueing: Bool) -> ChatViewController {
+        let viewController = makeChatViewController(
+            replaceExistingEnqueueing: replaceExistingEnqueueing
+        )
         return viewController
     }
 
-    private func makeChatViewController() -> ChatViewController {
+    private func makeChatViewController(replaceExistingEnqueueing: Bool) -> ChatViewController {
         // We need to defer passing controller to transcript model,
         // because model will use it later, however controller
         // can not be created without model, that is why
@@ -96,7 +102,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             // possible we need to call `start` here.
             start = { transcriptModel.start(isTranscriptFetchNeeded: true) }
         } else {
-            model = .chat(chatModel())
+            model = .chat(chatModel(replaceExistingEnqueueing: replaceExistingEnqueueing))
             start = {}
         }
 
@@ -170,7 +176,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 
 // MARK: Chat model
 extension ChatCoordinator {
-    private func chatModel() -> ChatViewModel {
+    private func chatModel(replaceExistingEnqueueing: Bool) -> ChatViewModel {
         let isTransferredSecureConversation = !skipTransferredSCHandling &&
         environment.getCurrentEngagement()?.isTransferredSecureConversation == true
 
@@ -191,6 +197,7 @@ extension ChatCoordinator {
             deliveredStatusText: viewFactory.theme.chat.visitorMessageStyle.delivered,
             failedToDeliverStatusText: viewFactory.theme.chat.visitorMessageStyle.failedToDeliver,
             chatType: chatType,
+            replaceExistingEnqueueing: replaceExistingEnqueueing,
             environment: .create(
                 with: environment,
                 viewFactory: viewFactory
@@ -312,7 +319,7 @@ extension ChatCoordinator {
                 guard let self, let controller = controller() else {
                     return
                 }
-                let chatModel = self.chatModel()
+                let chatModel = self.chatModel(replaceExistingEnqueueing: false)
                 controller.swapAndBindViewModel(.chat(chatModel))
                 chatModel.migrate(from: transcriptModel)
                 self.delegate?(.secureTranscriptUpgradedToLiveChat(controller))

@@ -68,7 +68,8 @@ private extension CallCoordinator {
             ),
             call: call,
             unreadMessages: unreadMessages,
-            startWith: startAction
+            startWith: startAction,
+            replaceExistingEnqueueing: false
         )
         viewModel.engagementDelegate = { [weak self] event in
             self?.handleEngagementViewModelEvent(event)

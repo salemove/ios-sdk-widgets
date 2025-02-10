@@ -27,7 +27,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
         environment: EngagementViewModel.Environment,
         call: Call,
         unreadMessages: ObservableValue<Int>,
-        startWith: StartAction
+        startWith: StartAction,
+        replaceExistingEnqueueing: Bool
     ) {
         self.call = call
         self.startWith = startWith
@@ -36,6 +37,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         super.init(
             interactor: interactor,
             screenShareHandler: screenShareHandler,
+            replaceExistingEnqueueing: replaceExistingEnqueueing,
             environment: environment
         )
         unreadMessages.addObserver(self) { [weak self] unreadCount, _ in

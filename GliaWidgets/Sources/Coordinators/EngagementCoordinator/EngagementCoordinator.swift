@@ -88,7 +88,10 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
 
     func start(maximize: Bool) {
-        setupEngagementController(skipTransferredSCHandling: false)
+        setupEngagementController(
+            skipTransferredSCHandling: false,
+            replaceExistingEnqueueing: false
+        )
 
         let bubbleView = viewFactory.makeBubbleView()
         unreadMessages.addObserver(self) { unreadCount, _ in
@@ -108,7 +111,8 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     func setupEngagementController(
         skipTransferredSCHandling: Bool,
-        animated: Bool = false
+        animated: Bool = false,
+        replaceExistingEnqueueing: Bool
     ) {
         let engagementKind = engagementLaunching.currentKind
         switch engagementKind {
@@ -118,7 +122,8 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
             let chatViewController = startChat(
                 withAction: .startEngagement,
                 showsCallBubble: false,
-                skipTransferredSCHandling: skipTransferredSCHandling
+                skipTransferredSCHandling: skipTransferredSCHandling,
+                replaceExistingEnqueueing: replaceExistingEnqueueing
             )
             engagement = .chat(chatViewController)
             navigationPresenter.setViewControllers(
@@ -148,7 +153,8 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
             let chatViewController = startChat(
                 withAction: .none,
                 showsCallBubble: true,
-                skipTransferredSCHandling: skipTransferredSCHandling
+                skipTransferredSCHandling: skipTransferredSCHandling,
+                replaceExistingEnqueueing: replaceExistingEnqueueing
             )
 
             engagement = .call(
@@ -306,7 +312,8 @@ extension EngagementCoordinator {
     private func startChat(
         withAction startAction: ChatViewModel.StartAction,
         showsCallBubble: Bool,
-        skipTransferredSCHandling: Bool
+        skipTransferredSCHandling: Bool,
+        replaceExistingEnqueueing: Bool
     ) -> ChatViewController {
         let coordinator = ChatCoordinator(
             interactor: interactor,
@@ -333,7 +340,7 @@ extension EngagementCoordinator {
         }
         pushCoordinator(coordinator)
 
-        return coordinator.start()
+        return coordinator.start(replaceExistingEnqueueing: replaceExistingEnqueueing)
     }
 
     private func handleChatCoordinatorEvent(event: ChatCoordinator.DelegateEvent) {
@@ -495,9 +502,15 @@ extension EngagementCoordinator {
         using messagingInitialScreen: SecureConversations.InitialScreen,
         requestedEngagementKind: EngagementKind
     ) -> UIViewController {
+        // TODO: Cover `replaceExistingEnqueueing` with unit tests (MOB-4047)
         let leaveCurrentSecureConversation = Command<Bool> { [weak self] accepted in
             if accepted {
-                self?.switchToEngagementKind(requestedEngagementKind)
+                self?.switchToEngagementKind(
+                    requestedEngagementKind,
+                    // We need to replace existing queue ticket
+                    // here when switching to engagement from SC.
+                    replaceExistingEnqueueing: true
+                )
             } else {
                 self?.engagementLaunching = .direct(kind: .messaging(.chatTranscript))
             }
@@ -522,7 +535,11 @@ extension EngagementCoordinator {
                 },
                 leaveCurrentSecureConversation: leaveCurrentSecureConversation,
                 switchToEngagement: .init { [weak self] kind in
-                    self?.switchToEngagementKind(kind)
+                    self?.switchToEngagementKind(
+                        kind,
+                        // Replace existing queue ticket here too.
+                        replaceExistingEnqueueing: true
+                    )
                 }
             )
         )
@@ -548,11 +565,15 @@ extension EngagementCoordinator {
         }
     }
 
-    private func switchToEngagementKind(_ kind: EngagementKind) {
+    private func switchToEngagementKind(
+        _ kind: EngagementKind,
+        replaceExistingEnqueueing: Bool
+    ) {
         engagementLaunching = .direct(kind: kind)
         setupEngagementController(
             skipTransferredSCHandling: true,
-            animated: true
+            animated: true,
+            replaceExistingEnqueueing: replaceExistingEnqueueing
         )
     }
 }
