@@ -17,7 +17,7 @@ extension SecureConversations {
                 environment.log.warning("Queue ID array for Secure Messaging contains invalid queue IDs: \(invalidIds).")
             }
 
-            environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds) { result in
+            environment.queuesMonitor.fetchQueues(queuesIds: queueIds) { result in
                 switch result {
                 case .success(let queues):
                     self.checkQueues(fetchedQueues: queues, completion: completion)
