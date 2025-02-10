@@ -1,3 +1,5 @@
+import Dispatch
+
 extension GCD {
     static let mock = Self(
         mainQueue: .mock,
