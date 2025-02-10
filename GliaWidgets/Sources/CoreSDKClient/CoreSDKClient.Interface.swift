@@ -38,6 +38,7 @@ struct CoreSdkClient {
 
     typealias QueueForEngagement = (
         _ options: GliaCoreSDK.QueueForEngagementOptions,
+        _ replaceExisting: Bool,
         _ completion: @escaping (Result<GliaCoreSDK.QueueTicket, GliaCoreSDK.GliaCoreError>) -> Void
     ) -> Void
 

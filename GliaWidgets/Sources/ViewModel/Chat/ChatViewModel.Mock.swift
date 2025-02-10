@@ -13,6 +13,7 @@ extension ChatViewModel {
         deliveredStatusText: String = "Delivered",
         failedToDeliverStatusText: String = "Failed",
         chatType: ChatViewModel.ChatType = .nonAuthenticated,
+        replaceExistingEnqueueing: Bool = false,
         environment: Environment = .mock,
         maximumUploads: () -> Int = { 2 }
     ) -> ChatViewModel {
@@ -28,6 +29,7 @@ extension ChatViewModel {
             deliveredStatusText: deliveredStatusText,
             failedToDeliverStatusText: failedToDeliverStatusText,
             chatType: chatType,
+            replaceExistingEnqueueing: replaceExistingEnqueueing,
             environment: environment,
             maximumUploads: maximumUploads
         )
