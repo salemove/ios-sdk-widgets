@@ -471,14 +471,16 @@ extension CoreSdkClient.Queue {
         name: String = "",
         status: QueueStatus = .unknown,
         isDefault: Bool = false,
-        media: [MediaType] = []
+        media: [MediaType] = [],
+        lastUpdated: Date = Date()
     ) -> CoreSdkClient.Queue {
         CoreSdkClient.Queue(
             id: id,
             name: name,
             status: status,
             isDefault: isDefault,
-            media: media
+            media: media,
+            lastUpdated: lastUpdated
         )
     }
 }

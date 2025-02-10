@@ -23,6 +23,9 @@ extension Glia {
                 loggerPhase.logger.prefixed(Self.self).warning("Interactor is missing")
                 throw GliaError.sdkIsNotConfigured
             }
+            // Interactor is initialized during configuration, which means that queueIds need
+            // to be set in interactor when EngagementLauncher is requested.
+            interactor.setQueuesIds(queueIds)
             return interactor
         }
 
@@ -38,8 +41,7 @@ extension Glia {
             guard let self else { return }
             let parameters = try getEngagementParameters(
                 configuration: getConfiguration(),
-                interactor: getInteractor(),
-                queueIds: queueIds
+                interactor: getInteractor()
             )
             self.resolveEngagementState(
                 engagementKind: engagementKind,

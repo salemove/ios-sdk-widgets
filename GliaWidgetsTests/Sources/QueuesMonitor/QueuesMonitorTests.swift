@@ -71,7 +71,8 @@ class QueuesMonitorTests: XCTestCase {
             "Setting up queues. Using 1 default queues."
         ]
         var receivedLogMessage: [String] = []
-        let expectedObservedQueues = [Queue.mock(isDefault: true)]
+        let mockedQueue = Queue.mock(isDefault: true)
+        let expectedObservedQueues = [mockedQueue]
         let mockQueues = [expectedObservedQueues[0], Queue.mock()]
         monitor.environment.logger.infoClosure = { logMessage, _, _, _ in
             receivedLogMessage.append(logMessage as? String ?? "")
@@ -82,6 +83,7 @@ class QueuesMonitorTests: XCTestCase {
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
+            completion(.success(mockedQueue))
             return UUID().uuidString
         }
 

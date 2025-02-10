@@ -230,14 +230,12 @@ private extension EntryWidget {
 
         viewModel.retryMonitoring = { [weak self] in
             self?.viewState = .loading
-            self?.environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: self?.queueIds ?? [])
         }
 
         return viewModel
     }
 
     func showView(in parentView: UIView) {
-        self.environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: self.queueIds)
         parentView.subviews.forEach { $0.removeFromSuperview() }
         let model = makeViewModel(showHeader: false)
         let view = makeView(model: model)
@@ -262,7 +260,6 @@ private extension EntryWidget {
     }
 
     func showSheet(in parentViewController: UIViewController) {
-        self.environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: self.queueIds)
         let model = makeViewModel(showHeader: true)
         let view = makeView(model: model).accessibilityAction(.escape, {
             self.hide()
@@ -401,7 +398,7 @@ private extension EntryWidget {
         unreadSecureMessagesCount: Int?
     ) -> EntryWidget.ViewState {
         switch queuesMonitorState {
-        case .idle:
+        case .idle, .loading:
             return .loading
         case .updated(let queues):
             let availableEngagementTypes = resolveAvailableEngagementTypes(from: queues)

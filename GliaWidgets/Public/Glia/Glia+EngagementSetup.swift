@@ -5,13 +5,8 @@ extension Glia {
     /// Set up and returns parameters needed to start or restore engagement
     func getEngagementParameters(
         configuration: Configuration,
-        interactor: Interactor,
-        queueIds: [String] = []
+        interactor: Interactor
     ) -> EngagementParameters {
-        // Interactor is initialized during configuration, which means that queueIds need
-        // to be set in interactor when startEngagement is called.
-        interactor.setQueuesIds(queueIds)
-
         // It is assumed that `features` to be provided from `configure` or via deprecated `startEngagement` method.
         let features = self.features ?? []
 
