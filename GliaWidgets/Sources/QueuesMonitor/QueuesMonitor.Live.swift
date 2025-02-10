@@ -5,6 +5,7 @@ import Combine
 final class QueuesMonitor {
     enum State {
         case idle
+        case loading
         case updated([Queue])
         case failed(Error)
     }
@@ -27,6 +28,32 @@ final class QueuesMonitor {
         self.environment = environment
     }
 
+    /// Fetches all available site's queues for given queues IDs.
+    ///
+    /// - Parameters:
+    ///   - queuesIds: The queues IDs that will be monitored.
+    ///   - fetchedQueuesCompletion: Returns fetched queues result for given `queuesIds`
+    ///   if no queues were found among site's queues returns default queues.
+    ///
+    func fetchQueues(queuesIds: [String], completion: @escaping (Result<[Queue], GliaCoreError>) -> Void) {
+        environment.listQueues { [weak self] queues, error in
+            guard let self else {
+                return
+            }
+            if let error {
+                environment.logger.error("Setting up queues. Failed to get site queues: \(error)")
+                self.state = .failed(error)
+                completion(.failure(error))
+                return
+            }
+
+            let observedQueues = evaluateQueues(queuesIds: queuesIds, fetchedQueues: queues)
+
+            self._observedQueues.setValue(observedQueues)
+            completion(.success(observedQueues))
+        }
+    }
+
     /// Fetches all available site's queues and initiates queues monitoring for given queues IDs.
     ///
     /// - Parameters:
@@ -38,6 +65,10 @@ final class QueuesMonitor {
         queuesIds: [String] = [],
         fetchedQueuesCompletion: ((Result<[Queue], GliaCoreError>) -> Void)? = nil
     ) {
+        if case .loading = state { return }
+
+        state = .loading
+
         stopMonitoring()
 
         fetchQueues(queuesIds: queuesIds) { [weak self] result in
@@ -59,26 +90,6 @@ final class QueuesMonitor {
 }
 
 private extension QueuesMonitor {
-    func fetchQueues(queuesIds: [String], completion: @escaping (Result<[Queue], GliaCoreError>) -> Void) {
-        environment.listQueues { [weak self] queues, error in
-            guard let self else {
-                return
-            }
-            if let error {
-                environment.logger.error("Setting up queues. Failed to get site queues: \(error)")
-                self.state = .failed(error)
-                completion(.failure(error))
-                return
-            }
-
-            let observedQueues = evaluateQueues(queuesIds: queuesIds, fetchedQueues: queues)
-
-            self.state = .updated(observedQueues)
-            self._observedQueues.setValue(observedQueues)
-            completion(.success(observedQueues))
-        }
-    }
-
     func evaluateQueues(queuesIds: [String], fetchedQueues: [Queue]?) -> [Queue] {
         guard let queues = fetchedQueues, !queues.isEmpty else {
             environment.logger.warning("Setting up queues. Site has no queues.")

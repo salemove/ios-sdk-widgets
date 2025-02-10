@@ -53,7 +53,8 @@ enum InteractorEvent {
 class Interactor {
     typealias EventHandler = (InteractorEvent) -> Void
 
-    private(set) var queueIds: [String]?
+    @Published private(set) var queueIds: [String]?
+
     var engagedOperator: CoreSdkClient.Operator? {
         switch state {
         case .engaged(let engagedOperator):
@@ -101,6 +102,13 @@ class Interactor {
                 self?.notify(.stateChanged(newState))
             }
             .store(in: &cancellables)
+        $queueIds
+            .removeDuplicates()
+            .compactMap { $0 }
+            .sink { [weak self] queueIds in
+                self?.environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds)
+            }
+            .store(in: &cancellables)
     }
 
     func addObserver(_ observer: AnyObject, handler: @escaping EventHandler) {
@@ -129,7 +137,6 @@ class Interactor {
 extension Interactor {
     func setQueuesIds(_ queueIds: [String]) {
         self.queueIds = queueIds
-        environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds)
     }
 
     func enqueueForEngagement(

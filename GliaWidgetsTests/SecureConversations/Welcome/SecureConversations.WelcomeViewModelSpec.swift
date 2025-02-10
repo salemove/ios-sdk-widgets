@@ -610,7 +610,7 @@ extension SecureConversationsWelcomeViewModelTests {
         let uuid = UUID.mock.uuidString
         var availability = SecureConversations.Availability.mock
         availability.environment.listQueues = { completion in
-            let queue = CoreSdkClient.Queue(
+            let queue = CoreSdkClient.Queue.mock(
                 id: uuid,
                 name: "",
                 status: .open,
@@ -632,7 +632,7 @@ extension SecureConversationsWelcomeViewModelTests {
         let uuid = UUID.mock.uuidString
         var availability = SecureConversations.Availability.mock
         availability.environment.listQueues = { completion in
-            let queue = CoreSdkClient.Queue(
+            let queue = CoreSdkClient.Queue.mock(
                 id: uuid,
                 name: "",
                 status: .open,
@@ -676,7 +676,7 @@ extension SecureConversationsWelcomeViewModelTests {
         let uuid = UUID.mock.uuidString
         var availability = SecureConversations.Availability.mock
         availability.environment.listQueues = { completion in
-            let queue = CoreSdkClient.Queue(
+            let queue = CoreSdkClient.Queue.mock(
                 id: uuid,
                 name: "",
                 status: .open,
