@@ -56,6 +56,7 @@ class ChatViewControllerTests: XCTestCase {
         viewModelEnv.log.prefixedClosure = { _ in return .mock }
         let interactor = Interactor.failing
         interactor.environment.gcd.mainQueue.async = { $0() }
+        interactor.environment.queuesMonitor = .mock()
         let viewModel = ChatViewModel.mock(
             interactor: interactor,
             environment: viewModelEnv
