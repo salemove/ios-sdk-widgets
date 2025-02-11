@@ -121,7 +121,9 @@ private extension QueuesMonitor {
                 queues.append(queue)
                 return
             }
-            queues[indexToChange] = queue
+            if queue.lastUpdated > queues[indexToChange].lastUpdated {
+                queues[indexToChange] = queue
+            }
         }
     }
 
