@@ -140,7 +140,7 @@ class QueuesMonitorTests: XCTestCase {
         var envCalls: [Call] = []
 
         let mockQueueId = "mock_queue_id"
-        let expectedObservedQueue = Queue.mock(id: mockQueueId, status: .closed)
+        let expectedObservedQueue = Queue.mock(id: mockQueueId, status: .open)
         let expectedUpdatedQueue = Queue.mock(id: mockQueueId, status: .open)
         let mockQueues = [expectedObservedQueue, Queue.mock(id: UUID().uuidString)]
 
@@ -178,7 +178,7 @@ class QueuesMonitorTests: XCTestCase {
         var envCalls: [Call] = []
 
         let mockQueueId = "mock_queue_id"
-        let expectedObservedQueue = Queue.mock(id: mockQueueId, status: .closed)
+        let expectedObservedQueue = Queue.mock(id: mockQueueId, status: .open)
         let expectedUpdatedQueue = Queue.mock(id: mockQueueId, status: .open)
         let mockQueues = [expectedObservedQueue, Queue.mock(id: UUID().uuidString)]
 
@@ -360,5 +360,128 @@ class QueuesMonitorTests: XCTestCase {
         monitor.stopMonitoring()
 
         XCTAssertEqual(envCalls, [.listQueues, .subscribeForQueuesUpdates, .unsubscribeFromUpdates])
+    }
+
+    func test_receiveOlderQueue_doesNotReplaceExistingQueue() {
+        var envCalls: [Call] = []
+        let mockQueueId = "mock_queue_id"
+        let existingQueue = Queue.mock(
+            id: mockQueueId,
+            lastUpdated: Date() // now
+        )
+        let olderQueue = Queue.mock(
+            id: mockQueueId,
+            lastUpdated: Date(timeIntervalSinceNow: -1000)
+        )
+
+        monitor.environment.listQueues = { completion in
+            envCalls.append(.listQueues)
+            completion([existingQueue], nil)
+        }
+        monitor.environment.subscribeForQueuesUpdates = { _, completion in
+            envCalls.append(.subscribeForQueuesUpdates)
+            completion(.success(olderQueue))
+            return UUID().uuidString
+        }
+        var receivedQueues: [Queue]?
+        monitor.$state
+            // Drop initial .idle and then .updated after fetching
+            .dropFirst(2)
+            .sink { state in
+                if case let .updated(queues) = state {
+                    receivedQueues = queues
+                }
+            }
+            .store(in: &cancellables)
+
+        monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+
+        XCTAssertEqual(envCalls, [.listQueues, .subscribeForQueuesUpdates])
+        XCTAssertEqual(receivedQueues?.count, 1)
+        XCTAssertEqual(receivedQueues?.first?.lastUpdated, existingQueue.lastUpdated)
+    }
+
+    func test_receiveNewerQueue_updatesExistingQueue() {
+        var envCalls: [Call] = []
+        let mockQueueId = "mock_queue_id"
+
+        let oldQueue = Queue.mock(
+            id: mockQueueId,
+            lastUpdated: Date(timeIntervalSinceNow: -1000)
+        )
+
+        let newerQueue = Queue.mock(
+            id: mockQueueId,
+            lastUpdated: Date() // now
+        )
+
+        monitor.environment.listQueues = { completion in
+            envCalls.append(.listQueues)
+            completion([oldQueue], nil)
+        }
+        monitor.environment.subscribeForQueuesUpdates = { _, completion in
+            envCalls.append(.subscribeForQueuesUpdates)
+            completion(.success(newerQueue))
+            return UUID().uuidString
+        }
+
+        var receivedQueues: [Queue]?
+        monitor.$state
+            // Drop initial .idle and then .updated after fetching
+            .dropFirst(2)
+            .sink { state in
+                if case let .updated(queues) = state {
+                    receivedQueues = queues
+                }
+            }
+            .store(in: &cancellables)
+
+        monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+
+        XCTAssertEqual(envCalls, [.listQueues, .subscribeForQueuesUpdates])
+        XCTAssertEqual(receivedQueues?.count, 1)
+        XCTAssertEqual(receivedQueues?.first?.lastUpdated, newerQueue.lastUpdated)
+    }
+
+    func test_receiveQueueForUnknownId_appendsQueue() {
+        var envCalls: [Call] = []
+        let knownQueueId = "known_queue_id"
+        let unknownQueueId = "unknown_queue_id"
+        let knownQueue = Queue.mock(
+            id: knownQueueId,
+            lastUpdated: Date()
+        )
+        let brandNewQueue = Queue.mock(
+            id: unknownQueueId,
+            lastUpdated: Date()
+        )
+
+        monitor.environment.listQueues = { completion in
+            envCalls.append(.listQueues)
+            completion([knownQueue], nil)
+        }
+        monitor.environment.subscribeForQueuesUpdates = { _, completion in
+            envCalls.append(.subscribeForQueuesUpdates)
+            completion(.success(brandNewQueue))
+            return UUID().uuidString
+        }
+
+        var receivedQueues: [Queue]?
+        monitor.$state
+            // Drop initial .idle and then .updated after fetching
+            .dropFirst(2)
+            .sink { state in
+                if case let .updated(queues) = state {
+                    receivedQueues = queues
+                }
+            }
+            .store(in: &cancellables)
+
+        monitor.fetchAndMonitorQueues(queuesIds: [knownQueueId])
+
+        XCTAssertEqual(envCalls, [.listQueues, .subscribeForQueuesUpdates])
+        XCTAssertEqual(receivedQueues?.count, 2)
+        XCTAssertTrue(receivedQueues?.contains(where: { $0.id == knownQueueId }) == true)
+        XCTAssertTrue(receivedQueues?.contains(where: { $0.id == unknownQueueId }) == true)
     }
 }
