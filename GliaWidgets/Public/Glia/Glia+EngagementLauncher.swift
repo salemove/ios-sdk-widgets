@@ -43,7 +43,7 @@ extension Glia {
                 configuration: getConfiguration(),
                 interactor: getInteractor()
             )
-            self.resolveEngagementState(
+            try self.resolveEngagementState(
                 engagementKind: engagementKind,
                 sceneProvider: sceneProvider,
                 configuration: parameters.configuration,
