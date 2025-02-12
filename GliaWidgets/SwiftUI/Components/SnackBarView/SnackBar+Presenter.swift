@@ -44,7 +44,7 @@ extension SnackBar {
             hostingController.view.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 hostingController.view.topAnchor.constraint(greaterThanOrEqualTo: parent.view.topAnchor),
-                hostingController.view.bottomAnchor.constraint(equalTo: parent.view.bottomAnchor, constant: 64),
+                hostingController.view.bottomAnchor.constraint(equalTo: parent.view.safeAreaLayoutGuide.bottomAnchor, constant: 64),
                 hostingController.view.leadingAnchor.constraint(equalTo: parent.view.leadingAnchor),
                 hostingController.view.trailingAnchor.constraint(equalTo: parent.view.trailingAnchor)
             ])
