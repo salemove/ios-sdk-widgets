@@ -200,9 +200,9 @@
 "engagement.phone.title" = "Phone";
 "engagement.chat.title" = "Chat";
 "engagement.video.title" = "Video";
-"message_center.welcome.check_messages" = "Check messages";
+"message_center.welcome.check_messages" = "Check Messages";
 "message_center.confirmation.check_messages.accessibility.hint" = "Navigates you to the chat transcript.";
-"message_center.confirmation.check_messages.accessibility.label" = "Check messages";
+"message_center.confirmation.check_messages.accessibility.label" = "Check Messages";
 "message_center.confirmation.subtitle" = "Your message has been sent. We will get back to you within 1 business day.";
 "message_center.header" = "Secure Messaging";
 "message_center.not_authenticated.message" = "We could not verify your authentication status.";
@@ -242,11 +242,11 @@
 
 "live_observation.indicator.message" = "Your app screen is visible to the operator.";
 
-"secure_messaging.chat.banner.top" = "Need live support?";
+"secure_messaging.chat.banner.top" = "Need Live Support?";
 "secure_messaging.chat.banner.bottom" = "Secure messaging has an expected response time of 1 business day.";
 "secure_messaging.chat.unavailable.message" = "Sending messages is currently not available.";
 "secure_messaging.chat.leave_current_conversation.title" = "Leave Current Conversation?";
-"secure_messaging.chat.leave_current_conversation.message" = "You have an ongoing conversation. Starting a new conversation before ongoing ones are resolved may lead to our agents overlooking your current query.";
+"secure_messaging.chat.leave_current_conversation.message" = "You already have a conversation in progress. Starting a new one may lead to our agents overlooking your current conversation.";
 "secure_messaging.chat.leave_current_conversation.button.positive" = "Stay";
 "secure_messaging.chat.leave_current_conversation.button.negative" = "Leave";
 
