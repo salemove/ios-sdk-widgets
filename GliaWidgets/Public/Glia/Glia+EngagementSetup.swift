@@ -47,7 +47,7 @@ extension Glia {
         features: Features,
         viewFactory: ViewFactory,
         ongoingEngagementMediaStreams: Engagement.Media?
-    ) {
+    ) throws {
         /// If during enqueued state the visitor initiates another engagement, we avoid cancelling the queue
         /// ticket and adding a new one, by monitoring the new engagement kind. If the engagement kind matches
         /// the current enqueued engagement kind, then we resume the old, and do not start a new one
@@ -61,6 +61,9 @@ extension Glia {
         }
 
         guard let currentEngagement = environment.coreSdk.getNonTransferredSecureConversationEngagement() else {
+            if case .messaging = engagementKind, !environment.isAuthenticated() {
+                throw GliaError.messagingIsNotSupportedForUnauthenticatedVisitor
+            }
             // This value can be set to `true` if engagement restoring happened.
             // To prevent missing Live Observation Confirmation dialog to be shown
             // for further engagements, we need to default this value again.

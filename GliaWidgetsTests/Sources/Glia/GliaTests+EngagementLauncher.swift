@@ -67,12 +67,28 @@ extension GliaTests {
             with: .mock(),
             theme: .mock()
         ) { _ in }
+        sdk.environment.isAuthenticated = { true }
 
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: [])
 
         try engagementLauncher.startSecureMessaging()
 
         XCTAssertEqual(sdk.engagement, .messaging(.welcome))
+    }
+
+    func test_startSecureConversationThrowsErrorWhenVisitorIsUnauthenticated() throws {
+        let sdk = makeConfigurableSDK()
+
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+
+        let engagementLauncher = try sdk.getEngagementLauncher(queueIds: [])
+
+        XCTAssertThrowsError(try engagementLauncher.startSecureMessaging()) { error in
+            XCTAssertEqual(error as? GliaError, GliaError.messagingIsNotSupportedForUnauthenticatedVisitor)
+        }
     }
 }
 
@@ -191,7 +207,7 @@ private extension GliaTests {
 
         extendedConfigure(sdk)
 
-        sdk.resolveEngagementState(
+        try sdk.resolveEngagementState(
             engagementKind: enqueueingEngagement,
             sceneProvider: .none,
             configuration: .mock(),
@@ -338,7 +354,7 @@ extension GliaTests {
 
         extendedConfigure(sdk)
 
-        sdk.resolveEngagementState(
+        try sdk.resolveEngagementState(
             engagementKind: engagementToEnqueue,
             sceneProvider: .none,
             configuration: .mock(),
@@ -374,6 +390,7 @@ private extension GliaTests {
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
+        sdkEnv.isAuthenticated = { false }
         sdkEnv.coreSdk.getCurrentEngagement = { nil }
         sdkEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
         sdkEnv.coreSdk.pendingSecureConversationStatus = { _ in }

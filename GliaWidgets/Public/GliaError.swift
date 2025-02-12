@@ -33,4 +33,7 @@ public enum GliaError: Error {
 
     /// Internal event subscription failure.
     case internalEventSubscriptionFailure
+
+    /// Messaging is not supported for unauthenticated visitor
+    case messagingIsNotSupportedForUnauthenticatedVisitor
 }

@@ -593,6 +593,7 @@ extension GliaTests {
         environment.coreSdk.createLogger = { _ in logger }
         environment.print = .mock
         environment.conditionalCompilation.isDebug = { true }
+        environment.isAuthenticated = { true }
 
         let engagementKind = EngagementKind.messaging(.welcome)
         var engagementLaunching: EngagementCoordinator.EngagementLaunching = .direct(kind: engagementKind)
