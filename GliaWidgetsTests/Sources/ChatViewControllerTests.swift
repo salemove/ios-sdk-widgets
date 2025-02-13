@@ -105,6 +105,7 @@ class ChatViewControllerTests: XCTestCase {
             return .mock
         }
         let interactor = Interactor.failing
+        interactor.setCurrentEngagement(.mock())
         interactor.environment.gcd.mainQueue.async = { $0() }
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
