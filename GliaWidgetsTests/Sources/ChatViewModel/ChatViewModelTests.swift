@@ -144,6 +144,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.log.infoClosure = { _, _, _, _ in }
         viewModelEnv.log.prefixedClosure = { _ in viewModelEnv.log }
         let interactor: Interactor = .mock()
+        interactor.setCurrentEngagement(.mock())
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
         let queueSectionIndex: Int = viewModel.queueOperatorSection.index
         let mockOperator: CoreSdkClient.Operator = .mock()
@@ -227,6 +228,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.log.prefixedClosure = { _ in viewModelEnv.log }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
+        interactor.setCurrentEngagement(.mock())
+        
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
         let mockOperator: CoreSdkClient.Operator = .mock()
         let mockItemKind: ChatItem.Kind = .operatorConnected(name: mockOperator.firstName, imageUrl: mockOperator.picture?.url)
@@ -284,6 +287,7 @@ class ChatViewModelTests: XCTestCase {
         interactorLog.prefixedClosure = { _ in interactorLog }
         interactorEnv.log = interactorLog
         let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.setCurrentEngagement(.mock())
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.log.infoClosure = { _, _, _, _ in }
         viewModelEnv.log.prefixedClosure = { _ in viewModelEnv.log }
@@ -680,6 +684,7 @@ class ChatViewModelTests: XCTestCase {
         }
 
         let interactor = Interactor.failing
+        interactor.setCurrentEngagement(.mock())
         var interactorLog = CoreSdkClient.Logger.failing
         interactorLog.infoClosure = { _, _, _, _ in }
         interactorLog.prefixedClosure = { _ in interactorLog }
@@ -738,6 +743,7 @@ class ChatViewModelTests: XCTestCase {
         }
 
         let interactor = Interactor.failing
+        interactor.setCurrentEngagement(.mock())
         var interactorLog = interactor.environment.log
         interactorLog.prefixedClosure = { _ in log }
         interactorLog.infoClosure = { _, _, _, _ in }
@@ -973,6 +979,7 @@ class ChatViewModelTests: XCTestCase {
             callback(.success(.mock(id: payload.messageId.rawValue)))
         }
         let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.setCurrentEngagement(.mock())
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
@@ -1556,6 +1563,44 @@ class ChatViewModelTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
 
         XCTAssertTrue(calls.isEmpty)
+    }
+
+    func test_handlingEngagedStateIsSkippedIfThereIsTransferredSC() {
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.gcd.mainQueue = .mock
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.setCurrentEngagement(.mock(status: .transferring, capabilities: .init(text: true)))
+
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.log.prefixedClosure = { _ in return .mock }
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
+        fileUploadListViewModelEnv.uploader.uploads = []
+        viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
+        let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
+        enum Call {
+            case refreshAll, appendRows, connected, showSnackBarView
+        }
+        var calls: [Call] = []
+        viewModel.action = { action in
+            switch action {
+            case .appendRows:
+                calls.append(.appendRows)
+            case .connected:
+                calls.append(.connected)
+            case .refreshAll:
+                calls.append(.refreshAll)
+            case .showSnackBarView:
+                calls.append(.showSnackBarView)
+            default:
+                break
+            }
+        }
+
+        interactor.state = .engaged(nil)
+
+        XCTAssertEqual(calls, [])
     }
 }
 

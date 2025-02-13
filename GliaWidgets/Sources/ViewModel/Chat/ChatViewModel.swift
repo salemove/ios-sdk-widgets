@@ -179,7 +179,7 @@ class ChatViewModel: EngagementViewModel {
 
             action?(.queue)
             action?(.scrollToBottom(animated: true))
-        case .engaged(let engagedOperator):
+        case .engaged(let engagedOperator) where interactor.currentEngagement?.isTransferredSecureConversation == false:
             environment.log.prefixed(Self.self).info("Operator connected")
             let name = engagedOperator?.firstName
             let pictureUrl = engagedOperator?.picture?.url

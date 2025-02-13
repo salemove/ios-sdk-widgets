@@ -619,8 +619,10 @@ extension ChatViewController {
         interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, completion in
             completion(.failure(.mock()))
         }
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.setCurrentEngagement(.mock())
         let chatViewModel = ChatViewModel.mock(
-            interactor: .mock(environment: interactorEnv),
+            interactor: interactor,
             failedToDeliverStatusText: "Failed to send. Tap on the message to retry.",
             environment: chatViewModelEnv
         )
