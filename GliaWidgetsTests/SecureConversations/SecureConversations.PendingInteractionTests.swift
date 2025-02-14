@@ -8,6 +8,7 @@ final class SecureConversationsPendingInteractionTests: XCTestCase {
         let uuidGen = UUID.incrementing
         var pendingCallback: ((Result<Bool, Error>) -> Void)?
         let interactor = Interactor.mock()
+        interactor.state = .none
         environment.interactorPublisher = Just(interactor).eraseToAnyPublisher()
         environment.observePendingSecureConversationsStatus = { callback in
             pendingCallback = callback
@@ -44,6 +45,22 @@ final class SecureConversationsPendingInteractionTests: XCTestCase {
         XCTAssertTrue(pendingInteraction.hasPendingInteraction)
         interactor.setCurrentEngagement(nil)
         XCTAssertFalse(pendingInteraction.hasPendingInteraction)
+        
+        // Check if setting current engagement not to SC engagement changes `hasPendingInteraction` to `false`
+        try XCTUnwrap(pendingCallback)(.success(true))
+        XCTAssertTrue(pendingInteraction.hasPendingInteraction)
+        interactor.setCurrentEngagement(.mock(engagedOperator: .mock(), status: .engaged))
+        XCTAssertFalse(pendingInteraction.hasPendingInteraction)
+        interactor.setCurrentEngagement(nil)
+        XCTAssertTrue(pendingInteraction.hasPendingInteraction)
+        
+        // Check if setting `interactor`'s enqueueingEngagementKind to NOT nil changes `hasPendingInteraction` to `false`
+        try XCTUnwrap(pendingCallback)(.success(true))
+        XCTAssertTrue(pendingInteraction.hasPendingInteraction)
+        interactor.state = .enqueueing(.audioCall)
+        XCTAssertFalse(pendingInteraction.hasPendingInteraction)
+        interactor.state = .none
+        XCTAssertTrue(pendingInteraction.hasPendingInteraction)
     }
 
     func test_unsubscribeIsCalledOnDeinit() throws {
