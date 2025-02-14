@@ -10,6 +10,8 @@ extension SecureConversations {
         private let environment: Environment
         private(set) var pendingStatusCancellationToken: String?
         private(set) var unreadMessageCountCancellationToken: String?
+        private var activeInteractor: Interactor?
+        private var cancelBag = CancelBag()
 
         init(environment: Environment) throws {
             self.environment = environment
@@ -39,21 +41,40 @@ extension SecureConversations {
 
             self.unreadMessageCountCancellationToken = unreadMessageCountCancellationToken
 
-            environment.interactorPublisher
+            let interactorStatePublisher = environment.interactorPublisher
+                .flatMap { interactor -> AnyPublisher<InteractorState, Never> in
+                    guard let interactor else {
+                        return Just(.none).eraseToAnyPublisher()
+                    }
+                    return interactor.$state.eraseToAnyPublisher()
+                }
+            let currentEngagementPublisher = environment.interactorPublisher
                 .flatMap { interactor -> AnyPublisher<CoreSdkClient.Engagement?, Never> in
                     guard let interactor else {
                         return Just(nil).eraseToAnyPublisher()
                     }
                     return interactor.$currentEngagement.eraseToAnyPublisher()
                 }
+            let hasOngoingOrEnqueueingEngagement = Publishers.CombineLatest(interactorStatePublisher, currentEngagementPublisher)
+                .map { state, currentEngagement in
+                    if case .engaged = currentEngagement?.status {
+                        return true
+                    } else {
+                        return state.enqueueingEngagementKind != nil
+                    }
+                }
+
+            currentEngagementPublisher
                 .map { $0?.isTransferredSecureConversation ?? false }
                 .assign(to: &$hasTransferredSecureConversation)
 
-            $pendingStatus.combineLatest($unreadMessageCount, $hasTransferredSecureConversation)
-                .map { hasPending, unreadCount, hasTransferredSecureConversation in
-                    hasPending || unreadCount > 0 || hasTransferredSecureConversation
-                }
-                .assign(to: &$hasPendingInteraction)
+            $pendingStatus.combineLatest(
+                $unreadMessageCount, $hasTransferredSecureConversation, hasOngoingOrEnqueueingEngagement
+            )
+            .map { hasPending, unreadCount, hasTransferredSecureConversation, hasOngoingOrEnqueueingEngagement in
+                (hasPending || unreadCount > 0 || hasTransferredSecureConversation) && !hasOngoingOrEnqueueingEngagement
+            }
+            .assign(to: &$hasPendingInteraction)
         }
 
         deinit {
