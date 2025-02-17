@@ -678,7 +678,8 @@ extension GliaTests {
             theme: .mock()
         ) { _ in }
         // Mock ongoing Audio engagement
-        sdk.environment.coreSdk.getCurrentEngagement = { .mock(media: .init(audio: .twoWay, video: nil)) }
+        let engagement = CoreSdkClient.Engagement.mock(media: .init(audio: .twoWay, video: nil))
+        sdk.environment.coreSdk.getCurrentEngagement = { engagement }
 
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
         try engagementLauncher.startChat()
@@ -686,7 +687,7 @@ extension GliaTests {
 
         // End audio engagement
         sdk.environment.coreSdk.getCurrentEngagement = { nil }
-        sdk.interactor?.end(with: .operatorHungUp)
+        sdk.interactor?.end(engagement: engagement,with: .operatorHungUp)
 
         try engagementLauncher.startChat()
 
