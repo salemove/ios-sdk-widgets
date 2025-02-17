@@ -642,10 +642,6 @@ extension ChatViewController {
     }
 
     static func mockSecureMessagingBottomBannerView(theme: Theme = Theme.mock()) -> ChatViewController {
-        var chatViewModelEnv = ChatViewModel.Environment.mock
-        chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
-        let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
-
         let transcriptModel = SecureConversations.TranscriptModel.init(
             isCustomCardSupported: false,
             environment: .mock(secureMessagingExpandedTopBannerItemsStyle: theme.chatStyle.secureMessagingExpandedTopBannerItemsStyle),
@@ -655,6 +651,7 @@ extension ChatViewController {
             interactor: .mock()
         )
 
+        transcriptModel.entryWidget?.viewState = .mediaTypes([.init(type: .chat)])
         return .init(viewModel: .transcript(transcriptModel), environment: .mock(viewFactory: .mock(theme: theme)))
     }
 

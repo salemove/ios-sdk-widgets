@@ -267,7 +267,6 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             chatView.props = .init(header: props.chat)
             // For regular chat engagement bottom banner is hidden.
             chatView.setSecureMessagingBottomBannerHidden(true)
-            chatView.setSecureMessagingTopBannerHidden(true)
             chatView.setSendingMessageUnavailabilityBannerHidden(viewModel.isSendMessageAvailable)
         case let .secureTranscript(needsTextInputEnabled):
             chatView.props = .init(header: props.secureTranscript)
@@ -276,13 +275,11 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             chatView.setSendingMessageUnavailabilityBannerHidden(viewModel.isSendMessageAvailable)
             // For secure messaging bottom banner is visible.
             chatView.setSecureMessagingBottomBannerHidden(false)
-            chatView.setSecureMessagingTopBannerHidden(false)
         case .chatToSecureTranscript:
             chatView.props = .init(header: props.secureTranscript)
             chatView.messageEntryView.isEnabled = true
             chatView.setSendingMessageUnavailabilityBannerHidden(true)
             chatView.setSecureMessagingBottomBannerHidden(false)
-            chatView.setSecureMessagingTopBannerHidden(false)
         }
     }
 
