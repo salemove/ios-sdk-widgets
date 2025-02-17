@@ -65,9 +65,11 @@ extension GliaTests {
             XCTFail("Interactor missing")
             return
         }
+
+        let engagement = CoreSdkClient.Engagement.mock()
         sdk.restoreOngoingEngagement(
             configuration: .mock(),
-            currentEngagement: .mock(),
+            currentEngagement: engagement,
             interactor: interactor,
             features: .all,
             maximize: false
@@ -77,8 +79,8 @@ extension GliaTests {
         XCTAssertEqual(calls, [.snackBarPresent])
 
         // end restored engagement
-        sdk.interactor?.end(with: .visitorHungUp)
-        
+        sdk.interactor?.end(engagement: engagement, with: .visitorHungUp)
+
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
         try engagementLauncher.startChat()
 
