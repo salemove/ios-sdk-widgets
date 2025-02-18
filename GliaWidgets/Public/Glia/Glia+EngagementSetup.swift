@@ -206,6 +206,9 @@ extension Glia {
                         queueIds: interactor.queueIds ?? [],
                         configuration: configuration
                     )
+                },
+                hasPendingInteraction: { [weak self] in
+                    self?.pendingInteraction?.hasPendingInteraction ?? false
                 }
             )
         )

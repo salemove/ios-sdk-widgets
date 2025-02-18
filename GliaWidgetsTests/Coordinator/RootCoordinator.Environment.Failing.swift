@@ -104,8 +104,9 @@ extension EngagementCoordinator.Environment {
         flipCameraButtonStyle: .nop,
         alertManager: .failing(viewFactory: .mock()),
         queuesMonitor: .failing,
-        pendingSecureConversationStatus: { _ in
-            fail("\(Self.self).pendingSecureConversationStatus")
+        hasPendingInteraction: {
+            fail("\(Self.self).hasPendingInteraction")
+            return false
         },
         createEntryWidget: { _ in
             fail("\(Self.self).createEntryWidget")

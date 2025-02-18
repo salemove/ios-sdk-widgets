@@ -328,7 +328,7 @@ extension EngagementCoordinator {
             environment: .create(
                 with: environment,
                 interactor: interactor,
-                shouldShowLeaveSecureConversationDialog: { false },
+                shouldShowLeaveSecureConversationDialog: { _ in false },
                 leaveCurrentSecureConversation: .nop,
                 switchToEngagement: .nop
             ),
@@ -529,9 +529,15 @@ extension EngagementCoordinator {
                 screenShareHandler: screenShareHandler,
                 isWindowVisible: isWindowVisible,
                 interactor: interactor,
-                shouldShowLeaveSecureConversationDialog: { [weak self] in
-                    guard let self, case .indirect = engagementLaunching else { return false }
-                    return true
+                shouldShowLeaveSecureConversationDialog: { [weak self] source in
+                    guard let self else { return false }
+                    switch source {
+                    case .transcriptOpened:
+                        guard case .indirect = engagementLaunching else { return false }
+                        return true
+                    case .entryWidgetTopBanner:
+                        return environment.hasPendingInteraction()
+                    }
                 },
                 leaveCurrentSecureConversation: leaveCurrentSecureConversation,
                 switchToEngagement: .init { [weak self] kind in

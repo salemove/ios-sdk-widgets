@@ -574,7 +574,7 @@ extension SecureConversations.TranscriptModel {
                 self.action?(.scrollToBottom(animated: false))
                 completion(messagesWithUnreadCount.messages)
                 markMessagesAsRead(
-                    with: self.hasUnreadMessages && !environment.shouldShowLeaveSecureConversationDialog()
+                    with: self.hasUnreadMessages && !environment.shouldShowLeaveSecureConversationDialog(.transcriptOpened)
                 )
 
                 if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
@@ -743,7 +743,7 @@ extension SecureConversations.TranscriptModel {
 
     private func entryWidgetMediaTypeSelected(_ item: EntryWidget.MediaTypeItem) {
         action?(.switchToEngagement)
-        engagementAction?(.showAlert(.leaveCurrentConversation { [weak self] in
+        let switchToEngagement = { [weak self] in
             let kind: EngagementKind
             switch item.type {
             case .video:
@@ -758,7 +758,14 @@ extension SecureConversations.TranscriptModel {
                 return
             }
             self?.environment.switchToEngagement(kind)
-        }))
+        }
+        if environment.shouldShowLeaveSecureConversationDialog(.entryWidgetTopBanner) {
+            engagementAction?(.showAlert(.leaveCurrentConversation {
+                switchToEngagement()
+            }))
+        } else {
+            switchToEngagement()
+        }
     }
 }
 

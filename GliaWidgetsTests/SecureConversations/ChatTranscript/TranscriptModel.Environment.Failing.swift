@@ -77,7 +77,10 @@ extension SecureConversations.TranscriptModel.Environment {
             fail("\(Self.self).maximumUploads")
             return 2
         },
-        shouldShowLeaveSecureConversationDialog: { false },
+        shouldShowLeaveSecureConversationDialog: { _ in
+            fail("\(Self.self).shouldShowLeaveSecureConversationDialog")
+            return false
+        },
         leaveCurrentSecureConversation: .init { _ in
             fail("\(Self.self).leaveCurrentSecureConversation")
         },

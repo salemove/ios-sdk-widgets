@@ -14,7 +14,7 @@ extension SecureConversations.TranscriptModel {
                 }
             }
         }
-        guard environment.shouldShowLeaveSecureConversationDialog() else {
+        guard environment.shouldShowLeaveSecureConversationDialog(.transcriptOpened) else {
             handleInteractorState()
             return
         }

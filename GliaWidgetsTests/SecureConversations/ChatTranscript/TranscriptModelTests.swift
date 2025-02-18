@@ -441,6 +441,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             .mock()
         }
         modelEnv.combineScheduler.global = { .global() }
+        modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
@@ -811,7 +812,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             expectation.fulfill()
             return .mock
         }
-        modelEnv.shouldShowLeaveSecureConversationDialog = { false }
+        modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
         modelEnv.markUnreadMessagesDelay = { .zero }
         modelEnv.notificationCenter.publisherForNotification = { _ in
             Empty<Notification, Never>().eraseToAnyPublisher()
@@ -872,7 +873,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             expectation.fulfill()
             return .mock
         }
-        modelEnv.shouldShowLeaveSecureConversationDialog = { true }
+        modelEnv.shouldShowLeaveSecureConversationDialog = { _ in true }
         modelEnv.markUnreadMessagesDelay = { .zero }
 
         let availabilityEnv = SecureConversations.Availability.Environment(
@@ -929,7 +930,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             expectation.fulfill()
             return .mock
         }
-        modelEnv.shouldShowLeaveSecureConversationDialog = { true }
+        modelEnv.shouldShowLeaveSecureConversationDialog = { _ in true }
         modelEnv.leaveCurrentSecureConversation = .nop
         modelEnv.markUnreadMessagesDelay = { .zero }
         modelEnv.notificationCenter.publisherForNotification = { _ in
@@ -999,7 +1000,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fetchChatHistory = { completion in
             completion(.success([.mock()]))
         }
-        modelEnv.shouldShowLeaveSecureConversationDialog = { false }
+        modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
         let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
         modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
         modelEnv.interactor = interactor
@@ -1043,5 +1044,123 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
 
         XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
+    }
+
+    func testLeaveCurrentConversationIfShouldShowLeaveScDialogIsFalseAndCalledFromTopBanner() {
+        var modelEnv = TranscriptModel.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }
+        modelEnv.log = logger
+        modelEnv.fileManager = .mock
+        modelEnv.createFileUploadListModel = { _ in .mock() }
+        modelEnv.listQueues = { callback in callback([], nil) }
+        modelEnv.maximumUploads = { 2 }
+        modelEnv.createEntryWidget = { config in .mock(configuration: config) }
+
+        enum Call: Equatable {
+            case shouldShowCalledFromTopBanner, shouldShowCalledFromTranscript
+            case switchToEngagement(EngagementKind)
+        }
+        var calls: [Call] = []
+        modelEnv.shouldShowLeaveSecureConversationDialog = { source in
+            switch source {
+            case .entryWidgetTopBanner:
+                calls.append(.shouldShowCalledFromTopBanner)
+            case .transcriptOpened:
+                calls.append(.shouldShowCalledFromTranscript)
+            }
+            return false
+        }
+        modelEnv.switchToEngagement = .init { kind in
+            calls.append(.switchToEngagement(kind))
+        }
+        let availabilityEnv = SecureConversations.Availability.Environment(
+            listQueues: modelEnv.listQueues,
+            isAuthenticated: { true },
+            log: logger,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
+        )
+        let viewModel = TranscriptModel(
+            isCustomCardSupported: false,
+            environment: modelEnv,
+            availability: .init(
+                environment: availabilityEnv
+            ),
+            deliveredStatusText: "",
+            failedToDeliverStatusText: "",
+            interactor: .failing
+        )
+        viewModel.engagementAction = { action in
+            guard case .showAlert(.leaveCurrentConversation) = action else { return }
+            XCTFail("`.showAlert(.leaveCurrentConversation)` action should not be called")
+        }
+
+        viewModel.entryWidget?.mediaTypeSelected(.init(type: .chat))
+
+        XCTAssertEqual(calls, [.shouldShowCalledFromTopBanner, .switchToEngagement(.chat)])
+    }
+
+    func testLeaveCurrentConversationIfShouldShowLeaveScDialogIsTrueAndCalledFromTopBanner() {
+        var modelEnv = TranscriptModel.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }
+        modelEnv.log = logger
+        modelEnv.fileManager = .mock
+        modelEnv.createFileUploadListModel = { _ in .mock() }
+        modelEnv.listQueues = { callback in callback([], nil) }
+        modelEnv.maximumUploads = { 2 }
+        modelEnv.createEntryWidget = { config in .mock(configuration: config) }
+
+        enum Call: Equatable {
+            case shouldShowCalledFromTopBanner, shouldShowCalledFromTranscript, showLeaveCurrentConversationDialog
+            case switchToEngagement(EngagementKind)
+        }
+        var calls: [Call] = []
+        modelEnv.shouldShowLeaveSecureConversationDialog = { source in
+            switch source {
+            case .entryWidgetTopBanner:
+                calls.append(.shouldShowCalledFromTopBanner)
+            case .transcriptOpened:
+                calls.append(.shouldShowCalledFromTranscript)
+            }
+            return true
+        }
+        modelEnv.switchToEngagement = .init { kind in
+            calls.append(.switchToEngagement(kind))
+        }
+        let availabilityEnv = SecureConversations.Availability.Environment(
+            listQueues: modelEnv.listQueues,
+            isAuthenticated: { true },
+            log: logger,
+            queuesMonitor: .mock(listQueues: modelEnv.listQueues),
+            getCurrentEngagement: { .mock() }
+        )
+        let viewModel = TranscriptModel(
+            isCustomCardSupported: false,
+            environment: modelEnv,
+            availability: .init(
+                environment: availabilityEnv
+            ),
+            deliveredStatusText: "",
+            failedToDeliverStatusText: "",
+            interactor: .failing
+        )
+        viewModel.engagementAction = { action in
+            guard case .showAlert(.leaveCurrentConversation(let confirmed, _)) = action else {
+                XCTFail("action should be `.showAlert(.leaveCurrentConversation)`")
+                return
+            }
+            calls.append(.showLeaveCurrentConversationDialog)
+            confirmed()
+        }
+
+        viewModel.entryWidget?.mediaTypeSelected(.init(type: .chat))
+
+        XCTAssertEqual(calls, [.shouldShowCalledFromTopBanner, .showLeaveCurrentConversationDialog, .switchToEngagement(.chat)])
     }
 }
