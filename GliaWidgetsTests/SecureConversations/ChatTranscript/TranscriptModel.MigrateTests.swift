@@ -23,6 +23,7 @@ final class TranscriptModelMigrateTests: XCTestCase {
         modelEnv.startSocketObservation = { calls.append(.startSocketObservation) }
 
         modelEnv.createEntryWidget = { _ in .mock() }
+        modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,

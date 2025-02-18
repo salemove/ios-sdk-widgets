@@ -31,7 +31,7 @@ extension SecureConversations.TranscriptModel {
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var log: CoreSdkClient.Logger
         var maximumUploads: () -> Int
-        var shouldShowLeaveSecureConversationDialog: () -> Bool
+        var shouldShowLeaveSecureConversationDialog: (SecureConversations.ShouldShowLeaveCurrentConversationSource) -> Bool
         /// The value returning by the command corresponds to decision made by visitor
         /// whether to leave current conversation:
         /// - `true` - visitor decided to leave the conversation;
@@ -126,7 +126,7 @@ extension SecureConversations.TranscriptModel.Environment {
         createSendMessagePayload: @escaping CoreSdkClient.CreateSendMessagePayload = { _, _ in .mock() },
         log: CoreSdkClient.Logger = .mock,
         maximumUploads: @escaping () -> Int = { .zero },
-        shouldShowLeaveSecureConversationDialog: @escaping () -> Bool = { false },
+        shouldShowLeaveSecureConversationDialog: @escaping (SecureConversations.ShouldShowLeaveCurrentConversationSource) -> Bool = { _ in false },
         leaveCurrentSecureConversation: Command<Bool> = .nop,
         createEntryWidget: @escaping EntryWidgetBuilder = { _ in .mock() },
         switchToEngagement: Command<EngagementKind> = .nop,

@@ -56,7 +56,7 @@ extension SecureConversations.Coordinator.Environment {
         alertManager: .mock(),
         queuesMonitor: .mock(),
         createEntryWidget: { _ in .mock() },
-        shouldShowLeaveSecureConversationDialog: { false },
+        shouldShowLeaveSecureConversationDialog: { _ in false },
         leaveCurrentSecureConversation: .nop,
         switchToEngagement: .nop,
         markUnreadMessagesDelay: { .mock },

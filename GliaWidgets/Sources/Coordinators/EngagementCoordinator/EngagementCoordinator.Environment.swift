@@ -46,7 +46,7 @@ extension EngagementCoordinator {
         var flipCameraButtonStyle: FlipCameraButtonStyle
         var alertManager: AlertManager
         var queuesMonitor: QueuesMonitor
-        var pendingSecureConversationStatus: CoreSdkClient.PendingSecureConversationStatus
+        var hasPendingInteraction: () -> Bool
         var createEntryWidget: EntryWidgetBuilder
         var dismissManager: GliaPresenter.DismissManager
         var combineScheduler: CombineBased.CombineScheduler
@@ -62,7 +62,8 @@ extension EngagementCoordinator.Environment {
         viewFactory: ViewFactory,
         alertManager: AlertManager,
         queuesMonitor: QueuesMonitor,
-        createEntryWidget: @escaping EntryWidgetBuilder
+        createEntryWidget: @escaping EntryWidgetBuilder,
+        hasPendingInteraction: @escaping () -> Bool
     ) -> Self {
         .init(
             fetchFile: environment.coreSdk.fetchFile,
@@ -109,7 +110,7 @@ extension EngagementCoordinator.Environment {
             flipCameraButtonStyle: viewFactory.theme.call.flipCameraButtonStyle,
             alertManager: alertManager,
             queuesMonitor: queuesMonitor,
-            pendingSecureConversationStatus: environment.coreSdk.pendingSecureConversationStatus,
+            hasPendingInteraction: hasPendingInteraction,
             createEntryWidget: createEntryWidget,
             dismissManager: environment.dismissManager,
             combineScheduler: environment.combineScheduler
