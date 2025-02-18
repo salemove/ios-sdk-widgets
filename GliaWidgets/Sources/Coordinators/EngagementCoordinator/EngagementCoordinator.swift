@@ -147,7 +147,8 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
             }
             let callViewController = startCall(
                 call,
-                withAction: .engagement(mediaType: mediaType)
+                withAction: .engagement(mediaType: mediaType),
+                replaceExistingEnqueueing: replaceExistingEnqueueing
             )
             interactor.state = .enqueueing(engagementKind)
             let chatViewController = startChat(
@@ -394,7 +395,8 @@ extension EngagementCoordinator {
 
     private func startCall(
         _ call: Call,
-        withAction startAction: CallViewModel.StartAction
+        withAction startAction: CallViewModel.StartAction,
+        replaceExistingEnqueueing: Bool
     ) -> CallViewController {
         let coordinator = CallCoordinator(
             interactor: interactor,
@@ -446,7 +448,7 @@ extension EngagementCoordinator {
         }
         pushCoordinator(coordinator)
 
-        return coordinator.start()
+        return coordinator.start(replaceExistingEnqueueing: replaceExistingEnqueueing)
     }
 
     private func makeGliaView(
@@ -629,7 +631,8 @@ extension EngagementCoordinator {
 
                         answer(accepted, successHandler)
                     }
-                )
+                ),
+                replaceExistingEnqueueing: false
             )
             engagement = .call(
                 callViewController,
