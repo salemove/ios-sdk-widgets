@@ -52,7 +52,7 @@ extension SecureConversations.Coordinator {
         var alertManager: AlertManager
         var queuesMonitor: QueuesMonitor
         var createEntryWidget: EntryWidgetBuilder
-        var shouldShowLeaveSecureConversationDialog: () -> Bool
+        var shouldShowLeaveSecureConversationDialog: (SecureConversations.ShouldShowLeaveCurrentConversationSource) -> Bool
         /// The value returning by the command corresponds to decision made by visitor
         /// whether to leave current conversation:
         /// - `true` - visitor decided to leave the conversation;
@@ -75,7 +75,7 @@ extension SecureConversations.Coordinator.Environment {
         screenShareHandler: ScreenShareHandler,
         isWindowVisible: ObservableValue<Bool>,
         interactor: Interactor,
-        shouldShowLeaveSecureConversationDialog: @escaping () -> Bool,
+        shouldShowLeaveSecureConversationDialog: @escaping (SecureConversations.ShouldShowLeaveCurrentConversationSource) -> Bool,
         leaveCurrentSecureConversation: Command<Bool>,
         switchToEngagement: Command<EngagementKind>
     ) -> Self {

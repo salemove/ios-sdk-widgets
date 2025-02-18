@@ -75,12 +75,12 @@ extension EngagementCoordinatorTests {
 
         XCTAssertEqual(coordinator.engagementLaunching.currentKind, .messaging(.chatTranscript))
         XCTAssertEqual(coordinator.engagementLaunching.initialKind, .videoCall)
-        XCTAssertTrue(subCoordinator.coordinatorEnvironment.shouldShowLeaveSecureConversationDialog())
+        XCTAssertTrue(subCoordinator.coordinatorEnvironment.shouldShowLeaveSecureConversationDialog(.transcriptOpened))
 
         subCoordinator.coordinatorEnvironment.leaveCurrentSecureConversation(true)
 
         XCTAssertEqual(coordinator.engagementLaunching.currentKind, .videoCall)
-        XCTAssertFalse(subCoordinator.coordinatorEnvironment.shouldShowLeaveSecureConversationDialog())
+        XCTAssertFalse(subCoordinator.coordinatorEnvironment.shouldShowLeaveSecureConversationDialog(.transcriptOpened))
     }
 
     // MARK: - Leave Conversation
@@ -95,11 +95,11 @@ extension EngagementCoordinatorTests {
 
         XCTAssertEqual(coordinator.engagementLaunching.currentKind, .messaging(.chatTranscript))
         XCTAssertEqual(coordinator.engagementLaunching.initialKind, .videoCall)
-        XCTAssertTrue(subCoordinator.coordinatorEnvironment.shouldShowLeaveSecureConversationDialog())
+        XCTAssertTrue(subCoordinator.coordinatorEnvironment.shouldShowLeaveSecureConversationDialog(.transcriptOpened))
 
         subCoordinator.coordinatorEnvironment.leaveCurrentSecureConversation(false)
 
         XCTAssertEqual(coordinator.engagementLaunching.currentKind, .messaging(.chatTranscript))
-        XCTAssertFalse(subCoordinator.coordinatorEnvironment.shouldShowLeaveSecureConversationDialog())
+        XCTAssertFalse(subCoordinator.coordinatorEnvironment.shouldShowLeaveSecureConversationDialog(.transcriptOpened))
     }
 }

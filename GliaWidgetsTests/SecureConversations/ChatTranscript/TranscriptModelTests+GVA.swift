@@ -146,6 +146,7 @@ extension SecureConversationsTranscriptModelTests {
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.getSecureUnreadMessageCount = { $0(.success(0)) }
         modelEnv.startSocketObservation = {}
+        modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
         let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
         modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
 

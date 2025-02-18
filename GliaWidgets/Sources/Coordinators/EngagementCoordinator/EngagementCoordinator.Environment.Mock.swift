@@ -47,7 +47,7 @@ extension EngagementCoordinator.Environment {
         flipCameraButtonStyle: .nop,
         alertManager: .mock(),
         queuesMonitor: .mock(),
-        pendingSecureConversationStatus: { $0(.success(false)) },
+        hasPendingInteraction: { false },
         createEntryWidget: { _ in .mock() },
         dismissManager: .init { _, _, _ in },
         combineScheduler: .mock
