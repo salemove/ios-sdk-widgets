@@ -43,9 +43,14 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
 
     func start() -> CallViewController {
+        start(replaceExistingEnqueueing: false)
+    }
+
+    func start(replaceExistingEnqueueing: Bool) -> CallViewController {
         let viewController = makeCallViewController(
             call: call,
-            startAction: startAction
+            startAction: startAction,
+            replaceExistingEnqueueing: replaceExistingEnqueueing
         )
         return viewController
     }
@@ -56,7 +61,8 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
 private extension CallCoordinator {
     func makeCallViewController(
         call: Call,
-        startAction: CallViewModel.StartAction
+        startAction: CallViewModel.StartAction,
+        replaceExistingEnqueueing: Bool
     ) -> CallViewController {
         environment.log.prefixed(Self.self).info("Create Call screen")
         let viewModel = CallViewModel(
@@ -69,7 +75,7 @@ private extension CallCoordinator {
             call: call,
             unreadMessages: unreadMessages,
             startWith: startAction,
-            replaceExistingEnqueueing: false
+            replaceExistingEnqueueing: replaceExistingEnqueueing
         )
         viewModel.engagementDelegate = { [weak self] event in
             self?.handleEngagementViewModelEvent(event)
