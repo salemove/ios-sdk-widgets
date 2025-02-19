@@ -42,7 +42,10 @@ public final class EntryWidget: NSObject {
         observeSecureUnreadMessageCount()
 
         Publishers.CombineLatest(environment.queuesMonitor.$state, $unreadSecureMessageCount)
-            .sink(receiveValue: handleQueuesMonitorUpdates(state:unreadSecureMessagesCount:))
+            .sink(receiveValue: { [weak self] in
+                guard let self else { return }
+                handleQueuesMonitorUpdates(state: $0, unreadSecureMessagesCount: $1)
+            })
             .store(in: &cancellables)
 
         environment.interactorPublisher
@@ -398,7 +401,7 @@ private extension EntryWidget {
         unreadSecureMessagesCount: Int?
     ) -> EntryWidget.ViewState {
         switch queuesMonitorState {
-        case .idle, .loading:
+        case .idle:
             return .loading
         case .updated(let queues):
             let availableEngagementTypes = resolveAvailableEngagementTypes(from: queues)
