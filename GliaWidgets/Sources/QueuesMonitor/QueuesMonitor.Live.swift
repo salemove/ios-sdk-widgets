@@ -5,7 +5,6 @@ import Combine
 final class QueuesMonitor {
     enum State {
         case idle
-        case loading
         case updated([Queue])
         case failed(Error)
     }
@@ -48,7 +47,7 @@ final class QueuesMonitor {
             }
 
             let observedQueues = evaluateQueues(queuesIds: queuesIds, fetchedQueues: queues)
-
+            state = .updated(observedQueues)
             self._observedQueues.setValue(observedQueues)
             completion(.success(observedQueues))
         }
@@ -65,10 +64,6 @@ final class QueuesMonitor {
         queuesIds: [String] = [],
         fetchedQueuesCompletion: ((Result<[Queue], GliaCoreError>) -> Void)? = nil
     ) {
-        if case .loading = state { return }
-
-        state = .loading
-
         stopMonitoring()
 
         fetchQueues(queuesIds: queuesIds) { [weak self] result in

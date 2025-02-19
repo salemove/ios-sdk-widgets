@@ -422,7 +422,7 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     func fail(error: CoreSdkClient.SalemoveError) {
-        // Fail is called from CoreSDK when acces token expiration happens
+        // Fail is called from CoreSDK when access token expiration happens
         // and it leads to fetchQueues failure that stops queues observing
         // Also when token expires CoreSDK makes force deauthentication which
         // allows to refetch the queues without errors
