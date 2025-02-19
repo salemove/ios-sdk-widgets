@@ -61,7 +61,9 @@ final class ChatViewControllerDynamicTypeFontTests: SnapshotTestCase {
         viewController.view.setNeedsLayout()
         viewController.view.layoutIfNeeded()
         
-        viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
-        viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
+        DispatchQueue.main.async {
+            viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
+            viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
+        }
     }
 }

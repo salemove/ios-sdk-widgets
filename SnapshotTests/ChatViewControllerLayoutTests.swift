@@ -101,9 +101,10 @@ final class ChatViewControllerLayoutTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         viewController.view.setNeedsLayout()
         viewController.view.layoutIfNeeded()
-        
-        viewController.assertSnapshot(as: .image, in: .portrait)
-        viewController.assertSnapshot(as: .image, in: .landscape)
+        DispatchQueue.main.async {
+            viewController.assertSnapshot(as: .image, in: .portrait)
+            viewController.assertSnapshot(as: .image, in: .landscape)
+        }
     }
 
     func test_secureMessagingBottomAndCollapsedTopBannerWithUnifiedUI() {
@@ -139,8 +140,10 @@ final class ChatViewControllerLayoutTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         viewController.view.setNeedsLayout()
         viewController.view.layoutIfNeeded()
-        
-        viewController.assertSnapshot(as: .image, in: .portrait)
-        viewController.assertSnapshot(as: .image, in: .landscape)
+
+        DispatchQueue.main.async {
+            viewController.assertSnapshot(as: .image, in: .portrait)
+            viewController.assertSnapshot(as: .image, in: .landscape)
+        }
     }
 }

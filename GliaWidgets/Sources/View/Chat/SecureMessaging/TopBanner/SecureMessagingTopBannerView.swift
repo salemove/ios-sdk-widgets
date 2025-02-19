@@ -89,6 +89,8 @@ final class SecureMessagingTopBannerView: UIView {
         isExpanded.assign(to: &self.$isExpanded)
 
         $isExpanded
+            // injected combine scheduler will be added here in MOB-4077
+            .receive(on: DispatchQueue.main)
             .sink { isExpanded in
                 let angle = isExpanded ? .pi : 0
                 UIView.animate(withDuration: Self.rotationDuration) {

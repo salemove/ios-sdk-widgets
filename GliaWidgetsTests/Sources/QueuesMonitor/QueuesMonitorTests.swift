@@ -211,7 +211,7 @@ class QueuesMonitorTests: XCTestCase {
 
         monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
         monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
-
+        addDelay()
         XCTAssertEqual(receivedQueues, [expectedUpdatedQueue])
         XCTAssertEqual(receivedUpdatedQueue?.state.status, .open)
         XCTAssertEqual(
@@ -483,5 +483,13 @@ class QueuesMonitorTests: XCTestCase {
         XCTAssertEqual(receivedQueues?.count, 2)
         XCTAssertTrue(receivedQueues?.contains(where: { $0.id == knownQueueId }) == true)
         XCTAssertTrue(receivedQueues?.contains(where: { $0.id == unknownQueueId }) == true)
+    }
+}
+
+extension QueuesMonitorTests {
+    func addDelay(withDelay: Double = 0.1) {
+        let expectation = self.expectation(description: "Wait for view state update")
+        expectation.isInverted = true
+        wait(for: [expectation], timeout: withDelay)
     }
 }
