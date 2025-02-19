@@ -406,16 +406,13 @@ extension Interactor: CoreSdkClient.Interactable {
         }
     }
 
-    func end(
-        engagement: CoreSdkClient.Engagement?,
-        with reason: CoreSdkClient.EngagementEndingReason
-    ) {
+    func end(with reason: CoreSdkClient.EngagementEndingReason) {
         switch reason {
         case .visitorHungUp:
             state = .ended(.byVisitor)
         case .operatorHungUp, .followUp:
             // Save engagement ended by operator to fetch a survey
-            endedEngagement = engagement
+            endedEngagement = environment.coreSdk.getCurrentEngagement()
             state = .ended(.byOperator)
         case .error:
             state = .ended(.byError)

@@ -935,7 +935,7 @@ class ChatViewModelTests: XCTestCase {
         viewModel = .mock(interactor: interactor)
         viewModel.engagementAction = delegate
 
-        interactor.end(engagement: .mock(), with: .operatorHungUp)
+        interactor.end(with: .operatorHungUp)
 
         let isValidInput: Bool
         if case .operatorEndedEngagement = alertInputType {

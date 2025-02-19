@@ -687,7 +687,7 @@ extension GliaTests {
 
         // End audio engagement
         sdk.environment.coreSdk.getCurrentEngagement = { nil }
-        sdk.interactor?.end(engagement: engagement,with: .operatorHungUp)
+        sdk.interactor?.end(with: .operatorHungUp)
 
         try engagementLauncher.startChat()
 
