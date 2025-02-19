@@ -276,7 +276,7 @@ class ChatViewControllerTests: XCTestCase {
             }
         }
 
-        interactor.end(engagement: engagement, with: .operatorHungUp)
+        interactor.end(with: .operatorHungUp)
 
         XCTAssertEqual(calls, [.presentEngagementEndedDialog])
     }
