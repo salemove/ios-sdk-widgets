@@ -42,6 +42,8 @@ public final class EntryWidget: NSObject {
         observeSecureUnreadMessageCount()
 
         Publishers.CombineLatest(environment.queuesMonitor.$state, $unreadSecureMessageCount)
+            // injected combine scheduler will be added here in MOB-4077
+            .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] in
                 guard let self else { return }
                 handleQueuesMonitorUpdates(state: $0, unreadSecureMessagesCount: $1)
@@ -55,6 +57,8 @@ public final class EntryWidget: NSObject {
                 }
                 return interactor.$currentEngagement.eraseToAnyPublisher()
             }
+            // injected combine scheduler will be added here in MOB-4077
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] engagement in
                 guard let self else { return }
                 ongoingEngagement = engagement
@@ -72,6 +76,8 @@ public final class EntryWidget: NSObject {
                 }
                 return interactor.$state.eraseToAnyPublisher()
             }
+            // injected combine scheduler will be added here in MOB-4077
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
                 guard let self else { return }
                 interactorState = state
@@ -82,14 +88,18 @@ public final class EntryWidget: NSObject {
             }
             .store(in: &cancellables)
         environment.hasPendingInteractionPublisher.assign(to: &$hasPendingInteraction)
-        $hasPendingInteraction.sink { [weak self] _ in
-            guard let self else { return }
-            handleQueuesMonitorUpdates(
-                state: environment.queuesMonitor.state,
-                unreadSecureMessagesCount: unreadSecureMessageCount
-            )
-        }
-        .store(in: &cancellables)
+
+        $hasPendingInteraction
+            // injected combine scheduler will be added here in MOB-4077
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                handleQueuesMonitorUpdates(
+                    state: environment.queuesMonitor.state,
+                    unreadSecureMessagesCount: unreadSecureMessageCount
+                )
+            }
+            .store(in: &cancellables)
     }
 
     deinit {

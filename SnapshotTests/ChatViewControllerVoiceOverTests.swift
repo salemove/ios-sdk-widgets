@@ -81,7 +81,9 @@ final class ChatViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.view.frame = UIScreen.main.bounds
         viewController.view.setNeedsLayout()
         viewController.view.layoutIfNeeded()
-        
-        viewController.assertSnapshot(as: .accessibilityImage)
+
+        DispatchQueue.main.async {
+            viewController.assertSnapshot(as: .accessibilityImage)
+        }
     }
 }
