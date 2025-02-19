@@ -409,7 +409,7 @@ class InteractorTests: XCTestCase {
             }
         }
 
-        interactor.end(engagement: .mock(), with: .operatorHungUp)
+        interactor.end(with: .operatorHungUp)
 
         XCTAssertEqual(callbacks, [.ended])
     }
@@ -434,7 +434,7 @@ class InteractorTests: XCTestCase {
             }
         }
 
-        interactor.end(engagement: .mock(), with: .followUp)
+        interactor.end(with: .followUp)
 
         XCTAssertEqual(callbacks, [.ended])
     }
@@ -575,7 +575,7 @@ class InteractorTests: XCTestCase {
         ]
 
         let test: (Item) -> Void = { item in
-            interactor.end(engagement: .mock(), with: item.reason)
+            interactor.end(with: item.reason)
             XCTAssertEqual(interactor.state, item.state)
         }
 
@@ -618,7 +618,7 @@ class InteractorTests: XCTestCase {
         )
         XCTAssertEqual(interactor.state, .enqueued(mockQueueTicket, .audioCall))
 
-        interactor.end(engagement: mockEngagement, with: .operatorHungUp)
+        interactor.end(with: .operatorHungUp)
         XCTAssertEqual(interactor.state, .ended(.byOperator))
         XCTAssertEqual(interactor.endedEngagement, mockEngagement)
 
@@ -644,7 +644,7 @@ class InteractorTests: XCTestCase {
         )
         XCTAssertEqual(interactor.state, .enqueued(mockQueueTicket, .audioCall))
 
-        interactor.end(engagement: mockEngagement, with: .followUp)
+        interactor.end(with: .followUp)
         XCTAssertEqual(interactor.state, .ended(.byOperator))
         XCTAssertEqual(interactor.endedEngagement, mockEngagement)
 
@@ -670,7 +670,7 @@ class InteractorTests: XCTestCase {
         )
         XCTAssertEqual(interactor.state, .enqueued(mockQueueTicket, .audioCall))
 
-        interactor.end(engagement: mockEngagement, with: .followUp)
+        interactor.end(with: .followUp)
         XCTAssertEqual(interactor.state, .ended(.byOperator))
         XCTAssertEqual(interactor.endedEngagement, mockEngagement)
 

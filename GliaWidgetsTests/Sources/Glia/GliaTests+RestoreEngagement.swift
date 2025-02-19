@@ -79,7 +79,7 @@ extension GliaTests {
         XCTAssertEqual(calls, [.snackBarPresent])
 
         // end restored engagement
-        sdk.interactor?.end(engagement: engagement, with: .visitorHungUp)
+        sdk.interactor?.end(with: .visitorHungUp)
 
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
         try engagementLauncher.startChat()
