@@ -38,6 +38,7 @@ extension ChatViewModelTests {
         env.fetchSiteConfigurations = { completion in
             completion(.success(site))
         }
+        env.createEntryWidget = { _ in .mock() }
         interactorMock.setCurrentEngagement(.mock())
         viewModel = .mock(interactor: interactorMock, environment: env)
 

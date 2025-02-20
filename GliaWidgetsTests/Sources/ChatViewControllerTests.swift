@@ -54,6 +54,7 @@ class ChatViewControllerTests: XCTestCase {
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.log.prefixedClosure = { _ in return .mock }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let interactor = Interactor.failing
         interactor.environment.gcd.mainQueue.async = { $0() }
         interactor.environment.queuesMonitor = .mock()
@@ -104,6 +105,7 @@ class ChatViewControllerTests: XCTestCase {
             calls.append(.prefixedLog($0))
             return .mock
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let interactor = Interactor.failing
         interactor.setCurrentEngagement(.mock())
         interactor.environment.gcd.mainQueue.async = { $0() }
@@ -160,6 +162,7 @@ class ChatViewControllerTests: XCTestCase {
             calls.append(.prefixedLog($0))
             return .mock
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let interactor = Interactor.failing
         interactor.environment.gcd.mainQueue.async = { $0() }
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
@@ -209,6 +212,7 @@ class ChatViewControllerTests: XCTestCase {
             calls.append(.prefixedLog($0))
             return .mock
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let interactor = Interactor.failing
         interactor.environment.gcd.mainQueue.async = { $0() }
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
@@ -257,6 +261,7 @@ class ChatViewControllerTests: XCTestCase {
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.log.prefixedClosure = { _ in return .mock }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let interactor = Interactor.failing
         interactor.environment.gcd.mainQueue.async = { $0() }
 

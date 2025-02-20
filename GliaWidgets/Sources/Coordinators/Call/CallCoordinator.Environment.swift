@@ -34,6 +34,7 @@ extension CallCoordinator {
         var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
         var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
         var combineScheduler: CombineBased.CombineScheduler
+        var createEntryWidget: EntryWidgetBuilder
     }
 }
 
@@ -71,7 +72,8 @@ extension CallCoordinator.Environment {
             isAuthenticated: environment.isAuthenticated,
             secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
             markUnreadMessagesDelay: environment.markUnreadMessagesDelay,
-            combineScheduler: environment.combineScheduler
+            combineScheduler: environment.combineScheduler,
+            createEntryWidget: environment.createEntryWidget
         )
     }
 }

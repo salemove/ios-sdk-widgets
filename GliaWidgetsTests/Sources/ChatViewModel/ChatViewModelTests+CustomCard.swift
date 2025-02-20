@@ -30,6 +30,7 @@ extension ChatViewModelTests {
         env.createSendMessagePayload = { content, attachment in
             .mock(content: content, attachment: attachment)
         }
+        env.createEntryWidget = { _ in .mock() }
         viewModel = .mock(interactor: interactorMock, environment: env)
 
         viewModel.sendSelectedCustomCardOption(

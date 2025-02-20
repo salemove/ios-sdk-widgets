@@ -721,20 +721,8 @@ extension SecureConversations.TranscriptModel {
     // Set up the Entry Widget configuration inside TranscriptModel,
     // since it requires passing view model logic to the configuration.
     private func makeEntryWidgetConfiguration() -> EntryWidget.Configuration {
-        .init(
-            sizeConstraints: .init(
-                singleCellHeight: 56,
-                singleCellIconSize: 24,
-                poweredByContainerHeight: 40,
-                sheetHeaderHeight: 36,
-                sheetHeaderDraggerWidth: 32,
-                sheetHeaderDraggerHeight: 4,
-                dividerHeight: 1,
-                dividerHorizontalPadding: 0
-            ),
-            showPoweredBy: false,
-            filterSecureConversation: true,
-            mediaTypeSelected: .init { [weak self] mediaType in
+        SecureConversations.ChatWithTranscriptModel.makeEntryWidgetConfiguration(
+            with: .init { [weak self] mediaType in
                 self?.entryWidgetMediaTypeSelected(mediaType)
             },
             mediaTypeItemsStyle: environment.topBannerItemsStyle
