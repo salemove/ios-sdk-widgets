@@ -40,7 +40,11 @@ extension ChatViewModel.Environment {
         notificationCenter: .mock,
         secureMarkMessagesAsRead: { _ in .mock },
         markUnreadMessagesDelay: { .mock },
-        combineScheduler: .mock
+        combineScheduler: .mock,
+        createEntryWidget: { _ in .mock() },
+        topBannerItemsStyle: .mock(),
+        switchToEngagement: .nop,
+        shouldShowLeaveSecureConversationDialog: { _ in false }
     )
 }
 #endif

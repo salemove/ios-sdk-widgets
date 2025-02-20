@@ -329,9 +329,23 @@ extension EngagementCoordinator {
             environment: .create(
                 with: environment,
                 interactor: interactor,
-                shouldShowLeaveSecureConversationDialog: { _ in false },
+                shouldShowLeaveSecureConversationDialog: { [weak self] source in
+                    guard let self else { return false }
+                    switch source {
+                    case .transcriptOpened:
+                        return false
+                    case .entryWidgetTopBanner:
+                        return environment.hasPendingInteraction()
+                    }
+                },
                 leaveCurrentSecureConversation: .nop,
-                switchToEngagement: .nop
+                switchToEngagement: .init { [weak self] kind in
+                    self?.switchToEngagementKind(
+                        kind,
+                        // Replace existing queue ticket here too.
+                        replaceExistingEnqueueing: true
+                    )
+                }
             ),
             startWithSecureTranscriptFlow: false,
             skipTransferredSCHandling: skipTransferredSCHandling

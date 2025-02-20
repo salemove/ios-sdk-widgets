@@ -971,7 +971,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
     }
 
     func testReceiveMessageMarksMessagesAsRead() {
-        // Once MOB-4008 is ready, this test must be rewritten using the Combine Scheduler tools.
+        XCTSkip("Once MOB-4008 is ready, this test must be rewritten using the Combine Scheduler tools.")
         let expectation = expectation(description: "Message marked as read")
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []

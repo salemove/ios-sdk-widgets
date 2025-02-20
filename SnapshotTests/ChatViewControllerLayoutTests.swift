@@ -95,7 +95,7 @@ final class ChatViewControllerLayoutTests: SnapshotTestCase {
         )
         viewController.updateViewConstraints()
         
-        (viewController.view as? ChatView)?.isTopBannerExpanded = true
+        (viewController.view as? ChatView)?.setIsTopBannerExpanded(true)
         viewController.updateViewConstraints()
         
         viewController.view.frame = UIScreen.main.bounds
@@ -134,7 +134,7 @@ final class ChatViewControllerLayoutTests: SnapshotTestCase {
         )
         viewController.updateViewConstraints()
         
-        (viewController.view as? ChatView)?.isTopBannerExpanded = true
+        (viewController.view as? ChatView)?.setIsTopBannerExpanded(true)
         viewController.updateViewConstraints()
         
         viewController.view.frame = UIScreen.main.bounds

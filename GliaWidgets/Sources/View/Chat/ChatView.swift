@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 extension ChatView {
     struct Props {
@@ -68,8 +69,9 @@ class ChatView: EngagementView {
     }
 
     // Made internal for Snapshot test purposes
-    @Published var isTopBannerExpanded = false
-    @Published private var isTopBannerHidden = true
+    @Published private(set) var isTopBannerExpanded = false
+    @Published private(set) var isTopBannerHidden = true
+    @Published private(set) var isTopBannerAllowed = false
 
     var props: Props {
         didSet { renderHeaderProps() }
@@ -521,9 +523,22 @@ extension ChatView {
         isAnyEngagementTypeAvailable
             .filter { !$0 }
             .assign(to: &$isTopBannerExpanded)
-        isAnyEngagementTypeAvailable
-            .map { !$0 }
+
+        Publishers.CombineLatest(isAnyEngagementTypeAvailable, $isTopBannerAllowed)
+            .map { typesAvailable, isTopBannerAllowed in
+                // If top banner is explicitly not allowed, then there's no need to
+                // evaluate available types, and we just early out hiding top banner.
+                if !isTopBannerAllowed {
+                    return true
+                }
+                // We also hide top banner, if no appropriate media types are available.
+                return !typesAvailable
+            }
             .assign(to: &$isTopBannerHidden)
+    }
+
+    func setIsTopBannerAllowed(_ isTopBannerAllowed: Bool) {
+        self.isTopBannerAllowed = isTopBannerAllowed
     }
 
     @objc private func entryWidgetTapGestureAction() {
@@ -1009,3 +1024,11 @@ extension ChatView {
     }
 }
 // swiftlint:enable file_length
+
+#if DEBUG
+extension ChatView {
+    func setIsTopBannerExpanded(_ isTopBannerExpanded: Bool) {
+        self.isTopBannerExpanded = isTopBannerExpanded
+    }
+}
+#endif

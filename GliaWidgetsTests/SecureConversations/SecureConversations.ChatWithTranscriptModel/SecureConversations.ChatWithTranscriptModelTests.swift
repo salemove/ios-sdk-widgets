@@ -82,7 +82,7 @@ final class SecureConversationsChatWithTranscriptModelTests: XCTestCase {
             )
         )
     
-        XCTAssertNil(chatViewModel.entryWidget)
+        XCTAssertNotNil(chatViewModel.entryWidget)
         XCTAssertNotNil(transcriptViewModel.entryWidget)
     }
 

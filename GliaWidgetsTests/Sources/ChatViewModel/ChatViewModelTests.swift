@@ -74,7 +74,11 @@ class ChatViewModelTests: XCTestCase {
                 notificationCenter: .mock,
                 secureMarkMessagesAsRead: { _ in .mock },
                 markUnreadMessagesDelay: { .mock },
-                combineScheduler: .mock
+                combineScheduler: .mock,
+                createEntryWidget: { _ in .mock() },
+                topBannerItemsStyle: .mock(),
+                switchToEngagement: .nop,
+                shouldShowLeaveSecureConversationDialog: { _ in false }
             ),
             maximumUploads: { 2 }
         )
@@ -143,6 +147,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.log.infoClosure = { _, _, _, _ in }
         viewModelEnv.log.prefixedClosure = { _ in viewModelEnv.log }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let interactor: Interactor = .mock()
         interactor.setCurrentEngagement(.mock())
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
@@ -171,6 +176,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
@@ -197,7 +203,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.log.infoClosure = { _, _, _, _ in }
         viewModelEnv.log.prefixedClosure = { _ in viewModelEnv.log }
-
+        viewModelEnv.createEntryWidget = { _ in .mock() }
+        
         let interactor: Interactor = .mock(environment: interactorEnv)
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
 
@@ -226,6 +233,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.log.infoClosure = { _, _, _, _ in }
         viewModelEnv.log.prefixedClosure = { _ in viewModelEnv.log }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
         interactor.setCurrentEngagement(.mock())
@@ -268,6 +276,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fetchSiteConfigurations = { _ in
             calls.append(.fetchSiteConfigurations)
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         // When
@@ -297,6 +306,7 @@ class ChatViewModelTests: XCTestCase {
             calls.append(.fetchSiteConfigurations)
         }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         // When
@@ -318,6 +328,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.uiApplication.open = {
             calls.append(.openUrl($0))
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(interactor: .mock(), environment: viewModelEnv)
 
         let telUrl = try XCTUnwrap(URL(string: "tel:12345678"))
@@ -338,6 +349,7 @@ class ChatViewModelTests: XCTestCase {
             calls.append(.openUrl($0))
         }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(interactor: .mock(), environment: viewModelEnv)
 
         let mailUrl = try XCTUnwrap(URL(string: "mailto:mock@mock.mock"))
@@ -360,6 +372,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.uiApplication.open = { url in
             calls.append(.open(url))
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(
             interactor: .mock(),
             environment: viewModelEnv
@@ -388,6 +401,7 @@ class ChatViewModelTests: XCTestCase {
             calls.append(.log)
             return .mock
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(
             interactor: .mock(),
             environment: viewModelEnv
@@ -414,6 +428,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.uiApplication.open = {
             calls.append(.open($0))
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(interactor: .mock(), environment: viewModelEnv)
 
         let mockUrl = try XCTUnwrap(URL(string: "mock://mock"))
@@ -529,6 +544,7 @@ class ChatViewModelTests: XCTestCase {
             .mock(environment: $0)
         }
         chatViewModelEnv.uiApplication.preferredContentSizeCategory = { .unspecified }
+        chatViewModelEnv.createEntryWidget = { _ in .mock() }
         let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
         var calls: [Call] = []
         chatViewModel.action = { action in
@@ -585,6 +601,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fetchChatHistory = { callback in
             callback(.success([.mock(id: expectedMessageId)]))
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         viewModel.start()
         XCTAssertEqual(viewModel.historyMessageIds, [expectedMessageId])
@@ -601,6 +618,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fetchChatHistory = { callback in
             callback(.success([.mock(id: expectedMessageId)]))
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         viewModel.start()
         var actions: [ChatViewModel.Action] = []
@@ -619,6 +637,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         viewModelEnv.fetchChatHistory = { _ in }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
 
         let messageId = "message_id"
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
@@ -653,6 +672,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fetchChatHistory = { callback in
             callback(.success([]))
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         viewModel.isViewLoaded = true
         viewModel.start()
@@ -682,6 +702,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.createSendMessagePayload = {
             .mock(messageIdSuffix: messageIdSuffix, content: $0, attachment: $1)
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
 
         let interactor = Interactor.failing
         interactor.setCurrentEngagement(.mock())
@@ -741,6 +762,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.createSendMessagePayload = {
             .mock(messageIdSuffix: messageIdSuffix, content: $0, attachment: $1)
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
 
         let interactor = Interactor.failing
         interactor.setCurrentEngagement(.mock())
@@ -793,6 +815,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fetchChatHistory = { callback in
             callback(.success([]))
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
+
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         viewModel.isViewLoaded = true
         viewModel.start()
@@ -955,6 +979,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
+
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
         viewModel.action = { action in
             switch action {
@@ -986,6 +1012,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         viewModelEnv.log = .mock
+        viewModelEnv.createEntryWidget = { _ in .mock() }
+
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
         let pendingMessages: [OutgoingMessage] = [
             .mock(payload: .mock(messageIdSuffix: "0")),
@@ -1016,6 +1044,8 @@ class ChatViewModelTests: XCTestCase {
         fileUploadListViewModelEnv.uploader.uploads = [upload]
         viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
         viewModelEnv.createSendMessagePayload = { .mock(content: $0, attachment: $1) }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
+
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         let messageContent = "Mock"
@@ -1042,6 +1072,8 @@ class ChatViewModelTests: XCTestCase {
         let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
         fileUploadListViewModelEnv.uploader.uploads = []
         viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
+
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
         enum Call {
             case engagementActionShowAlertWithOperatorEndedEngagement
@@ -1095,6 +1127,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.log.warningClosure = { message, _, _, _ in
             warnings.append("\(message)")
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
+
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
         enum Call {
             case engagementActionShowAlertWithOperatorEndedEngagement
@@ -1131,6 +1165,7 @@ class ChatViewModelTests: XCTestCase {
         let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
         fileUploadListViewModelEnv.uploader.uploads = []
         viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
         enum Call {
             case engagementDelegateFinished
@@ -1168,6 +1203,7 @@ class ChatViewModelTests: XCTestCase {
         let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
         fileUploadListViewModelEnv.uploader.uploads = []
         viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
 
         let viewModel = ChatViewModel.mock(
             interactor: interactor,
@@ -1189,6 +1225,7 @@ class ChatViewModelTests: XCTestCase {
         let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
         fileUploadListViewModelEnv.uploader.uploads = []
         viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
 
         let viewModel = ChatViewModel.mock(
             interactor: interactor,
@@ -1216,6 +1253,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.log.infoClosure = { _, _, _, _ in }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         viewModelEnv.isAuthenticated = { true }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
 
         let viewModel = ChatViewModel.mock(
             interactor: interactor,
@@ -1268,6 +1306,7 @@ class ChatViewModelTests: XCTestCase {
             expectation.fulfill()
             return .mock
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         viewModel.isViewLoaded = true
         viewModel.start()
@@ -1307,6 +1346,7 @@ class ChatViewModelTests: XCTestCase {
             expectation.fulfill()
             return .mock
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         viewModel.isViewLoaded = true
         viewModel.start()
@@ -1346,6 +1386,7 @@ class ChatViewModelTests: XCTestCase {
             expectation.fulfill()
             return .mock
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         viewModel.isViewLoaded = true
         viewModel.start()
@@ -1380,6 +1421,7 @@ class ChatViewModelTests: XCTestCase {
             expectation.fulfill()
             return .mock
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         viewModel.event(EngagementViewModel.Event.viewDidAppear)
 
@@ -1413,6 +1455,7 @@ class ChatViewModelTests: XCTestCase {
             expectation.fulfill()
             return .mock
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         viewModel.event(EngagementViewModel.Event.viewDidAppear)
 
@@ -1446,6 +1489,7 @@ class ChatViewModelTests: XCTestCase {
             expectation.fulfill()
             return .mock
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         viewModel.event(EngagementViewModel.Event.viewDidAppear)
 
@@ -1483,6 +1527,7 @@ class ChatViewModelTests: XCTestCase {
             expectation.fulfill()
             return .mock
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         viewModel.event(EngagementViewModel.Event.viewDidAppear)
 
@@ -1520,6 +1565,7 @@ class ChatViewModelTests: XCTestCase {
             expectation.fulfill()
             return .mock
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         viewModel.event(EngagementViewModel.Event.viewDidAppear)
 
@@ -1554,6 +1600,7 @@ class ChatViewModelTests: XCTestCase {
             expectation.fulfill()
             return .mock
         }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         viewModel.event(EngagementViewModel.Event.viewDidAppear)
 
@@ -1578,6 +1625,7 @@ class ChatViewModelTests: XCTestCase {
         let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
         fileUploadListViewModelEnv.uploader.uploads = []
         viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
         enum Call {
             case refreshAll, appendRows, connected, showSnackBarView
