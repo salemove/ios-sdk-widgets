@@ -104,4 +104,53 @@ final class ChatViewTest: XCTestCase {
         XCTAssertNil(controller)
         XCTAssertNil(viewModel)
     }
+
+    func test_isTopBannerHiddenWhenIsTopBannerAllowedIsFalse() throws {
+        throw XCTSkip("""
+                This test should be un-skipped when injected combine scheduler will be added in EntryWidget in MOB-4077.
+            """)
+        let env = EngagementView.Environment(
+            data: .failing,
+            uuid: { .mock },
+            gcd: .failing,
+            imageViewCache: .failing,
+            timerProviding: .failing,
+            uiApplication: .failing,
+            uiScreen: .failing
+        )
+        view = ChatView(
+            with: .mock(),
+            messageRenderer: .webRenderer,
+            environment: env,
+            props: .init(header: .mock())
+        )
+
+        var entryWidgetEnv = EntryWidget.Environment.mock()
+        let queueId = "queueId"
+        let mockQueue = CoreSdkClient.Queue.mock(id: queueId, media: [.text, .audio, .messaging])
+        let queuesMonitor = QueuesMonitor.mock(
+            listQueues: {
+                $0([mockQueue], nil)
+            },
+            subscribeForQueuesUpdates: { _, completion in
+                completion(.success(mockQueue))
+                return UUID.mock.uuidString
+            },
+            unsubscribeFromUpdates: nil
+        )
+        queuesMonitor.fetchAndMonitorQueues(queuesIds: [queueId])
+        entryWidgetEnv.queuesMonitor = queuesMonitor
+        let entryWidget = EntryWidget(
+            queueIds: [queueId],
+            configuration: .default,
+            environment: entryWidgetEnv
+        )
+        view.entryWidget = entryWidget
+
+        view.setIsTopBannerAllowed(true)
+        XCTAssertFalse(view.isTopBannerHidden)
+
+        view.setIsTopBannerAllowed(false)
+        XCTAssertTrue(view.isTopBannerHidden)
+    }
 }

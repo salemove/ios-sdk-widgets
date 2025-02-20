@@ -90,8 +90,8 @@ extension SecureConversations.ChatWithTranscriptModel {
 
     var entryWidget: EntryWidget? {
         switch self {
-        case .chat:
-            return nil
+        case let .chat(model):
+            return model.entryWidget
         case let .transcript(model):
             return model.entryWidget
         }
@@ -380,6 +380,28 @@ extension SecureConversations.ChatWithTranscriptModel {
         guard section[row].isOperatorMessage else { return false }
         let nextItem = section.item(after: row)
         return nextItem == nil || nextItem?.isOperatorMessage == false
+    }
+
+    static func makeEntryWidgetConfiguration(
+        with mediaTypeSelected: Command<EntryWidget.MediaTypeItem>?,
+        mediaTypeItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle?
+    ) -> EntryWidget.Configuration {
+        .init(
+            sizeConstraints: .init(
+                singleCellHeight: 56,
+                singleCellIconSize: 24,
+                poweredByContainerHeight: 40,
+                sheetHeaderHeight: 36,
+                sheetHeaderDraggerWidth: 32,
+                sheetHeaderDraggerHeight: 4,
+                dividerHeight: 1,
+                dividerHorizontalPadding: 0
+            ),
+            showPoweredBy: false,
+            filterSecureConversation: true,
+            mediaTypeSelected: mediaTypeSelected,
+            mediaTypeItemsStyle: mediaTypeItemsStyle
+        )
     }
 }
 

@@ -67,7 +67,19 @@ extension ChatViewModel.Environment {
             notificationCenter: .mock,
             secureMarkMessagesAsRead: { _ in .mock },
             markUnreadMessagesDelay: { .mock },
-            combineScheduler: .failing
+            combineScheduler: .failing,
+            createEntryWidget: { _ in
+                fail("\(Self.self).createEntryWidget")
+                return .mock()
+            },
+            topBannerItemsStyle: .mock(),
+            switchToEngagement: .init { _ in
+                fail("\(Self.self).switchToEngagement")
+            },
+            shouldShowLeaveSecureConversationDialog: { _ in
+                fail("\(Self.self).shouldShowLeaveSecureConversationDialog")
+                return false
+            }
         )
     }
 }

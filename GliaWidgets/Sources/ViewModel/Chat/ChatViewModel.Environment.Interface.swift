@@ -33,6 +33,10 @@ extension EngagementViewModel {
         var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
         var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
         var combineScheduler: CombineBased.CombineScheduler
+        var createEntryWidget: EntryWidgetBuilder
+        var topBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle
+        var switchToEngagement: Command<EngagementKind>
+        var shouldShowLeaveSecureConversationDialog: (SecureConversations.ShouldShowLeaveCurrentConversationSource) -> Bool
     }
 }
 
@@ -72,7 +76,11 @@ extension EngagementViewModel.Environment {
             notificationCenter: environment.notificationCenter,
             secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
             markUnreadMessagesDelay: environment.markUnreadMessagesDelay,
-            combineScheduler: environment.combineScheduler
+            combineScheduler: environment.combineScheduler,
+            createEntryWidget: environment.createEntryWidget,
+            topBannerItemsStyle: viewFactory.theme.chat.secureMessagingExpandedTopBannerItemsStyle,
+            switchToEngagement: environment.switchToEngagement,
+            shouldShowLeaveSecureConversationDialog: environment.shouldShowLeaveSecureConversationDialog
         )
     }
 
@@ -111,7 +119,11 @@ extension EngagementViewModel.Environment {
             notificationCenter: environment.notificationCenter,
             secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
             markUnreadMessagesDelay: environment.markUnreadMessagesDelay,
-            combineScheduler: environment.combineScheduler
+            combineScheduler: environment.combineScheduler,
+            createEntryWidget: environment.createEntryWidget,
+            topBannerItemsStyle: viewFactory.theme.chat.secureMessagingExpandedTopBannerItemsStyle,
+            switchToEngagement: .nop,
+            shouldShowLeaveSecureConversationDialog: { _ in false }
         )
     }
 }

@@ -34,6 +34,7 @@ extension CallCoordinator.Environment {
         isAuthenticated: { false },
         secureMarkMessagesAsRead: { _ in .mock },
         markUnreadMessagesDelay: { .mock },
-        combineScheduler: .mock
+        combineScheduler: .mock,
+        createEntryWidget: { _ in .mock() }
     )
 }

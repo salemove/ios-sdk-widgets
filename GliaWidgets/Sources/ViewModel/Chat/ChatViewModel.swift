@@ -65,6 +65,8 @@ class ChatViewModel: EngagementViewModel {
 
     private var markMessagesAsReadCancellables = CancelBag()
 
+    private(set) var entryWidget: EntryWidget?
+
     init(
         interactor: Interactor,
         screenShareHandler: ScreenShareHandler,
@@ -119,6 +121,13 @@ class ChatViewModel: EngagementViewModel {
             replaceExistingEnqueueing: replaceExistingEnqueueing,
             environment: environment
         )
+        do {
+            self.entryWidget = try environment.createEntryWidget(makeEntryWidgetConfiguration())
+        } catch {
+            // Creating an entry widget may fail if the SDK is not configured.
+            // This assumes that the SDK is configured by accessing Secure Conversations.
+            environment.log.warning("Could not create EntryWidget on Secure Conversation")
+        }
         unreadMessages.addObserver(self) { [weak self] unreadCount, _ in
             self?.action?(.updateUnreadMessageIndicator(itemCount: unreadCount))
         }
@@ -255,6 +264,47 @@ class ChatViewModel: EngagementViewModel {
             handleInteractorStateChanged(state)
         default:
             break
+        }
+    }
+}
+
+// MARK: Entry Widget
+extension ChatViewModel {
+    // Set up the Entry Widget configuration inside ChatViewModel,
+    // since it requires passing view model logic to the configuration.
+    private func makeEntryWidgetConfiguration() -> EntryWidget.Configuration {
+        SecureConversations.ChatWithTranscriptModel.makeEntryWidgetConfiguration(
+            with: .init { [weak self] mediaType in
+                self?.entryWidgetMediaTypeSelected(mediaType)
+            },
+            mediaTypeItemsStyle: environment.topBannerItemsStyle
+        )
+    }
+
+    private func entryWidgetMediaTypeSelected(_ item: EntryWidget.MediaTypeItem) {
+        action?(.switchToEngagement)
+        let switchToEngagement = { [weak self] in
+            let kind: EngagementKind
+            switch item.type {
+            case .video:
+                kind = .videoCall
+            case .audio:
+                kind = .audioCall
+            case .chat:
+                kind = .chat
+            case .secureMessaging:
+                kind = .messaging(.welcome)
+            case .callVisualizer:
+                return
+            }
+            self?.environment.switchToEngagement(kind)
+        }
+        if environment.shouldShowLeaveSecureConversationDialog(.entryWidgetTopBanner) {
+            engagementAction?(.showAlert(.leaveCurrentConversation {
+                switchToEngagement()
+            }))
+        } else {
+            switchToEngagement()
         }
     }
 }
