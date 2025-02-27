@@ -41,13 +41,12 @@ workflows:
     - certificate-and-profile-installer@1: {}
     - script:
         inputs:
-        - content: |-
-            bundle install
+        - content: bundle install
     - cocoapods-install@2: {}
     - recreate-user-schemes@1:
         inputs:
         - project_path: $BITRISE_PROJECT_PATH
-    - xcode-archive@4:
+    - xcode-archive@5:
         inputs:
         - scheme: $APP_SCHEME
         - team_id: $TEAM_ID
@@ -72,10 +71,9 @@ workflows:
     - cache-pull@2: {}
     - script:
         inputs:
-        - content: |-
-            bundle install
+        - content: bundle install
     - cocoapods-install@2: {}
-    - xcode-test@4:
+    - xcode-test@6:
         inputs:
         - scheme: $TEST_SCHEME
         - destination: platform=iOS Simulator,name=iPhone 13,OS=15.5
@@ -99,7 +97,7 @@ workflows:
         - lane: ios generate_docs
     - amazon-s3-upload@3:
         inputs:
-        - upload_bucket: "$AWS_BUCKET/widgets"
+        - upload_bucket: $AWS_BUCKET/widgets
         - access_key_id: $AWS_KEY
         - secret_access_key: $AWS_PASSWORD
         - acl_control: public-read
@@ -113,13 +111,12 @@ workflows:
     - certificate-and-profile-installer@1: {}
     - script:
         inputs:
-        - content: |-
-            bundle install
+        - content: bundle install
     - cocoapods-install@2: {}
     - recreate-user-schemes@1:
         inputs:
         - project_path: $BITRISE_PROJECT_PATH
-    - xcode-archive@4:
+    - xcode-archive@5:
         inputs:
         - scheme: $APP_SCHEME
         - team_id: $TEAM_ID
@@ -132,7 +129,7 @@ workflows:
     - deploy-to-bitrise-io@2:
         inputs:
         - notify_email_list: $NOTIFY_EMAILS
-    - slack@3:
+    - slack@4:
         inputs:
         - channel: '#tm-mobile-builds'
         - text: iOS Build Succeeded!
@@ -193,25 +190,24 @@ workflows:
     - certificate-and-profile-installer@1: {}
     - script:
         inputs:
-        - content: |-
-            bundle install
+        - content: bundle install
     - cocoapods-install: {}
     - recreate-user-schemes@1:
         inputs:
         - project_path: $BITRISE_PROJECT_PATH
-    - xcode-test:
+    - xcode-test@6:
         inputs:
         - scheme: $TEST_SCHEME
         - destination: platform=iOS Simulator,name=iPhone 13,OS=15.5
-    - xcode-test:
+    - xcode-test@6:
         inputs:
         - scheme: $SNAPSHOTS_SCHEME
         - destination: platform=iOS Simulator,name=iPhone 13,OS=15.5
-    - xcode-test:
+    - xcode-test@6:
         inputs:
         - scheme: $TESTING_APP_TESTS_SCHEME
         - destination: platform=iOS Simulator,name=iPhone 13,OS=15.5
-    - xcode-archive@4:
+    - xcode-archive@5:
         inputs:
         - scheme: $APP_SCHEME
         - team_id: $TEAM_ID
@@ -238,17 +234,14 @@ workflows:
     - certificate-and-profile-installer@1: {}
     - script:
         inputs:
-        - content: |-
-            bundle install
+        - content: bundle install
     - cocoapods-install@2: {}
     - bitrise-step-stamp-appicon-with-version-number@1:
         inputs:
         - stamp_version: TestFlight
         - stamp_path_to_icons: TestingApp/Assets.xcassets/AppIcon.appiconset
-    - set-xcode-build-number@1:
-        inputs:
-        - plist_path: TestingApp/Info.plist
-    - xcode-archive@4:
+    - set-xcode-build-number@2: {}
+    - xcode-archive@5:
         inputs:
         - scheme: $APP_SCHEME
         - team_id: $TEAM_ID
@@ -329,5 +322,5 @@ trigger_map:
   workflow: pull-request
 meta:
   bitrise.io:
-    stack: osx-xcode-15.2.x
+    stack: osx-xcode-16.1.x
     machine_type_id: g2-m1.4core
