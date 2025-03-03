@@ -386,6 +386,12 @@ internal enum Localization {
       /// Thank you!
       internal static var message: String { Localization.tr("Localizable", "engagement.ended.message", fallback: "This engagement has ended.\nThank you!") }
     }
+    internal enum IncomingRequest {
+      internal enum TimedOut {
+        /// The engagement request has timed out.
+        internal static var message: String { Localization.tr("Localizable", "engagement.incoming_request.timed_out.message", fallback: "The engagement request has timed out.") }
+      }
+    }
     internal enum MediaUpgrade {
       /// {operatorName} has offered you to upgrade.
       internal static var offer: String { Localization.tr("Localizable", "engagement.media_upgrade.offer", fallback: "{operatorName} has offered you to upgrade.") }
@@ -468,8 +474,8 @@ internal enum Localization {
       internal static var title: String { Localization.tr("Localizable", "entry_widget.empty_state.title", fallback: "Support team is currently offline") }
     }
     internal enum ErrorState {
-      /// We could not load the contacts at this time. This may be due to a temporary syncing issue or network problem.
-      internal static var description: String { Localization.tr("Localizable", "entry_widget.error_state.description", fallback: "We could not load the contacts at this time. This may be due to a temporary syncing issue or network problem.") }
+      /// We could not load the contacts at this time. This may be due to a temporary syncing issue or a network problem.
+      internal static var description: String { Localization.tr("Localizable", "entry_widget.error_state.description", fallback: "We could not load the contacts at this time. This may be due to a temporary syncing issue or a network problem.") }
       /// Could not load the contacts
       internal static var title: String { Localization.tr("Localizable", "entry_widget.error_state.title", fallback: "Could not load the contacts") }
       internal enum TryAgain {
