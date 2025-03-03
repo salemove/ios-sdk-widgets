@@ -121,7 +121,7 @@ extension CallVisualizer.Coordinator {
         environment.alertManager.dismissCurrentAlert()
         environment.gcd.mainQueue.asyncAfterDeadline(.now() + 0.5) {
             // Will be swapped for localized string in MOB-3894
-            self.showSnackBarMessage(text: "Request has timed out")
+            self.showSnackBarMessage(text: Localization.Engagement.IncomingRequest.TimedOut.message)
         }
         answer(false)
     }
