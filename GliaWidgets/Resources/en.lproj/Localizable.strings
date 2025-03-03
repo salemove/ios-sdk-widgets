@@ -23,7 +23,7 @@
 "android_chat_operator_message_accessibility" = "Operator\'s message: %1$s";
 "android_chat_operator_image_attachment_accessibility" = "Operator\'s attached image";
 "android_chat_operator_name_accessibility_message" = "Operator %1$s, Message: %2$s";
-"android_chat_queue_message_accessibility_label" = "%1$s. \n An MSR will be with you shortly.";
+"android_chat_queue_message_accessibility_label" = "%1$s. \n We’ll be with you shortly.";
 "android_chat_visitor_image_attachment_accessibility" = "Your attached image";
 "android_chat_visitor_image_attachment_delivered_accessibility" = "Your attached image. \n Delivered";
 "android_chat_visitor_message_accessibility" = "Your message: %1$s";
@@ -200,6 +200,7 @@
 "engagement.phone.title" = "Phone";
 "engagement.chat.title" = "Chat";
 "engagement.video.title" = "Video";
+"engagement.incoming_request.timed_out.message" = "The engagement request has timed out.";
 "message_center.welcome.check_messages" = "Check Messages";
 "message_center.confirmation.check_messages.accessibility.hint" = "Navigates you to the chat transcript.";
 "message_center.confirmation.check_messages.accessibility.label" = "Check Messages";
@@ -266,7 +267,7 @@
 "entry_widget.empty_state.title" = "Support team is currently offline";
 "entry_widget.empty_state.description" = "We are here to assist you during our business hours.";
 "entry_widget.error_state.title" = "Could not load the contacts";
-"entry_widget.error_state.description" = "We could not load the contacts at this time. This may be due to a temporary syncing issue or network problem.";
+"entry_widget.error_state.description" = "We could not load the contacts at this time. This may be due to a temporary syncing issue or a network problem.";
 "entry_widget.error_state.try_again.button.label" = "Try again";
 "entry_widget.loading.accessibility.label" = "Loading indicator. Waiting for available options.";
 "entry_widget.ongoing_engagement.description" = "Ongoing • Tap to return";
