@@ -11,6 +11,7 @@ extension ViewFactory {
         var uiScreen: UIKitBased.UIScreen
         var log: CoreSdkClient.Logger
         var uiDevice: UIKitBased.UIDevice
+        var combineScheduler: AnyCombineScheduler
     }
 }
 
@@ -28,7 +29,8 @@ extension ViewFactory.Environment {
             uiApplication: environment.uiApplication,
             uiScreen: environment.uiScreen,
             log: loggerPhase.logger,
-            uiDevice: environment.uiDevice
+            uiDevice: environment.uiDevice,
+            combineScheduler: environment.combineScheduler
         )
     }
 
@@ -42,7 +44,8 @@ extension ViewFactory.Environment {
             uiApplication: environment.uiApplication,
             uiScreen: environment.uiScreen,
             log: environment.log,
-            uiDevice: environment.uiDevice
+            uiDevice: environment.uiDevice,
+            combineScheduler: environment.combineScheduler
         )
     }
 }

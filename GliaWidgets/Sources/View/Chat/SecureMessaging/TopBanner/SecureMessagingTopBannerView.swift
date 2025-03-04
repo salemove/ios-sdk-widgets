@@ -6,7 +6,7 @@ final class SecureMessagingTopBannerView: UIView {
     private static let verticalMargins = 13.0
     private static let buttonImageHorizontalPadding = 6.0
     private static let rotationDuration = 0.3
-
+    private let environment: Environment
     private let label = UILabel().makeView { label in
         label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -83,14 +83,17 @@ final class SecureMessagingTopBannerView: UIView {
         }
     }
 
-    init(isExpanded: Published<Bool>.Publisher) {
+    init(
+        isExpanded: Published<Bool>.Publisher,
+        environment: Environment
+    ) {
+        self.environment = environment
         super.init(frame: .zero)
 
         isExpanded.assign(to: &self.$isExpanded)
 
         $isExpanded
-            // injected combine scheduler will be added here in MOB-4077
-            .receive(on: DispatchQueue.main)
+            .receive(on: environment.combineScheduler.main)
             .sink { isExpanded in
                 let angle = isExpanded ? .pi : 0
                 UIView.animate(withDuration: Self.rotationDuration) {

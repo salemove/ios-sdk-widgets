@@ -1059,7 +1059,7 @@ extension ChatViewModel: ApplicationVisibilityTracker {
             notificationCenter: environment.notificationCenter,
             isViewVisiblePublisher: isViewActive.toCombinePublisher(),
             resumeToForegroundDelay: environment.markUnreadMessagesDelay(),
-            delayScheduler: environment.combineScheduler.global()
+            delayScheduler: environment.combineScheduler.global
         )
             .sink { [weak self] _ in
                 _ = self?.environment.secureMarkMessagesAsRead { _ in }
