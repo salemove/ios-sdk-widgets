@@ -772,7 +772,7 @@ extension SecureConversations.TranscriptModel: ApplicationVisibilityTracker {
             for: environment.uiApplication.applicationState(),
             notificationCenter: environment.notificationCenter,
             resumeToForegroundDelay: environment.markUnreadMessagesDelay(),
-            delayScheduler: environment.combineScheduler.global()
+            delayScheduler: environment.combineScheduler.global
         )
             .sink { [weak self] _ in
                 self?.performMarkMessagesAsReadRequest()

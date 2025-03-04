@@ -157,6 +157,7 @@ class QueuesMonitorTests: XCTestCase {
         var receivedQueues: [Queue]?
         var receivedUpdatedQueue: Queue?
         monitor.$state
+            .receive(on: AnyCombineScheduler.mock.main)
             // Drop initial .idle and .updated with listed queues state update
             .dropFirst(2)
             .sink { state in
@@ -199,6 +200,7 @@ class QueuesMonitorTests: XCTestCase {
         var receivedQueues: [Queue]?
         var receivedUpdatedQueue: Queue?
         monitor.$state
+            .receive(on: AnyCombineScheduler.mock.main)
             // Drop initial .idle and .updated with listed queues state update
             .dropFirst(2)
             .sink { state in
@@ -211,7 +213,6 @@ class QueuesMonitorTests: XCTestCase {
 
         monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
         monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
-        addDelay()
         XCTAssertEqual(receivedQueues, [expectedUpdatedQueue])
         XCTAssertEqual(receivedUpdatedQueue?.state.status, .open)
         XCTAssertEqual(
@@ -224,7 +225,7 @@ class QueuesMonitorTests: XCTestCase {
         var envCalls: [Call] = []
 
         let mockQueueId = "mock_queue_id"
-        let expectedObservedQueue = Queue.mock(id: mockQueueId, status: .closed)
+        let expectedObservedQueue = Queue.mock(id: mockQueueId, status: .open)
         let expectedUpdatedQueue = Queue.mock(id: mockQueueId, status: .open)
         let mockQueues = [expectedObservedQueue, Queue.mock(id: UUID().uuidString)]
 
@@ -246,6 +247,7 @@ class QueuesMonitorTests: XCTestCase {
         var receivedQueues: [Queue]?
         var receivedUpdatedQueue: Queue?
         monitor.$state
+            .receive(on: AnyCombineScheduler.mock.main)
             // Drop initial .idle and .updated with listed queues state update
             .dropFirst(2)
             .sink { state in
@@ -483,13 +485,5 @@ class QueuesMonitorTests: XCTestCase {
         XCTAssertEqual(receivedQueues?.count, 2)
         XCTAssertTrue(receivedQueues?.contains(where: { $0.id == knownQueueId }) == true)
         XCTAssertTrue(receivedQueues?.contains(where: { $0.id == unknownQueueId }) == true)
-    }
-}
-
-extension QueuesMonitorTests {
-    func addDelay(withDelay: Double = 0.1) {
-        let expectation = self.expectation(description: "Wait for view state update")
-        expectation.isInverted = true
-        wait(for: [expectation], timeout: withDelay)
     }
 }

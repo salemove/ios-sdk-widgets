@@ -97,6 +97,6 @@ extension SecureConversations.TranscriptModel.Environment {
             fail("\(Self.self).markUnreadMessagesDelay")
             return .mock
         },
-        combineScheduler: .failing
+        combineScheduler: .mock
     )
 }

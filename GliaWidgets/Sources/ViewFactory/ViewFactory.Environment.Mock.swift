@@ -9,7 +9,8 @@ extension ViewFactory.Environment {
         uiApplication: .mock,
         uiScreen: .mock,
         log: .mock,
-        uiDevice: .mock
+        uiDevice: .mock,
+        combineScheduler: .mock
     )
 }
 #endif

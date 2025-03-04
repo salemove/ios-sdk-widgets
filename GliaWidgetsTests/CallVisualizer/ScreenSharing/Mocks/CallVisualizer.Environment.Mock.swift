@@ -29,7 +29,8 @@ extension CallVisualizer.Environment {
         snackBar: .mock,
         coreSdk: .mock,
         cameraDeviceManager: { .mock },
-        alertManager: .mock()
+        alertManager: .mock(),
+        combineScheduler: .mock
     )
 }
 

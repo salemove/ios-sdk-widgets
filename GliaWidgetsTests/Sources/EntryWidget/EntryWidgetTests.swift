@@ -37,7 +37,6 @@ class EntryWidgetTests: XCTestCase {
         )
 
         entryWidget.show(in: .init())
-        addDelay()
         if case let .mediaTypes(mediaTypes) = entryWidget.viewState {
             XCTAssertFalse(mediaTypes.contains(.init(type: .secureMessaging)))
         } else {
@@ -70,7 +69,6 @@ class EntryWidgetTests: XCTestCase {
         )
 
         entryWidget.show(in: .init())
-        addDelay()
         if case let .mediaTypes(mediaTypes) = entryWidget.viewState {
             XCTAssertTrue(mediaTypes.contains(.init(type: .secureMessaging)))
         } else {
@@ -100,7 +98,6 @@ class EntryWidgetTests: XCTestCase {
         environment.observeSecureUnreadMessageCount = observeMessageCount
 
         queuesMonitor.fetchAndMonitorQueues()
-        addDelay()
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
             configuration: .default,
@@ -108,7 +105,6 @@ class EntryWidgetTests: XCTestCase {
         )
         
         entryWidget.show(in: .init())
-        addDelay()
         if case let .mediaTypes(mediaTypes) = entryWidget.viewState {
             XCTAssertTrue(mediaTypes.contains(.init(type: .secureMessaging, badgeCount: 5)))
         } else {
@@ -186,7 +182,6 @@ class EntryWidgetTests: XCTestCase {
             configuration: .default,
             environment: environment
         )
-        addDelay()
 
         XCTAssertEqual(
             entryWidget.viewState,
@@ -223,7 +218,6 @@ class EntryWidgetTests: XCTestCase {
             configuration: .default,
             environment: environment
         )
-        addDelay()
 
         XCTAssertEqual(
             entryWidget.viewState,
@@ -257,7 +251,6 @@ class EntryWidgetTests: XCTestCase {
             configuration: configuration,
             environment: environment
         )
-        addDelay()
 
         XCTAssertEqual(
             entryWidget.viewState,
@@ -292,7 +285,6 @@ class EntryWidgetTests: XCTestCase {
             configuration: configuration,
             environment: environment
         )
-        addDelay()
 
         XCTAssertEqual(
             entryWidget.viewState,
@@ -326,7 +318,6 @@ class EntryWidgetTests: XCTestCase {
         )
 
         entryWidget.show(in: .init())
-        addDelay()
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.chat))
     }
 
@@ -356,7 +347,6 @@ class EntryWidgetTests: XCTestCase {
         )
 
         entryWidget.show(in: .init())
-        addDelay()
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.audio))
     }
 
@@ -386,7 +376,6 @@ class EntryWidgetTests: XCTestCase {
         )
 
         entryWidget.show(in: .init())
-        addDelay()
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.video))
     }
 
@@ -416,7 +405,6 @@ class EntryWidgetTests: XCTestCase {
         )
 
         entryWidget.show(in: .init())
-        addDelay()
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.callVisualizer))
     }
 
@@ -433,7 +421,6 @@ class EntryWidgetTests: XCTestCase {
         )
 
         entryWidget.show(in: .init())
-        addDelay()
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.chat))
     }
 
@@ -450,7 +437,6 @@ class EntryWidgetTests: XCTestCase {
         )
 
         entryWidget.show(in: .init())
-        addDelay()
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.audio))
     }
 
@@ -467,7 +453,6 @@ class EntryWidgetTests: XCTestCase {
         )
 
         entryWidget.show(in: .init())
-        addDelay()
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.video))
     }
     
@@ -484,7 +469,6 @@ class EntryWidgetTests: XCTestCase {
         )
 
         entryWidget.show(in: .init())
-        addDelay()
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.chat))
     }
 
@@ -501,7 +485,6 @@ class EntryWidgetTests: XCTestCase {
         )
 
         entryWidget.show(in: .init())
-        addDelay()
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.audio))
     }
 
@@ -518,7 +501,6 @@ class EntryWidgetTests: XCTestCase {
         )
 
         entryWidget.show(in: .init())
-        addDelay()
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.video))
     }
 
@@ -558,7 +540,6 @@ class EntryWidgetTests: XCTestCase {
         )
 
         entryWidget.embed(in: .init())
-        addDelay()
         XCTAssertEqual(entryWidget.viewState, .mediaTypes([.init(type: .audio), .init(type: .chat), .init(type: .secureMessaging)]))
     }
 
@@ -630,7 +611,6 @@ class EntryWidgetTests: XCTestCase {
         )
 
         entryWidget.show(in: .init())
-        addDelay()
         XCTAssertTrue(logs.contains(expectedLogMessage))
     }
 
@@ -659,21 +639,11 @@ class EntryWidgetTests: XCTestCase {
         let oldInteractor = Interactor.mock()
         oldInteractor.setCurrentEngagement(.mock())
         interactorSubject.send(oldInteractor)
-        addDelay()
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.chat))
 
         let newInteractor = Interactor.mock()
         newInteractor.setCurrentEngagement(.mock(media: .init(audio: .twoWay, video: nil)))
         interactorSubject.send(newInteractor)
-        addDelay()
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.audio))
-    }
-}
-
-extension EntryWidgetTests {
-    func addDelay(withDelay: Double = 0.1) {
-        let expectation = self.expectation(description: "Wait for view state update")
-        expectation.isInverted = true
-        wait(for: [expectation], timeout: withDelay)
     }
 }

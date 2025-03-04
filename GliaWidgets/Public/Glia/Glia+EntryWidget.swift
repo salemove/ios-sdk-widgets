@@ -35,7 +35,8 @@ extension Glia {
                 onCallVisualizerResume: { [weak self] in
                     guard let self else { return }
                     callVisualizer.resume()
-                }
+                },
+                combineScheduler: environment.combineScheduler
             )
         )
     }
