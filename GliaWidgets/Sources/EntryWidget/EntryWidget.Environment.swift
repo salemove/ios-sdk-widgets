@@ -13,6 +13,7 @@ extension EntryWidget {
         var hasPendingInteractionPublisher: AnyPublisher<Bool, Never>
         var interactorPublisher: AnyPublisher<Interactor?, Never>
         var onCallVisualizerResume: () -> Void
+        var combineScheduler: AnyCombineScheduler
     }
 }
 
@@ -30,7 +31,8 @@ extension EntryWidget.Environment {
             isAuthenticated: { true },
             hasPendingInteractionPublisher: .mock(false),
             interactorPublisher: .mock(nil),
-            onCallVisualizerResume: {}
+            onCallVisualizerResume: {},
+            combineScheduler: .mock
         )
     }
 }

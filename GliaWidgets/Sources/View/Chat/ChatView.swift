@@ -27,7 +27,10 @@ class ChatView: EngagementView {
     var selectCustomCardOption: ((HtmlMetadata.Option, MessageRenderer.Message.Identifier) -> Void)?
     var gvaButtonTapped: ((GvaOption) -> Void)?
     var retryMessageTapped: ((OutgoingMessage) -> Void)?
-    lazy var secureMessagingTopBannerView = SecureMessagingTopBannerView(isExpanded: $isTopBannerExpanded).makeView()
+    lazy var secureMessagingTopBannerView = SecureMessagingTopBannerView(
+        isExpanded: $isTopBannerExpanded,
+        environment: .create(with: environment)
+    ).makeView()
     let entryWidgetContainerView = UIView().makeView()
     let entryWidgetOverlayView = OverlayView().makeView()
     let secureMessagingBottomBannerView = SecureMessagingBottomBannerView().makeView()

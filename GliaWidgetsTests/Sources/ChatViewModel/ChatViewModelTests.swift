@@ -1280,8 +1280,6 @@ class ChatViewModelTests: XCTestCase {
     }
 
     func test_messageReceivedMarksAsReadIfOnEndIsRetain() {
-        // Once MOB-4008 is ready, this test must be rewritten using the Combine Scheduler tools.
-        let expectation = expectation(description: "Message marked as read")
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
         var viewModelEnv = ChatViewModel.Environment.failing()
@@ -1293,7 +1291,6 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fetchChatHistory = { callback in
             callback(.success([]))
         }
-        viewModelEnv.combineScheduler.global = { .global() }
         viewModelEnv.markUnreadMessagesDelay = { .zero }
         viewModelEnv.getCurrentEngagement = { .mock(actionOnEnd: .retain) }
         viewModelEnv.uiApplication.applicationState = { .active }
@@ -1303,7 +1300,6 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.secureMarkMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
-            expectation.fulfill()
             return .mock
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
@@ -1313,16 +1309,11 @@ class ChatViewModelTests: XCTestCase {
         viewModel.event(EngagementViewModel.Event.viewDidAppear)
 
         viewModel.interactorEvent(.receivedMessage(.mock(sender: .init(type: .operator))))
-        
-        wait(for: [expectation], timeout: 0.1)
 
         XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
     }
     
     func test_messageReceivedDontMarksAsReadIfOnEndIsShowSurvey() {
-        // Once MOB-4008 is ready, this test must be rewritten using the Combine Scheduler tools.
-        let expectation = expectation(description: "No Message marked as read")
-        expectation.isInverted = true
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
         var viewModelEnv = ChatViewModel.Environment.failing()
@@ -1343,7 +1334,6 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.secureMarkMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
-            expectation.fulfill()
             return .mock
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
@@ -1353,16 +1343,11 @@ class ChatViewModelTests: XCTestCase {
         viewModel.event(EngagementViewModel.Event.viewDidAppear)
 
         viewModel.interactorEvent(.receivedMessage(.mock(sender: .init(type: .operator))))
-        
-        wait(for: [expectation], timeout: 0.1)
 
         XCTAssertTrue(calls.isEmpty)
     }
     
     func test_messageReceivedDontMarksAsReadIfSenderIsVisitor() {
-        // Once MOB-4008 is ready, this test must be rewritten using the Combine Scheduler tools.
-        let expectation = expectation(description: "No Message marked as read")
-        expectation.isInverted = true
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
         var viewModelEnv = ChatViewModel.Environment.failing()
@@ -1383,7 +1368,6 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.secureMarkMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
-            expectation.fulfill()
             return .mock
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
@@ -1393,22 +1377,17 @@ class ChatViewModelTests: XCTestCase {
         viewModel.event(EngagementViewModel.Event.viewDidAppear)
 
         viewModel.interactorEvent(.receivedMessage(.mock(sender: .init(type: .visitor))))
-        
-        wait(for: [expectation], timeout: 0.1)
 
         XCTAssertTrue(calls.isEmpty)
     }
     
     func test_markMessagesAsRead() {
-        // Once MOB-4008 is ready, this test must be rewritten using the Combine Scheduler tools.
-        let expectation = expectation(description: "Message marked as read")
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
-        viewModelEnv.combineScheduler.global = { .global() }
         viewModelEnv.markUnreadMessagesDelay = { .zero }
         viewModelEnv.getCurrentEngagement = { .mock(actionOnEnd: .retain) }
         viewModelEnv.uiApplication.applicationState = { .active }
@@ -1418,7 +1397,6 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.secureMarkMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
-            expectation.fulfill()
             return .mock
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
@@ -1426,23 +1404,18 @@ class ChatViewModelTests: XCTestCase {
         viewModel.event(EngagementViewModel.Event.viewDidAppear)
 
         viewModel.markMessagesAsRead()
-        
-        wait(for: [expectation], timeout: 0.1)
 
         XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
     }
     
     func test_markMessagesAsReadNotTriggerBeforeDelay() {
-        // Once MOB-4008 is ready, this test must be rewritten using the Combine Scheduler tools.
-        let expectation = expectation(description: "No Message marked as read")
-        expectation.isInverted = true
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
-        viewModelEnv.combineScheduler.global = { .global() }
+        viewModelEnv.combineScheduler = .live
         viewModelEnv.markUnreadMessagesDelay = { .milliseconds(100) }
         viewModelEnv.getCurrentEngagement = { .mock(actionOnEnd: .retain) }
         viewModelEnv.uiApplication.applicationState = { .active }
@@ -1452,7 +1425,6 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.secureMarkMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
-            expectation.fulfill()
             return .mock
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
@@ -1460,23 +1432,17 @@ class ChatViewModelTests: XCTestCase {
         viewModel.event(EngagementViewModel.Event.viewDidAppear)
 
         viewModel.markMessagesAsRead()
-        
-        wait(for: [expectation], timeout: 0.001)
 
         XCTAssertTrue(calls.isEmpty)
     }
     
     func test_markMessagesAsReadNotTriggerIfApplicationInactive() {
-        // Once MOB-4008 is ready, this test must be rewritten using the Combine Scheduler tools.
-        let expectation = expectation(description: "No Message marked as read")
-        expectation.isInverted = true
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
-        viewModelEnv.combineScheduler.global = { .global() }
         viewModelEnv.markUnreadMessagesDelay = { .milliseconds(1) }
         viewModelEnv.getCurrentEngagement = { .mock(actionOnEnd: .retain) }
         viewModelEnv.uiApplication.applicationState = { .inactive }
@@ -1486,7 +1452,6 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.secureMarkMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
-            expectation.fulfill()
             return .mock
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
@@ -1494,23 +1459,18 @@ class ChatViewModelTests: XCTestCase {
         viewModel.event(EngagementViewModel.Event.viewDidAppear)
 
         viewModel.markMessagesAsRead()
-        
-        wait(for: [expectation], timeout: 0.1)
 
         XCTAssertTrue(calls.isEmpty)
     }
     
     func test_markMessagesAsReadNotTriggerIfApplicationGoBackground() {
-        // Once MOB-4008 is ready, this test must be rewritten using the Combine Scheduler tools.
-        let expectation = expectation(description: "No Message marked as read")
-        expectation.isInverted = true
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
-        viewModelEnv.combineScheduler.global = { .global() }
+        viewModelEnv.combineScheduler = .live
         viewModelEnv.markUnreadMessagesDelay = { .milliseconds(1) }
         viewModelEnv.getCurrentEngagement = { .mock(actionOnEnd: .retain) }
         viewModelEnv.uiApplication.applicationState = { .active }
@@ -1524,7 +1484,6 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.secureMarkMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
-            expectation.fulfill()
             return .mock
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
@@ -1533,22 +1492,17 @@ class ChatViewModelTests: XCTestCase {
 
         viewModel.markMessagesAsRead()
         notificationPublisher.send(.init(name: UIApplication.didEnterBackgroundNotification))
-        
-        wait(for: [expectation], timeout: 0.1)
-
         XCTAssertTrue(calls.isEmpty)
     }
     
     func test_markMessagesAsReadNotTriggerIfApplicationGoForeground() {
-        // Once MOB-4008 is ready, this test must be rewritten using the Combine Scheduler tools.
-        let expectation = expectation(description: "Message marked as read")
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
-        viewModelEnv.combineScheduler.global = { .global() }
+        viewModelEnv.combineScheduler = .mock
         viewModelEnv.markUnreadMessagesDelay = { .milliseconds(1) }
         viewModelEnv.getCurrentEngagement = { .mock(actionOnEnd: .retain) }
         viewModelEnv.uiApplication.applicationState = { .inactive }
@@ -1562,7 +1516,6 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.secureMarkMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
-            expectation.fulfill()
             return .mock
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
@@ -1571,23 +1524,18 @@ class ChatViewModelTests: XCTestCase {
 
         viewModel.markMessagesAsRead()
         notificationPublisher.send(.init(name: UIApplication.willEnterForegroundNotification))
-        
-        wait(for: [expectation], timeout: 0.1)
 
         XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
     }
     
     func test_markMessagesAsReadNotTriggerIfViewDidDisappear() {
-        // Once MOB-4008 is ready, this test must be rewritten using the Combine Scheduler tools.
-        let expectation = expectation(description: "No Message marked as read")
-        expectation.isInverted = true
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
-        viewModelEnv.combineScheduler.global = { .global() }
+        viewModelEnv.combineScheduler = .live
         viewModelEnv.markUnreadMessagesDelay = { .milliseconds(1) }
         viewModelEnv.getCurrentEngagement = { .mock(actionOnEnd: .retain) }
         viewModelEnv.uiApplication.applicationState = { .active }
@@ -1597,7 +1545,6 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.secureMarkMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
-            expectation.fulfill()
             return .mock
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
@@ -1606,8 +1553,6 @@ class ChatViewModelTests: XCTestCase {
 
         viewModel.markMessagesAsRead()
         viewModel.event(EngagementViewModel.Event.viewDidDisappear)
-        
-        wait(for: [expectation], timeout: 0.1)
 
         XCTAssertTrue(calls.isEmpty)
     }

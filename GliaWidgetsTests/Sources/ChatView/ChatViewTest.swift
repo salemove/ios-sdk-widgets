@@ -13,7 +13,8 @@ final class ChatViewTest: XCTestCase {
             imageViewCache: .failing,
             timerProviding: .failing,
             uiApplication: .failing,
-            uiScreen: .failing
+            uiScreen: .failing,
+            combineScheduler: .mock
         )
         view = ChatView(
             with: .mock(),
@@ -75,7 +76,7 @@ final class ChatViewTest: XCTestCase {
         logger.infoClosure = { _, _, _, _ in }
         logger.warningClosure = { _, _, _, _ in }
         coordinatorEnv.log = logger
-
+        coordinatorEnv.createEntryWidget = { _ in .mock() }
         let options: [ChatChoiceCardOption] = [try .mock()]
         coordinatorEnv.fetchChatHistory = {
             $0(
@@ -116,7 +117,8 @@ final class ChatViewTest: XCTestCase {
             imageViewCache: .failing,
             timerProviding: .failing,
             uiApplication: .failing,
-            uiScreen: .failing
+            uiScreen: .failing,
+            combineScheduler: .mock
         )
         view = ChatView(
             with: .mock(),

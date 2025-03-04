@@ -13,6 +13,7 @@ extension ViewFactory.Environment {
         uiApplication: .failing,
         uiScreen: .failing,
         log: .failing,
-        uiDevice: .failing
+        uiDevice: .failing,
+        combineScheduler: .mock
     )
 }
