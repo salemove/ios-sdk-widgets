@@ -32,6 +32,7 @@ extension CallVisualizer {
         var coreSdk: CoreSdkClient
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var alertManager: AlertManager
+        var combineScheduler: AnyCombineScheduler
     }
 }
 
@@ -75,7 +76,8 @@ extension CallVisualizer.Environment {
             snackBar: environment.snackBar,
             coreSdk: environment.coreSdk,
             cameraDeviceManager: environment.cameraDeviceManager,
-            alertManager: alertManager
+            alertManager: alertManager,
+            combineScheduler: environment.combineScheduler
         )
     }
 }

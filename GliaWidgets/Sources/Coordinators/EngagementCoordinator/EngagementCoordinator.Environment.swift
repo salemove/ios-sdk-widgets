@@ -49,7 +49,7 @@ extension EngagementCoordinator {
         var hasPendingInteraction: () -> Bool
         var createEntryWidget: EntryWidgetBuilder
         var dismissManager: GliaPresenter.DismissManager
-        var combineScheduler: CombineBased.CombineScheduler
+        var combineScheduler: AnyCombineScheduler
     }
 }
 

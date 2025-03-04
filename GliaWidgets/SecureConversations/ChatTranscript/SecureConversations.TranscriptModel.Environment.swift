@@ -42,7 +42,7 @@ extension SecureConversations.TranscriptModel {
         var topBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle
         var notificationCenter: FoundationBased.NotificationCenter
         var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
-        var combineScheduler: CombineBased.CombineScheduler
+        var combineScheduler: AnyCombineScheduler
     }
 }
 
@@ -134,7 +134,7 @@ extension SecureConversations.TranscriptModel.Environment {
         secureMessagingExpandedTopBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle = Theme().chatStyle.secureMessagingExpandedTopBannerItemsStyle,
         notificationCenter: FoundationBased.NotificationCenter = .mock,
         markUnreadMessagesDelay: @escaping () -> DispatchQueue.SchedulerTimeType.Stride = { .mock },
-        combineScheduler: CombineBased.CombineScheduler = .mock
+        combineScheduler: AnyCombineScheduler = .mock
     ) -> Self {
         Self(
             fetchFile: fetchFile,
