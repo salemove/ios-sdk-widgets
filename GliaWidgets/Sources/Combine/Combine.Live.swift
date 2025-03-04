@@ -1,8 +1,8 @@
 import Foundation
 
-extension CombineBased.CombineScheduler {
-    static let live = Self(
-        main: { DispatchQueue.main },
-        global: { DispatchQueue.global() }
+extension AnyCombineScheduler {
+    static let live = AnyCombineScheduler(
+        main: AnyScheduler(DispatchQueue.main),
+        global: AnyScheduler(DispatchQueue.global(qos: .default))
     )
 }

@@ -260,7 +260,6 @@
 		492F2E632D4CF6B3003465D9 /* Combine.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F2E622D4CF6B3003465D9 /* Combine.Interface.swift */; };
 		492F2E652D4CF890003465D9 /* Combine.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F2E642D4CF890003465D9 /* Combine.Live.swift */; };
 		492F2E672D4D18E5003465D9 /* Combine.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F2E662D4D18E5003465D9 /* Combine.Mock.swift */; };
-		492F2E692D4D1C0E003465D9 /* Combine.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492F2E682D4D1C0E003465D9 /* Combine.Failing.swift */; };
 		498ABBD52D47E77C001AE866 /* ApplicationVisibilityTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498ABBD42D47E77C001AE866 /* ApplicationVisibilityTracker.swift */; };
 		540DA2E4F381F57717A466E8 /* Pods_GliaWidgetsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B97A8A0B9AD30D0AB8666042 /* Pods_GliaWidgetsTests.framework */; };
 		6B2BFCE2274297F100B68506 /* SettingsSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */; };
@@ -718,6 +717,8 @@
 		AFF9542A2ADD8DB600C277E0 /* CoreSDKConfigurator.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF954292ADD8DB600C277E0 /* CoreSDKConfigurator.Mock.swift */; };
 		AFF9542C2ADDA10600C277E0 /* CoreSDKConfigurator.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF9542B2ADDA10600C277E0 /* CoreSDKConfigurator.Failing.swift */; };
 		AFFA99822C57D658004A2825 /* GliaTests+RestoreEngagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFFA99812C57D658004A2825 /* GliaTests+RestoreEngagement.swift */; };
+		C004A98D2D772AD100750E3C /* SecureMessagingTopBannerView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C004A98C2D772ABC00750E3C /* SecureMessagingTopBannerView.Environment.swift */; };
+		C004A98F2D77452A00750E3C /* CombineSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C004A98E2D77451F00750E3C /* CombineSchedulerTests.swift */; };
 		C00DE0AB2CD3847B005956B4 /* EntryWidgetViewLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00DE0AA2CD3847B005956B4 /* EntryWidgetViewLayoutTests.swift */; };
 		C00DE0AD2CD3BD53005956B4 /* EntryWidgetViewVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00DE0AC2CD3BD53005956B4 /* EntryWidgetViewVoiceOverTests.swift */; };
 		C00DE0AF2CD3BF35005956B4 /* EntryWidgetViewDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00DE0AE2CD3BF35005956B4 /* EntryWidgetViewDynamicTypeFontTests.swift */; };
@@ -1351,7 +1352,6 @@
 		492F2E622D4CF6B3003465D9 /* Combine.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Combine.Interface.swift; sourceTree = "<group>"; };
 		492F2E642D4CF890003465D9 /* Combine.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Combine.Live.swift; sourceTree = "<group>"; };
 		492F2E662D4D18E5003465D9 /* Combine.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Combine.Mock.swift; sourceTree = "<group>"; };
-		492F2E682D4D1C0E003465D9 /* Combine.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Combine.Failing.swift; sourceTree = "<group>"; };
 		498ABBD42D47E77C001AE866 /* ApplicationVisibilityTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationVisibilityTracker.swift; sourceTree = "<group>"; };
 		6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCell.swift; sourceTree = "<group>"; };
 		6B48213D2735873300F2900A /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
@@ -1813,6 +1813,8 @@
 		AFF9542B2ADDA10600C277E0 /* CoreSDKConfigurator.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSDKConfigurator.Failing.swift; sourceTree = "<group>"; };
 		AFFA99812C57D658004A2825 /* GliaTests+RestoreEngagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GliaTests+RestoreEngagement.swift"; sourceTree = "<group>"; };
 		B97A8A0B9AD30D0AB8666042 /* Pods_GliaWidgetsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgetsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C004A98C2D772ABC00750E3C /* SecureMessagingTopBannerView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureMessagingTopBannerView.Environment.swift; sourceTree = "<group>"; };
+		C004A98E2D77451F00750E3C /* CombineSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineSchedulerTests.swift; sourceTree = "<group>"; };
 		C00DE0AA2CD3847B005956B4 /* EntryWidgetViewLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetViewLayoutTests.swift; sourceTree = "<group>"; };
 		C00DE0AC2CD3BD53005956B4 /* EntryWidgetViewVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetViewVoiceOverTests.swift; sourceTree = "<group>"; };
 		C00DE0AE2CD3BF35005956B4 /* EntryWidgetViewDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetViewDynamicTypeFontTests.swift; sourceTree = "<group>"; };
@@ -2462,7 +2464,6 @@
 				AF6291142B0818DE00D3D76B /* SwiftBased.Failing.swift */,
 				AFF9542B2ADDA10600C277E0 /* CoreSDKConfigurator.Failing.swift */,
 				AF1C197F2B14FE9F00F8810F /* ConditionalCompilationClient.Failing.swift */,
-				492F2E682D4D1C0E003465D9 /* Combine.Failing.swift */,
 			);
 			path = GliaWidgetsTests;
 			sourceTree = "<group>";
@@ -3424,6 +3425,7 @@
 		2188DED82CECE4B600FA3BEF /* TopBanner */ = {
 			isa = PBXGroup;
 			children = (
+				C004A98C2D772ABC00750E3C /* SecureMessagingTopBannerView.Environment.swift */,
 				2188DED12CECC3D400FA3BEF /* SecureMessagingTopBannerView.swift */,
 				2188DED32CECE15800FA3BEF /* SecureMessagingTopBannerViewStyle.swift */,
 				2188DEE62CEE2E2100FA3BEF /* SecureMessagingTopBannerViewStyle.Accessibility.swift */,
@@ -3771,6 +3773,7 @@
 				C03A8046292BA76D00DDECA6 /* ChatViewControllerTests.swift */,
 				C03A8048292BC8DB00DDECA6 /* CallViewControllerTests.swift */,
 				753B05F72AFC1D750084611E /* SerialQueueTests.swift */,
+				C004A98E2D77451F00750E3C /* CombineSchedulerTests.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -5929,6 +5932,7 @@
 				75940987298D38C2008B173A /* VisitorCodeViewModel+Environment.swift in Sources */,
 				1A60AFBC256682C800E53F53 /* SubFlowCoordinator.swift in Sources */,
 				1A0C9A8C25C4092400815406 /* CallButtonStyle.swift in Sources */,
+				C004A98D2D772AD100750E3C /* SecureMessagingTopBannerView.Environment.swift in Sources */,
 				C0D6CA412C19A97100D4709B /* SecureConversations.FileUploadListView.Environment.swift in Sources */,
 				C09046CA2B7E05F7003C437C /* AttachmentSourceListStyle.Mock.swift in Sources */,
 				C0F3DE412C6E36C900DE6D7B /* View+Extensions.swift in Sources */,
@@ -6835,12 +6839,12 @@
 				31758EC12B5E9E22007BBD9F /* CallVisualizer.VideoCallCoordinator.Environment.Mock.swift in Sources */,
 				84551A952D478BD800C55DA2 /* CoreSdkClientTests.swift in Sources */,
 				31758EC02B5E9E22007BBD9F /* VideoCallCoordinatorTests.swift in Sources */,
-				492F2E692D4D1C0E003465D9 /* Combine.Failing.swift in Sources */,
 				9AE05CB32805C9D900871321 /* ChatViewModel.Environment.Failing.swift in Sources */,
 				7552DFB12A6FB7DF0093519B /* ChatMessageTests.swift in Sources */,
 				31CCE3E82BCE8F3A00F92535 /* VideoCallCoordinatorTests.swift in Sources */,
 				8418AD7B2BFB69BC007DE207 /* OnHoldOverlayVisualEffectViewTests.swift in Sources */,
 				8491AF672AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift in Sources */,
+				C004A98F2D77452A00750E3C /* CombineSchedulerTests.swift in Sources */,
 				AFEF5C7429929A8D005C3D8D /* SecureConversations.FileUploadListViewModel.Environment.Failing.swift in Sources */,
 				AFF9542C2ADDA10600C277E0 /* CoreSDKConfigurator.Failing.swift in Sources */,
 				31758EC42B5FB192007BBD9F /* EngagementCoordinatorTests.swift in Sources */,

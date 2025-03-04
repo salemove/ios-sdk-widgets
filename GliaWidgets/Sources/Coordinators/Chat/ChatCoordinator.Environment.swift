@@ -52,7 +52,7 @@ extension ChatCoordinator {
         var leaveCurrentSecureConversation: Command<Bool>
         var switchToEngagement: Command<EngagementKind>
         var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
-        var combineScheduler: CombineBased.CombineScheduler
+        var combineScheduler: AnyCombineScheduler
     }
 }
 

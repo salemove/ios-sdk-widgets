@@ -9,6 +9,7 @@ extension EngagementView {
         var timerProviding: FoundationBased.Timer.Providing
         var uiApplication: UIKitBased.UIApplication
         var uiScreen: UIKitBased.UIScreen
+        var combineScheduler: AnyCombineScheduler
     }
 }
 
@@ -21,7 +22,8 @@ extension EngagementView.Environment {
             imageViewCache: environment.imageViewCache,
             timerProviding: environment.timerProviding,
             uiApplication: environment.uiApplication,
-            uiScreen: environment.uiScreen
+            uiScreen: environment.uiScreen,
+            combineScheduler: environment.combineScheduler
         )
     }
 
@@ -33,7 +35,8 @@ extension EngagementView.Environment {
             imageViewCache: environment.imageViewCache,
             timerProviding: environment.timerProviding,
             uiApplication: environment.uiApplication,
-            uiScreen: environment.uiScreen
+            uiScreen: environment.uiScreen,
+            combineScheduler: environment.combineScheduler
         )
     }
 
@@ -45,7 +48,8 @@ extension EngagementView.Environment {
             imageViewCache: environment.imageViewCache,
             timerProviding: environment.timerProviding,
             uiApplication: environment.uiApplication,
-            uiScreen: environment.uiScreen
+            uiScreen: environment.uiScreen,
+            combineScheduler: environment.combineScheduler
         )
     }
 }

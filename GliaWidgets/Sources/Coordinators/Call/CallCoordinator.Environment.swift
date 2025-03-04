@@ -33,7 +33,7 @@ extension CallCoordinator {
         var isAuthenticated: () -> Bool
         var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
         var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
-        var combineScheduler: CombineBased.CombineScheduler
+        var combineScheduler: AnyCombineScheduler
         var createEntryWidget: EntryWidgetBuilder
     }
 }

@@ -440,7 +440,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.notificationCenter.publisherForNotification = { _ in
             .mock()
         }
-        modelEnv.combineScheduler.global = { .global() }
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
 
         let availabilityEnv = SecureConversations.Availability.Environment(
@@ -802,14 +801,11 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
         modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
         modelEnv.uiApplication.applicationState = { .active }
-        // Once MOB-4008 is ready, this test must be rewritten using the Combine Scheduler tools.
-        let expectation = expectation(description: "Message marked as read")
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
         modelEnv.secureMarkMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
-            expectation.fulfill()
             return .mock
         }
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
@@ -817,7 +813,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.notificationCenter.publisherForNotification = { _ in
             Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        modelEnv.combineScheduler.global = { .global() }
+
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
@@ -840,7 +836,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
         viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
-        wait(for: [expectation], timeout: 0.1)
 
         XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
     }
@@ -860,9 +855,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
-        // Once MOB-4008 is ready, this test must be rewritten using the Combine Scheduler tools.
-        let expectation = expectation(description: "No Message marked as read")
-        expectation.isInverted = true
         let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
         modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
         enum Call: Equatable { case secureMarkMessagesAsRead }
@@ -870,7 +862,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.secureMarkMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
-            expectation.fulfill()
             return .mock
         }
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in true }
@@ -897,7 +888,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
         viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
-        wait(for: [expectation], timeout: 0.1)
 
         XCTAssertTrue(calls.isEmpty)
     }
@@ -918,8 +908,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
         modelEnv.uiApplication.applicationState = { .active }
-        // Once MOB-4008 is ready, this test must be rewritten using the Combine Scheduler tools.
-        let expectation = expectation(description: "Message marked as read")
         let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
         modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
         enum Call: Equatable { case secureMarkMessagesAsRead }
@@ -927,7 +915,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.secureMarkMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
-            expectation.fulfill()
             return .mock
         }
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in true }
@@ -936,7 +923,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.notificationCenter.publisherForNotification = { _ in
             Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        modelEnv.combineScheduler.global = { .global() }
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
@@ -965,14 +951,11 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
         viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
-        wait(for: [expectation], timeout: 0.1)
 
         XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
     }
 
     func testReceiveMessageMarksMessagesAsRead() {
-        XCTSkip("Once MOB-4008 is ready, this test must be rewritten using the Combine Scheduler tools.")
-        let expectation = expectation(description: "Message marked as read")
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
         var modelEnv = TranscriptModel.Environment.failing
@@ -994,7 +977,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.secureMarkMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
-            expectation.fulfill()
             return .mock
         }
         modelEnv.fetchChatHistory = { completion in
@@ -1008,7 +990,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.notificationCenter.publisherForNotification = { _ in
             Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        modelEnv.combineScheduler.global = { .global() }
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             listQueues: modelEnv.listQueues,
@@ -1040,8 +1021,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             metadata: nil
         )
         interactor.receive(message: message)
-
-        wait(for: [expectation], timeout: 0.1)
 
         XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
     }

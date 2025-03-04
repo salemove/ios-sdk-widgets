@@ -113,6 +113,6 @@ extension EngagementCoordinator.Environment {
             return .mock()
         },
         dismissManager: .failing,
-        combineScheduler: .failing
+        combineScheduler: .mock
     )
 }

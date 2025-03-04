@@ -67,7 +67,7 @@ extension ChatViewModel.Environment {
             notificationCenter: .mock,
             secureMarkMessagesAsRead: { _ in .mock },
             markUnreadMessagesDelay: { .mock },
-            combineScheduler: .failing,
+            combineScheduler: .mock,
             createEntryWidget: { _ in
                 fail("\(Self.self).createEntryWidget")
                 return .mock()
