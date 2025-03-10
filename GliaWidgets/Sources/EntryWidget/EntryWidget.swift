@@ -216,6 +216,20 @@ private extension EntryWidget {
             availableMediaTypes.remove(.secureMessaging)
         }
 
+        let queuesStatuses = Set(queues.map { $0.state.status })
+        let areQueuesUnavailable = queuesStatuses.contains(.unstaffed) || queuesStatuses.contains(.full)
+
+        if !queuesStatuses.contains(.open) && areQueuesUnavailable {
+            // Entry Widget should not show unavailability if SecureConversation available even if queues is unstaffed or full
+            if availableMediaTypes.contains(.secureMessaging) {
+                availableMediaTypes.removeAll()
+                availableMediaTypes.insert(.secureMessaging)
+                // Entry Widget should show unavailability if queues is unstaffed or full and SecureConversation unavailable
+            } else {
+                availableMediaTypes.removeAll()
+            }
+        }
+
         return Array(availableMediaTypes).sorted(by: { $0.rawValue < $1.rawValue })
     }
 
