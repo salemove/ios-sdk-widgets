@@ -646,4 +646,106 @@ class EntryWidgetTests: XCTestCase {
         interactorSubject.send(newInteractor)
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.audio))
     }
+
+    func test_secureMessagingIsShownIfQueueIsUnstaffedOrFullAndSCAvailable() {
+        let mockQueueId = "mockQueueId"
+        let mockQueue = Queue.mock(id: mockQueueId, status: .unstaffed, media: [.messaging, .audio, .video])
+
+        var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
+        queueMonitorEnvironment.listQueues = { completion in
+            completion([mockQueue], nil)
+        }
+        queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
+            completion(.success(mockQueue))
+            return UUID.mock.uuidString
+        }
+        var environment = EntryWidget.Environment.mock()
+        environment.isAuthenticated = { true }
+
+        let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
+        environment.queuesMonitor = queuesMonitor
+
+        queuesMonitor.fetchAndMonitorQueues()
+
+        let entryWidget = EntryWidget(
+            queueIds: [mockQueueId],
+            configuration: .default,
+            environment: environment
+        )
+
+        entryWidget.show(in: .init())
+        if case let .mediaTypes(mediaTypes) = entryWidget.viewState {
+            XCTAssertEqual(mediaTypes, [.init(type: .secureMessaging)])
+        } else {
+            XCTFail("Unexpected view state \(entryWidget.viewState)")
+        }
+    }
+
+    func test_offlineIsShownIfQueueIsUnstaffedOrFullAndSCNotAvailable() {
+        let mockQueueId = "mockQueueId"
+        let mockQueue = Queue.mock(id: mockQueueId, status: .full, media: [.audio, .video])
+
+        var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
+        queueMonitorEnvironment.listQueues = { completion in
+            completion([mockQueue], nil)
+        }
+        queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
+            completion(.success(mockQueue))
+            return UUID.mock.uuidString
+        }
+        var environment = EntryWidget.Environment.mock()
+        environment.isAuthenticated = { true }
+
+        let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
+        environment.queuesMonitor = queuesMonitor
+
+        queuesMonitor.fetchAndMonitorQueues()
+
+        let entryWidget = EntryWidget(
+            queueIds: [mockQueueId],
+            configuration: .default,
+            environment: environment
+        )
+
+        entryWidget.show(in: .init())
+
+        XCTAssertEqual(entryWidget.viewState, .offline)
+    }
+
+    func test_entryWidgetShowsMediaIfAnyQueueIsOpen() {
+        let mockQueueId = "mockQueueId"
+        let mockQueue = Queue.mock(id: mockQueueId, status: .open, media: [.audio, .video])
+        let openMockQueue = Queue.mock(id: mockQueueId, status: .full, media: [.audio, .video])
+
+        var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
+        queueMonitorEnvironment.listQueues = { completion in
+            completion([mockQueue], nil)
+        }
+        queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
+            completion(.success(mockQueue))
+            return UUID.mock.uuidString
+        }
+        var environment = EntryWidget.Environment.mock()
+        environment.isAuthenticated = { true }
+
+        let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
+        environment.queuesMonitor = queuesMonitor
+
+        queuesMonitor.fetchAndMonitorQueues()
+
+        let entryWidget = EntryWidget(
+            queueIds: [mockQueueId],
+            configuration: .default,
+            environment: environment
+        )
+
+        entryWidget.show(in: .init())
+
+        entryWidget.show(in: .init())
+        if case let .mediaTypes(mediaTypes) = entryWidget.viewState {
+            XCTAssertEqual(mediaTypes, [.init(type: .video), .init(type: .audio)])
+        } else {
+            XCTFail("Unexpected view state \(entryWidget.viewState)")
+        }
+    }
 }
