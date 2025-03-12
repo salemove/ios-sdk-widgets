@@ -88,7 +88,7 @@ final class VisitorInfoModel {
 
     func loadVisitorInfo() {
         self.fetchInfoRequestState = .inFlight
-        environment.fetchVisitorInfo { [weak self] result in
+        environment.getVisitorInfo { [weak self] result in
             guard let self else { return }
             // Attributes needs to be ordered in some way,
             // that is why we need to keep their IDs in order.
@@ -442,7 +442,7 @@ final class VisitorInfoModel {
 
 extension VisitorInfoModel {
     struct Environment {
-        let fetchVisitorInfo: (@escaping (Result<GliaCore.VisitorInfo, Error>) -> Void) -> Void
+        let getVisitorInfo: (@escaping (Result<GliaCore.VisitorInfo, Error>) -> Void) -> Void
         let updateVisitorInfo: (VisitorInfoUpdate, @escaping (Result<Bool, Error>) -> Void) -> Void
         let uuid: () -> UUID
     }
