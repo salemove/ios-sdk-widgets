@@ -479,6 +479,20 @@ public class Glia {
             completion(.failure(GliaError.internalError))
         }
     }
+
+    /// Pauses live observation.
+    ///
+    /// This method is used to hide sensitive data from the screen by pausing live observation.
+    public func liveObservationPause() {
+        environment.coreSdk.liveObservationPause()
+    }
+
+    /// Resumes live observation.
+    ///
+    /// This method resumes live observation session after it has been paused.
+    public func liveObservationResume() {
+        environment.coreSdk.liveObservationResume()
+    }
 }
 
 // MARK: - Internal
