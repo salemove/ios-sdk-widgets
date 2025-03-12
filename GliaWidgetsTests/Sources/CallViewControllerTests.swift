@@ -1,5 +1,4 @@
 @testable import GliaWidgets
-import GliaCoreSDK
 import XCTest
 
 class CallViewControllerTests: XCTestCase {
@@ -104,7 +103,7 @@ class CallViewControllerTests: XCTestCase {
         notificationCenter.removeObserverClosure = { _ in }
         notificationCenter.removeObserverWithNameAndObject = { _, _, _ in }
         notificationCenter.addObserverClosure = { _, _, _, _ in }
-        GliaCore.sharedInstance.liveObservation.pause()
+        Glia.sharedInstance.liveObservation.pause()
         let env = CallViewController.Environment(
             viewFactory: .mock(),
             notificationCenter: notificationCenter,
@@ -159,7 +158,7 @@ class CallViewControllerTests: XCTestCase {
         notificationCenter.removeObserverClosure = { _ in }
         notificationCenter.removeObserverWithNameAndObject = { _, _, _ in }
         notificationCenter.addObserverClosure = { _, _, _, _ in }
-        GliaCore.sharedInstance.liveObservation.pause()
+        Glia.sharedInstance.liveObservation.pause()
         let env = CallViewController.Environment(
             viewFactory: .mock(),
             notificationCenter: notificationCenter,

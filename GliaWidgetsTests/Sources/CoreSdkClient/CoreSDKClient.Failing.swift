@@ -3,6 +3,7 @@
 extension CoreSdkClient {
     static let failing = Self(
         pushNotifications: .failing,
+        liveObservation: .failing,
         createAppDelegate: { .failing },
         clearSession: { fail("\(Self.self).clearSession") },
         localeProvider: .failing,
@@ -91,6 +92,22 @@ extension CoreSdkClient {
         },
         unsubscribeFromUnreadCount: { _ in
             fail("\(Self.self).unsubscribeFromUnreadCount")
+        },
+        liveObservationPause: {
+            fail("\(Self.self).liveObservationPause")
+        },
+        liveObservationResume: {
+            fail("\(Self.self).liveObservationResume")
+        }
+    )
+}
+
+extension CoreSdkClient.LiveObservation {
+    static let failing = Self(
+        pause: {
+            fail("\(Self.self).pause")
+        }, resume: {
+            fail("\(Self.self).resume")
         }
     )
 }

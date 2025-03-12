@@ -131,6 +131,7 @@ public class Glia {
     var loggerPhase: LoggerPhase
     var queuesMonitor: QueuesMonitor
     var alertManager: AlertManager
+    public var liveObservation: LiveObservation
     // We need to store `features` via `configure` method to use it
     // when engagement gets restored for Direct ID authentication flow.
     var features: Features?
@@ -187,6 +188,7 @@ public class Glia {
                 viewFactory: viewFactory
             )
         )
+        liveObservation = .init(environment: .create(with: environment))
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
