@@ -19,8 +19,8 @@ class ViewController: UIViewController {
 
     let visitorInfoModel = VisitorInfoModel(
         environment: .init(
-            fetchVisitorInfo: GliaCore.sharedInstance.fetchVisitorInfo,
-            updateVisitorInfo: GliaCore.sharedInstance.updateVisitorInfo,
+            getVisitorInfo: Glia.sharedInstance.getVisitorInfo,
+            updateVisitorInfo: Glia.sharedInstance.updateVisitorInfo,
             uuid: UUID.init
         )
     )

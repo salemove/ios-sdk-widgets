@@ -8,9 +8,9 @@ struct CoreSdkClient {
     var clearSession: () -> Void
     var localeProvider: LocaleProvider
 
-    typealias FetchVisitorInfo = (_ completion: @escaping (Result<Self.Salemove.VisitorInfo, Error>) -> Void) -> Void
+    typealias GetVisitorInfo = (_ completion: @escaping (Result<Self.Salemove.VisitorInfo, Error>) -> Void) -> Void
 
-    var fetchVisitorInfo: FetchVisitorInfo
+    var getVisitorInfo: GetVisitorInfo
 
     typealias UpdateVisitorInfo = (
         _ info: Self.VisitorInfoUpdate,
