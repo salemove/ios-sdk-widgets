@@ -6,7 +6,7 @@ extension CoreSdkClient {
         createAppDelegate: { .failing },
         clearSession: { fail("\(Self.self).clearSession") },
         localeProvider: .failing,
-        fetchVisitorInfo: { _ in fail("\(Self.self).fetchVisitorInfo") },
+        getVisitorInfo: { _ in fail("\(Self.self).getVisitorInfo") },
         updateVisitorInfo: { _, _ in fail("\(Self.self).updateVisitorInfo") },
         configureWithConfiguration: { _, _ in fail("\(Self.self).configureWithConfiguration") },
         configureWithInteractor: { _ in fail("\(Self.self).configureWithInteractor") },
