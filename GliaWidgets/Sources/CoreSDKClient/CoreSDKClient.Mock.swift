@@ -1,6 +1,6 @@
 #if DEBUG
 import Foundation
-import GliaCoreSDK
+@_spi(GliaWidgets) import GliaCoreSDK
 
 extension CoreSdkClient {
     static let mock = Self(
@@ -469,7 +469,7 @@ extension CoreSdkClient.Queue {
     static func mock(
         id: String = "",
         name: String = "",
-        status: QueueStatus = .unknown,
+        status: QueueStatus = .unknown(""),
         isDefault: Bool = false,
         media: [MediaType] = [],
         lastUpdated: Date = Date()
