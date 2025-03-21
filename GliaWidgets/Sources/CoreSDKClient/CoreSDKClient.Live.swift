@@ -71,7 +71,9 @@ extension CoreSdkClient {
             unsubscribeFromPendingSecureConversationStatus: {
                 GliaCore.sharedInstance.secureConversations.unsubscribeFromPendingSecureConversationStatus($0)
             },
-            unsubscribeFromUnreadCount: GliaCore.sharedInstance.secureConversations.unsubscribeFromUnreadMessageCount
+            unsubscribeFromUnreadCount: GliaCore.sharedInstance.secureConversations.unsubscribeFromUnreadMessageCount,
+            liveObservationPause: GliaCore.sharedInstance.liveObservation.pause,
+            liveObservationResume: GliaCore.sharedInstance.liveObservation.resume
         )
     }()
 }

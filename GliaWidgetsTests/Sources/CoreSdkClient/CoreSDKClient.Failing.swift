@@ -91,6 +91,12 @@ extension CoreSdkClient {
         },
         unsubscribeFromUnreadCount: { _ in
             fail("\(Self.self).unsubscribeFromUnreadCount")
+        },
+        liveObservationPause: {
+            fail("\(Self.self).liveObservationPause")
+        },
+        liveObservationResume: {
+            fail("\(Self.self).liveObservationResume")
         }
     )
 }

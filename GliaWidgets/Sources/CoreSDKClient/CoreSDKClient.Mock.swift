@@ -44,7 +44,9 @@ extension CoreSdkClient {
         pendingSecureConversationStatus: { $0(.success(false)) },
         observePendingSecureConversationStatus: { _ in nil },
         unsubscribeFromPendingSecureConversationStatus: { _ in },
-        unsubscribeFromUnreadCount: { _ in }
+        unsubscribeFromUnreadCount: { _ in },
+        liveObservationPause: {},
+        liveObservationResume: {}
     )
 }
 

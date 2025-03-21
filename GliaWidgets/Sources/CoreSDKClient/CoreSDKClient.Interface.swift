@@ -215,6 +215,10 @@ struct CoreSdkClient {
     typealias UnsubscribeFromUnreadCount = (String) -> Void
 
     var unsubscribeFromUnreadCount: UnsubscribeFromUnreadCount
+
+    var liveObservationPause: () -> Void
+
+    var liveObservationResume: () -> Void
 }
 
 extension CoreSdkClient {
