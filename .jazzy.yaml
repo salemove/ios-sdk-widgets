@@ -7,4 +7,4 @@ github_url: https://github.com/salemove/ios-sdk-widgets
 root_url: http://ios-sdk-docs.salemove.com.s3-website-us-east-1.amazonaws.com/widgets
 output: docs
 theme: apple
-xcodebuild_arguments: ["-workspace", "GliaWidgets.xcworkspace", "-scheme", "GliaWidgets", "-sdk", "iphonesimulator", "-destination", "platform=iOS Simulator,name=iPhone 14"]
+xcodebuild_arguments: ["-workspace", "GliaWidgets.xcworkspace", "-scheme", "GliaWidgets", "-sdk", "iphonesimulator", "-destination", "platform=iOS Simulator,name=iPhone SE (3rd generation)"]
