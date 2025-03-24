@@ -1,0 +1,28 @@
+name: Bitrise Token Fork Check
+
+on:
+  pull_request:
+    branches: [main, master]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  bitrise-check:
+    if: github.event.pull_request.head.repo.fork == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Check Bitrise Token Access
+        env:
+          BITRISE_BUILD_TRIGGER_TOKEN: ${{ secrets.BITRISE_BUILD_TRIGGER_TOKEN }}
+        run: |
+          if [ -z "${BITRISE_BUILD_TRIGGER_TOKEN}" ]; then
+            echo "✅ Bitrise token is NOT accessible (Secure)."
+          else
+            echo "⚠️ Bitrise token is exposed in fork PR!"
+          fi
