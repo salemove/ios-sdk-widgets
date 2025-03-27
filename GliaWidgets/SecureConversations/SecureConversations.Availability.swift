@@ -70,7 +70,7 @@ extension SecureConversations {
 
 extension SecureConversations.Availability {
     struct Environment {
-        var listQueues: CoreSdkClient.ListQueues
+        var getQueues: CoreSdkClient.ListQueues
         var isAuthenticated: () -> Bool
         var log: CoreSdkClient.Logger
         var queuesMonitor: QueuesMonitor
@@ -119,7 +119,7 @@ extension SecureConversations.Availability.Status {
 extension SecureConversations.Availability.Environment {
     static func create(with environment: ChatCoordinator.Environment) -> Self {
         .init(
-            listQueues: environment.listQueues,
+            getQueues: environment.listQueues,
             isAuthenticated: environment.isAuthenticated,
             log: environment.log,
             queuesMonitor: environment.queuesMonitor,
@@ -129,7 +129,7 @@ extension SecureConversations.Availability.Environment {
 
     static func create(with environment: SecureConversations.Coordinator.Environment) -> Self {
         .init(
-            listQueues: environment.listQueues,
+            getQueues: environment.listQueues,
             isAuthenticated: environment.isAuthenticated,
             log: environment.log,
             queuesMonitor: environment.queuesMonitor,
@@ -156,7 +156,7 @@ extension SecureConversations.Availability.Environment {
         getCurrentEngagement: @escaping CoreSdkClient.GetCurrentEngagement = { .mock() }
     ) -> Self {
         .init(
-            listQueues: listQueues,
+            getQueues: listQueues,
             isAuthenticated: isAuthenticated,
             log: log,
             queuesMonitor: queuesMonitor,
