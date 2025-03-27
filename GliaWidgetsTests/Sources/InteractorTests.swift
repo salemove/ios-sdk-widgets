@@ -681,14 +681,14 @@ class InteractorTests: XCTestCase {
     
     func test_interactorFailShouldRefetchAndRestartQueuesMonitor() {
         enum Call {
-            case listQueues
+            case getQueues
             case subscribeForUpdates
         }
         var calls: [Call] = []
         let interactor = Interactor.failing
         let queuesMonitor = QueuesMonitor.mock()
-        queuesMonitor.environment.listQueues = { completion in
-            calls.append(.listQueues)
+        queuesMonitor.environment.getQueues = { completion in
+            calls.append(.getQueues)
             completion([.mock()], nil)
         }
         
@@ -702,7 +702,7 @@ class InteractorTests: XCTestCase {
 
         interactor.fail(error: .mock())
     
-        XCTAssertEqual(calls, [.listQueues, .subscribeForUpdates])
+        XCTAssertEqual(calls, [.getQueues, .subscribeForUpdates])
     }
 }
 

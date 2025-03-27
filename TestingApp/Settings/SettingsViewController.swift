@@ -120,7 +120,7 @@ private extension SettingsViewController {
             extraButton: .init(title: "List queues", tap: { [weak self] in
                 let alert = UIAlertController(title: "List queues", message: "Please choose queue", preferredStyle: .alert)
 
-                Glia.sharedInstance.listQueues { [weak self] result in
+                Glia.sharedInstance.getQueues { [weak self] result in
                     switch result {
                     case .success(let queues):
                         queues.sorted(by: { $0.name < $1.name }).forEach { queue in

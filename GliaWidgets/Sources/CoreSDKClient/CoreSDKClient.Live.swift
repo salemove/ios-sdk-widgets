@@ -12,7 +12,7 @@ extension CoreSdkClient {
             updateVisitorInfo: GliaCore.sharedInstance.updateVisitorInfo(_:completion:),
             configureWithConfiguration: GliaCore.sharedInstance.configure(with:completion:),
             configureWithInteractor: GliaCore.sharedInstance.configure(interactor:),
-            listQueues: GliaCore.sharedInstance.listQueues(completion:),
+            getQueues: GliaCore.sharedInstance.listQueues(completion:),
             queueForEngagement: { options, replaceExisting, completion in
                 let options = QueueForEngagementOptions(
                     queueIds: options.queueIds,

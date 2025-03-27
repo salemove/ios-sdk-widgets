@@ -34,7 +34,7 @@ extension SecureConversations.TranscriptModel.Environment {
             return .mock
         },
         queueIds: [],
-        listQueues: { _ in
+        getQueues: { _ in
             fail("\(Self.self).listQueues")
         },
         createFileUploadListModel: { _ in

@@ -609,7 +609,7 @@ extension SecureConversationsWelcomeViewModelTests {
     func testAvailabilityAvailable() {
         let uuid = UUID.mock.uuidString
         var availability = SecureConversations.Availability.mock
-        availability.environment.listQueues = { completion in
+        availability.environment.getQueues = { completion in
             let queue = CoreSdkClient.Queue.mock(
                 id: uuid,
                 name: "",
@@ -631,7 +631,7 @@ extension SecureConversationsWelcomeViewModelTests {
 
         let uuid = UUID.mock.uuidString
         var availability = SecureConversations.Availability.mock
-        availability.environment.listQueues = { completion in
+        availability.environment.getQueues = { completion in
             let queue = CoreSdkClient.Queue.mock(
                 id: uuid,
                 name: "",
@@ -643,7 +643,7 @@ extension SecureConversationsWelcomeViewModelTests {
         }
 
         availability.environment.isAuthenticated = { true }
-        availability.environment.queuesMonitor = .mock(listQueues: availability.environment.listQueues)
+        availability.environment.queuesMonitor = .mock(getQueues: availability.environment.getQueues)
 
         let delegate: (WelcomeViewModel.DelegateEvent) -> Void = { event in
             switch event {
@@ -675,7 +675,7 @@ extension SecureConversationsWelcomeViewModelTests {
 
         let uuid = UUID.mock.uuidString
         var availability = SecureConversations.Availability.mock
-        availability.environment.listQueues = { completion in
+        availability.environment.getQueues = { completion in
             let queue = CoreSdkClient.Queue.mock(
                 id: uuid,
                 name: "",
@@ -687,7 +687,7 @@ extension SecureConversationsWelcomeViewModelTests {
         }
 
         availability.environment.isAuthenticated = { false }
-        availability.environment.queuesMonitor = .mock(listQueues: availability.environment.listQueues)
+        availability.environment.queuesMonitor = .mock(getQueues: availability.environment.getQueues)
 
         let delegate: (WelcomeViewModel.DelegateEvent) -> Void = { event in
             switch event {

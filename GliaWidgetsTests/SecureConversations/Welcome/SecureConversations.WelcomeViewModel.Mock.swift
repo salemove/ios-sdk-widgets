@@ -50,7 +50,7 @@ extension SecureConversations.WelcomeViewModel.Environment {
 extension SecureConversations.Availability {
     static let mock: SecureConversations.Availability = .init(
         environment: .init(
-            listQueues: { _ in },
+            getQueues: { _ in },
             isAuthenticated: { true },
             log: .mock,
             queuesMonitor: .mock(),
