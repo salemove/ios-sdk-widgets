@@ -510,7 +510,7 @@ class ChatViewModelTests: XCTestCase {
 
         let transcriptFileUploadListModel = FileUploadListViewModel(environment: transcriptFileUploadListModelEnv)
         transcriptModelEnv.createFileUploadListModel = { _ in transcriptFileUploadListModel }
-        transcriptModelEnv.listQueues = { callback in callback([], nil) }
+        transcriptModelEnv.getQueues = { callback in callback([], nil) }
         transcriptModelEnv.maximumUploads = { 2 }
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
@@ -519,7 +519,7 @@ class ChatViewModelTests: XCTestCase {
         transcriptModelEnv.log = logger
 
         let availabilityEnv = SecureConversations.Availability.Environment(
-            listQueues: transcriptModelEnv.listQueues,
+            getQueues: transcriptModelEnv.getQueues,
             isAuthenticated: { true },
             log: logger,
             queuesMonitor: .mock(),

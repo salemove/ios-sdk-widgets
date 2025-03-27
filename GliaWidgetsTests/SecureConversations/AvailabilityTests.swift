@@ -7,11 +7,11 @@ final class AvailabilityTests: XCTestCase {
     func testListQueuesErrorPassedToResult() throws {
         var env = Availability.Environment.failing
         let error = CoreSdkClient.SalemoveError.mock()
-        env.listQueues = { callback in
+        env.getQueues = { callback in
             callback(nil, error)
         }
         env.isAuthenticated = { true }
-        env.queuesMonitor = .mock(listQueues: env.listQueues)
+        env.queuesMonitor = .mock(getQueues: env.getQueues)
         let queueIds = [UUID.mock.uuidString]
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
@@ -23,7 +23,7 @@ final class AvailabilityTests: XCTestCase {
 
     func testEmptyQueueStatus() throws {
         var env = Availability.Environment.failing
-        env.listQueues = { callback in
+        env.getQueues = { callback in
             callback([], nil)
         }
         var logger = CoreSdkClient.Logger.failing
@@ -31,7 +31,7 @@ final class AvailabilityTests: XCTestCase {
         logger.warningClosure = { _, _, _, _ in }
         env.log = logger
         env.isAuthenticated = { true }
-        env.queuesMonitor = .mock(listQueues: env.listQueues)
+        env.queuesMonitor = .mock(getQueues: env.getQueues)
         env.getCurrentEngagement = { .mock() }
         let queueIds = [UUID.mock.uuidString]
         let availability = Availability(environment: env)
@@ -44,7 +44,7 @@ final class AvailabilityTests: XCTestCase {
 
     func testUnauthenticatedQueueStatus() throws {
         var env = Availability.Environment.failing
-        env.listQueues = { callback in
+        env.getQueues = { callback in
             callback([], nil)
         }
         var logger = CoreSdkClient.Logger.failing
@@ -52,7 +52,7 @@ final class AvailabilityTests: XCTestCase {
         logger.warningClosure = { _, _, _, _ in }
         env.log = logger
         env.isAuthenticated = { false }
-        env.queuesMonitor = .mock(listQueues: env.listQueues)
+        env.queuesMonitor = .mock(getQueues: env.getQueues)
         let queueIds = [UUID.mock.uuidString]
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
@@ -65,7 +65,7 @@ final class AvailabilityTests: XCTestCase {
     func testAvailableQueueStatus() throws {
         var env = Availability.Environment.failing
         let queueId = UUID.mock.uuidString
-        env.listQueues = { callback in
+        env.getQueues = { callback in
             callback([.mock(id: queueId, status: .open, media: [.messaging])], nil)
         }
         var logger = CoreSdkClient.Logger.failing
@@ -73,7 +73,7 @@ final class AvailabilityTests: XCTestCase {
         logger.infoClosure = { _, _, _, _ in }
         env.log = logger
         env.isAuthenticated = { true }
-        env.queuesMonitor = .mock(listQueues: env.listQueues)
+        env.queuesMonitor = .mock(getQueues: env.getQueues)
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
         availability.checkSecureConversationsAvailability(for: [queueId]) { result in
@@ -92,7 +92,7 @@ final class AvailabilityTests: XCTestCase {
         var env = Availability.Environment.failing
         let generateUUID = UUID.incrementing
         let queueIds = [generateUUID().uuidString]
-        env.listQueues = { callback in
+        env.getQueues = { callback in
             callback([.mock(id: generateUUID().uuidString, status: .open, media: [.messaging])], nil)
         }
         var logger = CoreSdkClient.Logger.failing
@@ -100,7 +100,7 @@ final class AvailabilityTests: XCTestCase {
         logger.warningClosure = { _, _, _, _ in }
         env.log = logger
         env.isAuthenticated = { true }
-        env.queuesMonitor = .mock(listQueues: env.listQueues)
+        env.queuesMonitor = .mock(getQueues: env.getQueues)
         env.getCurrentEngagement = { .mock() }
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
@@ -114,7 +114,7 @@ final class AvailabilityTests: XCTestCase {
         var env = Availability.Environment.failing
         let generateUUID = UUID.incrementing
         let queueId = generateUUID().uuidString
-        env.listQueues = { callback in
+        env.getQueues = { callback in
             callback([.mock(id: queueId, status: .closed, media: [.messaging])], nil)
         }
         var logger = CoreSdkClient.Logger.failing
@@ -122,7 +122,7 @@ final class AvailabilityTests: XCTestCase {
         logger.warningClosure = { _, _, _, _ in }
         env.log = logger
         env.isAuthenticated = { true }
-        env.queuesMonitor = .mock(listQueues: env.listQueues)
+        env.queuesMonitor = .mock(getQueues: env.getQueues)
         env.getCurrentEngagement = { .mock() }
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
@@ -136,7 +136,7 @@ final class AvailabilityTests: XCTestCase {
         var env = Availability.Environment.failing
         let generateUUID = UUID.incrementing
         let queueId = generateUUID().uuidString
-        env.listQueues = { callback in
+        env.getQueues = { callback in
             callback([.mock(id: queueId, status: .closed, media: [.text])], nil)
         }
         env.getCurrentEngagement = { .mock() }
@@ -145,7 +145,7 @@ final class AvailabilityTests: XCTestCase {
         logger.warningClosure = { _, _, _, _ in }
         env.log = logger
         env.isAuthenticated = { true }
-        env.queuesMonitor = .mock(listQueues: env.listQueues)
+        env.queuesMonitor = .mock(getQueues: env.getQueues)
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
         availability.checkSecureConversationsAvailability(for: [queueId]) { result in
@@ -157,7 +157,7 @@ final class AvailabilityTests: XCTestCase {
     func testAvailableStatusIfNoQueueIsPassed() throws {
         var env = Availability.Environment.failing
         let queueId = UUID.mock.uuidString
-        env.listQueues = { callback in
+        env.getQueues = { callback in
             callback([.mock(id: queueId, status: .open, isDefault: true, media: [.messaging])], nil)
         }
         var logger = CoreSdkClient.Logger.failing
@@ -166,7 +166,7 @@ final class AvailabilityTests: XCTestCase {
         logger.warningClosure = { _, _, _, _ in }
         env.log = logger
         env.isAuthenticated = { true }
-        env.queuesMonitor = .mock(listQueues: env.listQueues)
+        env.queuesMonitor = .mock(getQueues: env.getQueues)
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
         availability.checkSecureConversationsAvailability(for: []) { result in
@@ -184,7 +184,7 @@ final class AvailabilityTests: XCTestCase {
     func testEmptyQueueStatusStatusIfThereIsNoDefaultQueuesWithProperConditions() throws {
         var env = Availability.Environment.failing
         let queueId = UUID.mock.uuidString
-        env.listQueues = { callback in
+        env.getQueues = { callback in
             callback([.mock(id: queueId, status: .closed, isDefault: true, media: [.text])], nil)
         }
         var logger = CoreSdkClient.Logger.failing
@@ -192,7 +192,7 @@ final class AvailabilityTests: XCTestCase {
         logger.warningClosure = { _, _, _, _ in }
         env.log = logger
         env.isAuthenticated = { true }
-        env.queuesMonitor = .mock(listQueues: env.listQueues)
+        env.queuesMonitor = .mock(getQueues: env.getQueues)
         env.getCurrentEngagement = { .mock() }
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
@@ -207,7 +207,7 @@ final class AvailabilityTests: XCTestCase {
         env.getCurrentEngagement = {
             .mock(status: .transferring, capabilities: .init(text: true))
         }
-        env.listQueues = { callback in
+        env.getQueues = { callback in
             callback([], nil)
         }
         var logger = CoreSdkClient.Logger.failing
@@ -216,7 +216,7 @@ final class AvailabilityTests: XCTestCase {
         logger.warningClosure = { _, _, _, _ in }
         env.log = logger
         env.isAuthenticated = { true }
-        env.queuesMonitor = .mock(listQueues: env.listQueues)
+        env.queuesMonitor = .mock(getQueues: env.getQueues)
         let availability = Availability(environment: env)
         var receivedResult: Result<Availability.Status, CoreSdkClient.SalemoveError>?
         availability.checkSecureConversationsAvailability(for: []) { result in

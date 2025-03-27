@@ -1,13 +1,13 @@
 #if DEBUG
 extension QueuesMonitor {
     static func mock(
-        listQueues: CoreSdkClient.ListQueues? = nil,
+        getQueues: CoreSdkClient.ListQueues? = nil,
         subscribeForQueuesUpdates: CoreSdkClient.SubscribeForQueuesUpdates? = nil,
         unsubscribeFromUpdates: CoreSdkClient.UnsubscribeFromUpdates? = nil
     ) -> Self {
         Self(
             environment: .init(
-                listQueues: listQueues ?? QueuesMonitor.Environment.mock.listQueues,
+                getQueues: getQueues ?? QueuesMonitor.Environment.mock.getQueues,
                 subscribeForQueuesUpdates: subscribeForQueuesUpdates ?? QueuesMonitor.Environment.mock.subscribeForQueuesUpdates,
                 unsubscribeFromUpdates: unsubscribeFromUpdates ?? QueuesMonitor.Environment.mock.unsubscribeFromUpdates,
                 logger: .mock
