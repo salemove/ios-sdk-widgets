@@ -2,7 +2,7 @@
 
 extension SecureConversations.Availability.Environment {
     static let failing = Self(
-        listQueues: { _ in
+        getQueues: { _ in
             fail("\(Self.self).listQueues")
         },
         isAuthenticated: {

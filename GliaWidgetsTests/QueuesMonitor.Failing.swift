@@ -3,7 +3,7 @@
 extension QueuesMonitor {
     static let failing = QueuesMonitor(
         environment: .init(
-            listQueues: CoreSdkClient.failing.listQueues,
+            getQueues: CoreSdkClient.failing.getQueues,
             subscribeForQueuesUpdates: CoreSdkClient.failing.subscribeForQueuesUpdates,
             unsubscribeFromUpdates: CoreSdkClient.failing.unsubscribeFromUpdates,
             logger: .failing

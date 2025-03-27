@@ -34,7 +34,7 @@ struct CoreSdkClient {
         _ completion: @escaping Self.QueueRequestBlock
     ) -> Void
 
-    var listQueues: ListQueues
+    var getQueues: ListQueues
 
     typealias QueueForEngagement = (
         _ options: GliaCoreSDK.QueueForEngagementOptions,

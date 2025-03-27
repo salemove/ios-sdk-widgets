@@ -86,7 +86,7 @@ extension EngagementCoordinator.Environment {
             uiScreen: environment.uiScreen,
             notificationCenter: environment.notificationCenter,
             fetchChatHistory: environment.coreSdk.fetchChatHistory,
-            listQueues: environment.coreSdk.listQueues,
+            listQueues: environment.coreSdk.getQueues,
             sendSecureMessagePayload: environment.coreSdk.sendSecureMessagePayload,
             createFileUploader: environment.createFileUploader,
             createFileUploadListModel: environment.createFileUploadListModel,
