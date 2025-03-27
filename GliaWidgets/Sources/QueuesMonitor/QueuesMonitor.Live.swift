@@ -35,7 +35,7 @@ final class QueuesMonitor {
     ///   if no queues were found among site's queues returns default queues.
     ///
     func fetchQueues(queuesIds: [String], completion: @escaping (Result<[Queue], GliaCoreError>) -> Void) {
-        environment.listQueues { [weak self] queues, error in
+        environment.getQueues { [weak self] queues, error in
             guard let self else {
                 return
             }

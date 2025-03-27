@@ -177,7 +177,7 @@ public class Glia {
             )
         )
         queuesMonitor = .init(environment: .init(
-            listQueues: environment.coreSdk.listQueues,
+            getQueues: environment.coreSdk.getQueues,
             subscribeForQueuesUpdates: environment.coreSdk.subscribeForQueuesUpdates,
             unsubscribeFromUpdates: environment.coreSdk.unsubscribeFromUpdates,
             logger: loggerPhase.logger
@@ -464,13 +464,13 @@ public class Glia {
     /// - Parameters:
     ///   - completion: A callback that will return the Result struct with `Queue` list or `GliaCoreError`.
     ///
-    public func listQueues(_ completion: @escaping (Result<[Queue], Error>) -> Void) {
+    public func getQueues(_ completion: @escaping (Result<[Queue], Error>) -> Void) {
         guard configuration != nil else {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
         }
 
-        environment.coreSdk.listQueues { queues, error in
+        environment.coreSdk.getQueues { queues, error in
             if let error {
                 completion(.failure(error))
                 return

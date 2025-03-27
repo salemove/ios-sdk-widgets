@@ -16,7 +16,7 @@ extension SecureConversations.TranscriptModel {
         var uiApplication: UIKitBased.UIApplication
         var sendSecureMessagePayload: CoreSdkClient.SendSecureMessagePayload
         var queueIds: [String]
-        var listQueues: CoreSdkClient.ListQueues
+        var getQueues: CoreSdkClient.ListQueues
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var uuid: () -> UUID
         var secureUploadFile: CoreSdkClient.SecureConversationsUploadFile
@@ -66,7 +66,7 @@ extension SecureConversations.TranscriptModel.Environment {
             uiApplication: environment.uiApplication,
             sendSecureMessagePayload: environment.sendSecureMessagePayload,
             queueIds: environment.queueIds,
-            listQueues: environment.listQueues,
+            getQueues: environment.listQueues,
             createFileUploadListModel: environment.createFileUploadListModel,
             uuid: environment.uuid,
             secureUploadFile: environment.secureUploadFile,
@@ -111,7 +111,7 @@ extension SecureConversations.TranscriptModel.Environment {
         uiApplication: UIKitBased.UIApplication = .mock,
         sendSecureMessagePayload: @escaping CoreSdkClient.SendSecureMessagePayload = { _, _, _ in .mock },
         queueIds: [String] = [],
-        listQueues: @escaping CoreSdkClient.ListQueues = { _ in },
+        getQueues: @escaping CoreSdkClient.ListQueues = { _ in },
         createFileUploadListModel: @escaping SecureConversations.FileUploadListViewModel.Create = { _ in .mock() },
         uuid: @escaping () -> UUID = { .mock },
         secureUploadFile: @escaping CoreSdkClient.SecureConversationsUploadFile = { _, _, _ in .mock },
@@ -151,7 +151,7 @@ extension SecureConversations.TranscriptModel.Environment {
             uiApplication: uiApplication,
             sendSecureMessagePayload: sendSecureMessagePayload,
             queueIds: queueIds,
-            listQueues: listQueues,
+            getQueues: getQueues,
             createFileUploadListModel: createFileUploadListModel,
             uuid: uuid,
             secureUploadFile: secureUploadFile,
