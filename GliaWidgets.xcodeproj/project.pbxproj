@@ -734,6 +734,7 @@
 		C0175A282A67D470001FACDE /* GvaPersistentButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A272A67D470001FACDE /* GvaPersistentButtonStyle.swift */; };
 		C0175A2A2A67D499001FACDE /* GvaStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A292A67D499001FACDE /* GvaStyle.swift */; };
 		C0175A2C2A67E2E9001FACDE /* Theme+Gva.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A2B2A67E2E9001FACDE /* Theme+Gva.swift */; };
+		C0193DDA2D957D1900801CF6 /* PushNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0193DD92D957D1200801CF6 /* PushNotifications.swift */; };
 		C02248A72AD53DDA00CC4930 /* LiveObservationConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02248A62AD53DDA00CC4930 /* LiveObservationConfirmation.swift */; };
 		C02248AA2AD53E6100CC4930 /* LiveObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02248A92AD53E6100CC4930 /* LiveObservation.swift */; };
 		C034EEED2CAAB525002650B8 /* EntryWidgetStyle.RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C034EEEC2CAAB525002650B8 /* EntryWidgetStyle.RemoteConfig.swift */; };
@@ -1830,6 +1831,7 @@
 		C0175A272A67D470001FACDE /* GvaPersistentButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaPersistentButtonStyle.swift; sourceTree = "<group>"; };
 		C0175A292A67D499001FACDE /* GvaStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GvaStyle.swift; sourceTree = "<group>"; };
 		C0175A2B2A67E2E9001FACDE /* Theme+Gva.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Gva.swift"; sourceTree = "<group>"; };
+		C0193DD92D957D1200801CF6 /* PushNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotifications.swift; sourceTree = "<group>"; };
 		C02248A62AD53DDA00CC4930 /* LiveObservationConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveObservationConfirmation.swift; sourceTree = "<group>"; };
 		C02248A92AD53E6100CC4930 /* LiveObservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveObservation.swift; sourceTree = "<group>"; };
 		C034EEEC2CAAB525002650B8 /* EntryWidgetStyle.RemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetStyle.RemoteConfig.swift; sourceTree = "<group>"; };
@@ -2843,6 +2845,7 @@
 		1A60AFC12566857200E53F53 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C0193DD82D957D0500801CF6 /* PushNotifications */,
 				C0AF097B2D4B746E00699E83 /* Combine */,
 				2198B7AA2CAEB13E002C442B /* QueuesMonitor */,
 				215A25922CA44D900013023E /* EngagementLauncher */,
@@ -4834,6 +4837,14 @@
 			path = GVA;
 			sourceTree = "<group>";
 		};
+		C0193DD82D957D0500801CF6 /* PushNotifications */ = {
+			isa = PBXGroup;
+			children = (
+				C0193DD92D957D1200801CF6 /* PushNotifications.swift */,
+			);
+			path = PushNotifications;
+			sourceTree = "<group>";
+		};
 		C02248A82AD53DDF00CC4930 /* LiveObservation */ = {
 			isa = PBXGroup;
 			children = (
@@ -6483,6 +6494,7 @@
 				C06A7584296EC9DC006B69A2 /* NumberSlotStyle.Accessibility.swift in Sources */,
 				8491AF212A7D1F7900CC3E72 /* ChatView.GvaGallery.swift in Sources */,
 				847956402ADED7A2004EF60C /* CallVisualizer.Action.swift in Sources */,
+				C0193DDA2D957D1900801CF6 /* PushNotifications.swift in Sources */,
 				AF10ED8D29BA210500E85309 /* SecureConversations.MessagesWithUnreadCountLoader.swift in Sources */,
 				C0D2F04A2992765F00803B47 /* VideoCallView.OperatorImageView.swift in Sources */,
 				84520BDB2B0FA15A00F97617 /* WebViewController.swift in Sources */,
