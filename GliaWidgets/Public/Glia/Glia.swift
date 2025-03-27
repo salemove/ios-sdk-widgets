@@ -130,6 +130,7 @@ public class Glia {
     var assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard
     var loggerPhase: LoggerPhase
     var queuesMonitor: QueuesMonitor
+    public let pushNotifications: PushNotifications
     var alertManager: AlertManager
     public var liveObservation: LiveObservation
     // We need to store `features` via `configure` method to use it
@@ -189,6 +190,8 @@ public class Glia {
             )
         )
         liveObservation = .init(environment: .create(with: environment))
+
+        pushNotifications = .init(environment: .create(with: environment))
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.

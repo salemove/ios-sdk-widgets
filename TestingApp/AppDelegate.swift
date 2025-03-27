@@ -1,5 +1,5 @@
 import UIKit
-import GliaCoreSDK
+import GliaWidgets
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -31,9 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
     ) {
         debugPrint("✅ Registered for remote notifications. Token='\(deviceToken.map { String(format: "%02.2hhx", $0) }.joined())'.")
-        GliaCore.sharedInstance.pushNotifications.application(
-            application,
-            didRegisterForRemoteNotificationsWithDeviceToken: deviceToken
+        Glia.sharedInstance.pushNotifications.applicationDidRegisterForRemoteNotificationsWithDeviceToken(
+            application: application,
+            deviceToken: deviceToken
         )
     }
 
