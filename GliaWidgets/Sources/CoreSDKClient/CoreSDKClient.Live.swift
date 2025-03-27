@@ -4,6 +4,7 @@ extension CoreSdkClient {
     static let live: Self = {
         .init(
             pushNotifications: .live,
+            liveObservation: .live,
             createAppDelegate: Self.AppDelegate.live,
             clearSession: GliaCore.sharedInstance.clearSession,
             localeProvider: .init(getRemoteString: GliaCore.sharedInstance.localeProvider.getRemoteString(_:)),
@@ -71,9 +72,18 @@ extension CoreSdkClient {
             unsubscribeFromPendingSecureConversationStatus: {
                 GliaCore.sharedInstance.secureConversations.unsubscribeFromPendingSecureConversationStatus($0)
             },
-            unsubscribeFromUnreadCount: GliaCore.sharedInstance.secureConversations.unsubscribeFromUnreadMessageCount
+            unsubscribeFromUnreadCount: GliaCore.sharedInstance.secureConversations.unsubscribeFromUnreadMessageCount,
+            liveObservationPause: GliaCore.sharedInstance.liveObservation.pause,
+            liveObservationResume: GliaCore.sharedInstance.liveObservation.resume
         )
     }()
+}
+
+extension CoreSdkClient.LiveObservation {
+    static let live = Self(
+        pause: GliaCore.sharedInstance.liveObservation.pause,
+        resume: GliaCore.sharedInstance.liveObservation.resume
+    )
 }
 
 extension CoreSdkClient.PushNotifications {

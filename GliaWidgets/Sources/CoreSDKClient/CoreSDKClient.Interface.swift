@@ -4,6 +4,7 @@ import GliaCoreDependency
 
 struct CoreSdkClient {
     var pushNotifications: PushNotifications
+    var liveObservation: LiveObservation
     var createAppDelegate: () -> AppDelegate
     var clearSession: () -> Void
     var localeProvider: LocaleProvider
@@ -215,6 +216,17 @@ struct CoreSdkClient {
     typealias UnsubscribeFromUnreadCount = (String) -> Void
 
     var unsubscribeFromUnreadCount: UnsubscribeFromUnreadCount
+
+    var liveObservationPause: () -> Void
+
+    var liveObservationResume: () -> Void
+}
+
+extension CoreSdkClient {
+    struct LiveObservation {
+        var pause: () -> Void
+        var resume: () -> Void
+    }
 }
 
 extension CoreSdkClient {

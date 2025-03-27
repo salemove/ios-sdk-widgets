@@ -5,6 +5,7 @@ import Foundation
 extension CoreSdkClient {
     static let mock = Self(
         pushNotifications: .mock,
+        liveObservation: .mock,
         createAppDelegate: { .mock },
         clearSession: {},
         localeProvider: .mock,
@@ -44,7 +45,16 @@ extension CoreSdkClient {
         pendingSecureConversationStatus: { $0(.success(false)) },
         observePendingSecureConversationStatus: { _ in nil },
         unsubscribeFromPendingSecureConversationStatus: { _ in },
-        unsubscribeFromUnreadCount: { _ in }
+        unsubscribeFromUnreadCount: { _ in },
+        liveObservationPause: {},
+        liveObservationResume: {}
+    )
+}
+
+extension CoreSdkClient.LiveObservation {
+    static let mock = Self(
+        pause: {},
+        resume: {}
     )
 }
 

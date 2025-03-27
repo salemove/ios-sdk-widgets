@@ -1,5 +1,5 @@
 import UIKit
-import GliaCoreSDK
+import GliaWidgets
 
 final class SensitiveDataViewController: UIViewController {
     private lazy var message: UILabel = {
@@ -22,12 +22,12 @@ final class SensitiveDataViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        GliaCore.sharedInstance.liveObservation.pause()
+        Glia.sharedInstance.liveObservation.pause()
         super.viewWillAppear(animated)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        GliaCore.sharedInstance.liveObservation.resume()
+        Glia.sharedInstance.liveObservation.resume()
         super.viewWillDisappear(animated)
     }
 
