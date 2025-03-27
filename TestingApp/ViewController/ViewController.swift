@@ -1,4 +1,3 @@
-import GliaCoreSDK
 import GliaWidgets
 import UIKit
 
@@ -166,7 +165,7 @@ private extension ViewController {
 
 
     func setupPushHandler() {
-        GliaCore.sharedInstance.pushNotifications.handler = { [weak self] push in
+        Glia.sharedInstance.pushNotifications.setPushHandler { [weak self] push in
             switch (push.type, push.timing) {
             // Open chat transcript only when the push notification has come
             // when the app is on the background and the visitor has pressed
