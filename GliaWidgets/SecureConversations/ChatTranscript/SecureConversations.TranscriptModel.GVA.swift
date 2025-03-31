@@ -105,7 +105,7 @@ private extension SecureConversations.TranscriptModel {
             animated: true
         )
 
-        _ = environment.sendSecureMessagePayload(
+        _ = environment.secureConversations.sendMessagePayload(
             outgoingMessage.payload,
             environment.queueIds
         ) { [weak self] result in

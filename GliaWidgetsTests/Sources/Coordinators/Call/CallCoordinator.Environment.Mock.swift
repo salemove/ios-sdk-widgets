@@ -3,8 +3,8 @@ import Foundation
 
 extension CallCoordinator.Environment {
     static let mock = Self(
+        secureConversations: .mock,
         fetchFile: { engagementFile, progress, completion in },
-        downloadSecureFile: { file, progress, completion in .mock },
         uploadFileToEngagement: { file, progress, completion in },
         fileManager: .mock,
         data: .mock,
@@ -32,7 +32,6 @@ extension CallCoordinator.Environment {
         flipCameraButtonStyle: .nop,
         alertManager: .mock(),
         isAuthenticated: { false },
-        secureMarkMessagesAsRead: { _ in .mock },
         markUnreadMessagesDelay: { .mock },
         combineScheduler: .mock,
         createEntryWidget: { _ in .mock() }

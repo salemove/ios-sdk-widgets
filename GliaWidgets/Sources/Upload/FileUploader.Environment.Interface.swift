@@ -20,7 +20,7 @@ extension FileUploader.Environment {
 extension FileUploader.Environment {
     static func create(with environment: SecureConversations.Coordinator.Environment) -> Self {
         .init(
-            uploadFile: .toSecureMessaging(environment.uploadSecureFile),
+            uploadFile: .toSecureMessaging(environment.secureConversations.uploadFile),
             fileManager: environment.fileManager,
             data: environment.data,
             date: environment.date,
@@ -33,7 +33,7 @@ extension FileUploader.Environment {
 
     static func create(with environment: SecureConversations.TranscriptModel.Environment) -> Self {
         .init(
-            uploadFile: .toSecureMessaging(environment.secureUploadFile),
+            uploadFile: .toSecureMessaging(environment.secureConversations.uploadFile),
             fileManager: environment.fileManager,
             data: environment.data,
             date: environment.date,

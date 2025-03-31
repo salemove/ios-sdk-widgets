@@ -5,12 +5,9 @@ extension ChatViewModel.Environment {
         fetchChatHistory: CoreSdkClient.FetchChatHistory? = nil
     ) -> Self {
         .init(
+            secureConversations: .failing,
             fetchFile: { _, _, _ in
                 fail("\(Self.self).fetchFile")
-            },
-            downloadSecureFile: { _, _, _ in
-                fail("\(Self.self).downloadSecureFile")
-                return .mock
             },
             uploadFileToEngagement: { _, _, _ in
                 fail("\(Self.self).uploadFileToEngagement")
@@ -65,7 +62,6 @@ extension ChatViewModel.Environment {
                 return false
             },
             notificationCenter: .mock,
-            secureMarkMessagesAsRead: { _ in .mock },
             markUnreadMessagesDelay: { .mock },
             combineScheduler: .mock,
             createEntryWidget: { _ in

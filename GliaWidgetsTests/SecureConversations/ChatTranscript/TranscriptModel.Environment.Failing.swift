@@ -2,12 +2,9 @@
 
 extension SecureConversations.TranscriptModel.Environment {
     static let failing = SecureConversations.TranscriptModel.Environment(
+        secureConversations: .failing,
         fetchFile: { _, _, _ in
             fail("\(Self.self).fetchFile")
-        },
-        downloadSecureFile: { _, _, _ in
-            fail("\(Self.self).downloadSecureFile")
-            return .mock
         },
         fileManager: .failing,
         data: .failing,
@@ -29,10 +26,6 @@ extension SecureConversations.TranscriptModel.Environment {
             fail("\(Self.self).fetchChatHistory")
         },
         uiApplication: .failing,
-        sendSecureMessagePayload: { _, _, _ in
-            fail("\(Self.self).sendSecureMessagePayload")
-            return .mock
-        },
         queueIds: [],
         getQueues: { _ in
             fail("\(Self.self).listQueues")
@@ -45,22 +38,11 @@ extension SecureConversations.TranscriptModel.Environment {
             fail("\(Self.self).uuid")
             return .mock
         },
-        secureUploadFile: { _, _, _ in
-            fail("\(Self.self).secureUploadFile")
-            return .mock
-        },
         fileUploadListStyle: .mock,
         fetchSiteConfigurations: { _ in
             fail("\(Self.self).fetchSiteConfigurations")
         },
-        getSecureUnreadMessageCount: { _ in
-            fail("\(Self.self).getSecureUnreadMessageCount")
-        },
         messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.TestScheduler(startDate: .mock),
-        secureMarkMessagesAsRead: { _ in
-            fail("\(Self.self).secureMarkMessagesAsRead")
-            return .mock
-        },
         interactor: .mock(),
         startSocketObservation: {
             fail("\(Self.self).startSocketObservation")

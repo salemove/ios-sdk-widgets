@@ -3,11 +3,10 @@ import Foundation
 
 extension SecureConversations.Coordinator.Environment {
     static let mock = Self(
+        secureConversations: .mock,
         queueIds: [],
         listQueues: { completion in },
-        sendSecureMessagePayload: { secureMessagePayload, queueIds, completion in .mock },
         createFileUploader: { maximumUploads, environment in .mock() },
-        uploadSecureFile: { file, progress, completion in .mock },
         fileManager: .mock,
         data: .mock,
         date: { .mock },
@@ -34,10 +33,7 @@ extension SecureConversations.Coordinator.Environment {
         getNonTransferredSecureConversationEngagement: { .mock() },
         submitSurveyAnswer: { answers, surveyId, engagementId, completion in },
         interactor: .mock(),
-        getSecureUnreadMessageCount: { callback in },
         messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock,
-        secureMarkMessagesAsRead: { callback in .mock },
-        downloadSecureFile: { file, progress, completion in .mock },
         isAuthenticated: { true },
         startSocketObservation: { },
         stopSocketObservation: { },

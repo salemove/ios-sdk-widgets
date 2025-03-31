@@ -2,11 +2,10 @@ import Foundation
 
 extension SecureConversations.Coordinator {
     struct Environment {
+        var secureConversations: CoreSdkClient.SecureConversations
         var queueIds: [String]
         var listQueues: CoreSdkClient.ListQueues
-        var sendSecureMessagePayload: CoreSdkClient.SendSecureMessagePayload
         var createFileUploader: FileUploader.Create
-        var uploadSecureFile: CoreSdkClient.SecureConversationsUploadFile
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
         var date: () -> Date
@@ -33,10 +32,7 @@ extension SecureConversations.Coordinator {
         var getNonTransferredSecureConversationEngagement: CoreSdkClient.GetCurrentEngagement
         var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
         var interactor: Interactor
-        var getSecureUnreadMessageCount: CoreSdkClient.GetSecureUnreadMessageCount
         var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
-        var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
-        var downloadSecureFile: CoreSdkClient.DownloadSecureFile
         var isAuthenticated: () -> Bool
         var startSocketObservation: CoreSdkClient.StartSocketObservation
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
@@ -80,11 +76,10 @@ extension SecureConversations.Coordinator.Environment {
         switchToEngagement: Command<EngagementKind>
     ) -> Self {
         .init(
+            secureConversations: environment.secureConversations,
             queueIds: queueIds,
             listQueues: environment.listQueues,
-            sendSecureMessagePayload: environment.sendSecureMessagePayload,
             createFileUploader: environment.createFileUploader,
-            uploadSecureFile: environment.uploadSecureFile,
             fileManager: environment.fileManager,
             data: environment.data,
             date: environment.date,
@@ -111,10 +106,7 @@ extension SecureConversations.Coordinator.Environment {
             getNonTransferredSecureConversationEngagement: environment.getNonTransferredSecureConversationEngagement,
             submitSurveyAnswer: environment.submitSurveyAnswer,
             interactor: interactor,
-            getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
             messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
-            secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
-            downloadSecureFile: environment.downloadSecureFile,
             isAuthenticated: environment.isAuthenticated,
             startSocketObservation: environment.startSocketObservation,
             stopSocketObservation: environment.stopSocketObservation,

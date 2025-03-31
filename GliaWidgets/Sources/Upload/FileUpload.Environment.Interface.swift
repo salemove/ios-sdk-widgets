@@ -10,7 +10,7 @@ extension FileUpload {
 extension FileUpload.Environment {
     enum UploadFile {
         case toEngagement(CoreSdkClient.UploadFileToEngagement)
-        case toSecureMessaging(CoreSdkClient.SecureConversationsUploadFile)
+        case toSecureMessaging(CoreSdkClient.SecureConversations.UploadFile)
     }
 
     static func create(with environment: FileUploader.Environment) -> Self {

@@ -91,10 +91,10 @@ extension SecureConversations {
 
 extension SecureConversations.PendingInteraction {
     struct Environment {
-        var observePendingSecureConversationsStatus: CoreSdkClient.ObservePendingSecureConversationStatus
-        var observeSecureConversationsUnreadMessageCount: CoreSdkClient.SubscribeForUnreadSCMessageCount
-        var unsubscribeFromUnreadCount: CoreSdkClient.UnsubscribeFromUnreadCount
-        var unsubscribeFromPendingStatus: CoreSdkClient.UnsubscribeFromPendingSCStatus
+        var observePendingSecureConversationsStatus: CoreSdkClient.SecureConversations.ObservePendingStatus
+        var observeSecureConversationsUnreadMessageCount: CoreSdkClient.SecureConversations.SubscribeForUnreadMessageCount
+        var unsubscribeFromUnreadCount: CoreSdkClient.SecureConversations.UnsubscribeFromUnreadCount
+        var unsubscribeFromPendingStatus: CoreSdkClient.SecureConversations.UnsubscribeFromPendingStatus
         var interactorPublisher: AnyPublisher<Interactor?, Never>
     }
 }
@@ -114,10 +114,10 @@ extension SecureConversations.PendingInteraction.Environment {
         client: CoreSdkClient,
         interactorPublisher: AnyPublisher<Interactor?, Never>
     ) {
-        self.observePendingSecureConversationsStatus = client.observePendingSecureConversationStatus
-        self.observeSecureConversationsUnreadMessageCount = client.subscribeForUnreadSCMessageCount
-        self.unsubscribeFromPendingStatus = client.unsubscribeFromPendingSecureConversationStatus
-        self.unsubscribeFromUnreadCount = client.unsubscribeFromUnreadCount
+        self.observePendingSecureConversationsStatus = client.secureConversations.observePendingStatus
+        self.observeSecureConversationsUnreadMessageCount = client.secureConversations.subscribeForUnreadMessageCount
+        self.unsubscribeFromPendingStatus = client.secureConversations.unsubscribeFromPendingStatus
+        self.unsubscribeFromUnreadCount = client.secureConversations.unsubscribeFromPendingStatus
         self.interactorPublisher = interactorPublisher
     }
 }

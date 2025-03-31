@@ -2,10 +2,10 @@ import Foundation
 
 extension SecureConversations.WelcomeViewModel {
     struct Environment {
+        var secureConversations: CoreSdkClient.SecureConversations
         var welcomeStyle: SecureConversations.WelcomeStyle
         var queueIds: [String]
         var listQueues: CoreSdkClient.ListQueues
-        var sendSecureMessagePayload: CoreSdkClient.SendSecureMessagePayload
         var fileUploader: FileUploader
         var uiApplication: UIKitBased.UIApplication
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
@@ -13,7 +13,6 @@ extension SecureConversations.WelcomeViewModel {
         var startSocketObservation: CoreSdkClient.StartSocketObservation
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
-        var uploadSecureFile: CoreSdkClient.SecureConversationsUploadFile
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var log: CoreSdkClient.Logger
@@ -26,10 +25,10 @@ extension SecureConversations.WelcomeViewModel.Environment {
         viewFactory: ViewFactory
     ) -> Self {
         .init(
+            secureConversations: environment.secureConversations,
             welcomeStyle: viewFactory.theme.secureConversationsWelcome,
             queueIds: environment.queueIds,
             listQueues: environment.listQueues,
-            sendSecureMessagePayload: environment.sendSecureMessagePayload,
             fileUploader: environment.createFileUploader(
                 environment.maximumUploads(),
                 .create(with: environment)
@@ -40,7 +39,6 @@ extension SecureConversations.WelcomeViewModel.Environment {
             startSocketObservation: environment.startSocketObservation,
             stopSocketObservation: environment.stopSocketObservation,
             getCurrentEngagement: environment.getCurrentEngagement,
-            uploadSecureFile: environment.uploadSecureFile,
             uploadFileToEngagement: environment.uploadFileToEngagement,
             createSendMessagePayload: environment.createSendMessagePayload,
             log: environment.log

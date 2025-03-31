@@ -3,7 +3,7 @@ import Combine
 
 extension EntryWidget {
     struct Environment {
-        var observeSecureUnreadMessageCount: CoreSdkClient.SubscribeForUnreadSCMessageCount
+        var observeSecureUnreadMessageCount: CoreSdkClient.SecureConversations.SubscribeForUnreadMessageCount
         var unsubscribeFromUpdates: CoreSdkClient.UnsubscribeFromUpdates
         var queuesMonitor: QueuesMonitor
         var engagementLauncher: EngagementLauncher

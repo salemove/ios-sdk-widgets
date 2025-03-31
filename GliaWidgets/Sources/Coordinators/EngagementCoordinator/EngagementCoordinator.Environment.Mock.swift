@@ -1,6 +1,7 @@
 #if DEBUG
 extension EngagementCoordinator.Environment {
     static let mock = Self(
+        secureConversations: .mock,
         fetchFile: { _, _, _ in },
         uploadFileToEngagement: { _, _, _ in },
         audioSession: .mock,
@@ -22,15 +23,10 @@ extension EngagementCoordinator.Environment {
         notificationCenter: .mock,
         fetchChatHistory: { _ in },
         listQueues: { _ in },
-        sendSecureMessagePayload: { _, _, _ in .mock },
         createFileUploader: FileUploader.mock,
         createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:),
-        uploadSecureFile: { _, _, _ in .mock },
-        getSecureUnreadMessageCount: { _ in },
         messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock,
-        secureMarkMessagesAsRead: { _ in .mock },
         markUnreadMessagesDelay: { .mock },
-        downloadSecureFile: { _, _, _ in .mock },
         isAuthenticated: { false },
         startSocketObservation: {},
         stopSocketObservation: {},

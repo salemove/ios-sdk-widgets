@@ -57,7 +57,7 @@ extension SecureConversationsTranscriptModelTests {
         viewModel.environment.uiApplication.open = { url in
             calls.append(.openUrl(url.absoluteString))
         }
-        viewModel.environment.sendSecureMessagePayload = { payload, _, _ in
+        viewModel.environment.secureConversations.sendMessagePayload = { payload, _, _ in
             calls.append(.sendOption(payload.content, payload.attachment?.selectedOption))
             return .mock
         }
@@ -84,7 +84,7 @@ extension SecureConversationsTranscriptModelTests {
         viewModel.environment.uiApplication.open = { url in
             calls.append(.openUrl(url.absoluteString))
         }
-        viewModel.environment.sendSecureMessagePayload = { payload, _, _ in
+        viewModel.environment.secureConversations.sendMessagePayload = { payload, _, _ in
             calls.append(.sendOption(payload.content, payload.attachment?.selectedOption))
             return .mock
         }
@@ -144,7 +144,7 @@ extension SecureConversationsTranscriptModelTests {
         modelEnv.fetchChatHistory = { $0(.success([message])) }
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.getSecureUnreadMessageCount = { $0(.success(0)) }
+        modelEnv.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
         modelEnv.startSocketObservation = {}
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
         let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
