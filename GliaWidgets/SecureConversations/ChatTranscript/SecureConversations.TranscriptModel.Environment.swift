@@ -2,8 +2,8 @@ import Foundation
 
 extension SecureConversations.TranscriptModel {
     struct Environment {
+        var secureConversations: CoreSdkClient.SecureConversations
         var fetchFile: CoreSdkClient.FetchFile
-        var downloadSecureFile: CoreSdkClient.DownloadSecureFile
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
         var date: () -> Date
@@ -14,17 +14,13 @@ extension SecureConversations.TranscriptModel {
         var loadChatMessagesFromHistory: () -> Bool
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var uiApplication: UIKitBased.UIApplication
-        var sendSecureMessagePayload: CoreSdkClient.SendSecureMessagePayload
         var queueIds: [String]
         var getQueues: CoreSdkClient.ListQueues
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var uuid: () -> UUID
-        var secureUploadFile: CoreSdkClient.SecureConversationsUploadFile
         var fileUploadListStyle: FileUploadListStyle
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
-        var getSecureUnreadMessageCount: CoreSdkClient.GetSecureUnreadMessageCount
         var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
-        var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
         var interactor: Interactor
         var startSocketObservation: CoreSdkClient.StartSocketObservation
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
@@ -52,8 +48,8 @@ extension SecureConversations.TranscriptModel.Environment {
         viewFactory: ViewFactory
     ) -> Self {
         .init(
+            secureConversations: environment.secureConversations,
             fetchFile: environment.fetchFile,
-            downloadSecureFile: environment.downloadSecureFile,
             fileManager: environment.fileManager,
             data: environment.data,
             date: environment.date,
@@ -64,18 +60,14 @@ extension SecureConversations.TranscriptModel.Environment {
             loadChatMessagesFromHistory: environment.fromHistory,
             fetchChatHistory: environment.fetchChatHistory,
             uiApplication: environment.uiApplication,
-            sendSecureMessagePayload: environment.sendSecureMessagePayload,
             queueIds: environment.queueIds,
             getQueues: environment.listQueues,
             createFileUploadListModel: environment.createFileUploadListModel,
             uuid: environment.uuid,
-            secureUploadFile: environment.secureUploadFile,
             // TODO: MOB-3763
             fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.enabled.uploadList,
             fetchSiteConfigurations: environment.fetchSiteConfigurations,
-            getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
             messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
-            secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
             interactor: environment.interactor,
             startSocketObservation: environment.startSocketObservation,
             stopSocketObservation: environment.stopSocketObservation,
@@ -97,8 +89,8 @@ extension SecureConversations.TranscriptModel.Environment {
 #if DEBUG
 extension SecureConversations.TranscriptModel.Environment {
     static func mock(
+        secureConversations: CoreSdkClient.SecureConversations = .mock,
         fetchFile: @escaping CoreSdkClient.FetchFile = { _, _, _ in },
-        downloadSecureFile: @escaping CoreSdkClient.DownloadSecureFile = { _, _, _ in .mock },
         fileManager: FoundationBased.FileManager = .mock,
         data: FoundationBased.Data = .mock,
         date: @escaping () -> Date = { .mock },
@@ -109,17 +101,13 @@ extension SecureConversations.TranscriptModel.Environment {
         loadChatMessagesFromHistory: @escaping () -> Bool = { false },
         fetchChatHistory: @escaping CoreSdkClient.FetchChatHistory = { _ in },
         uiApplication: UIKitBased.UIApplication = .mock,
-        sendSecureMessagePayload: @escaping CoreSdkClient.SendSecureMessagePayload = { _, _, _ in .mock },
         queueIds: [String] = [],
         getQueues: @escaping CoreSdkClient.ListQueues = { _ in },
         createFileUploadListModel: @escaping SecureConversations.FileUploadListViewModel.Create = { _ in .mock() },
         uuid: @escaping () -> UUID = { .mock },
-        secureUploadFile: @escaping CoreSdkClient.SecureConversationsUploadFile = { _, _, _ in .mock },
         fileUploadListStyle: FileUploadListStyle = .mock,
         fetchSiteConfigurations: @escaping CoreSdkClient.FetchSiteConfigurations = { _ in },
-        getSecureUnreadMessageCount: @escaping CoreSdkClient.GetSecureUnreadMessageCount = { _ in },
         messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler = CoreSdkClient.ReactiveSwift.TestScheduler(),
-        secureMarkMessagesAsRead: @escaping CoreSdkClient.SecureMarkMessagesAsRead = { _ in .mock },
         interactor: Interactor = .mock(),
         startSocketObservation: @escaping CoreSdkClient.StartSocketObservation = {},
         stopSocketObservation: @escaping CoreSdkClient.StopSocketObservation = {},
@@ -137,8 +125,8 @@ extension SecureConversations.TranscriptModel.Environment {
         combineScheduler: AnyCombineScheduler = .mock
     ) -> Self {
         Self(
+            secureConversations: secureConversations,
             fetchFile: fetchFile,
-            downloadSecureFile: downloadSecureFile,
             fileManager: fileManager,
             data: data,
             date: date,
@@ -149,17 +137,13 @@ extension SecureConversations.TranscriptModel.Environment {
             loadChatMessagesFromHistory: loadChatMessagesFromHistory,
             fetchChatHistory: fetchChatHistory,
             uiApplication: uiApplication,
-            sendSecureMessagePayload: sendSecureMessagePayload,
             queueIds: queueIds,
             getQueues: getQueues,
             createFileUploadListModel: createFileUploadListModel,
             uuid: uuid,
-            secureUploadFile: secureUploadFile,
             fileUploadListStyle: fileUploadListStyle,
             fetchSiteConfigurations: fetchSiteConfigurations,
-            getSecureUnreadMessageCount: getSecureUnreadMessageCount,
             messagesWithUnreadCountLoaderScheduler: messagesWithUnreadCountLoaderScheduler,
-            secureMarkMessagesAsRead: secureMarkMessagesAsRead,
             interactor: interactor,
             startSocketObservation: startSocketObservation,
             stopSocketObservation: stopSocketObservation,

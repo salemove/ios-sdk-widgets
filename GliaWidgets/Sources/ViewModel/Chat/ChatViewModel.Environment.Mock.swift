@@ -4,8 +4,8 @@ import Foundation
 
 extension ChatViewModel.Environment {
     static let mock = Self(
+        secureConversations: .mock,
         fetchFile: { _, _, _ in },
-        downloadSecureFile: { _, _, _ in .mock },
         uploadFileToEngagement: { _, _, _ in },
         fileManager: .mock,
         data: .mock,
@@ -38,7 +38,6 @@ extension ChatViewModel.Environment {
         alertManager: .mock(),
         isAuthenticated: { false },
         notificationCenter: .mock,
-        secureMarkMessagesAsRead: { _ in .mock },
         markUnreadMessagesDelay: { .mock },
         combineScheduler: .mock,
         createEntryWidget: { _ in .mock() },

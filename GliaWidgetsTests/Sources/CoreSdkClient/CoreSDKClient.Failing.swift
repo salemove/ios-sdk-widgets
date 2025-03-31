@@ -4,6 +4,7 @@ extension CoreSdkClient {
     static let failing = Self(
         pushNotifications: .failing,
         liveObservation: .failing,
+        secureConversations: .failing,
         createAppDelegate: { .failing },
         clearSession: { fail("\(Self.self).clearSession") },
         localeProvider: .failing,
@@ -33,25 +34,6 @@ extension CoreSdkClient {
             fail("\(Self.self).requestVisitorCode")
             return .init()
         },
-        sendSecureMessagePayload: { _, _, _ in
-            fail("\(Self.self).sendSecureMessagePayload")
-            return .mock
-        },
-        uploadSecureFile: { _, _, _ in
-            fail("\(Self.self).uploadSecureFile")
-            return .mock
-        },
-        getSecureUnreadMessageCount: { _ in
-            fail("\(Self.self).getSecureUnreadMessageCount")
-        },
-        secureMarkMessagesAsRead: { _ in
-            fail("\(Self.self).secureMarkMessagesAsRead")
-            return .mock
-        },
-        downloadSecureFile: { _, _, _ in
-            fail("\(Self.self).downloadSecureFile")
-            return .mock
-        },
         startSocketObservation: {
             fail("\(Self.self).startSocketObservation")
         },
@@ -75,29 +57,47 @@ extension CoreSdkClient {
         },
         unsubscribeFromUpdates: { _, _ in
             fail("\(Self.self).unsubscribeFromUpdates")
+        }
+    )
+}
+
+extension CoreSdkClient.SecureConversations {
+    static let failing = Self(
+        sendMessagePayload: { _, _, _ in
+            fail("\(Self.self).sendMessagePayload")
+            return .mock
         },
-        subscribeForUnreadSCMessageCount: { _ in
-            fail("\(Self.self).subscribeForUnreadSCMessageCount")
+        uploadFile: { _, _, _ in
+            fail("\(Self.self).uploadFile")
+            return .mock
+        },
+        getUnreadMessageCount: { _ in
+            fail("\(Self.self).getUnreadMessageCount")
+        },
+        markMessagesAsRead: { _ in
+            fail("\(Self.self).markMessagesAsRead")
+            return .mock
+        },
+        downloadFile: { _, _, _ in
+            fail("\(Self.self).downloadFile")
+            return .mock
+        },
+        subscribeForUnreadMessageCount: { _ in
+            fail("\(Self.self).subscribeForUnreadMessageCount")
             return ""
         },
-        pendingSecureConversationStatus: { _ in
-            fail("\(Self.self).pendingSecureConversationStatus")
-        },
-        observePendingSecureConversationStatus: { _ in
-            fail("\(Self.self).observePendingSecureConversationStatus")
-            return nil
-        },
-        unsubscribeFromPendingSecureConversationStatus: { _ in
-            fail("\(Self.self).unsubscribeFromPendingSecureConversationStatus")
-        },
-        unsubscribeFromUnreadCount: { _ in
+        unsubscribeFromUnreadMessageCount: { _ in
             fail("\(Self.self).unsubscribeFromUnreadCount")
         },
-        liveObservationPause: {
-            fail("\(Self.self).liveObservationPause")
+        pendingStatus: { _ in
+            fail("\(Self.self).pendingStatus")
         },
-        liveObservationResume: {
-            fail("\(Self.self).liveObservationResume")
+        observePendingStatus: { _ in
+            fail("\(Self.self).observePendingStatus")
+            return nil
+        },
+        unsubscribeFromPendingStatus: { _ in
+            fail("\(Self.self).unsubscribeFromPendingStatus")
         }
     )
 }

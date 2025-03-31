@@ -2,6 +2,7 @@ import Foundation
 
 extension ChatCoordinator {
     struct Environment {
+        var secureConversations: CoreSdkClient.SecureConversations
         var fetchFile: CoreSdkClient.FetchFile
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
         var fileManager: FoundationBased.FileManager
@@ -20,14 +21,9 @@ extension ChatCoordinator {
         var uiApplication: UIKitBased.UIApplication
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
-        var sendSecureMessagePayload: CoreSdkClient.SendSecureMessagePayload
         var queueIds: [String]
         var listQueues: CoreSdkClient.ListQueues
-        var secureUploadFile: CoreSdkClient.SecureConversationsUploadFile
-        var getSecureUnreadMessageCount: CoreSdkClient.GetSecureUnreadMessageCount
         var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
-        var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
-        var downloadSecureFile: CoreSdkClient.DownloadSecureFile
         var isAuthenticated: () -> Bool
         var interactor: Interactor
         var startSocketObservation: CoreSdkClient.StartSocketObservation
@@ -65,6 +61,7 @@ extension ChatCoordinator.Environment {
         switchToEngagement: Command<EngagementKind>
     ) -> Self {
         .init(
+            secureConversations: environment.secureConversations,
             fetchFile: environment.fetchFile,
             uploadFileToEngagement: environment.uploadFileToEngagement,
             fileManager: environment.fileManager,
@@ -83,14 +80,9 @@ extension ChatCoordinator.Environment {
             uiApplication: environment.uiApplication,
             fetchChatHistory: environment.fetchChatHistory,
             createFileUploadListModel: environment.createFileUploadListModel,
-            sendSecureMessagePayload: environment.sendSecureMessagePayload,
             queueIds: interactor.queueIds ?? [],
             listQueues: environment.listQueues,
-            secureUploadFile: environment.uploadSecureFile,
-            getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
             messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
-            secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
-            downloadSecureFile: environment.downloadSecureFile,
             isAuthenticated: environment.isAuthenticated,
             interactor: interactor,
             startSocketObservation: environment.startSocketObservation,
@@ -117,6 +109,7 @@ extension ChatCoordinator.Environment {
 
     static func create(with environment: SecureConversations.Coordinator.Environment) -> Self {
         .init(
+            secureConversations: environment.secureConversations,
             fetchFile: environment.fetchFile,
             uploadFileToEngagement: environment.uploadFileToEngagement,
             fileManager: environment.fileManager,
@@ -135,14 +128,9 @@ extension ChatCoordinator.Environment {
             uiApplication: environment.uiApplication,
             fetchChatHistory: environment.fetchChatHistory,
             createFileUploadListModel: environment.createFileUploadListModel,
-            sendSecureMessagePayload: environment.sendSecureMessagePayload,
             queueIds: environment.queueIds,
             listQueues: environment.listQueues,
-            secureUploadFile: environment.uploadSecureFile,
-            getSecureUnreadMessageCount: environment.getSecureUnreadMessageCount,
             messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
-            secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
-            downloadSecureFile: environment.downloadSecureFile,
             isAuthenticated: environment.isAuthenticated,
             interactor: environment.interactor,
             startSocketObservation: environment.startSocketObservation,

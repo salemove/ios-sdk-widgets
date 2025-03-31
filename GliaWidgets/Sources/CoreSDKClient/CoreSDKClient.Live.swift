@@ -5,6 +5,7 @@ extension CoreSdkClient {
         .init(
             pushNotifications: .live,
             liveObservation: .live,
+            secureConversations: .live,
             createAppDelegate: Self.AppDelegate.live,
             clearSession: GliaCore.sharedInstance.clearSession,
             localeProvider: .init(getRemoteString: GliaCore.sharedInstance.localeProvider.getRemoteString(_:)),
@@ -50,11 +51,6 @@ extension CoreSdkClient {
                 }
             },
             requestVisitorCode: GliaCore.sharedInstance.callVisualizer.requestVisitorCode(completion:),
-            sendSecureMessagePayload: GliaCore.sharedInstance.secureConversations.send(secureMessagePayload:queueIds:completion:),
-            uploadSecureFile: GliaCore.sharedInstance.secureConversations.uploadFile(_:progress:completion:),
-            getSecureUnreadMessageCount: GliaCore.sharedInstance.secureConversations.getUnreadMessageCount(completion:),
-            secureMarkMessagesAsRead: GliaCore.sharedInstance.secureConversations.markMessagesAsRead(completion:),
-            downloadSecureFile: GliaCore.sharedInstance.secureConversations.downloadFile(_:progress:completion:),
             startSocketObservation: GliaCore.sharedInstance.startSocketObservation,
             stopSocketObservation: GliaCore.sharedInstance.stopSocketObservation,
             createSendMessagePayload: CoreSdkClient.SendMessagePayload.init(content:attachment:),
@@ -65,18 +61,24 @@ extension CoreSdkClient {
                 )
             },
             subscribeForQueuesUpdates: GliaCore.sharedInstance.subscribeForQueuesUpdates(forQueues:completion:),
-            unsubscribeFromUpdates: GliaCore.sharedInstance.unsubscribeFromUpdates(queueCallbackId:onError:),
-            subscribeForUnreadSCMessageCount: GliaCore.sharedInstance.secureConversations.subscribeToUnreadMessageCount(completion:),
-            pendingSecureConversationStatus: GliaCore.sharedInstance.secureConversations.pendingSecureConversationStatus,
-            observePendingSecureConversationStatus: GliaCore.sharedInstance.secureConversations.subscribeToPendingSecureConversationStatus,
-            unsubscribeFromPendingSecureConversationStatus: {
-                GliaCore.sharedInstance.secureConversations.unsubscribeFromPendingSecureConversationStatus($0)
-            },
-            unsubscribeFromUnreadCount: GliaCore.sharedInstance.secureConversations.unsubscribeFromUnreadMessageCount,
-            liveObservationPause: GliaCore.sharedInstance.liveObservation.pause,
-            liveObservationResume: GliaCore.sharedInstance.liveObservation.resume
+            unsubscribeFromUpdates: GliaCore.sharedInstance.unsubscribeFromUpdates(queueCallbackId:onError:)
         )
     }()
+}
+
+extension CoreSdkClient.SecureConversations {
+    static let live = Self(
+        sendMessagePayload: GliaCore.sharedInstance.secureConversations.send(secureMessagePayload:queueIds:completion:),
+        uploadFile: GliaCore.sharedInstance.secureConversations.uploadFile(_:progress:completion:),
+        getUnreadMessageCount: GliaCore.sharedInstance.secureConversations.getUnreadMessageCount(completion:),
+        markMessagesAsRead: GliaCore.sharedInstance.secureConversations.markMessagesAsRead(completion:),
+        downloadFile: GliaCore.sharedInstance.secureConversations.downloadFile(_:progress:completion:),
+        subscribeForUnreadMessageCount: GliaCore.sharedInstance.secureConversations.subscribeToUnreadMessageCount(completion:),
+        unsubscribeFromUnreadMessageCount: GliaCore.sharedInstance.secureConversations.unsubscribeFromUnreadMessageCount,
+        pendingStatus: GliaCore.sharedInstance.secureConversations.pendingSecureConversationStatus,
+        observePendingStatus: GliaCore.sharedInstance.secureConversations.subscribeToPendingSecureConversationStatus,
+        unsubscribeFromPendingStatus: { GliaCore.sharedInstance.secureConversations.unsubscribeFromPendingSecureConversationStatus($0) }
+    )
 }
 
 extension CoreSdkClient.LiveObservation {

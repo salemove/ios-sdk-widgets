@@ -3,7 +3,7 @@ import Foundation
 extension FileDownload {
     struct Environment {
         var fetchFile: CoreSdkClient.FetchFile
-        var downloadSecureFile: CoreSdkClient.DownloadSecureFile
+        var downloadSecureFile: CoreSdkClient.SecureConversations.DownloadFile
         var fileManager: FoundationBased.FileManager
         var gcd: GCD
         var uiScreen: UIKitBased.UIScreen
@@ -14,7 +14,7 @@ extension FileDownload {
 extension FileDownload.Environment {
     enum FetchFile {
         case fromEngagement(CoreSdkClient.FetchFile)
-        case fromSecureMessaging(CoreSdkClient.DownloadSecureFile)
+        case fromSecureMessaging(CoreSdkClient.SecureConversations.DownloadFile)
     }
 }
 extension FileDownload.Environment.FetchFile {
@@ -58,7 +58,7 @@ extension FileDownload.Environment.FetchFile {
 
     struct Environment {
         var fetchFile: CoreSdkClient.FetchFile
-        var downloadSecureFile: CoreSdkClient.DownloadSecureFile
+        var downloadSecureFile: CoreSdkClient.SecureConversations.DownloadFile
     }
 }
 

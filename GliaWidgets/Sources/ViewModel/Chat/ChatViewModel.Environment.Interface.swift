@@ -2,8 +2,8 @@ import Foundation
 
 extension EngagementViewModel {
     struct Environment {
+        var secureConversations: CoreSdkClient.SecureConversations
         var fetchFile: CoreSdkClient.FetchFile
-        var downloadSecureFile: CoreSdkClient.DownloadSecureFile
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
@@ -30,7 +30,6 @@ extension EngagementViewModel {
         var alertManager: AlertManager
         var isAuthenticated: () -> Bool
         var notificationCenter: FoundationBased.NotificationCenter
-        var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
         var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
         var combineScheduler: AnyCombineScheduler
         var createEntryWidget: EntryWidgetBuilder
@@ -46,8 +45,8 @@ extension EngagementViewModel.Environment {
         viewFactory: ViewFactory
     ) -> EngagementViewModel.Environment {
         .init(
+            secureConversations: environment.secureConversations,
             fetchFile: environment.fetchFile,
-            downloadSecureFile: environment.downloadSecureFile,
             uploadFileToEngagement: environment.uploadFileToEngagement,
             fileManager: environment.fileManager,
             data: environment.data,
@@ -74,7 +73,6 @@ extension EngagementViewModel.Environment {
             alertManager: environment.alertManager,
             isAuthenticated: environment.isAuthenticated,
             notificationCenter: environment.notificationCenter,
-            secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
             markUnreadMessagesDelay: environment.markUnreadMessagesDelay,
             combineScheduler: environment.combineScheduler,
             createEntryWidget: environment.createEntryWidget,
@@ -89,8 +87,8 @@ extension EngagementViewModel.Environment {
         viewFactory: ViewFactory
     ) -> EngagementViewModel.Environment {
         .init(
+            secureConversations: environment.secureConversations,
             fetchFile: environment.fetchFile,
-            downloadSecureFile: environment.downloadSecureFile,
             uploadFileToEngagement: environment.uploadFileToEngagement,
             fileManager: environment.fileManager,
             data: environment.data,
@@ -117,7 +115,6 @@ extension EngagementViewModel.Environment {
             alertManager: environment.alertManager,
             isAuthenticated: environment.isAuthenticated,
             notificationCenter: environment.notificationCenter,
-            secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
             markUnreadMessagesDelay: environment.markUnreadMessagesDelay,
             combineScheduler: environment.combineScheduler,
             createEntryWidget: environment.createEntryWidget,

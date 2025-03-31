@@ -111,7 +111,7 @@ private extension SecureConversations.WelcomeViewModel {
             fileUploadListModel.attachment
         )
 
-        _ = environment.sendSecureMessagePayload(
+        _ = environment.secureConversations.sendMessagePayload(
             payload,
             queueIds
         ) { [weak self] result in
@@ -447,7 +447,7 @@ extension SecureConversations.WelcomeViewModel {
         fileUploadListModel.environment.uploader.environment.uploadFile =
         isEngagementOngoing ?
             .toEngagement(environment.uploadFileToEngagement) :
-            .toSecureMessaging(environment.uploadSecureFile)
+            .toSecureMessaging(environment.secureConversations.uploadFile)
     }
 
     private func removeUpload(_ upload: FileUpload) {

@@ -2,8 +2,8 @@ import Foundation
 
 extension CallCoordinator {
     struct Environment {
+        var secureConversations: CoreSdkClient.SecureConversations
         var fetchFile: CoreSdkClient.FetchFile
-        var downloadSecureFile: CoreSdkClient.DownloadSecureFile
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
@@ -31,7 +31,6 @@ extension CallCoordinator {
         var flipCameraButtonStyle: FlipCameraButtonStyle
         var alertManager: AlertManager
         var isAuthenticated: () -> Bool
-        var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
         var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
         var combineScheduler: AnyCombineScheduler
         var createEntryWidget: EntryWidgetBuilder
@@ -41,8 +40,8 @@ extension CallCoordinator {
 extension CallCoordinator.Environment {
     static func create(with environment: EngagementCoordinator.Environment) -> Self {
         .init(
+            secureConversations: environment.secureConversations,
             fetchFile: environment.fetchFile,
-            downloadSecureFile: environment.downloadSecureFile,
             uploadFileToEngagement: environment.uploadFileToEngagement,
             fileManager: environment.fileManager,
             data: environment.data,
@@ -70,7 +69,6 @@ extension CallCoordinator.Environment {
             flipCameraButtonStyle: environment.flipCameraButtonStyle,
             alertManager: environment.alertManager,
             isAuthenticated: environment.isAuthenticated,
-            secureMarkMessagesAsRead: environment.secureMarkMessagesAsRead,
             markUnreadMessagesDelay: environment.markUnreadMessagesDelay,
             combineScheduler: environment.combineScheduler,
             createEntryWidget: environment.createEntryWidget

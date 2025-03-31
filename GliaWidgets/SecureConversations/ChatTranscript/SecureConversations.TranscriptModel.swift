@@ -294,7 +294,7 @@ extension SecureConversations.TranscriptModel {
             animated: true
         )
 
-        _ = environment.sendSecureMessagePayload(
+        _ = environment.secureConversations.sendMessagePayload(
             outgoingMessage.payload,
             environment.queueIds
         ) { [weak self] result in
@@ -352,7 +352,7 @@ extension SecureConversations.TranscriptModel {
         appendItem(item, to: pendingSection, animated: true)
         action?(.scrollToBottom(animated: true))
 
-        _ = environment.sendSecureMessagePayload(
+        _ = environment.secureConversations.sendMessagePayload(
             outgoingMessage.payload,
             environment.queueIds
         ) { [weak self] result in
@@ -781,7 +781,7 @@ extension SecureConversations.TranscriptModel: ApplicationVisibilityTracker {
     }
 
     fileprivate func performMarkMessagesAsReadRequest() {
-        _ = environment.secureMarkMessagesAsRead { [weak self] result in
+        _ = environment.secureConversations.markMessagesAsRead { [weak self] result in
             guard let self else { return }
 
             switch result {
@@ -879,7 +879,7 @@ extension SecureConversations.TranscriptModel {
             .uploader
             .uploads
             .map { [environment] upload in
-                upload.environment.uploadFile = .toSecureMessaging(environment.secureUploadFile)
+                upload.environment.uploadFile = .toSecureMessaging(environment.secureConversations.uploadFile)
                 return upload
             }
         event(.messageTextChanged(chatModel.messageText))

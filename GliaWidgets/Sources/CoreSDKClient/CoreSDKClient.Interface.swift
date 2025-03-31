@@ -5,6 +5,7 @@ import GliaCoreDependency
 struct CoreSdkClient {
     var pushNotifications: PushNotifications
     var liveObservation: LiveObservation
+    var secureConversations: SecureConversations
     var createAppDelegate: () -> AppDelegate
     var clearSession: () -> Void
     var localeProvider: LocaleProvider
@@ -129,38 +130,6 @@ struct CoreSdkClient {
 
     var requestVisitorCode: RequestVisitorCode
 
-    typealias SendSecureMessagePayload = (
-        _ secureMessagePayload: SendMessagePayload,
-        _ queueIds: [String],
-        _ completion: @escaping (Result<Self.Message, Error>) -> Void
-    ) -> Self.Cancellable
-
-    var sendSecureMessagePayload: SendSecureMessagePayload
-
-    typealias SecureConversationsUploadFile = (
-        _ file: EngagementFile,
-        _ progress: EngagementFileProgressBlock?,
-        _ completion: @escaping (Result<EngagementFileInformation, Swift.Error>) -> Void
-    ) -> Self.Cancellable
-
-    var uploadSecureFile: SecureConversationsUploadFile
-
-    typealias GetSecureUnreadMessageCount = (_ callback: @escaping (Result<Int, Error>) -> Void) -> Void
-
-    var getSecureUnreadMessageCount: GetSecureUnreadMessageCount
-
-    typealias SecureMarkMessagesAsRead = (_ callback: @escaping (Result<Void, Error>) -> Void) -> Cancellable
-
-    var secureMarkMessagesAsRead: SecureMarkMessagesAsRead
-
-    typealias DownloadSecureFile = (
-        _ file: EngagementFile,
-        _ progress: @escaping EngagementFileProgressBlock,
-        _ completion: @escaping (Result<EngagementFileData, Error>) -> Void
-    ) -> Cancellable
-
-    var downloadSecureFile: DownloadSecureFile
-
     typealias StartSocketObservation = () -> Void
 
     var startSocketObservation: StartSocketObservation
@@ -194,32 +163,61 @@ struct CoreSdkClient {
     ) -> Void
 
     var unsubscribeFromUpdates: UnsubscribeFromUpdates
+}
 
-    typealias SubscribeForUnreadSCMessageCount = (
+extension CoreSdkClient {
+    struct SecureConversations {
+        var sendMessagePayload: SendPayload
+        var uploadFile: UploadFile
+        var getUnreadMessageCount: GetUnreadMessageCount
+        var markMessagesAsRead: MarkMessagesAsRead
+        var downloadFile: DownloadFile
+        var subscribeForUnreadMessageCount: SubscribeForUnreadMessageCount
+        var unsubscribeFromUnreadMessageCount: UnsubscribeFromUnreadCount
+        var pendingStatus: PendingStatus
+        var observePendingStatus: ObservePendingStatus
+        var unsubscribeFromPendingStatus: UnsubscribeFromPendingStatus
+    }
+}
+
+extension CoreSdkClient.SecureConversations {
+    typealias Cancellable = GliaCore.Cancellable
+
+    typealias Message = GliaCoreSDK.Message
+
+    typealias SendPayload = (
+        _ secureMessagePayload: SendMessagePayload,
+        _ queueIds: [String],
+        _ completion: @escaping (Result<Message, Error>) -> Void
+    ) -> Cancellable
+
+    typealias UploadFile = (
+        _ file: EngagementFile,
+        _ progress: EngagementFileProgressBlock?,
+        _ completion: @escaping (Result<EngagementFileInformation, Swift.Error>) -> Void
+    ) -> Cancellable
+
+    typealias GetUnreadMessageCount = (_ callback: @escaping (Result<Int, Error>) -> Void) -> Void
+
+    typealias MarkMessagesAsRead = (_ callback: @escaping (Result<Void, Error>) -> Void) -> Cancellable
+
+    typealias DownloadFile = (
+        _ file: EngagementFile,
+        _ progress: @escaping EngagementFileProgressBlock,
+        _ completion: @escaping (Result<EngagementFileData, Error>) -> Void
+    ) -> Cancellable
+
+    typealias SubscribeForUnreadMessageCount = (
         _ completion: @escaping (Result<Int?, Error>) -> Void
     ) -> String?
 
-    var subscribeForUnreadSCMessageCount: SubscribeForUnreadSCMessageCount
-
-    typealias PendingSecureConversationStatus = (_ callback: @escaping (Result<Bool, Error>) -> Void) -> Void
-
-    var pendingSecureConversationStatus: PendingSecureConversationStatus
-
-    typealias ObservePendingSecureConversationStatus = (_ callback: @escaping (Result<Bool, Error>) -> Void) -> String?
-
-    var observePendingSecureConversationStatus: ObservePendingSecureConversationStatus
-
-    typealias UnsubscribeFromPendingSCStatus = (String) -> Void
-
-    var unsubscribeFromPendingSecureConversationStatus: UnsubscribeFromPendingSCStatus
-
     typealias UnsubscribeFromUnreadCount = (String) -> Void
 
-    var unsubscribeFromUnreadCount: UnsubscribeFromUnreadCount
+    typealias PendingStatus = (_ callback: @escaping (Result<Bool, Error>) -> Void) -> Void
 
-    var liveObservationPause: () -> Void
+    typealias ObservePendingStatus = (_ callback: @escaping (Result<Bool, Error>) -> Void) -> String?
 
-    var liveObservationResume: () -> Void
+    typealias UnsubscribeFromPendingStatus = (String) -> Void
 }
 
 extension CoreSdkClient {
