@@ -77,7 +77,7 @@ extension SecureConversationsTranscriptModelTests {
             }
         }
 
-        viewModel.environment.sendSecureMessagePayload = { _, _, completion in
+        viewModel.environment.secureConversations.sendMessagePayload = { _, _, completion in
             completion(.failure(GliaError.internalError))
             return .mock
         }
@@ -134,7 +134,7 @@ private extension SecureConversationsTranscriptModelTests {
         modelEnv.getQueues = { callback in callback([], nil) }
         modelEnv.uiApplication.canOpenURL = { _ in true }
         modelEnv.maximumUploads = { 2 }
-        modelEnv.sendSecureMessagePayload = { _, _, _ in .mock }
+        modelEnv.secureConversations.sendMessagePayload = { _, _, _ in .mock }
         modelEnv.createEntryWidget = { _ in .mock() }
         let availabilityEnv = SecureConversations.Availability.Environment(
             getQueues: modelEnv.getQueues,

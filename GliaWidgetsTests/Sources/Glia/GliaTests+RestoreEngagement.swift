@@ -25,16 +25,11 @@ extension GliaTests {
         sdkEnv.gcd.mainQueue.async = { $0() }
         let siteMock = try CoreSdkClient.Site.mock()
         sdkEnv.coreSdk.fetchSiteConfigurations = { callback in callback(.success(siteMock)) }
-        sdkEnv.coreSdk.pendingSecureConversationStatus = { _ in }
-        sdkEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
-        sdkEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
-        sdkEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
-        sdkEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
-        sdkEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let window = UIWindow(frame: .zero)
         window.rootViewController = .init()
@@ -106,17 +101,13 @@ extension GliaTests {
         sdkEnv.coreSdk.createLogger = { _ in logger }
         let siteMock = try CoreSdkClient.Site.mock()
         sdkEnv.coreSdk.fetchSiteConfigurations = { callback in callback(.success(siteMock)) }
-        sdkEnv.coreSdk.pendingSecureConversationStatus = { _ in }
-        sdkEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
         let uuidGen = UUID.incrementing
-        sdkEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in uuidGen().uuidString }
-        sdkEnv.coreSdk.observePendingSecureConversationStatus = { _ in uuidGen().uuidString }
-        sdkEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
-        sdkEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        sdkEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
+        sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in uuidGen().uuidString }
         sdkEnv.gcd.mainQueue.async = { $0() }
 
         let window = UIWindow(frame: .zero)
@@ -164,17 +155,13 @@ extension GliaTests {
         sdkEnv.coreSdk.createLogger = { _ in logger }
         let siteMock = try CoreSdkClient.Site.mock()
         sdkEnv.coreSdk.fetchSiteConfigurations = { callback in callback(.success(siteMock)) }
-        sdkEnv.coreSdk.pendingSecureConversationStatus = { _ in }
-        sdkEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
         let uuidGen = UUID.incrementing
-        sdkEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in uuidGen().uuidString }
-        sdkEnv.coreSdk.observePendingSecureConversationStatus = { _ in uuidGen().uuidString }
-        sdkEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
-        sdkEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        sdkEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
+        sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in uuidGen().uuidString }
         sdkEnv.gcd.mainQueue.async = { $0() }
 
         let window = UIWindow(frame: .zero)
@@ -224,21 +211,18 @@ extension GliaTests {
         sdkEnv.coreSdk.createLogger = { _ in logger }
         let siteMock = try CoreSdkClient.Site.mock()
         sdkEnv.coreSdk.fetchSiteConfigurations = { callback in callback(.success(siteMock)) }
-        sdkEnv.coreSdk.pendingSecureConversationStatus = { _ in }
-        sdkEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
+        sdkEnv.coreSdk.secureConversations.pendingStatus = { _ in }
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
         sdkEnv.snackBar.present = { _, _, _, _, _, _, _ in }
         let uuidGen = UUID.incrementing
-        sdkEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in uuidGen().uuidString }
-        sdkEnv.coreSdk.observePendingSecureConversationStatus = { callback in
+        sdkEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
+        sdkEnv.coreSdk.secureConversations.observePendingStatus = { callback in
             callback(.success(true))
             return uuidGen().uuidString
         }
-        sdkEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
-        sdkEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
         sdkEnv.gcd.mainQueue.async = { $0() }
 
         let window = UIWindow(frame: .zero)

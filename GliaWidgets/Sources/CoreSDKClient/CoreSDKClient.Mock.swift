@@ -6,6 +6,7 @@ extension CoreSdkClient {
     static let mock = Self(
         pushNotifications: .mock,
         liveObservation: .mock,
+        secureConversations: .mock,
         createAppDelegate: { .mock },
         clearSession: {},
         localeProvider: .mock,
@@ -29,25 +30,28 @@ extension CoreSdkClient {
         authentication: { _ in .mock },
         fetchChatHistory: { _ in },
         requestVisitorCode: { _ in .mock },
-        sendSecureMessagePayload: { _, _, _ in .mock },
-        uploadSecureFile: { _, _, _ in .mock },
-        getSecureUnreadMessageCount: { _ in },
-        secureMarkMessagesAsRead: { _ in .mock },
-        downloadSecureFile: { _, _, _ in .mock },
         startSocketObservation: {},
         stopSocketObservation: {},
         createSendMessagePayload: { _, _ in .mock() },
         createLogger: { _ in Logger.mock },
         getCameraDeviceManageable: { .mock },
         subscribeForQueuesUpdates: { _, _ in UUID.mock.uuidString },
-        unsubscribeFromUpdates: { _, _ in },
-        subscribeForUnreadSCMessageCount: { _ in UUID.mock.uuidString },
-        pendingSecureConversationStatus: { $0(.success(false)) },
-        observePendingSecureConversationStatus: { _ in nil },
-        unsubscribeFromPendingSecureConversationStatus: { _ in },
-        unsubscribeFromUnreadCount: { _ in },
-        liveObservationPause: {},
-        liveObservationResume: {}
+        unsubscribeFromUpdates: { _, _ in }
+    )
+}
+
+extension CoreSdkClient.SecureConversations {
+    static let mock = Self(
+        sendMessagePayload: { _, _, _ in .mock },
+        uploadFile: { _, _, _ in .mock },
+        getUnreadMessageCount: { _ in },
+        markMessagesAsRead: { _ in .mock },
+        downloadFile: { _, _, _ in .mock },
+        subscribeForUnreadMessageCount: { _ in UUID.mock.uuidString },
+        unsubscribeFromUnreadMessageCount: { _ in },
+        pendingStatus: { $0(.success(false)) },
+        observePendingStatus: { _ in nil },
+        unsubscribeFromPendingStatus: { _ in }
     )
 }
 

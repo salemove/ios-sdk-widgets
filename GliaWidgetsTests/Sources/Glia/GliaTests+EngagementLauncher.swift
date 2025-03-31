@@ -392,12 +392,7 @@ private extension GliaTests {
         }
         sdkEnv.isAuthenticated = { false }
         sdkEnv.coreSdk.getCurrentEngagement = { nil }
-        sdkEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
-        sdkEnv.coreSdk.pendingSecureConversationStatus = { _ in }
-        sdkEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
-        sdkEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
-        sdkEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
-        sdkEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         let window = UIWindow(frame: .zero)
         window.rootViewController = UIViewController()
         window.makeKeyAndVisible()

@@ -23,12 +23,9 @@ extension GliaTests {
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
         sdkEnv.coreSdk.createLogger = { _ in logger }
-        sdkEnv.coreSdk.pendingSecureConversationStatus = { _ in }
-        sdkEnv.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
-        sdkEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
-        sdkEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
-        sdkEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
-        sdkEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        sdkEnv.coreSdk.secureConversations.pendingStatus = { _ in }
+        sdkEnv.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
@@ -63,10 +60,7 @@ extension GliaTests {
         gliaEnv.conditionalCompilation.isDebug = { false }
         gliaEnv.coreSdk.createLogger = { _ in logger }
         gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        gliaEnv.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
-        gliaEnv.coreSdk.observePendingSecureConversationStatus = { _ in nil }
-        gliaEnv.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
-        gliaEnv.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         let sdk = Glia(environment: gliaEnv)
         sdk.queuesMonitor = .mock()
         sdk.environment.conditionalCompilation.isDebug = { true }
@@ -103,7 +97,6 @@ extension GliaTests {
         logger.prefixedClosure = { _ in logger }
         logger.configureLocalLogLevelClosure = { _ in }
         logger.configureRemoteLogLevelClosure = { _ in }
-        environment.coreSdk.pendingSecureConversationStatus = { _ in }
         environment.coreSdk.createLogger = { _ in logger }
         environment.conditionalCompilation.isDebug = { false }
         environment.createRootCoordinator = { _, _, _, _, _, _, _ in
@@ -115,11 +108,8 @@ extension GliaTests {
         }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
-        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
-        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
-        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
-        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
         try sdk.configure(
@@ -164,13 +154,9 @@ extension GliaTests {
             completion(.success(()))
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        environment.coreSdk.pendingSecureConversationStatus = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
-        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
-        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
-        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
-        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -218,13 +204,10 @@ extension GliaTests {
             completion(.success(()))
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        environment.coreSdk.pendingSecureConversationStatus = { _ in }
+        environment.coreSdk.secureConversations.pendingStatus = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
-        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
-        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
-        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
-        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
@@ -288,12 +271,8 @@ extension GliaTests {
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        environment.coreSdk.pendingSecureConversationStatus = { _ in }
-        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
-        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
-        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
-        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
-        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -345,12 +324,8 @@ extension GliaTests {
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        environment.coreSdk.pendingSecureConversationStatus = { _ in }
-        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
-        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
-        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
-        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
-        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -398,18 +373,14 @@ extension GliaTests {
             )
         }
 
-        environment.coreSdk.pendingSecureConversationStatus = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
-        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
-        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
-        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
-        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -462,17 +433,13 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.pendingSecureConversationStatus = { _ in }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
-        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
-        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
-        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
-        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -509,23 +476,22 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.pendingSecureConversationStatus = { $0(.success(true)) }
+        environment.coreSdk.secureConversations.pendingStatus = { $0(.success(true)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
         let uuIdGen = UUID.incrementing
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.subscribeForUnreadSCMessageCount = {
+        environment.coreSdk.secureConversations.subscribeForUnreadMessageCount = {
             $0(.success(0))
             return uuIdGen().uuidString
         }
-        environment.coreSdk.observePendingSecureConversationStatus = {
+        environment.coreSdk.secureConversations.observePendingStatus = {
             $0(.success(true))
             return uuIdGen().uuidString
         }
-        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
-        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        environment.coreSdk.secureConversations.unsubscribeFromPendingStatus = { _ in }
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
         try sdk.configure(
@@ -559,17 +525,14 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.pendingSecureConversationStatus = { $0(.success(false)) }
+        environment.coreSdk.secureConversations.pendingStatus = { $0(.success(false)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
-        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
-        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
-        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
-        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -604,23 +567,22 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.pendingSecureConversationStatus = { $0(.success(true)) }
+        environment.coreSdk.secureConversations.pendingStatus = { $0(.success(true)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
         let uuIdGen = UUID.incrementing
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.subscribeForUnreadSCMessageCount = { callback in
+        environment.coreSdk.secureConversations.subscribeForUnreadMessageCount = { callback in
             callback(.success(0))
             return uuIdGen().uuidString
         }
-        environment.coreSdk.observePendingSecureConversationStatus = { callback in
+        environment.coreSdk.secureConversations.observePendingStatus = { callback in
             callback(.success(true))
             return uuIdGen().uuidString
         }
-        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
-        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        environment.coreSdk.secureConversations.unsubscribeFromPendingStatus = { _ in }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -654,16 +616,14 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.pendingSecureConversationStatus = { $0(.success(false)) }
+        environment.coreSdk.secureConversations.pendingStatus = { $0(.success(false)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
-        environment.coreSdk.getSecureUnreadMessageCount = { $0(.success(0)) }
-        environment.coreSdk.subscribeForUnreadSCMessageCount = { _ in nil }
-        environment.coreSdk.observePendingSecureConversationStatus = { _ in nil }
-        environment.coreSdk.unsubscribeFromPendingSecureConversationStatus = { _ in }
-        environment.coreSdk.unsubscribeFromUnreadCount = { _ in }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in nil }
+        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         environment.coreSdk.fetchSiteConfigurations = { _ in }
 
         let sdk = Glia(environment: environment)

@@ -2,6 +2,7 @@
 
 extension EngagementCoordinator.Environment {
     static let failing = Self(
+        secureConversations: .failing,
         fetchFile: { _, _, _ in
             fail("\(Self.self).fetchFile")
         },
@@ -46,10 +47,6 @@ extension EngagementCoordinator.Environment {
         notificationCenter: .failing,
         fetchChatHistory: { _ in fail("\(Self.self).fetchChatHistory") },
         listQueues: { _ in fail("\(Self.self).listQueues") },
-        sendSecureMessagePayload: { _, _, _ in
-            fail("\(Self.self).sendSecureMessagePayload")
-            return .mock
-        },
         createFileUploader: { _, _ in
             .failing
         },
@@ -57,24 +54,9 @@ extension EngagementCoordinator.Environment {
             fail("\(Self.self).createFileUploadListModel")
             return .mock()
         },
-        uploadSecureFile: { _, _, _ in
-            fail("\(Self.self).uploadSecureFile")
-            return .mock
-        },
-        getSecureUnreadMessageCount: { _ in
-            fail("\(Self.self).getSecureUnreadMessageCount")
-        },
         messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock,
-        secureMarkMessagesAsRead: { _ in
-            fail("\(Self.self).secureMarkMessagesAsRead")
-            return .mock
-        },
         markUnreadMessagesDelay: {
             fail("\(Self.self).markUnreadMessagesDelay")
-            return .mock
-        },
-        downloadSecureFile: { _, _, _ in
-            fail("\(Self.self).downloadSecureFile")
             return .mock
         },
         isAuthenticated: {

@@ -30,8 +30,8 @@ class ChatViewModelTests: XCTestCase {
             chatType: .nonAuthenticated,
             replaceExistingEnqueueing: false,
             environment: .init(
+                secureConversations: .failing,
                 fetchFile: { _, _, _ in },
-                downloadSecureFile: { _, _, _ in .mock },
                 uploadFileToEngagement: { _, _, _ in },
                 fileManager: fileManager,
                 data: .failing,
@@ -72,7 +72,6 @@ class ChatViewModelTests: XCTestCase {
                 alertManager: .mock(),
                 isAuthenticated: { false },
                 notificationCenter: .mock,
-                secureMarkMessagesAsRead: { _ in .mock },
                 markUnreadMessagesDelay: { .mock },
                 combineScheduler: .mock,
                 createEntryWidget: { _ in .mock() },
@@ -1297,7 +1296,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.notificationCenter.publisherForNotification = { _ in
             Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        viewModelEnv.secureMarkMessagesAsRead = { completion in
+        viewModelEnv.secureConversations.markMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
             return .mock
@@ -1331,7 +1330,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.notificationCenter.publisherForNotification = { _ in
             Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        viewModelEnv.secureMarkMessagesAsRead = { completion in
+        viewModelEnv.secureConversations.markMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
             return .mock
@@ -1365,7 +1364,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.notificationCenter.publisherForNotification = { _ in
             Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        viewModelEnv.secureMarkMessagesAsRead = { completion in
+        viewModelEnv.secureConversations.markMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
             return .mock
@@ -1394,7 +1393,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.notificationCenter.publisherForNotification = { _ in
             Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        viewModelEnv.secureMarkMessagesAsRead = { completion in
+        viewModelEnv.secureConversations.markMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
             return .mock
@@ -1422,7 +1421,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.notificationCenter.publisherForNotification = { _ in
             Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        viewModelEnv.secureMarkMessagesAsRead = { completion in
+        viewModelEnv.secureConversations.markMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
             return .mock
@@ -1449,7 +1448,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.notificationCenter.publisherForNotification = { type in
             Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        viewModelEnv.secureMarkMessagesAsRead = { completion in
+        viewModelEnv.secureConversations.markMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
             return .mock
@@ -1481,7 +1480,7 @@ class ChatViewModelTests: XCTestCase {
             }
             return Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        viewModelEnv.secureMarkMessagesAsRead = { completion in
+        viewModelEnv.secureConversations.markMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
             return .mock
@@ -1513,7 +1512,7 @@ class ChatViewModelTests: XCTestCase {
             }
             return Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        viewModelEnv.secureMarkMessagesAsRead = { completion in
+        viewModelEnv.secureConversations.markMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
             return .mock
@@ -1542,7 +1541,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.notificationCenter.publisherForNotification = { type in
             Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        viewModelEnv.secureMarkMessagesAsRead = { completion in
+        viewModelEnv.secureConversations.markMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
             return .mock

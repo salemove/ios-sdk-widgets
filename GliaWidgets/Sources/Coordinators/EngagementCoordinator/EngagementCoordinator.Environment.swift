@@ -2,6 +2,7 @@ import Foundation
 
 extension EngagementCoordinator {
     struct Environment {
+        var secureConversations: CoreSdkClient.SecureConversations
         var fetchFile: CoreSdkClient.FetchFile
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
         var audioSession: Glia.Environment.AudioSession
@@ -23,15 +24,10 @@ extension EngagementCoordinator {
         var notificationCenter: FoundationBased.NotificationCenter
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var listQueues: CoreSdkClient.ListQueues
-        var sendSecureMessagePayload: CoreSdkClient.SendSecureMessagePayload
         var createFileUploader: FileUploader.Create
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
-        var uploadSecureFile: CoreSdkClient.SecureConversationsUploadFile
-        var getSecureUnreadMessageCount: CoreSdkClient.GetSecureUnreadMessageCount
         var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
-        var secureMarkMessagesAsRead: CoreSdkClient.SecureMarkMessagesAsRead
         var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
-        var downloadSecureFile: CoreSdkClient.DownloadSecureFile
         var isAuthenticated: () -> Bool
         var startSocketObservation: CoreSdkClient.StartSocketObservation
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
@@ -66,6 +62,7 @@ extension EngagementCoordinator.Environment {
         hasPendingInteraction: @escaping () -> Bool
     ) -> Self {
         .init(
+            secureConversations: environment.coreSdk.secureConversations,
             fetchFile: environment.coreSdk.fetchFile,
             uploadFileToEngagement: environment.coreSdk.uploadFileToEngagement,
             audioSession: environment.audioSession,
@@ -87,15 +84,10 @@ extension EngagementCoordinator.Environment {
             notificationCenter: environment.notificationCenter,
             fetchChatHistory: environment.coreSdk.fetchChatHistory,
             listQueues: environment.coreSdk.getQueues,
-            sendSecureMessagePayload: environment.coreSdk.sendSecureMessagePayload,
             createFileUploader: environment.createFileUploader,
             createFileUploadListModel: environment.createFileUploadListModel,
-            uploadSecureFile: environment.coreSdk.uploadSecureFile,
-            getSecureUnreadMessageCount: environment.coreSdk.getSecureUnreadMessageCount,
             messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
-            secureMarkMessagesAsRead: environment.coreSdk.secureMarkMessagesAsRead,
             markUnreadMessagesDelay: markUnreadMessagesDelay,
-            downloadSecureFile: environment.coreSdk.downloadSecureFile,
             isAuthenticated: environment.isAuthenticated,
             startSocketObservation: environment.coreSdk.startSocketObservation,
             stopSocketObservation: environment.coreSdk.stopSocketObservation,

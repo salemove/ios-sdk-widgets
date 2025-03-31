@@ -11,10 +11,10 @@ extension SecureConversations.WelcomeViewModel {
 
 extension SecureConversations.WelcomeViewModel.Environment {
     static func mock(
+        secureConversations: CoreSdkClient.SecureConversations = .mock,
         welcomeStyle: SecureConversations.WelcomeStyle = Theme().secureConversationsWelcomeStyle,
         queueIds: [String] = [],
         listQueues: @escaping CoreSdkClient.ListQueues = { _ in },
-        sendSecureMessagePayload: @escaping CoreSdkClient.SendSecureMessagePayload = { _, _, _ in return .mock },
         fileUploader: FileUploader = .mock(),
         uiApplication: UIKitBased.UIApplication = .mock,
         createFileUploadListModel: @escaping SecureConversations.FileUploadListViewModel.Create = { _ in .mock() },
@@ -22,16 +22,15 @@ extension SecureConversations.WelcomeViewModel.Environment {
         startSocketObservation: @escaping CoreSdkClient.StartSocketObservation = {},
         stopSocketObservation: @escaping CoreSdkClient.StopSocketObservation = {},
         getCurrentEngagement: @escaping CoreSdkClient.GetCurrentEngagement = { .mock() },
-        uploadSecureFile: @escaping CoreSdkClient.SecureConversationsUploadFile = { _, _, _ in .mock },
         uploadFileToEngagement: @escaping CoreSdkClient.UploadFileToEngagement = { _, _, _ in },
         createSendMessagePayload: @escaping CoreSdkClient.CreateSendMessagePayload = { _, _ in .mock() },
         log: CoreSdkClient.Logger = .mock
     ) -> SecureConversations.WelcomeViewModel.Environment {
         .init(
+            secureConversations: secureConversations,
             welcomeStyle: welcomeStyle,
             queueIds: queueIds,
             listQueues: listQueues,
-            sendSecureMessagePayload: sendSecureMessagePayload,
             fileUploader: fileUploader,
             uiApplication: uiApplication,
             createFileUploadListModel: createFileUploadListModel,
@@ -39,7 +38,6 @@ extension SecureConversations.WelcomeViewModel.Environment {
             startSocketObservation: startSocketObservation,
             stopSocketObservation: stopSocketObservation,
             getCurrentEngagement: getCurrentEngagement,
-            uploadSecureFile: uploadSecureFile,
             uploadFileToEngagement: uploadFileToEngagement,
             createSendMessagePayload: createSendMessagePayload,
             log: log

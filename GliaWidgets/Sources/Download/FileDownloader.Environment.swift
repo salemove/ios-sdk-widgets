@@ -3,7 +3,7 @@ import Foundation
 extension FileDownloader {
     struct Environment {
         var fetchFile: CoreSdkClient.FetchFile
-        var downloadSecureFile: CoreSdkClient.DownloadSecureFile
+        var downloadSecureFile: CoreSdkClient.SecureConversations.DownloadFile
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data
         var date: () -> Date
@@ -18,7 +18,7 @@ extension FileDownloader.Environment {
     static func create(with environment: SecureConversations.TranscriptModel.Environment) -> Self {
         .init(
             fetchFile: environment.fetchFile,
-            downloadSecureFile: environment.downloadSecureFile,
+            downloadSecureFile: environment.secureConversations.downloadFile,
             fileManager: environment.fileManager,
             data: environment.data,
             date: environment.date,
@@ -32,7 +32,7 @@ extension FileDownloader.Environment {
     static func create(with environment: ChatViewModel.Environment) -> Self {
         .init(
             fetchFile: environment.fetchFile,
-            downloadSecureFile: environment.downloadSecureFile,
+            downloadSecureFile: environment.secureConversations.downloadFile,
             fileManager: environment.fileManager,
             data: environment.data,
             date: environment.date,

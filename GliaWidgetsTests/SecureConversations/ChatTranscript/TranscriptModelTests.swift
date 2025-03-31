@@ -78,7 +78,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.getQueues = { _ in }
         modelEnv.fetchChatHistory = { _ in }
-        modelEnv.getSecureUnreadMessageCount = { _ in }
+        modelEnv.secureConversations.getUnreadMessageCount = { _ in }
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
@@ -133,7 +133,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             calls.append(.loadSiteConfiguration)
         }
 
-        modelEnv.getSecureUnreadMessageCount = { _ in calls.append(.getSecureUnreadMessageCount)
+        modelEnv.secureConversations.getUnreadMessageCount = { _ in calls.append(.getSecureUnreadMessageCount)
         }
         modelEnv.startSocketObservation = {}
         let availabilityEnv = SecureConversations.Availability.Environment(
@@ -167,7 +167,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.getQueues = { _ in }
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.getSecureUnreadMessageCount = { _ in }
+        modelEnv.secureConversations.getUnreadMessageCount = { _ in }
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
@@ -217,7 +217,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.getQueues = { _ in }
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.getSecureUnreadMessageCount = { _ in }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
         let availabilityEnv = SecureConversations.Availability.Environment(
@@ -261,7 +260,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.getQueues = { _ in }
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.getSecureUnreadMessageCount = { _ in }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
         let availabilityEnv = SecureConversations.Availability.Environment(
@@ -301,7 +299,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.getQueues = { _ in }
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.getSecureUnreadMessageCount = { _ in }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
         let availabilityEnv = SecureConversations.Availability.Environment(
@@ -338,7 +335,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.getQueues = { _ in }
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.getSecureUnreadMessageCount = { _ in }
         modelEnv.createSendMessagePayload = {
             .mock(messageIdSuffix: "mock", content: $0, attachment: $1)
         }
@@ -346,7 +342,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createEntryWidget = { _ in .mock() }
         enum Call: Equatable { case sendSecureMessagePayload }
         var calls: [Call] = []
-        modelEnv.sendSecureMessagePayload = { _, _, _ in
+        modelEnv.secureConversations.sendMessagePayload = { _, _, _ in
             calls.append(.sendSecureMessagePayload)
             return .mock
         }
@@ -388,7 +384,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createEntryWidget = { _ in .mock() }
         enum Call: Equatable { case getSecureUnreadMessageCount }
         var calls: [Call] = []
-        modelEnv.getSecureUnreadMessageCount = { _ in
+        modelEnv.secureConversations.getUnreadMessageCount = { _ in
             calls.append(.getSecureUnreadMessageCount)
         }
 
@@ -427,7 +423,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             callback(.success([.mock(sender: .operator)]))
         }
         modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.getSecureUnreadMessageCount = { callback in
+        modelEnv.secureConversations.getUnreadMessageCount = { callback in
             callback(.success(1))
         }
         modelEnv.startSocketObservation = {}
@@ -485,7 +481,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.maximumUploads = { 2 }
-        modelEnv.getSecureUnreadMessageCount = { callback in
+        modelEnv.secureConversations.getUnreadMessageCount = { callback in
             callback(.success(0))
         }
         modelEnv.startSocketObservation = {}
@@ -553,7 +549,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.maximumUploads = { 2 }
-        modelEnv.getSecureUnreadMessageCount = { callback in
+        modelEnv.secureConversations.getUnreadMessageCount = { callback in
             callback(.success(0))
         }
         modelEnv.startSocketObservation = {}
@@ -794,7 +790,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.getQueues = { _ in }
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.fetchChatHistory = { $0(.success([.mock(), .mock(), .mock()])) }
-        modelEnv.getSecureUnreadMessageCount = { $0(.success(5)) }
+        modelEnv.secureConversations.getUnreadMessageCount = { $0(.success(5)) }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
@@ -804,7 +800,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.uiApplication.applicationState = { .active }
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
-        modelEnv.secureMarkMessagesAsRead = { completion in
+        modelEnv.secureConversations.markMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
             return .mock
@@ -851,7 +847,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.getQueues = { _ in }
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.fetchChatHistory = { $0(.success([.mock(), .mock(), .mock()])) }
-        modelEnv.getSecureUnreadMessageCount = { $0(.success(5)) }
+        modelEnv.secureConversations.getUnreadMessageCount = { $0(.success(5)) }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
@@ -860,7 +856,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
-        modelEnv.secureMarkMessagesAsRead = { completion in
+        modelEnv.secureConversations.markMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
             return .mock
@@ -903,7 +899,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.getQueues = { _ in }
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.fetchChatHistory = { $0(.success([.mock(), .mock(), .mock()])) }
-        modelEnv.getSecureUnreadMessageCount = { $0(.success(5)) }
+        modelEnv.secureConversations.getUnreadMessageCount = { $0(.success(5)) }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
@@ -913,7 +909,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
-        modelEnv.secureMarkMessagesAsRead = { completion in
+        modelEnv.secureConversations.markMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
             return .mock
@@ -968,14 +964,14 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.getSecureUnreadMessageCount = { $0(.success(0)) }
+        modelEnv.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
         modelEnv.maximumUploads = { 2 }
         modelEnv.startSocketObservation = {}
         modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, callback in callback() }
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.createEntryWidget = { _ in .mock() }
         modelEnv.uiApplication.applicationState = { .active }
-        modelEnv.secureMarkMessagesAsRead = { completion in
+        modelEnv.secureConversations.markMessagesAsRead = { completion in
             calls.append(.secureMarkMessagesAsRead)
             completion(.success(()))
             return .mock
