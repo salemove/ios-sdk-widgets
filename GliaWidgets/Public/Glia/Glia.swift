@@ -132,7 +132,8 @@ public class Glia {
     var queuesMonitor: QueuesMonitor
     public let pushNotifications: PushNotifications
     var alertManager: AlertManager
-    public var liveObservation: LiveObservation
+    public let liveObservation: LiveObservation
+    public let secureConversation: SecureConversations
     // We need to store `features` via `configure` method to use it
     // when engagement gets restored for Direct ID authentication flow.
     var features: Features?
@@ -192,6 +193,8 @@ public class Glia {
         liveObservation = .init(environment: .create(with: environment))
 
         pushNotifications = .init(environment: .create(with: environment))
+
+        secureConversation = .init(environment: .create(with: environment))
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
