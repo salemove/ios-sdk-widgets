@@ -63,6 +63,9 @@ public struct AlertConfiguration: Equatable {
     /// Configuration of the current conversation leaving confirmation alert.
     public var leaveCurrentConversation: ConfirmationAlertConfiguration
 
+    /// Configuration of the intermediate push notifications permissions alert
+    public var pushNotificationsPermissions: ConfirmationAlertConfiguration
+
     /// - Parameters:
     ///   - leaveQueue: Configuration of the queue leaving confirmation alert.
     ///   - endEngagement: Configuration of the engagement ending confirmation alert.
@@ -107,7 +110,8 @@ public struct AlertConfiguration: Equatable {
         unsupportedGvaBroadcastError: MessageAlertConfiguration,
         liveObservationConfirmation: ConfirmationAlertConfiguration,
         expiredAccessTokenError: MessageAlertConfiguration,
-        leaveCurrentConversation: ConfirmationAlertConfiguration
+        leaveCurrentConversation: ConfirmationAlertConfiguration,
+        pushNotificationsPermissions: ConfirmationAlertConfiguration
     ) {
         self.leaveQueue = leaveQueue
         self.endEngagement = endEngagement
@@ -130,5 +134,6 @@ public struct AlertConfiguration: Equatable {
         self.liveObservationConfirmation = liveObservationConfirmation
         self.expiredAccessTokenError = expiredAccessTokenError
         self.leaveCurrentConversation = leaveCurrentConversation
+        self.pushNotificationsPermissions = pushNotificationsPermissions
     }
 }

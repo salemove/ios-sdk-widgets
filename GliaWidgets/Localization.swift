@@ -724,6 +724,12 @@ internal enum Localization {
       }
     }
   }
+  internal enum PushNotificationsAlert {
+    /// Please allow push notifications to receive new messages alerts.
+    internal static var message: String { Localization.tr("Localizable", "push_notifications_alert.message", fallback: "Please allow push notifications to receive new messages alerts.") }
+    /// Allow Push Notifications
+    internal static var title: String { Localization.tr("Localizable", "push_notifications_alert.title", fallback: "Allow Push Notifications") }
+  }
   internal enum ScreenSharing {
     internal enum VisitorScreen {
       internal enum Disclaimer {

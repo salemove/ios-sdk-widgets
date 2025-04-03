@@ -86,6 +86,8 @@ extension AlertManager.AlertTypeComposer {
             )
         case let .leaveCurrentConversation(confirmed, declined):
             return leaveCurrentConversationAlertType(confirmed: confirmed, declined: declined)
+        case let .requestPushNoticationsPermissions(confirmed, declined):
+            return requestPNPermissionsAlertType(accepted: confirmed, declined: declined)
         }
     }
 
@@ -340,6 +342,17 @@ private extension AlertManager.AlertTypeComposer {
             conf: theme.alertConfiguration.leaveCurrentConversation,
             accessibilityIdentifier: "alert_confirmation_leaveCurrentConversation",
             confirmed: confirmed,
+            declined: declined
+        )
+    }
+
+    func requestPNPermissionsAlertType(
+        accepted: @escaping () -> Void,
+        declined: @escaping () -> Void
+    ) -> AlertType {
+        .requestPushNoticationsPermissions(
+            conf: theme.alertConfiguration.pushNotificationsPermissions,
+            accepted: accepted,
             declined: declined
         )
     }
