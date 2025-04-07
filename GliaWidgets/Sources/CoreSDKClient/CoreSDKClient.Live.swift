@@ -61,7 +61,8 @@ extension CoreSdkClient {
                 )
             },
             subscribeForQueuesUpdates: GliaCore.sharedInstance.subscribeForQueuesUpdates(forQueues:completion:),
-            unsubscribeFromUpdates: GliaCore.sharedInstance.unsubscribeFromUpdates(queueCallbackId:onError:)
+            unsubscribeFromUpdates: GliaCore.sharedInstance.unsubscribeFromUpdates(queueCallbackId:onError:),
+            configureLogLevel: GliaCore.sharedInstance.configureLogLevel(level:)
         )
     }()
 }

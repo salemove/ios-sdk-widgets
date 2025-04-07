@@ -57,6 +57,9 @@ extension CoreSdkClient {
         },
         unsubscribeFromUpdates: { _, _ in
             fail("\(Self.self).unsubscribeFromUpdates")
+        },
+        configureLogLevel: { _ in
+            fail("\(Self.self).configureLogLevel")
         }
     )
 }
