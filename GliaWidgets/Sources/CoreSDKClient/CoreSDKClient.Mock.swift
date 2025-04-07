@@ -36,7 +36,8 @@ extension CoreSdkClient {
         createLogger: { _ in Logger.mock },
         getCameraDeviceManageable: { .mock },
         subscribeForQueuesUpdates: { _, _ in UUID.mock.uuidString },
-        unsubscribeFromUpdates: { _, _ in }
+        unsubscribeFromUpdates: { _, _ in },
+        configureLogLevel: { _ in }
     )
 }
 
