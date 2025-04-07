@@ -158,6 +158,16 @@ extension Theme {
             showsPoweredBy: showsPoweredBy
         )
 
+        let pushNotificationsPermissions = ConfirmationAlertConfiguration(
+            // TODO: MOB-4254 Add actual localization strings taken from tech writers
+            title: Localization.PushNotificationsAlert.title,
+            message: Localization.PushNotificationsAlert.message,
+            negativeTitle: Localization.General.cancel,
+            positiveTitle: Localization.General.allow,
+            switchButtonBackgroundColors: false,
+            showsPoweredBy: showsPoweredBy
+        )
+
         return AlertConfiguration(
             leaveQueue: leaveQueue,
             endEngagement: endEngagement,
@@ -179,7 +189,8 @@ extension Theme {
             unsupportedGvaBroadcastError: unsupportedGvaBroadcastError,
             liveObservationConfirmation: liveObservationConfirmation,
             expiredAccessTokenError: expiredAccessTokenError,
-            leaveCurrentConversation: leaveCurrentConversation
+            leaveCurrentConversation: leaveCurrentConversation,
+            pushNotificationsPermissions: pushNotificationsPermissions
         )
     }
 }

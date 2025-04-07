@@ -274,3 +274,6 @@
 "entry_widget.ongoing_engagement.button.accessibility.hint" = "Returns to ongoing engagement";
 "entry_widget.call_visualizer.description" = "You are already in contact with the support team";
 "entry_widget.call_visualizer.button.label" = "Call Visualizer";
+
+"push_notifications_alert.title" = "Allow Push Notifications";
+"push_notifications_alert.message" = "Please allow push notifications to receive new messages alerts.";

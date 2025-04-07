@@ -52,6 +52,11 @@ enum AlertType {
         accessibilityIdentifier: String?,
         dismissed: (() -> Void)?
     )
+    case requestPushNoticationsPermissions(
+        conf: ConfirmationAlertConfiguration,
+        accepted: () -> Void,
+        declined: () -> Void
+    )
 
     /// Indicating presentation priority of an alert.
     /// Based on comparing values we can decide whether an alert can be replaced with another alert.
@@ -59,7 +64,7 @@ enum AlertType {
         switch self {
         case .singleAction, .singleMediaUpgrade, .screenShareOffer, .criticalError:
             return .highest
-        case .confirmation, .liveObservationConfirmation:
+        case .confirmation, .liveObservationConfirmation, .requestPushNoticationsPermissions:
             return .high
         case .message, .systemAlert, .view, .leaveConversation:
             return .regular
