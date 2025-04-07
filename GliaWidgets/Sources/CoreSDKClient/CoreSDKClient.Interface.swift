@@ -163,6 +163,8 @@ struct CoreSdkClient {
     ) -> Void
 
     var unsubscribeFromUpdates: UnsubscribeFromUpdates
+
+    var configureLogLevel: (LogLevel) -> Void
 }
 
 extension CoreSdkClient {

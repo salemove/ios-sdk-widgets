@@ -487,6 +487,16 @@ public class Glia {
             completion(.failure(GliaError.internalError))
         }
     }
+
+    /// Configure log level
+    ///
+    /// - parameters:
+    /// - level: One of the 'LogLevel' values that the logger should use
+    ///
+    @_spi(CortexFinancial)
+    public func configureLogLevel(level: GliaCoreSDK.LogLevel) {
+        environment.coreSdk.configureLogLevel(level)
+    }
 }
 
 // MARK: - Internal
