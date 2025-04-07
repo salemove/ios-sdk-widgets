@@ -22,7 +22,8 @@ extension AlertConfiguration {
             unsupportedGvaBroadcastError: .mock(),
             liveObservationConfirmation: .mock(),
             expiredAccessTokenError: .mock(),
-            leaveCurrentConversation: .mock()
+            leaveCurrentConversation: .mock(),
+            pushNotificationsPermissions: .mock()
         )
     }
 }

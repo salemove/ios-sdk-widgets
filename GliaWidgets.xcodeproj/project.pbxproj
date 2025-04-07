@@ -168,6 +168,7 @@
 		210150742CC13E8900294BA4 /* QueuesMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210150732CC13E8900294BA4 /* QueuesMonitorTests.swift */; };
 		210150782CC14E8200294BA4 /* QueuesMonitor.Environment.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210150752CC140A600294BA4 /* QueuesMonitor.Environment.Mock.swift */; };
 		210150792CC14E8200294BA4 /* QueuesMonitor.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2100B47D2CB6A37A00AC7527 /* QueuesMonitor.Mock.swift */; };
+		2130F5F22D9D7E740068E46B /* AlertViewController+RequestPushNotificationsPermissions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2130F5F12D9D7E740068E46B /* AlertViewController+RequestPushNotificationsPermissions.swift */; };
 		215A25902CA44D8A0013023E /* Glia+EngagementLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215A258F2CA44D8A0013023E /* Glia+EngagementLauncher.swift */; };
 		215A25932CA44D900013023E /* EngagementLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215A25912CA44D900013023E /* EngagementLauncher.swift */; };
 		215A25982CABC7DF0013023E /* EngagementLauncherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215A25972CABC7DF0013023E /* EngagementLauncherTests.swift */; };
@@ -1268,6 +1269,7 @@
 		2100B4862CB91E7B00AC7527 /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
 		210150732CC13E8900294BA4 /* QueuesMonitorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueuesMonitorTests.swift; sourceTree = "<group>"; };
 		210150752CC140A600294BA4 /* QueuesMonitor.Environment.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueuesMonitor.Environment.Mock.swift; sourceTree = "<group>"; };
+		2130F5F12D9D7E740068E46B /* AlertViewController+RequestPushNotificationsPermissions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+RequestPushNotificationsPermissions.swift"; sourceTree = "<group>"; };
 		215A258F2CA44D8A0013023E /* Glia+EngagementLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Glia+EngagementLauncher.swift"; sourceTree = "<group>"; };
 		215A25912CA44D900013023E /* EngagementLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EngagementLauncher.swift; sourceTree = "<group>"; };
 		215A25972CABC7DF0013023E /* EngagementLauncherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementLauncherTests.swift; sourceTree = "<group>"; };
@@ -3176,6 +3178,7 @@
 				C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */,
 				6E60DD5527146C9D001422EF /* AlertViewController+SingleAction.swift */,
 				C0B325E62AC5A8FA006BC430 /* AlertViewController+LiveObservationConfirmation.swift */,
+				2130F5F12D9D7E740068E46B /* AlertViewController+RequestPushNotificationsPermissions.swift */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -6171,6 +6174,7 @@
 				C09046DA2B7E09D1003C437C /* UserImageStyle.RemoteConfig.swift in Sources */,
 				9A8130B527D7563000220BBD /* LocalFile.Environment.Interface.swift in Sources */,
 				9AB3401B27FB4720006E0FE2 /* OperatorTypingIndicatorStyle.Accessibility.swift in Sources */,
+				2130F5F22D9D7E740068E46B /* AlertViewController+RequestPushNotificationsPermissions.swift in Sources */,
 				1AA738B625790D9900E1120F /* ActionButton.swift in Sources */,
 				84D2293028C61FF300F64FE7 /* WKNavigationPolicyProvider.Mock.swift in Sources */,
 				1A0C144425B868FC00B00695 /* CallCoordinator.swift in Sources */,

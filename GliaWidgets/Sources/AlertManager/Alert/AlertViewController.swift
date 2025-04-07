@@ -95,6 +95,7 @@ class AlertViewController: UIViewController, Replaceable {
         )
     }
 
+    // swiftlint:disable:next function_body_length
     private func makeAlertView() -> AlertView? {
         switch type {
         case let .message(conf, accessibilityIdentifier, dismissed):
@@ -157,6 +158,12 @@ class AlertViewController: UIViewController, Replaceable {
                 with: conf,
                 accessibilityIdentifier: accessibilityIdentifier,
                 dismissed: dismissed
+            )
+        case let .requestPushNoticationsPermissions(conf, accepted, declined):
+            return makeRequestPNPermissionsAlertView(
+                with: conf,
+                accepted: accepted,
+                declined: declined
             )
         }
     }
