@@ -1,4 +1,3 @@
-import GliaCoreSDK
 import XCTest
 
 @testable import GliaWidgets

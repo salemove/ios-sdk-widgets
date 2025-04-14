@@ -1,6 +1,5 @@
 import UIKit
 import GliaWidgets
-import GliaCoreSDK
 
 extension ViewController {
     @IBAction func showUpdateVisitorInfo() {

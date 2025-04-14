@@ -1,6 +1,5 @@
 import XCTest
 import Combine
-import GliaCoreSDK
 
 @testable import GliaWidgets
 

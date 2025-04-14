@@ -1,5 +1,4 @@
 import Foundation
-import GliaCoreSDK
 
 // MARK: Custom cards
 extension SecureConversations.TranscriptModel {

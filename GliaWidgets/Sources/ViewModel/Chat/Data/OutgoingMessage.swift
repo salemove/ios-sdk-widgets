@@ -1,5 +1,4 @@
 import Foundation
-import GliaCoreSDK
 
 class OutgoingMessage: Equatable {
     let files: [LocalFile]
