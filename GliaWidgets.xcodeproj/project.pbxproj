@@ -723,6 +723,7 @@
 		C00DE0AB2CD3847B005956B4 /* EntryWidgetViewLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00DE0AA2CD3847B005956B4 /* EntryWidgetViewLayoutTests.swift */; };
 		C00DE0AD2CD3BD53005956B4 /* EntryWidgetViewVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00DE0AC2CD3BD53005956B4 /* EntryWidgetViewVoiceOverTests.swift */; };
 		C00DE0AF2CD3BF35005956B4 /* EntryWidgetViewDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00DE0AE2CD3BF35005956B4 /* EntryWidgetViewDynamicTypeFontTests.swift */; };
+		C010DAC62DAD0D0900DA54DA /* Glia.LocaleProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C010DAC52DAD0D0200DA54DA /* Glia.LocaleProvider.swift */; };
 		C0175A0F2A55A624001FACDE /* ChatMessagaEntryViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A0E2A55A624001FACDE /* ChatMessagaEntryViewTests.swift */; };
 		C0175A112A55AA3E001FACDE /* ChatMessageEntryView.+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A102A55AA3E001FACDE /* ChatMessageEntryView.+Mock.swift */; };
 		C0175A132A56E29E001FACDE /* ChatMessageCardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0175A122A56E29E001FACDE /* ChatMessageCardType.swift */; };
@@ -1821,6 +1822,7 @@
 		C00DE0AA2CD3847B005956B4 /* EntryWidgetViewLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetViewLayoutTests.swift; sourceTree = "<group>"; };
 		C00DE0AC2CD3BD53005956B4 /* EntryWidgetViewVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetViewVoiceOverTests.swift; sourceTree = "<group>"; };
 		C00DE0AE2CD3BF35005956B4 /* EntryWidgetViewDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetViewDynamicTypeFontTests.swift; sourceTree = "<group>"; };
+		C010DAC52DAD0D0200DA54DA /* Glia.LocaleProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Glia.LocaleProvider.swift; sourceTree = "<group>"; };
 		C0175A0E2A55A624001FACDE /* ChatMessagaEntryViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessagaEntryViewTests.swift; sourceTree = "<group>"; };
 		C0175A102A55AA3E001FACDE /* ChatMessageEntryView.+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatMessageEntryView.+Mock.swift"; sourceTree = "<group>"; };
 		C0175A122A56E29E001FACDE /* ChatMessageCardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessageCardType.swift; sourceTree = "<group>"; };
@@ -3892,6 +3894,7 @@
 			children = (
 				AFBBF5772851C391004993B3 /* Glia.Deprecated.swift */,
 				7594098E298D3929008B173A /* Glia.OpaqueAuthentication.swift */,
+				C010DAC52DAD0D0200DA54DA /* Glia.LocaleProvider.swift */,
 				1A60AF7D25656F0400E53F53 /* Glia.swift */,
 				C0D6CA622C19C59100D4709B /* Glia.OpaqueAuthentication.Environment.swift */,
 				755D187E29A6B1B90009F5E8 /* Glia+EngagementSetup.swift */,
@@ -6393,6 +6396,7 @@
 				AF3D520D2983B3DD00AD8E69 /* FileUploader.Environment.Interface.swift in Sources */,
 				1ABD6C5925B5758000D56EFA /* BubbleStyle.swift in Sources */,
 				C0D2F08B29A4E95700803B47 /* ConnectView.Mock.swift in Sources */,
+				C010DAC62DAD0D0900DA54DA /* Glia.LocaleProvider.swift in Sources */,
 				8491AF272A8E3F6A00CC3E72 /* CGColor+Extensions.swift in Sources */,
 				C0175A252A66A431001FACDE /* GvaPersistentButtonOptionView.swift in Sources */,
 				AF10ED9129BF85C700E85309 /* UnreadMessageDividerStyle.swift in Sources */,
