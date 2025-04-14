@@ -1,5 +1,4 @@
 import Foundation
-import GliaCoreSDK
 
 private extension String {
     static let gvaOptionUrlTargetModal = "modal"
