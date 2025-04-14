@@ -134,6 +134,7 @@ public class Glia {
     var alertManager: AlertManager
     public let liveObservation: LiveObservation
     public let secureConversation: SecureConversations
+    public let localeProvider: LocaleProvider
     // We need to store `features` via `configure` method to use it
     // when engagement gets restored for Direct ID authentication flow.
     var features: Features?
@@ -195,6 +196,8 @@ public class Glia {
         pushNotifications = .init(environment: .create(with: environment))
 
         secureConversation = .init(environment: .create(with: environment))
+
+        localeProvider = .init(locale: environment.coreSdk.localeProvider.getRemoteString)
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
