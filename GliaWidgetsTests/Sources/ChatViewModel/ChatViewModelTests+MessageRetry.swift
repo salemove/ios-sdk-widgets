@@ -1,6 +1,5 @@
 @testable import GliaWidgets
 import XCTest
-import GliaCoreSDK
 
 extension ChatViewModelTests {
     func testSendMessageRetrySuccess() {

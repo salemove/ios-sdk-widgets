@@ -1,5 +1,4 @@
 @testable import GliaWidgets
-import GliaCoreSDK
 import XCTest
 
 extension GliaTests {

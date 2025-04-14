@@ -1,5 +1,4 @@
 import UIKit
-import GliaCoreSDK
 
 extension CallVisualizer {
     class VisitorCodeViewModel {

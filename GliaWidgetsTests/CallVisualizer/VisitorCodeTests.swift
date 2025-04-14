@@ -1,6 +1,5 @@
 @testable import GliaWidgets
 import XCTest
-import GliaCoreSDK
 
 class VisitorCodeTests: XCTestCase {
     func test_vc_deinit() {

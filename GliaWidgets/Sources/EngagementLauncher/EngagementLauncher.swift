@@ -1,5 +1,4 @@
 import Foundation
-import GliaCoreSDK
 
  /// `EngagementLauncher`class allows launching different types of engagements, such as chat,
  /// audio calls, video calls, and secure messaging.

@@ -1,4 +1,3 @@
-import GliaCoreSDK
 import UIKit
 
 extension Survey {
