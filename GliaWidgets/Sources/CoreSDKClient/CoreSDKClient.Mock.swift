@@ -66,8 +66,12 @@ extension CoreSdkClient.LiveObservation {
 extension CoreSdkClient.PushNotifications {
     static let mock = Self(
         applicationDidRegisterForRemoteNotificationsWithDeviceToken: { _, _ in },
+        applicationDidFailToRegisterForRemoteNotificationsWithError: { _, _ in },
         setPushHandler: { _ in },
-        pushHandler: { nil }
+        pushHandler: { nil },
+        subscribeTo: { _ in },
+        userNotificationCenterWillPresent: { _, _, _ in },
+        userNotificationCenterDidReceiveResponse: { _, _, _ in }
     )
 }
 
