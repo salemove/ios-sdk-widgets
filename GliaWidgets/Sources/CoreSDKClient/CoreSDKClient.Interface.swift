@@ -235,9 +235,23 @@ extension CoreSdkClient {
             _ application: UIApplication,
             _ deviceToken: Data
         ) -> Void
-
+        var applicationDidFailToRegisterForRemoteNotificationsWithError: (
+            _ application: UIApplication,
+            _ error: any Error
+        ) -> Void
         var setPushHandler: (PushHandler?) -> Void
         var pushHandler: () -> PushHandler?
+        var subscribeTo: ([GliaCoreSDK.PushNotificationsType]) -> Void
+        var userNotificationCenterWillPresent: (
+            _ center: UNUserNotificationCenter,
+            _ willPresentNotification: UNNotification,
+            _ completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+        ) -> Void
+        var userNotificationCenterDidReceiveResponse: (
+            _ center: UNUserNotificationCenter,
+            _ didReceiveResponse: UNNotificationResponse,
+            _ completionHandler: @escaping () -> Void
+        ) -> Void
     }
 }
 

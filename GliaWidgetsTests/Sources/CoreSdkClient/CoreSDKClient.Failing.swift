@@ -120,12 +120,24 @@ extension CoreSdkClient.PushNotifications {
         applicationDidRegisterForRemoteNotificationsWithDeviceToken: { _, _ in
             fail("\(Self.self).applicationDidRegisterForRemoteNotificationsWithDeviceToken")
         },
+        applicationDidFailToRegisterForRemoteNotificationsWithError: { _, _ in
+            fail("\(Self.self).applicationDidFailToRegisterForRemoteNotificationsWithError")
+        },
         setPushHandler: { _ in
             fail("\(Self.self).setPushHandler")
         },
         pushHandler: {
             fail("\(Self.self).pushHandler")
             return nil
+        },
+        subscribeTo: { _ in
+            fail("\(Self.self).subscribeTo")
+        },
+        userNotificationCenterWillPresent: { _, _, _ in
+            fail("\(Self.self).userNotificationCenterWillPresent")
+        },
+        userNotificationCenterDidReceiveResponse: { _, _, _ in
+            fail("\(Self.self).userNotificationCenterDidReceiveResponse")
         }
     )
 }

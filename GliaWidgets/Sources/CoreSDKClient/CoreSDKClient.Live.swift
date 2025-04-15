@@ -91,10 +91,35 @@ extension CoreSdkClient.LiveObservation {
 
 extension CoreSdkClient.PushNotifications {
     static let live = Self(
-        applicationDidRegisterForRemoteNotificationsWithDeviceToken:
-            GliaCore.sharedInstance.pushNotifications.application(_:didRegisterForRemoteNotificationsWithDeviceToken:),
+        applicationDidRegisterForRemoteNotificationsWithDeviceToken: { application, token in
+            GliaCore.sharedInstance.pushNotifications.application(
+                application,
+                didRegisterForRemoteNotificationsWithDeviceToken: token
+            )
+        },
+        applicationDidFailToRegisterForRemoteNotificationsWithError: { application, error in
+            GliaCore.sharedInstance.pushNotifications.application(
+                application,
+                didFailToRegisterForRemoteNotificationsWithError: error
+            )
+        },
         setPushHandler: { GliaCore.sharedInstance.pushNotifications.handler = $0 },
-        pushHandler: { GliaCore.sharedInstance.pushNotifications.handler }
+        pushHandler: { GliaCore.sharedInstance.pushNotifications.handler },
+        subscribeTo: GliaCore.sharedInstance.pushNotifications.subscribeTo(_:),
+        userNotificationCenterWillPresent: { center, willPresent, completionHandler in
+            GliaCore.sharedInstance.pushNotifications.userNotificationCenter(
+                center,
+                willPresent: willPresent,
+                withCompletionHandler: completionHandler
+            )
+        },
+        userNotificationCenterDidReceiveResponse: { center, didReceive, completionHandler in
+            GliaCore.sharedInstance.pushNotifications.userNotificationCenter(
+                center,
+                didReceive: didReceive,
+                withCompletionHandler: completionHandler
+            )
+        }
     )
 }
 
