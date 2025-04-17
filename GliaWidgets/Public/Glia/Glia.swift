@@ -323,7 +323,7 @@ public class Glia {
                         errorForCompletion = GliaError.invalidLocale
                     }
                 }
-
+                loggerPhase.logger.error("Glia Widgets SDK initialization failed")
                 debugPrint("💥 Core SDK configuration is not valid. Unexpected error='\(error)'.")
                 completion(.failure(errorForCompletion))
             }
