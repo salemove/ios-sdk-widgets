@@ -92,7 +92,11 @@ extension Glia {
 
                 auth.authenticate(
                     with: .init(rawValue: idToken),
-                    externalAccessToken: accessToken.map { .init(rawValue: $0) }
+                    externalAccessToken: accessToken.map { .init(rawValue: $0) },
+                    shouldRequestPushNotificationSystemPermission: { callback in
+                        // Will be replaced with Intermediate dialog within MOB-4272
+                        callback(true)
+                    }
                 ) { [weak self]  result in
                     // Wait for possible engagement (if there is one)
                     // to get restored along with `rootCoordinator`
