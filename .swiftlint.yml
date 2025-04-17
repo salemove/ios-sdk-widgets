@@ -30,6 +30,7 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Carthage
   - Pods
   - DerivedData
+  - GliaWidgets/Asset.swift
 
 cyclomatic_complexity:
   ignores_case_statements: true
@@ -57,6 +58,3 @@ reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit, html, em
 
 included:
   - GliaWidgets
-
-excluded:
-  - GliaWidgets/Asset.swift
