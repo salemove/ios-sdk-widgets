@@ -3,8 +3,9 @@ import GliaWidgets
 
 extension ViewController {
     @IBAction private func configureSDKTapped() {
+        setupPushNotificationConfig()
         showRemoteConfigAlert { [weak self] fileName in
-            self?.configureSDK(uiConfigName: fileName) { [weak self] result in
+            self?.configureSDK(uiConfigName: fileName) { result in
                 guard case let .failure(error) = result else { return }
                 self?.showErrorAlert(using: error)
             }
@@ -29,12 +30,7 @@ extension ViewController {
             }
         }
 
-        #if DEBUG
-        let pushNotifications = Configuration.PushNotifications.sandbox
-        #else
-        let pushNotifications = Configuration.PushNotifications.disabled
-        #endif
-        configuration.pushNotifications = pushNotifications
+        setupPushNotificationConfig()
 
         if autoConfigureSdkToggle.isOn {
             configureSDK(uiConfigName: nil) { [weak self] result in
@@ -49,6 +45,18 @@ extension ViewController {
         } else {
             completion()
         }
+    }
+
+    func setupPushNotificationConfig() {
+        #if DEBUG
+        let pushNotifications = Configuration.PushNotifications.sandbox
+        #else
+        let pushNotifications = Configuration.PushNotifications.disabled
+        #endif
+        configuration.pushNotifications = pushNotifications
+
+        let pushNotificationsTypes: [PushNotificationsType] = [.start, .message, .end]
+        Glia.sharedInstance.pushNotifications.subscribeTo(pushNotificationsTypes)
     }
 
     func configureSDK(

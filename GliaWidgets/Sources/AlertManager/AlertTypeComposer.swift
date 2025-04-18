@@ -86,7 +86,7 @@ extension AlertManager.AlertTypeComposer {
             )
         case let .leaveCurrentConversation(confirmed, declined):
             return leaveCurrentConversationAlertType(confirmed: confirmed, declined: declined)
-        case let .requestPushNoticationsPermissions(confirmed, declined):
+        case let .requestPushNotificationsPermissions(confirmed, declined):
             return requestPNPermissionsAlertType(accepted: confirmed, declined: declined)
         }
     }
@@ -350,7 +350,8 @@ private extension AlertManager.AlertTypeComposer {
         accepted: @escaping () -> Void,
         declined: @escaping () -> Void
     ) -> AlertType {
-        .requestPushNoticationsPermissions(
+        environment.log.prefixed(Self.self).info("Show Push Notifications Intermediate Dialog")
+        return .requestPushNotificationsPermissions(
             conf: theme.alertConfiguration.pushNotificationsPermissions,
             accepted: accepted,
             declined: declined

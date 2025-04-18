@@ -52,7 +52,7 @@ enum AlertType {
         accessibilityIdentifier: String?,
         dismissed: (() -> Void)?
     )
-    case requestPushNoticationsPermissions(
+    case requestPushNotificationsPermissions(
         conf: ConfirmationAlertConfiguration,
         accepted: () -> Void,
         declined: () -> Void
@@ -64,7 +64,7 @@ enum AlertType {
         switch self {
         case .singleAction, .singleMediaUpgrade, .screenShareOffer, .criticalError:
             return .highest
-        case .confirmation, .liveObservationConfirmation, .requestPushNoticationsPermissions:
+        case .confirmation, .liveObservationConfirmation, .requestPushNotificationsPermissions:
             return .high
         case .message, .systemAlert, .view, .leaveConversation:
             return .regular
