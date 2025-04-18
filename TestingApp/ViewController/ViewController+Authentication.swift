@@ -3,6 +3,7 @@ import GliaWidgets
 
 extension ViewController {
     @IBAction private func toggleAuthentication() {
+        setupPushNotificationConfig()
         let authenticate = {
             self.catchingError {
                 let authentication = try Glia.sharedInstance.authentication(with: self.authenticationBehavior)

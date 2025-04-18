@@ -79,12 +79,6 @@ extension Glia {
                     "Authenticate. Is external access token used: \(accessToken != nil)"
                 )
 
-                let interactor = self?.interactor
-                let viewFactory = self?.rootCoordinator?.viewFactory
-                let sceneProvider = self?.rootCoordinator?.sceneProvider
-
-                let prevEngagementIsNotPresent = self?.environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil
-
                 // We need to unsubscribe from listening to Interactor events
                 // until authentication is finished to avoid
                 // calling engagement restoration twice.
@@ -93,49 +87,20 @@ extension Glia {
                 auth.authenticate(
                     with: .init(rawValue: idToken),
                     externalAccessToken: accessToken.map { .init(rawValue: $0) },
-                    shouldRequestPushNotificationSystemPermission: { callback in
-                        // Will be replaced with Intermediate dialog within MOB-4272
-                        callback(true)
+                    shouldRequestPushNotificationSystemPermission: { [weak self] answerCallback in
+                        self?.alertManager.present(in: .global, as: .requestPushNotificationsPermissions(confirmed: {
+                            answerCallback(true)
+                        }, declined: {
+                            answerCallback(false)
+                        }))
+                    },
+                    completion: { [weak self] result in
+                        self?.handleAuthenticationResult(
+                            result.mapError(Glia.Authentication.Error.init),
+                            callback: callback
+                        )
                     }
-                ) { [weak self]  result in
-                    // Wait for possible engagement (if there is one)
-                    // to get restored along with `rootCoordinator`
-                    // and bubble view.
-                    self?.environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(1)) {
-                        switch result {
-                        case .success:
-                            // Attempt to restore ongoing engagement after configuration.
-                            // Skip restoring transferred Secure Conversation.
-                            if let ongoingEngagement = self?.environment.coreSdk.getNonTransferredSecureConversationEngagement(),
-                                let configuration = self?.configuration, prevEngagementIsNotPresent,
-                                let interactor {
-                                self?.closeRootCoordinator()
-                                self?.restoreOngoingEngagement(
-                                    configuration: configuration,
-                                    currentEngagement: ongoingEngagement,
-                                    interactor: interactor,
-                                    features: self?.features ?? .all,
-                                    maximize: false
-                                )
-                            } else {
-                                // Handle authentication with possibility to restart engagement.
-                                self?.restartEngagementIfNeeded(
-                                    interactor: interactor,
-                                    viewFactory: viewFactory,
-                                    sceneProvider: sceneProvider,
-                                    features: self?.features
-                                )
-                            }
-                            // We need to subscribe on Interactor events
-                            // once authentication if finished.
-                            self?.startObservingInteractorEvents()
-                        case .failure:
-                            break
-                        }
-
-                        callback(result.mapError(Glia.Authentication.Error.init) )
-                    }
-                }
+                )
             },
             deauthenticateWithCallback: { [weak self] callback in
                 self?.loggerPhase.logger.prefixed(Self.self).info("Unauthenticate")
@@ -166,6 +131,55 @@ extension Glia {
             },
             environment: .create(with: loggerPhase.logger)
         )
+    }
+
+    private func handleAuthenticationResult(
+        _ result: Result<Void, Glia.Authentication.Error>,
+        callback: @escaping Glia.Authentication.Callback
+    ) {
+        // Wait for possible engagement (if there is one)
+        // to get restored along with `rootCoordinator`
+        // and bubble view.
+        environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(1)) { [weak self] in
+            switch result {
+            case .success:
+                // Attempt to restore ongoing engagement after configuration.
+                // Skip restoring transferred Secure Conversation.
+                let interactor = self?.interactor
+                let viewFactory = self?.rootCoordinator?.viewFactory
+                let sceneProvider = self?.rootCoordinator?.sceneProvider
+
+                let prevEngagementIsNotPresent = self?.environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil
+
+                if let ongoingEngagement = self?.environment.coreSdk.getNonTransferredSecureConversationEngagement(),
+                   let configuration = self?.configuration, prevEngagementIsNotPresent,
+                   let interactor {
+                    self?.closeRootCoordinator()
+                    self?.restoreOngoingEngagement(
+                        configuration: configuration,
+                        currentEngagement: ongoingEngagement,
+                        interactor: interactor,
+                        features: self?.features ?? .all,
+                        maximize: false
+                    )
+                } else {
+                    // Handle authentication with possibility to restart engagement.
+                    self?.restartEngagementIfNeeded(
+                        interactor: interactor,
+                        viewFactory: viewFactory,
+                        sceneProvider: sceneProvider,
+                        features: self?.features
+                    )
+                }
+                // We need to subscribe on Interactor events
+                // once authentication if finished.
+                self?.startObservingInteractorEvents()
+            case .failure:
+                break
+            }
+
+            callback(result)
+        }
     }
 
     private func restartEngagementIfNeeded(
