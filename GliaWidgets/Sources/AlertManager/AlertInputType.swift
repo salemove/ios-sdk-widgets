@@ -34,7 +34,7 @@ enum AlertInputType: Equatable {
         answer: CoreSdkClient.AnswerBlock
     )
     case leaveCurrentConversation(confirmed: () -> Void, declined: (() -> Void)? = nil)
-    case requestPushNoticationsPermissions(confirmed: () -> Void, declined: () -> Void)
+    case requestPushNotificationsPermissions(confirmed: () -> Void, declined: () -> Void)
 
     static func == (lhs: AlertInputType, rhs: AlertInputType) -> Bool {
         switch (lhs, rhs) {
@@ -69,7 +69,7 @@ enum AlertInputType: Equatable {
             return (lhsError as NSError?) == (rhsError as NSError?)
         case (.leaveCurrentConversation, .leaveCurrentConversation):
             return true
-        case (.requestPushNoticationsPermissions, .requestPushNoticationsPermissions):
+        case (.requestPushNotificationsPermissions, .requestPushNotificationsPermissions):
             return true
         default:
             return false

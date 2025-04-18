@@ -162,8 +162,6 @@ extension ViewController {
 
 // MARK: - Private
 private extension ViewController {
-
-
     func setupPushHandler() {
         Glia.sharedInstance.pushNotifications.setPushHandler { [weak self] push in
             switch (push.type, push.timing) {

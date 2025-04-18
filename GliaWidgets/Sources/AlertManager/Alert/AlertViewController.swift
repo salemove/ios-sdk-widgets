@@ -159,7 +159,7 @@ class AlertViewController: UIViewController, Replaceable {
                 accessibilityIdentifier: accessibilityIdentifier,
                 dismissed: dismissed
             )
-        case let .requestPushNoticationsPermissions(conf, accepted, declined):
+        case let .requestPushNotificationsPermissions(conf, accepted, declined):
             return makeRequestPNPermissionsAlertView(
                 with: conf,
                 accepted: accepted,
