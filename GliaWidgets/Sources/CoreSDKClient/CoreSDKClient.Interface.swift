@@ -242,16 +242,6 @@ extension CoreSdkClient {
         var setPushHandler: (PushHandler?) -> Void
         var pushHandler: () -> PushHandler?
         var subscribeTo: ([GliaCoreSDK.PushNotificationsType]) -> Void
-        var userNotificationCenterWillPresent: (
-            _ center: UNUserNotificationCenter,
-            _ willPresentNotification: UNNotification,
-            _ completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
-        ) -> Void
-        var userNotificationCenterDidReceiveResponse: (
-            _ center: UNUserNotificationCenter,
-            _ didReceiveResponse: UNNotificationResponse,
-            _ completionHandler: @escaping () -> Void
-        ) -> Void
     }
 }
 

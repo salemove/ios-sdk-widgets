@@ -132,12 +132,6 @@ extension CoreSdkClient.PushNotifications {
         },
         subscribeTo: { _ in
             fail("\(Self.self).subscribeTo")
-        },
-        userNotificationCenterWillPresent: { _, _, _ in
-            fail("\(Self.self).userNotificationCenterWillPresent")
-        },
-        userNotificationCenterDidReceiveResponse: { _, _, _ in
-            fail("\(Self.self).userNotificationCenterDidReceiveResponse")
         }
     )
 }

@@ -69,9 +69,7 @@ extension CoreSdkClient.PushNotifications {
         applicationDidFailToRegisterForRemoteNotificationsWithError: { _, _ in },
         setPushHandler: { _ in },
         pushHandler: { nil },
-        subscribeTo: { _ in },
-        userNotificationCenterWillPresent: { _, _, _ in },
-        userNotificationCenterDidReceiveResponse: { _, _, _ in }
+        subscribeTo: { _ in }
     )
 }
 
