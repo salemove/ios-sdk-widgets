@@ -105,21 +105,7 @@ extension CoreSdkClient.PushNotifications {
         },
         setPushHandler: { GliaCore.sharedInstance.pushNotifications.handler = $0 },
         pushHandler: { GliaCore.sharedInstance.pushNotifications.handler },
-        subscribeTo: GliaCore.sharedInstance.pushNotifications.subscribeTo(_:),
-        userNotificationCenterWillPresent: { center, willPresent, completionHandler in
-            GliaCore.sharedInstance.pushNotifications.userNotificationCenter(
-                center,
-                willPresent: willPresent,
-                withCompletionHandler: completionHandler
-            )
-        },
-        userNotificationCenterDidReceiveResponse: { center, didReceive, completionHandler in
-            GliaCore.sharedInstance.pushNotifications.userNotificationCenter(
-                center,
-                didReceive: didReceive,
-                withCompletionHandler: completionHandler
-            )
-        }
+        subscribeTo: GliaCore.sharedInstance.pushNotifications.subscribeTo(_:)
     )
 }
 
