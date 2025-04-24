@@ -231,6 +231,14 @@ extension CoreSdkClient {
 
 extension CoreSdkClient {
     struct PushNotifications {
+        struct Actions {
+            var setSecureMessageAction: (@escaping () -> Void) -> Void
+
+            init(setSecureMessageAction: @escaping (@escaping () -> Void) -> Void) {
+                self.setSecureMessageAction = setSecureMessageAction
+            }
+        }
+
         var applicationDidRegisterForRemoteNotificationsWithDeviceToken: (
             _ application: UIApplication,
             _ deviceToken: Data
