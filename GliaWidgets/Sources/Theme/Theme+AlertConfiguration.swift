@@ -159,11 +159,10 @@ extension Theme {
         )
 
         let pushNotificationsPermissions = ConfirmationAlertConfiguration(
-            // TODO: MOB-4254 Add actual localization strings taken from tech writers
             title: Localization.PushNotificationsAlert.title,
             message: Localization.PushNotificationsAlert.message,
-            negativeTitle: Localization.General.cancel,
-            positiveTitle: Localization.General.allow,
+            negativeTitle: Localization.PushNotificationsAlert.Button.negative,
+            positiveTitle: Localization.PushNotificationsAlert.Button.positive,
             switchButtonBackgroundColors: false,
             showsPoweredBy: showsPoweredBy
         )
