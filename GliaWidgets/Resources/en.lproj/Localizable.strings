@@ -275,5 +275,8 @@
 "entry_widget.call_visualizer.description" = "You are already in contact with the support team";
 "entry_widget.call_visualizer.button.label" = "Call Visualizer";
 
-"push_notifications_alert.title" = "Allow Push Notifications";
-"push_notifications_alert.message" = "Please allow push notifications to receive new messages alerts.";
+"push_notifications_alert.title" = "Stay In Touch";
+"push_notifications_alert.message" = "Allow push notifications so we can message you (and return your messages) in the app.";
+"push_notifications_alert.button.positive" = "Allow";
+"push_notifications_alert.button.negative" = "Not right now";
+

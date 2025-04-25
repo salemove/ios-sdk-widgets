@@ -725,10 +725,16 @@ internal enum Localization {
     }
   }
   internal enum PushNotificationsAlert {
-    /// Please allow push notifications to receive new messages alerts.
-    internal static var message: String { Localization.tr("Localizable", "push_notifications_alert.message", fallback: "Please allow push notifications to receive new messages alerts.") }
-    /// Allow Push Notifications
-    internal static var title: String { Localization.tr("Localizable", "push_notifications_alert.title", fallback: "Allow Push Notifications") }
+    /// Allow push notifications so we can message you (and return your messages) in the app.
+    internal static var message: String { Localization.tr("Localizable", "push_notifications_alert.message", fallback: "Allow push notifications so we can message you (and return your messages) in the app.") }
+    /// Stay In Touch
+    internal static var title: String { Localization.tr("Localizable", "push_notifications_alert.title", fallback: "Stay In Touch") }
+    internal enum Button {
+      /// Not right now
+      internal static var negative: String { Localization.tr("Localizable", "push_notifications_alert.button.negative", fallback: "Not right now") }
+      /// Allow
+      internal static var positive: String { Localization.tr("Localizable", "push_notifications_alert.button.positive", fallback: "Allow") }
+    }
   }
   internal enum ScreenSharing {
     internal enum VisitorScreen {
