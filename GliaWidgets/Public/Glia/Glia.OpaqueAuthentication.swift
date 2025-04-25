@@ -95,7 +95,6 @@ extension Glia {
                         }))
                     },
                     completion: { [weak self] result in
-                        print("$$ CALLED THIS MTF")
                         self?.handleAuthenticationResult(
                             result.mapError(Glia.Authentication.Error.init),
                             callback: callback

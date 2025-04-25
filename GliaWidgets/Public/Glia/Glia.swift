@@ -210,6 +210,7 @@ public class Glia {
         environment.coreSdk.pushNotifications.actions.setSecureMessageAction { [weak self] in
             guard let self else { return }
             self.$engagementRestorationState
+                .receive(on: environment.combineScheduler.main)
                 .first { $0 == .restored }
                 .sink { _ in
                     let engagementLauncher = try? self.getEngagementLauncher(queueIds: [])

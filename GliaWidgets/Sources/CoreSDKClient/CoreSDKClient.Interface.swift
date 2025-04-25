@@ -233,9 +233,14 @@ extension CoreSdkClient {
     struct PushNotifications {
         struct Actions {
             var setSecureMessageAction: (@escaping () -> Void) -> Void
+            var secureMessageAction: () -> (() -> Void)?
 
-            init(setSecureMessageAction: @escaping (@escaping () -> Void) -> Void) {
+            init(
+                setSecureMessageAction: @escaping (@escaping () -> Void) -> Void,
+                secureMessageAction: @escaping () -> (() -> Void)?
+            ) {
                 self.setSecureMessageAction = setSecureMessageAction
+                self.secureMessageAction = secureMessageAction
             }
         }
 
@@ -250,6 +255,7 @@ extension CoreSdkClient {
         var setPushHandler: (PushHandler?) -> Void
         var pushHandler: () -> PushHandler?
         var subscribeTo: ([GliaCoreSDK.PushNotificationsType]) -> Void
+        var actions: Actions
     }
 }
 

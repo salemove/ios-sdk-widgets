@@ -64,7 +64,10 @@ extension CoreSdkClient.LiveObservation {
 }
 
 extension CoreSdkClient.PushNotifications.Actions {
-    static let mock = Self { _ in }
+    static let mock = Self(
+        setSecureMessageAction: { GliaCore.sharedInstance.pushNotificationsActionProcessor.secureMessagePushNotificationAction = $0 },
+        secureMessageAction: { GliaCore.sharedInstance.pushNotificationsActionProcessor.secureMessagePushNotificationAction }
+    )
 }
 
 extension CoreSdkClient.PushNotifications {

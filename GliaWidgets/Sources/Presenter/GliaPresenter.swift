@@ -65,7 +65,14 @@ final class GliaPresenter {
                 """
             )
         }
-
+        if viewController === presentingController {
+            environment.log.warning(
+                """
+                Attempt to present the same instance of \(presentingController.self).
+                """
+            )
+            return
+        }
         presentingController.present(
             viewController,
             animated: animated,

@@ -18,11 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         handleSetAnimationsEnabled()
     }
     
-//    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-//        UNUserNotificationCenter.current().delegate = self
-//        return true
-//    }
-    
     func application(
         _ app: UIApplication,
         open url: URL,
@@ -40,24 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             application: application,
             deviceToken: deviceToken
         )
-    }
-//    func topViewController() -> UIViewController? {
-//        
-//        if var topController = UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.rootViewController {
-//            while let presentedViewController = topController.presentedViewController {
-//                topController = presentedViewController
-//            }
-//            return topController
-//        }
-//        return nil
-//        
-//    }
-//    
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-//        
-//        let alert = UIAlertController(title: "Wohooo", message: "", preferredStyle: .alert)
-//        topViewController().present(alert, animated: true)
-        Glia.sharedInstance.pushNotifications.userNotificationCenterDidReceiveResponse(center: center, didReceive: response, completionHandler: completionHandler)
     }
 
     func application(

@@ -18,7 +18,7 @@ target 'TestingApp' do
 end
 
 target 'GliaWidgets' do
-  pod 'GliaCoreSDK', :path => '/Users/yevhenkyivskyi/Desktop/Glia/ios-sdk/GliaCoreSDK.sources.podspec'
+  pod 'GliaCoreSDK'
   swiftlint
 end
 

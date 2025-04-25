@@ -107,7 +107,8 @@ extension CoreSdkClient.PushNotifications {
         pushHandler: { GliaCore.sharedInstance.pushNotifications.handler },
         subscribeTo: GliaCore.sharedInstance.pushNotifications.subscribeTo(_:),
         actions: .init(
-            setSecureMessageAction: { GliaCore.sharedInstance.pushNotificationsActionProcessor.secureMessagePushNotificationAction = $0 }
+            setSecureMessageAction: { GliaCore.sharedInstance.pushNotificationsActionProcessor.secureMessagePushNotificationAction = $0 },
+            secureMessageAction: { GliaCore.sharedInstance.pushNotificationsActionProcessor.secureMessagePushNotificationAction }
         )
     )
 }

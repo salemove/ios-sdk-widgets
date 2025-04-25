@@ -193,6 +193,7 @@
 		2188DEE52CEE2C6000FA3BEF /* SendingMessageUnavailableBannerViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2188DEE22CEE2C6000FA3BEF /* SendingMessageUnavailableBannerViewStyle.swift */; };
 		2188DEE72CEE2E2100FA3BEF /* SecureMessagingTopBannerViewStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2188DEE62CEE2E2100FA3BEF /* SecureMessagingTopBannerViewStyle.Accessibility.swift */; };
 		2188DEE92CEE2E3400FA3BEF /* SecureMessagingTopBannerViewStyle.RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2188DEE82CEE2E3400FA3BEF /* SecureMessagingTopBannerViewStyle.RemoteConfig.swift */; };
+		218CE31E2DBBB2AA0046A302 /* GliaTests+PushNotifcationsAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218CE31D2DBBB2AA0046A302 /* GliaTests+PushNotifcationsAction.swift */; };
 		2198B7AC2CAEB14D002C442B /* QueuesMonitor.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2198B7AB2CAEB14D002C442B /* QueuesMonitor.Live.swift */; };
 		2198B7AE2CB035A6002C442B /* QueuesMonitor.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2198B7AD2CB035A6002C442B /* QueuesMonitor.Environment.swift */; };
 		21BADEBB2D2D7F94000AD9CF /* MockConfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 21BADEBA2D2D7F94000AD9CF /* MockConfiguration.json */; };
@@ -1295,6 +1296,7 @@
 		2188DEE22CEE2C6000FA3BEF /* SendingMessageUnavailableBannerViewStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendingMessageUnavailableBannerViewStyle.swift; sourceTree = "<group>"; };
 		2188DEE62CEE2E2100FA3BEF /* SecureMessagingTopBannerViewStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureMessagingTopBannerViewStyle.Accessibility.swift; sourceTree = "<group>"; };
 		2188DEE82CEE2E3400FA3BEF /* SecureMessagingTopBannerViewStyle.RemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureMessagingTopBannerViewStyle.RemoteConfig.swift; sourceTree = "<group>"; };
+		218CE31D2DBBB2AA0046A302 /* GliaTests+PushNotifcationsAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GliaTests+PushNotifcationsAction.swift"; sourceTree = "<group>"; };
 		2198B7AB2CAEB14D002C442B /* QueuesMonitor.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueuesMonitor.Live.swift; sourceTree = "<group>"; };
 		2198B7AD2CB035A6002C442B /* QueuesMonitor.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueuesMonitor.Environment.swift; sourceTree = "<group>"; };
 		21BADEBA2D2D7F94000AD9CF /* MockConfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = MockConfiguration.json; sourceTree = "<group>"; };
@@ -4399,6 +4401,7 @@
 			children = (
 				8491AF612AA20F8F00CC3E72 /* Mocks */,
 				7512A5A627C3926500319DF1 /* GliaTests.swift */,
+				218CE31D2DBBB2AA0046A302 /* GliaTests+PushNotifcationsAction.swift */,
 				846A5C4429F6BEFA0049B29F /* GliaTests+StartEngagement.swift */,
 				AFFA99812C57D658004A2825 /* GliaTests+RestoreEngagement.swift */,
 				215A25992CAC19780013023E /* GliaTests+EngagementLauncher.swift */,
@@ -6877,6 +6880,7 @@
 				846A5C4529F6BEFA0049B29F /* GliaTests+StartEngagement.swift in Sources */,
 				7512A57A27BF9FCD00319DF1 /* ChatViewModelTests.swift in Sources */,
 				84602A792AEAB7CA0031E606 /* Survey.Mock.swift in Sources */,
+				218CE31E2DBBB2AA0046A302 /* GliaTests+PushNotifcationsAction.swift in Sources */,
 				210150742CC13E8900294BA4 /* QueuesMonitorTests.swift in Sources */,
 				31CCE3E42BCE8F3A00F92535 /* CallVisualizerCoordinatorTests.swift in Sources */,
 			);
