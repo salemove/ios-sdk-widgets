@@ -231,6 +231,18 @@ extension CoreSdkClient {
 
 extension CoreSdkClient {
     struct PushNotifications {
+        struct Actions {
+            var setSecureMessageAction: (@escaping () -> Void) -> Void
+            var secureMessageAction: () -> (() -> Void)?
+
+            init(
+                setSecureMessageAction: @escaping (@escaping () -> Void) -> Void,
+                secureMessageAction: @escaping () -> (() -> Void)?
+            ) {
+                self.setSecureMessageAction = setSecureMessageAction
+                self.secureMessageAction = secureMessageAction
+            }
+        }
         var applicationDidRegisterForRemoteNotificationsWithDeviceToken: (
             _ application: UIApplication,
             _ deviceToken: Data
@@ -242,6 +254,7 @@ extension CoreSdkClient {
         var setPushHandler: (PushHandler?) -> Void
         var pushHandler: () -> PushHandler?
         var subscribeTo: ([GliaCoreSDK.PushNotificationsType]) -> Void
+        var actions: Actions
     }
 }
 

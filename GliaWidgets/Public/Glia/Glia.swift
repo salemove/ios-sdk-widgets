@@ -44,6 +44,14 @@ extension EngagementKind {
     }
 }
 
+/// State of SDK while restoring engagement after configuration
+enum EngagementRestorationState {
+    case none
+    case restoring
+    /// State of SDK when engagement was restored, restarted or there was no engagement after SDK configured
+    case restored
+}
+
 extension SecureConversations {
     /// The initial screen seen by a visitor when starting a secure conversation.
     public enum InitialScreen: Equatable {
@@ -91,6 +99,7 @@ public class Glia {
 
     /// Used to monitor engagement state changes.
     public var onEvent: ((GliaEvent) -> Void)?
+    @Published var engagementRestorationState: EngagementRestorationState = .none
 
     var stringProvidingPhase: StringProvidingPhase = .notConfigured
 
@@ -140,6 +149,7 @@ public class Glia {
     var features: Features?
 
     private(set) var configuration: Configuration?
+    var cancelBag = Set<AnyCancellable>()
 
     // Indicates whether at least one of two conditions is correct:
     // - pending secure conversation exists;
@@ -198,6 +208,18 @@ public class Glia {
         secureConversation = .init(environment: .create(with: environment))
 
         localeProvider = .init(locale: environment.coreSdk.localeProvider.getRemoteString)
+
+        environment.coreSdk.pushNotifications.actions.setSecureMessageAction { [weak self] in
+            guard let self else { return }
+            self.$engagementRestorationState
+                .receive(on: environment.combineScheduler.main)
+                .first { $0 == .restored }
+                .sink { _ in
+                    let engagementLauncher = try? self.getEngagementLauncher(queueIds: [])
+                    try? engagementLauncher?.startSecureMessaging(initialScreen: .chatTranscript)
+                }
+                .store(in: &cancelBag)
+        }
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
@@ -239,6 +261,7 @@ public class Glia {
         // second-time configuration has not been complete, but `startEngagement`
         // is fired and SDK has previous `configuration`.
         self.configuration = nil
+        self.engagementRestorationState = .none
 
         alertManager.overrideTheme(theme)
 
