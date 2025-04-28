@@ -19,6 +19,7 @@ public struct Configuration {
     public var pushNotifications: PushNotifications
 
     /// Controls the visibility of the "Powered by" text and image.
+    @available(*, deprecated, message: "Replaced by RemoteConfiguration.isWhiteLabelApp")
     public let isWhiteLabelApp: Bool
 
     /// Company name. Appears during connection with operator.

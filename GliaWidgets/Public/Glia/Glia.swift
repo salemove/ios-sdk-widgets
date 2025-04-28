@@ -248,9 +248,14 @@ public class Glia {
             throw GliaError.configuringDuringEngagementIsNotAllowed
         }
 
+        if configuration.isWhiteLabelApp {
+            theme.showsPoweredBy = false
+        }
+
         if let uiConfig {
             theme.apply(configuration: uiConfig, assetsBuilder: assetsBuilder)
         }
+
         self.theme = theme
         self.assetsBuilder = assetsBuilder
         // We need to store features to be used for restored engagement

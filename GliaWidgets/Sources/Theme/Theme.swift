@@ -59,6 +59,7 @@ public class Theme {
     public lazy var secureConversationsConfirmation: SecureConversations.ConfirmationStyle = defaultSecureConversationsConfirmationStyle
 
     /// Controls the visibility of the "Powered by" text and image.
+    @available(*, deprecated, message: "Replaced by RemoteConfiguration.isWhiteLabelApp")
     public var showsPoweredBy: Bool
 
     /// Snack bar View style.
