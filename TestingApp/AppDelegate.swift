@@ -12,7 +12,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return .init(window: window, handlers: deepLinksHandlers)
     }()
 
-
     func applicationDidFinishLaunching(_ application: UIApplication) {
         handleProcessInfo()
         handleSetAnimationsEnabled()
