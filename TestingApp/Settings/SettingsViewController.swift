@@ -15,6 +15,7 @@ final class SettingsViewController: UIViewController {
     private var queueIDCell: SettingsTextCell!
     private var environmentCell: EnvironmentSettingsTextCell!
     private var visitorContextAssedIdCell: SettingsTextCell!
+    private var isWhiteLabelAppCell: SettingsSwitchCell!
     private var manualLocaleOverrideCell: SettingsTextCell!
     private var bubbleFeatureCell: SettingsSwitchCell!
     private var primaryColorCell: SettingsColorCell!
@@ -158,7 +159,12 @@ private extension SettingsViewController {
             text: props.config.manualLocaleOverride ?? ""
         )
         manualLocaleOverrideCell.textField.accessibilityIdentifier = "settings_manual_locale_override_textfield"
-
+    
+        isWhiteLabelAppCell = SettingsSwitchCell(
+            title: "Is white label App",
+            isOn: props.config.isWhiteLabelApp
+        )
+        
         bubbleFeatureCell = SettingsSwitchCell(
             title: "Present \"Bubble\" overlay in engagement time",
             isOn: props.features ~= .bubbleView
@@ -281,7 +287,8 @@ private extension SettingsViewController {
             siteApiKeySecretCell,
             queueIDCell,
             visitorContextAssedIdCell,
-            manualLocaleOverrideCell
+            manualLocaleOverrideCell,
+            isWhiteLabelAppCell
         ]
         configurationSection = Section(
             title: "Glia configuration",
@@ -293,8 +300,10 @@ private extension SettingsViewController {
     private func updateConfiguration() {
         let uuid = UUID(uuidString: visitorContextAssedIdCell.textField.text ?? "")
 
-        let manualLocaleOverrideText =  manualLocaleOverrideCell.textField.text ?? ""
+        let manualLocaleOverrideText = manualLocaleOverrideCell.textField.text ?? ""
         let manualLocaleOverride = manualLocaleOverrideText.isEmpty ? nil : manualLocaleOverrideText
+        
+        let isWhiteLabelApp = isWhiteLabelAppCell.switcher.isOn
 
         props.changeConfig(
             Configuration(
@@ -302,6 +311,7 @@ private extension SettingsViewController {
                 environment: environmentCell.environment,
                 site: siteCell.textField.text ?? "",
                 visitorContext: uuid.map { Configuration.VisitorContext(assetId: $0) },
+                isWhiteLabelApp: isWhiteLabelApp,
                 manualLocaleOverride: manualLocaleOverride
             )
         )
