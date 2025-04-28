@@ -114,7 +114,7 @@ extension Glia {
                     case .failure:
                         break
                     }
-
+                    self?.engagementRestorationState = .none
                     callback(result.mapError(Glia.Authentication.Error.init))
                 }
             },
@@ -188,6 +188,7 @@ extension Glia {
         sceneProvider: SceneProvider?,
         features: Features?
     ) {
+        engagementRestorationState = .restoring
         closeRootCoordinator()
         // Restart engagement happens implicitly, however, to create RootCoordinator
         // queueId, engagementKind, etc. are needed.
@@ -195,7 +196,10 @@ extension Glia {
         // should be restarted with the same options.
         guard let interactor = interactor,
               let viewFactory = viewFactory,
-              let features = features else { return }
+              let features = features else {
+            engagementRestorationState = .restored
+            return
+        }
 
         // Waits for while for establishing socket connection, connection to channels, and
         // receive necessary information about engagement.
@@ -220,6 +224,7 @@ extension Glia {
             } else {
                 self?.closeRootCoordinator()
             }
+            self?.engagementRestorationState = .restored
         }
     }
 

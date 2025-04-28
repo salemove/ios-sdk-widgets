@@ -47,3 +47,9 @@ public final class EngagementLauncher {
         try startEngagement(.messaging(.welcome), sceneProvider)
     }
 }
+
+extension EngagementLauncher {
+    func startSecureMessaging(initialScreen: SecureConversations.InitialScreen, sceneProvider: SceneProvider? = nil) throws {
+        try startEngagement(.messaging(initialScreen), sceneProvider)
+    }
+}

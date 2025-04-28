@@ -132,7 +132,11 @@ extension CoreSdkClient.PushNotifications {
         },
         subscribeTo: { _ in
             fail("\(Self.self).subscribeTo")
-        }
+        },
+        actions: .init(
+            setSecureMessageAction: { _ in },
+            secureMessageAction: { return nil }
+        )
     )
 }
 

@@ -33,6 +33,7 @@ extension Glia {
         features: Features,
         maximize: Bool
     ) {
+        engagementRestorationState = .restoring
         // In this case, where engagement is restored, LO acknowledgement dialog
         // should not appear again, however snack bar message has to be shown via
         // `showSnackBarIfNeeded` function.
@@ -90,5 +91,6 @@ extension Glia {
         }
 
         showSnackBarIfNeeded()
+        engagementRestorationState = .restored
     }
 }
