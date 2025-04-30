@@ -1,4 +1,5 @@
 @testable import GliaWidgets
+@_spi(GliaWidgets) import GliaCoreSDK
 
 extension EngagementCoordinator.Environment {
     static let failing = Self(

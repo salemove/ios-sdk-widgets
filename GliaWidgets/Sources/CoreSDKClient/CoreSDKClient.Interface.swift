@@ -362,6 +362,13 @@ extension CoreSdkClient {
     typealias LogLevel = GliaCoreSDK.LogLevel
     typealias Request = GliaCoreSDK.Request
     typealias EngagementChangedBlock = GliaCoreSDK.EngagementChangedBlock
+    typealias AnyCombineScheduler = GliaCoreSDK.AnyCombineScheduler
+    typealias AnyScheduler = GliaCoreSDK.AnyScheduler
+}
+
+extension CoreSdkClient.AnyCombineScheduler {
+    var main: AnyScheduler { mainScheduler }
+    var global: AnyScheduler { globalScheduler }
 }
 
 extension CoreSdkClient {

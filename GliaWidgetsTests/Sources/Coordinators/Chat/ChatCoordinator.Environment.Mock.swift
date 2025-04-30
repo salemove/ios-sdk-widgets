@@ -1,5 +1,6 @@
 import Foundation
 @testable import GliaWidgets
+@_spi(GliaWidgets) import GliaCoreSDK
 
 extension ChatCoordinator.Environment {
     static var mock = Self(

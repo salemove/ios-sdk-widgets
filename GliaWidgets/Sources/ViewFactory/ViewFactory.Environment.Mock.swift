@@ -1,4 +1,6 @@
 #if DEBUG
+@_spi(GliaWidgets) import GliaCoreSDK
+
 extension ViewFactory.Environment {
     static let mock = Self(
         data: .mock,

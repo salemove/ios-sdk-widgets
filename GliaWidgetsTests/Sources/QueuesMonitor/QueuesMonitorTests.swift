@@ -1,6 +1,6 @@
 import XCTest
 import Combine
-import GliaCoreSDK
+@_spi(GliaWidgets) import GliaCoreSDK
 
 @testable import GliaWidgets
 
@@ -157,7 +157,7 @@ class QueuesMonitorTests: XCTestCase {
         var receivedQueues: [Queue]?
         var receivedUpdatedQueue: Queue?
         monitor.$state
-            .receive(on: AnyCombineScheduler.mock.main)
+            .receive(on: CoreSdkClient.AnyCombineScheduler.mock.mainScheduler)
             // Drop initial .idle and .updated with listed queues state update
             .dropFirst(2)
             .sink { state in
@@ -200,7 +200,7 @@ class QueuesMonitorTests: XCTestCase {
         var receivedQueues: [Queue]?
         var receivedUpdatedQueue: Queue?
         monitor.$state
-            .receive(on: AnyCombineScheduler.mock.main)
+            .receive(on: CoreSdkClient.AnyCombineScheduler.mock.mainScheduler)
             // Drop initial .idle and .updated with listed queues state update
             .dropFirst(2)
             .sink { state in
@@ -247,7 +247,7 @@ class QueuesMonitorTests: XCTestCase {
         var receivedQueues: [Queue]?
         var receivedUpdatedQueue: Queue?
         monitor.$state
-            .receive(on: AnyCombineScheduler.mock.main)
+            .receive(on: CoreSdkClient.AnyCombineScheduler.mock.mainScheduler)
             // Drop initial .idle and .updated with listed queues state update
             .dropFirst(2)
             .sink { state in
