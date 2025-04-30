@@ -48,7 +48,7 @@ extension ChatCoordinator {
         var leaveCurrentSecureConversation: Command<Bool>
         var switchToEngagement: Command<EngagementKind>
         var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
-        var combineScheduler: AnyCombineScheduler
+        var combineScheduler: CoreSdkClient.AnyCombineScheduler
     }
 }
 

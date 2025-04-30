@@ -1,4 +1,5 @@
 #if DEBUG
+@_spi(GliaWidgets) import GliaCoreSDK
 
 extension CallVisualizer.Environment {
     static let mock = Self(

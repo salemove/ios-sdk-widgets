@@ -1,4 +1,5 @@
 import Foundation
+@_spi(GliaWidgets) import GliaCoreSDK
 
 extension SecureConversations.TranscriptModel {
     struct Environment {
@@ -38,7 +39,7 @@ extension SecureConversations.TranscriptModel {
         var topBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle
         var notificationCenter: FoundationBased.NotificationCenter
         var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
-        var combineScheduler: AnyCombineScheduler
+        var combineScheduler: CoreSdkClient.AnyCombineScheduler
     }
 }
 
@@ -122,7 +123,7 @@ extension SecureConversations.TranscriptModel.Environment {
         secureMessagingExpandedTopBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle = Theme().chatStyle.secureMessagingExpandedTopBannerItemsStyle,
         notificationCenter: FoundationBased.NotificationCenter = .mock,
         markUnreadMessagesDelay: @escaping () -> DispatchQueue.SchedulerTimeType.Stride = { .mock },
-        combineScheduler: AnyCombineScheduler = .mock
+        combineScheduler: CoreSdkClient.AnyCombineScheduler = .mock
     ) -> Self {
         Self(
             secureConversations: secureConversations,

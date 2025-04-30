@@ -10,7 +10,7 @@ extension CallView {
         var uiApplication: UIKitBased.UIApplication
         var uiScreen: UIKitBased.UIScreen
         var uiDevice: UIKitBased.UIDevice
-        var combineScheduler: AnyCombineScheduler
+        var combineScheduler: CoreSdkClient.AnyCombineScheduler
     }
 }
 

@@ -11,7 +11,7 @@ extension ViewFactory {
         var uiScreen: UIKitBased.UIScreen
         var log: CoreSdkClient.Logger
         var uiDevice: UIKitBased.UIDevice
-        var combineScheduler: AnyCombineScheduler
+        var combineScheduler: CoreSdkClient.AnyCombineScheduler
     }
 }
 

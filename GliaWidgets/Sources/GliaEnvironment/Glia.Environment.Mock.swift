@@ -1,5 +1,6 @@
 #if DEBUG
 import Foundation
+@_spi(GliaWidgets) import GliaCoreSDK
 
 extension Glia.Environment {
     static let mock = Self(

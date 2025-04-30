@@ -32,7 +32,7 @@ extension CallCoordinator {
         var alertManager: AlertManager
         var isAuthenticated: () -> Bool
         var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
-        var combineScheduler: AnyCombineScheduler
+        var combineScheduler: CoreSdkClient.AnyCombineScheduler
         var createEntryWidget: EntryWidgetBuilder
     }
 }

@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+@_spi(GliaWidgets) import GliaCoreSDK
 
 extension SecureConversations {
     final class PendingInteraction: ObservableObject {
@@ -123,6 +124,7 @@ extension SecureConversations.PendingInteraction.Environment {
 }
 
 #if DEBUG
+@_spi(GliaWidgets) import GliaCoreSDK
 extension SecureConversations.PendingInteraction.Environment {
     static let mock: Self = {
         let uuidGen = UUID.incrementing

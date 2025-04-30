@@ -2,7 +2,7 @@ import Foundation
 
 extension SecureMessagingTopBannerView {
     struct Environment {
-        var combineScheduler: AnyCombineScheduler
+        var combineScheduler: CoreSdkClient.AnyCombineScheduler
     }
 }
 

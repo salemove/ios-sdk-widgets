@@ -1,4 +1,6 @@
 #if DEBUG
+@_spi(GliaWidgets) import GliaCoreSDK
+
 extension EngagementCoordinator.Environment {
     static let mock = Self(
         secureConversations: .mock,

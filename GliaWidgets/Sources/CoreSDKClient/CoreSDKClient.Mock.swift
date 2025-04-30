@@ -116,12 +116,14 @@ extension CoreSdkClient.Salemove.Configuration {
     static func mock(
         siteId: String = "mocked-id",
         region: CoreSdkClient.Salemove.Region = .us,
-        authMethod: CoreSdkClient.Salemove.AuthorizationMethod = .mock
+        authMethod: CoreSdkClient.Salemove.AuthorizationMethod = .mock,
+        suppressPushNotificationsPermissionRequestDuringAuthentication: Bool = false
     ) throws -> Self {
         try CoreSdkClient.Salemove.Configuration(
             siteId: siteId,
             region: region,
-            authorizingMethod: authMethod
+            authorizingMethod: authMethod,
+            suppressPushNotificationsPermissionRequestDuringAuthentication: suppressPushNotificationsPermissionRequestDuringAuthentication
         )
     }
 }

@@ -1,4 +1,5 @@
 @testable import GliaWidgets
+@_spi(GliaWidgets) import GliaCoreSDK
 
 extension SecureConversations.TranscriptModel.Environment {
     static let failing = SecureConversations.TranscriptModel.Environment(
