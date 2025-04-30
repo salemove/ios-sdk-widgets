@@ -45,7 +45,7 @@ extension EngagementCoordinator {
         var hasPendingInteraction: () -> Bool
         var createEntryWidget: EntryWidgetBuilder
         var dismissManager: GliaPresenter.DismissManager
-        var combineScheduler: AnyCombineScheduler
+        var combineScheduler: CoreSdkClient.AnyCombineScheduler
     }
 }
 

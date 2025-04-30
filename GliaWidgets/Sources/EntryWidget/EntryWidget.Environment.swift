@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+@_spi(GliaWidgets) import GliaCoreSDK
 
 extension EntryWidget {
     struct Environment {
@@ -13,7 +14,7 @@ extension EntryWidget {
         var hasPendingInteractionPublisher: AnyPublisher<Bool, Never>
         var interactorPublisher: AnyPublisher<Interactor?, Never>
         var onCallVisualizerResume: () -> Void
-        var combineScheduler: AnyCombineScheduler
+        var combineScheduler: CoreSdkClient.AnyCombineScheduler
     }
 }
 

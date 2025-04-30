@@ -1,5 +1,6 @@
 import Foundation
 @testable import GliaWidgets
+@_spi(GliaWidgets) import GliaCoreSDK
 
 extension CallCoordinator.Environment {
     static let mock = Self(

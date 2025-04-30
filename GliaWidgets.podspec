@@ -19,5 +19,5 @@ Pod::Spec.new do |s|
   }
   s.exclude_files         = ['GliaWidgets/Window/**']
 
-  s.dependency 'GliaCoreSDK', '2.1.2'
+  s.dependency 'GliaCoreSDK', '2.1.3'
 end

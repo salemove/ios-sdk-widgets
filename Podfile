@@ -27,6 +27,7 @@ end
 
 target 'SnapshotTests' do
   pod 'AccessibilitySnapshot', '0.5.0'
+  pod 'GliaCoreSDK'
 end
 
 post_install do |installer|

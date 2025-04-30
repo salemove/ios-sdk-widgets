@@ -1,4 +1,5 @@
 @testable import GliaWidgets
+@_spi(GliaWidgets) import GliaCoreSDK
 
 extension ChatViewModel.Environment {
     static func failing(

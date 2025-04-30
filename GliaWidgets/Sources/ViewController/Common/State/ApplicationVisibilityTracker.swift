@@ -6,7 +6,7 @@ protocol ApplicationVisibilityTracker: AnyObject {
         for applicationState: UIApplication.State,
         notificationCenter: FoundationBased.NotificationCenter,
         resumeToForegroundDelay: DispatchQueue.SchedulerTimeType.Stride,
-        delayScheduler: AnyScheduler
+        delayScheduler: CoreSdkClient.AnyScheduler
     ) -> AnyPublisher<Void, Never>
 
     func isViewVisiblePublisher(
@@ -14,7 +14,7 @@ protocol ApplicationVisibilityTracker: AnyObject {
         notificationCenter: FoundationBased.NotificationCenter,
         isViewVisiblePublisher: AnyPublisher<Bool, Never>,
         resumeToForegroundDelay: DispatchQueue.SchedulerTimeType.Stride,
-        delayScheduler: AnyScheduler
+        delayScheduler: CoreSdkClient.AnyScheduler
     ) -> AnyPublisher<Void, Never>
 }
 
@@ -23,7 +23,7 @@ extension ApplicationVisibilityTracker {
         for applicationState: UIApplication.State,
         notificationCenter: FoundationBased.NotificationCenter,
         resumeToForegroundDelay: DispatchQueue.SchedulerTimeType.Stride,
-        delayScheduler: AnyScheduler
+        delayScheduler: CoreSdkClient.AnyScheduler
     ) -> AnyPublisher<Void, Never> {
         return isViewVisiblePublisher(
             for: applicationState,
@@ -39,7 +39,7 @@ extension ApplicationVisibilityTracker {
         notificationCenter: FoundationBased.NotificationCenter,
         isViewVisiblePublisher: AnyPublisher<Bool, Never>,
         resumeToForegroundDelay: DispatchQueue.SchedulerTimeType.Stride,
-        delayScheduler: AnyScheduler
+        delayScheduler: CoreSdkClient.AnyScheduler
     ) -> AnyPublisher<Void, Never> {
         return Publishers.Merge3(
             Just(applicationState == .active),

@@ -31,7 +31,7 @@ extension EngagementViewModel {
         var isAuthenticated: () -> Bool
         var notificationCenter: FoundationBased.NotificationCenter
         var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
-        var combineScheduler: AnyCombineScheduler
+        var combineScheduler: CoreSdkClient.AnyCombineScheduler
         var createEntryWidget: EntryWidgetBuilder
         var topBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle
         var switchToEngagement: Command<EngagementKind>

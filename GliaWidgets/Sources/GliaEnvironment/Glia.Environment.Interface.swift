@@ -55,7 +55,7 @@ extension Glia {
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var isAuthenticated: () -> Bool
         var dismissManager: GliaPresenter.DismissManager
-        var combineScheduler: AnyCombineScheduler
+        var combineScheduler: CoreSdkClient.AnyCombineScheduler
     }
 }
 
