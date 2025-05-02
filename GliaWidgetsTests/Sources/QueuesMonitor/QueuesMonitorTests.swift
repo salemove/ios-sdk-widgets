@@ -140,16 +140,21 @@ class QueuesMonitorTests: XCTestCase {
         var envCalls: [Call] = []
 
         let mockQueueId = "mock_queue_id"
-        let expectedObservedQueue = Queue.mock(id: mockQueueId, status: .open)
-        let expectedUpdatedQueue = Queue.mock(id: mockQueueId, status: .open)
+        // We use this date value to ensure that
+        // `expectedUpdatedQueue.lastUpdated > expectedObservedQueue.lastUpdated`.
+        // Otherwise, the `expectedUpdatedQueue` is ignored during the `QueuesMonitor.updateQueue(_:)` call.
+        let date = Date()
+        let expectedObservedQueue = Queue.mock(id: mockQueueId, status: .open, lastUpdated: date)
+        let expectedUpdatedQueue = Queue.mock(id: mockQueueId, status: .open, lastUpdated: date.advanced(by: 1))
         let mockQueues = [expectedObservedQueue, Queue.mock(id: UUID().uuidString)]
 
         monitor.environment.getQueues = { completion in
             envCalls.append(.getQueues)
             completion(mockQueues, nil)
         }
-        monitor.environment.subscribeForQueuesUpdates = { _, completion in
+        monitor.environment.subscribeForQueuesUpdates = { [expectedUpdatedQueue] _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
+            // expectedUpdatedQueue.lastUpdated = expectedUpdatedQueue.lastUpdated.addingTimeInterval(1)
             completion(.success(expectedUpdatedQueue))
             return UUID().uuidString
         }
@@ -179,8 +184,12 @@ class QueuesMonitorTests: XCTestCase {
         var envCalls: [Call] = []
 
         let mockQueueId = "mock_queue_id"
-        let expectedObservedQueue = Queue.mock(id: mockQueueId, status: .open)
-        let expectedUpdatedQueue = Queue.mock(id: mockQueueId, status: .open)
+        // We use this date value to ensure that
+        // `expectedUpdatedQueue.lastUpdated > expectedObservedQueue.lastUpdated`.
+        // Otherwise, the `expectedUpdatedQueue` is ignored during the `QueuesMonitor.updateQueue(_:)` call.
+        let date = Date()
+        let expectedObservedQueue = Queue.mock(id: mockQueueId, status: .open, lastUpdated: date)
+        let expectedUpdatedQueue = Queue.mock(id: mockQueueId, status: .open, lastUpdated: date.advanced(by: 1))
         let mockQueues = [expectedObservedQueue, Queue.mock(id: UUID().uuidString)]
 
         monitor.environment.getQueues = { completion in
@@ -225,8 +234,12 @@ class QueuesMonitorTests: XCTestCase {
         var envCalls: [Call] = []
 
         let mockQueueId = "mock_queue_id"
-        let expectedObservedQueue = Queue.mock(id: mockQueueId, status: .open)
-        let expectedUpdatedQueue = Queue.mock(id: mockQueueId, status: .open)
+        // We use this date value to ensure that
+        // `expectedUpdatedQueue.lastUpdated > expectedObservedQueue.lastUpdated`.
+        // Otherwise, the `expectedUpdatedQueue` is ignored during the `QueuesMonitor.updateQueue(_:)` call.
+        let date = Date()
+        let expectedObservedQueue = Queue.mock(id: mockQueueId, status: .open, lastUpdated: date)
+        let expectedUpdatedQueue = Queue.mock(id: mockQueueId, status: .open, lastUpdated: date.advanced(by: 1))
         let mockQueues = [expectedObservedQueue, Queue.mock(id: UUID().uuidString)]
 
         monitor.environment.getQueues = { completion in
