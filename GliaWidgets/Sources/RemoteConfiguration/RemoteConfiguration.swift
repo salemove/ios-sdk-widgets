@@ -13,7 +13,7 @@ public struct RemoteConfiguration: Codable {
     let snackBar: SnackBar?
     let webBrowserScreen: WebView?
     let entryWidget: EntryWidget?
-    let isWhiteLabelApp: Bool?
+    let isWhiteLabel: Bool?
 }
 
 extension RemoteConfiguration {
