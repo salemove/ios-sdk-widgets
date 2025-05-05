@@ -57,7 +57,7 @@ extension Theme {
             configuration: configuration.entryWidget,
             assetsBuilder: assetsBuilder
         )
-        if configuration.isWhiteLabelApp ?? false {
+        if configuration.isWhiteLabel ?? false {
             showsPoweredBy = false
         }
     }

@@ -657,7 +657,7 @@ final class GliaTests: XCTestCase {
             snackBar: nil,
             webBrowserScreen: nil,
             entryWidget: nil,
-            isWhiteLabelApp: nil
+            isWhiteLabel: nil
         )
 
         let theme = Theme(colorStyle: .custom(themeColor))
