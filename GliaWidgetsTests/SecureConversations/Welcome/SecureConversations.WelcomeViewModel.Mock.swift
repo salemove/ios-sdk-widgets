@@ -14,7 +14,7 @@ extension SecureConversations.WelcomeViewModel.Environment {
         secureConversations: CoreSdkClient.SecureConversations = .mock,
         welcomeStyle: SecureConversations.WelcomeStyle = Theme().secureConversationsWelcomeStyle,
         queueIds: [String] = [],
-        listQueues: @escaping CoreSdkClient.ListQueues = { _ in },
+        listQueues: @escaping CoreSdkClient.GetQueues = { _ in },
         fileUploader: FileUploader = .mock(),
         uiApplication: UIKitBased.UIApplication = .mock,
         createFileUploadListModel: @escaping SecureConversations.FileUploadListViewModel.Create = { _ in .mock() },

@@ -130,10 +130,10 @@ final class ChatViewTest: XCTestCase {
 
         var entryWidgetEnv = EntryWidget.Environment.mock()
         let queueId = "queueId"
-        let mockQueue = CoreSdkClient.Queue.mock(id: queueId, media: [.text, .audio, .messaging])
+        let mockQueue = Queue.mock(id: queueId, media: [.text, .audio, .messaging])
         let queuesMonitor = QueuesMonitor.mock(
             getQueues: {
-                $0([mockQueue], nil)
+                $0(.success([mockQueue]))
             },
             subscribeForQueuesUpdates: { _, completion in
                 completion(.success(mockQueue))

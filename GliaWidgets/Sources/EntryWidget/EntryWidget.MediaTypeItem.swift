@@ -1,4 +1,3 @@
-import GliaCoreSDK
 import SwiftUI
 
 extension EntryWidget {

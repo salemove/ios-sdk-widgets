@@ -22,7 +22,7 @@ extension ChatCoordinator {
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var queueIds: [String]
-        var listQueues: CoreSdkClient.ListQueues
+        var listQueues: CoreSdkClient.GetQueues
         var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
         var isAuthenticated: () -> Bool
         var interactor: Interactor

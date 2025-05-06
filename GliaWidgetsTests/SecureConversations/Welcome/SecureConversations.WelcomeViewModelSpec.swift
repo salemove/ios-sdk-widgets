@@ -610,14 +610,14 @@ extension SecureConversationsWelcomeViewModelTests {
         let uuid = UUID.mock.uuidString
         var availability = SecureConversations.Availability.mock
         availability.environment.getQueues = { completion in
-            let queue = CoreSdkClient.Queue.mock(
+            let queue = Queue.mock(
                 id: uuid,
                 name: "",
                 status: .open,
                 isDefault: true,
                 media: [.messaging]
             )
-            completion([queue], nil)
+            completion(.success([queue]))
         }
         availability.environment.isAuthenticated = { true }
 
@@ -632,14 +632,14 @@ extension SecureConversationsWelcomeViewModelTests {
         let uuid = UUID.mock.uuidString
         var availability = SecureConversations.Availability.mock
         availability.environment.getQueues = { completion in
-            let queue = CoreSdkClient.Queue.mock(
+            let queue = Queue.mock(
                 id: uuid,
                 name: "",
                 status: .open,
                 isDefault: true,
                 media: [.text]
             )
-            completion([queue], nil)
+            completion(.success([queue]))
         }
 
         availability.environment.isAuthenticated = { true }
@@ -676,14 +676,14 @@ extension SecureConversationsWelcomeViewModelTests {
         let uuid = UUID.mock.uuidString
         var availability = SecureConversations.Availability.mock
         availability.environment.getQueues = { completion in
-            let queue = CoreSdkClient.Queue.mock(
+            let queue = Queue.mock(
                 id: uuid,
                 name: "",
                 status: .open,
                 isDefault: true,
                 media: [.messaging]
             )
-            completion([queue], nil)
+            completion(.success([queue]))
         }
 
         availability.environment.isAuthenticated = { false }

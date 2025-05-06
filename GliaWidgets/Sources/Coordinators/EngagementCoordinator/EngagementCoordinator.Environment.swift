@@ -23,7 +23,7 @@ extension EngagementCoordinator {
         var uiScreen: UIKitBased.UIScreen
         var notificationCenter: FoundationBased.NotificationCenter
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
-        var listQueues: CoreSdkClient.ListQueues
+        var listQueues: CoreSdkClient.GetQueues
         var createFileUploader: FileUploader.Create
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
