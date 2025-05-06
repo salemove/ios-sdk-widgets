@@ -509,7 +509,7 @@ class ChatViewModelTests: XCTestCase {
 
         let transcriptFileUploadListModel = FileUploadListViewModel(environment: transcriptFileUploadListModelEnv)
         transcriptModelEnv.createFileUploadListModel = { _ in transcriptFileUploadListModel }
-        transcriptModelEnv.getQueues = { callback in callback([], nil) }
+        transcriptModelEnv.getQueues = { callback in callback(.success([])) }
         transcriptModelEnv.maximumUploads = { 2 }
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }

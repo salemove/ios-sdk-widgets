@@ -504,18 +504,13 @@ public class Glia {
             return
         }
 
-        environment.coreSdk.getQueues { queues, error in
-            if let error {
-                completion(.failure(error))
-                return
-            }
-
-            if let queues {
+        environment.coreSdk.getQueues { result in
+            switch result {
+            case let .success(queues):
                 completion(.success(queues))
-                return
+            case let .failure(error):
+                completion(.failure(error))
             }
-
-            completion(.failure(GliaError.internalError))
         }
     }
 

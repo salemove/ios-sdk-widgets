@@ -16,7 +16,7 @@ class EntryWidgetTests: XCTestCase {
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
-            completion([mockQueue], nil)
+            completion(.success([mockQueue]))
         }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
@@ -50,7 +50,7 @@ class EntryWidgetTests: XCTestCase {
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
-            completion([mockQueue], nil)
+            completion(.success([mockQueue]))
         }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
@@ -81,7 +81,7 @@ class EntryWidgetTests: XCTestCase {
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
-            completion([mockQueue], nil)
+            completion(.success([mockQueue]))
         }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
@@ -162,7 +162,7 @@ class EntryWidgetTests: XCTestCase {
         var environment = EntryWidget.Environment.mock()
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
-            completion([mockQueue], nil)
+            completion(.success([mockQueue]))
         }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
@@ -194,7 +194,7 @@ class EntryWidgetTests: XCTestCase {
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio, .video, .text])
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
-            completion([mockQueue], nil)
+            completion(.success([mockQueue]))
         }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
@@ -230,7 +230,7 @@ class EntryWidgetTests: XCTestCase {
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio, .video, .text])
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
-            completion([mockQueue], nil)
+            completion(.success([mockQueue]))
         }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
@@ -263,7 +263,7 @@ class EntryWidgetTests: XCTestCase {
         let mockQueue = Queue.mock(id: mockQueueId, media: [.audio, .video, .text])
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
-            completion([mockQueue], nil)
+            completion(.success([mockQueue]))
         }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
@@ -298,7 +298,7 @@ class EntryWidgetTests: XCTestCase {
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
-            completion([mockQueue], nil)
+            completion(.success([mockQueue]))
         }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
@@ -327,7 +327,7 @@ class EntryWidgetTests: XCTestCase {
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
-            completion([mockQueue], nil)
+            completion(.success([mockQueue]))
         }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
@@ -356,7 +356,7 @@ class EntryWidgetTests: XCTestCase {
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
-            completion([mockQueue], nil)
+            completion(.success([mockQueue]))
         }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
@@ -385,7 +385,7 @@ class EntryWidgetTests: XCTestCase {
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
-            completion([mockQueue], nil)
+            completion(.success([mockQueue]))
         }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
@@ -521,7 +521,7 @@ class EntryWidgetTests: XCTestCase {
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
-            completion([mockQueue], nil)
+            completion(.success([mockQueue]))
         }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
@@ -553,7 +553,7 @@ class EntryWidgetTests: XCTestCase {
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
-            completion([mockQueue], nil)
+            completion(.success([mockQueue]))
         }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
@@ -586,7 +586,7 @@ class EntryWidgetTests: XCTestCase {
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
-            completion([mockQueue], nil)
+            completion(.success([mockQueue]))
         }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
@@ -622,7 +622,7 @@ class EntryWidgetTests: XCTestCase {
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
-            completion([mockQueue], nil)
+            completion(.success([mockQueue]))
         }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
@@ -653,7 +653,7 @@ class EntryWidgetTests: XCTestCase {
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
-            completion([mockQueue], nil)
+            completion(.success([mockQueue]))
         }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
@@ -687,7 +687,7 @@ class EntryWidgetTests: XCTestCase {
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
-            completion([mockQueue], nil)
+            completion(.success([mockQueue]))
         }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
@@ -719,7 +719,7 @@ class EntryWidgetTests: XCTestCase {
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
-            completion([mockQueue], nil)
+            completion(.success([mockQueue]))
         }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))

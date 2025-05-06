@@ -39,7 +39,7 @@ class QueuesMonitorTests: XCTestCase {
         }
         monitor.environment.getQueues = { completion in
             envCalls.append(.getQueues)
-            completion(mockQueues, nil)
+            completion(.success(mockQueues))
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -47,7 +47,7 @@ class QueuesMonitorTests: XCTestCase {
             return UUID().uuidString
         }
 
-        var receivedQueues: [Queue]?
+        var receivedQueues: [GliaWidgets.Queue]?
         monitor.$state
             .sink { state in
                 if case let .updated(queues) = state {
@@ -79,7 +79,7 @@ class QueuesMonitorTests: XCTestCase {
         }
         monitor.environment.getQueues = { completion in
             envCalls.append(.getQueues)
-            completion(mockQueues, nil)
+            completion(.success(mockQueues))
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -87,7 +87,7 @@ class QueuesMonitorTests: XCTestCase {
             return UUID().uuidString
         }
 
-        var receivedQueues: [Queue]?
+        var receivedQueues: [GliaWidgets.Queue]?
         monitor.$state
             .sink { state in
                 if case let .updated(queues) = state {
@@ -113,7 +113,7 @@ class QueuesMonitorTests: XCTestCase {
         }
         monitor.environment.getQueues = { completion in
             envCalls.append(.getQueues)
-            completion(nil, expectedError)
+            completion(.failure(expectedError))
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -150,7 +150,7 @@ class QueuesMonitorTests: XCTestCase {
 
         monitor.environment.getQueues = { completion in
             envCalls.append(.getQueues)
-            completion(mockQueues, nil)
+            completion(.success(mockQueues))
         }
         monitor.environment.subscribeForQueuesUpdates = { [expectedUpdatedQueue] _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -159,8 +159,8 @@ class QueuesMonitorTests: XCTestCase {
             return UUID().uuidString
         }
 
-        var receivedQueues: [Queue]?
-        var receivedUpdatedQueue: Queue?
+        var receivedQueues: [GliaWidgets.Queue]?
+        var receivedUpdatedQueue: GliaWidgets.Queue?
         monitor.$state
             .receive(on: CoreSdkClient.AnyCombineScheduler.mock.mainScheduler)
             // Drop initial .idle and .updated with listed queues state update
@@ -194,7 +194,7 @@ class QueuesMonitorTests: XCTestCase {
 
         monitor.environment.getQueues = { completion in
             envCalls.append(.getQueues)
-            completion(mockQueues, nil)
+            completion(.success(mockQueues))
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -206,8 +206,8 @@ class QueuesMonitorTests: XCTestCase {
             envCalls.append(.unsubscribeFromUpdates)
         }
 
-        var receivedQueues: [Queue]?
-        var receivedUpdatedQueue: Queue?
+        var receivedQueues: [GliaWidgets.Queue]?
+        var receivedUpdatedQueue: GliaWidgets.Queue?
         monitor.$state
             .receive(on: CoreSdkClient.AnyCombineScheduler.mock.mainScheduler)
             // Drop initial .idle and .updated with listed queues state update
@@ -244,7 +244,7 @@ class QueuesMonitorTests: XCTestCase {
 
         monitor.environment.getQueues = { completion in
             envCalls.append(.getQueues)
-            completion(mockQueues, nil)
+            completion(.success(mockQueues))
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -257,8 +257,8 @@ class QueuesMonitorTests: XCTestCase {
             error(CoreSdkClient.SalemoveError.mock())
         }
 
-        var receivedQueues: [Queue]?
-        var receivedUpdatedQueue: Queue?
+        var receivedQueues: [GliaWidgets.Queue]?
+        var receivedUpdatedQueue: GliaWidgets.Queue?
         monitor.$state
             .receive(on: CoreSdkClient.AnyCombineScheduler.mock.mainScheduler)
             // Drop initial .idle and .updated with listed queues state update
@@ -290,7 +290,7 @@ class QueuesMonitorTests: XCTestCase {
 
         monitor.environment.getQueues = { completion in
             envCalls.append(.getQueues)
-            completion(mockQueues, nil)
+            completion(.success(mockQueues))
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -323,7 +323,7 @@ class QueuesMonitorTests: XCTestCase {
 
         monitor.environment.getQueues = { completion in
             envCalls.append(.getQueues)
-            completion([], nil)
+            completion(.success([]))
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -358,7 +358,7 @@ class QueuesMonitorTests: XCTestCase {
 
         monitor.environment.getQueues = { completion in
             envCalls.append(.getQueues)
-            completion([], nil)
+            completion(.success([]))
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -391,14 +391,14 @@ class QueuesMonitorTests: XCTestCase {
 
         monitor.environment.getQueues = { completion in
             envCalls.append(.getQueues)
-            completion([existingQueue], nil)
+            completion(.success([existingQueue]))
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
             completion(.success(olderQueue))
             return UUID().uuidString
         }
-        var receivedQueues: [Queue]?
+        var receivedQueues: [GliaWidgets.Queue]?
         monitor.$state
             // Drop initial .idle and then .updated after fetching
             .dropFirst(2)
@@ -432,7 +432,7 @@ class QueuesMonitorTests: XCTestCase {
 
         monitor.environment.getQueues = { completion in
             envCalls.append(.getQueues)
-            completion([oldQueue], nil)
+            completion(.success([oldQueue]))
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -440,7 +440,7 @@ class QueuesMonitorTests: XCTestCase {
             return UUID().uuidString
         }
 
-        var receivedQueues: [Queue]?
+        var receivedQueues: [GliaWidgets.Queue]?
         monitor.$state
             // Drop initial .idle and then .updated after fetching
             .dropFirst(2)
@@ -473,7 +473,7 @@ class QueuesMonitorTests: XCTestCase {
 
         monitor.environment.getQueues = { completion in
             envCalls.append(.getQueues)
-            completion([knownQueue], nil)
+            completion(.success([knownQueue]))
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -481,7 +481,7 @@ class QueuesMonitorTests: XCTestCase {
             return UUID().uuidString
         }
 
-        var receivedQueues: [Queue]?
+        var receivedQueues: [GliaWidgets.Queue]?
         monitor.$state
             // Drop initial .idle and then .updated after fetching
             .dropFirst(2)

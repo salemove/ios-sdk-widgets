@@ -13,7 +13,21 @@ extension CoreSdkClient {
             updateVisitorInfo: GliaCore.sharedInstance.updateVisitorInfo(_:completion:),
             configureWithConfiguration: GliaCore.sharedInstance.configure(with:completion:),
             configureWithInteractor: GliaCore.sharedInstance.configure(interactor:),
-            getQueues: GliaCore.sharedInstance.listQueues(completion:),
+            getQueues: { completion in
+                GliaCore.sharedInstance.listQueues { coreQueues, error in
+                    if let error {
+                        completion(.failure(error))
+                        return
+                    }
+
+                    if let coreQueues {
+                        let queues = coreQueues.map { $0.asWidgetSDKQueue() }
+                        completion(.success(queues))
+                        return
+                    }
+                    completion(.failure(GliaError.internalError))
+                }
+            },
             queueForEngagement: { options, replaceExisting, completion in
                 let options = QueueForEngagementOptions(
                     queueIds: options.queueIds,
@@ -60,7 +74,17 @@ extension CoreSdkClient {
                     GliaCore.sharedInstance.cameraDeviceManageable()
                 )
             },
-            subscribeForQueuesUpdates: GliaCore.sharedInstance.subscribeForQueuesUpdates(forQueues:completion:),
+            subscribeForQueuesUpdates: { queues, completion in
+                GliaCore.sharedInstance.subscribeForQueuesUpdates(forQueues: queues) { result in
+                    switch result {
+                    case let .success(coreQueue):
+                        let queue = coreQueue.asWidgetSDKQueue()
+                        completion(.success(queue))
+                    case let .failure(error):
+                        completion(.failure(error))
+                    }
+                }
+            },
             unsubscribeFromUpdates: GliaCore.sharedInstance.unsubscribeFromUpdates(queueCallbackId:onError:),
             configureLogLevel: GliaCore.sharedInstance.configureLogLevel(level:)
         )

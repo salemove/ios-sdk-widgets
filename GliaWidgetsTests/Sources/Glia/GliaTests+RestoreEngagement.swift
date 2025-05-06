@@ -43,7 +43,7 @@ extension GliaTests {
             calls.append(.snackBarPresent)
         }
 
-        sdkEnv.coreSdk.getQueues = { callback in callback([], nil) }
+        sdkEnv.coreSdk.getQueues = { callback in callback(.success([])) }
         sdkEnv.coreSdk.subscribeForQueuesUpdates = { _, _ in
             return UUID.mock.uuidString
         }
