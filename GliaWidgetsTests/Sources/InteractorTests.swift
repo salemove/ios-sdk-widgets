@@ -689,7 +689,7 @@ class InteractorTests: XCTestCase {
         let queuesMonitor = QueuesMonitor.mock()
         queuesMonitor.environment.getQueues = { completion in
             calls.append(.getQueues)
-            completion([.mock()], nil)
+            completion(.success([.mock()]))
         }
         
         queuesMonitor.environment.subscribeForQueuesUpdates = { _, completion in

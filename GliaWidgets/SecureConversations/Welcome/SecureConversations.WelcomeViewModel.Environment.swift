@@ -5,7 +5,7 @@ extension SecureConversations.WelcomeViewModel {
         var secureConversations: CoreSdkClient.SecureConversations
         var welcomeStyle: SecureConversations.WelcomeStyle
         var queueIds: [String]
-        var listQueues: CoreSdkClient.ListQueues
+        var listQueues: CoreSdkClient.GetQueues
         var fileUploader: FileUploader
         var uiApplication: UIKitBased.UIApplication
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create

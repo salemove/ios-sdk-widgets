@@ -16,7 +16,7 @@ extension SecureConversations.TranscriptModel {
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var uiApplication: UIKitBased.UIApplication
         var queueIds: [String]
-        var getQueues: CoreSdkClient.ListQueues
+        var getQueues: CoreSdkClient.GetQueues
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var uuid: () -> UUID
         var fileUploadListStyle: FileUploadListStyle
@@ -103,7 +103,7 @@ extension SecureConversations.TranscriptModel.Environment {
         fetchChatHistory: @escaping CoreSdkClient.FetchChatHistory = { _ in },
         uiApplication: UIKitBased.UIApplication = .mock,
         queueIds: [String] = [],
-        getQueues: @escaping CoreSdkClient.ListQueues = { _ in },
+        getQueues: @escaping CoreSdkClient.GetQueues = { _ in },
         createFileUploadListModel: @escaping SecureConversations.FileUploadListViewModel.Create = { _ in .mock() },
         uuid: @escaping () -> UUID = { .mock },
         fileUploadListStyle: FileUploadListStyle = .mock,

@@ -16,7 +16,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.log = logger
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
-        modelEnv.getQueues = { callback in callback([], nil) }
+        modelEnv.getQueues = { callback in callback(.success([])) }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
         let availabilityEnv = SecureConversations.Availability.Environment(
@@ -48,7 +48,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.log = logger
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
-        modelEnv.getQueues = { callback in callback(nil, .mock()) }
+        let mockError = NSError(domain: "", code: 1)
+        modelEnv.getQueues = { callback in callback(.failure(mockError)) }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
         let availabilityEnv = SecureConversations.Availability.Environment(
@@ -624,7 +625,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         var availabilityEnv = SecureConversations.Availability.Environment.failing
         availabilityEnv.log = logger
         availabilityEnv.getQueues = { callback in
-            callback([], nil)
+            callback(.success([]))
         }
         availabilityEnv.isAuthenticated = { true }
         availabilityEnv.queuesMonitor = .mock(getQueues: availabilityEnv.getQueues)
@@ -657,7 +658,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         var availabilityEnv = SecureConversations.Availability.Environment.failing
         availabilityEnv.log = logger
         availabilityEnv.getQueues = { callback in
-            callback([.mock()], nil)
+            callback(.success([.mock()]))
         }
         availabilityEnv.isAuthenticated = { false }
         availabilityEnv.queuesMonitor = .mock(getQueues: availabilityEnv.getQueues)
@@ -686,8 +687,9 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         }
         modelEnvironment.createEntryWidget = { _ in .mock() }
         var availabilityEnv = SecureConversations.Availability.Environment.failing
+        let mockError = NSError(domain: "", code: 1)
         availabilityEnv.getQueues = { callback in
-            callback(nil, .mock())
+            callback(.failure(mockError))
         }
         availabilityEnv.isAuthenticated = { false }
         availabilityEnv.queuesMonitor = .mock(getQueues: availabilityEnv.getQueues)
@@ -719,7 +721,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         var availabilityEnv = SecureConversations.Availability.Environment.failing
         availabilityEnv.log = logger
         availabilityEnv.getQueues = { callback in
-            callback([.mock()], nil)
+            callback(.success([.mock()]))
         }
         availabilityEnv.isAuthenticated = { true }
         availabilityEnv.queuesMonitor = .mock(getQueues: availabilityEnv.getQueues)
@@ -752,7 +754,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         var availabilityEnv = SecureConversations.Availability.Environment.failing
         availabilityEnv.log = logger
         availabilityEnv.getQueues = { callback in
-            callback([.mock()], nil)
+            callback(.success([.mock()]))
         }
         availabilityEnv.isAuthenticated = { true }
         availabilityEnv.queuesMonitor = .mock(getQueues: availabilityEnv.getQueues)
@@ -1031,7 +1033,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.log = logger
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
-        modelEnv.getQueues = { callback in callback([], nil) }
+        modelEnv.getQueues = { callback in callback(.success([])) }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { config in .mock(configuration: config) }
 
@@ -1088,7 +1090,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.log = logger
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
-        modelEnv.getQueues = { callback in callback([], nil) }
+        modelEnv.getQueues = { callback in callback(.success([])) }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { config in .mock(configuration: config) }
 

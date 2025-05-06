@@ -4,7 +4,7 @@ extension SecureConversations.Coordinator {
     struct Environment {
         var secureConversations: CoreSdkClient.SecureConversations
         var queueIds: [String]
-        var listQueues: CoreSdkClient.ListQueues
+        var listQueues: CoreSdkClient.GetQueues
         var createFileUploader: FileUploader.Create
         var fileManager: FoundationBased.FileManager
         var data: FoundationBased.Data

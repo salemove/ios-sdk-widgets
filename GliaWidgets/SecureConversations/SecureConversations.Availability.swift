@@ -2,7 +2,7 @@ import Foundation
 
 extension SecureConversations {
     struct Availability {
-        typealias CompletionResult = (Result<Status, CoreSdkClient.SalemoveError>) -> Void
+        typealias CompletionResult = (Result<Status, Error>) -> Void
 
         var environment: Environment
 
@@ -28,8 +28,8 @@ extension SecureConversations {
         }
 
         private func checkQueues(
-            fetchedQueues: [CoreSdkClient.Queue],
-            completion: (Result<Status, CoreSdkClient.SalemoveError>) -> Void
+            fetchedQueues: [Queue],
+            completion: (Result<Status, Error>) -> Void
         ) {
             guard environment.isAuthenticated() else {
                 environment.log.warning("Secure Messaging is unavailable because the visitor is not authenticated.")
@@ -59,10 +59,10 @@ extension SecureConversations {
             completion(.success(.available(.queues(queueIds: queueIds))))
         }
 
-        private var defaultPredicate: (CoreSdkClient.Queue) -> Bool {
+        private var defaultPredicate: (Queue) -> Bool {
             {
                 $0.state.status != .closed &&
-                $0.state.media.contains(CoreSdkClient.MediaType.messaging)
+                $0.state.media.contains(MediaType.messaging)
             }
         }
     }
@@ -70,7 +70,7 @@ extension SecureConversations {
 
 extension SecureConversations.Availability {
     struct Environment {
-        var getQueues: CoreSdkClient.ListQueues
+        var getQueues: CoreSdkClient.GetQueues
         var isAuthenticated: () -> Bool
         var log: CoreSdkClient.Logger
         var queuesMonitor: QueuesMonitor
@@ -149,7 +149,7 @@ extension SecureConversations.Availability {
 
 extension SecureConversations.Availability.Environment {
     static func mock(
-        listQueues: @escaping CoreSdkClient.ListQueues = { _ in },
+        listQueues: @escaping CoreSdkClient.GetQueues = { _ in },
         isAuthenticated: @escaping () -> Bool = { false },
         log: CoreSdkClient.Logger = .mock,
         queuesMonitor: QueuesMonitor = .mock(),

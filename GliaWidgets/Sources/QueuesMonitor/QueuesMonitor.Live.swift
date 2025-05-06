@@ -34,22 +34,21 @@ final class QueuesMonitor {
     ///   - fetchedQueuesCompletion: Returns fetched queues result for given `queuesIds`
     ///   if no queues were found among site's queues returns default queues.
     ///
-    func fetchQueues(queuesIds: [String], completion: @escaping (Result<[Queue], GliaCoreError>) -> Void) {
-        environment.getQueues { [weak self] queues, error in
-            guard let self else {
-                return
-            }
-            if let error {
+    func fetchQueues(queuesIds: [String], completion: @escaping (Result<[Queue], Error>) -> Void) {
+        environment.getQueues { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case let .success(queues):
+                let observedQueues = evaluateQueues(queuesIds: queuesIds, fetchedQueues: queues)
+                state = .updated(observedQueues)
+                self._observedQueues.setValue(observedQueues)
+                completion(.success(observedQueues))
+            case let .failure(error):
                 environment.logger.error("Setting up queues. Failed to get site queues: \(error)")
                 self.state = .failed(error)
                 completion(.failure(error))
                 return
             }
-
-            let observedQueues = evaluateQueues(queuesIds: queuesIds, fetchedQueues: queues)
-            state = .updated(observedQueues)
-            self._observedQueues.setValue(observedQueues)
-            completion(.success(observedQueues))
         }
     }
 
@@ -62,7 +61,7 @@ final class QueuesMonitor {
     ///
     func fetchAndMonitorQueues(
         queuesIds: [String] = [],
-        fetchedQueuesCompletion: ((Result<[Queue], GliaCoreError>) -> Void)? = nil
+        fetchedQueuesCompletion: ((Result<[Queue], Error>) -> Void)? = nil
     ) {
         stopMonitoring()
 

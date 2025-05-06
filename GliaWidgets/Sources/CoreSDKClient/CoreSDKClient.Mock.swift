@@ -492,7 +492,7 @@ extension CoreSdkClient.Site {
     }
 }
 
-extension CoreSdkClient.Queue {
+extension Queue {
     static func mock(
         id: String = "",
         name: String = "",
@@ -500,13 +500,12 @@ extension CoreSdkClient.Queue {
         isDefault: Bool = false,
         media: [MediaType] = [],
         lastUpdated: Date = Date()
-    ) -> CoreSdkClient.Queue {
-        CoreSdkClient.Queue(
+    ) -> Queue {
+        Queue(
             id: id,
             name: name,
-            status: status,
+            state: .init(status: status, media: media),
             isDefault: isDefault,
-            media: media,
             lastUpdated: lastUpdated
         )
     }

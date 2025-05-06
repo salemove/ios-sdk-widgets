@@ -1,7 +1,7 @@
 #if DEBUG
 extension QueuesMonitor {
     static func mock(
-        getQueues: CoreSdkClient.ListQueues? = nil,
+        getQueues: CoreSdkClient.GetQueues? = nil,
         subscribeForQueuesUpdates: CoreSdkClient.SubscribeForQueuesUpdates? = nil,
         unsubscribeFromUpdates: CoreSdkClient.UnsubscribeFromUpdates? = nil
     ) -> Self {

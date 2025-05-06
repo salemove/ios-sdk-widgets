@@ -32,11 +32,11 @@ struct CoreSdkClient {
 
     var configureWithInteractor: ConfigureWithInteractor
 
-    typealias ListQueues = (
-        _ completion: @escaping Self.QueueRequestBlock
+    typealias GetQueues = (
+        _ completion: @escaping (Result<[Queue], Error>) -> Void
     ) -> Void
 
-    var getQueues: ListQueues
+    var getQueues: GetQueues
 
     typealias QueueForEngagement = (
         _ options: GliaCoreSDK.QueueForEngagementOptions,
@@ -152,7 +152,7 @@ struct CoreSdkClient {
 
     typealias SubscribeForQueuesUpdates = (
         _ queueIds: [String],
-        _ completion: @escaping (Result<GliaCoreSDK.Queue, GliaCoreSDK.GliaCoreError>) -> Void
+        _ completion: @escaping (Result<Queue, Error>) -> Void
     ) -> String?
 
     var subscribeForQueuesUpdates: SubscribeForQueuesUpdates
@@ -319,7 +319,6 @@ extension CoreSdkClient {
     typealias OperatorBlock = GliaCoreSDK.OperatorBlock
     typealias OperatorTypingStatus = GliaCoreSDK.OperatorTypingStatus
     typealias OperatorTypingStatusUpdate = GliaCoreSDK.OperatorTypingStatusUpdate
-    typealias Queue = GliaCoreSDK.Queue
     typealias QueueError = GliaCoreSDK.QueueError
     typealias QueueState = GliaCoreSDK.QueueState
     typealias QueueStatus = GliaCoreSDK.QueueStatus
