@@ -9,7 +9,18 @@ extension CoreSdkClient {
             createAppDelegate: Self.AppDelegate.live,
             clearSession: GliaCore.sharedInstance.clearSession,
             localeProvider: .init(getRemoteString: GliaCore.sharedInstance.localeProvider.getRemoteString(_:)),
-            getVisitorInfo: GliaCore.sharedInstance.fetchVisitorInfo(_:),
+            getVisitorInfo: { completion in
+                GliaCore.sharedInstance.fetchVisitorInfo { result in
+                    switch result {
+                    case let .success(coreVisitorInfo):
+                        let visitorInfo = coreVisitorInfo.asWidgetSdkVisitorInfo()
+                        completion(.success(visitorInfo))
+                    case let .failure(error):
+                        completion(.failure(error))
+                    }
+                }
+            },
+            getVisitorInfoDeprecated: GliaCore.sharedInstance.fetchVisitorInfo(_:),
             updateVisitorInfo: GliaCore.sharedInstance.updateVisitorInfo(_:completion:),
             configureWithConfiguration: GliaCore.sharedInstance.configure(with:completion:),
             configureWithInteractor: GliaCore.sharedInstance.configure(interactor:),

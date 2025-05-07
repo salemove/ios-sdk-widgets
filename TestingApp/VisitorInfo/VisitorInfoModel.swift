@@ -30,7 +30,7 @@ final class VisitorInfoModel {
     }
 
     // Keeps track of *fetch* visitor info request state.
-    var fetchInfoRequestState: RequestState<GliaCore.VisitorInfo>? {
+    var fetchInfoRequestState: RequestState<VisitorInfo>? {
         didSet {
             requestPropsRendered()
         }
@@ -442,7 +442,7 @@ final class VisitorInfoModel {
 
 extension VisitorInfoModel {
     struct Environment {
-        let getVisitorInfo: (@escaping (Result<GliaCore.VisitorInfo, Error>) -> Void) -> Void
+        let getVisitorInfo: (@escaping (Result<VisitorInfo, Error>) -> Void) -> Void
         let updateVisitorInfo: (VisitorInfoUpdate, @escaping (Result<Bool, Error>) -> Void) -> Void
         let uuid: () -> UUID
     }

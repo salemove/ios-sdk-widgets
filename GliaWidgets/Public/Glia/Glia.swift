@@ -427,7 +427,7 @@ public class Glia {
     ///   `configure(with:uiConfig:assetsBuilder:completion:)` must be called prior to
     ///   this method, because `GliaError.sdkIsNotConfigured` will occur otherwise.
     ///
-    public func getVisitorInfo(completion: @escaping (Result<GliaCore.VisitorInfo, Error>) -> Void) {
+    public func getVisitorInfo(completion: @escaping (Result<VisitorInfo, Error>) -> Void) {
         guard configuration != nil else {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
