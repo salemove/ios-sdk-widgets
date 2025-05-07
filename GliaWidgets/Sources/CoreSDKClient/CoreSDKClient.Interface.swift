@@ -10,9 +10,10 @@ struct CoreSdkClient {
     var clearSession: () -> Void
     var localeProvider: LocaleProvider
 
-    typealias GetVisitorInfo = (_ completion: @escaping (Result<Self.Salemove.VisitorInfo, Error>) -> Void) -> Void
+    typealias GetVisitorInfo = (_ completion: @escaping (Result<VisitorInfo, Error>) -> Void) -> Void
 
     var getVisitorInfo: GetVisitorInfo
+    var getVisitorInfoDeprecated: (_ completion: @escaping (Result<GliaCore.VisitorInfo, Error>) -> Void) -> Void
 
     typealias UpdateVisitorInfo = (
         _ info: Self.VisitorInfoUpdate,
