@@ -9,6 +9,7 @@ extension CoreSdkClient {
         clearSession: { fail("\(Self.self).clearSession") },
         localeProvider: .failing,
         getVisitorInfo: { _ in fail("\(Self.self).getVisitorInfo") },
+        getVisitorInfoDeprecated: { _ in fail("\(Self.self).getVisitorInfoDeprecated")},
         updateVisitorInfo: { _, _ in fail("\(Self.self).updateVisitorInfo") },
         configureWithConfiguration: { _, _ in fail("\(Self.self).configureWithConfiguration") },
         configureWithInteractor: { _ in fail("\(Self.self).configureWithInteractor") },
