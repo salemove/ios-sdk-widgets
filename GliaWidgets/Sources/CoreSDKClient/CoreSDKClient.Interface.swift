@@ -16,11 +16,15 @@ struct CoreSdkClient {
     var getVisitorInfoDeprecated: (_ completion: @escaping (Result<GliaCore.VisitorInfo, Error>) -> Void) -> Void
 
     typealias UpdateVisitorInfo = (
-        _ info: Self.VisitorInfoUpdate,
+        _ info: VisitorInfoUpdate,
         _ completion: @escaping (Result<Bool, Error>) -> Void
     ) -> Void
 
     var updateVisitorInfo: UpdateVisitorInfo
+    var updateVisitorInfoDeprecated: (
+        _ info: GliaCoreSDK.VisitorInfoUpdate,
+        _ completion: @escaping (Result<Bool, Error>) -> Void
+    ) -> Void
 
     typealias ConfigureWithConfiguration = (
         _ sdkConfiguration: Self.Salemove.Configuration,
@@ -340,7 +344,6 @@ extension CoreSdkClient {
     typealias VideoStreamAddedBlock = GliaCoreSDK.VideoStreamAddedBlock
     typealias VisitorContext = GliaCoreSDK.VisitorContext
     typealias ContextType = GliaCoreSDK.VisitorContext.ContextType
-    typealias VisitorInfoUpdate = GliaCoreSDK.VisitorInfoUpdate
     typealias VisitorScreenSharingState = GliaCoreSDK.VisitorScreenSharingState
     typealias VisitorScreenSharingStateChange = GliaCoreSDK.VisitorScreenSharingStateChange
     typealias Engagement = GliaCoreSDK.Engagement

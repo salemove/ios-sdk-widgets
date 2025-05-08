@@ -21,7 +21,11 @@ extension CoreSdkClient {
                 }
             },
             getVisitorInfoDeprecated: GliaCore.sharedInstance.fetchVisitorInfo(_:),
-            updateVisitorInfo: GliaCore.sharedInstance.updateVisitorInfo(_:completion:),
+            updateVisitorInfo: { visitorInfoUpdate, completion in
+                let coreSdkVisitorInfoUpdate = visitorInfoUpdate.asCoreSdkVisitorInfoUpdate()
+                GliaCore.sharedInstance.updateVisitorInfo(coreSdkVisitorInfoUpdate, completion: completion)
+            },
+            updateVisitorInfoDeprecated: GliaCore.sharedInstance.updateVisitorInfo(_:completion:),
             configureWithConfiguration: GliaCore.sharedInstance.configure(with:completion:),
             configureWithInteractor: GliaCore.sharedInstance.configure(interactor:),
             getQueues: { completion in
