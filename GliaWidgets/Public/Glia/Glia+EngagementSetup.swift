@@ -69,13 +69,18 @@ extension Glia {
             // for further engagements, we need to default this value again.
             interactor.skipLiveObservationConfirmations = false
 
-            startRootCoordinator(
-                with: interactor,
-                viewFactory: viewFactory,
-                sceneProvider: sceneProvider,
-                engagementKind: ongoingEngagementMediaStreams.map { EngagementKind(media: $0) } ?? engagementKind,
-                features: features
-            )
+            // Root coordinator is not nil if secure conversation chat transcript is open
+            if let rootCoordinator {
+                rootCoordinator.maximize()
+            } else {
+                startRootCoordinator(
+                    with: interactor,
+                    viewFactory: viewFactory,
+                    sceneProvider: sceneProvider,
+                    engagementKind: ongoingEngagementMediaStreams.map { EngagementKind(media: $0) } ?? engagementKind,
+                    features: features
+                )
+            }
             return
         }
 
