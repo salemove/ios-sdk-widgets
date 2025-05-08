@@ -916,6 +916,9 @@
 		C0C5BB772CAD4278001B2025 /* MediaTypeItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C5BB762CAD4259001B2025 /* MediaTypeItemStyle.swift */; };
 		C0C5BB792CAD42FD001B2025 /* MediaTypeItemStyle.RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C5BB782CAD42FD001B2025 /* MediaTypeItemStyle.RemoteConfig.swift */; };
 		C0CC6CCC2DCB547D003F7997 /* VisitorInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CC6CCB2DCB5479003F7997 /* VisitorInfo.swift */; };
+		C0CC6CCE2DCB626B003F7997 /* VisitorInfoUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CC6CCD2DCB6267003F7997 /* VisitorInfoUpdate.swift */; };
+		C0CC6CD02DCB634D003F7997 /* VisitorInfoUpdate.NoteUpdateMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CC6CCF2DCB6343003F7997 /* VisitorInfoUpdate.NoteUpdateMethod.swift */; };
+		C0CC6CD22DCB6371003F7997 /* VisitorInfoUpdate.CustomAttributesUpdateMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CC6CD12DCB6363003F7997 /* VisitorInfoUpdate.CustomAttributesUpdateMethod.swift */; };
 		C0D2F02C2991219100803B47 /* VideoCallCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F02B2991219100803B47 /* VideoCallCoordinator.swift */; };
 		C0D2F02E2991221900803B47 /* VideoCallCoordinator.DelegateEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F02D2991221900803B47 /* VideoCallCoordinator.DelegateEvent.swift */; };
 		C0D2F0302991229F00803B47 /* VideoCallCoordinator.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2F02F2991229F00803B47 /* VideoCallCoordinator.Environment.swift */; };
@@ -2017,6 +2020,9 @@
 		C0C5BB762CAD4259001B2025 /* MediaTypeItemStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaTypeItemStyle.swift; sourceTree = "<group>"; };
 		C0C5BB782CAD42FD001B2025 /* MediaTypeItemStyle.RemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaTypeItemStyle.RemoteConfig.swift; sourceTree = "<group>"; };
 		C0CC6CCB2DCB5479003F7997 /* VisitorInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorInfo.swift; sourceTree = "<group>"; };
+		C0CC6CCD2DCB6267003F7997 /* VisitorInfoUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorInfoUpdate.swift; sourceTree = "<group>"; };
+		C0CC6CCF2DCB6343003F7997 /* VisitorInfoUpdate.NoteUpdateMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorInfoUpdate.NoteUpdateMethod.swift; sourceTree = "<group>"; };
+		C0CC6CD12DCB6363003F7997 /* VisitorInfoUpdate.CustomAttributesUpdateMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorInfoUpdate.CustomAttributesUpdateMethod.swift; sourceTree = "<group>"; };
 		C0D2F02B2991219100803B47 /* VideoCallCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallCoordinator.swift; sourceTree = "<group>"; };
 		C0D2F02D2991221900803B47 /* VideoCallCoordinator.DelegateEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallCoordinator.DelegateEvent.swift; sourceTree = "<group>"; };
 		C0D2F02F2991229F00803B47 /* VideoCallCoordinator.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCallCoordinator.Environment.swift; sourceTree = "<group>"; };
@@ -5159,6 +5165,9 @@
 			isa = PBXGroup;
 			children = (
 				C0CC6CCB2DCB5479003F7997 /* VisitorInfo.swift */,
+				C0CC6CCD2DCB6267003F7997 /* VisitorInfoUpdate.swift */,
+				C0CC6CCF2DCB6343003F7997 /* VisitorInfoUpdate.NoteUpdateMethod.swift */,
+				C0CC6CD12DCB6363003F7997 /* VisitorInfoUpdate.CustomAttributesUpdateMethod.swift */,
 			);
 			path = VisitorInfo;
 			sourceTree = "<group>";
@@ -6288,6 +6297,7 @@
 				311CAFCD29F8FAE20067B59F /* SecureConversations.TranscriptModel.CustomCard.swift in Sources */,
 				C0D6CA432C19AA0900D4709B /* SecureConversations.MessageTextView.swift in Sources */,
 				9A19926B27D3BA8700161AAE /* ViewFactory.Environment.Mock.swift in Sources */,
+				C0CC6CD02DCB634D003F7997 /* VisitorInfoUpdate.NoteUpdateMethod.swift in Sources */,
 				84681A9B2A669D8800DD7406 /* QuickReplyView.swift in Sources */,
 				1A6EB05725A717CB0007081A /* ChatMessage.swift in Sources */,
 				C0E948062AB1D64700890026 /* HeaderButtonSwiftUI.swift in Sources */,
@@ -6320,6 +6330,7 @@
 				C09046712B7CFE11003C437C /* ConfirmationStyle.TitleStyle.Accessibility.swift in Sources */,
 				C09047252B7E1BBA003C437C /* GvaGalleryCardStyle.ViewStyle.swift in Sources */,
 				1A60B0192567FC8A00E53F53 /* ButtonKind.swift in Sources */,
+				C0CC6CD22DCB6371003F7997 /* VisitorInfoUpdate.CustomAttributesUpdateMethod.swift in Sources */,
 				AFA5E96229F2CF9400F13DB7 /* SecureConversations.TranscriptModel.DividedChatItemsForUnreadCount.swift in Sources */,
 				C42463742673ABE10082C135 /* ScreenShareHandler.Interface.swift in Sources */,
 				216D311D2CFE2ED10019CA9E /* MediaTypeItemsStyle.Mock.swift in Sources */,
@@ -6506,6 +6517,7 @@
 				C090471F2B7E1B1F003C437C /* GvaGalleryCardStyle.ButtonStyle.RemoteConfig.swift in Sources */,
 				AFB6A07B2CCBF53800A1ED9A /* MediaTypeItemStyle.Loading.Accessibility.swift in Sources */,
 				C09047112B7E17AE003C437C /* Theme.Shadow.RemoteConfig.swift in Sources */,
+				C0CC6CCE2DCB626B003F7997 /* VisitorInfoUpdate.swift in Sources */,
 				AFA2FDFA2890827E00428E6D /* BadgeStyle.Mock.swift in Sources */,
 				8491AF002A6FB44200CC3E72 /* GvaGalleryCardCell.swift in Sources */,
 				C0D6CA5B2C19BF1D00D4709B /* SecureConversations.ConfirmationViewModel.Environment.swift in Sources */,

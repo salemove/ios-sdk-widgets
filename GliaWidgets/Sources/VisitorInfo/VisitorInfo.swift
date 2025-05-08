@@ -1,7 +1,7 @@
 import Foundation
 import GliaCoreSDK
 
-public struct VisitorInfo : Equatable, Decodable {
+public struct VisitorInfo: Equatable, Decodable {
     /// Visitor's name
     public let name: String?
 
@@ -15,7 +15,7 @@ public struct VisitorInfo : Equatable, Decodable {
     public let note: String?
 
     /// Visitor's custom attributes
-    public let customAttributes: [String : String]?
+    public let customAttributes: [String: String]?
 
     /// Is visitor banned
     public let banned: Bool

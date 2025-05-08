@@ -13,6 +13,7 @@ extension CoreSdkClient {
         getVisitorInfo: { _ in },
         getVisitorInfoDeprecated: { _ in},
         updateVisitorInfo: { _, _ in },
+        updateVisitorInfoDeprecated: { _, _ in },
         configureWithConfiguration: { _, _ in },
         configureWithInteractor: { _ in },
         getQueues: { _ in },

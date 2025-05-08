@@ -1,6 +1,5 @@
 import Combine
 import GliaWidgets
-import GliaCoreSDK
 
 final class VisitorInfoModel {
     typealias Props = VisitorInfoViewController.Props

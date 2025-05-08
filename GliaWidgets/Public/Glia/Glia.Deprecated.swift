@@ -13,4 +13,16 @@ extension Glia {
     public func listQueues(_ completion: @escaping (Result<[Queue], Error>) -> Void) {
         getQueues(completion)
     }
+
+    @available(*, deprecated, message: "Deprecated, use ``Glia.updateVisitorInfo(info:completion:)`` instead.")
+    public func updateVisitorInfo(
+        _ info: GliaCoreSDK.VisitorInfoUpdate,
+        completion: @escaping (Result<Bool, Error>) -> Void
+    ) {
+        guard configuration != nil else {
+            completion(.failure(GliaError.sdkIsNotConfigured))
+            return
+        }
+        environment.coreSdk.updateVisitorInfoDeprecated(info, completion)
+    }
 }
