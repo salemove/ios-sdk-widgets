@@ -6,6 +6,20 @@ public struct QueueState: Decodable, Equatable {
     public let status: QueueStatus
     /// An array of media types for which queuing is enabled
     public let media: [MediaType]
+
+    /// Initializes QueueState.
+    ///
+    /// - Parameters:
+    ///   - status: Queue status.
+    ///   - media: An array of media types for which queuing is enabled.
+    ///
+    public init(
+        status: QueueStatus,
+        media: [MediaType]
+    ) {
+        self.status = status
+        self.media = media
+    }
 }
 
 extension GliaCoreSDK.QueueState {
