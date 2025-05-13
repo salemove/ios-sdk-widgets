@@ -8,14 +8,16 @@ extension Configuration {
         environment: Environment = .beta,
         site: String = "site-id",
         companyName: String = "",
-        manualLocaleOverride: String? = nil
+        manualLocaleOverride: String? = nil,
+        suppressPushNotificationsPermissionRequestDuringAuthentication: Bool = false
     ) -> Self {
         Configuration(
             authorizationMethod: authMethod,
             environment: environment,
             site: site,
             companyName: companyName,
-            manualLocaleOverride: manualLocaleOverride
+            manualLocaleOverride: manualLocaleOverride,
+            suppressPushNotificationsPermissionRequestDuringAuthentication: suppressPushNotificationsPermissionRequestDuringAuthentication
         )
     }
 }
