@@ -29,6 +29,10 @@ public struct Configuration {
     /// then the default locale from site settings will be used.
     public var manualLocaleOverride: String?
 
+    /// If `true`, the SDK will not prompt the user for push notification
+    /// permissions during authentication.
+    public var suppressPushNotificationsPermissionRequestDuringAuthentication: Bool
+
     /// Initializes the configuration.
     ///
     /// - Parameters:
@@ -50,7 +54,8 @@ public struct Configuration {
         pushNotifications: PushNotifications = .disabled,
         isWhiteLabelApp: Bool = false,
         companyName: String = "",
-        manualLocaleOverride: String? = nil
+        manualLocaleOverride: String? = nil,
+        suppressPushNotificationsPermissionRequestDuringAuthentication: Bool = false
     ) {
         self.authorizationMethod = authorizationMethod
         self.environment = environment
@@ -60,6 +65,7 @@ public struct Configuration {
         self.isWhiteLabelApp = isWhiteLabelApp
         self.companyName = companyName
         self.manualLocaleOverride = manualLocaleOverride
+        self.suppressPushNotificationsPermissionRequestDuringAuthentication = suppressPushNotificationsPermissionRequestDuringAuthentication
     }
 }
 
