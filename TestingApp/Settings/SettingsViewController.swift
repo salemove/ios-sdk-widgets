@@ -17,6 +17,7 @@ final class SettingsViewController: UIViewController {
     private var visitorContextAssedIdCell: SettingsTextCell!
     private var isWhiteLabelAppCell: SettingsSwitchCell!
     private var manualLocaleOverrideCell: SettingsTextCell!
+    private var suppressPushPermissionCell: SettingsSwitchCell!
     private var bubbleFeatureCell: SettingsSwitchCell!
     private var primaryColorCell: SettingsColorCell!
     private var secondaryColorCell: SettingsColorCell!
@@ -159,12 +160,18 @@ private extension SettingsViewController {
             text: props.config.manualLocaleOverride ?? ""
         )
         manualLocaleOverrideCell.textField.accessibilityIdentifier = "settings_manual_locale_override_textfield"
-    
+
         isWhiteLabelAppCell = SettingsSwitchCell(
             title: "Is white label App",
             isOn: props.config.isWhiteLabelApp
         )
-        
+
+        suppressPushPermissionCell = SettingsSwitchCell(
+            title: "Suppress push permission during auth",
+            isOn: props.config.suppressPushNotificationsPermissionRequestDuringAuthentication
+        )
+        suppressPushPermissionCell.switcher.accessibilityIdentifier = "settings_suppress_push_permission_switch"
+
         bubbleFeatureCell = SettingsSwitchCell(
             title: "Present \"Bubble\" overlay in engagement time",
             isOn: props.features ~= .bubbleView
@@ -288,7 +295,8 @@ private extension SettingsViewController {
             queueIDCell,
             visitorContextAssedIdCell,
             manualLocaleOverrideCell,
-            isWhiteLabelAppCell
+            isWhiteLabelAppCell,
+            suppressPushPermissionCell
         ]
         configurationSection = Section(
             title: "Glia configuration",
@@ -304,6 +312,7 @@ private extension SettingsViewController {
         let manualLocaleOverride = manualLocaleOverrideText.isEmpty ? nil : manualLocaleOverrideText
         
         let isWhiteLabelApp = isWhiteLabelAppCell.switcher.isOn
+        let suppressPushPermission = suppressPushPermissionCell.switcher.isOn
 
         props.changeConfig(
             Configuration(
@@ -312,7 +321,8 @@ private extension SettingsViewController {
                 site: siteCell.textField.text ?? "",
                 visitorContext: uuid.map { Configuration.VisitorContext(assetId: $0) },
                 isWhiteLabelApp: isWhiteLabelApp,
-                manualLocaleOverride: manualLocaleOverride
+                manualLocaleOverride: manualLocaleOverride,
+                suppressPushNotificationsPermissionRequestDuringAuthentication: suppressPushPermission
             )
         )
 

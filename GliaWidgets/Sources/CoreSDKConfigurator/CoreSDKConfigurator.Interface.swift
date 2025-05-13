@@ -16,8 +16,8 @@ extension CoreSDKConfigurator {
                     authorizingMethod: configuration.authorizationMethod.coreAuthorizationMethod,
                     pushNotifications: configuration.pushNotifications.coreSdk,
                     manualLocaleOverride: configuration.manualLocaleOverride,
-                    // TODO: Pass the actual value passed during SDK configuration
-                    suppressPushNotificationsPermissionRequestDuringAuthentication: false
+                    suppressPushNotificationsPermissionRequestDuringAuthentication: configuration
+                        .suppressPushNotificationsPermissionRequestDuringAuthentication
                 )
                 coreSdk.configureWithConfiguration(sdkConfiguration, completion)
             }

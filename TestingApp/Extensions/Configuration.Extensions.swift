@@ -9,7 +9,8 @@ extension Configuration {
             authorizationMethod: .siteApiKey(id: "", secret: ""),
             environment: env,
             site: "",
-            manualLocaleOverride: nil
+            manualLocaleOverride: nil,
+            suppressPushNotificationsPermissionRequestDuringAuthentication: false
         )
     }
 }
@@ -36,7 +37,8 @@ extension Configuration {
             environment: environment,
             site: siteId,
             visitorContext: visitorContext,
-            manualLocaleOverride: manualLocaleOverride
+            manualLocaleOverride: manualLocaleOverride,
+            suppressPushNotificationsPermissionRequestDuringAuthentication: false
         )
     }
 }
@@ -65,7 +67,8 @@ extension Configuration: Codable {
              visitorContext,
              pushNotifications,
              isWhiteLabelApp,
-             manualLocaleOverride
+             manualLocaleOverride,
+             suppressPushNotificationsPermissionRequestDuringAuthentication
     }
 
     public init(from decoder: Decoder) throws {
@@ -77,7 +80,12 @@ extension Configuration: Codable {
             visitorContext: container.decodeIfPresent(VisitorContext.self, forKey: .visitorContext),
             pushNotifications: container.decodeIfPresent(PushNotifications.self, forKey: .pushNotifications) ?? .disabled,
             isWhiteLabelApp: container.decodeIfPresent(Bool.self, forKey: .isWhiteLabelApp) ?? false,
-            manualLocaleOverride: container.decodeIfPresent(String.self, forKey: .manualLocaleOverride) ?? nil
+            manualLocaleOverride: container.decodeIfPresent(String.self, forKey: .manualLocaleOverride) ?? nil,
+            suppressPushNotificationsPermissionRequestDuringAuthentication: container
+                .decodeIfPresent(
+                    Bool.self,
+                    forKey: .suppressPushNotificationsPermissionRequestDuringAuthentication
+                ) ?? false
         )
     }
 
@@ -90,6 +98,10 @@ extension Configuration: Codable {
         try container.encode(pushNotifications, forKey: .pushNotifications)
         try container.encode(isWhiteLabelApp, forKey: .isWhiteLabelApp)
         try container.encode(manualLocaleOverride, forKey: .manualLocaleOverride)
+        try container.encode(
+            suppressPushNotificationsPermissionRequestDuringAuthentication,
+            forKey: .suppressPushNotificationsPermissionRequestDuringAuthentication
+        )
     }
 }
 
