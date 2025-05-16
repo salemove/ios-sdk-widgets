@@ -209,13 +209,13 @@ public class Glia {
 
         localeProvider = .init(locale: environment.coreSdk.localeProvider.getRemoteString)
 
-        environment.coreSdk.pushNotifications.actions.setSecureMessageAction { [weak self] in
+        environment.coreSdk.pushNotifications.actions.setSecureMessageAction { [weak self] senderQueueId in
             guard let self else { return }
             self.$engagementRestorationState
                 .receive(on: environment.combineScheduler.main)
                 .first { $0 == .restored }
                 .sink { _ in
-                    let engagementLauncher = try? self.getEngagementLauncher(queueIds: [])
+                    let engagementLauncher = try? self.getEngagementLauncher(queueIds: [senderQueueId].compactMap { $0 })
                     try? engagementLauncher?.startSecureMessaging(initialScreen: .chatTranscript)
                 }
                 .store(in: &cancelBag)
