@@ -812,7 +812,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in uuidGen().uuidString }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
-        let authentication = CoreSdkClient.Authentication(deauthenticateWithCallback: { callback in
+        let authentication = CoreSdkClient.Authentication(deauthenticateWithCallback: { _, callback in
             callback(.success(()))
         })
         gliaEnv.coreSdk.authentication = { _ in authentication }
