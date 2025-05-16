@@ -8,7 +8,7 @@ extension Glia {
         typealias GetVisitor = () -> Void
 
         var authenticateWithIdToken: (_ idToken: IdToken, _ accessToken: AccessToken?, _ callback: @escaping Callback) -> Void
-        var deauthenticateWithCallback: (@escaping Callback) -> Void
+        var deauthenticateWithCallback: (_ shouldStopPushNotifications: Bool, @escaping Callback) -> Void
         var isAuthenticatedClosure: () -> Bool
         var refresh: (
             _ idToken: IdToken,
@@ -102,9 +102,9 @@ extension Glia {
                     }
                 )
             },
-            deauthenticateWithCallback: { [weak self] callback in
+            deauthenticateWithCallback: { [weak self] shouldStopPushNotifications, callback in
                 self?.loggerPhase.logger.prefixed(Self.self).info("Unauthenticate")
-                auth.deauthenticate { result in
+                auth.deauthenticate(shouldStopPushNotifications: shouldStopPushNotifications) { result in
                     switch result {
                     case .success:
                         // Erase interactor state.
@@ -264,10 +264,11 @@ extension Glia.Authentication {
     /// Deauthenticate Visitor.
     ///
     /// - Parameters:
+    ///   - shouldStopPushNotifications: Boolean that indicates whether to stop Push Notifications after deauthentication or not.
     ///   - completion: Completion handler.
     ///
-    public func deauthenticate(completion: @escaping (Result<Void, Error>) -> Void) {
-        self.deauthenticateWithCallback(completion)
+    public func deauthenticate(shouldStopPushNotifications: Bool = false, completion: @escaping (Result<Void, Error>) -> Void) {
+        self.deauthenticateWithCallback(shouldStopPushNotifications, completion)
     }
 
     /// Initialize placeholder instance.
