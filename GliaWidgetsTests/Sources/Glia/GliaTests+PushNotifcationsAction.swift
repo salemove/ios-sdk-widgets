@@ -6,7 +6,7 @@ extension GliaTests {
     func test_startSecureMessageWhenSecureMessagePushReceivedBeforeConfigure() throws {
         let sdk = makeConfigurableSDK()
 
-        sdk.environment.coreSdk.pushNotifications.actions.secureMessageAction()?()
+        sdk.environment.coreSdk.pushNotifications.actions.secureMessageAction()?("queue_id")
 
         try sdk.configure(
             with: .mock(),
@@ -15,6 +15,7 @@ extension GliaTests {
 
         sdk.engagementRestorationState = .restored
 
+        XCTAssertEqual(sdk.interactor?.queueIds, ["queue_id"])
         XCTAssertEqual(sdk.engagement, .messaging(.chatTranscript))
     }
 
@@ -28,8 +29,9 @@ extension GliaTests {
 
         sdk.engagementRestorationState = .restored
 
-        sdk.environment.coreSdk.pushNotifications.actions.secureMessageAction()?()
+        sdk.environment.coreSdk.pushNotifications.actions.secureMessageAction()?("queue_id")
 
+        XCTAssertEqual(sdk.interactor?.queueIds, ["queue_id"])
         XCTAssertEqual(sdk.engagement, .messaging(.chatTranscript))
     }
 
@@ -43,8 +45,9 @@ extension GliaTests {
 
         sdk.engagementRestorationState = .restored
 
-        sdk.environment.coreSdk.pushNotifications.actions.secureMessageAction()?()
+        sdk.environment.coreSdk.pushNotifications.actions.secureMessageAction()?("queue_id")
 
+        XCTAssertEqual(sdk.interactor?.queueIds, ["queue_id"])
         XCTAssertEqual(sdk.engagement, .none)
     }
 }
@@ -55,7 +58,7 @@ private extension GliaTests {
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         sdkEnv.coreSdk.localeProvider = .mock
         
-        var mockSCMessagePushAction: (() -> Void)?
+        var mockSCMessagePushAction: ((String?) -> Void)?
         sdkEnv.coreSdk.pushNotifications.actions = .init(
             setSecureMessageAction: { mockSCMessagePushAction = $0 },
             secureMessageAction: { mockSCMessagePushAction }

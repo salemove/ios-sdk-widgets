@@ -237,12 +237,12 @@ extension CoreSdkClient {
 extension CoreSdkClient {
     struct PushNotifications {
         struct Actions {
-            var setSecureMessageAction: (@escaping () -> Void) -> Void
-            var secureMessageAction: () -> (() -> Void)?
+            var setSecureMessageAction: (@escaping (_ senderQueueId: String?) -> Void) -> Void
+            var secureMessageAction: () -> ((_ senderQueueId: String?) -> Void)?
 
             init(
-                setSecureMessageAction: @escaping (@escaping () -> Void) -> Void,
-                secureMessageAction: @escaping () -> (() -> Void)?
+                setSecureMessageAction: @escaping (@escaping (_ senderQueueId: String?) -> Void) -> Void,
+                secureMessageAction: @escaping () -> ((_ senderQueueId: String?) -> Void)?
             ) {
                 self.setSecureMessageAction = setSecureMessageAction
                 self.secureMessageAction = secureMessageAction
