@@ -215,6 +215,9 @@ public class Glia {
                 .receive(on: environment.combineScheduler.main)
                 .first { $0 == .restored }
                 .sink { _ in
+                    self.loggerPhase.logger.prefixed(Self.self).info(
+                        "Chat transcript is opened from Secure Conversation push notification message"
+                    )
                     let engagementLauncher = try? self.getEngagementLauncher(queueIds: [senderQueueId].compactMap { $0 })
                     try? engagementLauncher?.startSecureMessaging(initialScreen: .chatTranscript)
                 }
