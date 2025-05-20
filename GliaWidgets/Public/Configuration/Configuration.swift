@@ -45,6 +45,8 @@ public struct Configuration {
     ///   - companyName: Name of the company.
     ///   - manualLocaleOverride: The name of the manual locale override. If not set, 
     ///   or if set as `nil`, then the default locale from site settings will be used.
+    ///   - suppressPushNotificationsPermissionRequestDuringAuthentication: If `true`, the SDK will not prompt the user for push
+    /// notification permissions during authentication.
     ///
     public init(
         authorizationMethod: AuthorizationMethod,
