@@ -48,10 +48,19 @@ extension ViewController {
     }
 
     func setupPushNotificationConfig() {
+        let pushNotifications: Configuration.PushNotifications
+
         #if DEBUG
-        let pushNotifications = Configuration.PushNotifications.sandbox
+        pushNotifications = .sandbox
         #else
-        let pushNotifications = Configuration.PushNotifications.disabled
+        // `ENABLE_PUSH_NOTIFICATIONS` is used for turning PNs on/off
+        // for specific acceptance test.
+        let enablePushes = ProcessInfo.processInfo.environment["ENABLE_PUSH_NOTIFICATIONS"] == "true"
+        if enablePushes {
+            pushNotifications = Configuration.PushNotifications.production
+        } else {
+            pushNotifications = Configuration.PushNotifications.disabled
+        }
         #endif
         configuration.pushNotifications = pushNotifications
 
