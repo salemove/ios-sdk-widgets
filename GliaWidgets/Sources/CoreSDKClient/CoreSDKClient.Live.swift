@@ -123,8 +123,12 @@ extension CoreSdkClient.SecureConversations {
 
 extension CoreSdkClient.LiveObservation {
     static let live = Self(
-        pause: GliaCore.sharedInstance.liveObservation.pause,
-        resume: GliaCore.sharedInstance.liveObservation.resume
+        pause: {
+            GliaCore.sharedInstance.liveObservation.pause()
+        },
+        resume: {
+            GliaCore.sharedInstance.liveObservation.resume()
+        }
     )
 }
 
