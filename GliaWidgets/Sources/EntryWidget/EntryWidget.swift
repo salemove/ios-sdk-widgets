@@ -202,7 +202,7 @@ private extension EntryWidget {
         var availableMediaTypes: Set<EngagementType> = []
 
         queues.forEach { queue in
-            queue.state.media.forEach { mediaType in
+            queue.media.forEach { mediaType in
                 if let mediaTypeItem = EngagementType(mediaType: mediaType) {
                     availableMediaTypes.insert(mediaTypeItem)
                 }
@@ -216,7 +216,7 @@ private extension EntryWidget {
             availableMediaTypes.remove(.secureMessaging)
         }
 
-        let queuesStatuses = Set(queues.map { $0.state.status })
+        let queuesStatuses = Set(queues.map { $0.status })
         let areQueuesUnavailable = queuesStatuses.contains(.unstaffed) || queuesStatuses.contains(.full)
 
         if !queuesStatuses.contains(.open) && areQueuesUnavailable {
