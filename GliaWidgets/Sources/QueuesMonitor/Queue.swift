@@ -7,7 +7,9 @@ public struct Queue: Equatable {
     /// Queue name
     public let name: String
     /// Queue state
-    public let state: QueueState
+    public let status: QueueStatus
+    /// An array of media types for which queuing is enabled
+    public let media: [MediaType]
     /// Indicates that queue is the default. `true` if Queue is default
     public let isDefault: Bool
     /// Queue dispatch time
@@ -25,14 +27,16 @@ public struct Queue: Equatable {
     public init(
         id: String,
         name: String,
-        state: QueueState,
+        status: QueueStatus,
+        media: [MediaType],
         isDefault: Bool,
         lastUpdated: Date
     ) {
         self.id = id
         self.name = name
         self.isDefault = isDefault
-        self.state = state
+        self.status = status
+        self.media = media
         self.lastUpdated = lastUpdated
     }
 }
@@ -42,7 +46,8 @@ extension GliaCoreSDK.Queue {
         .init(
             id: self.id,
             name: self.name,
-            state: state.asWidgetSDKQueueState(),
+            status: .init(coreStatus: self.state.status),
+            media: self.state.media.map({ .init(mediaType: $0) }),
             isDefault: isDefault,
             lastUpdated: lastUpdated
         )

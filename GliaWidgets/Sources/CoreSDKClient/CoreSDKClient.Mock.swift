@@ -506,7 +506,8 @@ extension Queue {
         Queue(
             id: id,
             name: name,
-            state: .init(status: status, media: media),
+            status: status,
+            media: media,
             isDefault: isDefault,
             lastUpdated: lastUpdated
         )

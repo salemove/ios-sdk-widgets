@@ -176,7 +176,7 @@ class QueuesMonitorTests: XCTestCase {
         monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
 
         XCTAssertEqual(receivedQueues, [expectedUpdatedQueue])
-        XCTAssertEqual(receivedUpdatedQueue?.state.status, .open)
+        XCTAssertEqual(receivedUpdatedQueue?.status, .open)
         XCTAssertEqual(envCalls, [.getQueues, .subscribeForQueuesUpdates])
     }
 
@@ -223,7 +223,7 @@ class QueuesMonitorTests: XCTestCase {
         monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
         monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
         XCTAssertEqual(receivedQueues, [expectedUpdatedQueue])
-        XCTAssertEqual(receivedUpdatedQueue?.state.status, .open)
+        XCTAssertEqual(receivedUpdatedQueue?.status, .open)
         XCTAssertEqual(
             envCalls,
             [.getQueues, .subscribeForQueuesUpdates, .unsubscribeFromUpdates, .getQueues, .subscribeForQueuesUpdates]
@@ -275,7 +275,7 @@ class QueuesMonitorTests: XCTestCase {
         monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
 
         XCTAssertEqual(receivedQueues, [expectedUpdatedQueue])
-        XCTAssertEqual(receivedUpdatedQueue?.state.status, .open)
+        XCTAssertEqual(receivedUpdatedQueue?.status, .open)
         XCTAssertEqual(
             envCalls,
             [.getQueues, .subscribeForQueuesUpdates, .unsubscribeFromUpdates, .getQueues, .subscribeForQueuesUpdates]

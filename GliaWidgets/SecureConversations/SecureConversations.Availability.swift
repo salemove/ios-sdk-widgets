@@ -61,8 +61,8 @@ extension SecureConversations {
 
         private var defaultPredicate: (Queue) -> Bool {
             {
-                $0.state.status != .closed &&
-                $0.state.media.contains(MediaType.messaging)
+                $0.status != .closed &&
+                $0.media.contains(MediaType.messaging)
             }
         }
     }
