@@ -11,12 +11,12 @@ extension EntryWidgetView {
 
         var style: EntryWidgetStyle {
             if let mediaTypeItemsStyle = configuration.mediaTypeItemsStyle {
-                var widgetStyle = theme.entryWidgetStyle
+                var widgetStyle = theme.entryWidget
                 widgetStyle.mediaTypeItem = mediaTypeItemsStyle.mediaItemStyle
                 widgetStyle.dividerColor = mediaTypeItemsStyle.dividerColor
                 return widgetStyle
             } else {
-                return theme.entryWidgetStyle
+                return theme.entryWidget
             }
         }
 
