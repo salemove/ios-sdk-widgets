@@ -40,8 +40,8 @@ let package = Package(
         ),
         .binaryTarget(
             name: "GliaWidgetsSDKXcf",
-            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/3.0.1/GliaWidgetsXcf.xcframework.zip",
-            checksum: "b9df1d22a5e835e241c8825ea175a8f41d0f6a044a0f05fbc64de1dbcf71f8f5"
+            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/3.1.0/GliaWidgetsXcf.xcframework.zip",
+            checksum: "e4a21e48753dc8dad54622772b4cbe14b22b6571d39cec877656539b87429248"
         ),
         .target(
             name: "GliaWidgets",
