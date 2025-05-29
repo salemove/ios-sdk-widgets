@@ -1,7 +1,7 @@
 import Foundation
 import GliaCoreSDK
 
-public enum QueueStatus: Decodable, Equatable, Hashable {
+public enum QueueStatus: Decodable, Equatable, Hashable, RawRepresentable {
     /// Visitor can enqueue
     case open
     /// Visitor cannot enqueue because the Queue is closed
@@ -12,6 +12,31 @@ public enum QueueStatus: Decodable, Equatable, Hashable {
     case unstaffed
     /// Visitor should not enqueue because the Queue state is not supported
     case unknown(String)
+
+    public init?(rawValue: String) {
+        switch rawValue {
+        case Self.open.rawValue:
+            self = .open
+        case Self.closed.rawValue:
+            self = .closed
+        case Self.full.rawValue:
+            self = .full
+        case Self.unstaffed.rawValue:
+            self = .unstaffed
+        default:
+            self = .unknown(rawValue)
+        }
+    }
+
+    public var rawValue: String {
+        switch self {
+        case .open: return "opened"
+        case .closed: return "closed"
+        case .full: return "full"
+        case .unstaffed: return "unstaffed"
+        case let .unknown(value): return value
+        }
+    }
 
     public init(coreStatus: GliaCoreSDK.QueueStatus) {
         switch coreStatus {
