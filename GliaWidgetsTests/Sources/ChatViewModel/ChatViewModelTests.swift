@@ -596,7 +596,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
-        let expectedMessageId = "expected_message_id"
+        let expectedMessageId = "expected_message_id".uppercased()
         viewModelEnv.fetchChatHistory = { callback in
             callback(.success([.mock(id: expectedMessageId)]))
         }
@@ -604,6 +604,29 @@ class ChatViewModelTests: XCTestCase {
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         viewModel.start()
         XCTAssertEqual(viewModel.historyMessageIds, [expectedMessageId])
+    }
+
+    func test_messageReceivedFromSocketIsRemovedWhenSameMessageArrivesFromHistory() {
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.loadChatMessagesFromHistory = { true }
+        viewModelEnv.fetchSiteConfigurations = { _ in }
+        let expectedMessageId = "expected_message_id".uppercased()
+        viewModelEnv.fetchChatHistory = { callback in
+            callback(.success([.mock(id: expectedMessageId)]))
+        }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
+        let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
+
+        viewModel.interactorEvent(.receivedMessage(.mock(id: expectedMessageId)))
+        XCTAssertEqual(viewModel.receivedMessageIds, [expectedMessageId])
+
+        viewModel.start()
+        XCTAssertEqual(viewModel.historyMessageIds, [expectedMessageId])
+        XCTAssertEqual(viewModel.receivedMessageIds, [])
+        XCTAssertTrue(viewModel.messagesSection.items.isEmpty)
     }
 
     func test_messageReceivedFromSocketIsDiscarded() {

@@ -426,7 +426,26 @@ extension ChatViewModel {
             // Store message ids from history,
             // to be able to discard duplicates
             // delivered by sockets.
-            self.historyMessageIds = Set(messages.map(\.id))
+            self.historyMessageIds = Set(messages.map(\.id).map { $0.uppercased() })
+
+            // Remove all messages that have been already received from sockets
+            // in prior of those that have been received from history to avoid duplication.
+            let duplicatedIds = self.historyMessageIds.intersection(self.receivedMessageIds)
+            duplicatedIds.forEach { self.receivedMessageIds.remove($0) }
+
+            self.messagesSection.removeAll { item in
+                switch item.kind {
+                case .visitorMessage(let chatMessage, _) where duplicatedIds.contains(chatMessage.id.uppercased()):
+                    return true
+                case .operatorMessage(let chatMessage, _, _) where duplicatedIds.contains(chatMessage.id.uppercased()):
+                    return true
+                default:
+                    return false
+                }
+            }
+
+            self.action?(.refreshSection(self.messagesSection.index))
+
             let items = messages.compactMap {
                 ChatItem(
                     with: $0,
@@ -688,7 +707,7 @@ extension ChatViewModel {
     private func receivedMessage(_ message: CoreSdkClient.Message) {
         // Discard messages that have been already received from history
         // to avoid duplication.
-        guard !historyMessageIds.contains(message.id) else {
+        guard !historyMessageIds.contains(message.id.uppercased()) else {
             return
         }
 
@@ -696,7 +715,7 @@ extension ChatViewModel {
         // This can happen in case if socket will delay
         // message delivery and it will be added during
         // REST API response.
-        guard !hasReceivedMessage(messageId: message.id) else {
+        guard !hasReceivedMessage(messageId: message.id.uppercased()) else {
             return
         }
 
@@ -712,45 +731,10 @@ extension ChatViewModel {
 
         registerReceivedMessage(messageId: message.id)
 
-        let receivedMessage = message
-
         switch message.sender.type {
         case .operator, .system, .visitor:
-            let message = ChatMessage(
-                with: message,
-                operator: interactor.engagedOperator
-            )
-            if let item = ChatItem(
-                with: message,
-                isCustomCardSupported: isCustomCardSupported
-            ) {
-                unreadMessages.received(1)
+            handleReceivedMessage(message)
 
-                guard isViewLoaded else {
-                    return
-                }
-
-                let isChatBottomReached = isChatScrolledToBottom.value
-
-                addChatItemToMessagesSection(evaluating: message, replacingWith: receivedMessage, item)
-                action?(.updateItemsUserImage(animated: true))
-
-                let choiceCardInputModeEnabled = message.cardType == .choiceCard || self.isInteractableCustomCard(message)
-                action?(.setChoiceCardInputModeEnabled(choiceCardInputModeEnabled))
-
-                // Store info about choice card mode from which
-                // attachment button visibility will be calculated.
-                self.isChoiceCardInputModeEnabled = choiceCardInputModeEnabled
-
-                if isChatBottomReached {
-                    action?(.scrollToBottom(animated: true))
-                }
-
-                if case .gvaQuickReply(_, let button, _, _) = item.kind {
-                    let props = button.options.map { quickReplyOption($0) }
-                    action?(.quickReplyPropsUpdated(.shown(props)))
-                }
-            }
         default:
             // All Quick Reply buttons of the same set should disappear
             // after the user taps on one of the buttons or when
@@ -761,6 +745,42 @@ extension ChatViewModel {
         markMessagesAsRead(
             with: message.sender.type != .visitor && environment.getCurrentEngagement()?.actionOnEnd == .retain
         )
+    }
+
+    private func handleReceivedMessage(_ receivedMessage: CoreSdkClient.Message) {
+        let message = ChatMessage(
+            with: receivedMessage,
+            operator: interactor.engagedOperator
+        )
+        guard let item = ChatItem(
+            with: message,
+            isCustomCardSupported: isCustomCardSupported
+        ), isViewLoaded else { return }
+
+        if receivedMessage.sender.type != .visitor {
+            unreadMessages.received(1)
+        }
+
+        let isChatBottomReached = isChatScrolledToBottom.value
+
+        addChatItemToMessagesSection(evaluating: message, replacingWith: receivedMessage, item)
+        action?(.updateItemsUserImage(animated: true))
+
+        let choiceCardInputModeEnabled = message.cardType == .choiceCard || self.isInteractableCustomCard(message)
+        action?(.setChoiceCardInputModeEnabled(choiceCardInputModeEnabled))
+
+        // Store info about choice card mode from which
+        // attachment button visibility will be calculated.
+        self.isChoiceCardInputModeEnabled = choiceCardInputModeEnabled
+
+        if isChatBottomReached {
+            action?(.scrollToBottom(animated: true))
+        }
+
+        if case .gvaQuickReply(_, let button, _, _) = item.kind {
+            let props = button.options.map { quickReplyOption($0) }
+            action?(.quickReplyPropsUpdated(.shown(props)))
+        }
     }
 
     private func messagesUpdated(_ messages: [CoreSdkClient.Message]) {
@@ -1061,10 +1081,10 @@ extension ChatViewModel: ApplicationVisibilityTracker {
             resumeToForegroundDelay: environment.markUnreadMessagesDelay(),
             delayScheduler: environment.combineScheduler.global
         )
-            .sink { [weak self] _ in
-                _ = self?.environment.secureConversations.markMessagesAsRead { _ in }
-            }
-            .store(in: &markMessagesAsReadCancellables)
+        .sink { [weak self] _ in
+            _ = self?.environment.secureConversations.markMessagesAsRead { _ in }
+        }
+        .store(in: &markMessagesAsReadCancellables)
     }
 }
 
