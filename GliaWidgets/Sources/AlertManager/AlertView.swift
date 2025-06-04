@@ -109,7 +109,11 @@ class AlertView: BaseView {
     }
 
     func addActionView(_ actionView: UIView) {
-        actionsStackView.addArrangedSubview(actionView)
+        if actionsStackView.axis == .vertical {
+            actionsStackView.insertArrangedSubview(actionView, at: 0)
+        } else {
+            actionsStackView.addArrangedSubview(actionView)
+        }
     }
 
     override func setup() {
@@ -149,12 +153,12 @@ class AlertView: BaseView {
         titleLabel.numberOfLines = 0
         titleLabel.font = style.titleFont
         titleLabel.textColor = style.titleColor
-        titleLabel.textAlignment = .center
+        titleLabel.textAlignment = style.titleAlignment
 
         messageLabel.numberOfLines = 0
         messageLabel.font = style.messageFont
         messageLabel.textColor = style.messageColor
-        messageLabel.textAlignment = .center
+        messageLabel.textAlignment = style.messageAlignment
 
         actionsStackView.spacing = 11
         actionsStackView.distribution = .fillEqually
