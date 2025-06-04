@@ -14,6 +14,9 @@ public struct AlertStyle: Equatable {
     /// Color of the title image.
     public var titleImageColor: UIColor
 
+    /// Alignment of the title.
+    public var titleAlignment: NSTextAlignment
+
     /// Font of the message text.
     public var messageFont: UIFont
 
@@ -22,6 +25,9 @@ public struct AlertStyle: Equatable {
 
     /// Text style of the message text.
     public var messageTextStyle: UIFont.TextStyle
+
+    /// Alignment of the message.
+    public var messageAlignment: NSTextAlignment
 
     /// Background color of the view.
     public var backgroundColor: ColorType
@@ -58,9 +64,11 @@ public struct AlertStyle: Equatable {
     ///   - titleColor: Color of the title text.
     ///   - titleTextStyle: Text style of the title text.
     ///   - titleImageColor: Color of the title image.
+    ///   - titleAlignment: Alignment of the title.
     ///   - messageFont: Font of the message text.
     ///   - messageColor: Color of the message text.
     ///   - messageTextStyle: Text style of the message text.
+    ///   - messageAlignment: Alignment of the message.
     ///   - backgroundColor: Background color of the view.
     ///   - closeButtonColor: Color of the close button.
     ///   - firstLinkAction: Style of the first link action button.
@@ -77,9 +85,11 @@ public struct AlertStyle: Equatable {
         titleColor: UIColor,
         titleTextStyle: UIFont.TextStyle = .title2,
         titleImageColor: UIColor,
+        titleAlignment: NSTextAlignment = .center,
         messageFont: UIFont,
         messageColor: UIColor,
         messageTextStyle: UIFont.TextStyle = .body,
+        messageAlignment: NSTextAlignment = .center,
         backgroundColor: ColorType,
         closeButtonColor: ColorType,
         firstLinkAction: ActionButtonStyle,
@@ -95,9 +105,11 @@ public struct AlertStyle: Equatable {
         self.titleColor = titleColor
         self.titleTextStyle = titleTextStyle
         self.titleImageColor = titleImageColor
+        self.titleAlignment = titleAlignment
         self.messageFont = messageFont
         self.messageColor = messageColor
         self.messageTextStyle = messageTextStyle
+        self.messageAlignment = messageAlignment
         self.backgroundColor = backgroundColor
         self.closeButtonColor = closeButtonColor
         self.firstLinkAction = firstLinkAction

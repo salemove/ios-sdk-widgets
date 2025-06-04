@@ -55,6 +55,10 @@ private extension AlertStyle {
             .map { UIColor(hex: $0) }
             .first
             .unwrap { titleColor = $0 }
+
+        configuration?.alignment.unwrap {
+            titleAlignment = $0.asNsTextAlignment
+        }
     }
 
     mutating func applyTitleImageConfiguration(_ configuration: RemoteConfiguration.Color?) {
@@ -77,6 +81,10 @@ private extension AlertStyle {
             .map { UIColor(hex: $0) }
             .first
             .unwrap { messageColor = $0 }
+
+        configuration?.alignment.unwrap {
+            messageAlignment = $0.asNsTextAlignment
+        }
     }
 
     mutating func applyBackgroundConfiguration(_ configuration: RemoteConfiguration.Color?) {
