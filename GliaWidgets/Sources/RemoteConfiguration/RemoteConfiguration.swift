@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 public struct RemoteConfiguration: Codable {
     let globalColors: GlobalColors?
@@ -134,6 +135,17 @@ extension RemoteConfiguration {
         case center
         case leading
         case trailing
+
+        var asNsTextAlignment: NSTextAlignment {
+            switch self {
+            case .center:
+                return .center
+            case .leading:
+                return .left
+            case .trailing:
+                return .right
+            }
+        }
     }
 
     public struct Font: Codable {
