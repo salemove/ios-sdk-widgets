@@ -6,5 +6,5 @@ enum StaticValues {
     /// version cannot be changed by integrators, so this ensures that our code will
     /// always have the correct version regardless of what our integrators do with
     /// our plist files.
-    static let sdkVersion = "3.1.1"
+    static let sdkVersion = "3.1.2"
 }
