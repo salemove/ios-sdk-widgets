@@ -182,7 +182,9 @@ class EngagementViewModel: CommonEngagementModel {
         case .stopped where interactor.currentEngagement?.isTransferredSecureConversation == true:
             engagementAction?(.showCloseButton)
         case .stopped:
-            engagementAction?(.showEndButton)
+            if activeEngagement != nil {
+                engagementAction?(.showEndButton)
+            }
         }
     }
 }

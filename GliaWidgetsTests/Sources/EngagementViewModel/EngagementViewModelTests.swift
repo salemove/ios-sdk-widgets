@@ -33,6 +33,7 @@ final class EngagementViewModelTests: XCTestCase {
         )
         enum Call { case showEndButton }
         var calls: [Call] = []
+        viewModel.activeEngagement = .mock()
         viewModel.engagementAction = { action in
             switch action {
             case .showEndButton:
