@@ -243,15 +243,25 @@ extension Interactor {
 
     func endEngagement(completion: @escaping (Result<Void, Error>) -> Void) {
         environment.coreSdk.endEngagement { [weak self] _, error in
+            guard let self else { return }
             if let error = error {
                 completion(.failure(error))
             } else {
-                self?.state = .ended(.byVisitor)
+                self.state = .ended(.byVisitor)
+                // Save engagement ended by visitor to fetch a survey
+                self.endedEngagement = self.environment.coreSdk.getCurrentEngagement()
                 completion(.success(()))
             }
         }
     }
 
+    /**
+        Clean up interactor.
+     
+        Used to clean up:
+        * Cached `endedEngagement` that is used for presenting survey.
+        * Interactor `state`.
+    */
     func cleanup() {
         state = .none
         endedEngagement = nil
