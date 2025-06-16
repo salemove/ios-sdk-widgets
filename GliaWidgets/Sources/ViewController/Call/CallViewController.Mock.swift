@@ -115,6 +115,7 @@ extension CallViewController {
             unreadMessages: unreadMessages,
             startWith: startAction
         )
+        viewModel.activeEngagement = .mock()
         let theme = Theme.mock()
         let viewFactEnv = ViewFactory.Environment.mock
         let viewFactory: ViewFactory = .mock(
@@ -144,6 +145,7 @@ extension CallViewController {
             unreadMessages: unreadMessages,
             startWith: startAction
         )
+        viewModel.activeEngagement = .mock()
         let theme = Theme.mock()
         var viewFactEnv = ViewFactory.Environment.mock
         viewFactEnv.imageViewCache.getImageForKey = { _ in .mock }
@@ -218,6 +220,7 @@ extension CallViewController {
             startWith: startAction,
             environment: callViewModelEnv
         )
+        viewModel.activeEngagement = .mock()
         let theme = Theme.mock()
         let viewFactEnv = ViewFactory.Environment.mock
         let viewFactory: ViewFactory = .mock(
@@ -268,6 +271,7 @@ extension CallViewController {
             startWith: startAction,
             environment: callViewModelEnv
         )
+        viewModel.activeEngagement = .mock()
         let viewFactEnv = ViewFactory.Environment.mock
         let viewFactory: ViewFactory = .mock(
             theme: theme,
