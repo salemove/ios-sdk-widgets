@@ -286,8 +286,10 @@ extension EngagementCoordinator {
                 environment.log.prefixed(Self.self).info("Submit survey answers")
                 environment.submitSurveyAnswer($0, $1, $2, $3)
             },
-            cancel: {
+            cancel: { [weak self] in
+                guard let self else { return }
                 viewController.dismiss(animated: true) {
+                    self.interactor.cleanup()
                     dismissGliaViewController()
                 }
             },
@@ -295,13 +297,16 @@ extension EngagementCoordinator {
             updateProps: { viewController.props = $0 },
             onError: { [weak self] error in
                 guard let self else { return }
+                self.interactor.cleanup()
                 environment.alertManager.present(
                     in: .root(viewController),
                     as: .error(error: error)
                 )
             },
-            completion: {
+            completion: { [weak self] in
+                guard let self else { return }
                 viewController.dismiss(animated: true) {
+                    self.interactor.cleanup()
                     dismissGliaViewController()
                 }
             }
