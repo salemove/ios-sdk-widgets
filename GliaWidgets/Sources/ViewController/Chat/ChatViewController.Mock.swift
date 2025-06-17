@@ -648,6 +648,7 @@ extension ChatViewController {
             availability: .mock(),
             deliveredStatusText: "deliveredStatusText",
             failedToDeliverStatusText: "failedToDeliverStatusText",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .mock()
         )
 
@@ -684,6 +685,7 @@ extension ChatViewController {
             availability: .mock(),
             deliveredStatusText: "deliveredStatusText",
             failedToDeliverStatusText: "failedToDeliverStatusText",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .mock()
         )
 
