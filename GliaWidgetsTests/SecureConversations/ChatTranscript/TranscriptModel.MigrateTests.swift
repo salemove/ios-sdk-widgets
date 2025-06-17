@@ -43,6 +43,7 @@ final class TranscriptModelMigrateTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: interactor
         )
 

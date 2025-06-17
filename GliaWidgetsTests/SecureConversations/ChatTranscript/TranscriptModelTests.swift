@@ -34,6 +34,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
 
@@ -67,6 +68,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
 
@@ -104,6 +106,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
 
@@ -152,6 +155,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
         viewModel.start(isTranscriptFetchNeeded: true)
@@ -187,6 +191,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
         viewModel.start(isTranscriptFetchNeeded: true)
@@ -236,6 +241,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
 
@@ -279,6 +285,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
 
@@ -318,6 +325,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
 
@@ -363,6 +371,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
 
@@ -405,6 +414,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
 
@@ -456,6 +466,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
 
@@ -510,6 +521,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: interactor
         )
 
@@ -578,6 +590,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: interactor
         )
 
@@ -636,6 +649,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
         XCTAssertFalse(model.isSecureConversationsAvailable)
@@ -668,6 +682,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
         XCTAssertFalse(model.isSecureConversationsAvailable)
@@ -699,6 +714,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
         XCTAssertFalse(model.isSecureConversationsAvailable)
@@ -732,6 +748,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
         XCTAssertFalse(model.isSecureConversationsAvailable)
@@ -765,6 +782,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
         var actions: [TranscriptModel.Action] = []
@@ -813,7 +831,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             Empty<Notification, Never>().eraseToAnyPublisher()
         }
 
-
         let availabilityEnv = SecureConversations.Availability.Environment(
             getQueues: modelEnv.getQueues,
             isAuthenticated: { true },
@@ -830,8 +847,11 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: 5),
             interactor: .failing
         )
+
+        viewModel.isViewActive.value = true
 
         viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
@@ -882,6 +902,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
 
@@ -939,8 +960,11 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
+
+        viewModel.isViewActive.value = true
 
         viewModel.engagementAction = { action in
             if case .showAlert(let type) = action, case let .leaveCurrentConversation(_, declined) = type {
@@ -1006,8 +1030,11 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: interactor
         )
+
+        viewModel.isViewActive.value = true
 
         viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
@@ -1069,6 +1096,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
         viewModel.engagementAction = { action in
@@ -1126,6 +1154,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
         viewModel.engagementAction = { action in

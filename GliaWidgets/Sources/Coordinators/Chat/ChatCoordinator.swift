@@ -275,6 +275,7 @@ extension ChatCoordinator {
             availability: .init(environment: .create(with: environment)),
             deliveredStatusText: viewFactory.theme.chat.visitorMessageStyle.delivered,
             failedToDeliverStatusText: viewFactory.theme.chat.visitorMessageStyle.failedToDeliver,
+            unreadMessages: unreadMessages,
             interactor: interactor
         )
 

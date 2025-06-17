@@ -150,6 +150,7 @@ private extension SecureConversationsTranscriptModelTests {
             availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
             failedToDeliverStatusText: "Failed",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
     }
