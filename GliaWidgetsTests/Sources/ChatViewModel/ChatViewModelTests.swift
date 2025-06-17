@@ -532,6 +532,7 @@ class ChatViewModelTests: XCTestCase {
             ),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
 
