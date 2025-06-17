@@ -78,6 +78,7 @@ final class SecureConversationsChatWithTranscriptModelTests: XCTestCase {
                 availability: .mock,
                 deliveredStatusText: "Delivered",
                 failedToDeliverStatusText: "Failed to deliver",
+                unreadMessages: ObservableValue<Int>.init(with: .zero),
                 interactor: .mock()
             )
         )

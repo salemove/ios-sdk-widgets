@@ -34,6 +34,7 @@ extension SecureConversations {
         private let downloader: FileDownloader
         let fileUploadListModel: SecureConversations.FileUploadListViewModel
         private(set) var hasViewAppeared: Bool
+        private(set) var isViewActive = ObservableValue<Bool>(with: false)
         private(set) var messageText = "" {
             didSet {
                 validateMessage()
@@ -85,6 +86,7 @@ extension SecureConversations {
         }
 
         let transcriptMessageLoader: SecureConversations.MessagesWithUnreadCountLoader
+        let unreadMessages: ObservableValue<Int>
 
         private var markMessagesAsReadCancellables = CancelBag()
 
@@ -94,6 +96,7 @@ extension SecureConversations {
             availability: Availability,
             deliveredStatusText: String,
             failedToDeliverStatusText: String,
+            unreadMessages: ObservableValue<Int>,
             interactor: Interactor
         ) {
             self.isCustomCardSupported = isCustomCardSupported
@@ -117,6 +120,7 @@ extension SecureConversations {
                 )
             )
 
+            self.unreadMessages = unreadMessages
             self.transcriptMessageLoader = .init(environment: .create(with: environment))
             do {
                 self.entryWidget = try environment.createEntryWidget(makeEntryWidgetConfiguration())
@@ -134,6 +138,11 @@ extension SecureConversations {
                     // sending is not possible because of file upload limitations.
                     self?.validateMessage()
                 }
+            }
+
+            unreadMessages.addObserver(self) { [weak self] unreadCount, _ in
+                self?.hasUnreadMessages = unreadCount > 0
+                self?.action?(.updateUnreadMessageIndicator(itemCount: unreadCount))
             }
 
             uploader.limitReached.addObserver(self) { [weak self] limitReached, _ in
@@ -189,6 +198,10 @@ extension SecureConversations {
             switch event {
             case .closeTapped:
                 engagementDelegate?(.finished)
+            case .viewDidAppear:
+                isViewActive.value = true
+            case .viewDidDisappear:
+                isViewActive.value = false
             default: break
             }
         }
@@ -246,6 +259,7 @@ extension SecureConversations {
 
         deinit {
             environment.interactor.removeObserver(self)
+            unreadMessages.removeObserver(self)
         }
     }
 }
@@ -768,16 +782,17 @@ extension SecureConversations.TranscriptModel: ApplicationVisibilityTracker {
             return
         }
         markMessagesAsReadCancellables.removeAll()
-        isAppVisiblePublisher(
+        isViewVisiblePublisher(
             for: environment.uiApplication.applicationState(),
             notificationCenter: environment.notificationCenter,
+            isViewVisiblePublisher: isViewActive.toCombinePublisher(),
             resumeToForegroundDelay: environment.markUnreadMessagesDelay(),
             delayScheduler: environment.combineScheduler.global
         )
-            .sink { [weak self] _ in
-                self?.performMarkMessagesAsReadRequest()
-            }
-            .store(in: &markMessagesAsReadCancellables)
+        .sink { [weak self] _ in
+            self?.performMarkMessagesAsReadRequest()
+        }
+        .store(in: &markMessagesAsReadCancellables)
     }
 
     fileprivate func performMarkMessagesAsReadRequest() {
@@ -799,6 +814,8 @@ extension SecureConversations.TranscriptModel: ApplicationVisibilityTracker {
                 if isChatScrolledToBottom.value {
                     action?(.scrollToBottom(animated: true))
                 }
+
+                unreadMessages.value = 0
             case .failure:
                 break
             }
@@ -819,6 +836,7 @@ extension SecureConversations.TranscriptModel {
         availability: SecureConversations.Availability,
         deliveredStatusText: String,
         failedToDeliverStatusText: String,
+        unreadMessages: ObservableValue<Int>,
         interactor: Interactor
     ) -> SecureConversations.TranscriptModel {
         .init(
@@ -827,6 +845,7 @@ extension SecureConversations.TranscriptModel {
             availability: availability,
             deliveredStatusText: deliveredStatusText,
             failedToDeliverStatusText: failedToDeliverStatusText,
+            unreadMessages: unreadMessages,
             interactor: interactor
         )
     }
@@ -866,7 +885,14 @@ extension SecureConversations.TranscriptModel {
                 return true
             }
         }
-        historySection.set(items)
+
+        let itemsWithDivider = Self.dividedChatItemsForUnreadCount(
+            chatItems: items,
+            unreadCount: unreadMessages.value,
+            divider: ChatItem(kind: .unreadMessageDivider)
+        )
+
+        historySection.set(itemsWithDivider)
         action?(.refreshAll)
 
         // There's a possibility where migration to SC (this actually doesn't seem to work ATM, needs checking (MOB-3988)).
@@ -897,6 +923,8 @@ extension SecureConversations.TranscriptModel {
         // we skip chat transcript loading.
         start(isTranscriptFetchNeeded: false)
         showLeaveConversationDialogIfNeeded()
+
+        markMessagesAsRead(with: unreadMessages.value > 0)
     }
 
     func clearSections(_ sections: [Section<ChatItem>]) {
