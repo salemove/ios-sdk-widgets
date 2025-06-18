@@ -4,32 +4,16 @@ final class SecureMessagingBottomBannerView: UIView {
     private static let horizontalMargins = 16.0
     private static let verticalMargins = 8.0
 
-    private let label = UILabel().makeView()
-    private let divider = UIView().makeView()
+    private let label = UILabel()
+    private let divider = UIView()
 
-    private lazy var visibleLabelConstraints: [NSLayoutConstraint] = [
-        label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Self.horizontalMargins),
-        label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Self.horizontalMargins),
-        label.topAnchor.constraint(equalTo: topAnchor, constant: Self.verticalMargins),
-        label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Self.verticalMargins)
-    ]
-
-    private lazy var visibleDividerConstraints: [NSLayoutConstraint] = [
-        divider.heightAnchor.constraint(equalToConstant: 1),
-        divider.topAnchor.constraint(equalTo: topAnchor, constant: -1),
-        divider.leadingAnchor.constraint(lessThanOrEqualTo: leadingAnchor),
-        divider.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
-    ]
-
-    private lazy var invisibleConstraints = [
-        self.heightAnchor.constraint(equalToConstant: 0)
-    ]
+    private var visibleLabelConstraints: [NSLayoutConstraint] = []
+    private var visibleDividerConstraints: [NSLayoutConstraint] = []
+    private var zeroHeightConstraint: NSLayoutConstraint!
 
     var props = Props.initial {
         didSet {
-            guard props != oldValue else {
-                return
-            }
+            guard props != oldValue else { return }
             renderProps()
         }
     }
@@ -44,38 +28,31 @@ final class SecureMessagingBottomBannerView: UIView {
 
     private func setup() {
         addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        divider.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         addSubview(divider)
-        renderHidden(isHidden)
+
+        visibleLabelConstraints = [
+            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Self.horizontalMargins),
+            label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Self.horizontalMargins),
+            label.topAnchor.constraint(equalTo: topAnchor, constant: Self.verticalMargins),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Self.verticalMargins)
+        ]
+        visibleDividerConstraints = [
+            divider.heightAnchor.constraint(equalToConstant: 1),
+            divider.topAnchor.constraint(equalTo: topAnchor, constant: -1),
+            divider.leadingAnchor.constraint(lessThanOrEqualTo: leadingAnchor),
+            divider.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
+        ]
+
+        NSLayoutConstraint.activate(visibleLabelConstraints)
+        NSLayoutConstraint.activate(visibleDividerConstraints)
+
+        zeroHeightConstraint = heightAnchor.constraint(equalToConstant: 0)
+        zeroHeightConstraint.isActive = false
+
         renderProps()
-    }
-
-    override var isHidden: Bool {
-        didSet {
-            super.isHidden = self.isHidden
-            guard isHidden != oldValue else {
-                return
-            }
-            renderHidden(self.isHidden)
-        }
-    }
-
-    private func renderHidden(_ hidden: Bool) {
-        // In order to avoid breaking auto-layout constraints
-        // we deactivate relevant constraints if view gets hidden
-        // and activate zero-height constraints.
-        if hidden {
-            NSLayoutConstraint.deactivate(visibleLabelConstraints)
-            NSLayoutConstraint.deactivate(visibleDividerConstraints)
-            NSLayoutConstraint.activate(invisibleConstraints)
-        } else {
-            NSLayoutConstraint.deactivate(invisibleConstraints)
-            NSLayoutConstraint.activate(visibleLabelConstraints)
-            NSLayoutConstraint.activate(visibleDividerConstraints)
-        }
-        // Layout manually to enforce constraints to be applied immediately,
-        // thus affecting the `frame`.
-        layoutIfNeeded()
     }
 
     private func renderProps() {
@@ -83,9 +60,22 @@ final class SecureMessagingBottomBannerView: UIView {
         label.textColor = props.style.textColor
         backgroundColor = props.style.backgroundColor.color
         label.font = props.style.font
-        isHidden = props.isHidden
         divider.backgroundColor = props.style.dividerColor
         setFontScalingEnabled(props.style.accessibility.isFontScalingEnabled, for: label)
+
+        if props.isHidden {
+            label.isHidden = true
+            divider.isHidden = true
+            NSLayoutConstraint.deactivate(visibleLabelConstraints)
+            NSLayoutConstraint.deactivate(visibleDividerConstraints)
+            zeroHeightConstraint.isActive = true
+        } else {
+            zeroHeightConstraint.isActive = false
+            NSLayoutConstraint.activate(visibleLabelConstraints)
+            NSLayoutConstraint.activate(visibleDividerConstraints)
+            label.isHidden = false
+            divider.isHidden = false
+        }
     }
 }
 
