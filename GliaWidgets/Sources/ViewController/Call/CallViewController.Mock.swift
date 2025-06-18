@@ -115,7 +115,8 @@ extension CallViewController {
             unreadMessages: unreadMessages,
             startWith: startAction
         )
-        viewModel.activeEngagement = .mock()
+        interactor.state = .engaged(nil)
+
         let theme = Theme.mock()
         let viewFactEnv = ViewFactory.Environment.mock
         let viewFactory: ViewFactory = .mock(
@@ -220,7 +221,7 @@ extension CallViewController {
             startWith: startAction,
             environment: callViewModelEnv
         )
-        viewModel.activeEngagement = .mock()
+        interactor.state = .engaged(nil)
         let theme = Theme.mock()
         let viewFactEnv = ViewFactory.Environment.mock
         let viewFactory: ViewFactory = .mock(
@@ -271,7 +272,7 @@ extension CallViewController {
             startWith: startAction,
             environment: callViewModelEnv
         )
-        viewModel.activeEngagement = .mock()
+        viewModel.interactor.state = .engaged(nil)
         let viewFactEnv = ViewFactory.Environment.mock
         let viewFactory: ViewFactory = .mock(
             theme: theme,

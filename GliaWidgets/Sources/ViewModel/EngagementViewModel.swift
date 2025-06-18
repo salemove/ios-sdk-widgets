@@ -182,7 +182,10 @@ class EngagementViewModel: CommonEngagementModel {
         case .stopped where interactor.currentEngagement?.isTransferredSecureConversation == true:
             engagementAction?(.showCloseButton)
         case .stopped:
-            if activeEngagement != nil {
+            switch interactor.state {
+            case .none, .enqueueing, .enqueued, .ended:
+                break
+            case .engaged:
                 engagementAction?(.showEndButton)
             }
         }
