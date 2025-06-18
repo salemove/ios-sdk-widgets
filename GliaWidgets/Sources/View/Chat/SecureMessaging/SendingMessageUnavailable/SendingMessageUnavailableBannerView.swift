@@ -4,29 +4,15 @@ final class SendingMessageUnavailableBannerView: UIView {
     private static let horizontalMargins = 16.0
     private static let verticalMargins = 8.0
 
-    private let label = UILabel().makeView()
-    private let icon = UIImageView(image: Asset.sendMessageUnavailableInfo.image).makeView()
+    private let label = UILabel()
+    private let icon = UIImageView(image: Asset.sendMessageUnavailableInfo.image)
 
-    private lazy var visibleConstraints: [NSLayoutConstraint] = [
-        icon.trailingAnchor.constraint(equalTo: label.leadingAnchor, constant: -8),
-        icon.centerYAnchor.constraint(equalTo: label.centerYAnchor),
-        icon.widthAnchor.constraint(equalToConstant: 16),
-        icon.heightAnchor.constraint(equalTo: icon.widthAnchor, multiplier: 1.0),
-        label.leadingAnchor.constraint(lessThanOrEqualTo: leadingAnchor, constant: 40),
-        label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Self.horizontalMargins),
-        label.topAnchor.constraint(equalTo: topAnchor, constant: Self.verticalMargins),
-        label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Self.verticalMargins)
-    ]
-
-    private lazy var invisibleConstraints: [NSLayoutConstraint] = [
-        self.heightAnchor.constraint(lessThanOrEqualToConstant: 0)
-    ]
+    private var contentConstraints: [NSLayoutConstraint] = []
+    private var zeroHeightConstraint: NSLayoutConstraint!
 
     var props = Props.initial {
         didSet {
-            guard props != oldValue else {
-                return
-            }
+            guard props != oldValue else { return }
             renderProps()
         }
     }
@@ -41,38 +27,28 @@ final class SendingMessageUnavailableBannerView: UIView {
 
     private func setup() {
         addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        icon.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
 
         addSubview(icon)
 
-        renderHidden(isHidden)
+        contentConstraints = [
+            icon.trailingAnchor.constraint(equalTo: label.leadingAnchor, constant: -8),
+            icon.centerYAnchor.constraint(equalTo: label.centerYAnchor),
+            icon.widthAnchor.constraint(equalToConstant: 16),
+            icon.heightAnchor.constraint(equalTo: icon.widthAnchor, multiplier: 1.0),
+            label.leadingAnchor.constraint(lessThanOrEqualTo: leadingAnchor, constant: 40),
+            label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -Self.horizontalMargins),
+            label.topAnchor.constraint(equalTo: topAnchor, constant: Self.verticalMargins),
+            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Self.verticalMargins)
+        ]
+        NSLayoutConstraint.activate(contentConstraints)
+
+        zeroHeightConstraint = heightAnchor.constraint(equalToConstant: 0)
+        zeroHeightConstraint.isActive = false
+
         renderProps()
-    }
-
-    override var isHidden: Bool {
-        didSet {
-            super.isHidden = self.isHidden
-            guard isHidden != oldValue else {
-                return
-            }
-            renderHidden(self.isHidden)
-        }
-    }
-
-    private func renderHidden(_ hidden: Bool) {
-        // In order to avoid breaking auto-layout constraints
-        // we deactivate relevant constraints if view gets hidden
-        // and activate zero-height constraints.
-        if hidden {
-            NSLayoutConstraint.deactivate(visibleConstraints)
-            NSLayoutConstraint.activate(invisibleConstraints)
-        } else {
-            NSLayoutConstraint.deactivate(invisibleConstraints)
-            NSLayoutConstraint.activate(visibleConstraints)
-        }
-        // Layout manually to enforce constraints to be applied immediately,
-        // thus affecting the `frame`.
-        layoutIfNeeded()
     }
 
     private func renderProps() {
@@ -81,7 +57,20 @@ final class SendingMessageUnavailableBannerView: UIView {
         backgroundColor = props.style.backgroundColor.color
         label.font = props.style.font
         icon.tintColor = props.style.iconColor
-        isHidden = props.isHidden
+
+        if props.isHidden {
+            label.isHidden = true
+            icon.isHidden = true
+
+            NSLayoutConstraint.deactivate(contentConstraints)
+            zeroHeightConstraint.isActive = true
+        } else {
+            zeroHeightConstraint.isActive = false
+            NSLayoutConstraint.activate(contentConstraints)
+
+            label.isHidden = false
+            icon.isHidden = false
+        }
     }
 }
 
