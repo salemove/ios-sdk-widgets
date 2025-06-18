@@ -25,15 +25,16 @@ final class EngagementViewModelTests: XCTestCase {
     }
 
     func testHandleScreenSharingStatusShowsEndButton() {
+        let interactor: Interactor = .mock()
+        interactor.state = .engaged(nil)
         let viewModel = EngagementViewModel(
-            interactor: .failing,
-            screenShareHandler: .mock, 
+            interactor: interactor,
+            screenShareHandler: .mock,
             replaceExistingEnqueueing: false,
             environment: .mock
         )
         enum Call { case showEndButton }
         var calls: [Call] = []
-        viewModel.activeEngagement = .mock()
         viewModel.engagementAction = { action in
             switch action {
             case .showEndButton:

@@ -1283,7 +1283,6 @@ class ChatViewModelTests: XCTestCase {
             chatType: .secureTranscript(upgradedFromChat: true),
             environment: viewModelEnv
         )
-        viewModel.activeEngagement = .mock()
         enum Call { case refreshAll, showEndButton }
         var calls: [Call] = []
         viewModel.engagementAction = { action in
@@ -1299,7 +1298,7 @@ class ChatViewModelTests: XCTestCase {
         interactor.state = .engaged(nil)
 
         XCTAssertEqual(viewModel.chatType, .authenticated)
-        XCTAssertEqual(calls, [.refreshAll, .showEndButton, .refreshAll])
+        XCTAssertEqual(calls, [.refreshAll, .refreshAll])
     }
 
     func test_messageReceivedMarksAsReadIfOnEndIsRetain() {
