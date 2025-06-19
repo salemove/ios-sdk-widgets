@@ -84,6 +84,8 @@ extension Glia {
                 // calling engagement restoration twice.
                 self?.stopObservingInteractorEvents()
 
+                let prevEngagementIsNotPresent = self?.environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil
+
                 auth.authenticate(
                     with: .init(rawValue: idToken),
                     externalAccessToken: accessToken.map { .init(rawValue: $0) },
@@ -97,6 +99,7 @@ extension Glia {
                     completion: { [weak self] result in
                         self?.handleAuthenticationResult(
                             result.mapError(Glia.Authentication.Error.init),
+                            prevEngagementIsNotPresent: prevEngagementIsNotPresent,
                             callback: callback
                         )
                     }
@@ -135,6 +138,7 @@ extension Glia {
 
     private func handleAuthenticationResult(
         _ result: Result<Void, Glia.Authentication.Error>,
+        prevEngagementIsNotPresent: Bool,
         callback: @escaping Glia.Authentication.Callback
     ) {
         // Wait for possible engagement (if there is one)
@@ -143,14 +147,12 @@ extension Glia {
         environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(1)) { [weak self] in
             switch result {
             case .success:
-                // Attempt to restore ongoing engagement after configuration.
-                // Skip restoring transferred Secure Conversation.
                 let interactor = self?.interactor
                 let viewFactory = self?.rootCoordinator?.viewFactory
                 let sceneProvider = self?.rootCoordinator?.sceneProvider
 
-                let prevEngagementIsNotPresent = self?.environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil
-
+                // Attempt to restore ongoing engagement after configuration.
+                // Skip restoring transferred Secure Conversation.
                 if let ongoingEngagement = self?.environment.coreSdk.getNonTransferredSecureConversationEngagement(),
                    let configuration = self?.configuration, prevEngagementIsNotPresent,
                    let interactor {
