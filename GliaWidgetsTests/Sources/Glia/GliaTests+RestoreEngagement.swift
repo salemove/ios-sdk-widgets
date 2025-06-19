@@ -115,6 +115,8 @@ extension GliaTests {
         sdkEnv.uiApplication.windows = { [window] }
         enum Call {
             case snackBarPresent
+            case engagementStarted
+            case minimized
         }
 
         var calls: [Call] = []
@@ -128,6 +130,16 @@ extension GliaTests {
         sdk.stringProvidingPhase = .configured { _ in
             return ""
         }
+        sdk.onEvent = { event in
+            switch event {
+            case .started:
+                calls.append(.engagementStarted)
+            case .minimized:
+                calls.append(.minimized)
+            default:
+                XCTFail("Unexpected event received")
+            }
+        }
         guard let interactor = sdk.interactor else {
             XCTFail("Interactor missing")
             return
@@ -135,7 +147,7 @@ extension GliaTests {
         interactor.state = .engaged(.mock())
 
         XCTAssertNotNil(sdk.rootCoordinator?.gliaViewController)
-        XCTAssertEqual(calls, [.snackBarPresent])
+        XCTAssertEqual(calls, [.engagementStarted, .minimized, .snackBarPresent])
     }
 
     func test_sdkDoesNotRestoreOngoingTransferredSecureConversation() throws {
@@ -180,6 +192,9 @@ extension GliaTests {
         sdk.stringProvidingPhase = .configured { _ in
             return ""
         }
+        sdk.onEvent = { event in
+            XCTFail("Unexpected event received")
+        }
         guard let interactor = sdk.interactor else {
             XCTFail("Interactor missing")
             return
@@ -190,6 +205,13 @@ extension GliaTests {
     }
 
     func test_sdkRestoresMessagingWhenOngoingEngagementExistsAndPendingInteractionIsTrue() throws {
+        enum Call {
+            case snackBarPresent
+            case engagementStarted
+            case minimized
+            case maximized
+        }
+        var calls: [Call] = []
         var sdkEnv = Glia.Environment.failing
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         var launching: EngagementCoordinator.EngagementLaunching?
@@ -215,7 +237,9 @@ extension GliaTests {
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
-        sdkEnv.snackBar.present = { _, _, _, _, _, _, _ in }
+        sdkEnv.snackBar.present = { _, _, _, _, _, _, _ in
+            calls.append(.snackBarPresent)
+        }
         let uuidGen = UUID.incrementing
         sdkEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
         sdkEnv.coreSdk.secureConversations.observePendingStatus = { callback in
@@ -235,6 +259,16 @@ extension GliaTests {
         sdk.stringProvidingPhase = .configured { _ in
             return ""
         }
+        sdk.onEvent = { event in
+            switch event {
+            case .started:
+                calls.append(.engagementStarted)
+            case .minimized:
+                calls.append(.minimized)
+            default:
+                XCTFail("Unexpected event received")
+            }
+        }
         guard let interactor = sdk.interactor else {
             XCTFail("Interactor missing")
             return
@@ -243,5 +277,6 @@ extension GliaTests {
 
         XCTAssertNotNil(sdk.rootCoordinator?.gliaViewController)
         XCTAssertEqual(launching, .direct(kind: .messaging(.chatTranscript)))
+        XCTAssertEqual(calls, [.engagementStarted, .minimized, .snackBarPresent])
     }
 }
