@@ -2,15 +2,19 @@ import UIKit
 
 final class UserImageView: BaseView {
     private let style: UserImageStyle
+    private let placeholderInsets: UIEdgeInsets
     private let placeholderImageView = UIImageView()
+    private let placeholderBackgroundView = UIView()
     private let operatorImageView: ImageView
     private let environment: Environment
 
     init(
         with style: UserImageStyle,
+        placeholderInsets: UIEdgeInsets = .zero,
         environment: Environment
     ) {
         self.style = style
+        self.placeholderInsets = placeholderInsets
         self.environment = environment
         self.operatorImageView = ImageView(environment: .create(with: environment))
         super.init()
@@ -36,9 +40,14 @@ final class UserImageView: BaseView {
         super.defineLayout()
 
         var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+
+        addSubview(placeholderBackgroundView)
+        placeholderBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += placeholderBackgroundView.layoutInSuperview()
+
         addSubview(placeholderImageView)
         placeholderImageView.translatesAutoresizingMaskIntoConstraints = false
-        constraints += placeholderImageView.layoutInSuperview()
+        constraints += placeholderImageView.layoutInSuperview(insets: placeholderInsets)
 
         addSubview(operatorImageView)
         operatorImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -51,9 +60,9 @@ final class UserImageView: BaseView {
         updatePlaceholderContentMode()
         switch style.placeholderBackgroundColor {
         case .fill(let color):
-            placeholderImageView.backgroundColor = color
+            placeholderBackgroundView.backgroundColor = color
         case .gradient(let colors):
-            placeholderImageView.makeGradientBackground(colors: colors)
+            placeholderBackgroundView.makeGradientBackground(colors: colors)
         }
         switch style.imageBackgroundColor {
         case .fill(let color):
@@ -95,6 +104,7 @@ final class UserImageView: BaseView {
 
     private func changeOperatorImageVisibility(visible: Bool) {
         placeholderImageView.isHidden = visible
+        placeholderBackgroundView.isHidden = visible
         operatorImageView.isHidden = !visible
     }
 }
