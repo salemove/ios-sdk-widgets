@@ -12,7 +12,7 @@ extension Theme {
         /// Text style
         public var textStyle: UIFont.TextStyle
 
-        /// Text aligmment
+        /// Text alignment
         public var alignment: NSTextAlignment
 
         /// Accessibility related properties
@@ -22,7 +22,7 @@ extension Theme {
         ///   - color: Foreground hex color
         ///   - font: Font
         ///   - textStyle: Text style
-        ///   - alignment: Text aligmment
+        ///   - alignment: Text alignment
         ///   - accessibility: Accessibility related properties
         ///
         public init(
