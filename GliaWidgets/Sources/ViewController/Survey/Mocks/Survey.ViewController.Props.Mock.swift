@@ -71,7 +71,7 @@ extension Survey.ViewController.Props {
     }
 }
 
-private extension Survey.ViewController.Props {
+extension Survey.ViewController.Props {
     static func makeScalePropsMock(
         selectedOption: Survey.Option<Int>? = nil,
         showValidationError: Bool = false
@@ -114,6 +114,11 @@ private extension Survey.ViewController.Props {
     }
 
     static func makeSinglePropsMock(
+        options: [Survey.Option<String>] = [
+            .init(name: "First option", value: "\(1)"),
+            .init(name: "Second option", value: "\(2)"),
+            .init(name: "Third option", value: "\(3)")
+        ],
         selectedOption: Survey.Option<String>? = nil,
         defaultOption: Survey.Option<String>? = nil,
         showValidationError: Bool = false
@@ -125,11 +130,7 @@ private extension Survey.ViewController.Props {
             showValidationError: showValidationError,
             accessibility: .init(value: "Required")
         )
-        props.options = [
-            .init(name: "First option", value: "\(1)"),
-            .init(name: "Second option", value: "\(2)"),
-            .init(name: "Third option", value: "\(3)")
-        ].compactMap { $0 }
+        props.options = options.compactMap { $0 }
         props.defaultOption = defaultOption
         props.selected = selectedOption
         return props
