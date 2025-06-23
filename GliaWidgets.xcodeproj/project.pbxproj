@@ -494,6 +494,7 @@
 		8492F9172CAD2F2000242691 /* TranscriptModelTests+ResponseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492F9162CAD2F2000242691 /* TranscriptModelTests+ResponseCard.swift */; };
 		8492F9192CAD329800242691 /* TranscriptModelTests+MessageRetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492F9182CAD329800242691 /* TranscriptModelTests+MessageRetry.swift */; };
 		8492F91B2CAD6ADE00242691 /* ChatViewModelTests+MessageRetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492F91A2CAD6ADE00242691 /* ChatViewModelTests+MessageRetry.swift */; };
+		8497C1E82E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8497C1E72E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift */; };
 		84A318A12869ECFC00CA1DE5 /* Unavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A318A02869ECFC00CA1DE5 /* Unavailable.swift */; };
 		84C24CF82B8353A00089A388 /* ProcessInfoHandling.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C24CF72B8353A00089A388 /* ProcessInfoHandling.Interface.swift */; };
 		84C24CFA2B83541F0089A388 /* ProcessInfoHandling.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C24CF92B83541F0089A388 /* ProcessInfoHandling.Mock.swift */; };
@@ -1594,6 +1595,7 @@
 		8492F9162CAD2F2000242691 /* TranscriptModelTests+ResponseCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TranscriptModelTests+ResponseCard.swift"; sourceTree = "<group>"; };
 		8492F9182CAD329800242691 /* TranscriptModelTests+MessageRetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TranscriptModelTests+MessageRetry.swift"; sourceTree = "<group>"; };
 		8492F91A2CAD6ADE00242691 /* ChatViewModelTests+MessageRetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModelTests+MessageRetry.swift"; sourceTree = "<group>"; };
+		8497C1E72E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleChoiceQuestionViewTests.swift; sourceTree = "<group>"; };
 		84A318A02869ECFC00CA1DE5 /* Unavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unavailable.swift; sourceTree = "<group>"; };
 		84C24CF72B8353A00089A388 /* ProcessInfoHandling.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoHandling.Interface.swift; sourceTree = "<group>"; };
 		84C24CF92B83541F0089A388 /* ProcessInfoHandling.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoHandling.Mock.swift; sourceTree = "<group>"; };
@@ -2855,10 +2857,6 @@
 		1A60AFC12566857200E53F53 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				C0193DD82D957D0500801CF6 /* PushNotifications */,
-				2198B7AA2CAEB13E002C442B /* QueuesMonitor */,
-				215A25922CA44D900013023E /* EngagementLauncher */,
-				C0F3DE352C69F4A700DE6D7B /* EntryWidget */,
 				C0D6C9E72C09C70B00D4709B /* AlertManager */,
 				C4794E6E270673FC00F989F7 /* Animation */,
 				75940965298D38B6008B173A /* BundleManaging */,
@@ -3767,6 +3765,7 @@
 		7512A57827BF9FB800319DF1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				8497C1E52E0952D400FE1F1F /* Survey */,
 				84551A962D4A5AFC00C55DA2 /* EngagementViewModel */,
 				84551A932D478BAD00C55DA2 /* CoreSdkClient */,
 				C06B6D4A2CCB916300A66D8A /* EntryWidget */,
@@ -4552,6 +4551,22 @@
 				8492F9142CAAE30F00242691 /* SecureConversations.ChatWithTranscriptModelTests.swift */,
 			);
 			path = SecureConversations.ChatWithTranscriptModel;
+			sourceTree = "<group>";
+		};
+		8497C1E52E0952D400FE1F1F /* Survey */ = {
+			isa = PBXGroup;
+			children = (
+				8497C1E62E0952E200FE1F1F /* SingleChoiceQuestionView */,
+			);
+			path = Survey;
+			sourceTree = "<group>";
+		};
+		8497C1E62E0952E200FE1F1F /* SingleChoiceQuestionView */ = {
+			isa = PBXGroup;
+			children = (
+				8497C1E72E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift */,
+			);
+			path = SingleChoiceQuestionView;
 			sourceTree = "<group>";
 		};
 		84C24CF62B8353840089A388 /* ProcessInfoHandling */ = {
@@ -6800,6 +6815,7 @@
 				84551A982D4A5B0F00C55DA2 /* EngagementViewModelTests.swift in Sources */,
 				AF1C19802B14FE9F00F8810F /* ConditionalCompilationClient.Failing.swift in Sources */,
 				84520BED2B19FD3000F97617 /* CallVisualizerTests+LO.swift in Sources */,
+				8497C1E82E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift in Sources */,
 				9A19927027D3BCAE00161AAE /* GCD.Failing.swift in Sources */,
 				215A25982CABC7DF0013023E /* EngagementLauncherTests.swift in Sources */,
 				3142696A29FFB712003DF62E /* Interactor.Failing.swift in Sources */,
