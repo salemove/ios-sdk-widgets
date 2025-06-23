@@ -102,7 +102,7 @@ extension Survey {
             option opt: Survey.Option<String>
         ) -> CheckboxView.State {
             // If user selected or it should be selected by default.
-            let isSelected = props.selected == opt || props.defaultOption == opt
+            let isSelected = props.selected == opt || (props.defaultOption == opt && props.selected == nil)
 
             // Trigger selection manually because the option has
             // been selected by default, not because of user input.
