@@ -38,7 +38,7 @@ public extension Theme.SurveyStyle {
                     ),
                     normalLayer: .init(
                         background: .fill(color: color.baseLight),
-                        borderColor: color.baseNormal.cgColor,
+                        borderColor: color.baseNormal.withAlphaComponent(0.3).cgColor,
                         borderWidth: 1,
                         cornerRadius: 4
                     ),
@@ -49,9 +49,9 @@ public extension Theme.SurveyStyle {
                         accessibility: .init(isFontScalingEnabled: true)
                     ),
                     selectedLayer: .init(
-                        background: .fill(color: color.primary),
+                        background: .fill(color: color.baseLight),
                         borderColor: UIColor.gray.cgColor,
-                        borderWidth: 0,
+                        borderWidth: 1,
                         cornerRadius: 4
                     ),
                     highlightedText: .init(
@@ -61,6 +61,7 @@ public extension Theme.SurveyStyle {
                         accessibility: .init(isFontScalingEnabled: true)
                     ),
                     highlightedLayer: .init(
+                        background: .fill(color: color.baseLight),
                         borderColor: color.systemNegative.cgColor,
                         borderWidth: 1,
                         cornerRadius: 4
