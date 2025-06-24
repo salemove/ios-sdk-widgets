@@ -70,23 +70,13 @@ extension Survey {
 
             textView.text = props.value
             validationError.isHidden = !props.showValidationError
-            textView.layer.cornerRadius = props.showValidationError ?
-                style.option.highlightedLayer.cornerRadius :
-                style.option.normalLayer.cornerRadius
-            textView.layer.borderColor = props.showValidationError ?
-                style.option.highlightedLayer.borderColor :
-                style.option.normalLayer.borderColor
-            textView.layer.borderWidth = props.showValidationError ?
-                style.option.highlightedLayer.borderWidth :
-                style.option.normalLayer.borderWidth
-            if let backgroundColor = style.option.normalLayer.background {
-                switch backgroundColor {
-                case .fill(let color):
-                    textView.backgroundColor = color
-                case .gradient(let colors):
-                    textView.layer.insertSublayer(makeGradientBackground(colors: colors), at: 0)
-                }
-            }
+
+            let textViewStyle = props.showValidationError ?
+            style.option.highlightedLayer :
+            style.option.normalLayer
+
+            renderTextViewStyle(textViewStyle)
+
             textView.textColor = UIColor(hex: style.text.color)
             textView.font = style.text.font
 
@@ -94,6 +84,20 @@ extension Survey {
                 style.accessibility.isFontScalingEnabled,
                 for: textView
             )
+        }
+
+        func renderTextViewStyle(_ style: Theme.Layer) {
+            textView.layer.cornerRadius = style.cornerRadius
+            textView.layer.borderColor = style.borderColor
+            textView.layer.borderWidth = style.borderWidth
+            style.background.unwrap { colorType in
+                switch colorType {
+                case .fill(let color):
+                    textView.backgroundColor = color
+                case .gradient(let colors):
+                    textView.layer.insertSublayer(makeGradientBackground(colors: colors), at: 0)
+                }
+            }
         }
 
         // MARK: - Private
@@ -143,5 +147,13 @@ extension Survey.InputQuestionView {
 extension Survey.InputQuestionView: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         props.textDidChange(textView.text)
+    }
+
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        renderTextViewStyle(style.option.selectedLayer)
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        render()
     }
 }
