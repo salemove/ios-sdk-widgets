@@ -34,7 +34,7 @@ public extension Theme.SurveyStyle {
                         accessibility: .init(isFontScalingEnabled: true)
                     ),
                     normalLayer: .init(
-                        borderColor: color.baseNormal.cgColor,
+                        borderColor: color.baseNormal.withAlphaComponent(0.3).cgColor,
                         borderWidth: 1,
                         cornerRadius: 4
                     ),
