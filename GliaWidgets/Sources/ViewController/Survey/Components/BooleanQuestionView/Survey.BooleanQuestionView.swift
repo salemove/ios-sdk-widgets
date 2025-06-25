@@ -56,7 +56,7 @@ extension Survey {
                 (0..<abs(delta)).forEach { _ in
                     let buttonView = ButtonView(style: style.option)
                     constraints.append(buttonView.widthAnchor.constraint(greaterThanOrEqualToConstant: 48))
-                    constraints.append(buttonView.heightAnchor.constraint(equalToConstant: 52))
+                    constraints.append(buttonView.heightAnchor.constraint(equalToConstant: 48))
                     optionsStack.addArrangedSubview(buttonView)
                 }
             case ..<0:
