@@ -33,10 +33,6 @@ extension Theme {
             configuration: configuration.callVisualizer?.visitorCode,
             assetBuilder: assetsBuilder
         )
-        screenSharing.apply(
-            configuration: configuration.callVisualizer?.screenSharing,
-            assetBuilder: assetsBuilder
-        )
         secureConversationsWelcome.apply(
             configuration: configuration.secureMessagingWelcomeScreen,
             assetsBuilder: assetsBuilder
