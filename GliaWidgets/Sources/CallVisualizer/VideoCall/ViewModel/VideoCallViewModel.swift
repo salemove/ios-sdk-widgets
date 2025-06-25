@@ -62,8 +62,6 @@ extension CallVisualizer {
 
         private var topLabelHidden: Bool { didSet { reportChange() } }
 
-        private var endScreenShareButtonHidden: Bool { didSet { reportChange() } }
-
         private var flipCameraAccLabelWithTap: VideoStreamView.FlipCameraAccLabelWithTap? { didSet { reportChange() } }
 
         // MARK: - Initializer
@@ -96,7 +94,6 @@ extension CallVisualizer {
             title = Localization.Engagement.Video.title
             callDuration = ""
             topLabelHidden = false
-            endScreenShareButtonHidden = environment.screenShareHandler.status().value == .stopped
             statusStyle = style.connect.connecting
 
             self.call.kind.addObserver(self) { [weak self] kind, _ in
@@ -110,9 +107,6 @@ extension CallVisualizer {
             }
             self.call.duration.addObserver(self) { [weak self] duration, _ in
                 self?.onDurationChanged(duration)
-            }
-            self.environment.screenShareHandler.status().addObserver(self) { [weak self] status, _ in
-                self?.onScreenSharingStatusChange(status)
             }
 
             environment.notificationCenter.addObserver(
@@ -159,7 +153,6 @@ extension CallVisualizer.VideoCallViewModel {
                 remoteVideoStream: remoteVideoStream,
                 localVideoStream: localVideoStream,
                 topLabelHidden: topLabelHidden,
-                endScreenShareButtonHidden: endScreenShareButtonHidden,
                 connectViewHidden: connectViewHidden,
                 topStackAlpha: interfaceOrientation.isLandscape ? 0.0 : 1.0,
                 headerProps: .init(
@@ -168,12 +161,9 @@ extension CallVisualizer.VideoCallViewModel {
                     endButton: .init(),
                     backButton: backButton,
                     closeButton: .init(style: style.header.closeButton),
-                    endScreenshareButton: .init(
-                        tap: .init { [weak self] in
-                            self?.environment.screenShareHandler.stop(nil)
-                        },
-                        style: style.header.endScreenShareButton
-                    ),
+                    // TODO: This will be removed in a subsequent commit, because header is used widely across
+                    // many features, and removing it now will make the commit too big
+                    endScreenshareButton: .init(style: style.header.closeButton),
                     style: style.header
                 ),
                 flipCameraTap: flipCameraAccLabelWithTap?.tapCallback,
@@ -547,15 +537,6 @@ private extension CallVisualizer.VideoCallViewModel {
         updateButtons()
         updateRemoteVideoVisible()
         updateLocalVideoVisible()
-    }
-
-    func onScreenSharingStatusChange(_ status: ScreenSharingStatus) {
-        switch status {
-        case .started:
-            endScreenShareButtonHidden = false
-        case .stopped:
-            endScreenShareButtonHidden = true
-        }
     }
 }
 

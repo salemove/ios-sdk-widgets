@@ -258,12 +258,6 @@
 "callVisualizer.visitorCode.accessibility.refreshHint" = "Generates new visitor code";
 "callVisualizer.visitorCode.accessibility.closeLabel" = "Close Button";
 "callVisualizer.visitorCode.accessibility.closeHint" = "Closes visitor code";
-"callVisualizer.screenSharing.title" = "Screen Sharing";
-"callVisualizer.screenSharing.message" = "Your Screen is Being Shared";
-"callVisualizer.screenSharing.button.title" = "End Screen Sharing";
-"callVisualizer.screenSharing.accessibility.messageHint" = "Message label";
-"callVisualizer.screenSharing.accessibility.buttonLabel" = "End screen sharing";
-"callVisualizer.screenSharing.accessibility.buttonHint" = "Ends screen sharing";
 
 "gva.error_unsupported" = "This action is not currently supported on mobile";
 "chat.input.send" = "Send";

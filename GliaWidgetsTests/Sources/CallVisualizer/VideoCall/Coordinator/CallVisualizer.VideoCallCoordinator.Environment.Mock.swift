@@ -14,7 +14,6 @@ extension CallVisualizer.VideoCallCoordinator.Environment {
         notificationCenter: .mock,
         date: { .mock },
         engagedOperator: { .mock() },
-        screenShareHandler: .mock,
         proximityManager: .mock,
         log: .mock,
         cameraDeviceManager: { .mock },

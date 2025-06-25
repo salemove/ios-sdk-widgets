@@ -16,7 +16,6 @@ extension CallVisualizer.Environment {
         interactorPublisher: .mock(.mock()),
         callVisualizerPresenter: .init(presenter: { nil }),
         bundleManaging: .init { .main },
-        screenShareHandler: .mock,
         audioSession: .mock,
         date: { .mock },
         engagedOperator: { .mock() },

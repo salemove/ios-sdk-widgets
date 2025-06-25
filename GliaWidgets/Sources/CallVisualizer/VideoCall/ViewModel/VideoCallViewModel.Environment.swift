@@ -11,7 +11,6 @@ extension CallVisualizer.VideoCallViewModel {
         var notificationCenter: FoundationBased.NotificationCenter
         var date: () -> Date
         var engagedOperator: () -> CoreSdkClient.Operator?
-        var screenShareHandler: ScreenShareHandler
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
@@ -31,7 +30,6 @@ extension CallVisualizer.VideoCallViewModel.Environment {
             notificationCenter: environment.notificationCenter,
             date: environment.date,
             engagedOperator: environment.engagedOperator,
-            screenShareHandler: environment.screenShareHandler,
             proximityManager: environment.proximityManager,
             log: environment.log,
             cameraDeviceManager: environment.cameraDeviceManager,
