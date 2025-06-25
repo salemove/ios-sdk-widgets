@@ -52,9 +52,6 @@ public class Theme {
     /// Call Visualizer Visitor Code view style.
     public lazy var visitorCode: VisitorCodeStyle = { visitorCodeStyle }()
 
-    /// Call Visualizer Screen Sharing View style.
-    public lazy var screenSharing: ScreenSharingViewStyle = { screenSharingStyle }()
-
     // Confirmation Screen in Secure Conversation flow style.
     public lazy var secureConversationsConfirmation: SecureConversations.ConfirmationStyle = defaultSecureConversationsConfirmationStyle
 
@@ -132,10 +129,6 @@ public class Theme {
         )
         visitorCode.apply(
             configuration: config.callVisualizer?.visitorCode,
-            assetBuilder: assetsBuilder
-        )
-        screenSharing.apply(
-            configuration: config.callVisualizer?.screenSharing,
             assetBuilder: assetsBuilder
         )
         secureConversationsWelcome.apply(

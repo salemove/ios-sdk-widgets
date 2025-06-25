@@ -191,45 +191,6 @@ final class GliaTests: XCTestCase {
         XCTAssertEqual(calls, [.onEvent(.ended)])
     }
 
-    func testOnEventWhenScreenSharingScreenIsShownAndCallVisualizerEngagementEnds() throws {
-        enum Call: Equatable {
-            case onEvent(GliaEvent)
-        }
-        var calls = [Call]()
-
-        var gliaEnv = Glia.Environment.failing
-        var logger = CoreSdkClient.Logger.failing
-        logger.configureLocalLogLevelClosure = { _ in }
-        logger.configureRemoteLogLevelClosure = { _ in }
-        logger.infoClosure = { _, _, _, _ in }
-        logger.prefixedClosure = { _ in logger }
-        gliaEnv.print = .mock
-        gliaEnv.coreSdk.createLogger = { _ in logger }
-        gliaEnv.conditionalCompilation.isDebug = { true }
-        gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
-        gliaEnv.gcd.mainQueue.async = { callback in callback() }
-        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
-        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
-
-        let sdk = Glia(environment: gliaEnv)
-        sdk.onEvent = {
-            calls.append(.onEvent($0))
-        }
-        try sdk.configure(
-            with: .mock(),
-            theme: .mock()
-        ) { _ in }
-
-        sdk.callVisualizer.coordinator.showEndScreenSharingViewController()
-        sdk.interactor?.setEndedEngagement(.mock(source: .callVisualizer))
-        sdk.interactor?.state = .ended(.byOperator)
-
-        XCTAssertEqual(calls, [.onEvent(.minimized), .onEvent(.ended)])
-    }
-
     func testOnEventWhenVideoScreenIsShownAndCallVisualizerEngagementEnds() throws {
         enum Call: Equatable {
             case onEvent(GliaEvent)
@@ -584,47 +545,6 @@ final class GliaTests: XCTestCase {
         XCTAssertNoThrow(try XCTUnwrap(endEngagementResult))
         XCTAssertNil(sdk.rootCoordinator)
         XCTAssertNil(rootCoordinator)
-    }
-
-    func test_screenSharingIsStoppedWhenCallVisualizerEngagementIsEnded() throws {
-        enum Call { case ended }
-        var calls: [Call] = []
-        var gliaEnv = Glia.Environment.failing
-        gliaEnv.print.printClosure = { _, _, _ in }
-        var logger = CoreSdkClient.Logger.failing
-        logger.configureLocalLogLevelClosure = { _ in }
-        logger.configureRemoteLogLevelClosure = { _ in }
-        logger.prefixedClosure = { _ in logger }
-        logger.infoClosure = { _, _, _, _ in }
-        gliaEnv.coreSdk.createLogger = { _ in logger }
-        gliaEnv.conditionalCompilation.isDebug = { true }
-        let screenShareHandler: ScreenShareHandler = .mock
-        screenShareHandler.status().value = .started
-        gliaEnv.screenShareHandler = screenShareHandler
-        gliaEnv.gcd.mainQueue.async = { callback in callback() }
-        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, callback in
-            callback(.success(()))
-        }
-        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
-        let sdk = Glia(environment: gliaEnv)
-        try sdk.configure(
-            with: .mock(),
-            theme: .mock()
-        ) { _ in }
-        sdk.interactor?.setEndedEngagement(.mock(source: .callVisualizer))
-        sdk.onEvent = { event in
-            switch event {
-            case .ended:
-                calls.append(.ended)
-            default:
-                XCTFail("There is should be no another event")
-            }
-        }
-        sdk.interactor?.state = .ended(.byOperator)
-
-        XCTAssertEqual(screenShareHandler.status().value, .stopped)
-        XCTAssertEqual(calls, [.ended])
     }
 
     func test_remoteConfigIsAppliedToThemeUponConfigure() throws {

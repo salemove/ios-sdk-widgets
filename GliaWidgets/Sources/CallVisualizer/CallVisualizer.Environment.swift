@@ -16,7 +16,6 @@ extension CallVisualizer {
         var interactorPublisher: AnyPublisher<Interactor?, Never>
         var callVisualizerPresenter: CallVisualizer.Presenter
         var bundleManaging: BundleManaging
-        var screenShareHandler: ScreenShareHandler
         var audioSession: Glia.Environment.AudioSession
         var date: () -> Date
         var engagedOperator: () -> CoreSdkClient.Operator?
@@ -61,7 +60,6 @@ extension CallVisualizer.Environment {
             interactorPublisher: interactorPublisher,
             callVisualizerPresenter: environment.callVisualizerPresenter,
             bundleManaging: environment.bundleManaging,
-            screenShareHandler: environment.screenShareHandler,
             audioSession: environment.audioSession,
             date: environment.date,
             engagedOperator: engagedOperator,

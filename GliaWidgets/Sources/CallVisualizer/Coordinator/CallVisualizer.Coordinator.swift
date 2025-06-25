@@ -25,39 +25,12 @@ extension CallVisualizer {
 
         // MARK: - Private
         private var visitorCodeCoordinator: VisitorCodeCoordinator?
-        private var screenSharingCoordinator: ScreenSharingCoordinator?
         private var videoCallCoordinator: VideoCallCoordinator?
         private var interactorSubscription: AnyCancellable?
         private(set) var activeInteractor: Interactor?
         private var state: State
         private let bubbleSize = CGSize(width: 60, height: 60)
         private let bubbleView: BubbleView
-        private lazy var screensharingImageView: UIView = {
-            let icon = CallVisualizer.BubbleIcon(
-                image: UIImage(
-                    named: "screensharing",
-                    in: environment.bundleManaging.current(),
-                    compatibleWith: .none
-                ),
-                imageSize: .init(width: 24, height: 24)
-            ) { [weak self] icon in
-                guard let self = self else { return }
-                switch self.environment.viewFactory.theme.minimizedBubble.badge?.backgroundColor {
-                case .fill(let color):
-                    icon.backgroundColor = color
-                case .gradient(let colors):
-                    icon.makeGradientBackground(
-                        colors: colors
-                    )
-                case .none:
-                    break
-                }
-                icon.layer.masksToBounds = true
-                icon.layer.cornerRadius = min(self.bubbleSize.width, self.bubbleSize.height) / 2
-            }
-
-            return icon
-        }()
     }
 }
 
@@ -66,8 +39,6 @@ extension CallVisualizer.Coordinator {
         switch state {
         case .initial:
             return
-        case .screenSharing:
-            showEndScreenSharingViewController()
         case .videoCall:
             resumeVideoCallViewController()
         }
@@ -154,9 +125,7 @@ extension CallVisualizer.Coordinator {
     func end() {
         removeBubbleView()
         closeFlow()
-        stopObservingScreenSharingHandlerState()
         videoCallCoordinator = nil
-        screenSharingCoordinator = nil
     }
 
     func addVideoStream(stream: CoreSdkClient.VideoStreamable) {
@@ -212,7 +181,6 @@ extension CallVisualizer.Coordinator {
             switch event {
             case .close:
                 self?.closeFlow()
-                self?.screenSharingCoordinator = nil
             }
         }
 
@@ -238,25 +206,9 @@ extension CallVisualizer.Coordinator {
     }
 
     func closeFlow() {
-        // Presented flow can consist of:
-        // - Only screen sharing screen is presented from Root (Main) controller.
-        // - Only Video call screen is presented from Root (Main) controller.
-        // - Video call screen is presented over Screen sharing screen,
-        // which is presented from Root (Main) controller.
-        //
-        // To dismiss all presented controllers just need to call `dismiss` from Root (Main) controller.
-        // If Screen sharing screen is exist, no matter whether Video call screen is presented over it,
-        // screenSharingCoordinator?.viewController.presentingViewController is Root (Main) controller,
-        // otherwise videoCallCoordinator?.viewController?.presentingViewController is Root (Main) controller.
-        switch (screenSharingCoordinator, videoCallCoordinator) {
-        case (.some(let screenSharing), _):
-            screenSharing.viewController?.presentingViewController?.dismiss(animated: true)
+        if let videoCallCoordinator {
+            videoCallCoordinator.viewController?.presentingViewController?.dismiss(animated: true)
             environment.eventHandler(.minimized)
-        case (.none, .some(let videoCall)):
-            videoCall.viewController?.presentingViewController?.dismiss(animated: true)
-            environment.eventHandler(.minimized)
-        case (.none, .none):
-            break
         }
     }
 
@@ -268,63 +220,6 @@ extension CallVisualizer.Coordinator {
         } else {
             completion?()
         }
-    }
-}
-
-// MARK: - Screen sharing
-
-extension CallVisualizer.Coordinator {
-    func observeScreenSharingHandlerState() {
-        self.environment
-            .screenShareHandler
-            .status()
-            .addObserver(self) { [weak self] newStatus, _ in
-                guard self?.videoCallCoordinator == nil else {
-                    self?.state = .videoCall
-                    return
-                }
-                switch newStatus {
-                case .started:
-                    self?.createScreenShareBubbleView()
-                    self?.state = .screenSharing
-                case .stopped:
-                    self?.screenSharingCoordinator?.viewController?.dismiss(animated: true)
-                    self?.screenSharingCoordinator = nil
-                    self?.removeBubbleView()
-                    self?.state = .initial
-                }
-            }
-    }
-
-    private func stopObservingScreenSharingHandlerState() {
-        environment.screenShareHandler.status().removeObserver(self)
-        environment.screenShareHandler.stop(nil)
-    }
-
-    private func buildScreenSharingViewController(uiConfig: RemoteConfiguration? = nil) -> UIViewController {
-        let coordinator = CallVisualizer.ScreenSharingCoordinator(
-            environment: .create(with: environment)
-        )
-
-        coordinator.delegate = { [weak self] event in
-            switch event {
-            case .close:
-                self?.screenSharingCoordinator = nil
-            }
-        }
-
-        let viewController = coordinator.start()
-        self.screenSharingCoordinator = coordinator
-
-        return viewController
-    }
-
-    func showEndScreenSharingViewController() {
-        let viewController = buildScreenSharingViewController()
-        environment
-            .presenter
-            .getInstance()?
-            .present(viewController, animated: true)
     }
 }
 
@@ -378,14 +273,6 @@ private extension CallVisualizer.Coordinator {
 // MARK: - Bubble
 
 private extension CallVisualizer.Coordinator {
-    func createScreenShareBubbleView() {
-        guard let parent = environment.presenter.getInstance()?.view else { return }
-        bubbleView.kind = .view(screensharingImageView)
-        bubbleView.frame = .init(origin: .init(x: parent.frame.maxX, y: parent.frame.maxY), size: bubbleSize)
-        parent.addSubview(bubbleView)
-        updateBubblePosition()
-    }
-
     func createOperatorImageBubbleView() {
         guard let parent = environment.presenter.getInstance()?.view else { return }
         let imageUrl = environment.engagedOperator()?.picture?.url
@@ -503,7 +390,6 @@ private extension CallVisualizer.Coordinator {
 extension CallVisualizer.Coordinator {
     enum State {
         case initial
-        case screenSharing
         case videoCall
     }
 }

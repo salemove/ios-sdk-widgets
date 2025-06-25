@@ -12,36 +12,8 @@ final class CallVisualizerTests: XCTestCase {
         calls.removeAll()
     }
 
-    func testScreenSharingStateChanged() {
-        var screenShareHandlerMock = ScreenShareHandler.mock
-        screenShareHandlerMock.updateState = { _ in
-            self.calls.append(.updateState)
-        }
-        var environmentMock = CallVisualizer.Environment.mock
-        environmentMock.screenShareHandler = screenShareHandlerMock
-        environmentMock.getCurrentEngagement = {
-            .mock(source: .callVisualizer)
-        }
-        let interactorMock = Interactor.mock()
-        environmentMock.interactorPublisher = Just(interactorMock).eraseToAnyPublisher()
-        let callVisualizer = CallVisualizer(environment: environmentMock)
-        callVisualizer.startObservingInteractorEvents()
-
-        interactorMock.onVisitorScreenSharingStateChange(
-            screenSharingState(status: .sharing),
-            nil
-        )
-
-        XCTAssertEqual(calls, [.updateState])
-    }
-
     func testHandlingInteractorEventWhenEngagementIsNil() {
-        var screenShareHandlerMock = ScreenShareHandler.mock
-        screenShareHandlerMock.updateState = { _ in
-            self.calls.append(.updateState)
-        }
         var environmentMock = CallVisualizer.Environment.mock
-        environmentMock.screenShareHandler = screenShareHandlerMock
         environmentMock.getCurrentEngagement = { nil }
 
         let callVisualizer = CallVisualizer(environment: environmentMock)
@@ -49,10 +21,6 @@ final class CallVisualizerTests: XCTestCase {
 
         let interactorMock = Interactor.mock()
         environmentMock.interactorPublisher = Just(interactorMock).eraseToAnyPublisher()
-        interactorMock.onVisitorScreenSharingStateChange(
-            screenSharingState(status: .sharing),
-            nil
-        )
 
         XCTAssertEqual(calls, [])
     }
@@ -60,12 +28,7 @@ final class CallVisualizerTests: XCTestCase {
     func testHandlingInteractorEventWhenEngagementIsLive() {
         enum Call { case updateState }
         var calls: [Call] = []
-        var screenShareHandlerMock = ScreenShareHandler.mock
-        screenShareHandlerMock.updateState = { _ in
-            calls.append(.updateState)
-        }
         var environmentMock = CallVisualizer.Environment.mock
-        environmentMock.screenShareHandler = screenShareHandlerMock
         environmentMock.getCurrentEngagement = { .mock() }
 
         let callVisualizer = CallVisualizer(environment: environmentMock)
@@ -73,10 +36,6 @@ final class CallVisualizerTests: XCTestCase {
 
         let interactorMock = Interactor.mock()
         environmentMock.interactorPublisher = Just(interactorMock).eraseToAnyPublisher()
-        interactorMock.onVisitorScreenSharingStateChange(
-            screenSharingState(status: .sharing),
-            nil
-        )
 
         XCTAssertEqual(calls, [])
     }
@@ -121,11 +80,5 @@ final class CallVisualizerTests: XCTestCase {
         let newInteractor = Interactor.mock()
         interactorSubject.send(newInteractor)
         XCTAssertEqual(callVisualizer.activeInteractor?.currentEngagement, .none)
-    }
-
-    // MARK: - Private
-
-    private func screenSharingState(status: GliaCoreSDK.ScreenSharingStatus) -> CoreSdkClient.VisitorScreenSharingState {
-        .init(status: status, localScreen: nil)
     }
 }
