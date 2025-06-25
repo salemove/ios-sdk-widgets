@@ -126,17 +126,6 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
         XCTAssertFalse(coordinator.environment.presenter.getInstance()?.presentedViewController is AlertViewController)
     }
 
-    func test_end() {
-        var stopCallCounter = 0
-        coordinator.environment.screenShareHandler.stop = { _ in
-            stopCallCounter += 1
-        }
-
-        coordinator.end()
-
-        XCTAssertEqual(stopCallCounter, 1)
-    }
-
     func test_showSnackBarIfNeeded() throws {
         let site = CoreSdkClient.Site(
             id: .mock, defaultOperatorPicture: nil,

@@ -11,23 +11,6 @@ final class VideoCallTests: XCTestCase {
         XCTAssertNil(weakViewController, "VisitorCodeViewController not deinitilized")
     }
 
-    func test_end_screen_sharing() {
-        var isRunning = true
-        var screenShareHandlerMock = ScreenShareHandler.mock
-        screenShareHandlerMock.stop = { _ in
-            isRunning = false
-        }
-        var environment = CallVisualizer.VideoCallViewModel.Environment.mock
-        environment.screenShareHandler = screenShareHandlerMock
-
-        let viewModel: CallVisualizer.VideoCallViewModel = .mock(environment: environment, call: .mock())
-        let props = viewModel.makeProps()
-
-        XCTAssertTrue(isRunning)
-        props.videoCallViewProps.headerProps.endScreenshareButton?.tap()
-        XCTAssertFalse(isRunning)
-    }
-
     func test_video_button_action() {
         var wasExecuted: Bool = false
         let buttonBarProps: CallVisualizer.VideoCallView.CallButtonBar.Props = .mock(
@@ -67,20 +50,6 @@ final class VideoCallTests: XCTestCase {
         XCTAssertEqual(wasExecuted, true)
     }
 
-    func test_endScreenSharingIsVisible() {
-        let viewModel = mockViewModel(with: .started)
-        let props = viewModel.makeProps()
-
-        XCTAssertFalse(props.videoCallViewProps.endScreenShareButtonHidden)
-    }
-
-    func test_endScreenSharingIsHidden() {
-        let viewModel = mockViewModel(with: .stopped)
-        let props = viewModel.makeProps()
-
-        XCTAssertTrue(props.videoCallViewProps.endScreenShareButtonHidden)
-    }
-
     func test_proximityManagerStartsAndStops() {
         enum Call: Equatable { case isIdleTimerDisabled(Bool), isProximityMonitoringEnabled(Bool) }
         var calls: [Call] = []
@@ -114,14 +83,8 @@ final class VideoCallTests: XCTestCase {
 }
 
 private extension VideoCallTests {
-    func mockViewModel(
-        with screenSharingStatus: ScreenSharingStatus
-    ) -> CallVisualizer.VideoCallViewModel {
-        var screenShareHandlerMock = ScreenShareHandler.mock
-        screenShareHandlerMock.status = { .init(with: screenSharingStatus) }
+    func mockViewModel() -> CallVisualizer.VideoCallViewModel {
         var environment = CallVisualizer.VideoCallViewModel.Environment.mock
-        environment.screenShareHandler = screenShareHandlerMock
-
         return .mock(environment: environment)
     }
 }

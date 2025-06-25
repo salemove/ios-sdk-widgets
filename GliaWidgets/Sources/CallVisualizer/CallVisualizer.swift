@@ -117,10 +117,6 @@ extension CallVisualizer {
         coordinator.showSnackBarIfNeeded()
     }
 
-    func observeScreenSharingHandlerState() {
-        coordinator.observeScreenSharingHandlerState()
-    }
-
     func restoreVideoIfPossible() {
         guard let engagement = environment.getCurrentEngagement(), engagement.source == .callVisualizer && engagement.mediaStreams.video != nil else {
             return
@@ -165,19 +161,6 @@ extension CallVisualizer {
                 return
             }
             switch event {
-            case .screenShareOffer(answer: let answer):
-                environment.coreSdk.requestEngagedOperator { operators, _ in
-                    self.environment.alertManager.present(
-                        in: .global,
-                        as: .screenSharing(
-                            operators: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
-                            accepted: { [weak self] in
-                                self?.observeScreenSharingHandlerState()
-                            },
-                            answer: answer
-                        )
-                    )
-                }
             case let .upgradeOffer(offer, answer):
                 environment.coreSdk.requestEngagedOperator { operators, _ in
                     self.environment.alertManager.present(
@@ -200,8 +183,6 @@ extension CallVisualizer {
                     delegate?(.engagementStarted)
                     environment.log.prefixed(Self.self).info("Engagement started")
                 }
-            case let .screenSharingStateChanged(state):
-                environment.screenShareHandler.updateState(state)
             default:
                 break
             }

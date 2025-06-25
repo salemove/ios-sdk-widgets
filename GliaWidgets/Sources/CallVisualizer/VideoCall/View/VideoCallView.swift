@@ -275,7 +275,6 @@ extension CallVisualizer.VideoCallView {
         let remoteVideoStream: CoreSdkClient.StreamView?
         let localVideoStream: CoreSdkClient.StreamView?
         let topLabelHidden: Bool
-        let endScreenShareButtonHidden: Bool
         let connectViewHidden: Bool
         let topStackAlpha: CGFloat
         let headerProps: Header.Props
@@ -295,7 +294,6 @@ private extension CallVisualizer.VideoCallView {
         renderRemoteVideoStream = props.remoteVideoStream
         renderLocalVideoStream = props.localVideoStream
         topLabel.isHidden = props.topLabelHidden
-        header.endScreenShareButton?.isHidden = props.endScreenShareButtonHidden
         connectView.isHidden = props.connectViewHidden
         topStackView.alpha = props.topStackAlpha
         header.props = props.headerProps

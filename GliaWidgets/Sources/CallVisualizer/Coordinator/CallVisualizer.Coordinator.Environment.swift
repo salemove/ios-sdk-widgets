@@ -14,7 +14,6 @@ extension CallVisualizer.Coordinator {
         var viewFactory: ViewFactory
         var presenter: CallVisualizer.Presenter
         var bundleManaging: BundleManaging
-        var screenShareHandler: ScreenShareHandler
         var timerProviding: FoundationBased.Timer.Providing
         var requestVisitorCode: CoreSdkClient.RequestVisitorCode
         var audioSession: Glia.Environment.AudioSession
@@ -50,7 +49,6 @@ extension CallVisualizer.Coordinator.Environment {
             viewFactory: viewFactory,
             presenter: environment.callVisualizerPresenter,
             bundleManaging: environment.bundleManaging,
-            screenShareHandler: environment.screenShareHandler,
             timerProviding: environment.timerProviding,
             requestVisitorCode: environment.requestVisitorCode,
             audioSession: environment.audioSession,
