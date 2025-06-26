@@ -56,8 +56,6 @@ class EngagementViewModel: CommonEngagementModel {
             engagementDelegate?(.back)
         case .closeTapped:
             closeTapped()
-        case .endScreenSharingTapped:
-            engagementAction?(.showAlert(.endScreenShare(confirmed: endScreenSharing)))
         }
     }
 
@@ -84,8 +82,6 @@ class EngagementViewModel: CommonEngagementModel {
             stateChanged(state)
         case .error(let error):
             handleError(error)
-        case .screenShareOffer(let answer):
-            offerScreenShare(answer: answer)
         case .screenSharingStateChanged(let state):
             updateScreenSharingState(to: state)
         default:
@@ -194,16 +190,6 @@ class EngagementViewModel: CommonEngagementModel {
 
 // MARK: - Private
 private extension EngagementViewModel {
-    private func offerScreenShare(answer: @escaping CoreSdkClient.AnswerBlock) {
-        environment.alertManager.present(
-            in: .global,
-            as: .screenSharing(
-                operators: interactor.engagedOperator?.firstName ?? "",
-                answer: answer
-            )
-        )
-    }
-
     private func closeTapped() {
         switch interactor.state {
         case .enqueueing, .enqueued:
@@ -266,7 +252,6 @@ extension EngagementViewModel {
         case viewDidDisappear
         case backTapped
         case closeTapped
-        case endScreenSharingTapped
     }
 
     enum Action {

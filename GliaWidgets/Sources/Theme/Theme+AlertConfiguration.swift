@@ -21,14 +21,6 @@ extension Theme {
             message: Localization.Engagement.Ended.message,
             buttonTitle: Localization.General.ok
         )
-        let endScreenShare = ConfirmationAlertConfiguration(
-            title: Localization.Alert.ScreenSharing.Stop.header,
-            message: Localization.Alert.ScreenSharing.Stop.message,
-            negativeTitle: Localization.General.no,
-            positiveTitle: Localization.General.yes,
-            switchButtonBackgroundColors: true,
-            showsPoweredBy: showsPoweredBy
-        )
         let operatorsUnavailable = MessageAlertConfiguration(
             title: Localization.Engagement.Queue.Closed.header,
             message: Localization.Engagement.Queue.Closed.message
@@ -80,14 +72,6 @@ extension Theme {
         let twoWayVideoUpgrade = SingleMediaUpgradeAlertConfiguration(
             title: Localization.MediaUpgrade.Video.TwoWay.title,
             titleImage: Asset.upgradeVideo.image,
-            decline: Localization.General.decline,
-            accept: Localization.General.accept,
-            showsPoweredBy: showsPoweredBy
-        )
-        let screenShareOffer = ScreenShareOfferAlertConfiguration(
-            title: Localization.Alert.ScreenSharing.Start.header,
-            message: Localization.Alert.ScreenSharing.Start.message,
-            titleImage: Asset.startScreenShare.image,
             decline: Localization.General.decline,
             accept: Localization.General.accept,
             showsPoweredBy: showsPoweredBy
@@ -176,8 +160,6 @@ extension Theme {
             audioUpgrade: audioUpgrade,
             oneWayVideoUpgrade: oneWayVideoUpgrade,
             twoWayVideoUpgrade: twoWayVideoUpgrade,
-            screenShareOffer: screenShareOffer,
-            endScreenShare: endScreenShare,
             microphoneSettings: microphoneSettings,
             cameraSettings: cameraSettings,
             mediaSourceNotAvailable: mediaSourceNotAvailable,

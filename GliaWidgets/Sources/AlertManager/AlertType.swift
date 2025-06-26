@@ -32,11 +32,6 @@ enum AlertType {
         accepted: () -> Void,
         declined: () -> Void
     )
-    case screenShareOffer(
-        ScreenShareOfferAlertConfiguration,
-        accepted: () -> Void,
-        declined: () -> Void
-    )
     case liveObservationConfirmation(
         ConfirmationAlertConfiguration,
         link: (WebViewController.Link) -> Void,
@@ -62,7 +57,7 @@ enum AlertType {
     /// Based on comparing values we can decide whether an alert can be replaced with another alert.
     var presentationPriority: PresentationPriority {
         switch self {
-        case .singleAction, .singleMediaUpgrade, .screenShareOffer, .criticalError:
+        case .singleAction, .singleMediaUpgrade, .criticalError:
             return .highest
         case .confirmation, .liveObservationConfirmation, .requestPushNotificationsPermissions:
             return .high
