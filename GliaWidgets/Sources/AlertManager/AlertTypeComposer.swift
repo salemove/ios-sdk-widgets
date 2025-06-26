@@ -56,8 +56,6 @@ extension AlertManager.AlertTypeComposer {
                 accepted: accepted,
                 declined: declined
             )
-        case let .endScreenShare(confirmed):
-            return endScreenShareAlertType(confirmed: confirmed)
         case let .operatorEndedEngagement(action):
             return operatorEndedEngagementAlertType(action: action)
         case let .leaveQueue(confirmed):
@@ -68,13 +66,6 @@ extension AlertManager.AlertTypeComposer {
             return try mediaUpgradeOfferAlertType(
                 operators: operators,
                 offer: offer,
-                accepted: accepted,
-                declined: declined,
-                answer: answer
-            )
-        case let .screenSharing(operators, accepted, declined, answer):
-            return screenShareOfferAlertType(
-                operators: operators,
                 accepted: accepted,
                 declined: declined,
                 answer: answer
@@ -230,14 +221,6 @@ private extension AlertManager.AlertTypeComposer {
         )
     }
 
-    func endScreenShareAlertType(confirmed: @escaping () -> Void) -> AlertType {
-        .confirmation(
-            conf: theme.alertConfiguration.endScreenShare,
-            accessibilityIdentifier: "alert_confirmation_endScreenSharing",
-            confirmed: confirmed
-        )
-    }
-
     func operatorEndedEngagementAlertType(action: @escaping () -> Void) -> AlertType {
         environment.log.prefixed(Self.self).info("Show Engagement Ended Dialog")
         return .singleAction(
@@ -306,31 +289,6 @@ private extension AlertManager.AlertTypeComposer {
 
         return .singleMediaUpgrade(
             configuration,
-            accepted: acceptedOffer,
-            declined: declinedOffer
-        )
-    }
-
-    func screenShareOfferAlertType(
-        operators: String,
-        accepted: (() -> Void)? = nil,
-        declined: (() -> Void)? = nil,
-        answer: @escaping CoreSdkClient.AnswerBlock
-    ) -> AlertType {
-        environment.log.prefixed(Self.self).info("Show Start Screen Sharing Dialog")
-        let acceptedOffer: () -> Void = {
-            self.environment.log.prefixed(Self.self).info("Screen sharing accepted by visitor")
-            answer(true)
-            accepted?()
-        }
-
-        let declinedOffer: () -> Void = {
-            self.environment.log.prefixed(Self.self).info("Screen sharing declined by visitor")
-            answer(false)
-            declined?()
-        }
-        return .screenShareOffer(
-            theme.alertConfiguration.screenShareOffer.withOperatorName(operators),
             accepted: acceptedOffer,
             declined: declinedOffer
         )

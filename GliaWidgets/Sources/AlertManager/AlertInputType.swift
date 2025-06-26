@@ -7,7 +7,6 @@ enum AlertInputType: Equatable {
     )
     case cameraSettings(dismissed: (() -> Void)? = nil)
     case endEngagement(confirmed: () -> Void)
-    case endScreenShare(confirmed: () -> Void)
     case leaveQueue(confirmed: () -> Void)
     case liveObservationConfirmation(
         link: (WebViewController.Link) -> Void,
@@ -27,12 +26,6 @@ enum AlertInputType: Equatable {
         declined: (() -> Void)? = nil,
         answer: CoreSdkClient.AnswerWithSuccessBlock
     )
-    case screenSharing(
-        operators: String,
-        accepted: (() -> Void)? = nil,
-        declined: (() -> Void)? = nil,
-        answer: CoreSdkClient.AnswerBlock
-    )
     case leaveCurrentConversation(confirmed: () -> Void, declined: (() -> Void)? = nil)
     case requestPushNotificationsPermissions(confirmed: () -> Void, declined: () -> Void)
 
@@ -41,8 +34,6 @@ enum AlertInputType: Equatable {
         case (.cameraSettings, .cameraSettings):
             return true
         case (.endEngagement, .endEngagement):
-            return true
-        case (.endScreenShare, .endScreenShare):
             return true
         case (.leaveQueue, .leaveQueue):
             return true
@@ -62,8 +53,6 @@ enum AlertInputType: Equatable {
         case (.unavailableMessageCenterForBeingUnauthenticated, .unavailableMessageCenterForBeingUnauthenticated):
             return false
         case (.mediaUpgrade, .mediaUpgrade):
-            return false
-        case (.screenSharing, .screenSharing):
             return false
         case let (.error(lhsError, _), .error(rhsError, _)):
             return (lhsError as NSError?) == (rhsError as NSError?)

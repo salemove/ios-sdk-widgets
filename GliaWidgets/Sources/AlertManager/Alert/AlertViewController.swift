@@ -129,12 +129,6 @@ class AlertViewController: UIViewController, Replaceable {
                 accepted: accepted,
                 declined: declined
             )
-        case let .screenShareOffer(conf, accepted, declined):
-            return makeScreenShareOfferAlertView(
-                with: conf,
-                accepted: accepted,
-                declined: declined
-            )
         case let .liveObservationConfirmation(conf, link, accepted, declined):
             return makeLiveObservationAlertView(
                 with: conf,

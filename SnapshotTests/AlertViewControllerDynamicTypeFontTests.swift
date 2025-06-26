@@ -4,16 +4,6 @@ import SnapshotTesting
 import XCTest
 
 final class AlertViewControllerDynamicTypeFontTests: SnapshotTestCase {
-    func test_screenSharingOffer_extra3Large() {
-        let alert = alert(ofKind: .screenShareOffer(
-            .mock(),
-            accepted: {},
-            declined: {}
-        ))
-        alert.assertSnapshot(as: .extra3LargeFont, in: .portrait)
-        alert.assertSnapshot(as: .extra3LargeFont, in: .landscape)
-    }
-
     func test_mediaUpgradeOffer_extra3Large() {
         let alert = alert(ofKind: .singleMediaUpgrade(
             .mock(),

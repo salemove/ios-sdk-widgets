@@ -27,7 +27,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         let view = viewFactory.makeChatView(
             endCmd: .init { [weak self] in self?.viewModel.event(.closeTapped) },
             closeCmd: .init { [weak self] in self?.viewModel.event(.closeTapped) },
-            endScreenshareCmd: .init { [weak self] in self?.viewModel.event(.endScreenSharingTapped) },
+            endScreenshareCmd: .init {},
             backCmd: .init { [weak self] in self?.viewModel.event(.backTapped) }
         )
         self.view = view
@@ -227,7 +227,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         }
         let backEvent = Cmd { viewModel.event(EngagementViewModel.Event.backTapped) }
         let closeEvent = Cmd { viewModel.event(EngagementViewModel.Event.closeTapped) }
-        let endScreenSharingEvent = Cmd { viewModel.event(EngagementViewModel.Event.endScreenSharingTapped) }
+        let endScreenSharingEvent = Cmd {}
 
         let chatHeaderBackButton = chatTheme.header.backButton.map {
             HeaderButton.Props(tap: backEvent, style: $0)
