@@ -4,15 +4,6 @@ import SnapshotTesting
 import XCTest
 
 final class AlertViewControllerVoiceOverTests: SnapshotTestCase {
-    func test_screenSharingOffer() {
-        let alert = alert(ofKind: .screenShareOffer(
-            .mock(),
-            accepted: {},
-            declined: {}
-        ))
-        alert.assertSnapshot(as: .accessibilityImage)
-    }
-
     func test_mediaUpgradeOffer() {
         let alert = alert(ofKind: .singleMediaUpgrade(
             .mock(),

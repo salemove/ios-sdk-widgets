@@ -1011,8 +1011,6 @@
 		C43D7A0D25FF92530064B1DA /* ChoiceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A0C25FF92530064B1DA /* ChoiceCardView.swift */; };
 		C43D7A1525FF9A590064B1DA /* ChatChoiceCardOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A1425FF9A590064B1DA /* ChatChoiceCardOption.swift */; };
 		C460C7782600BCF400449851 /* ChoiceCardOptionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C460C7772600BCF400449851 /* ChoiceCardOptionStyle.swift */; };
-		C47901B325ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47901B225ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift */; };
-		C47901B725ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */; };
 		C499A57E26382FAA009962AC /* UnreadMessageIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499A57D26382FAA009962AC /* UnreadMessageIndicatorView.swift */; };
 		C499A58426382FBE009962AC /* UnreadMessageIndicatorStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C499A58326382FBE009962AC /* UnreadMessageIndicatorStyle.swift */; };
 		C49A29DB2614A22600819269 /* QuickLookViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C49A29DA2614A22600819269 /* QuickLookViewModel.swift */; };
@@ -2101,8 +2099,6 @@
 		C43D7A1425FF9A590064B1DA /* ChatChoiceCardOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatChoiceCardOption.swift; sourceTree = "<group>"; };
 		C460C7772600BCF400449851 /* ChoiceCardOptionStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceCardOptionStyle.swift; sourceTree = "<group>"; };
 		C46B2463262F05BE001245A1 /* TestingApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestingApp.entitlements; sourceTree = "<group>"; };
-		C47901B225ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShareOfferAlertConfiguration.swift; sourceTree = "<group>"; };
-		C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertViewController+ScreenShareOffer.swift"; sourceTree = "<group>"; };
 		C499A57D26382FAA009962AC /* UnreadMessageIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadMessageIndicatorView.swift; sourceTree = "<group>"; };
 		C499A58326382FBE009962AC /* UnreadMessageIndicatorStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnreadMessageIndicatorStyle.swift; sourceTree = "<group>"; };
 		C49A29DA2614A22600819269 /* QuickLookViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickLookViewModel.swift; sourceTree = "<group>"; };
@@ -3150,7 +3146,6 @@
 				1A4AF5CC25AEF4A0002CD0F4 /* AlertViewController+Message.swift */,
 				1A4AF5D225AEF543002CD0F4 /* AlertViewController+Confirmation.swift */,
 				1ABD6C9525B6F46700D56EFA /* AlertViewController+SingleMediaUpgrade.swift */,
-				C47901B625ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift */,
 				6E60DD5527146C9D001422EF /* AlertViewController+SingleAction.swift */,
 				C0B325E62AC5A8FA006BC430 /* AlertViewController+LiveObservationConfirmation.swift */,
 				2130F5F12D9D7E740068E46B /* AlertViewController+RequestPushNotificationsPermissions.swift */,
@@ -3290,7 +3285,6 @@
 				1ABD6C8025B6E97400D56EFA /* MultipleMediaUpgradeAlertConfiguration.swift */,
 				1ABD6C8625B6EFD000D56EFA /* SingleMediaUpgradeAlertConfiguration.swift */,
 				1A5F495425CBE84A003E3678 /* SettingsAlertConfiguration.swift */,
-				C47901B225ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift */,
 				6E60DD5727146DDB001422EF /* SingleActionAlertConfiguration.swift */,
 				9AB196D927C3FE3A00FD60AB /* AlertConfiguration.Mock.swift */,
 			);
@@ -6188,7 +6182,6 @@
 				1AA738B225790D5A00E1120F /* AlertView.swift in Sources */,
 				845E2F8E283FB5B500C04D56 /* Theme.Survey.SingleQuestion.Accessibility.swift in Sources */,
 				C0D6CA072C1843A900D4709B /* EngagementViewController.Environment.swift in Sources */,
-				C47901B725ED2FB0007EE195 /* AlertViewController+ScreenShareOffer.swift in Sources */,
 				1A8366B025FF40AB005FE7EE /* LocalFile.swift in Sources */,
 				C09046C22B7D0EEE003C437C /* NumberSlotStyle.RemoteConfig.swift in Sources */,
 				75D987F82AF2BA500016A702 /* RemoteConfiguration+SnackBar.swift in Sources */,
@@ -6613,7 +6606,6 @@
 				9A1992E527D6679300161AAE /* UIKitBased.Live.swift in Sources */,
 				1A60B0232567FD2D00E53F53 /* CloseButtonProperties.swift in Sources */,
 				1ABD6C8725B6EFD000D56EFA /* SingleMediaUpgradeAlertConfiguration.swift in Sources */,
-				C47901B325ED2F31007EE195 /* ScreenShareOfferAlertConfiguration.swift in Sources */,
 				1A0C143A25B85C3D00B00695 /* CallStyle.swift in Sources */,
 				C09047342B7E1DA6003C437C /* ChatStyle.RemoteConfig.swift in Sources */,
 				C0D6CA252C1862C900D4709B /* AlertManager.Environment.swift in Sources */,

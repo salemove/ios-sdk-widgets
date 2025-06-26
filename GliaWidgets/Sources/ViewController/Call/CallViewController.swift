@@ -25,7 +25,7 @@ final class CallViewController: EngagementViewController {
         let view = viewFactory.makeCallView(
             endCmd: .init { [weak self] in self?.viewModel.event(.closeTapped) },
             closeCmd: .init { [weak self] in self?.viewModel.event(.closeTapped) },
-            endScreenshareCmd: .init { [weak self] in self?.viewModel.event(.endScreenSharingTapped) },
+            endScreenshareCmd: .nop,
             backCmd: .init { [weak self] in self?.viewModel.event(.backTapped) }
         )
         self.view = view
