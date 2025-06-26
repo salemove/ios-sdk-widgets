@@ -10,8 +10,6 @@ extension AlertConfiguration {
             audioUpgrade: .mock(),
             oneWayVideoUpgrade: .mock(),
             twoWayVideoUpgrade: .mock(),
-            screenShareOffer: .mock(),
-            endScreenShare: .mock(),
             microphoneSettings: .mock(),
             cameraSettings: .mock(),
             mediaSourceNotAvailable: .mock(),
@@ -38,19 +36,6 @@ extension SingleActionAlertConfiguration {
             title: title,
             message: message,
             buttonTitle: buttonTitle
-        )
-    }
-}
-
-extension ScreenShareOfferAlertConfiguration {
-    static func mock() -> Self {
-        .init(
-            title: "mocked-title",
-            message: "mocked-message",
-            titleImage: nil,
-            decline: "mocked-decline",
-            accept: "mocked-accept",
-            showsPoweredBy: true
         )
     }
 }

@@ -3,16 +3,6 @@ import SnapshotTesting
 import XCTest
 
 final class AlertViewControllerLayoutTests: SnapshotTestCase {
-    func test_screenSharingOffer() {
-        let alert = alert(ofKind: .screenShareOffer(
-            .mock(),
-            accepted: {},
-            declined: {}
-        ))
-        alert.assertSnapshot(as: .image, in: .portrait)
-        alert.assertSnapshot(as: .image, in: .landscape)
-    }
-
     func test_mediaUpgradeOffer() {
         let alert = alert(ofKind: .singleMediaUpgrade(
             .mock(),

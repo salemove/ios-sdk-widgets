@@ -24,12 +24,6 @@ public struct AlertConfiguration: Equatable {
     /// Configuration of the two-way video upgrade confirmation alert.
     public var twoWayVideoUpgrade: SingleMediaUpgradeAlertConfiguration
 
-    /// Configuration of the screen sharing start confirmation alert.
-    public var screenShareOffer: ScreenShareOfferAlertConfiguration
-
-    /// Configuration of the screen sharing end confirmation alert.
-    public var endScreenShare: ConfirmationAlertConfiguration
-
     /// Configuration of the microphone permission settings alert.
     public var microphoneSettings: SettingsAlertConfiguration
 
@@ -75,8 +69,6 @@ public struct AlertConfiguration: Equatable {
     ///   - audioUpgrade: Configuration of the audio upgrade confirmation alert.
     ///   - oneWayVideoUpgrade: Configuration of the one-way video upgrade confirmation alert.
     ///   - twoWayVideoUpgrade: Configuration of the two-way video upgrade confirmation alert.
-    ///   - screenShareOffer: Configuration of the screen sharing start confirmation alert.
-    ///   - endScreenShare: Configuration of the screen sharing end confirmation alert.
     ///   - microphoneSettings: Configuration of the microphone permission settings alert.
     ///   - cameraSettings: Configuration of the camera permission settings alert.
     ///   - mediaSourceNotAvailable: Configuration of the unavailable media source (camera, etc) alert.
@@ -98,8 +90,6 @@ public struct AlertConfiguration: Equatable {
         audioUpgrade: SingleMediaUpgradeAlertConfiguration,
         oneWayVideoUpgrade: SingleMediaUpgradeAlertConfiguration,
         twoWayVideoUpgrade: SingleMediaUpgradeAlertConfiguration,
-        screenShareOffer: ScreenShareOfferAlertConfiguration,
-        endScreenShare: ConfirmationAlertConfiguration,
         microphoneSettings: SettingsAlertConfiguration,
         cameraSettings: SettingsAlertConfiguration,
         mediaSourceNotAvailable: MessageAlertConfiguration,
@@ -121,8 +111,6 @@ public struct AlertConfiguration: Equatable {
         self.audioUpgrade = audioUpgrade
         self.oneWayVideoUpgrade = oneWayVideoUpgrade
         self.twoWayVideoUpgrade = twoWayVideoUpgrade
-        self.screenShareOffer = screenShareOffer
-        self.endScreenShare = endScreenShare
         self.microphoneSettings = microphoneSettings
         self.cameraSettings = cameraSettings
         self.mediaSourceNotAvailable = mediaSourceNotAvailable

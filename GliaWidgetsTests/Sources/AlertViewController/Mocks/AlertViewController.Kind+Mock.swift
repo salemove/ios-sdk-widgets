@@ -2,7 +2,7 @@ import Foundation
 @testable import GliaWidgets
 
 enum AlertKind {
-    case message, singleAction, singleMediaUpgrade, screenShareOffer, confirmation
+    case message, singleAction, singleMediaUpgrade, confirmation
 }
 
 extension AlertKind {
@@ -14,8 +14,6 @@ extension AlertKind {
             return .singleAction(conf: .mock(), accessibilityIdentifier: "", actionTapped: {})
         case .singleMediaUpgrade:
             return .singleMediaUpgrade(.mock(), accepted: {}, declined: {})
-        case .screenShareOffer:
-            return .screenShareOffer(.mock(), accepted: {}, declined: {})
         case .confirmation:
             return .confirmation(conf: .mock(), accessibilityIdentifier: "", confirmed: {})
         }
