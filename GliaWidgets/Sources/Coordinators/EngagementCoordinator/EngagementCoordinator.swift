@@ -47,7 +47,6 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let chatCall = ObservableValue<Call?>(with: nil)
     private let unreadMessages = ObservableValue<Int>(with: 0)
     private let isWindowVisible = ObservableValue<Bool>(with: false)
-    private let screenShareHandler: ScreenShareHandler
 
     private let navigationController = NavigationController()
     let navigationPresenter: NavigationPresenter
@@ -61,7 +60,6 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         viewFactory: ViewFactory,
         sceneProvider: SceneProvider?,
         engagementLaunching: EngagementLaunching,
-        screenShareHandler: ScreenShareHandler,
         features: Features,
         environment: Environment
     ) {
@@ -76,7 +74,6 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
             )
         )
         self.navigationPresenter = NavigationPresenter(with: navigationController)
-        self.screenShareHandler = screenShareHandler
         self.features = features
         self.environment = environment
         navigationController.modalPresentationStyle = .fullScreen
@@ -328,7 +325,6 @@ extension EngagementCoordinator {
             call: chatCall,
             unreadMessages: unreadMessages,
             showsCallBubble: showsCallBubble,
-            screenShareHandler: screenShareHandler,
             isWindowVisible: isWindowVisible,
             startAction: startAction,
             environment: .create(
@@ -423,7 +419,6 @@ extension EngagementCoordinator {
             navigationPresenter: navigationPresenter,
             call: call,
             unreadMessages: unreadMessages,
-            screenShareHandler: screenShareHandler,
             startAction: startAction,
             environment: .create(with: environment)
         )
@@ -547,7 +542,6 @@ extension EngagementCoordinator {
                 chatCall: chatCall,
                 unreadMessages: unreadMessages,
                 showCallBubble: false,
-                screenShareHandler: screenShareHandler,
                 isWindowVisible: isWindowVisible,
                 interactor: interactor,
                 shouldShowLeaveSecureConversationDialog: { [weak self] source in

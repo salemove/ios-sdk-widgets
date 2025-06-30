@@ -24,7 +24,6 @@ final class ChatCoordinatorTests: XCTestCase {
             call: .init(with: .mock()),
             unreadMessages: .init(with: 0),
             showsCallBubble: false,
-            screenShareHandler: .mock,
             isWindowVisible: .init(with: true),
             startAction: .startEngagement,
             environment: environment,

@@ -7,10 +7,9 @@ extension GliaTests {
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         let rootCoordinator = EngagementCoordinator.mock(
             engagementLaunching: .direct(kind: .chat),
-            screenShareHandler: .mock,
             environment: .engagementCoordEnvironmentWithKeyWindow
         )
-        sdkEnv.createRootCoordinator = { _, _, _, _, _, _, _ in
+        sdkEnv.createRootCoordinator = { _, _, _, _, _, _ in
             rootCoordinator
         }
         sdkEnv.print.printClosure = { _, _, _ in }
@@ -84,10 +83,9 @@ extension GliaTests {
     func test_restoreOngoingSecureConversationEngagement() throws {
         var sdkEnv = Glia.Environment.failing
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
-        sdkEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _, _ in
+        sdkEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _ in
             EngagementCoordinator.mock(
                 engagementLaunching: engagementLaunching,
-                screenShareHandler: .mock,
                 environment: .engagementCoordEnvironmentWithKeyWindow
             )
         }
@@ -153,7 +151,7 @@ extension GliaTests {
     func test_sdkDoesNotRestoreOngoingTransferredSecureConversation() throws {
         var sdkEnv = Glia.Environment.failing
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
-        sdkEnv.createRootCoordinator = { _, _, _, _, _, _, _ in
+        sdkEnv.createRootCoordinator = { _, _, _, _, _, _ in
             XCTFail("SDK should not create root coordinator")
             return .mock()
         }
@@ -215,11 +213,10 @@ extension GliaTests {
         var sdkEnv = Glia.Environment.failing
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         var launching: EngagementCoordinator.EngagementLaunching?
-        sdkEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _, _ in
+        sdkEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _ in
             launching = engagementLaunching
             return EngagementCoordinator.mock(
                 engagementLaunching: engagementLaunching,
-                screenShareHandler: .mock,
                 environment: .engagementCoordEnvironmentWithKeyWindow
             )
         }

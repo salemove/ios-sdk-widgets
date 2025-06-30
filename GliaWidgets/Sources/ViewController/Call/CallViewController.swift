@@ -86,6 +86,7 @@ private extension CallViewController {
             case .connected(name: let name, imageUrl: let imageUrl):
                 view.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
                 view.connectView.operatorView.setSize(.large, animated: true)
+                view.header.showEndButton()
             case .setTopTextHidden(let hidden):
                 view.topLabel.isHidden = hidden
             case .setBottomTextHidden(let hidden):

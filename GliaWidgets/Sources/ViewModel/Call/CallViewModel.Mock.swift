@@ -2,7 +2,6 @@
 extension CallViewModel {
     static func mock(
         interactor: Interactor = .mock(),
-        screenShareHandler: ScreenShareHandler = .mock,
         call: Call = .init(.audio, environment: .mock),
         unreadMessages: ObservableValue<Int> = .init(with: .zero),
         startWith: StartAction = .engagement(mediaType: .audio),
@@ -11,7 +10,6 @@ extension CallViewModel {
     ) -> CallViewModel {
         .init(
             interactor: interactor,
-            screenShareHandler: screenShareHandler,
             environment: environment,
             call: call,
             unreadMessages: unreadMessages,

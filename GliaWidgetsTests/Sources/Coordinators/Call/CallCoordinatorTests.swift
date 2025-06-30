@@ -22,7 +22,6 @@ final class CallCoordinatorTests: XCTestCase {
             navigationPresenter: NavigationPresenter(with: NavigationController()),
             call: .mock(),
             unreadMessages: .init(with: 0),
-            screenShareHandler: .mock,
             startAction: startAction,
             environment: .mock
         )
