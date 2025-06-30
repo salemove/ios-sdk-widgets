@@ -21,7 +21,6 @@ class CallViewModelTests: XCTestCase {
 
         viewModel = .init(
             interactor: .mock(),
-            screenShareHandler: .mock,
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
@@ -114,7 +113,6 @@ class CallViewModelTests: XCTestCase {
 
         viewModel = .init(
             interactor: interactor,
-            screenShareHandler: .mock,
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
@@ -172,7 +170,6 @@ class CallViewModelTests: XCTestCase {
 
         viewModel = .init(
             interactor: .mock(),
-            screenShareHandler: .mock,
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
@@ -258,7 +255,6 @@ class CallViewModelTests: XCTestCase {
 
         viewModel = .init(
             interactor: interactor,
-            screenShareHandler: .mock,
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
@@ -338,7 +334,6 @@ class CallViewModelTests: XCTestCase {
 
         viewModel = .init(
             interactor: interactor,
-            screenShareHandler: .mock,
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
@@ -379,7 +374,6 @@ class CallViewModelTests: XCTestCase {
 
         viewModel = .init(
             interactor: interactor,
-            screenShareHandler: .mock,
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
@@ -529,7 +523,6 @@ class CallViewModelTests: XCTestCase {
         env.proximityManager = .init(environment: proximityManagerEnv)
         viewModel = .init(
             interactor: .mock(),
-            screenShareHandler: .mock,
             environment: env,
             call: .mock(),
             unreadMessages: .init(with: 0),
@@ -572,7 +565,6 @@ class CallViewModelTests: XCTestCase {
 
         viewModel = .init(
             interactor: .mock(),
-            screenShareHandler: .mock,
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
@@ -635,7 +627,6 @@ class CallViewModelTests: XCTestCase {
 
         viewModel = .init(
             interactor: .mock(),
-            screenShareHandler: .mock,
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),

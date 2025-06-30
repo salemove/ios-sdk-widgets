@@ -204,7 +204,6 @@ extension SecureConversations.Coordinator {
             call: environment.chatCall,
             unreadMessages: environment.unreadMessages,
             showsCallBubble: environment.showsCallBubble,
-            screenShareHandler: environment.screenShareHandler,
             isWindowVisible: environment.isWindowVisible,
             startAction: .startEngagement,
             environment: .create(with: environment),

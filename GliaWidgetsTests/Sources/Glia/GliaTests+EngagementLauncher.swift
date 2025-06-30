@@ -373,7 +373,7 @@ private extension GliaTests {
         var sdkEnv = Glia.Environment.failing
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         sdkEnv.coreSdk.localeProvider = .mock
-        sdkEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _, _ in
+        sdkEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _ in
                 .mock(
                     engagementLaunching: engagementLaunching,
                     environment: .engagementCoordEnvironmentWithKeyWindow

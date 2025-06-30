@@ -40,9 +40,6 @@ enum InteractorEvent {
     case audioStreamError(CoreSdkClient.SalemoveError)
     case videoStreamAdded(CoreSdkClient.VideoStreamable)
     case videoStreamError(CoreSdkClient.SalemoveError)
-    case screenShareOffer(answer: CoreSdkClient.AnswerBlock)
-    case screenShareError(error: CoreSdkClient.SalemoveError)
-    case screenSharingStateChanged(to: CoreSdkClient.VisitorScreenSharingState)
     case error(CoreSdkClient.SalemoveError)
     case engagementTransferred(CoreSdkClient.Operator?)
     case engagementTransferring
@@ -278,9 +275,7 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     var onScreenSharingOffer: CoreSdkClient.ScreenshareOfferBlock {
-        return { [weak self] answer in
-            self?.notify(.screenShareOffer(answer: answer))
-        }
+        return { _ in }
     }
 
     var onMediaUpgradeOffer: CoreSdkClient.MediaUgradeOfferBlock {
@@ -355,13 +350,7 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     var onVisitorScreenSharingStateChange: CoreSdkClient.VisitorScreenSharingStateChange {
-        return { [weak self] state, error in
-            if let error = error {
-                self?.notify(.screenShareError(error: error))
-            } else {
-                self?.notify(.screenSharingStateChanged(to: state))
-            }
-        }
+        return { _, _ in }
     }
 
     var onAudioStreamAdded: CoreSdkClient.AudioStreamAddedBlock {

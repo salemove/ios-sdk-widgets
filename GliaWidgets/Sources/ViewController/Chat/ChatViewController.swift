@@ -117,6 +117,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             case .connected(let name, let imageUrl):
                 view?.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
                 view?.unreadMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)
+                view?.header.showEndButton()
                 self.viewModel.action?(.setMessageEntryConnected(true))
             case .setMessageEntryEnabled(let enabled):
                 view?.messageEntryView.isEnabled = enabled
@@ -226,7 +227,6 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         }
         let backEvent = Cmd { viewModel.event(EngagementViewModel.Event.backTapped) }
         let closeEvent = Cmd { viewModel.event(EngagementViewModel.Event.closeTapped) }
-        let endScreenSharingEvent = Cmd {}
 
         let chatHeaderBackButton = chatTheme.header.backButton.map {
             HeaderButton.Props(tap: backEvent, style: $0)

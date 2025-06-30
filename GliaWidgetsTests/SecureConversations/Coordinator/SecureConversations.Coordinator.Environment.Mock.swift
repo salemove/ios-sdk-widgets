@@ -27,7 +27,6 @@ extension SecureConversations.Coordinator.Environment {
         chatCall: .init(with: .mock()),
         unreadMessages: .init(with: 0),
         showsCallBubble: true,
-        screenShareHandler: .mock,
         isWindowVisible: .init(with: true),
         uploadFileToEngagement: { file, progress, completion in },
         getCurrentEngagement: { .mock() },
