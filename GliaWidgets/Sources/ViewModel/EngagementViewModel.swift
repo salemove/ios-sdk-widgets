@@ -8,7 +8,6 @@ class EngagementViewModel: CommonEngagementModel {
     var engagementDelegate: DelegateCallback?
     let interactor: Interactor
     let environment: Environment
-    let screenShareHandler: ScreenShareHandler
     // Need to keep strong reference of `activeEngagement`,
     // to be able to fetch survey after ending engagement
     var activeEngagement: CoreSdkClient.Engagement?
@@ -20,27 +19,20 @@ class EngagementViewModel: CommonEngagementModel {
 
     init(
         interactor: Interactor,
-        screenShareHandler: ScreenShareHandler,
         replaceExistingEnqueueing: Bool,
         environment: Environment
     ) {
         self.interactor = interactor
-        self.screenShareHandler = screenShareHandler
         self.environment = environment
         self.hasViewAppeared = false
         self.replaceExistingEnqueueing = replaceExistingEnqueueing
         self.interactor.addObserver(self) { [weak self] event in
             self?.interactorEvent(event)
         }
-        screenShareHandler.status().addObserver(self) { [weak self] status, _ in
-            self?.handleScreenSharingStatus(status)
-        }
     }
 
     deinit {
         interactor.removeObserver(self)
-        screenShareHandler.status().removeObserver(self)
-        screenShareHandler.cleanUp()
     }
 
     func event(_ event: Event) {
@@ -82,8 +74,6 @@ class EngagementViewModel: CommonEngagementModel {
             stateChanged(state)
         case .error(let error):
             handleError(error)
-        case .screenSharingStateChanged(let state):
-            updateScreenSharingState(to: state)
         default:
             break
         }
@@ -138,24 +128,10 @@ class EngagementViewModel: CommonEngagementModel {
         }
     }
 
-    func updateScreenSharingState(to state: CoreSdkClient.VisitorScreenSharingState) {
-        if state.status == .sharing {
-            environment.log.prefixed(Self.self).info("Screen sharing started")
-        }
-        screenShareHandler.updateState(state)
-    }
-
-    func endScreenSharing() {
-        screenShareHandler.stop(nil)
-        engagementAction?(.showEndButton)
-        environment.log.prefixed(Self.self).info("Screen sharing ended")
-    }
-
     func endSession() {
         interactor.endSession { [weak self] _ in
             self?.engagementDelegate?(.finished)
         }
-        screenShareHandler.stop(nil)
     }
 
     func conditionallyEndSession() {
@@ -169,22 +145,6 @@ class EngagementViewModel: CommonEngagementModel {
 
     func setViewAppeared() {
         hasViewAppeared = true
-    }
-
-    func handleScreenSharingStatus(_ status: ScreenSharingStatus) {
-        switch status {
-        case .started:
-            break
-        case .stopped where interactor.currentEngagement?.isTransferredSecureConversation == true:
-            engagementAction?(.showCloseButton)
-        case .stopped:
-            switch interactor.state {
-            case .none, .enqueueing, .enqueued, .ended:
-                break
-            case .engaged:
-                engagementAction?(.showEndButton)
-            }
-        }
     }
 }
 

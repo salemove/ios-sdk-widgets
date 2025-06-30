@@ -3,7 +3,6 @@ extension ChatViewModel {
     static func mock(
         interactor: Interactor = .mock(),
         alertConfiguration: AlertConfiguration = .mock(),
-        screenShareHandler: ScreenShareHandler = .mock,
         call: ObservableValue<Call?> = .init(with: .init(.audio, environment: .mock)),
         unreadMessages: ObservableValue<Int> = .init(with: .zero),
         showsCallBubble: Bool = false,
@@ -19,7 +18,6 @@ extension ChatViewModel {
     ) -> ChatViewModel {
         ChatViewModel(
             interactor: interactor,
-            screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
             showsCallBubble: showsCallBubble,

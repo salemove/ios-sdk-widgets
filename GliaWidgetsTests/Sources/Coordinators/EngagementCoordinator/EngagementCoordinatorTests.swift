@@ -285,7 +285,6 @@ extension EngagementCoordinatorTests {
             viewFactory: .mock(),
             sceneProvider: MockedSceneProvider(),
             engagementLaunching: engagementLaunching,
-            screenShareHandler: .mock,
             features: [],
             environment: env
         )

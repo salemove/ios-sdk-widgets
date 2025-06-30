@@ -21,13 +21,12 @@ extension Glia.Environment {
         uiDevice: .live,
         notificationCenter: .live,
         createRootCoordinator: EngagementCoordinator.init(
-            interactor:viewFactory:sceneProvider:engagementLaunching:screenShareHandler:features:environment:
+            interactor:viewFactory:sceneProvider:engagementLaunching:features:environment:
         ),
         callVisualizerPresenter: .topViewController(application: .live),
         bundleManaging: .live,
         createFileUploader: FileUploader.init(maximumUploads:environment:),
         createFileUploadListModel: SecureConversations.FileUploadListViewModel.init,
-        screenShareHandler: ScreenShareHandler.create(),
         messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.QueueScheduler.main,
         orientationManager: .init(environment: .init(
             uiApplication: .live,

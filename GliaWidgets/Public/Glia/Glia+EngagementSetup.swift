@@ -193,7 +193,6 @@ extension Glia {
             viewFactory: viewFactory,
             sceneProvider: sceneProvider,
             engagementLaunching: engagementLaunching,
-            screenShareHandler: environment.screenShareHandler,
             features: features,
             environment: .create(
                 with: environment,

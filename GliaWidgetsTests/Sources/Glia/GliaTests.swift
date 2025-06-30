@@ -520,7 +520,7 @@ final class GliaTests: XCTestCase {
         environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
         var engCoordEnvironment = EngagementCoordinator.Environment.engagementCoordEnvironmentWithKeyWindow
         engCoordEnvironment.fileManager = .mock
-        environment.createRootCoordinator = { _, _, _, _, _, _, _ in EngagementCoordinator.mock(environment: engCoordEnvironment) }
+        environment.createRootCoordinator = { _, _, _, _, _, _ in EngagementCoordinator.mock(environment: engCoordEnvironment) }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -740,10 +740,9 @@ final class GliaTests: XCTestCase {
         gliaEnv.gcd.mainQueue.async = { $0() }
         gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
         gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        gliaEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _, _ in
+        gliaEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _ in
             EngagementCoordinator.mock(
                 engagementLaunching: engagementLaunching,
-                screenShareHandler: .mock,
                 environment: .engagementCoordEnvironmentWithKeyWindow
             )
         }
@@ -795,10 +794,9 @@ final class GliaTests: XCTestCase {
         gliaEnv.gcd.mainQueue.asyncAfterDeadline = { _, _ in }
         gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
         gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        gliaEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _, _ in
+        gliaEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _ in
             EngagementCoordinator.mock(
                 engagementLaunching: engagementLaunching,
-                screenShareHandler: .mock,
                 environment: .engagementCoordEnvironmentWithKeyWindow
             )
         }

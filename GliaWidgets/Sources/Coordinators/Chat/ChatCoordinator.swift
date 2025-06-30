@@ -26,7 +26,6 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let unreadMessages: ObservableValue<Int>
     private let isWindowVisible: ObservableValue<Bool>
     private let startAction: ChatViewModel.StartAction
-    private let screenShareHandler: ScreenShareHandler
     private(set) var mediaPickerController: MediaPickerController?
     private(set) var filePickerController: FilePickerController?
     private(set) var quickLookController: QuickLookController?
@@ -48,7 +47,6 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         call: ObservableValue<Call?>,
         unreadMessages: ObservableValue<Int>,
         showsCallBubble: Bool,
-        screenShareHandler: ScreenShareHandler,
         isWindowVisible: ObservableValue<Bool>,
         startAction: ChatViewModel.StartAction,
         environment: Environment,
@@ -61,7 +59,6 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.call = call
         self.unreadMessages = unreadMessages
         self.showsCallBubble = showsCallBubble
-        self.screenShareHandler = screenShareHandler
         self.isWindowVisible = isWindowVisible
         self.startAction = startAction
         self.environment = environment
@@ -187,7 +184,6 @@ extension ChatCoordinator {
         )
         let viewModel = ChatViewModel(
             interactor: interactor,
-            screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
             showsCallBubble: showsCallBubble,
