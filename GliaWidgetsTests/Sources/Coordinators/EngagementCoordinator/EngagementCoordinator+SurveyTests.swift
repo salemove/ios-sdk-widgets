@@ -31,7 +31,6 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
             viewFactory: ViewFactory.mock(),
             sceneProvider: nil,
             engagementLaunching: .direct(kind: .audioCall),
-            screenShareHandler: .mock,
             features: [],
             environment: engagementCoordinatorEnv
         )

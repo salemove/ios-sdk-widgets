@@ -28,7 +28,6 @@ extension CallViewController {
     static func mockAudioCallQueueState() throws -> CallViewController {
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(environment: interactorEnv)
-        let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.audio
         let callEnv = Call.Environment.mock
         let call = Call.mock(kind: callKind, environment: callEnv)
@@ -36,7 +35,6 @@ extension CallViewController {
         let startAction = CallViewModel.StartAction.engagement(mediaType: .audio)
         let viewModel = CallViewModel.mock(
             interactor: interactor,
-            screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
             startWith: startAction
@@ -56,7 +54,6 @@ extension CallViewController {
     static func mockAudioCallConnectingState() throws -> CallViewController {
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(environment: interactorEnv)
-        let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.audio
         let callEnv = Call.Environment.mock
         let call = Call.mock(kind: callKind, environment: callEnv)
@@ -64,7 +61,6 @@ extension CallViewController {
         let startAction = CallViewModel.StartAction.engagement(mediaType: .audio)
         let viewModel = CallViewModel.mock(
             interactor: interactor,
-            screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
             startWith: startAction
@@ -86,7 +82,6 @@ extension CallViewController {
             callback(.success(()))
         }
         let interactor = Interactor.mock(environment: interactorEnv)
-        let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.audio
         let callEnv = Call.Environment.mock
         let call = Call.mock(kind: callKind, environment: callEnv)
@@ -110,7 +105,6 @@ extension CallViewController {
         let startAction = CallViewModel.StartAction.engagement(mediaType: .audio)
         let viewModel = CallViewModel.mock(
             interactor: interactor,
-            screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
             startWith: startAction
@@ -133,7 +127,6 @@ extension CallViewController {
     static func mockVideoCallConnectingState() throws -> CallViewController {
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(environment: interactorEnv)
-        let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.video(direction: .oneWay)
         let callEnv = Call.Environment.mock
         let call = Call.mock(kind: callKind, environment: callEnv)
@@ -141,7 +134,6 @@ extension CallViewController {
         let startAction = CallViewModel.StartAction.engagement(mediaType: .audio)
         let viewModel = CallViewModel.mock(
             interactor: interactor,
-            screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
             startWith: startAction
@@ -174,7 +166,6 @@ extension CallViewController {
     static func mockVideoCallQueueState() throws -> CallViewController {
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(environment: interactorEnv)
-        let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.video(direction: .oneWay)
         let callEnv = Call.Environment.mock
         let call = Call.mock(kind: callKind, environment: callEnv)
@@ -182,7 +173,6 @@ extension CallViewController {
         let startAction = CallViewModel.StartAction.engagement(mediaType: .audio)
         let viewModel = CallViewModel.mock(
             interactor: interactor,
-            screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
             startWith: startAction
@@ -202,7 +192,6 @@ extension CallViewController {
     static func mockVideoCallConnectedState() throws -> CallViewController {
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(environment: interactorEnv)
-        let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.video(direction: .oneWay)
         let callEnv = Call.Environment.mock
         let call = Call.mock(kind: callKind, environment: callEnv)
@@ -215,7 +204,6 @@ extension CallViewController {
         }
         let viewModel = CallViewModel.mock(
             interactor: interactor,
-            screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
             startWith: startAction,
@@ -245,7 +233,6 @@ extension CallViewController {
     static func mockVideoCallConnectedStateWithFlipToBackCameraButton() throws -> CallViewController {
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(environment: interactorEnv)
-        let screenShareHandler = ScreenShareHandler.mock
         let callKind = CallKind.video(direction: .oneWay)
         let callEnv = Call.Environment.mock
         let call = Call.mock(kind: callKind, environment: callEnv)
@@ -266,7 +253,6 @@ extension CallViewController {
         }
         let viewModel = CallViewModel.mock(
             interactor: interactor,
-            screenShareHandler: screenShareHandler,
             call: call,
             unreadMessages: unreadMessages,
             startWith: startAction,

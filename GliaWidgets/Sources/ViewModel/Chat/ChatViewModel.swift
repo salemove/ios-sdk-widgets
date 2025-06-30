@@ -69,7 +69,6 @@ class ChatViewModel: EngagementViewModel {
 
     init(
         interactor: Interactor,
-        screenShareHandler: ScreenShareHandler,
         call: ObservableValue<Call?>,
         unreadMessages: ObservableValue<Int>,
         showsCallBubble: Bool,
@@ -117,7 +116,6 @@ class ChatViewModel: EngagementViewModel {
         self.failedToDeliverStatusText = failedToDeliverStatusText
         super.init(
             interactor: interactor,
-            screenShareHandler: screenShareHandler,
             replaceExistingEnqueueing: replaceExistingEnqueueing,
             environment: environment
         )
@@ -205,8 +203,6 @@ class ChatViewModel: EngagementViewModel {
             action?(.scrollToBottom(animated: false))
             action?(.setMessageEntryEnabled(true))
 
-            handleScreenSharingStatus(screenShareHandler.status().value)
-
             fetchSiteConfigurations()
 
             pendingMessages.forEach { [weak self] outgoingMessage in
@@ -256,7 +252,6 @@ class ChatViewModel: EngagementViewModel {
             onEngagementTransferring()
         case .onLiveToSecureConversationsEngagementTransferring:
             setChatType(.secureTranscript(upgradedFromChat: true))
-            handleScreenSharingStatus(screenShareHandler.status().value)
             action?(.refreshAll)
         case .engagementTransferred:
             onEngagementTransferred()
@@ -356,7 +351,6 @@ extension ChatViewModel {
         action?(.setAttachmentButtonEnabling(.disabled))
         appendItem(.init(kind: .transferring), to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
-        endScreenSharing()
     }
 
     private func onEngagementTransferred() {

@@ -25,7 +25,6 @@ extension SecureConversations.Coordinator {
         var chatCall: ObservableValue<Call?>
         var unreadMessages: ObservableValue<Int>
         var showsCallBubble: Bool
-        var screenShareHandler: ScreenShareHandler
         var isWindowVisible: ObservableValue<Bool>
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
@@ -68,7 +67,6 @@ extension SecureConversations.Coordinator.Environment {
         chatCall: ObservableValue<Call?>,
         unreadMessages: ObservableValue<Int>,
         showCallBubble: Bool,
-        screenShareHandler: ScreenShareHandler,
         isWindowVisible: ObservableValue<Bool>,
         interactor: Interactor,
         shouldShowLeaveSecureConversationDialog: @escaping (SecureConversations.ShouldShowLeaveCurrentConversationSource) -> Bool,
@@ -99,7 +97,6 @@ extension SecureConversations.Coordinator.Environment {
             chatCall: chatCall,
             unreadMessages: unreadMessages,
             showsCallBubble: showCallBubble,
-            screenShareHandler: screenShareHandler,
             isWindowVisible: isWindowVisible,
             uploadFileToEngagement: environment.uploadFileToEngagement,
             getCurrentEngagement: environment.getCurrentEngagement,

@@ -497,30 +497,6 @@ class InteractorTests: XCTestCase {
 
         XCTAssertEqual(callbacks, [.expiredAccessToken])
     }
-
-    func test_onScreenSharingOfferSendsScreenShareOfferEvent() throws {
-        enum Callback: Equatable {
-            case screenShareOffered
-        }
-        var callbacks: [Callback] = []
-        var interactorEnv = Interactor.Environment.failing
-        interactorEnv.gcd = .mock
-        let interactor = Interactor.mock(environment: interactorEnv)
-
-        interactor.addObserver(self) { event in
-            switch event {
-            case .screenShareOffer:
-                callbacks.append(.screenShareOffered)
-            
-            default:
-                return
-            }
-        }
-
-        interactor.onScreenSharingOffer({ _ in })
-
-        XCTAssertEqual(callbacks, [.screenShareOffered])
-    }
     
     func test_onMediaUpgradeOfferSendsMediaUpgradeOfferEvent() throws {
         enum Callback: Equatable {

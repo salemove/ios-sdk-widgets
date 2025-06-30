@@ -23,7 +23,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
     init(
         interactor: Interactor,
-        screenShareHandler: ScreenShareHandler,
         environment: EngagementViewModel.Environment,
         call: Call,
         unreadMessages: ObservableValue<Int>,
@@ -36,7 +35,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
         self.unreadMessages = unreadMessages
         super.init(
             interactor: interactor,
-            screenShareHandler: screenShareHandler,
             replaceExistingEnqueueing: replaceExistingEnqueueing,
             environment: environment
         )
@@ -196,8 +194,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
     }
 
     private func showConnected() {
-        handleScreenSharingStatus(screenShareHandler.status().value)
-
         action?(
             .connected(
                 name: interactor.engagedOperator?.firstName,
@@ -264,7 +260,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
 extension CallViewModel {
     private func onEngagementTransferring() {
         environment.log.prefixed(Self.self).info("Transfer the call")
-        endScreenSharing()
         call.transfer()
         durationCounter.stop()
         action?(.transferring)

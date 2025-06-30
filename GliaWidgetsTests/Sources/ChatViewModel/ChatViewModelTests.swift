@@ -18,7 +18,6 @@ class ChatViewModelTests: XCTestCase {
         let choiceCardMock = try ChatChoiceCardOption.mock()
         viewModel = .init(
             interactor: .mock(),
-            screenShareHandler: .mock,
             call: .init(with: nil),
             unreadMessages: .init(with: 0),
             showsCallBubble: true,
@@ -248,18 +247,6 @@ class ChatViewModelTests: XCTestCase {
         let lastItemKind = viewModel.item(for: lastSectionLastItemIndex, in: lastSectionIndex).kind
 
         XCTAssertEqual(lastItemKind, mockItemKind)
-    }
-
-    func test_screenSharingTerminationUponEngagmentTransferring() {
-        let viewModel: ChatViewModel = .mock(screenShareHandler: .create())
-        let state: CoreSdkClient.VisitorScreenSharingState = .init(status: .sharing, localScreen: nil)
-        viewModel.screenShareHandler.updateState(state)
-
-        XCTAssertEqual(viewModel.screenShareHandler.status().value, .started)
-
-        viewModel.interactor.onEngagementTransferring()
-
-        XCTAssertEqual(viewModel.screenShareHandler.status().value, .stopped)
     }
 
     func test__updateDoesNotCallSDKFetchSiteConfigurationsOnEnqueueingState() throws {

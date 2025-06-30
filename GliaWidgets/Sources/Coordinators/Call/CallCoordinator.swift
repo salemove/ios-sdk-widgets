@@ -18,7 +18,6 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let navigationPresenter: NavigationPresenter
     private let call: Call
     private let unreadMessages: ObservableValue<Int>
-    private let screenShareHandler: ScreenShareHandler
     private let startAction: CallViewModel.StartAction
     private let environment: Environment
 
@@ -28,7 +27,6 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
         navigationPresenter: NavigationPresenter,
         call: Call,
         unreadMessages: ObservableValue<Int>,
-        screenShareHandler: ScreenShareHandler,
         startAction: CallViewModel.StartAction,
         environment: Environment
     ) {
@@ -37,7 +35,6 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.navigationPresenter = navigationPresenter
         self.call = call
         self.unreadMessages = unreadMessages
-        self.screenShareHandler = screenShareHandler
         self.startAction = startAction
         self.environment = environment
     }
@@ -67,7 +64,6 @@ private extension CallCoordinator {
         environment.log.prefixed(Self.self).info("Create Call screen")
         let viewModel = CallViewModel(
             interactor: interactor,
-            screenShareHandler: screenShareHandler,
             environment: .create(
                 with: environment,
                 viewFactory: viewFactory
