@@ -338,7 +338,6 @@ private extension CallVisualizer.Coordinator {
             endButton: nil,
             backButton: nil,
             closeButton: .init(tap: close, style: theme.chat.header.closeButton),
-            endScreenshareButton: nil,
             style: theme.chat.header
         )
 

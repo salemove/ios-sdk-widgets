@@ -6677,7 +6677,6 @@
 				216D310D2CF795380019CA9E /* EntryWidgetViewModelTests.swift in Sources */,
 				AF4D821C29D6E572007763F8 /* TranscriptModel.DividedChatItemsForUnreadCountTests.swift in Sources */,
 				84520BF62B20936F00F97617 /* SnackBar.Failing.swift in Sources */,
-				84551A982D4A5B0F00C55DA2 /* EngagementViewModelTests.swift in Sources */,
 				AF1C19802B14FE9F00F8810F /* ConditionalCompilationClient.Failing.swift in Sources */,
 				84520BED2B19FD3000F97617 /* CallVisualizerTests+LO.swift in Sources */,
 				8497C1E82E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift in Sources */,

@@ -347,7 +347,6 @@ class CallView: EngagementView {
                 endButton: props.endButton,
                 backButton: props.backButton,
                 closeButton: props.closeButton,
-                endScreenshareButton: props.endScreenshareButton,
                 style: props.style
             )
         }

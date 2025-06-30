@@ -7,7 +7,6 @@ extension Header.Props {
         endButton: ActionButton.Props = .init(),
         backButton: HeaderButton.Props = .init(style: .mock()),
         closeButton: HeaderButton.Props = .init(style: .mock()),
-        endScreenShareButton: HeaderButton.Props = .init(style: .mock()),
         style: HeaderStyle = .mock()
     ) -> Header.Props {
         .init(
@@ -16,7 +15,6 @@ extension Header.Props {
             endButton: endButton,
             backButton: backButton,
             closeButton: closeButton,
-            endScreenshareButton: endScreenShareButton,
             style: style
         )
     }

@@ -12,7 +12,6 @@ final class Header: BaseView {
     var backButton: HeaderButton?
     var closeButton: HeaderButton?
     var endButton: ActionButton?
-    var endScreenShareButton: HeaderButton?
 
     var props: Props {
         didSet {
@@ -41,9 +40,7 @@ final class Header: BaseView {
         if let endButtonProps = props.endButton {
             self.endButton = ActionButton(props: endButtonProps)
         }
-        if let endScreenshareProps = props.endScreenshareButton {
-            self.endScreenShareButton = HeaderButton(with: endScreenshareProps)
-        }
+
         super.init()
         self.titleLabel.accessibilityTraits = .header
     }
@@ -97,19 +94,11 @@ final class Header: BaseView {
 
     func showCloseButton() {
         endButton?.isHidden = true
-        endScreenShareButton?.isHidden = true
         closeButton?.isHidden = false
     }
 
     func showEndButton() {
         endButton?.isHidden = false
-        closeButton?.isHidden = true
-        endScreenShareButton?.isHidden = true
-    }
-
-    func showEndScreenSharingButton() {
-        endButton?.isHidden = false
-        endScreenShareButton?.isHidden = false
         closeButton?.isHidden = true
     }
 
@@ -153,9 +142,6 @@ final class Header: BaseView {
             constraints += backButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         }
 
-        if let endScreenShareButton {
-            rightItemContainer.addArrangedSubview(endScreenShareButton)
-        }
         if let endButton {
             rightItemContainer.addArrangedSubview(endButton)
         }

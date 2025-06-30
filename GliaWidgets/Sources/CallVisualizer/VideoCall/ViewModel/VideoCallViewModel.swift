@@ -161,9 +161,6 @@ extension CallVisualizer.VideoCallViewModel {
                     endButton: .init(),
                     backButton: backButton,
                     closeButton: .init(style: style.header.closeButton),
-                    // TODO: This will be removed in a subsequent commit, because header is used widely across
-                    // many features, and removing it now will make the commit too big
-                    endScreenshareButton: .init(style: style.header.closeButton),
                     style: style.header
                 ),
                 flipCameraTap: flipCameraAccLabelWithTap?.tapCallback,

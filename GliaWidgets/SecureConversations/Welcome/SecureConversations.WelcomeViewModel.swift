@@ -325,7 +325,6 @@ extension SecureConversations.WelcomeViewModel {
                 tap: Cmd { [weak instance] in instance?.delegate?(.closeTapped) },
                 style: style.header.closeButton
             ),
-            endScreenshareButton: .init(style: style.header.endScreenShareButton),
             style: style.header
         )
     }

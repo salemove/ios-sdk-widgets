@@ -9,8 +9,7 @@ extension HeaderStyle {
         backgroundColor: ColorType = .fill(color: .blue),
         backButton: HeaderButtonStyle = .mock(),
         closeButton: HeaderButtonStyle = .mock(),
-        endButton: ActionButtonStyle = .mock(),
-        endScreenShareButton: HeaderButtonStyle = .mock()
+        endButton: ActionButtonStyle = .mock()
     ) -> HeaderStyle {
         return .init(
             titleFont: titleFont,
@@ -18,8 +17,7 @@ extension HeaderStyle {
             backgroundColor: backgroundColor,
             backButton: backButton,
             closeButton: closeButton,
-            endButton: endButton,
-            endScreenShareButton: endScreenShareButton
+            endButton: endButton
         )
     }
 }

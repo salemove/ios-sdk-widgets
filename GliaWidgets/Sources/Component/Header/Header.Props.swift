@@ -7,7 +7,6 @@ extension Header {
         let endButton: ActionButton.Props?
         let backButton: HeaderButton.Props?
         let closeButton: HeaderButton.Props?
-        let endScreenshareButton: HeaderButton.Props?
         let style: HeaderStyle
     }
 }

@@ -174,7 +174,7 @@ class EngagementViewModel: CommonEngagementModel {
     func handleScreenSharingStatus(_ status: ScreenSharingStatus) {
         switch status {
         case .started:
-            engagementAction?(.showEndScreenShareButton)
+            break
         case .stopped where interactor.currentEngagement?.isTransferredSecureConversation == true:
             engagementAction?(.showCloseButton)
         case .stopped:
@@ -257,7 +257,6 @@ extension EngagementViewModel {
     enum Action {
         case showEndButton
         case showCloseButton
-        case showEndScreenShareButton
         case showLiveObservationConfirmation(
             link: (WebViewController.Link) -> Void,
             accepted: () -> Void,

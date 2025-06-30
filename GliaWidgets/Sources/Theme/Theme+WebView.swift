@@ -38,7 +38,6 @@ extension Theme {
             backButton: nil,
             closeButton: closeButton,
             endButton: endButton,
-            endScreenShareButton: endScreenShareButton,
             accessibility: .init(isFontScalingEnabled: true)
         )
         return .init(header: header)
