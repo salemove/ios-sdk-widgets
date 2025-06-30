@@ -25,7 +25,6 @@ final class CallViewController: EngagementViewController {
         let view = viewFactory.makeCallView(
             endCmd: .init { [weak self] in self?.viewModel.event(.closeTapped) },
             closeCmd: .init { [weak self] in self?.viewModel.event(.closeTapped) },
-            endScreenshareCmd: .nop,
             backCmd: .init { [weak self] in self?.viewModel.event(.backTapped) }
         )
         self.view = view
@@ -138,7 +137,6 @@ private extension CallViewController {
             endButton: props.endButton,
             backButton: props.backButton,
             closeButton: props.closeButton,
-            endScreenshareButton: props.endScreenshareButton,
             style: props.style
         )
     }

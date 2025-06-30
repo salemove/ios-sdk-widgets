@@ -54,7 +54,6 @@ extension RemoteConfiguration {
         let backButton: Button?
         let closeButton: Button?
         let endButton: Button?
-        let endScreenSharingButton: Button?
     }
 
     struct MessageBalloon: Codable {

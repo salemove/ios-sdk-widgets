@@ -31,14 +31,7 @@ extension Theme {
                 isFontScalingEnabled: true
             )
         )
-        let endScreenShareButton = HeaderButtonStyle(
-            image: Asset.startScreenShare.image,
-            color: color.baseLight,
-            accessibility: .init(
-                label: Localization.ScreenSharing.VisitorScreen.End.title,
-                hint: ""
-            )
-        )
+
         let header = HeaderStyle(
             titleFont: font.header2,
             titleColor: color.baseLight,
@@ -46,7 +39,6 @@ extension Theme {
             backButton: backButton,
             closeButton: closeButton,
             endButton: endButton,
-            endScreenShareButton: endScreenShareButton,
             accessibility: .init(isFontScalingEnabled: true)
         )
 

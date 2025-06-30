@@ -15,10 +15,6 @@ struct HeaderSwiftUI: View {
                     ActionButtonSwiftUI(model: model.endButton)
                 }
 
-                if !model.endScreenshareButton.isHidden {
-                    HeaderButtonSwiftUI(model: model.endScreenshareButton)
-                }
-
                 if !model.closeButton.isHidden {
                     HeaderButtonSwiftUI(model: model.closeButton)
                 }
@@ -48,7 +44,6 @@ extension HeaderSwiftUI {
         let endButton: ActionButtonSwiftUI.Model
         let backButton: HeaderButtonSwiftUI.Model?
         let closeButton: HeaderButtonSwiftUI.Model
-        let endScreenshareButton: HeaderButtonSwiftUI.Model
         let style: HeaderStyle
         let environment: Environment
 
@@ -58,7 +53,6 @@ extension HeaderSwiftUI {
             endButton: ActionButtonSwiftUI.Model,
             backButton: HeaderButtonSwiftUI.Model?,
             closeButton: HeaderButtonSwiftUI.Model,
-            endScreenshareButton: HeaderButtonSwiftUI.Model,
             style: HeaderStyle,
             environment: Environment
         ) {
@@ -67,7 +61,6 @@ extension HeaderSwiftUI {
             self.endButton = endButton
             self.backButton = backButton
             self.closeButton = closeButton
-            self.endScreenshareButton = endScreenshareButton
             self.style = style
             self.environment = environment
         }
