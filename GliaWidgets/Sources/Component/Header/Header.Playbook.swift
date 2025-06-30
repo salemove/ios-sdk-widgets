@@ -40,7 +40,6 @@ extension ViewPlaybook {
                 endButton: .init(style: headerStyle.endButton),
                 backButton: backButton,
                 closeButton: .init(style: standardTheme.chat.header.closeButton),
-                endScreenshareButton: .init(style: standardTheme.chat.header.endScreenShareButton),
                 style: standardTheme.chat.header
             )
         )
@@ -64,7 +63,6 @@ extension ViewPlaybook {
                 endButton: .init(style: headerStyle.endButton),
                 backButton: backButton,
                 closeButton: .init(style: headerStyle.closeButton),
-                endScreenshareButton: .init(style: headerStyle.endScreenShareButton),
                 style: headerStyle
             )
         )
@@ -85,7 +83,6 @@ extension Header.Props {
             endButton: props.endButton,
             backButton: props.backButton,
             closeButton: props.closeButton,
-            endScreenshareButton: props.endScreenshareButton,
             style: props.style
         )
     }

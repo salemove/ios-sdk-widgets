@@ -27,7 +27,6 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         let view = viewFactory.makeChatView(
             endCmd: .init { [weak self] in self?.viewModel.event(.closeTapped) },
             closeCmd: .init { [weak self] in self?.viewModel.event(.closeTapped) },
-            endScreenshareCmd: .init {},
             backCmd: .init { [weak self] in self?.viewModel.event(.backTapped) }
         )
         self.view = view
@@ -239,7 +238,6 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             endButton: .init(style: chatTheme.header.endButton, tap: endEvent, accessibilityIdentifier: "header_end_button"),
             backButton: chatHeaderBackButton,
             closeButton: .init(tap: closeEvent, style: chatTheme.header.closeButton),
-            endScreenshareButton: .init(tap: endScreenSharingEvent, style: chatTheme.header.endScreenShareButton),
             style: chatTheme.header
         )
 
@@ -249,7 +247,6 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             endButton: .init(style: chatTheme.secureTranscriptHeader.endButton, tap: endEvent, accessibilityIdentifier: "header_end_button"),
             backButton: nil,
             closeButton: .init(tap: closeEvent, style: chatTheme.secureTranscriptHeader.closeButton),
-            endScreenshareButton: .init(tap: endScreenSharingEvent, style: chatTheme.secureTranscriptHeader.endScreenShareButton),
             style: chatTheme.secureTranscriptHeader
         )
 

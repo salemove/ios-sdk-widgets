@@ -60,13 +60,6 @@ extension SecureConversations.ConfirmationViewSwiftUI.Model {
             isHidden: false
         )
 
-        let endScreenShareButtonProps: HeaderButtonSwiftUI.Model = .init(
-            style: style.header.endScreenShareButton,
-            accessibilityIdentifier: "header_end_screen_sharing_button",
-            isEnabled: false,
-            isHidden: true
-        )
-
         let environment: HeaderSwiftUI.Environment = .init(uiApplication: environment.uiApplication)
 
         return .init(
@@ -75,7 +68,6 @@ extension SecureConversations.ConfirmationViewSwiftUI.Model {
             endButton: endButtonProps,
             backButton: nil,
             closeButton: closeButtonProps,
-            endScreenshareButton: endScreenShareButtonProps,
             style: style.header,
             environment: environment
         )

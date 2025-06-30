@@ -48,7 +48,6 @@ extension Theme {
             backButton: backButton,
             closeButton: closeButton,
             endButton: endButton,
-            endScreenShareButton: endScreenShareButton,
             accessibility: .init(isFontScalingEnabled: true)
         )
         let operatorImage = UserImageStyle(

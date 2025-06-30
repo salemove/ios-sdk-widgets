@@ -710,7 +710,6 @@ extension EngagementCoordinator {
             endButton: nil,
             backButton: nil,
             closeButton: .init(tap: close, style: theme.webView.header.closeButton),
-            endScreenshareButton: nil,
             style: theme.webView.header
         )
 
