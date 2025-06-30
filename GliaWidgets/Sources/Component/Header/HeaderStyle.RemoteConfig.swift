@@ -54,6 +54,5 @@ extension HeaderStyle {
             configuration: configuration?.endButton,
             assetsBuilder: assetsBuilder
         )
-        endScreenShareButton.apply(configuration: configuration?.endScreenSharingButton)
     }
 }

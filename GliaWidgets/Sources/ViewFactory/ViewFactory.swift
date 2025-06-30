@@ -22,7 +22,6 @@ class ViewFactory {
     func makeChatView(
         endCmd: Cmd,
         closeCmd: Cmd,
-        endScreenshareCmd: Cmd,
         backCmd: Cmd
     ) -> ChatView {
         return ChatView(
@@ -33,7 +32,6 @@ class ViewFactory {
                 theme: theme,
                 endCmd: endCmd,
                 closeCmd: closeCmd,
-                endScreenshareCmd: endScreenshareCmd,
                 backCmd: backCmd
             )
         )
@@ -43,7 +41,6 @@ class ViewFactory {
         theme: Theme,
         endCmd: Cmd,
         closeCmd: Cmd,
-        endScreenshareCmd: Cmd,
         backCmd: Cmd
     ) -> ChatView.Props {
         let backButton = theme.chat.header.backButton.map { HeaderButton.Props(tap: backCmd, style: $0) }
@@ -55,7 +52,6 @@ class ViewFactory {
                 endButton: .init(style: theme.chat.header.endButton, tap: endCmd, accessibilityIdentifier: "header_end_button"),
                 backButton: backButton,
                 closeButton: .init(tap: closeCmd, style: theme.chat.header.closeButton),
-                endScreenshareButton: .init(tap: endScreenshareCmd, style: theme.chat.header.endScreenShareButton),
                 style: theme.chat.header
             )
         )
@@ -64,7 +60,6 @@ class ViewFactory {
     func makeCallView(
         endCmd: Cmd,
         closeCmd: Cmd,
-        endScreenshareCmd: Cmd,
         backCmd: Cmd
     ) -> CallView {
         return CallView(
@@ -74,7 +69,6 @@ class ViewFactory {
                 theme: theme,
                 endCmd: endCmd,
                 closeCmd: closeCmd,
-                endScreenshareCmd: endScreenshareCmd,
                 backCmd: backCmd
             )
         )
@@ -84,7 +78,6 @@ class ViewFactory {
         theme: Theme,
         endCmd: Cmd,
         closeCmd: Cmd,
-        endScreenshareCmd: Cmd,
         backCmd: Cmd
     ) -> CallView.Props {
         let backButton = theme.call.header.backButton.map { HeaderButton.Props( tap: backCmd, style: $0) }
@@ -96,7 +89,6 @@ class ViewFactory {
                 endButton: .init(style: theme.call.header.endButton, tap: endCmd, accessibilityIdentifier: "header_end_button"),
                 backButton: backButton,
                 closeButton: .init(tap: closeCmd, style: theme.call.header.closeButton),
-                endScreenshareButton: .init(tap: endScreenshareCmd, style: theme.call.header.endScreenShareButton),
                 style: theme.call.header
             )
         )

@@ -23,9 +23,6 @@ public struct HeaderStyle: Equatable {
     /// Style of the engagement ending button.
     public var endButton: ActionButtonStyle
 
-    /// Style of the screen sharing ending button.
-    public var endScreenShareButton: HeaderButtonStyle
-
     /// Accessibility related properties.
     public var accessibility: Accessibility
 
@@ -37,7 +34,6 @@ public struct HeaderStyle: Equatable {
     ///   - backButton: Style of the back button.
     ///   - closeButton: Style of the queue closing button.
     ///   - endButton: Style of the engagement ending button.
-    ///   - endScreenShareButton: Style of the screen sharing ending button.
     ///   - accessibility: Accessibility related properties.
     ///
     public init(
@@ -48,7 +44,6 @@ public struct HeaderStyle: Equatable {
         backButton: HeaderButtonStyle?,
         closeButton: HeaderButtonStyle,
         endButton: ActionButtonStyle,
-        endScreenShareButton: HeaderButtonStyle,
         accessibility: Accessibility = .unsupported
     ) {
         self.titleFont = titleFont
@@ -58,7 +53,6 @@ public struct HeaderStyle: Equatable {
         self.backButton = backButton
         self.closeButton = closeButton
         self.endButton = endButton
-        self.endScreenShareButton = endScreenShareButton
         self.accessibility = accessibility
     }
 }

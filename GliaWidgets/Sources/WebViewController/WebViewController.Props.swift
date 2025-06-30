@@ -15,7 +15,6 @@ extension WebViewController {
                     endButton: nil,
                     backButton: nil,
                     closeButton: nil,
-                    endScreenshareButton: nil,
                     style: Theme().webView.header
                 ),
                 externalOpen: .nop
