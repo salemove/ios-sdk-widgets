@@ -57,11 +57,6 @@
 "alert.mediaSourceNotAvailable.title" = "Unable to access media source";
 "alert.mediaSourceNotAvailable.message" = "This media source is not available on your device";
 
-"alert.screenSharing.start.title" = "{operatorName} has asked you to share your screen";
-"alert.screenSharing.start.message" = "{operatorName} would like to see the screen of your device";
-"alert.screenSharing.stop.title" = "Stop screen sharing?";
-"alert.screenSharing.stop.message" = "Are you sure you want to stop sharing your screen?";
-
 "alert.visitorCode.title" = "Your Visitor Code";
 
 "chat.title" = "Chat";
@@ -262,6 +257,5 @@
 "gva.error_unsupported" = "This action is not currently supported on mobile";
 "chat.input.send" = "Send";
 "chat.status.typing" = "Operator typing";
-"screensharing.visitor_screen.disclaimer.info" = "Depending on your selection, your entire screen might be shared with the operator, not just the application window.";
 "send_message.send" = "Send message";
 "send_message.sending" = "Sending…";

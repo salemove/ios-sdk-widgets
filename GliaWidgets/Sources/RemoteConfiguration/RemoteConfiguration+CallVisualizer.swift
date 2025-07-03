@@ -3,7 +3,6 @@ import Foundation
 extension RemoteConfiguration {
     struct CallVisualizer: Codable {
         let visitorCode: VisitorCode?
-        let screenSharing: ScreenSharing?
     }
 
     struct VisitorCode: Codable {
@@ -14,12 +13,5 @@ extension RemoteConfiguration {
         let background: Layer?
         let loadingProgressColor: Color?
         let closeButtonColor: Color?
-    }
-
-    struct ScreenSharing: Codable {
-        let header: Header?
-        let message: Text?
-        let endButton: Button?
-        let background: Layer?
     }
 }
