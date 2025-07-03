@@ -58,7 +58,7 @@ public enum Asset {
       public static let callVideoInactive = ImageAsset(name: "call-video-inactive")
       public static let flipCamera = ImageAsset(name: "flip-camera")
       public static let callOnHold = ImageAsset(name: "call-on-hold")
-    public static let screensharing = ImageAsset(name: "screensharing")
+    public static let callVisualizer = ImageAsset(name: "callVisualizer")
       public static let uploadError = ImageAsset(name: "uploadError")
       public static let uploadRemove = ImageAsset(name: "uploadRemove")
     public static let chatPickMedia = ImageAsset(name: "chatPickMedia")
@@ -104,7 +104,7 @@ public enum Asset {
       callVideoInactive,
       flipCamera,
       callOnHold,
-      screensharing,
+      callVisualizer,
       uploadError,
       uploadRemove,
       chatPickMedia,

@@ -34,7 +34,7 @@ extension HeaderButtonStyle {
 
 extension ActionButtonStyle {
     static func mock(
-        title: String = Localization.ScreenSharing.VisitorScreen.End.title,
+        title: String = "mock title",
         titleFont: UIFont = .systemFont(ofSize: 16, weight: .regular),
         titleColor: UIColor = .white,
         backgroundColor: ColorType = .fill(color: Color.systemNegative),
