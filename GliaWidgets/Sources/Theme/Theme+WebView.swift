@@ -20,16 +20,7 @@ extension Theme {
                 isFontScalingEnabled: true
             )
         )
-        let endScreenShareButton = HeaderButtonStyle(
-            image: Asset.startScreenShare.image,
-            color: color.baseLight,
-            accessibility: .init(
-                label: Localization.ScreenSharing.VisitorScreen.End.title,
-                hint: ""
-            )
-        )
-
-        // endButton, endScreenShareButton and backButton
+        // endButton and backButton
         // are hidden and not used on WebView screen
         let header = HeaderStyle(
             titleFont: font.header2,

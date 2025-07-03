@@ -70,7 +70,7 @@ extension EntryWidget {
                     headline: "Call Visualizer",
                     subheadline: "",
                     hintline: "",
-                    image: Asset.screensharing.image
+                    image: Asset.callVisualizer.image
                 )
             }
         }
