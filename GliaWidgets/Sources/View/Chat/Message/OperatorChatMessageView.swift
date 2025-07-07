@@ -1,7 +1,7 @@
 import UIKit
 
 private extension UIEdgeInsets {
-    static let placeholderInsets: Self = .init(top: 2, left: 2, bottom: 2, right: 2)
+    static let placeholderInsets: Self = .init(top: 6, left: 6, bottom: 6, right: 6)
 }
 
 class OperatorChatMessageView: ChatMessageView {

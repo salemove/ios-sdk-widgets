@@ -10,7 +10,7 @@ class BubbleWindow: UIWindow {
     private let environment: Environment
     private let bubbleView: BubbleView
     private let kSize = CGSize(width: 80, height: 80)
-    private let kBubbleInset: CGFloat = 10
+    private let kBubbleInset: CGFloat = 8
     private let kEdgeInset: CGFloat = 0
     private var initialFrame: CGRect {
         let bounds = environment.uiApplication.windows().first?.frame ?? environment.uiScreen.bounds()

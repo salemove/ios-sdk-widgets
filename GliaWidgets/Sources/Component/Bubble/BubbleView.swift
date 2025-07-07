@@ -1,5 +1,9 @@
 import UIKit
 
+private extension UIEdgeInsets {
+    static let placeholderInsets: Self = .init(top: 18, left: 18, bottom: 18, right: 18)
+}
+
 enum BubbleKind {
     case userImage(url: String?)
     case view(UIView)
@@ -128,6 +132,7 @@ class BubbleView: BaseView {
             guard let userImageView = userImageView else {
                 let userImageView = UserImageView(
                     with: style.userImage,
+                    placeholderInsets: .placeholderInsets,
                     environment: .create(with: environment)
                 )
                 userImageView.setOperatorImage(fromUrl: url, animated: true)
