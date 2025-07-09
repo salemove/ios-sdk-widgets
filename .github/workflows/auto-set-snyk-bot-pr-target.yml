@@ -1,0 +1,40 @@
+name: Change Snyk bot PRs target branch to development
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  change_target_branch:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: Get PR Information
+        id: pr_info
+        run: |
+          echo "PR_NUMBER=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+          echo "PR_AUTHOR=${{ github.event.pull_request.user.login }}" >> $GITHUB_OUTPUT
+          echo "CURRENT_BASE_BRANCH=${{ github.event.pull_request.base.ref }}" >> $GITHUB_OUTPUT
+      - name: PR Author and Base Branch
+        run: |
+          echo "Captured PR Author: ${{ steps.pr_info.outputs.PR_AUTHOR }}"
+          echo "Captured Current Base Branch: ${{ steps.pr_info.outputs.CURRENT_BASE_BRANCH }}"
+      - name: Change Target Branch if Snyk Bot Author
+        run: |
+          PR_NUMBER="${{ steps.pr_info.outputs.PR_NUMBER }}"
+          PR_AUTHOR="${{ steps.pr_info.outputs.PR_AUTHOR }}"
+          NEW_BASE_BRANCH="development"
+          CURRENT_BASE_BRANCH="${{ steps.pr_info.outputs.CURRENT_BASE_BRANCH }}" # Assign to shell variable
+          echo "Detected PR #${PR_NUMBER} by ${PR_AUTHOR} with base branch ${CURRENT_BASE_BRANCH}."
+          if [[ ("$PR_AUTHOR" == "snyk-bot" || "$PR_AUTHOR" == "snyk-io") && "$CURRENT_BASE_BRANCH" != "$NEW_BASE_BRANCH" ]]; then
+            echo "Changing base branch of PR #${PR_NUMBER} from ${CURRENT_BASE_BRANCH} to ${NEW_BASE_BRANCH}."
+            gh pr edit "$PR_NUMBER" --base "$NEW_BASE_BRANCH" --repo "${{ github.repository }}"
+            echo "Successfully changed base branch."
+          else
+            echo "Conditions not met for changing branch. PR Author: ${PR_AUTHOR}, Current Base Branch: ${CURRENT_BASE_BRANCH}."
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
