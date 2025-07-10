@@ -1,5 +1,9 @@
 import UIKit
 
+private extension UIEdgeInsets {
+    static let placeholderInsets: Self = .init(top: 6, left: 6, bottom: 6, right: 6)
+}
+
 final class GvaResponseTextView: ChatMessageView {
     var showsOperatorImage: Bool = false {
         didSet {
@@ -7,6 +11,7 @@ final class GvaResponseTextView: ChatMessageView {
                 guard operatorImageView == nil else { return }
                 let operatorImageView = UserImageView(
                     with: viewStyle.operatorImage,
+                    placeholderInsets: .placeholderInsets,
                     environment: .create(with: environment)
                 )
                 self.operatorImageView = operatorImageView
