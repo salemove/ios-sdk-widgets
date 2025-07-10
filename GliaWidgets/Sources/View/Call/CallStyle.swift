@@ -59,6 +59,9 @@ public class CallStyle: EngagementStyle {
     /// Style of the call view when the visitor is put on hold.
     public var onHoldStyle: OnHoldStyle
 
+    /// Style of the call view snack bar.
+    public var snackBar: Theme.SnackBarStyle
+
     /// Style for camera switching button.
     public var flipCameraButtonStyle: FlipCameraButtonStyle
 
@@ -89,6 +92,7 @@ public class CallStyle: EngagementStyle {
     ///   - bottomTextStyle: Text style of the bottom text.
     ///   - buttonBar: Style of the button bar.
     ///   - onHoldStyle: Style of the call view when the visitor is put on hold.
+    ///   - snackBar: Style of the call view snack bar.
     ///   - accessibility: Accessiblity properties for CallStyle.
     ///
     public init(
@@ -116,6 +120,7 @@ public class CallStyle: EngagementStyle {
         buttonBar: CallButtonBarStyle,
         onHoldStyle: OnHoldStyle,
         flipCameraButtonStyle: FlipCameraButtonStyle,
+        snackBar: Theme.SnackBarStyle,
         accessibility: Accessibility = .unsupported
     ) {
         self.audioTitle = audioTitle
@@ -139,6 +144,7 @@ public class CallStyle: EngagementStyle {
         self.onHoldStyle = onHoldStyle
         self.accessibility = accessibility
         self.flipCameraButtonStyle = flipCameraButtonStyle
+        self.snackBar = snackBar
         super.init(
             header: header,
             connect: connect,

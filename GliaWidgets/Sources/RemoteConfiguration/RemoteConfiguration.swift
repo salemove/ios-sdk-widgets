@@ -40,12 +40,14 @@ extension RemoteConfiguration {
         let callOperator, topText: Text?
         let connect: EngagementStates?
         let visitorVideo: VisitorVideo?
+        let snackBar: SnackBar?
 
         enum CodingKeys: String, CodingKey {
             case background, bottomText, buttonBar, duration, header, connect
             case callOperator = "operator"
             case topText
             case visitorVideo
+            case snackBar
         }
     }
 
