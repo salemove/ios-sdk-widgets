@@ -408,7 +408,7 @@ extension ChatViewController {
         chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
 
         var viewFactoryEnv = ViewFactory.Environment.mock
-        viewFactoryEnv.imageViewCache.getImageForKey = { _ in UIImage.mock }
+        viewFactoryEnv.imageViewCache.getImageForKey = { _ in nil }
 
         let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
         let controller = ChatViewController.mock(
