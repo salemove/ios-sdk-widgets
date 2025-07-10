@@ -143,7 +143,7 @@ private extension CallViewController {
     }
 
     func showSnackBarView() {
-        let style = viewFactory.theme.invertedSnackBar
+        let style = viewFactory.theme.call.snackBar
         environment.snackBar.present(
             text: style.text,
             style: style,

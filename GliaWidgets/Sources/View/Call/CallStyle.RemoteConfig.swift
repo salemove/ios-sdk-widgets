@@ -38,6 +38,11 @@ extension CallStyle {
             assetsBuilder: assetsBuilder
         )
 
+        snackBar.apply(
+            configuration: configuration?.snackBar,
+            assetsBuilder: assetsBuilder
+        )
+
         flipCameraButtonStyle.apply(configuration?.visitorVideo?.flipCameraButton)
     }
 
