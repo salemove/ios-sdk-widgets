@@ -182,6 +182,7 @@ extension Theme {
                     switchToFrontCameraAccessibilityHint: Localization.Call.VisitorVideo.FrontCamera.Button.Accessibility.hint
                 )
             ),
+            snackBar: invertedSnackBar,
             accessibility: .init(
                 operatorNameHint: Localization.Call.Connect.FirstText.Accessibility.hint,
                 durationHint: Localization.Call.Connect.SecondText.Accessibility.hint,

@@ -183,7 +183,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             case .transcript(.messageCenterAvailabilityUpdated):
                 break
             case .showSnackBarView:
-                let style = self.environment.viewFactory.theme.snackBarStyle
+                let style = self.environment.viewFactory.theme.snackBar
                 self.environment.snackBar.present(
                     text: style.text,
                     style: style,
