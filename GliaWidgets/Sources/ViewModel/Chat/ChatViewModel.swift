@@ -252,6 +252,7 @@ class ChatViewModel: EngagementViewModel {
             onEngagementTransferring()
         case .onLiveToSecureConversationsEngagementTransferring:
             setChatType(.secureTranscript(upgradedFromChat: true))
+            engagementAction?(.showCloseButton)
             action?(.refreshAll)
         case .engagementTransferred:
             onEngagementTransferred()
