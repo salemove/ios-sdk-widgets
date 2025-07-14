@@ -58,6 +58,7 @@ extension SecureConversations {
 
             progressView.clipsToBounds = true
             progressView.layer.cornerRadius = 4
+            progressView.layer.cornerCurve = .continuous
 
             removeButton.addTarget(self, action: #selector(remove), for: .touchUpInside)
             removeButton.accessibilityIdentifier = "secureConversations_remove_attachment_button"

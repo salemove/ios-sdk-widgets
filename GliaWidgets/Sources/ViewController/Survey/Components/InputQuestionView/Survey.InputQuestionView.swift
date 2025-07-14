@@ -88,6 +88,7 @@ extension Survey {
 
         func renderTextViewStyle(_ style: Theme.Layer) {
             textView.layer.cornerRadius = style.cornerRadius
+            textView.layer.cornerCurve = .continuous
             textView.layer.borderColor = style.borderColor
             textView.layer.borderWidth = style.borderWidth
             style.background.unwrap { colorType in

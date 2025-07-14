@@ -20,6 +20,7 @@ extension UIView {
         l.startPoint = CGPoint(x: 0, y: 0.5)
         l.endPoint = CGPoint(x: 1, y: 0.5)
         l.cornerRadius = cornerRadius ?? 0.0
+        l.cornerCurve = .continuous
         if l.superlayer == nil {
             layer.insertSublayer(l, at: 0)
         }
@@ -42,6 +43,7 @@ extension UIView {
             }
         }
         layer.cornerRadius = background.cornerRadius
+        layer.cornerCurve = .continuous
         layer.borderColor = background.borderColor
         layer.borderWidth = background.borderWidth
         return self

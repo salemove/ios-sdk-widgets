@@ -13,7 +13,7 @@ extension CallVisualizer.VisitorCodeView {
             self.clipsToBounds = true
             self.textAlignment = .center
             NSLayoutConstraint.activate([
-                self.heightAnchor.constraint(equalToConstant: 60),
+                self.heightAnchor.constraint(equalToConstant: 66),
                 self.widthAnchor.constraint(equalToConstant: 55).priority(.defaultHigh)
             ])
         }
@@ -34,6 +34,7 @@ extension CallVisualizer.VisitorCodeView {
             font = props.style.numberFont
             textColor = props.style.numberColor
             layer.cornerRadius = props.style.cornerRadius
+            layer.cornerCurve = .continuous
             layer.borderWidth = props.style.borderWidth
             layer.borderColor = props.style.borderColor.cgColor
 

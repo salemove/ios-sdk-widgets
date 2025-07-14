@@ -54,12 +54,12 @@ extension AlertViewController {
             confirmed: confirmed
         )
         let alertStyle = viewFactory.theme.alert
-        var negativeButtonStyle = alertStyle.negativeAction
+        var negativeButtonStyle = alertStyle.negativeNeutralAction
         var positiveButtonStyle = alertStyle.positiveAction
 
         if conf.switchButtonBackgroundColors {
             negativeButtonStyle = alertStyle.positiveAction
-            positiveButtonStyle = alertStyle.negativeAction
+            positiveButtonStyle = alertStyle.negativeNeutralAction
         }
 
         negativeButtonStyle.title = conf.negativeTitle

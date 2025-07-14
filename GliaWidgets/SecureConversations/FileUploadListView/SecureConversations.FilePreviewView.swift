@@ -65,6 +65,7 @@ extension SecureConversations {
 
         private func renderProps() {
             layer.cornerRadius = props.style.cornerRadius
+            layer.cornerCurve = .continuous
             label.font = props.style.fileFont
             label.textColor = props.style.fileColor
             setFontScalingEnabled(

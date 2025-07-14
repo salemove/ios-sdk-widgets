@@ -68,6 +68,7 @@ private extension QuickReplyButtonCell {
         button.setTitleColor(style.textColor, for: .normal)
         button.titleLabel?.font = style.textFont
         button.layer.cornerRadius = style.cornerRadius
+        button.layer.cornerCurve = .continuous
         button.layer.borderColor = style.borderColor.cgColor
         button.layer.borderWidth = style.borderWidth
     }
