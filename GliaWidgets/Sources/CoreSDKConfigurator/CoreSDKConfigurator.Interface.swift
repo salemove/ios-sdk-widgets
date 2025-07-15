@@ -17,7 +17,8 @@ extension CoreSDKConfigurator {
                     pushNotifications: configuration.pushNotifications.coreSdk,
                     manualLocaleOverride: configuration.manualLocaleOverride,
                     suppressPushNotificationsPermissionRequestDuringAuthentication: configuration
-                        .suppressPushNotificationsPermissionRequestDuringAuthentication
+                        .suppressPushNotificationsPermissionRequestDuringAuthentication,
+                    isPushNotificationProxyEnabled: configuration.isPushNotificationProxyEnabled
                 )
                 coreSdk.configureWithConfiguration(sdkConfiguration, completion)
             }

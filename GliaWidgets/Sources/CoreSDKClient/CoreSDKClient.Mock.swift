@@ -79,7 +79,9 @@ extension CoreSdkClient.PushNotifications {
         setPushHandler: { _ in },
         pushHandler: { nil },
         subscribeTo: { _ in },
-        actions: .mock
+        actions: .mock,
+        userNotificationCenterWillPresent: { _, _, _ in },
+        userNotificationCenterDidReceiveResponse: { _, _, _ in }
     )
 }
 
