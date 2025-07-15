@@ -42,6 +42,50 @@ public struct PushNotifications {
         )
     }
 
+    /// Forwards the notification delivery event to the underlying SDK when a notification is about to be presented.
+    ///
+    /// This method should be called from `UNUserNotificationCenterDelegate`'s
+    /// `userNotificationCenter(_:willPresent:withCompletionHandler:)` method.
+    ///
+    /// - Parameters:
+    ///   - center: The `UNUserNotificationCenter` instance handling the notification.
+    ///   - willPresentNotificationCenter: The `UNNotification` to be presented.
+    ///   - completionHandler: A closure that takes the presentation options for the notification.
+    ///
+    public func userNotificationCenterWillPresent(
+        center: UNUserNotificationCenter,
+        willPresent: UNNotification,
+        completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
+    ) {
+        environment.coreSdk.pushNotifications.userNotificationCenterWillPresent(
+            center,
+            willPresent,
+            completionHandler
+        )
+    }
+
+    /// Forwards the user's response for a delivered notification to the underlying SDK.
+    ///
+    /// This method should be invoked from `UNUserNotificationCenterDelegate`'s
+    /// `userNotificationCenter(_:didReceive:withCompletionHandler:)` method.
+    ///
+    /// - Parameters:
+    ///   - center: The `UNUserNotificationCenter` instance that handled the response.
+    ///   - didReceiveResponseCenter: The `UNNotificationResponse` received from the user.
+    ///   - completionHandler: A closure executed once the response has been handled.
+    ///
+    public func userNotificationCenterDidReceiveResponse(
+        center: UNUserNotificationCenter,
+        didReceive: UNNotificationResponse,
+        completionHandler: @escaping () -> Void
+    ) {
+        environment.coreSdk.pushNotifications.userNotificationCenterDidReceiveResponse(
+            center,
+            didReceive,
+            completionHandler
+        )
+    }
+
     /// Sets the current push action handler that the SDK uses to forward notification actions.
     ///
     /// This handler is executed in response to user interactions with notifications (via

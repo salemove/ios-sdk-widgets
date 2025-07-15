@@ -138,7 +138,9 @@ extension CoreSdkClient.PushNotifications {
         actions: .init(
             setSecureMessageAction: { _ in },
             secureMessageAction: { return nil }
-        )
+        ),
+        userNotificationCenterWillPresent: { _, _, _ in },
+        userNotificationCenterDidReceiveResponse: { _, _, _ in }
     )
 }
 

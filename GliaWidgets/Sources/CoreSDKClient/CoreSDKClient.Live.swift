@@ -152,7 +152,13 @@ extension CoreSdkClient.PushNotifications {
         actions: .init(
             setSecureMessageAction: { GliaCore.sharedInstance.pushNotificationsActionProcessor.secureMessagePushNotificationAction = $0 },
             secureMessageAction: { GliaCore.sharedInstance.pushNotificationsActionProcessor.secureMessagePushNotificationAction }
-        )
+        ),
+        userNotificationCenterWillPresent: { center, notification, completionHandler in
+            GliaCore.sharedInstance.pushNotifications.widgetsNotificationCenter(center, willPresent: notification, withCompletionHandler: completionHandler)
+        },
+        userNotificationCenterDidReceiveResponse: { center, response, completionHandler in
+            GliaCore.sharedInstance.pushNotifications.widgetsNotificationCenter(center, didReceive: response, withCompletionHandler: completionHandler)
+        }
     )
 }
 

@@ -33,6 +33,11 @@ public struct Configuration {
     /// permissions during authentication.
     public var suppressPushNotificationsPermissionRequestDuringAuthentication: Bool
 
+    /// If `true`, the SDK will intercept the notification center delegate setup,
+    /// set itself as the main delegate, and then proxy all events to the
+    /// previously set delegate.
+    public var isPushNotificationProxyEnabled: Bool
+
     /// Initializes the configuration.
     ///
     /// - Parameters:
@@ -57,7 +62,8 @@ public struct Configuration {
         isWhiteLabelApp: Bool = false,
         companyName: String = "",
         manualLocaleOverride: String? = nil,
-        suppressPushNotificationsPermissionRequestDuringAuthentication: Bool = false
+        suppressPushNotificationsPermissionRequestDuringAuthentication: Bool = false,
+        isPushNotificationProxyEnabled: Bool = true
     ) {
         self.authorizationMethod = authorizationMethod
         self.environment = environment
@@ -68,6 +74,7 @@ public struct Configuration {
         self.companyName = companyName
         self.manualLocaleOverride = manualLocaleOverride
         self.suppressPushNotificationsPermissionRequestDuringAuthentication = suppressPushNotificationsPermissionRequestDuringAuthentication
+        self.isPushNotificationProxyEnabled = isPushNotificationProxyEnabled
     }
 }
 
