@@ -274,10 +274,6 @@ extension Interactor: CoreSdkClient.Interactable {
         }
     }
 
-    var onScreenSharingOffer: CoreSdkClient.ScreenshareOfferBlock {
-        return { _ in }
-    }
-
     var onMediaUpgradeOffer: CoreSdkClient.MediaUgradeOfferBlock {
         return { [weak self] offer, answer in
             self?.notify(.upgradeOffer(offer, answer: answer))
@@ -347,10 +343,6 @@ extension Interactor: CoreSdkClient.Interactable {
         return { [weak self] messages in
             self?.notify(.messagesUpdated(messages))
         }
-    }
-
-    var onVisitorScreenSharingStateChange: CoreSdkClient.VisitorScreenSharingStateChange {
-        return { _, _ in }
     }
 
     var onAudioStreamAdded: CoreSdkClient.AudioStreamAddedBlock {
