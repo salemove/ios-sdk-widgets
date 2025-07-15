@@ -334,7 +334,6 @@ extension CoreSdkClient {
     typealias RequestAnswerBlock = GliaCoreSDK.RequestAnswerBlock
     typealias Salemove = GliaCoreSDK.GliaCore
     typealias SalemoveError = GliaCoreSDK.GliaCoreError
-    typealias ScreenshareOfferBlock = GliaCoreSDK.ScreenshareOfferBlock
     typealias SingleChoiceOption = GliaCoreSDK.SingleChoiceOption
     typealias StreamableOnHoldHandler = GliaCoreSDK.StreamableOnHoldHandler
     typealias StreamView = GliaCoreSDK.StreamView
@@ -344,8 +343,6 @@ extension CoreSdkClient {
     typealias VideoStreamAddedBlock = GliaCoreSDK.VideoStreamAddedBlock
     typealias VisitorContext = GliaCoreSDK.VisitorContext
     typealias ContextType = GliaCoreSDK.VisitorContext.ContextType
-    typealias VisitorScreenSharingState = GliaCoreSDK.VisitorScreenSharingState
-    typealias VisitorScreenSharingStateChange = GliaCoreSDK.VisitorScreenSharingStateChange
     typealias Engagement = GliaCoreSDK.Engagement
     typealias Site = GliaCoreSDK.Site
     typealias Survey = GliaCoreSDK.Survey
