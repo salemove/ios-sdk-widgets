@@ -31,6 +31,7 @@ class GvaPersistentButtonOptionView: BaseView {
         accessibilityLabel = text
         accessibilityTraits = .button
         layer.cornerRadius = style.cornerRadius
+        layer.cornerCurve = .continuous
         layer.borderWidth = style.borderWidth
         layer.borderColor = style.borderColor.cgColor
 

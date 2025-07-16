@@ -36,6 +36,7 @@ final class ChoiceCardOptionView: UIView {
     private func setup() {
         backgroundColor = style.normal.background.color
         layer.cornerRadius = style.normal.cornerRadius
+        layer.cornerCurve = .continuous
 
         textLabel.text = text
         textLabel.font = style.normal.title.font

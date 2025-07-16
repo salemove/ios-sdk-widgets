@@ -145,6 +145,7 @@ extension Survey {
                     }
                 }
                 this.scrollView.layer.cornerRadius = theme.survey.layer.cornerRadius
+                this.scrollView.layer.cornerCurve = .continuous
 
                 this.cancelButton.update(with: theme.survey.cancelButton)
                 this.submitButton.update(with: theme.survey.submitButton)

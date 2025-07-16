@@ -2,13 +2,16 @@ import UIKit
 
 /// Base fonts used in a theme.
 public struct ThemeFont {
-    /// Biggest header font. By default, used in top label of connection view during queue and for operator's name during audio or video call. Default is Roboto Bold 24.
+    /// Biggest font. By default, used in visitor code numbers. Default is Roboto Bold 40.
+    public var largeTitle: UIFont
+
+    /// Second biggest header font. By default, used in top label of connection view during queue and for operator's name during audio or video call. Default is Roboto Bold 24.
     public var header1: UIFont
 
-    /// Second biggest header font. By default, used in both labels in the connection view when connecting to operator and for titles in chat view header and alerts. Default is Roboto Regular 20.
+    /// Third biggest header font. By default, used in both labels in the connection view when connecting to operator and for titles in chat view header and alerts. Default is Roboto Regular 20.
     public var header2: UIFont
 
-    /// Third biggest header font. By default, used in media upgrade alerts' titles. Default is Roboto Medium 18.
+    /// Fourth biggest header font. By default, used in media upgrade alerts' titles. Default is Roboto Medium 18.
     public var header3: UIFont
 
     /// Main body text font. By default, mostly used in chat messages and message input area, as well as attachment source title labels. Default is Roboto Regular 16.
@@ -30,15 +33,17 @@ public struct ThemeFont {
     public var buttonLabel: UIFont
 
     /// - Parameters:
-    ///   - header1: Biggest header font. By default, used in top label of connection view during queue and for operator's name during audio or video call. Default is Roboto Bold 24.
-    ///   - header2: Second biggest header font. By default, used in both labels in the connection view when connecting to operator and for titles in chat view header and alerts. Default is Roboto Regular 20.
-    ///   - header3: Third biggest header font. By default, used in media upgrade alerts' titles. Default is Roboto Medium 18.
+    ///   - largeTitle: Biggest font. By default, used in visitor code numbers. Default is Roboto Bold 40.
+    ///   - header1: Second biggest header font. By default, used in top label of connection view during queue and for operator's name during audio or video call. Default is Roboto Bold 24.
+    ///   - header2: Third biggest header font. By default, used in both labels in the connection view when connecting to operator and for titles in chat view header and alerts. Default is Roboto Regular 20.
+    ///   - header3: Fourth biggest header font. By default, used in media upgrade alerts' titles. Default is Roboto Medium 18.
     ///   - bodyText: Main body text font. By default, mostly used in chat messages and message input area, as well as attachment source title labels. Default is Roboto Regular 16.
     ///   - subtitle: Subtitle text font. By default, used for title in the call view header, second label in connect view when connected to operator and for file extension in chat attachments. Default is Roboto Regular 14.
     ///   - mediumSubtitle: Medium subtitle text font. By default, used for status texts in incoming and outcoming chat attachments. Default is Roboto Medium 14.
     ///   - caption: Caption text font. By default, used for visitor message status text ("Delivered"), unread message badge label, chat attachment information labels and call view button labels. Default is Roboto Regular 12.
     ///   - buttonLabel: Button label text font. By default, used in "End" buttons in chat and call view headers and buttons in alerts. Default is Roboto Regular 16.
     public init(
+        largeTitle: UIFont? = nil,
         header1: UIFont? = nil,
         header2: UIFont? = nil,
         header3: UIFont? = nil,
@@ -49,6 +54,7 @@ public struct ThemeFont {
         caption: UIFont? = nil,
         buttonLabel: UIFont? = nil
     ) {
+        self.largeTitle = largeTitle ?? UIFont.systemFont(ofSize: 40, weight: .ultraLight)
         self.header1 = header1 ?? UIFont.systemFont(ofSize: 24, weight: .bold)
         self.header2 = header2 ?? UIFont.systemFont(ofSize: 20, weight: .regular)
         self.header3 = header3 ?? UIFont.systemFont(ofSize: 18, weight: .medium)
@@ -62,6 +68,7 @@ public struct ThemeFont {
 
     init() {
         let fontScaling = FontScaling.theme
+        self.largeTitle = fontScaling.uiFont(with: .largeTitle)
         self.header1 = fontScaling.uiFont(with: .title1) // header1 ?? Font.bold(24) // .title1
         self.header2 = fontScaling.uiFont(with: .title2) // header2 ?? Font.regular(20) // .title2
         self.header3 = fontScaling.uiFont(with: .title3) // header3 ?? Font.medium(18) // .title3
@@ -104,7 +111,7 @@ extension FontScaling.Style {
         case .headline:
             return .init(weight: .medium, size: 16) // mediumSubtitle1 ?? Font.medium(16)
         case .largeTitle:
-            return .init(weight: .regular, size: 34)
+            return .init(weight: .semibold, size: 40)
         case .subheadline:
             return .init(weight: .medium, size: 14) // mediumSubtitle2 ?? Font.medium(14)
         case .title1:

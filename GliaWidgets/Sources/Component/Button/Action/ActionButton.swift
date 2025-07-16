@@ -37,7 +37,7 @@ class ActionButton: UIButton {
         clipsToBounds = true
         layer.masksToBounds = false
         layer.cornerRadius = props.style.cornerRaidus ?? 0
-
+        layer.cornerCurve = .continuous
         layer.borderColor = props.style.borderColor?.cgColor
         layer.borderWidth = props.style.borderWidth ?? 0.0
 
@@ -100,7 +100,7 @@ extension ActionButton {
 
         init(
             style: ActionButtonStyle = .init(title: "", titleFont: .systemFont(ofSize: 16), titleColor: .white, backgroundColor: .fill(color: .blue)),
-            height: CGFloat = 40,
+            height: CGFloat = 48,
             tap: Cmd = .nop,
             accessibilityIdentifier: String = ""
         ) {

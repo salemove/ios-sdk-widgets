@@ -49,6 +49,7 @@ final class CustomPresentationController: UIPresentationController {
     override func containerViewWillLayoutSubviews() {
         super.containerViewWillLayoutSubviews()
         presentedView?.layer.cornerRadius = cornerRadius
+        presentedView?.layer.cornerCurve = .continuous
         presentedView?.layer.masksToBounds = true
         presentedView?.frame = frameOfPresentedViewInContainerView
     }

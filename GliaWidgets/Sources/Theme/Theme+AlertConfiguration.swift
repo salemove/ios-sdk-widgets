@@ -3,23 +3,23 @@ extension Theme {
         let leaveQueue = ConfirmationAlertConfiguration(
             title: Localization.Engagement.Queue.Leave.header,
             message: Localization.Engagement.Queue.Leave.message,
-            negativeTitle: Localization.General.no,
+            negativeTitle: Localization.General.decline,
             positiveTitle: Localization.General.yes,
-            switchButtonBackgroundColors: true,
+            switchButtonBackgroundColors: false,
             showsPoweredBy: showsPoweredBy
         )
         let endEngagement = ConfirmationAlertConfiguration(
             title: Localization.Engagement.End.Confirmation.header,
             message: Localization.Engagement.End.message,
-            negativeTitle: Localization.General.no,
+            negativeTitle: Localization.General.decline,
             positiveTitle: Localization.General.yes,
-            switchButtonBackgroundColors: true,
+            switchButtonBackgroundColors: false,
             showsPoweredBy: showsPoweredBy
         )
         let operatorEndedEngagement = SingleActionAlertConfiguration(
             title: Localization.Engagement.Ended.header,
             message: Localization.Engagement.Ended.message,
-            buttonTitle: Localization.General.ok
+            buttonTitle: Localization.General.close
         )
         let operatorsUnavailable = MessageAlertConfiguration(
             title: Localization.Engagement.Queue.Closed.header,
@@ -127,8 +127,8 @@ extension Theme {
             message: Localization.Engagement.Confirm.message,
             firstLinkButtonUrl: Localization.Engagement.Confirm.Link1.url,
             secondLinkButtonUrl: Localization.Engagement.Confirm.Link2.url,
-            negativeTitle: Localization.General.cancel,
-            positiveTitle: Localization.General.allow,
+            negativeTitle: Localization.General.decline,
+            positiveTitle: Localization.General.accept,
             switchButtonBackgroundColors: true,
             showsPoweredBy: showsPoweredBy
         )

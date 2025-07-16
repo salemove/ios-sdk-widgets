@@ -108,7 +108,7 @@ extension CallVisualizer {
 
         lazy var poweredBy: PoweredBy = PoweredBy(style: props.style.poweredBy)
         lazy var visitorCodeStack = UIStackView.make(.horizontal, spacing: 8)()
-        private let contentInsets = UIEdgeInsets(top: 24, left: 24, bottom: 21, right: 24)
+        private let contentInsets = UIEdgeInsets(top: 32, left: 32, bottom: 24, right: 32)
 
         override func setup() {
             super.setup()
@@ -133,8 +133,8 @@ extension CallVisualizer {
 
             addSubview(closeButton)
             closeButton.translatesAutoresizingMaskIntoConstraints = false
-            constraints += closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30)
-            constraints += closeButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -26)
+            constraints += closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -34)
+            constraints += closeButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -30)
 
             refreshButton.translatesAutoresizingMaskIntoConstraints = false
             constraints += refreshButton.heightAnchor.constraint(equalToConstant: 40)
@@ -154,6 +154,7 @@ extension CallVisualizer {
             }
 
             refreshButton.layer.cornerRadius = props.style.actionButton.cornerRaidus ?? 9
+            refreshButton.layer.cornerCurve = .continuous
             refreshButton.layer.borderWidth = props.style.actionButton.borderWidth ?? 0
             refreshButton.layer.borderColor = props.style.actionButton.borderColor?.cgColor
             refreshButton.layer.shadowColor = props.style.actionButton.shadowColor?.cgColor
@@ -259,6 +260,7 @@ extension CallVisualizer.VisitorCodeView {
     func renderProps() {
         titleLabel.accessibilityIdentifier = props.titleAccessibilityIdentifier
         layer.cornerRadius = props.style.cornerRadius
+        layer.cornerCurve = .continuous
         layer.borderColor = props.style.borderColor.cgColor
         layer.borderWidth = props.style.borderWidth
 

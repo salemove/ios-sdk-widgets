@@ -55,6 +55,7 @@ final class ChoiceCardView: OperatorChatMessageView {
             let imageView = ImageView(environment: .create(with: environment))
             imageView.contentMode = .scaleAspectFill
             imageView.layer.cornerRadius = 4
+            imageView.layer.cornerCurve = .continuous
             imageView.layer.masksToBounds = true
             imageView.match(.height, value: kImageHeight).activate()
             imageView.setImage(from: imageUrl, animated: true)

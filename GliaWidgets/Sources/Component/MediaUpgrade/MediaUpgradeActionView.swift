@@ -25,6 +25,7 @@ class MediaUpgradeActionView: UIView {
         layer.borderColor = style.borderColor.cgColor
         layer.borderWidth = 1.0
         layer.cornerRadius = 3.0
+        layer.cornerCurve = .continuous
 
         imageView.image = style.icon
         imageView.tintColor = style.iconColor

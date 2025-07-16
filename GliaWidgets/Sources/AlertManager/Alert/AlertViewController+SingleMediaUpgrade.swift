@@ -12,7 +12,7 @@ extension AlertViewController {
         alertView.showsPoweredBy = conf.showsPoweredBy
         alertView.showsCloseButton = false
 
-        var declineButtonStyle = viewFactory.theme.alert.negativeAction
+        var declineButtonStyle = viewFactory.theme.alert.negativeNeutralAction
         declineButtonStyle.title = conf.decline
 
         var acceptButtonStyle = viewFactory.theme.alert.positiveAction

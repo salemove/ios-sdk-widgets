@@ -38,6 +38,7 @@ class ChatImageFileContentView: ChatFileContentView {
         contentView.backgroundColor = style.backgroundColor
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = 4
+        contentView.layer.cornerCurve = .continuous
 
         imageView.contentMode = .scaleAspectFill
     }

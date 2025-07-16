@@ -98,6 +98,7 @@ private extension GvaGalleryCardView {
 
         // Container
         layer.cornerRadius = style.cardContainer.cornerRadius
+        layer.cornerCurve = .continuous
         layer.borderWidth = style.cardContainer.borderWidth
         layer.borderColor = style.cardContainer.borderColor.cgColor
 

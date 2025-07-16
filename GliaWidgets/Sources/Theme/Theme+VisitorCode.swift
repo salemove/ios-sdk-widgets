@@ -4,10 +4,10 @@ extension Theme {
     var visitorCodeStyle: VisitorCodeStyle {
         let numberSlot = NumberSlotStyle(
             backgroundColor: .fill(color: color.baseLight),
-            borderColor: color.baseNeutral,
+            borderColor: color.baseShade,
             borderWidth: 1,
-            cornerRadius: 8,
-            numberFont: font.header1,
+            cornerRadius: 4,
+            numberFont: font.largeTitle,
             numberColor: color.baseDark,
             accessibility: .init(isFontScalingEnabled: true)
         )

@@ -93,6 +93,7 @@ extension Survey {
 
         func updateActiveState() {
             value.layer.cornerRadius = style.normalLayer.cornerRadius
+            value.layer.cornerCurve = .continuous
             value.layer.borderWidth = style.normalLayer.borderWidth
             value.layer.borderColor = style.normalLayer.borderColor
             value.textColor = .init(hex: style.normalText.color)
@@ -114,6 +115,7 @@ extension Survey {
 
         func updateSelectedState() {
             value.layer.cornerRadius = style.selectedLayer.cornerRadius
+            value.layer.cornerCurve = .continuous
             value.layer.borderWidth = style.selectedLayer.borderWidth
             value.layer.borderColor = style.selectedLayer.borderColor
             value.textColor = .init(hex: style.selectedText.color)
@@ -135,6 +137,7 @@ extension Survey {
 
         func updateHighlightedState() {
             value.layer.cornerRadius = style.highlightedLayer.cornerRadius
+            value.layer.cornerCurve = .continuous
             value.layer.borderWidth = style.highlightedLayer.borderWidth
             value.layer.borderColor = style.highlightedLayer.borderColor
             value.textColor = .init(hex: style.highlightedText.color)

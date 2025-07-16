@@ -93,6 +93,7 @@ extension GvaPersistentButtonView {
 
         override func layoutSubviews() {
             layer.cornerRadius = style.cornerRadius
+            layer.cornerCurve = .continuous
             layer.borderWidth = style.borderWidth
             layer.borderColor = style.borderColor.cgColor
 

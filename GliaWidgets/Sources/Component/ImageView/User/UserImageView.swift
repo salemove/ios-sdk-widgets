@@ -57,6 +57,7 @@ final class UserImageView: BaseView {
     override func layoutSubviews() {
         super.layoutSubviews()
         layer.cornerRadius = bounds.height / 2.0
+        layer.cornerCurve = .continuous
         updatePlaceholderContentMode()
         switch style.placeholderBackgroundColor {
         case .fill(let color):

@@ -10,46 +10,22 @@ class AlertView: BaseView {
         get { return titleImageView.image }
         set {
             titleImageView.image = newValue
-
-            if newValue == nil {
-                titleImageView.removeFromSuperview()
-            } else {
-                guard titleImageView.superview == nil else { return }
-                titleImageViewContainer.addSubview(titleImageView)
-                titleImageView.translatesAutoresizingMaskIntoConstraints = false
-                var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
-                constraints += titleImageView.layoutInSuperview(edges: .vertical)
-                constraints += titleImageView.layoutInCenter(titleImageViewContainer)
-                constraints += titleImageView.leadingAnchor.constraint(greaterThanOrEqualTo: titleImageViewContainer.leadingAnchor)
-                constraints += titleImageView.trailingAnchor.constraint(lessThanOrEqualTo: titleImageViewContainer.trailingAnchor)
-            }
+            updateStackContents()
         }
     }
     var title: String? {
         get { return titleLabel.text }
-        set { titleLabel.text = newValue }
+        set { titleLabel.text = newValue; updateStackContents() }
     }
     var message: String? {
         get { return messageLabel.text }
-        set { messageLabel.text = newValue }
+        set { messageLabel.text = newValue; updateStackContents() }
     }
     var showsCloseButton: Bool = false {
-        didSet {
-            if showsCloseButton {
-                addCloseButton()
-            } else {
-                removeCloseButton()
-            }
-        }
+        didSet { updateStackContents() }
     }
     var showsPoweredBy: Bool = false {
-        didSet {
-            if showsPoweredBy {
-                addPoweredBy()
-            } else {
-                removePoweredBy()
-            }
-        }
+        didSet { updateStackContents() }
     }
 
     var actionCount: Int {
@@ -64,14 +40,14 @@ class AlertView: BaseView {
     private let titleLabel = UILabel().makeView()
     private let messageLabel = UILabel().makeView()
     private let stackView = UIStackView().makeView()
-    private let topContentStackView = UIStackView().makeView()
     private let linkButtonStackView = UIStackView().makeView()
     private let actionsStackView = UIStackView().makeView()
-    private let kContentInsets = UIEdgeInsets(top: 28, left: 32, bottom: 28, right: 32)
-    private let kCornerRadius: CGFloat = 30
+    private let kContentInsets = UIEdgeInsets(top: 32, left: 32, bottom: 24, right: 32)
+    private let kCornerRadius: CGFloat = 16
     private let titleImageViewSize: CGFloat = 32
     private var poweredBy: PoweredBy?
     private var closeButton: Button?
+    private var closeButtonRow: UIStackView?
 
     init(with style: AlertStyle) {
         self.style = style
@@ -106,14 +82,12 @@ class AlertView: BaseView {
     func addLinkButton(_ contentView: UIView) {
         linkButtonStackView.isHidden = false
         linkButtonStackView.addArrangedSubview(contentView)
+        updateStackContents()
     }
 
     func addActionView(_ actionView: UIView) {
-        if actionsStackView.axis == .vertical {
-            actionsStackView.insertArrangedSubview(actionView, at: 0)
-        } else {
-            actionsStackView.addArrangedSubview(actionView)
-        }
+        actionsStackView.addArrangedSubview(actionView)
+        updateStackContents()
     }
 
     override func setup() {
@@ -122,6 +96,7 @@ class AlertView: BaseView {
 
         layer.masksToBounds = false
         layer.cornerRadius = kCornerRadius
+        layer.cornerCurve = .continuous
         layer.shadowColor = UIColor.black.withAlphaComponent(0.2).cgColor
         layer.shadowOffset = CGSize(width: 0.0, height: 10.0)
         layer.shadowRadius = 30.0
@@ -129,23 +104,6 @@ class AlertView: BaseView {
 
         stackView.axis = .vertical
         stackView.spacing = 16
-        stackView.addArrangedSubviews([
-            topContentStackView,
-            linkButtonStackView,
-            actionsStackView
-        ])
-
-        topContentStackView.axis = .vertical
-        topContentStackView.spacing = 16
-        topContentStackView.addArrangedSubviews([
-            titleImageViewContainer,
-            titleLabel,
-            messageLabel
-        ])
-
-        linkButtonStackView.isHidden = true
-        linkButtonStackView.axis = .vertical
-        linkButtonStackView.spacing = 8
 
         titleImageView.contentMode = .scaleAspectFit
         titleImageView.tintColor = style.titleImageColor
@@ -160,9 +118,15 @@ class AlertView: BaseView {
         messageLabel.textColor = style.messageColor
         messageLabel.textAlignment = style.messageAlignment
 
-        actionsStackView.spacing = 11
+        linkButtonStackView.isHidden = true
+        linkButtonStackView.axis = .vertical
+        linkButtonStackView.spacing = 8
+
+        actionsStackView.spacing = 8
         actionsStackView.distribution = .fillEqually
         actionsStackView.axis = style.actionAxis
+        actionsStackView.isLayoutMarginsRelativeArrangement = true
+        actionsStackView.layoutMargins = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
 
         setFontScalingEnabled(
             style.accessibility.isFontScalingEnabled,
@@ -182,15 +146,23 @@ class AlertView: BaseView {
         constraints += stackView.layoutInSuperview(insets: kContentInsets)
         constraints += titleImageView.match(value: titleImageViewSize)
     }
+    
+    private func makeCloseButtonRow() -> UIStackView {
+        let closeRow = UIStackView()
+        closeRow.axis = .horizontal
+        closeRow.alignment = .fill
+        closeRow.distribution = .fill
+        closeRow.isLayoutMarginsRelativeArrangement = true
+        closeRow.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 
-    private func addCloseButton() {
-        guard closeButton == nil else { return }
-
+        let spacer = UIView()
         let closeButton = Button(
             kind: .alertClose,
             tap: { [weak self] in self?.closeTapped?() }
         )
-
+        closeButton.accessibilityIdentifier = "alert_close_button"
+        closeButton.setContentHuggingPriority(.required, for: .horizontal)
+        closeButton.setContentCompressionResistancePriority(.required, for: .horizontal)
         switch style.closeButtonColor {
         case .fill(let color):
             closeButton.tintColor = color
@@ -198,31 +170,69 @@ class AlertView: BaseView {
             closeButton.makeGradientBackground(colors: colors)
         }
 
-        closeButton.accessibilityIdentifier = "alert_close_button"
+        closeRow.addArrangedSubview(spacer)
+        closeRow.addArrangedSubview(closeButton)
+
         self.closeButton = closeButton
-        addSubview(closeButton)
-        closeButton.translatesAutoresizingMaskIntoConstraints = false
-        [
-            closeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            closeButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10)
-        ].activate()
+        self.closeButtonRow = closeRow
+
+        return closeRow
     }
 
-    private func removeCloseButton() {
-        closeButton?.removeFromSuperview()
+    private func getOrCreatePoweredBy() -> PoweredBy {
+        if let poweredBy = poweredBy {
+            return poweredBy
+        } else {
+            let newPoweredBy = PoweredBy(style: style.poweredBy)
+            self.poweredBy = newPoweredBy
+            return newPoweredBy
+        }
     }
 
-    private func addPoweredBy() {
-        guard poweredBy == nil else { return }
+    private func updateStackContents() {
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        let iconAndTitleStack = UIStackView()
+        iconAndTitleStack.axis = .vertical
+        iconAndTitleStack.alignment = .center
+        iconAndTitleStack.spacing = 8
 
-        let poweredBy = PoweredBy(style: style.poweredBy)
-        self.poweredBy = poweredBy
+        if titleImageView.image != nil {
+            if titleImageView.superview == nil {
+                titleImageViewContainer.addSubview(titleImageView)
+                titleImageView.translatesAutoresizingMaskIntoConstraints = false
+                var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
+                constraints += titleImageView.layoutInSuperview(edges: .vertical)
+                constraints += titleImageView.layoutInCenter(titleImageViewContainer)
+                constraints += titleImageView.leadingAnchor.constraint(greaterThanOrEqualTo: titleImageViewContainer.leadingAnchor)
+                constraints += titleImageView.trailingAnchor.constraint(lessThanOrEqualTo: titleImageViewContainer.trailingAnchor)
+            }
+            iconAndTitleStack.addArrangedSubview(titleImageViewContainer)
+            iconAndTitleStack.addArrangedSubview(titleLabel)
+        } else {
+            iconAndTitleStack.addArrangedSubview(titleLabel)
+        }
 
-        stackView.addArrangedSubview(poweredBy)
-        stackView.setCustomSpacing(23, after: actionsStackView)
-    }
+        stackView.addArrangedSubview(iconAndTitleStack)
+        if let message = messageLabel.text, !message.isEmpty {
+            stackView.addArrangedSubview(messageLabel)
+        }
 
-    private func removePoweredBy() {
-        poweredBy?.removeFromSuperview()
+        if !linkButtonStackView.isHidden && !linkButtonStackView.arrangedSubviews.isEmpty {
+            stackView.addArrangedSubview(linkButtonStackView)
+        }
+
+        if !actionsStackView.arrangedSubviews.isEmpty {
+            stackView.addArrangedSubview(actionsStackView)
+        }
+
+        if showsCloseButton {
+            let closeRow = makeCloseButtonRow()
+            stackView.addArrangedSubview(closeRow)
+        }
+
+        if showsPoweredBy {
+            let pb = getOrCreatePoweredBy()
+            stackView.addArrangedSubview(pb)
+        }
     }
 }

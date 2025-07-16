@@ -40,6 +40,7 @@ class ChatFileDownloadContentView: ChatFileContentView {
         super.setup()
         backgroundColor = style.backgroundColor
         layer.cornerRadius = 4
+        layer.cornerCurve = .continuous
         layer.borderWidth = 1
         layer.borderColor = style.borderColor.cgColor
 

@@ -86,9 +86,17 @@ class ViewFactory {
             header: .init(
                 title: "",
                 effect: .none,
-                endButton: .init(style: theme.call.header.endButton, tap: endCmd, accessibilityIdentifier: "header_end_button"),
+                endButton: .init(
+                    style: theme.call.header.endButton,
+                    height: 40,
+                    tap: endCmd,
+                    accessibilityIdentifier: "header_end_button"
+                ),
                 backButton: backButton,
-                closeButton: .init(tap: closeCmd, style: theme.call.header.closeButton),
+                closeButton: .init(
+                    tap: closeCmd,
+                    style: theme.call.header.closeButton
+                ),
                 style: theme.call.header
             )
         )

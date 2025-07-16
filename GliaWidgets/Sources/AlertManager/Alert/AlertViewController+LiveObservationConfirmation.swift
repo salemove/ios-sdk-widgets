@@ -14,11 +14,11 @@ extension AlertViewController {
         alertView.showsCloseButton = false
 
         let alertStyle = viewFactory.theme.alert
-        var declineButtonStyle = alertStyle.negativeAction
-        declineButtonStyle.title = conf.negativeTitle ?? ""
+        var declineButtonStyle = alertStyle.negativeNeutralAction
+        declineButtonStyle.title = conf.negativeTitle
 
         var acceptButtonStyle = alertStyle.positiveAction
-        acceptButtonStyle.title = conf.positiveTitle ?? ""
+        acceptButtonStyle.title = conf.positiveTitle
 
         if let firstLinkButton = linkButton(
             for: conf.firstLinkButtonUrl,

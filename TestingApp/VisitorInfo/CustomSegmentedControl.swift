@@ -79,6 +79,7 @@ class CustomSegmentedControl: UIControl {
 
     private func setupView() {
         layer.cornerRadius = cornerRadius
+        layer.cornerCurve = .continuous
         layer.borderWidth = borderWidth
         layer.borderColor = borderColor.cgColor
         backgroundColor = .clear

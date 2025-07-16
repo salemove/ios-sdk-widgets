@@ -67,6 +67,7 @@ class BubbleView: BaseView {
 
         onHoldView.frame = userImageView?.bounds ?? .zero
         onHoldView.layer.cornerRadius = cornerRadius
+        onHoldView.layer.cornerCurve = .continuous
     }
 
     func showOnHoldView() {

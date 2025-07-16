@@ -123,6 +123,7 @@ extension SecureConversations.WelcomeView {
             self.backgroundColor = style.backgroundColor
             self.layer.borderWidth = style.borderWidth
             self.layer.cornerRadius = style.cornerRadius
+            self.layer.cornerCurve = .continuous
             self.layer.borderColor = style.borderColor.cgColor
             // Hide placeholder if textfield is active or has non-empty text.
             placeholderLabel.isHidden = !textView.text.isEmpty || textView.isFirstResponder

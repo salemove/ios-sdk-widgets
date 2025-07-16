@@ -67,6 +67,7 @@ extension SecureConversations {
             layer.borderWidth = props.borderWidth
             layer.borderColor = props.borderColor.cgColor
             layer.cornerRadius = props.cornerRadius
+            layer.cornerCurve = .continuous
             activityIndicator.color = props.activityIndicatorColor
             renderedIsIndicatorShown = props.isActivityIndicatorShown
             accessibilityTraits = .button
