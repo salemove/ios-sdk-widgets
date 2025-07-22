@@ -214,10 +214,9 @@ workflows:
     - script@1:
         title: Copy xccovreport to Deploy Dir
         inputs:
-          - content: |
+          - content: |-
             echo "Copying coverage report to Deploy dir"
             cp "$BITRISE_XCOV_OUTPUT_PATH" "$BITRISE_DEPLOY_DIR/coverage.xccovreport"
-
     - xcode-archive@5:
         inputs:
         - scheme: $APP_SCHEME
