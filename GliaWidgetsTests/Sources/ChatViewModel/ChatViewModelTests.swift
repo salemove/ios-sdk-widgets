@@ -1246,6 +1246,100 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.shouldForceEnqueueing)
     }
 
+    func testLoadHistoryStartsEnqueueingWhenReplaceExistingEnqueueingIsTrue() throws {
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.gcd.mainQueue.async = { $0() }
+
+        let interactor = Interactor.mock(environment: interactorEnv)
+
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
+        fileUploadListViewModelEnv.uploader.uploads = []
+        viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
+        viewModelEnv.fetchSiteConfigurations = { _ in }
+        viewModelEnv.loadChatMessagesFromHistory = { true }
+        viewModelEnv.fetchChatHistory = { callback in
+            callback(.success([.mock()]))
+        }
+        viewModelEnv.getNonTransferredSecureConversationEngagement = { nil }
+
+        let viewModel = ChatViewModel.mock(
+            interactor: interactor,
+            chatType: .authenticated,
+            replaceExistingEnqueueing: true,
+            environment: viewModelEnv
+        )
+
+        viewModel.start()
+
+        XCTAssertEqual(interactor.state, .enqueueing(.chat))
+    }
+
+    func testLoadHistoryStartsEnqueueingWhenTranscriptIsEmpty() throws {
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.gcd.mainQueue.async = { $0() }
+
+        let interactor = Interactor.mock(environment: interactorEnv)
+
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
+        fileUploadListViewModelEnv.uploader.uploads = []
+        viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
+        viewModelEnv.fetchSiteConfigurations = { _ in }
+        viewModelEnv.loadChatMessagesFromHistory = { true }
+        viewModelEnv.fetchChatHistory = { callback in
+            callback(.success([]))
+        }
+        viewModelEnv.getNonTransferredSecureConversationEngagement = { nil }
+
+        let viewModel = ChatViewModel.mock(
+            interactor: interactor,
+            chatType: .authenticated,
+            environment: viewModelEnv
+        )
+
+        viewModel.start()
+
+        XCTAssertEqual(interactor.state, .enqueueing(.chat))
+    }
+
+    func testLoadHistoryStartsEnqueueingWhenOngoingEngagementExists() throws {
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.gcd.mainQueue.async = { $0() }
+
+        let interactor = Interactor.mock(environment: interactorEnv)
+
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
+        fileUploadListViewModelEnv.uploader.uploads = []
+        viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
+        viewModelEnv.fetchSiteConfigurations = { _ in }
+        viewModelEnv.loadChatMessagesFromHistory = { true }
+        viewModelEnv.fetchChatHistory = { callback in
+            callback(.success([.mock()]))
+        }
+        viewModelEnv.getNonTransferredSecureConversationEngagement = { .mock() }
+
+        let viewModel = ChatViewModel.mock(
+            interactor: interactor,
+            chatType: .authenticated,
+            environment: viewModelEnv
+        )
+
+        viewModel.start()
+
+        XCTAssertEqual(interactor.state, .enqueueing(.chat))
+    }
+
     func testTransferredScSwitchesChatTypeToAuthenticatedOnEngagedState() throws {
         var interactorEnv = Interactor.Environment.failing
         interactorEnv.gcd.mainQueue.async = { $0() }
