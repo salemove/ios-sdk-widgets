@@ -164,7 +164,7 @@ class ChatViewModel: EngagementViewModel {
             // We enqueue eagerly in case if this is the first engagement for visitor (by  evaluating previous chat history)
             // or in case if engagement has been restored.
 
-            if history.isEmpty || self.environment.getNonTransferredSecureConversationEngagement() != nil {
+            if history.isEmpty || self.environment.getNonTransferredSecureConversationEngagement() != nil || self.replaceExistingEnqueueing {
                 self.interactor.state = .enqueueing(.chat)
             }
         }
