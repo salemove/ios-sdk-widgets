@@ -22,7 +22,7 @@ extension Glia {
             interactor: interactor,
             features: features ?? [],
             maximize: false,
-            aiScreenContextSummary: nil
+            aiScreenContextSummary: { summary in summary(nil) }
         )
         loggerPhase.logger.prefixed(Self.self).info("Engagement was restored")
     }
@@ -33,7 +33,7 @@ extension Glia {
         interactor: Interactor,
         features: Features,
         maximize: Bool,
-        aiScreenContextSummary: AiScreenContext?
+        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void
     ) {
         engagementRestorationState = .restoring
         // In this case, where engagement is restored, LO acknowledgement dialog

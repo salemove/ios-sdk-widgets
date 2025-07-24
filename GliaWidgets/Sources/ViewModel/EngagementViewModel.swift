@@ -16,12 +16,12 @@ class EngagementViewModel: CommonEngagementModel {
     /// A flag indicating where enqueue will replace existing one.
     /// Used when 'Leave Current Conversation?' dialog is closed with 'Leave' button.
     let replaceExistingEnqueueing: Bool
-    let aiScreenContextSummary: AiScreenContext?
+    let aiScreenContextSummary: ((AiScreenContext?) -> Void) -> Void
 
     init(
         interactor: Interactor,
         replaceExistingEnqueueing: Bool,
-        aiScreenContextSummary: AiScreenContext?,
+        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void,
         environment: Environment
     ) {
         self.interactor = interactor
@@ -63,7 +63,7 @@ class EngagementViewModel: CommonEngagementModel {
     func enqueue(
         engagementKind: EngagementKind,
         replaceExisting: Bool,
-        aiScreenContextSummary: AiScreenContext?
+        aiScreenContextSummary: ((AiScreenContext?) -> Void) -> Void
     ) {
         interactor.enqueueForEngagement(
             engagementKind: engagementKind,

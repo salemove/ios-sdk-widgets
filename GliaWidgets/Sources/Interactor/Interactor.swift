@@ -139,7 +139,7 @@ extension Interactor {
     func enqueueForEngagement(
         engagementKind: EngagementKind,
         replaceExisting: Bool,
-        aiScreenContextSummary: AiScreenContext?,
+        aiScreenContextSummary: ((AiScreenContext?) -> Void) -> Void,
         success: @escaping () -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
@@ -161,30 +161,32 @@ extension Interactor {
             .map(CoreSdkClient.VisitorContext.ContextType.assetId)
             .map(CoreSdkClient.VisitorContext.init(_:))
 
-        self.environment.coreSdk.queueForEngagement(
-            .init(
-                queueIds: queueIds ?? [],
-                visitorContext: coreSdkVisitorContext,
-                // shouldCloseAllQueues is `true` by default core sdk,
-                // here it is passed explicitly
-                shouldCloseAllQueues: true,
-                mediaType: engagementKind.mediaType,
-                engagementOptions: options
-            ),
-            replaceExisting,
-            aiScreenContextSummary
-        ) { [weak self] result in
-            switch result {
-            case .failure(let error):
-                self?.environment.log.prefixed(Self.self).info("Queue for engagement stopped due to error or empty queue")
-                self?.state = .ended(.byError)
-                failure(error)
-            case .success(let ticket):
+        aiScreenContextSummary { summmary in
+            self.environment.coreSdk.queueForEngagement(
+                .init(
+                    queueIds: queueIds ?? [],
+                    visitorContext: coreSdkVisitorContext,
+                    // shouldCloseAllQueues is `true` by default core sdk,
+                    // here it is passed explicitly
+                    shouldCloseAllQueues: true,
+                    mediaType: engagementKind.mediaType,
+                    engagementOptions: options
+                ),
+                replaceExisting,
+                summmary
+            ) { [weak self] result in
+                switch result {
+                case .failure(let error):
+                    self?.environment.log.prefixed(Self.self).info("Queue for engagement stopped due to error or empty queue")
+                    self?.state = .ended(.byError)
+                    failure(error)
+                case .success(let ticket):
 
-                if case .enqueueing = self?.state {
-                    self?.state = .enqueued(ticket, engagementKind)
+                    if case .enqueueing = self?.state {
+                        self?.state = .enqueued(ticket, engagementKind)
+                    }
+                    success()
                 }
-                success()
             }
         }
     }

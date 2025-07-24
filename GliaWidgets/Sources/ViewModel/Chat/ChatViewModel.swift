@@ -79,7 +79,7 @@ class ChatViewModel: EngagementViewModel {
         failedToDeliverStatusText: String,
         chatType: ChatType,
         replaceExistingEnqueueing: Bool,
-        aiScreenContextSummary: AiScreenContext?,
+        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void,
         environment: Environment,
         maximumUploads: () -> Int
     ) {

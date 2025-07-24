@@ -6,7 +6,7 @@ extension EngagementCoordinator {
         sceneProvider: SceneProvider? = nil,
         engagementLaunching: EngagementCoordinator.EngagementLaunching = .direct(kind: .audioCall),
         features: Features = .all,
-        aiScreenContextSummary: AiScreenContext? = nil,
+        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void = { $0(nil) },
         environment: Environment = .mock
     ) -> EngagementCoordinator {
         EngagementCoordinator(

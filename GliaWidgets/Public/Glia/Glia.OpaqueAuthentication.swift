@@ -163,7 +163,7 @@ extension Glia {
                         interactor: interactor,
                         features: self?.features ?? .all,
                         maximize: false,
-                        aiScreenContextSummary: nil
+                        aiScreenContextSummary: { $0(nil) }
                     )
                 } else {
                     // Handle authentication with possibility to restart engagement.
@@ -220,7 +220,7 @@ extension Glia {
                     sceneProvider: sceneProvider,
                     engagementKind: .init(media: restartedEngagement.mediaStreams),
                     features: features,
-                    aiScreenContextSummary: nil,
+                    aiScreenContextSummary: { $0(nil) },
                     maximize: false
                 )
 

@@ -28,7 +28,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         unreadMessages: ObservableValue<Int>,
         startWith: StartAction,
         replaceExistingEnqueueing: Bool,
-        aiScreenContextSummary: AiScreenContext?
+        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void
     ) {
         self.call = call
         self.startWith = startWith

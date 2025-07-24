@@ -10,13 +10,13 @@ extension SecureConversations {
         private(set) var viewModel: SecureConversations.WelcomeViewModel?
         private(set) var selectedPickerController: SelectedPickerController?
         private var messagingInitialScreen: SecureConversations.InitialScreen
-        let aiScreenContextSummary: AiScreenContext?
+        let aiScreenContextSummary: ((AiScreenContext?) -> Void) -> Void
 
         init(
             messagingInitialScreen: SecureConversations.InitialScreen,
             viewFactory: ViewFactory,
             navigationPresenter: NavigationPresenter,
-            aiScreenContextSummary: AiScreenContext?,
+            aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void,
             environment: Environment
         ) {
             self.messagingInitialScreen = messagingInitialScreen

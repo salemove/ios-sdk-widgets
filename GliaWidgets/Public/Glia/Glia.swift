@@ -338,7 +338,7 @@ public class Glia {
                         interactor: interactor,
                         features: features,
                         maximize: false,
-                        aiScreenContextSummary: nil
+                        aiScreenContextSummary: { $0(nil) }
                     )
                 }
             case .failure(let error):

@@ -15,7 +15,7 @@ extension CallViewModel {
             unreadMessages: unreadMessages,
             startWith: startWith,
             replaceExistingEnqueueing: replaceExistingEnqueueing,
-            aiScreenContextSummary: nil
+            aiScreenContextSummary: { $0(nil) }
         )
     }
 }

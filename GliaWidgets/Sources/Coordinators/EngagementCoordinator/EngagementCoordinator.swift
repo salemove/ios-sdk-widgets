@@ -53,7 +53,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     let gliaPresenter: GliaPresenter
     private let kBubbleViewSize: CGFloat = 60.0
     let features: Features
-    let aiScreenContextSummary: AiScreenContext?
+    let aiScreenContextSummary: ((AiScreenContext?) -> Void) -> Void
     private let environment: Environment
 
     init(
@@ -62,7 +62,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         sceneProvider: SceneProvider?,
         engagementLaunching: EngagementLaunching,
         features: Features,
-        aiScreenContextSummary: AiScreenContext?,
+        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void,
         environment: Environment
     ) {
         self.interactor = interactor
@@ -114,7 +114,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         skipTransferredSCHandling: Bool,
         animated: Bool = false,
         replaceExistingEnqueueing: Bool,
-        aiScreenContextSummary: AiScreenContext?
+        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void
     ) {
         let engagementKind = engagementLaunching.currentKind
         switch engagementKind {
@@ -325,7 +325,7 @@ extension EngagementCoordinator {
         showsCallBubble: Bool,
         skipTransferredSCHandling: Bool,
         replaceExistingEnqueueing: Bool,
-        aiScreenContextSummary: AiScreenContext?
+        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void
     ) -> ChatViewController {
         let coordinator = ChatCoordinator(
             interactor: interactor,
@@ -425,7 +425,7 @@ extension EngagementCoordinator {
         _ call: Call,
         withAction startAction: CallViewModel.StartAction,
         replaceExistingEnqueueing: Bool,
-        aiScreenContextSummary: AiScreenContext?
+        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void
     ) -> CallViewController {
         let coordinator = CallCoordinator(
             interactor: interactor,
@@ -663,7 +663,7 @@ extension EngagementCoordinator {
                     }
                 ),
                 replaceExistingEnqueueing: false,
-                aiScreenContextSummary: nil
+                aiScreenContextSummary: { $0(nil) }
             )
             engagement = .call(
                 callViewController,
