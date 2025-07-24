@@ -10,17 +10,20 @@ extension SecureConversations {
         private(set) var viewModel: SecureConversations.WelcomeViewModel?
         private(set) var selectedPickerController: SelectedPickerController?
         private var messagingInitialScreen: SecureConversations.InitialScreen
+        let aiScreenContextSummary: AiScreenContext?
 
         init(
             messagingInitialScreen: SecureConversations.InitialScreen,
             viewFactory: ViewFactory,
             navigationPresenter: NavigationPresenter,
+            aiScreenContextSummary: AiScreenContext?,
             environment: Environment
         ) {
             self.messagingInitialScreen = messagingInitialScreen
             self.viewFactory = viewFactory
             self.navigationPresenter = navigationPresenter
             self.environment = environment
+            self.aiScreenContextSummary = aiScreenContextSummary
         }
 
         func start() -> UIViewController {
@@ -208,7 +211,8 @@ extension SecureConversations.Coordinator {
             startAction: .startEngagement,
             environment: .create(with: environment),
             startWithSecureTranscriptFlow: true,
-            skipTransferredSCHandling: false
+            skipTransferredSCHandling: false,
+            aiScreenContextSummary: aiScreenContextSummary
         )
 
         coordinator.delegate = { [weak self] event in

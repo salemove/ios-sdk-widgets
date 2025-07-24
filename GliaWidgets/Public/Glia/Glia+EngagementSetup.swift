@@ -46,7 +46,8 @@ extension Glia {
         interactor: Interactor,
         features: Features,
         viewFactory: ViewFactory,
-        ongoingEngagementMediaStreams: Engagement.Media?
+        ongoingEngagementMediaStreams: Engagement.Media?,
+        aiScreenContextSummary: AiScreenContext?
     ) throws {
         /// If during enqueued state the visitor initiates another engagement, we avoid cancelling the queue
         /// ticket and adding a new one, by monitoring the new engagement kind. If the engagement kind matches
@@ -78,7 +79,8 @@ extension Glia {
                     viewFactory: viewFactory,
                     sceneProvider: sceneProvider,
                     engagementKind: ongoingEngagementMediaStreams.map { EngagementKind(media: $0) } ?? engagementKind,
-                    features: features
+                    features: features,
+                    aiScreenContextSummary: aiScreenContextSummary
                 )
             }
             return
@@ -99,6 +101,7 @@ extension Glia {
                     snackBarStyle: viewFactory.theme.snackBar,
                     configuration: configuration,
                     interactor: interactor,
+                    aiScreenContextSummary: aiScreenContextSummary,
                     features: features
                 )
             case .audioCall, .videoCall:
@@ -108,6 +111,7 @@ extension Glia {
                     snackBarStyle: viewFactory.theme.snackBar,
                     configuration: configuration,
                     interactor: interactor,
+                    aiScreenContextSummary: aiScreenContextSummary,
                     features: features
                 )
             case .none:
@@ -164,6 +168,7 @@ extension Glia {
         sceneProvider: SceneProvider?,
         engagementKind: EngagementKind,
         features: Features,
+        aiScreenContextSummary: AiScreenContext?,
         maximize: Bool = true
     ) {
         let engagementLaunching: EngagementCoordinator.EngagementLaunching
@@ -194,6 +199,7 @@ extension Glia {
             sceneProvider: sceneProvider,
             engagementLaunching: engagementLaunching,
             features: features,
+            aiScreenContextSummary: aiScreenContextSummary,
             environment: .create(
                 with: environment,
                 loggerPhase: loggerPhase,
@@ -262,6 +268,7 @@ extension Glia {
         snackBarStyle: Theme.SnackBarStyle,
         configuration: Configuration,
         interactor: Interactor,
+        aiScreenContextSummary: AiScreenContext?,
         features: Features
     ) {
         if shoulShowSnackBar {
@@ -278,7 +285,8 @@ extension Glia {
                     currentEngagement: ongoingEngagement,
                     interactor: interactor,
                     features: features,
-                    maximize: true
+                    maximize: true,
+                    aiScreenContextSummary: aiScreenContextSummary
                 )
             }
         }

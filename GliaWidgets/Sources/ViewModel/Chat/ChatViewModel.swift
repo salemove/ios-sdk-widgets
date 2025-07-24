@@ -79,6 +79,7 @@ class ChatViewModel: EngagementViewModel {
         failedToDeliverStatusText: String,
         chatType: ChatType,
         replaceExistingEnqueueing: Bool,
+        aiScreenContextSummary: AiScreenContext?,
         environment: Environment,
         maximumUploads: () -> Int
     ) {
@@ -117,6 +118,7 @@ class ChatViewModel: EngagementViewModel {
         super.init(
             interactor: interactor,
             replaceExistingEnqueueing: replaceExistingEnqueueing,
+            aiScreenContextSummary: aiScreenContextSummary,
             environment: environment
         )
         do {

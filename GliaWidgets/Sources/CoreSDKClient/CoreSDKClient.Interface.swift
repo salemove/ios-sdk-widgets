@@ -46,6 +46,7 @@ struct CoreSdkClient {
     typealias QueueForEngagement = (
         _ options: GliaCoreSDK.QueueForEngagementOptions,
         _ replaceExisting: Bool,
+        _ aiScreenContextSummary: GliaCoreSDK.AiScreenContext?,
         _ completion: @escaping (Result<GliaCoreSDK.QueueTicket, GliaCoreSDK.GliaCoreError>) -> Void
     ) -> Void
 
@@ -375,6 +376,8 @@ extension CoreSdkClient {
     typealias AnyCombineScheduler = GliaCoreSDK.AnyCombineScheduler
     typealias AnyScheduler = GliaCoreSDK.AnyScheduler
 }
+
+public typealias AiScreenContext = GliaCoreSDK.AiScreenContext
 
 extension CoreSdkClient.AnyCombineScheduler {
     var main: AnyScheduler { mainScheduler }

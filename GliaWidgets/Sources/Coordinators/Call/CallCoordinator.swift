@@ -19,6 +19,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let call: Call
     private let unreadMessages: ObservableValue<Int>
     private let startAction: CallViewModel.StartAction
+    private let aiScreenContextSummary: AiScreenContext?
     private let environment: Environment
 
     init(
@@ -28,6 +29,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
         call: Call,
         unreadMessages: ObservableValue<Int>,
         startAction: CallViewModel.StartAction,
+        aiScreenContextSummary: AiScreenContext?,
         environment: Environment
     ) {
         self.interactor = interactor
@@ -36,6 +38,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.call = call
         self.unreadMessages = unreadMessages
         self.startAction = startAction
+        self.aiScreenContextSummary = aiScreenContextSummary
         self.environment = environment
     }
 
@@ -47,7 +50,8 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
         let viewController = makeCallViewController(
             call: call,
             startAction: startAction,
-            replaceExistingEnqueueing: replaceExistingEnqueueing
+            replaceExistingEnqueueing: replaceExistingEnqueueing,
+            aiScreenContextSummary: aiScreenContextSummary
         )
         return viewController
     }
@@ -59,7 +63,8 @@ private extension CallCoordinator {
     func makeCallViewController(
         call: Call,
         startAction: CallViewModel.StartAction,
-        replaceExistingEnqueueing: Bool
+        replaceExistingEnqueueing: Bool,
+        aiScreenContextSummary: AiScreenContext?
     ) -> CallViewController {
         environment.log.prefixed(Self.self).info("Create Call screen")
         let viewModel = CallViewModel(
@@ -71,7 +76,8 @@ private extension CallCoordinator {
             call: call,
             unreadMessages: unreadMessages,
             startWith: startAction,
-            replaceExistingEnqueueing: replaceExistingEnqueueing
+            replaceExistingEnqueueing: replaceExistingEnqueueing,
+            aiScreenContextSummary: aiScreenContextSummary
         )
         viewModel.engagementDelegate = { [weak self] event in
             self?.handleEngagementViewModelEvent(event)

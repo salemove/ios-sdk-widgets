@@ -337,7 +337,8 @@ public class Glia {
                         currentEngagement: currentEngagement,
                         interactor: interactor,
                         features: features,
-                        maximize: false
+                        maximize: false,
+                        aiScreenContextSummary: nil
                     )
                 }
             case .failure(let error):

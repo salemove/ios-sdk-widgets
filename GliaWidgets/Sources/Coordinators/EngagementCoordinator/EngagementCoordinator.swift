@@ -53,6 +53,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     let gliaPresenter: GliaPresenter
     private let kBubbleViewSize: CGFloat = 60.0
     let features: Features
+    let aiScreenContextSummary: AiScreenContext?
     private let environment: Environment
 
     init(
@@ -61,6 +62,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         sceneProvider: SceneProvider?,
         engagementLaunching: EngagementLaunching,
         features: Features,
+        aiScreenContextSummary: AiScreenContext?,
         environment: Environment
     ) {
         self.interactor = interactor
@@ -76,6 +78,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.navigationPresenter = NavigationPresenter(with: navigationController)
         self.features = features
         self.environment = environment
+        self.aiScreenContextSummary = aiScreenContextSummary
         navigationController.modalPresentationStyle = .fullScreen
         navigationController.isNavigationBarHidden = true
     }
@@ -87,7 +90,8 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     func start(maximize: Bool) {
         setupEngagementController(
             skipTransferredSCHandling: false,
-            replaceExistingEnqueueing: false
+            replaceExistingEnqueueing: false,
+            aiScreenContextSummary: aiScreenContextSummary
         )
 
         let bubbleView = viewFactory.makeBubbleView()
@@ -109,7 +113,8 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     func setupEngagementController(
         skipTransferredSCHandling: Bool,
         animated: Bool = false,
-        replaceExistingEnqueueing: Bool
+        replaceExistingEnqueueing: Bool,
+        aiScreenContextSummary: AiScreenContext?
     ) {
         let engagementKind = engagementLaunching.currentKind
         switch engagementKind {
@@ -120,7 +125,8 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
                 withAction: .startEngagement,
                 showsCallBubble: false,
                 skipTransferredSCHandling: skipTransferredSCHandling,
-                replaceExistingEnqueueing: replaceExistingEnqueueing
+                replaceExistingEnqueueing: replaceExistingEnqueueing,
+                aiScreenContextSummary: aiScreenContextSummary
             )
             engagement = .chat(chatViewController)
             navigationPresenter.setViewControllers(
@@ -145,14 +151,16 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
             let callViewController = startCall(
                 call,
                 withAction: .engagement(mediaType: mediaType),
-                replaceExistingEnqueueing: replaceExistingEnqueueing
+                replaceExistingEnqueueing: replaceExistingEnqueueing,
+                aiScreenContextSummary: aiScreenContextSummary
             )
             interactor.state = .enqueueing(engagementKind)
             let chatViewController = startChat(
                 withAction: .none,
                 showsCallBubble: true,
                 skipTransferredSCHandling: skipTransferredSCHandling,
-                replaceExistingEnqueueing: replaceExistingEnqueueing
+                replaceExistingEnqueueing: replaceExistingEnqueueing,
+                aiScreenContextSummary: aiScreenContextSummary
             )
 
             engagement = .call(
@@ -316,7 +324,8 @@ extension EngagementCoordinator {
         withAction startAction: ChatViewModel.StartAction,
         showsCallBubble: Bool,
         skipTransferredSCHandling: Bool,
-        replaceExistingEnqueueing: Bool
+        replaceExistingEnqueueing: Bool,
+        aiScreenContextSummary: AiScreenContext?
     ) -> ChatViewController {
         let coordinator = ChatCoordinator(
             interactor: interactor,
@@ -349,14 +358,18 @@ extension EngagementCoordinator {
                 }
             ),
             startWithSecureTranscriptFlow: false,
-            skipTransferredSCHandling: skipTransferredSCHandling
+            skipTransferredSCHandling: skipTransferredSCHandling,
+            aiScreenContextSummary: aiScreenContextSummary
         )
         coordinator.delegate = { [weak self] event in
             self?.handleChatCoordinatorEvent(event: event)
         }
         pushCoordinator(coordinator)
 
-        return coordinator.start(replaceExistingEnqueueing: replaceExistingEnqueueing)
+        return coordinator.start(
+            replaceExistingEnqueueing: replaceExistingEnqueueing,
+            aiScreenContextSummary: aiScreenContextSummary
+        )
     }
 
     private func handleChatCoordinatorEvent(event: ChatCoordinator.DelegateEvent) {
@@ -411,7 +424,8 @@ extension EngagementCoordinator {
     private func startCall(
         _ call: Call,
         withAction startAction: CallViewModel.StartAction,
-        replaceExistingEnqueueing: Bool
+        replaceExistingEnqueueing: Bool,
+        aiScreenContextSummary: AiScreenContext?
     ) -> CallViewController {
         let coordinator = CallCoordinator(
             interactor: interactor,
@@ -420,6 +434,7 @@ extension EngagementCoordinator {
             call: call,
             unreadMessages: unreadMessages,
             startAction: startAction,
+            aiScreenContextSummary: aiScreenContextSummary,
             environment: .create(with: environment)
         )
         coordinator.delegate = { [weak self] event in
@@ -535,6 +550,7 @@ extension EngagementCoordinator {
             messagingInitialScreen: messagingInitialScreen,
             viewFactory: viewFactory,
             navigationPresenter: navigationPresenter,
+            aiScreenContextSummary: aiScreenContextSummary,
             environment: .create(
                 with: environment,
                 queueIds: interactor.queueIds ?? [],
@@ -594,7 +610,8 @@ extension EngagementCoordinator {
         setupEngagementController(
             skipTransferredSCHandling: true,
             animated: true,
-            replaceExistingEnqueueing: replaceExistingEnqueueing
+            replaceExistingEnqueueing: replaceExistingEnqueueing,
+            aiScreenContextSummary: aiScreenContextSummary
         )
     }
 }
@@ -645,7 +662,8 @@ extension EngagementCoordinator {
                         answer(accepted, successHandler)
                     }
                 ),
-                replaceExistingEnqueueing: false
+                replaceExistingEnqueueing: false,
+                aiScreenContextSummary: nil
             )
             engagement = .call(
                 callViewController,

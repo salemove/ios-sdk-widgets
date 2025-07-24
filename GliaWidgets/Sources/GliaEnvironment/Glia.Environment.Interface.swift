@@ -18,6 +18,7 @@ extension Glia {
             _ sceneProvider: SceneProvider?,
             _ engagementLaunching: EngagementCoordinator.EngagementLaunching,
             _ features: Features,
+            _ aiScreenContextSummary: AiScreenContext?,
             _ environment: EngagementCoordinator.Environment
         ) -> EngagementCoordinator
 
@@ -64,6 +65,7 @@ extension Glia.Environment {
         sceneProvider: SceneProvider?,
         engagementLaunching: EngagementCoordinator.EngagementLaunching,
         features: Features,
+        aiScreenContextSummary: AiScreenContext?,
         environment: EngagementCoordinator.Environment
     ) -> EngagementCoordinator {
         self.createRootCoordinator(
@@ -72,6 +74,7 @@ extension Glia.Environment {
             sceneProvider,
             engagementLaunching,
             features,
+            aiScreenContextSummary,
             environment
         )
     }

@@ -169,11 +169,11 @@ extension EntryWidget {
             do {
                 switch mediaTypeItem.type {
                 case .chat:
-                    try self.environment.engagementLauncher.startChat()
+                    try self.environment.engagementLauncher.startChat(screenContext: nil)
                 case .audio:
-                    try self.environment.engagementLauncher.startAudioCall()
+                    try self.environment.engagementLauncher.startAudioCall(screenContext: nil)
                 case .video:
-                    try self.environment.engagementLauncher.startVideoCall()
+                    try self.environment.engagementLauncher.startVideoCall(screenContext: nil)
                 case .secureMessaging:
                     try self.environment.engagementLauncher.startSecureMessaging()
                 case .callVisualizer:

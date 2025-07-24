@@ -28,6 +28,7 @@ extension ChatViewModel {
             failedToDeliverStatusText: failedToDeliverStatusText,
             chatType: chatType,
             replaceExistingEnqueueing: replaceExistingEnqueueing,
+            aiScreenContextSummary: nil,
             environment: environment,
             maximumUploads: maximumUploads
         )

@@ -139,6 +139,7 @@ extension Interactor {
     func enqueueForEngagement(
         engagementKind: EngagementKind,
         replaceExisting: Bool,
+        aiScreenContextSummary: AiScreenContext?,
         success: @escaping () -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
@@ -170,7 +171,8 @@ extension Interactor {
                 mediaType: engagementKind.mediaType,
                 engagementOptions: options
             ),
-            replaceExisting
+            replaceExisting,
+            aiScreenContextSummary
         ) { [weak self] result in
             switch result {
             case .failure(let error):

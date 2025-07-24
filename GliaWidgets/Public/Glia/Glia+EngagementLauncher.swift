@@ -37,7 +37,7 @@ extension Glia {
 
         loggerPhase.logger.info("Returning an Engagement Launcher")
 
-        return EngagementLauncher { [weak self] engagementKind, sceneProvider in
+        return EngagementLauncher { [weak self] engagementKind, aiScreenContextSummary, sceneProvider in
             guard let self else { return }
             let parameters = try getEngagementParameters(
                 configuration: getConfiguration(),
@@ -50,7 +50,8 @@ extension Glia {
                 interactor: parameters.interactor,
                 features: parameters.features,
                 viewFactory: parameters.viewFactory,
-                ongoingEngagementMediaStreams: parameters.ongoingEngagementMediaStreams
+                ongoingEngagementMediaStreams: parameters.ongoingEngagementMediaStreams,
+                aiScreenContextSummary: aiScreenContextSummary
             )
         }
     }

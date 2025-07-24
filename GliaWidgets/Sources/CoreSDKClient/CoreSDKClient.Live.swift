@@ -43,7 +43,7 @@ extension CoreSdkClient {
                     completion(.failure(GliaError.internalError))
                 }
             },
-            queueForEngagement: { options, replaceExisting, completion in
+            queueForEngagement: { options, replaceExisting, aiScreenContextSummary, completion in
                 let options = QueueForEngagementOptions(
                     queueIds: options.queueIds,
                     visitorContext: options.visitorContext,
@@ -52,7 +52,10 @@ extension CoreSdkClient {
                     engagementOptions: options.engagementOptions
                 )
                 GliaCore.sharedInstance.queueForEngagement(
-                    using: options, replaceExisting: replaceExisting, completion: completion
+                    using: options,
+                    replaceExisting: replaceExisting,
+                    aiScreenContextSummary: aiScreenContextSummary,
+                    completion: completion
                 )
             },
             requestMediaUpgradeWithOffer: GliaCore.sharedInstance.requestMediaUpgrade(offer:completion:),

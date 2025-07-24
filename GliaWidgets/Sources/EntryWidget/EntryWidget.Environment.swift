@@ -21,7 +21,7 @@ extension EntryWidget {
 #if DEBUG
 extension EntryWidget.Environment {
     static func mock() -> Self {
-        let engagementLauncher = EngagementLauncher { _, _ in }
+        let engagementLauncher = EngagementLauncher { _, _, _ in }
         return .init(
             observeSecureUnreadMessageCount: { _ in UUID.mock.uuidString },
             unsubscribeFromUpdates: { _, _ in },

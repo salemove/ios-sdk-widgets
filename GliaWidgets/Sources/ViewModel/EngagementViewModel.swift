@@ -16,16 +16,19 @@ class EngagementViewModel: CommonEngagementModel {
     /// A flag indicating where enqueue will replace existing one.
     /// Used when 'Leave Current Conversation?' dialog is closed with 'Leave' button.
     let replaceExistingEnqueueing: Bool
+    let aiScreenContextSummary: AiScreenContext?
 
     init(
         interactor: Interactor,
         replaceExistingEnqueueing: Bool,
+        aiScreenContextSummary: AiScreenContext?,
         environment: Environment
     ) {
         self.interactor = interactor
         self.environment = environment
         self.hasViewAppeared = false
         self.replaceExistingEnqueueing = replaceExistingEnqueueing
+        self.aiScreenContextSummary = aiScreenContextSummary
         self.interactor.addObserver(self) { [weak self] event in
             self?.interactorEvent(event)
         }
@@ -57,10 +60,15 @@ class EngagementViewModel: CommonEngagementModel {
 
     func start() {}
 
-    func enqueue(engagementKind: EngagementKind, replaceExisting: Bool) {
+    func enqueue(
+        engagementKind: EngagementKind,
+        replaceExisting: Bool,
+        aiScreenContextSummary: AiScreenContext?
+    ) {
         interactor.enqueueForEngagement(
             engagementKind: engagementKind,
             replaceExisting: replaceExisting,
+            aiScreenContextSummary: aiScreenContextSummary,
             success: {},
             failure: { [weak self] error in
                 self?.handleError(error)
@@ -111,7 +119,8 @@ class EngagementViewModel: CommonEngagementModel {
                     if site.mobileConfirmDialogEnabled == false || self.interactor.skipLiveObservationConfirmations {
                         self.enqueue(
                             engagementKind: engagementKind,
-                            replaceExisting: replaceExistingEnqueueing
+                            replaceExisting: replaceExistingEnqueueing,
+                            aiScreenContextSummary: aiScreenContextSummary
                         )
                     } else {
                         self.showLiveObservationConfirmation(in: engagementKind)
@@ -185,7 +194,8 @@ extension EngagementViewModel {
                 guard let self else { return }
                 enqueue(
                     engagementKind: engagementKind,
-                    replaceExisting: replaceExistingEnqueueing
+                    replaceExisting: replaceExistingEnqueueing,
+                    aiScreenContextSummary: aiScreenContextSummary
                 )
             },
             declined: { [weak self] in

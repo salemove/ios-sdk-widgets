@@ -38,6 +38,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     /// - has `false` in case when Chat screen was opened directly, for example
     /// when Chat engagement initiated and there is `hasPendingInteraction` returns `false`.
     private let skipTransferredSCHandling: Bool
+    private let aiScreenContextSummary: AiScreenContext?
     private weak var controller: ChatViewController?
 
     init(
@@ -51,7 +52,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         startAction: ChatViewModel.StartAction,
         environment: Environment,
         startWithSecureTranscriptFlow: Bool,
-        skipTransferredSCHandling: Bool
+        skipTransferredSCHandling: Bool,
+        aiScreenContextSummary: AiScreenContext?
     ) {
         self.interactor = interactor
         self.viewFactory = viewFactory
@@ -64,20 +66,31 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.environment = environment
         self.startWithSecureTranscriptFlow = startWithSecureTranscriptFlow
         self.skipTransferredSCHandling = skipTransferredSCHandling
+        self.aiScreenContextSummary = aiScreenContextSummary
     }
 
     func start() -> ChatViewController {
-        start(replaceExistingEnqueueing: false)
+        start(
+            replaceExistingEnqueueing: false,
+            aiScreenContextSummary: aiScreenContextSummary
+        )
     }
 
-    func start(replaceExistingEnqueueing: Bool) -> ChatViewController {
+    func start(
+        replaceExistingEnqueueing: Bool,
+        aiScreenContextSummary: AiScreenContext?
+    ) -> ChatViewController {
         let viewController = makeChatViewController(
-            replaceExistingEnqueueing: replaceExistingEnqueueing
+            replaceExistingEnqueueing: replaceExistingEnqueueing,
+            aiScreenContextSummary: aiScreenContextSummary
         )
         return viewController
     }
 
-    private func makeChatViewController(replaceExistingEnqueueing: Bool) -> ChatViewController {
+    private func makeChatViewController(
+        replaceExistingEnqueueing: Bool,
+        aiScreenContextSummary: AiScreenContext?
+    ) -> ChatViewController {
         // We need to defer passing controller to transcript model,
         // because model will use it later, however controller
         // can not be created without model, that is why
@@ -99,7 +112,10 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             // possible we need to call `start` here.
             start = { transcriptModel.start(isTranscriptFetchNeeded: true) }
         } else {
-            model = .chat(chatModel(replaceExistingEnqueueing: replaceExistingEnqueueing))
+            model = .chat(chatModel(
+                replaceExistingEnqueueing: replaceExistingEnqueueing,
+                aiScreenContextSummary: aiScreenContextSummary
+            ))
             start = {}
         }
 
@@ -173,7 +189,10 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 
 // MARK: Chat model
 extension ChatCoordinator {
-    private func chatModel(replaceExistingEnqueueing: Bool) -> ChatViewModel {
+    private func chatModel(
+        replaceExistingEnqueueing: Bool,
+        aiScreenContextSummary: AiScreenContext?
+    ) -> ChatViewModel {
         let isTransferredSecureConversation = !skipTransferredSCHandling &&
         environment.getCurrentEngagement()?.isTransferredSecureConversation == true
 
@@ -194,6 +213,7 @@ extension ChatCoordinator {
             failedToDeliverStatusText: viewFactory.theme.chat.visitorMessageStyle.failedToDeliver,
             chatType: chatType,
             replaceExistingEnqueueing: replaceExistingEnqueueing,
+            aiScreenContextSummary: aiScreenContextSummary,
             environment: .create(
                 with: environment,
                 viewFactory: viewFactory
@@ -316,7 +336,10 @@ extension ChatCoordinator {
                 guard let self, let controller = controller() else {
                     return
                 }
-                let chatModel = self.chatModel(replaceExistingEnqueueing: false)
+                let chatModel = self.chatModel(
+                    replaceExistingEnqueueing: false,
+                    aiScreenContextSummary: aiScreenContextSummary
+                )
                 controller.swapAndBindViewModel(.chat(chatModel))
                 chatModel.migrate(from: transcriptModel)
                 self.delegate?(.secureTranscriptUpgradedToLiveChat(controller))
