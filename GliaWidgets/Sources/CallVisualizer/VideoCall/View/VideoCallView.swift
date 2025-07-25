@@ -71,8 +71,7 @@ extension CallVisualizer {
         }
 
         private lazy var header = Header(props: props.headerProps).make { header in
-            header.endButton?.isHidden = true
-            header.closeButton?.isHidden = true
+            header.hideCloseAndEndButtons()
 
             if let backButton = props.style.header.backButton {
                 header.backButton?.accessibilityLabel = backButton.accessibility.label
