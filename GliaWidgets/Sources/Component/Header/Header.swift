@@ -10,8 +10,8 @@ final class Header: BaseView {
     }
 
     var backButton: HeaderButton?
-    var closeButton: HeaderButton?
-    var endButton: ActionButton?
+    private var closeButton: HeaderButton?
+    private var endButton: ActionButton?
 
     var props: Props {
         didSet {
@@ -19,7 +19,6 @@ final class Header: BaseView {
         }
     }
     private let leftItemContainer = UIView()
-    private let rightItemContainer = UIStackView()
     private let titleLabel = UILabel()
     private let contentView = UIView()
     private var effectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
@@ -93,21 +92,23 @@ final class Header: BaseView {
     }
 
     func showCloseButton() {
-        endButton?.isHidden = true
-        closeButton?.isHidden = false
+        self.endButton?.isHidden = true
+        self.closeButton?.isHidden = false
     }
 
     func showEndButton() {
-        endButton?.isHidden = false
-        closeButton?.isHidden = true
+        self.endButton?.isHidden = false
+        self.closeButton?.isHidden = true
+    }
+    
+    func hideCloseAndEndButtons() {
+        self.endButton?.isHidden = true
+        self.closeButton?.isHidden = true
     }
 
     override func setup() {
         super.setup()
         titleLabel.textAlignment = .center
-        rightItemContainer.axis = .horizontal
-        rightItemContainer.spacing = 16
-        rightItemContainer.alignment = .center
         backButton?.accessibilityIdentifier = "header_back_button"
         closeButton?.accessibilityIdentifier = "header_close_button"
     }
@@ -143,15 +144,17 @@ final class Header: BaseView {
         }
 
         if let endButton {
-            rightItemContainer.addArrangedSubview(endButton)
+            contentView.addSubview(endButton)
+            endButton.translatesAutoresizingMaskIntoConstraints = false
+            constraints += endButton.layoutInSuperview(edges: .trailing)
+            constraints += endButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         }
         if let closeButton {
-            rightItemContainer.addArrangedSubview(closeButton)
+            contentView.addSubview(closeButton)
+            closeButton.translatesAutoresizingMaskIntoConstraints = false
+            constraints += closeButton.layoutInSuperview(edges: .trailing)
+            constraints += closeButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         }
-        contentView.addSubview(rightItemContainer)
-        rightItemContainer.translatesAutoresizingMaskIntoConstraints = false
-        constraints += rightItemContainer.layoutInSuperview(edges: .trailing)
-        constraints += rightItemContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         updateHeight()
 
         renderProps()
