@@ -57,8 +57,13 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         view.entryWidget = viewModel.entryWidget
 
         view.header.showBackButton()
-        view.header.showCloseButton()
-
+        switch viewModel {
+        case .chat:
+            view.header.hideCloseAndEndButtons()
+        case .transcript:
+            view.header.showCloseButton()
+        }
+       
         view.numberOfSections = {
             viewModel.numberOfSections
         }
@@ -112,8 +117,10 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         viewModel.action = { [weak self, weak view] action in
             guard let self else { return }
             switch action {
-            case .queue:
+            case .enqueueing:
                 view?.setConnectState(.queue, animated: false)
+            case .enqueued:
+                view?.header.showCloseButton()
             case .connected(let name, let imageUrl):
                 view?.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
                 view?.unreadMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)

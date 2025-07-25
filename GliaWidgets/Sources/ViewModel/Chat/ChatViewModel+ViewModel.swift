@@ -26,7 +26,8 @@ extension ChatViewModel: ViewModel {
         enum TranscriptAction {
             case messageCenterAvailabilityUpdated
         }
-        case queue
+        case enqueueing
+        case enqueued
         case connected(name: String?, imageUrl: String?)
         case transferring
         case setMessageEntryEnabled(Bool)

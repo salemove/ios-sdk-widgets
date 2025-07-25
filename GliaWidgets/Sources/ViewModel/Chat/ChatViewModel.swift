@@ -184,8 +184,10 @@ class ChatViewModel: EngagementViewModel {
                 animated: false
             )
 
-            action?(.queue)
+            action?(.enqueueing)
             action?(.scrollToBottom(animated: true))
+        case .enqueued:
+            action?(.enqueued)
         case .engaged(let engagedOperator) where interactor.currentEngagement?.isTransferredSecureConversation == false:
             environment.log.prefixed(Self.self).info("Operator connected")
             let name = engagedOperator?.firstName
