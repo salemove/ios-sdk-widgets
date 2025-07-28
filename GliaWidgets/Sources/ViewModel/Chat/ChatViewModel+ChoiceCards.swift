@@ -1,7 +1,8 @@
 import Foundation
 
 extension ChatViewModel {
-    func sendChoiceCardResponse(_ option: ChatChoiceCardOption, to messageId: String) {
+    @MainActor
+    func sendChoiceCardResponse(_ option: ChatChoiceCardOption, to messageId: String) async {
         guard let text = option.text else { return }
         let attachment = CoreSdkClient.Attachment(
             type: .singleChoiceResponse,
@@ -23,20 +24,29 @@ extension ChatViewModel {
         appendItem(item, to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
 
-        interactor.send(messagePayload: payload) { [weak self] result in
-            guard let self = self else { return }
-
-            switch result {
-            case .success(let message):
-                let selection = message.content
-                self.respond(to: messageId, with: selection)
-            case .failure:
-                self.markMessageAsFailed(
-                    outgoingMessage,
-                    in: self.messagesSection
-                )
-            }
+        do {
+            let message = try await interactor.send(messagePayload: payload)
+            onSuccessSendChoiceCardResponse(message: message, messageId: messageId)
+        } catch {
+            onFailureSendChoiceCardResponse(outgoingMessage: outgoingMessage)
         }
+    }
+
+    @MainActor
+    func onSuccessSendChoiceCardResponse(
+        message: CoreSdkClient.Message,
+        messageId: String
+    ) {
+        let selection = message.content
+        self.respond(to: messageId, with: selection)
+    }
+
+    @MainActor
+    func onFailureSendChoiceCardResponse(outgoingMessage: OutgoingMessage) {
+        self.markMessageAsFailed(
+            outgoingMessage,
+            in: self.messagesSection
+        )
     }
 
     func respond(to choiceCardId: String, with selection: String?) {
