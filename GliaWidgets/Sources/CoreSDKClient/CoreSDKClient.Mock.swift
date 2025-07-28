@@ -17,7 +17,7 @@ extension CoreSdkClient {
         getQueues: { _ in },
         queueForEngagement: { _, _, _ in },
         sendMessagePreview: { _ in true },
-        sendMessageWithMessagePayload: { _, _ in },
+        sendMessageWithMessagePayload: { _ in .mock() },
         sendFile: { _, _ in },
         cancelQueueTicket: { _, _ in },
         endEngagement: { true },

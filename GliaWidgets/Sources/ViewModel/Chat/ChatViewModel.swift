@@ -233,6 +233,33 @@ class ChatViewModel: EngagementViewModel {
         }
     }
 
+    @MainActor
+    func onSuccessSendPendingMessages(
+        message: CoreSdkClient.Message,
+        outgoingMessage: OutgoingMessage
+    ) {
+        // When pending message is successfully delivered,
+        // it has to be removed from the `pendingMessages` list, to avoid
+        // situation where it gets sent again, for example after
+        // transfer to another operator.
+        removePendingMessage(by: message.id)
+        self.replace(
+            outgoingMessage,
+            uploads: [],
+            with: message,
+            in: self.messagesSection
+        )
+        self.action?(.scrollToBottom(animated: true))
+    }
+
+    @MainActor
+    func onFailureSendPendingMessages(outgoingMessage: OutgoingMessage) {
+        markMessageAsFailed(
+            outgoingMessage,
+            in: messagesSection
+        )
+    }
+
     override func interactorEvent(_ event: InteractorEvent) {
         super.interactorEvent(event)
 
@@ -303,6 +330,23 @@ extension ChatViewModel {
 }
 
 extension ChatViewModel {
+    @MainActor
+    func asyncEvent(_ event: AsyncEvent) async {
+        switch event {
+        case .sendTapped:
+            await sendMessage()
+            action?(.quickReplyPropsUpdated(.hidden))
+        case .customCardOptionSelected(let option, let messageId):
+            await sendSelectedCustomCardOption(option, for: messageId)
+        case .gvaButtonTapped(let option):
+            await gvaOptionAction(for: option)()
+        case .retryMessageTapped(let message):
+            await retryMessageSending(message)
+        case .choiceOptionSelected(let option, let messageId):
+            await sendChoiceCardResponse(option, to: messageId)
+        }
+    }
+
     func event(_ event: Event) {
         switch event {
         case .viewDidLoad:
@@ -310,9 +354,6 @@ extension ChatViewModel {
             isViewLoaded = true
         case .messageTextChanged(let text):
             messageText = text
-        case .sendTapped:
-            sendMessage()
-            action?(.quickReplyPropsUpdated(.hidden))
         case .removeUploadTapped(let upload):
             removeUpload(upload)
         case .pickMediaTapped:
@@ -323,18 +364,10 @@ extension ChatViewModel {
             fileTapped(file)
         case .downloadTapped(let download):
             downloadTapped(download)
-        case .choiceOptionSelected(let option, let messageId):
-            sendChoiceCardResponse(option, to: messageId)
         case .chatScrolled(let bottomReached):
             isChatScrolledToBottom.value = bottomReached
         case .linkTapped(let url):
             linkTapped(url)
-        case .customCardOptionSelected(let option, let messageId):
-            sendSelectedCustomCardOption(option, for: messageId)
-        case .gvaButtonTapped(let option):
-            gvaOptionAction(for: option)()
-        case .retryMessageTapped(let message):
-            retryMessageSending(message)
         case .loadOlderHistoryRequested:
             loadOlderHistory()
         }
@@ -557,25 +590,23 @@ extension ChatViewModel {
                 }
             }
         } else {
-            interactor.send(messagePayload: outgoingMessage.payload) { [weak self] result in
+            Task { [weak self] in
                 guard let self else { return }
-                switch result {
-                case let .success(message):
-                    // When pending message is successfully delivered,
-                    // it has to be removed from the `pendingMessages` list, to avoid
-                    // situation where it gets sent again, for example after
-                    // transfer to another operator.
-                    self.removePendingMessage(by: message.id)
-                    self.replace(outgoingMessage, uploads: [], with: message, in: messagesSection)
-                    self.action?(.scrollToBottom(animated: true))
-                case .failure:
-                    self.markMessageAsFailed(outgoingMessage, in: messagesSection)
+                do {
+                    let message = try await self.interactor.send(messagePayload: outgoingMessage.payload)
+                    await self.onSuccessSendPendingMessages(
+                        message: message,
+                        outgoingMessage: outgoingMessage
+                    )
+                } catch {
+                    await self.onFailureSendPendingMessages(outgoingMessage: outgoingMessage)
                 }
             }
         }
     }
 
-    private func sendMessage() {
+    @MainActor
+    private func sendMessage() async {
         guard validateMessage() else { return }
 
         let uploads = fileUploadListModel.succeededUploads
@@ -608,18 +639,15 @@ extension ChatViewModel {
                 let textOutgoing = OutgoingMessage(payload: textPayload)
                 appendItem(ChatItem(with: textOutgoing), to: messagesSection, animated: true)
 
-                interactor.send(messagePayload: textOutgoing.payload) { [weak self] result in
-                    guard let self else { return }
-                    switch result {
-                    case let .success(message):
-                        if !self.hasReceivedMessage(messageId: message.id) {
-                            self.registerReceivedMessage(messageId: message.id)
-                            self.replace(textOutgoing, uploads: [], with: message, in: self.messagesSection)
-                            self.action?(.scrollToBottom(animated: true))
-                        }
-                    case .failure:
-                        self.markMessageAsFailed(textOutgoing, in: self.messagesSection)
-                    }
+                do {
+                    let message = try await interactor.send(messagePayload: textOutgoing.payload)
+                    onSuccessSendMessage(
+                        message: message,
+                        outgoingMessage: textOutgoing,
+                        uploads: []
+                    )
+                } catch {
+                    onFailureSendMessage(outgoingMessage: textOutgoing)
                 }
             }
 
@@ -659,6 +687,32 @@ extension ChatViewModel {
             }
             pendingItems.forEach { handle(pendingMessage: $0) }
         }
+    }
+
+    @MainActor
+    func onSuccessSendMessage(
+        message: CoreSdkClient.Message,
+        outgoingMessage: OutgoingMessage,
+        uploads: [FileUpload]
+    ) {
+        if !hasReceivedMessage(messageId: message.id) {
+            registerReceivedMessage(messageId: message.id)
+            replace(
+                outgoingMessage,
+                uploads: uploads,
+                with: message,
+                in: messagesSection
+            )
+            action?(.scrollToBottom(animated: true))
+        }
+    }
+
+    @MainActor
+    func onFailureSendMessage(outgoingMessage: OutgoingMessage) {
+        markMessageAsFailed(
+            outgoingMessage,
+            in: messagesSection
+        )
     }
 
     func handle(pendingMessage: OutgoingMessage) {
@@ -1056,7 +1110,8 @@ extension ChatViewModel {
 // MARK: Message sending retry
 
 extension ChatViewModel {
-    private func retryMessageSending(_ outgoingMessage: OutgoingMessage) {
+    @MainActor
+    private func retryMessageSending(_ outgoingMessage: OutgoingMessage) async {
         removeMessage(outgoingMessage, in: messagesSection)
         let item = ChatItem(with: outgoingMessage)
         appendItem(item, to: messagesSection, animated: true)
@@ -1079,21 +1134,44 @@ extension ChatViewModel {
                 }
             }
         } else {
-            interactor.send(messagePayload: outgoingMessage.payload) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(message):
-                    if !self.hasReceivedMessage(messageId: message.id) {
-                        self.registerReceivedMessage(messageId: message.id)
-                        self.replace(outgoingMessage, uploads: [], with: message, in: self.messagesSection)
-                        self.action?(.scrollToBottom(animated: true))
-                    }
-                    self.updateSelectedOption(with: outgoingMessage)
-                case .failure:
-                    self.markMessageAsFailed(outgoingMessage, in: self.messagesSection)
-                }
+            do {
+                let message = try await interactor.send(messagePayload: outgoingMessage.payload)
+                onSuccessRetryMessageSending(
+                    message: message,
+                    outgoingMessage: outgoingMessage
+                )
+            } catch {
+                onFailureRetryMessageSending(outgoingMessage: outgoingMessage)
             }
         }
+    }
+
+    @MainActor
+    func onSuccessRetryMessageSending(
+        message: CoreSdkClient.Message,
+        outgoingMessage: OutgoingMessage
+    ) {
+        if !hasReceivedMessage(messageId: message.id) {
+            registerReceivedMessage(messageId: message.id)
+
+            replace(
+                outgoingMessage,
+                uploads: [],
+                with: message,
+                in: messagesSection
+            )
+            action?(.scrollToBottom(animated: true))
+        }
+
+        updateSelectedOption(with: outgoingMessage)
+    }
+
+    @MainActor
+    func onFailureRetryMessageSending(outgoingMessage: OutgoingMessage) {
+        markMessageAsFailed(
+            outgoingMessage,
+            in: messagesSection
+        )
     }
 
     // Updates Response Card or Custom Card selected option
@@ -1246,9 +1324,10 @@ extension ChatViewModel: AttachmentOptions {
 #if DEBUG
 extension ChatViewModel {
     /// Sets text and immediately sends it. Used for testing.
-    func invokeSetTextAndSendMessage(text: String) {
+    @MainActor
+    func invokeSetTextAndSendMessage(text: String) async {
         self.messageText = text
-        self.sendMessage()
+        await self.sendMessage()
     }
 
     /// Sets pending messages list for unit testing
