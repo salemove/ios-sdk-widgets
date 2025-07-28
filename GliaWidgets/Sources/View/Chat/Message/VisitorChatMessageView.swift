@@ -11,7 +11,7 @@ class VisitorChatMessageView: ChatMessageView {
         set { errorLabel.text = newValue }
     }
 
-    var messageTapped: (() -> Void)?
+    var messageTapped: (() async -> Void)?
 
     private let statusLabel = UILabel().makeView()
     private let errorLabel = UILabel().makeView()
@@ -89,7 +89,9 @@ class VisitorChatMessageView: ChatMessageView {
     }
 
     @objc private func tapped() {
-        messageTapped?()
+        Task {
+            await messageTapped?()
+        }
     }
 }
 

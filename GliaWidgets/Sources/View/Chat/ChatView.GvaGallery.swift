@@ -39,7 +39,7 @@ extension ChatView {
             let options = card.options?.map { option in
                 GvaGalleryCardView.Props.Option(
                     title: option.text,
-                    action: .init { [weak self] in self?.gvaButtonTapped?(option) }
+                    action: .init { [weak self] in await self?.gvaButtonTapped?(option) }
                 )
             } ?? []
             var image: GvaGalleryCardView.Props.Image?

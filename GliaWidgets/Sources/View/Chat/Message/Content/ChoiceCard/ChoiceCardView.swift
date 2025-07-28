@@ -1,7 +1,7 @@
 import UIKit
 
 final class ChoiceCardView: OperatorChatMessageView {
-    var onOptionTapped: ((ChatChoiceCardOption) -> Void)!
+    var onOptionTapped: ((ChatChoiceCardOption) async -> Void)!
 
     private let viewStyle: Theme.ChoiceCardStyle
     private let kLayoutMargins = UIEdgeInsets(top: 12, left: 16, bottom: 16, right: 16)
@@ -90,7 +90,7 @@ final class ChoiceCardView: OperatorChatMessageView {
                     : .disabled
             } else if choiceCard.isActive {
                 optionView.state = .normal
-                optionView.tap = { self.onOptionTapped(option) }
+                optionView.tap = { await self.onOptionTapped(option) }
             } else {
                 optionView.state = .disabled
             }
