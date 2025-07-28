@@ -174,7 +174,7 @@ extension GvaGalleryCardView {
 extension GvaGalleryCardView.Props {
     struct Option {
         let title: String
-        let action: Cmd
+        let action: AsyncCmd
 
         static var nop: Option { .init(title: "", action: .nop) }
     }
