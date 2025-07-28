@@ -9,24 +9,31 @@ extension CoreSdkClient {
             createAppDelegate: Self.AppDelegate.live,
             clearSession: GliaCore.sharedInstance.clearSession,
             localeProvider: .init(getRemoteString: GliaCore.sharedInstance.localeProvider.getRemoteString(_:)),
-            getVisitorInfo: { completion in
-                GliaCore.sharedInstance.fetchVisitorInfo { result in
-                    switch result {
-                    case let .success(coreVisitorInfo):
-                        let visitorInfo = coreVisitorInfo.asWidgetSdkVisitorInfo()
-                        completion(.success(visitorInfo))
-                    case let .failure(error):
-                        completion(.failure(error))
+            configureWithConfiguration: GliaCore.sharedInstance.configure(with:completion:), getVisitorInfo: {
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.fetchVisitorInfo { result in
+                        switch result {
+                        case let .success(coreVisitorInfo):
+                            let visitorInfo = coreVisitorInfo.asWidgetSdkVisitorInfo()
+                            continuation.resume(returning: visitorInfo)
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
                     }
                 }
             },
-            getVisitorInfoDeprecated: GliaCore.sharedInstance.fetchVisitorInfo(_:),
-            updateVisitorInfo: { visitorInfoUpdate, completion in
-                let coreSdkVisitorInfoUpdate = visitorInfoUpdate.asCoreSdkVisitorInfoUpdate()
-                GliaCore.sharedInstance.updateVisitorInfo(coreSdkVisitorInfoUpdate, completion: completion)
+            updateVisitorInfo: { visitorInfoUpdate in
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.updateVisitorInfo(visitorInfoUpdate.asCoreSdkVisitorInfoUpdate()) { result in
+                        switch result {
+                        case let .success(success):
+                            continuation.resume(returning: success)
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
+                    }
+                }
             },
-            updateVisitorInfoDeprecated: GliaCore.sharedInstance.updateVisitorInfo(_:completion:),
-            configureWithConfiguration: GliaCore.sharedInstance.configure(with:completion:),
             configureWithInteractor: GliaCore.sharedInstance.configure(interactor:),
             getQueues: { completion in
                 GliaCore.sharedInstance.listQueues { coreQueues, error in
@@ -59,7 +66,17 @@ extension CoreSdkClient {
             sendMessagePreview: GliaCore.sharedInstance.sendMessagePreview(message:completion:),
             sendMessageWithMessagePayload: GliaCore.sharedInstance.send(messagePayload:completion:),
             cancelQueueTicket: GliaCore.sharedInstance.cancel(queueTicket:completion:),
-            endEngagement: GliaCore.sharedInstance.endEngagement(completion:),
+            endEngagement: {
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.endEngagement { success, error in
+                        if let error = error {
+                            continuation.resume(throwing: error)
+                        } else {
+                            continuation.resume(returning: success)
+                        }
+                    }
+                }
+            },
             requestEngagedOperator: GliaCore.sharedInstance.requestEngagedOperator(completion:),
             uploadFileToEngagement: GliaCore.sharedInstance.uploadFileToEngagement(_:progress:completion:),
             fetchFile: GliaCore.sharedInstance.fetchFile(engagementFile:progress:completion:),
