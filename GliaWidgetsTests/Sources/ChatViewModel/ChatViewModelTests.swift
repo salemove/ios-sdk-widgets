@@ -723,7 +723,7 @@ class ChatViewModelTests: XCTestCase {
         interactor.environment.gcd.mainQueue.async = { $0() }
         interactor.environment.coreSdk.configureWithInteractor = { _ in }
         interactor.environment.coreSdk.configureWithConfiguration = { _, callback in callback(.success(())) }
-        interactor.environment.coreSdk.sendMessagePreview = { _, _ in }
+        interactor.environment.coreSdk.sendMessagePreview = { _ in true }
         interactor.environment.coreSdk.sendMessageWithMessagePayload = { _, completion in
             completion(.success(.mock(id: expectedMessageId)))
         }
@@ -783,7 +783,7 @@ class ChatViewModelTests: XCTestCase {
         interactor.environment.gcd.mainQueue.async = { $0() }
         interactor.environment.coreSdk.configureWithInteractor = { _ in }
         interactor.environment.coreSdk.configureWithConfiguration = { _, callback in callback(.success(())) }
-        interactor.environment.coreSdk.sendMessagePreview = { _, _ in }
+        interactor.environment.coreSdk.sendMessagePreview = { _ in true }
         interactor.environment.coreSdk.sendMessageWithMessagePayload = { [weak viewModel] _, completion in
             // Deliver message via socket before REST API response.
             viewModel?.interactorEvent(.receivedMessage(.mock(id: expectedMessageId)))
@@ -1040,7 +1040,7 @@ class ChatViewModelTests: XCTestCase {
         interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, callback in
             callback(.failure(.mock()))
         }
-        interactorEnv.coreSdk.sendMessagePreview = { _, _ in }
+        interactorEnv.coreSdk.sendMessagePreview = { _ in true }
         let interactor = Interactor.mock(environment: interactorEnv)
         interactor.state = .engaged(nil)
 
