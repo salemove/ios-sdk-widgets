@@ -153,7 +153,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
                 $0[.buttonName] = .string(OtelButtonNames.send.rawValue)
             }
-            viewModel.event(.sendTapped)
+            await viewModel.asyncEvent(.sendTapped)
         }
         view.messageEntryView.pickMediaTapped = { [weak self] in
             self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
@@ -185,7 +185,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             self?.environment.openTelemetry.logger.i(.chatScreenSingleChoiceAnswered) {
                 $0[.messageId] = .string(messageId)
             }
-            viewModel.event(.choiceOptionSelected(option, messageId))
+            await viewModel.asyncEvent(.choiceOptionSelected(option, messageId))
         }
         view.chatScrolledToBottom = { bottomReached in
             viewModel.event(.chatScrolled(bottomReached: bottomReached))
@@ -194,24 +194,24 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             viewModel.event(.linkTapped(url))
         }
         view.selectCustomCardOption = { [weak self] option, messageId in
-            self?.environment.openTelemetry.logger.i(.chatScreenCustomCardAction) {
                 $0[.messageId] = .string(messageId.rawValue)
+            self?.environment.openTelemetry.logger.i(.chatScreenCustomCardAction) {
             }
-            viewModel.event(.customCardOptionSelected(option: option, messageId: messageId))
+            await viewModel.asyncEvent(.customCardOptionSelected(option: option, messageId: messageId))
         }
 
         view.gvaButtonTapped = { [weak self] option in
             self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
                 $0[.buttonName] = .string(OtelButtonNames.gva.rawValue)
             }
-            viewModel.event(.gvaButtonTapped(option))
+            await viewModel.asyncEvent(.gvaButtonTapped(option))
         }
 
         view.retryMessageTapped = { [weak self] message in
             self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
-                $0[.buttonName] = .string(OtelButtonNames.retry.rawValue)
             }
-            viewModel.event(.retryMessageTapped(message))
+                $0[.buttonName] = .string(OtelButtonNames.retry.rawValue)
+            await viewModel.asyncEvent(.retryMessageTapped(message))
         }
 
         var viewModel = viewModel
