@@ -66,9 +66,7 @@ struct CoreSdkClient {
 
     var cancelQueueTicket: CancelQueueTicket
 
-    typealias EndEngagement = (_ completion: @escaping Self.SuccessBlock) -> Void
-
-    var endEngagement: EndEngagement
+    var endEngagement: () async throws -> Bool
 
     typealias RequestEngagedOperator = (_ completion: @escaping Self.OperatorBlock) -> Void
 

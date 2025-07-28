@@ -1162,8 +1162,9 @@ class ChatViewModelTests: XCTestCase {
     func test_closeActionDoesNotShowConfirmationIfThereIsTransferredSC() throws {
         var interactorEnv = Interactor.Environment.failing
         interactorEnv.gcd.mainQueue = .mock
-        interactorEnv.coreSdk.endEngagement = { _ in
+        interactorEnv.coreSdk.endEngagement = {
             XCTFail("End engagement should not be called")
+            return false
         }
         let interactor = Interactor.mock(environment: interactorEnv)
         interactor.setCurrentEngagement(.mock(status: .transferring, capabilities: .init(text: true)))
