@@ -8,11 +8,15 @@ extension CoreSdkClient {
         createAppDelegate: { .failing },
         clearSession: { fail("\(Self.self).clearSession") },
         localeProvider: .failing,
-        getVisitorInfo: { _ in fail("\(Self.self).getVisitorInfo") },
-        getVisitorInfoDeprecated: { _ in fail("\(Self.self).getVisitorInfoDeprecated")},
-        updateVisitorInfo: { _, _ in fail("\(Self.self).updateVisitorInfo") },
-        updateVisitorInfoDeprecated: { _, _ in fail("\(Self.self).updateVisitorInfoDeprecated") },
         configureWithConfiguration: { _, _ in fail("\(Self.self).configureWithConfiguration") },
+        getVisitorInfo: {
+            fail("\(Self.self).getVisitorInfo")
+            throw NSError(domain: "CoreSdkClient", code: -1, userInfo: nil)
+        },
+        updateVisitorInfo: { _ in
+            fail("\(Self.self).updateVisitorInfo")
+            throw NSError(domain: "CoreSdkClient", code: -1, userInfo: nil)
+        },
         configureWithInteractor: { _ in fail("\(Self.self).configureWithInteractor") },
         getQueues: { _ in fail("\(Self.self).listQueues") },
         queueForEngagement: { _, _, _ in fail("\(Self.self).queueForEngagement") },
