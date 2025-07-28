@@ -523,7 +523,9 @@ extension ChatViewModel {
     }
 
     private func sendMessagePreview(_ message: String) {
-        interactor.sendMessagePreview(message)
+        Task {
+            _ = try? await interactor.sendMessagePreview(message)
+        }
     }
 
     private func sendMessage() {

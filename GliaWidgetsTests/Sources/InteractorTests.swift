@@ -75,19 +75,20 @@ class InteractorTests: XCTestCase {
         ])
     }
 
-    func test_sendMessagePreview() throws {
+    func test_sendMessagePreview() async throws {
         enum Callback: Equatable {
             case sendMessagePreview(String)
         }
 
         var callbacks: [Callback] = []
         var interactorEnv = Interactor.Environment.failing
-        interactorEnv.coreSdk.sendMessagePreview = { message, _ in
+        interactorEnv.coreSdk.sendMessagePreview = { message in
             callbacks.append(.sendMessagePreview(message))
+            return true
         }
         let interactor = Interactor.mock(environment: interactorEnv)
 
-        interactor.sendMessagePreview("mock")
+        _ = try await interactor.sendMessagePreview("mock")
         XCTAssertEqual(callbacks, [.sendMessagePreview("mock")])
     }
 

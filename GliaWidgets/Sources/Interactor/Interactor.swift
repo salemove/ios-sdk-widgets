@@ -187,8 +187,8 @@ extension Interactor {
         }
     }
 
-    func sendMessagePreview(_ message: String) {
-        environment.coreSdk.sendMessagePreview(message) { _, _ in }
+    func sendMessagePreview(_ message: String) async throws -> Bool {
+        try await environment.coreSdk.sendMessagePreview(message)
     }
 
     func send(
