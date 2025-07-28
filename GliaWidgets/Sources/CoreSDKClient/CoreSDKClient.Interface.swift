@@ -39,13 +39,6 @@ struct CoreSdkClient {
 
     var queueForEngagement: QueueForEngagement
 
-    typealias RequestMediaUpgradeWithOffer = (
-        _ offer: Self.MediaUpgradeOffer,
-        _ completion: @escaping Self.SuccessBlock
-    ) -> Void
-
-    var requestMediaUpgradeWithOffer: RequestMediaUpgradeWithOffer
-
     typealias SendMessagePreview = (
         _ message: String,
         _ completion: @escaping Self.SuccessBlock
