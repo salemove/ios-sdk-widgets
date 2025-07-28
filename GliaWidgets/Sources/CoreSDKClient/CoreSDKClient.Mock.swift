@@ -20,7 +20,7 @@ extension CoreSdkClient {
         sendMessagePreview: { _, _ in },
         sendMessageWithMessagePayload: { _, _ in },
         cancelQueueTicket: { _, _ in },
-        endEngagement: { _ in },
+        endEngagement: { true },
         requestEngagedOperator: { _ in },
         uploadFileToEngagement: { _, _, _ in },
         fetchFile: { _, _, _ in },
