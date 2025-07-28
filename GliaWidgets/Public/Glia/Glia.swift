@@ -491,7 +491,14 @@ public class Glia {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
         }
-        environment.coreSdk.getVisitorInfo(completion)
+        Task {
+            do {
+                let visitorInfo = try await environment.coreSdk.getVisitorInfo()
+                completion(.success(visitorInfo))
+            } catch {
+                completion(.failure(error))
+            }
+        }
     }
 
     /// Update current Visitor's information.
@@ -536,7 +543,14 @@ public class Glia {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
         }
-        environment.coreSdk.updateVisitorInfo(info, completion)
+        Task {
+            do {
+                let result = try await environment.coreSdk.updateVisitorInfo(info)
+                completion(.success(result))
+            } catch {
+                completion(.failure(error))
+            }
+        }
     }
 
     /// Ends active engagement if existing and closes Widgets SDK UI (includes bubble).
