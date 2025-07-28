@@ -4,7 +4,7 @@ class ChatMessageEntryView: BaseView {
     let pickMediaButton: MessageButton
     let uploadListView: SecureConversations.FileUploadListView
     var textChanged: ((String) -> Void)?
-    var sendTapped: (() -> Void)?
+    var sendTapped: (() async -> Void)?
     var pickMediaTapped: (() -> Void)?
     var messageText: String {
         get { return textView.text }
@@ -251,7 +251,9 @@ class ChatMessageEntryView: BaseView {
     }
 
     private func sendTap() {
-        sendTapped?()
+        Task {
+            await sendTapped?()
+        }
     }
 
     @objc private func textViewContainerTap() {

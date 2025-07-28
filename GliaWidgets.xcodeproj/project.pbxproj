@@ -733,6 +733,7 @@
 		C05E3EDE29C99E070013BC81 /* ProximityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05E3EDD29C99E070013BC81 /* ProximityManager.swift */; };
 		C06152D52AB1BC1300063BF8 /* Font+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06152D42AB1BC1300063BF8 /* Font+Extensions.swift */; };
 		C06152DA2AB1BC4300063BF8 /* OrientationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06152D92AB1BC4300063BF8 /* OrientationManager.swift */; };
+		C0622D9C2E37F37100A1F19D /* XCTestCase+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0622D9B2E37F36800A1F19D /* XCTestCase+Extension.swift */; };
 		C06A757F296EC76B006B69A2 /* VisitorCodeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06A757E296EC76B006B69A2 /* VisitorCodeStyle.swift */; };
 		C06A7582296EC856006B69A2 /* NumberSlotStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06A7581296EC856006B69A2 /* NumberSlotStyle.swift */; };
 		C06A7584296EC9DC006B69A2 /* NumberSlotStyle.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06A7583296EC9DC006B69A2 /* NumberSlotStyle.Accessibility.swift */; };
@@ -1815,6 +1816,7 @@
 		C05E3EDD29C99E070013BC81 /* ProximityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProximityManager.swift; sourceTree = "<group>"; };
 		C06152D42AB1BC1300063BF8 /* Font+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extensions.swift"; sourceTree = "<group>"; };
 		C06152D92AB1BC4300063BF8 /* OrientationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationManager.swift; sourceTree = "<group>"; };
+		C0622D9B2E37F36800A1F19D /* XCTestCase+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Extension.swift"; sourceTree = "<group>"; };
 		C06A757E296EC76B006B69A2 /* VisitorCodeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitorCodeStyle.swift; sourceTree = "<group>"; };
 		C06A7581296EC856006B69A2 /* NumberSlotStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberSlotStyle.swift; sourceTree = "<group>"; };
 		C06A7583296EC9DC006B69A2 /* NumberSlotStyle.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberSlotStyle.Accessibility.swift; sourceTree = "<group>"; };
@@ -2408,6 +2410,7 @@
 		1A205D6525655CB2003AA3CD /* GliaWidgetsTests */ = {
 			isa = PBXGroup;
 			children = (
+				C0622D9B2E37F36800A1F19D /* XCTestCase+Extension.swift */,
 				84520BF42B20935B00F97617 /* LiveObservations */,
 				3146C9412AB1850A0047D8CC /* Resources */,
 				7552DFAF2A6FB37E0093519B /* ChatMessage */,
@@ -5758,9 +5761,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5775,9 +5782,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TestingApp/Pods-TestingApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TestingApp/Pods-TestingApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5792,9 +5803,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -6728,6 +6743,7 @@
 				31CCE3E82BCE8F3A00F92535 /* VideoCallCoordinatorTests.swift in Sources */,
 				8418AD7B2BFB69BC007DE207 /* OnHoldOverlayVisualEffectViewTests.swift in Sources */,
 				8491AF672AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift in Sources */,
+				C0622D9C2E37F37100A1F19D /* XCTestCase+Extension.swift in Sources */,
 				AFEF5C7429929A8D005C3D8D /* SecureConversations.FileUploadListViewModel.Environment.Failing.swift in Sources */,
 				AFF9542C2ADDA10600C277E0 /* CoreSDKConfigurator.Failing.swift in Sources */,
 				31758EC42B5FB192007BBD9F /* EngagementCoordinatorTests.swift in Sources */,
