@@ -211,7 +211,10 @@ extension CallVisualizer.Coordinator {
 
 extension CallVisualizer.Coordinator {
     func declineEngagement() {
-        activeInteractor?.endEngagement { _ in }
+        Task {
+            try? await activeInteractor?.endEngagement()
+        }
+
         end()
     }
 
