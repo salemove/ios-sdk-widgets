@@ -217,8 +217,8 @@ extension CallVisualizer.Coordinator {
 
 extension CallVisualizer.Coordinator {
     func declineEngagement() {
-        activeInteractor?.endEngagement { _ in }
         Task { @MainActor [weak self] in
+            try? await activeInteractor?.endEngagement()
             self?.end()
         }
     }
