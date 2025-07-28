@@ -137,7 +137,10 @@ class EngagementViewModel: CommonEngagementModel {
 
     func endSession() {
         interactor.endSession { [weak self] _ in
-            self?.engagementDelegate?(.finished)
+            guard let self = self else { return }
+            self.environment.gcd.mainQueue.asyncIfNeeded {
+                self.engagementDelegate?(.finished)
+            }
         }
     }
 
