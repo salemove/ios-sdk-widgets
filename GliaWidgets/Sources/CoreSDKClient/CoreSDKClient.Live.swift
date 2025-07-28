@@ -62,7 +62,17 @@ extension CoreSdkClient {
                     using: options, replaceExisting: replaceExisting, completion: completion
                 )
             },
-            sendMessagePreview: GliaCore.sharedInstance.sendMessagePreview(message:completion:),
+            sendMessagePreview: { message in
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.sendMessagePreview(message: message) { success, error in
+                        if let error = error {
+                            continuation.resume(throwing: error)
+                        } else {
+                            continuation.resume(returning: success)
+                        }
+                    }
+                }
+            },
             sendMessageWithMessagePayload: GliaCore.sharedInstance.send(messagePayload:completion:),
             cancelQueueTicket: GliaCore.sharedInstance.cancel(queueTicket:completion:),
             endEngagement: {

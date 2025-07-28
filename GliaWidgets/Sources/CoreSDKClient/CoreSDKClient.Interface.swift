@@ -39,12 +39,7 @@ struct CoreSdkClient {
 
     var queueForEngagement: QueueForEngagement
 
-    typealias SendMessagePreview = (
-        _ message: String,
-        _ completion: @escaping Self.SuccessBlock
-    ) -> Void
-
-    var sendMessagePreview: SendMessagePreview
+    var sendMessagePreview: (_ message: String) async throws -> Bool
 
     typealias SendMessageWithMessagePayloadCallback = (Result<CoreSdkClient.Message, CoreSdkClient.GliaCoreError>) -> Void
         typealias SendMessageWithMessagePayload = (
