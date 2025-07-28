@@ -7,7 +7,7 @@ private extension String {
 
 extension SecureConversations.TranscriptModel {
     func quickReplyOption(_ gvaOption: GvaOption) -> QuickReplyButtonCell.Props {
-        let action = Cmd { [weak self] in
+        let action = AsyncCmd { [weak self] in
             self?.gvaOptionAction(for: gvaOption)()
             self?.action?(.quickReplyPropsUpdated(.hidden))
         }

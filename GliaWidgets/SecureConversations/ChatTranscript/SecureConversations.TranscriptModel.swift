@@ -207,14 +207,29 @@ extension SecureConversations {
             }
         }
 
+        @MainActor
+        func asyncEvent(_ event: ChatViewModel.AsyncEvent) async {
+            switch event {
+            case .sendTapped:
+                sendMessage()
+            case .customCardOptionSelected:
+                break
+            case let .gvaButtonTapped(option):
+                gvaOptionAction(for: option)()
+            case let .retryMessageTapped(message):
+                retryMessageSending(message)
+            case .choiceOptionSelected:
+                // Not supported for transcript.
+                break
+            }
+        }
+
         func event(_ event: Event) {
             switch event {
             case .viewDidLoad:
                 isViewLoaded = true
             case .messageTextChanged(let text):
                 messageText = text
-            case .sendTapped:
-                sendMessage()
             case .removeUploadTapped(let upload):
                 removeUpload(upload)
             case .pickMediaTapped:
@@ -226,20 +241,10 @@ extension SecureConversations {
                 fileTapped(file)
             case .downloadTapped(let download):
                 downloadTapped(download)
-            case .choiceOptionSelected:
-                // Not supported for transcript.
-                break
             case .chatScrolled(let bottomReached):
                 isChatScrolledToBottom.value = bottomReached
             case .linkTapped(let url):
                 linkTapped(url)
-            case .customCardOptionSelected:
-                // Not supported for transcript.
-                break
-            case let .gvaButtonTapped(option):
-                gvaOptionAction(for: option)()
-            case let .retryMessageTapped(message):
-                retryMessageSending(message)
             }
         }
 

@@ -191,11 +191,8 @@ extension Interactor {
         try await environment.coreSdk.sendMessagePreview(message)
     }
 
-    func send(
-        messagePayload: CoreSdkClient.SendMessagePayload,
-        completion: @escaping (Result<CoreSdkClient.Message, CoreSdkClient.GliaCoreError>) -> Void
-    ) {
-        environment.coreSdk.sendMessageWithMessagePayload(messagePayload, completion)
+    func send(messagePayload: CoreSdkClient.SendMessagePayload) async throws -> CoreSdkClient.Message {
+        try await environment.coreSdk.sendMessageWithMessagePayload(messagePayload)
     }
 
     func endSession(completion: @escaping (Result<Void, Error>) -> Void) {

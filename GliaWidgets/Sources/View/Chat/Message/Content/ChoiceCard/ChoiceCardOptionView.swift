@@ -11,7 +11,7 @@ final class ChoiceCardOptionView: UIView {
         didSet { updateStyle() }
     }
 
-    var tap: (() -> Void)?
+    var tap: (() async -> Void)?
 
     private let text: String?
     private let textLabel = UILabel()
@@ -97,7 +97,9 @@ final class ChoiceCardOptionView: UIView {
     }
 
     @objc private func onTap() {
-        tap?()
+        Task {
+            await tap?()
+        }
     }
 }
 

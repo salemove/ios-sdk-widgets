@@ -2,7 +2,7 @@
 import XCTest
 
 extension SecureConversationsTranscriptModelTests {
-    func testSendMessageRetrySuccess() {
+    func testSendMessageRetrySuccess() async {
         let outgoingMessage = OutgoingMessage.mock()
         var calls: [Call] = []
         let viewModel = createViewModel()
@@ -38,7 +38,7 @@ extension SecureConversationsTranscriptModelTests {
         viewModel.pendingSection.append(.init(kind: .outgoingMessage(outgoingMessage, error: "Failed")))
         viewModel.pendingSection.append(.init(kind: .visitorMessage(ChatMessage.mock(), status: nil)))
 
-        viewModel.event(.retryMessageTapped(outgoingMessage))
+        await viewModel.asyncEvent(.retryMessageTapped(outgoingMessage))
 
         XCTAssertEqual(calls, expectedCalls)
         XCTAssertEqual(viewModel.pendingSection.itemCount, 3)
@@ -53,7 +53,7 @@ extension SecureConversationsTranscriptModelTests {
         }
     }
 
-    func testSendMessageRetryFailure() {
+    func testSendMessageRetryFailure() async {
         let outgoingMessage = OutgoingMessage.mock()
         var calls: [Call] = []
         let viewModel = createViewModel()
@@ -98,7 +98,7 @@ extension SecureConversationsTranscriptModelTests {
         viewModel.pendingSection.append(.init(kind: .outgoingMessage(outgoingMessage, error: "Failed")))
         viewModel.pendingSection.append(.init(kind: .visitorMessage(ChatMessage.mock(), status: nil)))
 
-        viewModel.event(.retryMessageTapped(outgoingMessage))
+        await viewModel.asyncEvent(.retryMessageTapped(outgoingMessage))
 
         XCTAssertEqual(calls, expectedCalls)
         XCTAssertEqual(viewModel.pendingSection.itemCount, 3)
