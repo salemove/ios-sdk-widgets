@@ -618,6 +618,8 @@ extension ChatViewController {
         viewFactoryEnv.imageViewCache.getImageForKey = { _ in UIImage.mock }
 
         var interactorEnv = Interactor.Environment.mock
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _ in
+            throw CoreSdkClient.GliaCoreError.mock()
         interactorEnv.gcd = .live
         interactorEnv.coreSdk.sendMessageWithMessagePayload = { _ in
             throw CoreSdkClient.GliaCoreError.mock()

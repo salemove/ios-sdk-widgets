@@ -39,6 +39,7 @@ extension ChatViewModelTests {
             for: .init(rawValue: "mock")
         )
 
+        await waitUntil { calls == [.sendOption("text", "value")] }
         XCTAssertEqual(calls, [.sendOption("text", "value")])
     }
 }

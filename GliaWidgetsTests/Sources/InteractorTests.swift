@@ -493,7 +493,9 @@ class InteractorTests: XCTestCase {
                 callbacks.append(.unknownError)
             }
         }
-
+        await waitUntil {
+            callbacks == [.expiredAccessToken]
+        }
         XCTAssertEqual(callbacks, [.expiredAccessToken])
     }
     
