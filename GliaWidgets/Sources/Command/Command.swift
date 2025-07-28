@@ -68,3 +68,49 @@ extension Cmd {
         execute()
     }
 }
+
+/// A `Command` whose closure may `await`.
+struct AsyncCommand<T>: Hashable {
+    let tag: String
+    let file: String
+    let function: String
+    let line: UInt
+    let closure: (T) async -> Void
+
+    init(
+        tag: String = "",
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: UInt = #line,
+        closure: @escaping (T) async -> Void
+    ) {
+        self.tag = tag
+        self.file = "\(file)"
+        self.function = "\(function)"
+        self.line = line
+        self.closure = closure
+    }
+
+    func execute(with value: T) async { await closure(value) }
+    func callAsFunction(_ value: T) async { await execute(with: value) }
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.tag == rhs.tag &&
+        lhs.file == rhs.file &&
+        lhs.function == rhs.function &&
+        lhs.line == rhs.line
+    }
+
+    func hash(into h: inout Hasher) {
+        h.combine(tag); h.combine(file); h.combine(function); h.combine(line)
+    }
+
+    static var nop: Self { Self(tag: "nop", closure: { _ in }) }
+}
+
+typealias AsyncCmd = AsyncCommand<Void>
+
+extension AsyncCmd {
+    func execute() async { await execute(with: ()) }
+    func callAsFunction() async { await execute() }
+}

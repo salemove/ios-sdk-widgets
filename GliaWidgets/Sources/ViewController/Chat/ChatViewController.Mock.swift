@@ -604,8 +604,9 @@ extension ChatViewController {
     }
 
     // MARK: - Message Sending Failed State
-    static func mockMessageSendingFailedState() throws -> ChatViewController {
+    static func mockMessageSendingFailedState() async throws -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
+        chatViewModelEnv.gcd = .live
         let messageUuid = UUID.incrementing
 
         chatViewModelEnv.createSendMessagePayload = {
@@ -613,11 +614,13 @@ extension ChatViewController {
         }
 
         var viewFactoryEnv = ViewFactory.Environment.mock
+        viewFactoryEnv.gcd = .live
         viewFactoryEnv.imageViewCache.getImageForKey = { _ in UIImage.mock }
 
         var interactorEnv = Interactor.Environment.mock
-        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, completion in
-            completion(.failure(.mock()))
+        interactorEnv.gcd = .live
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _ in
+            throw CoreSdkClient.GliaCoreError.mock()
         }
         let interactor = Interactor.mock(environment: interactorEnv)
         interactor.setCurrentEngagement(.mock())
@@ -635,8 +638,9 @@ extension ChatViewController {
                 environment: viewFactoryEnv
             )
         )
-        chatViewModel.invokeSetTextAndSendMessage(text: "mock")
-        chatViewModel.invokeSetTextAndSendMessage(text: "mock mock")
+        try await Task.sleep(nanoseconds: 1_000_000_000)
+        await chatViewModel.invokeSetTextAndSendMessage(text: "mock")
+        await chatViewModel.invokeSetTextAndSendMessage(text: "mock mock")
         controller.view.updateConstraints()
         return controller
     }
