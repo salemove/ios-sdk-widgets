@@ -20,7 +20,10 @@ extension CoreSdkClient {
         configureWithInteractor: { _ in fail("\(Self.self).configureWithInteractor") },
         getQueues: { _ in fail("\(Self.self).listQueues") },
         queueForEngagement: { _, _, _ in fail("\(Self.self).queueForEngagement") },
-        sendMessagePreview: { _, _ in fail("\(Self.self).sendMessagePreview") },
+        sendMessagePreview: { _ in
+            fail("\(Self.self).sendMessagePreview")
+            throw NSError(domain: "CoreSdkClient", code: -1, userInfo: nil)
+        },
         sendMessageWithMessagePayload: { _, _ in fail("\(Self.self).sendMessageWithMessagePayload") },
         cancelQueueTicket: { _, _ in fail("cancelQueueTicket") },
         endEngagement: {
