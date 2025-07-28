@@ -7,7 +7,12 @@ class ChatViewModelTests: XCTestCase {
 
     var viewModel: ChatViewModel!
 
-    func test__choiceOptionSelected() throws {
+    override func tearDown() {
+        viewModel = nil
+        super.tearDown()
+    }
+
+    func test__choiceOptionSelected() async throws {
 
         enum Call { case sendSelectedOptionValue }
         var calls = [Call]()
@@ -35,7 +40,7 @@ class ChatViewModelTests: XCTestCase {
                 fileManager: fileManager,
                 data: .failing,
                 date: { Date.mock },
-                gcd: .failing,
+                gcd: .live,
                 uiScreen: .failing,
                 createThumbnailGenerator: { .failing },
                 createFileDownload: { _, _, _ in
@@ -82,7 +87,7 @@ class ChatViewModelTests: XCTestCase {
             maximumUploads: { 2 }
         )
 
-        viewModel.sendChoiceCardResponse(choiceCardMock, to: "mocked-message-id")
+        await viewModel.sendChoiceCardResponse(choiceCardMock, to: "mocked-message-id")
 
         XCTAssertEqual(calls, [.sendSelectedOptionValue])
     }
@@ -424,19 +429,19 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertEqual(calls, [.canOpen(mockUrl), .open(mockUrl)])
     }
 
-    func test_deliveryStatusText() {
+    func test_deliveryStatusText() async {
         let deliveredStatusText = "This message has been delivered"
         let messageContent = "Message"
 
         var environment: Interactor.Environment = .mock
-        environment.coreSdk.sendMessageWithMessagePayload = { _, completion in
+        environment.coreSdk.sendMessageWithMessagePayload = { _ in
             let coreSdkMessage = Message(
                 id: UUID().uuidString,
                 content: messageContent,
                 sender: MessageSender.mock,
                 metadata: nil
             )
-            completion(.success(coreSdkMessage))
+            return coreSdkMessage
         }
 
         // `sendMessageWithAttachment` goes through this method first, so if
@@ -472,7 +477,7 @@ class ChatViewModelTests: XCTestCase {
 
         // Simulate typing and message and pressing the send button
         viewModel.event(.messageTextChanged(messageContent))
-        viewModel.event(.sendTapped)
+        await viewModel.asyncEvent(.sendTapped)
     }
 
     func testMigrateSetsExpectedFieldsFromTranscriptModelAndCallsActions() throws {
@@ -694,7 +699,7 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.receivedMessageIds, [expectedMessageId.uppercased()])
     }
 
-    func test_messageReceivedFirstFromRestDiscardsSameOneFromSocket() throws {
+    func test_messageReceivedFirstFromRestDiscardsSameOneFromSocket() async throws {
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
@@ -721,12 +726,12 @@ class ChatViewModelTests: XCTestCase {
         interactorLog.infoClosure = { _, _, _, _ in }
         interactorLog.prefixedClosure = { _ in interactorLog }
         interactor.environment.log = interactorLog
-        interactor.environment.gcd.mainQueue.async = { $0() }
+        interactor.environment.gcd = .live
         interactor.environment.coreSdk.configureWithInteractor = { _ in }
         interactor.environment.coreSdk.configureWithConfiguration = { _, callback in callback(.success(())) }
         interactor.environment.coreSdk.sendMessagePreview = { _ in true }
-        interactor.environment.coreSdk.sendMessageWithMessagePayload = { _, completion in
-            completion(.success(.mock(id: expectedMessageId)))
+        interactor.environment.coreSdk.sendMessageWithMessagePayload = { _ in
+            return .mock(id: expectedMessageId)
         }
         interactor.environment.coreSdk.queueForEngagement = { _, _, completion in
             completion(.success(.mock))
@@ -736,7 +741,7 @@ class ChatViewModelTests: XCTestCase {
         viewModel.isViewLoaded = true
         viewModel.start()
         interactor.state = .engaged(.mock())
-        viewModel.invokeSetTextAndSendMessage(text: "Mock send message.")
+        await viewModel.invokeSetTextAndSendMessage(text: "Mock send message.")
 
         viewModel.interactorEvent(.receivedMessage(.mock(id: expectedMessageId)))
 
@@ -754,7 +759,7 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertEqual(try XCTUnwrap(receivedMessage).id, expectedMessageId)
     }
 
-    func test_messageReceivedFirstFromSocketDiscardsSameOneFromRest() throws {
+    func test_messageReceivedFirstFromSocketDiscardsSameOneFromRest() async throws {
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
@@ -781,14 +786,14 @@ class ChatViewModelTests: XCTestCase {
         interactorLog.prefixedClosure = { _ in log }
         interactorLog.infoClosure = { _, _, _, _ in }
         interactor.environment.log = interactorLog
-        interactor.environment.gcd.mainQueue.async = { $0() }
+        interactor.environment.gcd = .live
         interactor.environment.coreSdk.configureWithInteractor = { _ in }
         interactor.environment.coreSdk.configureWithConfiguration = { _, callback in callback(.success(())) }
         interactor.environment.coreSdk.sendMessagePreview = { _ in true }
-        interactor.environment.coreSdk.sendMessageWithMessagePayload = { [weak viewModel] _, completion in
+        interactor.environment.coreSdk.sendMessageWithMessagePayload = { [weak viewModel] _ in
             // Deliver message via socket before REST API response.
             viewModel?.interactorEvent(.receivedMessage(.mock(id: expectedMessageId)))
-            completion(.success(.mock(id: expectedMessageId)))
+            return .mock(id: expectedMessageId)
         }
         interactor.environment.coreSdk.queueForEngagement = { _, _, completion in
             completion(.success(.mock))
@@ -799,7 +804,7 @@ class ChatViewModelTests: XCTestCase {
         viewModel.start()
         viewModel.interactor.state = .enqueueing(.chat)
         interactor.state = .engaged(.mock())
-        viewModel.invokeSetTextAndSendMessage(text: "Mock send message.")
+        await viewModel.invokeSetTextAndSendMessage(text: "Mock send message.")
         viewModel.interactorEvent(.receivedMessage(.mock(id: expectedMessageId)))
 
         let lastMessage = viewModel.messagesSection.items.last?.kind
@@ -981,7 +986,7 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertTrue(isValidInput)
     }
 
-    func test_quickReplyWillBeHiddenAfterMessageIsSent() throws {
+    func test_quickReplyWillBeHiddenAfterMessageIsSent() async throws {
         enum Calls { case quickReplyHidden }
         var calls: [Calls] = []
         let interactorEnv = Interactor.Environment(coreSdk: .failing, queuesMonitor: .failing, gcd: .mock, log: .mock)
@@ -1006,18 +1011,19 @@ class ChatViewModelTests: XCTestCase {
                 break
             }
         }
-        viewModel.event(.sendTapped)
+        await viewModel.asyncEvent(.sendTapped)
         XCTAssertEqual(calls, [.quickReplyHidden])
     }
 
-    func test_pendingMessageGetsRemovedFromListWhenMessageIsSentSuccesfully() {
-        var interactorEnv = Interactor.Environment(coreSdk: .failing, queuesMonitor: .failing, gcd: .mock, log: .mock)
-        interactorEnv.coreSdk.sendMessageWithMessagePayload = { payload, callback in
-            callback(.success(.mock(id: payload.messageId.rawValue)))
+    func test_pendingMessageGetsRemovedFromListWhenMessageIsSentSuccesfully() async {
+        var interactorEnv = Interactor.Environment(coreSdk: .failing, queuesMonitor: .failing, gcd: .live, log: .mock)
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { payload in
+            return .mock(id: payload.messageId.rawValue)
         }
         let interactor = Interactor.mock(environment: interactorEnv)
         interactor.setCurrentEngagement(.mock())
         var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.gcd = .live
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
@@ -1033,13 +1039,17 @@ class ChatViewModelTests: XCTestCase {
         viewModel.setPendingMessagesForTesting(pendingMessages)
         XCTAssertEqual(pendingMessages, viewModel.getPendingMessageForTesting())
         viewModel.update(for: .engaged(.mock()))
+
+        await waitUntil {
+            viewModel.getPendingMessageForTesting().isEmpty
+        }
         XCTAssertTrue(viewModel.getPendingMessageForTesting().isEmpty)
     }
 
-    func test_messageAttachmentIsKeptAfterFailureSending() throws {
+    func test_messageAttachmentIsKeptAfterFailureSending() async throws {
         var interactorEnv = Interactor.Environment.mock
-        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, callback in
-            callback(.failure(.mock()))
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _ in
+            throw CoreSdkClient.GliaCoreError.mock()
         }
         interactorEnv.coreSdk.sendMessagePreview = { _ in true }
         let interactor = Interactor.mock(environment: interactorEnv)
@@ -1060,7 +1070,7 @@ class ChatViewModelTests: XCTestCase {
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         let messageContent = "Mock"
-        viewModel.invokeSetTextAndSendMessage(text: messageContent)
+        await viewModel.invokeSetTextAndSendMessage(text: messageContent)
 
         switch viewModel.messagesSection.items.last?.kind {
         case let .outgoingMessage(message, _):
