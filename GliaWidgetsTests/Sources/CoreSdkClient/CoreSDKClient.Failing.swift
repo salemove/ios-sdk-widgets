@@ -20,7 +20,6 @@ extension CoreSdkClient {
         configureWithInteractor: { _ in fail("\(Self.self).configureWithInteractor") },
         getQueues: { _ in fail("\(Self.self).listQueues") },
         queueForEngagement: { _, _, _ in fail("\(Self.self).queueForEngagement") },
-        requestMediaUpgradeWithOffer: { _, _ in fail("\(Self.self).requestMediaUpgradeWithOffer") },
         sendMessagePreview: { _, _ in fail("\(Self.self).sendMessagePreview") },
         sendMessageWithMessagePayload: { _, _ in fail("\(Self.self).sendMessageWithMessagePayload") },
         cancelQueueTicket: { _, _ in fail("cancelQueueTicket") },
