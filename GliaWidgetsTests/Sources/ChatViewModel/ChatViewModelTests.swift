@@ -1073,11 +1073,12 @@ class ChatViewModelTests: XCTestCase {
 
     func test_engagementEndedByOperatorCallsEngagementAndDelegateActions() {
         var interactorEnv = Interactor.Environment.failing
-        interactorEnv.gcd.mainQueue = .mock
+        interactorEnv.gcd = .live
         let interactor = Interactor.mock(environment: interactorEnv)
         interactor.state = .ended(.byOperator)
 
         var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.gcd = .live
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
@@ -1162,15 +1163,17 @@ class ChatViewModelTests: XCTestCase {
 
     func test_closeActionDoesNotShowConfirmationIfThereIsTransferredSC() throws {
         var interactorEnv = Interactor.Environment.failing
-        interactorEnv.gcd.mainQueue = .mock
-        interactorEnv.coreSdk.endEngagement = { _ in
+        interactorEnv.gcd = .live
+        interactorEnv.coreSdk.endEngagement = {
             XCTFail("End engagement should not be called")
+            return false
         }
         let interactor = Interactor.mock(environment: interactorEnv)
         interactor.setCurrentEngagement(.mock(status: .transferring, capabilities: .init(text: true)))
         interactor.state = .engaged(nil)
 
         var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.gcd = .live
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock

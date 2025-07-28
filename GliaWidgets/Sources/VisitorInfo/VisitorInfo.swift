@@ -49,3 +49,20 @@ extension GliaCore.VisitorInfo {
         )
     }
 }
+
+#if DEBUG
+extension VisitorInfo {
+    static let mock = VisitorInfo(
+        name: "Test",
+        email: "test@example.com",
+        phone: "+123456789",
+        note: "test note",
+        customAttributes: ["foo": "bar"],
+        banned: false,
+        generatedName: nil,
+        href: nil,
+        id: "id",
+        externalId: "externalId"
+    )
+}
+#endif

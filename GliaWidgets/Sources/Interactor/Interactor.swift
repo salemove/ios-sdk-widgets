@@ -228,7 +228,15 @@ extension Interactor {
         case .engaged where currentEngagement?.isTransferredSecureConversation == true:
             completion(.success(()))
         case .engaged:
-            endEngagement(completion: completion)
+            Task {
+                do {
+                    try await endEngagement()
+                    completion(.success(()))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+
         case .ended:
             completion(.success(()))
 
@@ -253,38 +261,34 @@ extension Interactor {
         }
     }
 
-    func endEngagement(completion: @escaping (Result<Void, Error>) -> Void) {
+    func endEngagement() async throws {
         let requestID = UUID()
         surveyEligibility = .pendingVisitorEnd(
             requestID: requestID,
             engagement: currentEngagement
         )
-        environment.coreSdk.endEngagement { [weak self] _, error in
-            guard let self else { return }
-            if let error = error {
-                if case let .pendingVisitorEnd(pendingRequestID, _) = self.surveyEligibility,
-                   pendingRequestID == requestID {
-                    self.surveyEligibility = .unavailable
-                }
-                completion(.failure(error))
-            } else {
-                guard case let .pendingVisitorEnd(pendingRequestID, endingEngagement) = self.surveyEligibility,
-                      pendingRequestID == requestID else {
-                    completion(.success(()))
-                    return
-                }
 
-                if let endingEngagement,
-                   self.currentEngagement == nil || self.currentEngagement?.id == endingEngagement.id,
-                   self.endedEngagement?.id == endingEngagement.id {
-                    self.surveyEligibility = .eligible(endingEngagement)
-                } else {
-                    self.surveyEligibility = .unavailable
-                }
-                self.state = .ended(.byVisitor)
-                completion(.success(()))
+        do {
+            _ = try await environment.coreSdk.endEngagement()
+        } catch {
+            if case let .pendingVisitorEnd(pendingRequestID, _) = surveyEligibility,
+               pendingRequestID == requestID {
+                surveyEligibility = .unavailable
             }
+            throw error
         }
+
+        guard case let .pendingVisitorEnd(pendingRequestID, endingEngagement) = surveyEligibility,
+              pendingRequestID == requestID else { return }
+
+        if let endingEngagement,
+           currentEngagement == nil || currentEngagement?.id == endingEngagement.id,
+           endedEngagement?.id == endingEngagement.id {
+            surveyEligibility = .eligible(endingEngagement)
+        } else {
+            surveyEligibility = .unavailable
+        }
+        state = .ended(.byVisitor)
     }
 
     /**
