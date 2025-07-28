@@ -438,9 +438,13 @@ public class Glia {
         Task {
             do {
                 let visitorInfo = try await environment.coreSdk.getVisitorInfo()
-                completion(.success(visitorInfo))
+                environment.gcd.mainQueue.asyncIfNeeded {
+                    completion(.success(visitorInfo))
+                }
             } catch {
-                completion(.failure(error))
+                environment.gcd.mainQueue.asyncIfNeeded {
+                    completion(.failure(error))
+                }
             }
         }
     }
@@ -484,9 +488,13 @@ public class Glia {
         Task {
             do {
                 let result = try await environment.coreSdk.updateVisitorInfo(info)
-                completion(.success(result))
+                environment.gcd.mainQueue.asyncIfNeeded {
+                    completion(.success(result))
+                }
             } catch {
-                completion(.failure(error))
+                environment.gcd.mainQueue.asyncIfNeeded {
+                    completion(.failure(error))
+                }
             }
         }
     }
