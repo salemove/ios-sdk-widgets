@@ -16,7 +16,6 @@ extension CoreSdkClient {
         configureWithInteractor: { _ in },
         getQueues: { _ in },
         queueForEngagement: { _, _, _ in },
-        requestMediaUpgradeWithOffer: { _, _ in },
         sendMessagePreview: { _, _ in },
         sendMessageWithMessagePayload: { _, _ in },
         cancelQueueTicket: { _, _ in },
