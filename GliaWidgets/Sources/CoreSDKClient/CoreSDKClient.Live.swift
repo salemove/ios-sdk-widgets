@@ -73,7 +73,18 @@ extension CoreSdkClient {
                     }
                 }
             },
-            sendMessageWithMessagePayload: GliaCore.sharedInstance.send(messagePayload:completion:),
+            sendMessageWithMessagePayload: { payload in
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.send(messagePayload: payload) { result in
+                        switch result {
+                        case let .success(message):
+                            continuation.resume(returning: message)
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
+                    }
+                }
+            },
             sendFile: GliaCore.sharedInstance.send(file:completion:),
             cancelQueueTicket: GliaCore.sharedInstance.cancel(queueTicket:completion:),
             endEngagement: {

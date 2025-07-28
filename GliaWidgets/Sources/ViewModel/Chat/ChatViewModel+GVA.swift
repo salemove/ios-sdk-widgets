@@ -7,8 +7,8 @@ private extension String {
 
 extension ChatViewModel {
     func quickReplyOption(_ gvaOption: GvaOption) -> QuickReplyButtonCell.Props {
-        let action = Cmd { [weak self] in
-            self?.gvaOptionAction(for: gvaOption)()
+        let action = AsyncCmd { [weak self] in
+            await self?.gvaOptionAction(for: gvaOption)()
             self?.action?(.quickReplyPropsUpdated(.hidden))
         }
         return .init(
@@ -17,7 +17,7 @@ extension ChatViewModel {
         )
     }
 
-    func gvaOptionAction(for option: GvaOption) -> Cmd {
+    func gvaOptionAction(for option: GvaOption) -> AsyncCmd {
         // If `option.destinationPdBroadcastEvent` is specified,
         // this is broadcast event button, which is not supported
         // on mobile. So an alert should be shown.
@@ -35,7 +35,7 @@ extension ChatViewModel {
         return postbackButtonAction(for: option)
     }
 
-    func postbackButtonAction(for option: GvaOption) -> Cmd {
+    func postbackButtonAction(for option: GvaOption) -> AsyncCmd {
         .init { [weak self] in
             guard let self else { return }
 
@@ -63,14 +63,14 @@ extension ChatViewModel {
                 self.enqueue(engagementKind: .chat, replaceExisting: false)
 
             case .engaged:
-                self.sendMessage(outgoingMessage)
+                await self.sendMessage(outgoingMessage)
             }
         }
     }
 }
 
 private extension ChatViewModel {
-    func urlButtonAction(url: URL, urlTarget: String?) -> Cmd {
+    func urlButtonAction(url: URL, urlTarget: String?) -> AsyncCmd {
         .init { [weak self] in
             guard let self else { return }
 
@@ -118,37 +118,43 @@ private extension ChatViewModel {
         }
     }
 
-    func broadcastEventButtonAction() -> Cmd {
+    func broadcastEventButtonAction() -> AsyncCmd {
         .init { [weak self] in
             guard let self else { return }
             self.engagementAction?(.showAlert(.unsupportedGvaBroadcastError()))
         }
     }
 
-    func sendMessage(_ outgoingMessage: OutgoingMessage) {
+    @MainActor
+    func sendMessage(_ outgoingMessage: OutgoingMessage) async {
         let item = ChatItem(with: outgoingMessage)
         appendItem(item, to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
 
-        interactor.send(messagePayload: outgoingMessage.payload) { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case let .success(message):
-                if !self.hasReceivedMessage(messageId: message.id) {
-                    self.registerReceivedMessage(messageId: message.id)
-                    self.replace(
-                        outgoingMessage,
-                        uploads: [],
-                        with: message,
-                        in: self.messagesSection
-                    )
-                }
-            case .failure:
-                self.markMessageAsFailed(
-                    outgoingMessage,
-                    in: self.messagesSection
-                )
-            }
+        do {
+            let message = try await interactor.send(messagePayload: outgoingMessage.payload)
+            onSuccessSendMessage(
+                message: message,
+                outgoingMessage: outgoingMessage
+            )
+        } catch {
+            onFailureSendMessage(outgoingMessage: outgoingMessage)
+        }
+    }
+
+    @MainActor
+    func onSuccessSendMessage(
+        message: CoreSdkClient.Message,
+        outgoingMessage: OutgoingMessage
+    ) {
+        if !hasReceivedMessage(messageId: message.id) {
+            registerReceivedMessage(messageId: message.id)
+            replace(
+                outgoingMessage,
+                uploads: [],
+                with: message,
+                in: messagesSection
+            )
         }
     }
 }

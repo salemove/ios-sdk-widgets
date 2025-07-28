@@ -1,7 +1,7 @@
 import UIKit
 
 final class GvaPersistentButtonView: OperatorChatMessageView {
-    var onOptionTapped: ((GvaOption) -> Void)!
+    var onOptionTapped: ((GvaOption) async -> Void)!
 
     private let viewStyle: GvaPersistentButtonStyle
     private let stackViewLayoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
@@ -56,7 +56,9 @@ final class GvaPersistentButtonView: OperatorChatMessageView {
                 text: option.text
             )
             optionView.tap = { [weak self] in
-                self?.onOptionTapped(option)
+                Task {
+                    await self?.onOptionTapped(option)
+                }
             }
             return optionView
         }
