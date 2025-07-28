@@ -71,6 +71,7 @@ final class ChatViewTest: XCTestCase {
         coordinatorEnv.getCurrentEngagement = { nil }
         coordinatorEnv.isAuthenticated = { true }
         coordinatorEnv.maximumUploads = { 1 }
+        coordinatorEnv.gcd = .live
         coordinatorEnv.getNonTransferredSecureConversationEngagement = { nil }
         coordinatorEnv.gcd = .live
         var logger = CoreSdkClient.Logger.failing

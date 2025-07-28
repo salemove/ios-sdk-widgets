@@ -15,6 +15,11 @@ class InteractorTests: XCTestCase {
 
     var interactor: Interactor!
 
+    override func tearDown() {
+        interactor = nil
+        super.tearDown()
+    }
+
     func test__enqueueForEngagement() throws {
         enum Call {
             case queueForEngagement
@@ -89,6 +94,7 @@ class InteractorTests: XCTestCase {
         let interactor = Interactor.mock(environment: interactorEnv)
 
         _ = try await interactor.sendMessagePreview("mock")
+
         XCTAssertEqual(callbacks, [.sendMessagePreview("mock")])
     }
 
@@ -437,14 +443,16 @@ class InteractorTests: XCTestCase {
         XCTAssertEqual(callbacks, [.ended])
     }
 
-    func test_sendMessageCallsCoreSdkSendMessageWithAttachment() throws {
+    func test_sendMessageCallsCoreSdkSendMessageWithAttachment() async throws {
         enum Callback: Equatable {
             case sendMessageWithAttachment
         }
         var callbacks: [Callback] = []
         var interactorEnv = Interactor.Environment.failing
-        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, _ in
+        interactorEnv.gcd = .live
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _ in
             callbacks.append(.sendMessageWithAttachment)
+            return .mock()
         }
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         interactorEnv.coreSdk.configureWithConfiguration = { $1(.success(())) }
@@ -455,14 +463,17 @@ class InteractorTests: XCTestCase {
             case .success:
                 break
             case let .failure(error):
-                XCTFail(error.reason)
+                XCTFail(error.localizedDescription)
             }
         }
-        
+
+        await waitUntil {
+            callbacks == [.sendMessageWithAttachment]
+        }
         XCTAssertEqual(callbacks, [.sendMessageWithAttachment])
     }
 
-    func test_sendMessageFailsWith401Error() throws {
+    func test_sendMessageFailsWith401Error() async throws {
         enum Callback: Equatable {
             case success
             case expiredAccessToken
@@ -474,9 +485,10 @@ class InteractorTests: XCTestCase {
             reason: "Expired access token",
             error: CoreSdkClient.Authentication.Error.expiredAccessToken
         )
-        interactorEnv.coreSdk.sendMessageWithMessagePayload = { payload, result in
-            result(.failure(expectedError))
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { payload in
+            throw expectedError
         }
+        interactorEnv.gcd = .live
         let interactor = Interactor.mock(environment: interactorEnv)
 
         interactor.send(messagePayload: .mock(content: "mock-message")) { result in
@@ -492,7 +504,9 @@ class InteractorTests: XCTestCase {
                 }
             }
         }
-
+        await waitUntil {
+            callbacks == [.expiredAccessToken]
+        }
         XCTAssertEqual(callbacks, [.expiredAccessToken])
     }
     
