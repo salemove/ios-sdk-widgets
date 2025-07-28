@@ -106,6 +106,15 @@ extension SecureConversations.ChatWithTranscriptModel {
         }
     }
 
+    func asyncEvent(_ event: Chat.AsyncEvent) async {
+        switch self {
+        case let .chat(model):
+            await model.asyncEvent(event)
+        case let .transcript(model):
+            break
+        }
+    }
+
     func numberOfItems(in section: Int) -> Int {
         switch self {
         case let .chat(model):
