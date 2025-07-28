@@ -16,7 +16,7 @@ extension CoreSdkClient {
         configureWithInteractor: { _ in },
         getQueues: { _ in },
         queueForEngagement: { _, _, _ in },
-        sendMessagePreview: { _, _ in },
+        sendMessagePreview: { _ in true },
         sendMessageWithMessagePayload: { _, _ in },
         cancelQueueTicket: { _, _ in },
         endEngagement: { true },
