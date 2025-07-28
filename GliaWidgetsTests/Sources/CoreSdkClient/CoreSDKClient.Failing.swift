@@ -18,11 +18,8 @@ extension CoreSdkClient {
             throw NSError(domain: "updateVisitorInfo", code: -1, userInfo: nil)
         },
         configureWithInteractor: { _ in fail("\(Self.self).configureWithInteractor") },
-        getQueues: { _ in fail("\(Self.self).getQueues") },
-        queueForEngagement: { _, _, _ in
-            fail("\(Self.self).queueForEngagement")
-        },
-        requestMediaUpgradeWithOffer: { _, _ in fail("\(Self.self).requestMediaUpgradeWithOffer") },
+        getQueues: { _ in fail("\(Self.self).listQueues") },
+        queueForEngagement: { _, _, _ in fail("\(Self.self).queueForEngagement") },
         sendMessagePreview: { _, _ in fail("\(Self.self).sendMessagePreview") },
         sendMessageWithMessagePayload: { _, _ in fail("\(Self.self).sendMessageWithMessagePayload") },
         cancelQueueTicket: { _, _ in fail("cancelQueueTicket") },
