@@ -104,15 +104,15 @@ extension CoreSdkClient {
             fetchSiteConfigurations: GliaCore.sharedInstance.fetchSiteConfiguration(_:),
             submitSurveyAnswer: GliaCore.sharedInstance.submitSurveyAnswer(_:surveyId:engagementId:completion:),
             authentication: GliaCore.sharedInstance.authentication,
-            fetchChatHistory: { completion in
-                GliaCore.sharedInstance.fetchChatTranscript { result in
-                    switch result {
-                    case let .success(messages):
-                        completion(
-                            .success(messages.map { ChatMessage(with: $0) })
-                        )
-                    case let .failure(error):
-                        completion(.failure(error))
+            fetchChatHistory: {
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.fetchChatTranscript { result in
+                        switch result {
+                        case let .success(messages):
+                            continuation.resume(returning: messages.map { ChatMessage(with: $0) })
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
                     }
                 }
             },

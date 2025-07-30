@@ -48,7 +48,8 @@ final class ChatViewTest: XCTestCase {
         }
     }
 
-    func test_viewIsReleasedOnceModuleIsClosedWithResponseCardsInTranscript() throws {
+    @MainActor
+    func test_viewIsReleasedOnceModuleIsClosedWithResponseCardsInTranscript() async throws {
         guard #available(iOS 17, *) else {
             throw XCTSkip("""
                 This test does not pass on OS lower than iOS 17, but actual fix work well.
@@ -82,19 +83,16 @@ final class ChatViewTest: XCTestCase {
         coordinatorEnv.createEntryWidget = { _ in .mock() }
         let options: [ChatChoiceCardOption] = [try .mock()]
         coordinatorEnv.fetchChatHistory = {
-            $0(
-                .success(
-                    [
-                        .mock(attachment: .mock(
-                            type: .singleChoice,
-                            files: [],
-                            imageUrl: nil,
-                            options: options
-                        ))
-                    ]
-                )
-            )
+            [
+                .mock(attachment: .mock(
+                    type: .singleChoice,
+                    files: [],
+                    imageUrl: nil,
+                    options: options
+                ))
+            ]
         }
+        coordinatorEnv.gcd = .live
         let coordinator = EngagementCoordinator.mock(
             engagementLaunching: .direct(kind: .chat),
             environment: coordinatorEnv
@@ -106,6 +104,10 @@ final class ChatViewTest: XCTestCase {
         viewModel?.event(.closeTapped)
         
         XCTAssertNil(controller)
+
+        await waitUntil {
+            viewModel == nil
+        }
         XCTAssertNil(viewModel)
     }
 

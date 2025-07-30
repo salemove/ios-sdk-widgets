@@ -9,7 +9,10 @@ final class EngagementCoordinatorTests: XCTestCase {
         coordinator = createCoordinator()
     }
 
-    // Start
+    override func tearDown() {
+        coordinator = nil
+        super.tearDown()
+    }
 
     func test_startText() throws {
         var calledEvents: [EngagementCoordinator.DelegateEvent] = []
@@ -276,6 +279,7 @@ extension EngagementCoordinatorTests {
         env.dismissManager.dismissViewControllerAnimateWithCompletion = { _, _, completion in
             completion?()
         }
+        env.gcd = .live
         let window = UIWindow(frame: .zero)
         window.rootViewController = .init()
         window.makeKeyAndVisible()

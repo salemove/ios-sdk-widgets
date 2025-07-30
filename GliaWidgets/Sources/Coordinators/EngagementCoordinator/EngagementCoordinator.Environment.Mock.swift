@@ -23,7 +23,7 @@ extension EngagementCoordinator.Environment {
         uiApplication: .mock,
         uiScreen: .mock,
         notificationCenter: .mock,
-        fetchChatHistory: { _ in },
+        fetchChatHistory: { [] },
         listQueues: { _ in },
         createFileUploader: FileUploader.mock,
         createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:),
