@@ -114,7 +114,7 @@ extension SecureConversationsTranscriptModelTests {
         XCTAssertEqual(calls, [.showAlert])
     }
 
-    func test_quickReplyIsShownWhenItIsLastMessage() throws {
+    func test_quickReplyIsShownWhenItIsLastMessage() async throws {
         enum Call { case quickReply }
         var calls: [Call] = []
 
@@ -141,7 +141,7 @@ extension SecureConversationsTranscriptModelTests {
             ChatMessage.self,
             from: Data(json)
         )
-        modelEnv.fetchChatHistory = { $0(.success([message])) }
+        modelEnv.fetchChatHistory = { [message] }
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
@@ -174,6 +174,9 @@ extension SecureConversationsTranscriptModelTests {
         viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
 
+        await waitUntil {
+            calls == [.quickReply]
+        }
         XCTAssertEqual(calls, [.quickReply])
     }
 }

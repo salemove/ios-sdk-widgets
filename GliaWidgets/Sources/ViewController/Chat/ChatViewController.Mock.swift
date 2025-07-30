@@ -193,7 +193,7 @@ extension ChatViewController {
                 downloads: []
             )
         ]
-        chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
+        chatViewModelEnv.fetchChatHistory = { messages }
         let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
         var factoryEnv = ViewFactory.Environment.mock
         factoryEnv.data.dataWithContentsOfFileUrl = { _ in UIImage.mock.pngData() ?? Data() }
@@ -208,7 +208,7 @@ extension ChatViewController {
     static func mockVisitorFileUploadStates() throws -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
-        chatViewModelEnv.fetchChatHistory = { $0(.success([])) }
+        chatViewModelEnv.fetchChatHistory = { [] }
         var interEnv = Interactor.Environment.mock
         interEnv.coreSdk.configureWithConfiguration = { _, callback in
             callback(.success(()))
@@ -311,7 +311,7 @@ extension ChatViewController {
                 downloads: []
             )
         ]
-        chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
+        chatViewModelEnv.fetchChatHistory = { messages }
 
         var viewFactoryEnv = ViewFactory.Environment.mock
         viewFactoryEnv.imageViewCache.getImageForKey = { _ in UIImage.mock }
@@ -359,7 +359,7 @@ extension ChatViewController {
             )
         ]
 
-        chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
+        chatViewModelEnv.fetchChatHistory = { messages }
 
         var viewFactoryEnv = ViewFactory.Environment.mock
         viewFactoryEnv.imageViewCache.getImageForKey = { _ in UIImage.mock }
@@ -405,7 +405,7 @@ extension ChatViewController {
             )
         ]
 
-        chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
+        chatViewModelEnv.fetchChatHistory = { messages }
 
         var viewFactoryEnv = ViewFactory.Environment.mock
         viewFactoryEnv.imageViewCache.getImageForKey = { _ in nil }
@@ -451,7 +451,7 @@ extension ChatViewController {
             )
         ]
 
-        chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
+        chatViewModelEnv.fetchChatHistory = { messages }
 
         var viewFactoryEnv = ViewFactory.Environment.mock
         viewFactoryEnv.imageViewCache.getImageForKey = { _ in UIImage.mock }
@@ -474,7 +474,7 @@ extension ChatViewController {
     static func mockVisitorFileDownloadStates(completion: ([ChatMessage]) -> Void) throws -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
-        chatViewModelEnv.fetchChatHistory = { $0(.success([])) }
+        chatViewModelEnv.fetchChatHistory = { [] }
         let messages: [ChatMessage] =
         (0 ..< 4).map { idx in
             ChatMessage.mock(
@@ -504,7 +504,7 @@ extension ChatViewController {
                 downloads: []
             )
         }
-        chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
+        chatViewModelEnv.fetchChatHistory = { messages }
         var interEnv = Interactor.Environment.mock
         interEnv.coreSdk.configureWithConfiguration = { _, callback in
             callback(.success(()))

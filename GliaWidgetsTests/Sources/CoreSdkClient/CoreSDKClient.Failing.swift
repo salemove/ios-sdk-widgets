@@ -42,7 +42,10 @@ extension CoreSdkClient {
             fail("\(Self.self).authentication")
             return .mock
         },
-        fetchChatHistory: { _ in },
+        fetchChatHistory: {
+            fail("\(Self.self).fetchChatHistory")
+            throw NSError(domain: "Mock", code: -1)
+        },
         requestVisitorCode: { _ in
             fail("\(Self.self).requestVisitorCode")
             return .init()

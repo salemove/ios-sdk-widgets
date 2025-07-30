@@ -17,45 +17,16 @@ extension SecureConversations {
         var environment: Environment
 
         func loadMessagesWithUnreadCount(callback: @escaping (Result<MessagesWithUnreadCount, Error>) -> Void) {
-            typealias ReactiveSwift = CoreSdkClient.ReactiveSwift
-            let unreadCountTimeoutProducer = ReactiveSwift.SignalProducer<Void, Never>(value: ())
-            let unreadCountRequestSource = ReactiveSwift.Signal<Result<Int, Error>, Never>.pipe()
-            let unreadCountTimeoutSource = ReactiveSwift.Signal<Result<Int, Error>, Never>.pipe()
-            // In case if `unreadCount` will never be delivered,
-            // (for example if sockets are disconnected, because
-            // `unreadCount` is based on sockets)
-            // we will still receive callback by timeout.
-            let unreadCountRequestWithTimeoutSource = ReactiveSwift.Signal.merge(
-                unreadCountRequestSource.output,
-                unreadCountTimeoutSource.output
-            ).take(first: 1)
-
-            let messagesSource = ReactiveSwift.Signal<Result<[ChatMessage], CoreSdkClient.SalemoveError>, Never>.pipe()
-
-            let combined = ReactiveSwift.Signal.zip(
-                messagesSource.output,
-                unreadCountRequestWithTimeoutSource
-            )
-
-            unreadCountTimeoutProducer
-                .delay(Self.unreadCountFallbackTimeoutSeconds, on: environment.scheduler)
-                .startWithCompleted {
-                    unreadCountTimeoutSource.input.send(value: .failure(TimeoutError()))
+            Task {
+                do {
+                    let messages = try await environment.fetchChatHistory()
+                    getSecureUnreadMessageCountWithTimeout(timeout: Self.unreadCountFallbackTimeoutSeconds) { count in
+                        callback(.success(MessagesWithUnreadCount(messages: messages, unreadCount: count)))
+                    }
+                } catch {
+                    callback(.failure(error))
                 }
-
-            combined
-                .observe(on: environment.scheduler)
-                .observeValues { messageResult, unreadCountResult in
-                    callback(
-                        Self.messageWithUnreadCountResult(
-                            messageResult: messageResult.mapError { $0 as Error },
-                            unreadCountResult: unreadCountResult
-                        )
-                    )
-                }
-
-            environment.getSecureUnreadMessageCount(unreadCountRequestSource.input.send(value:))
-            environment.fetchChatHistory(messagesSource.input.send(value:))
+            }
         }
 
         static func messageWithUnreadCountResult(
@@ -75,6 +46,31 @@ extension SecureConversations {
                     return .failure(error)
                 }
             }
+
+        func getSecureUnreadMessageCountWithTimeout(
+            timeout: TimeInterval,
+            completion: @escaping (Int) -> Void
+        ) {
+            var didFinish = false
+
+            environment.getSecureUnreadMessageCount { result in
+                guard !didFinish else { return }
+                didFinish = true
+
+                switch result {
+                case .success(let count):
+                    completion(count)
+                case .failure:
+                    completion(0)
+                }
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
+                if !didFinish {
+                    didFinish = true
+                    completion(0)
+                }
+            }
+        }
     }
 }
 

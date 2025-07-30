@@ -37,9 +37,7 @@ class ChatViewControllerTests: XCTestCase {
         }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
 
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
@@ -86,9 +84,7 @@ class ChatViewControllerTests: XCTestCase {
         }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
             mobileConfirmDialogEnabled: true,
@@ -97,6 +93,7 @@ class ChatViewControllerTests: XCTestCase {
         viewModelEnv.fetchSiteConfigurations = { completion in
             completion(.success(site))
         }
+        viewModelEnv.gcd = .live
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
@@ -143,9 +140,7 @@ class ChatViewControllerTests: XCTestCase {
         }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
             mobileConfirmDialogEnabled: true,
@@ -154,6 +149,7 @@ class ChatViewControllerTests: XCTestCase {
         viewModelEnv.fetchSiteConfigurations = { completion in
             completion(.success(site))
         }
+        viewModelEnv.gcd = .live
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
@@ -193,9 +189,7 @@ class ChatViewControllerTests: XCTestCase {
         }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: false,
             mobileConfirmDialogEnabled: true,
@@ -204,6 +198,7 @@ class ChatViewControllerTests: XCTestCase {
         viewModelEnv.fetchSiteConfigurations = { completion in
             completion(.success(site))
         }
+        viewModelEnv.gcd = .live
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
@@ -244,9 +239,7 @@ class ChatViewControllerTests: XCTestCase {
         }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
 
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,

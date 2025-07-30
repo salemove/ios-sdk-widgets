@@ -55,6 +55,7 @@ extension GliaTests {
 private extension GliaTests {
     func makeConfigurableSDK(isAuthenticated: Bool = true) -> Glia {
         var sdkEnv = Glia.Environment.mock
+        sdkEnv.gcd = .live
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         sdkEnv.coreSdk.localeProvider = .mock
         

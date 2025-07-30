@@ -727,6 +727,7 @@ final class GliaTests: XCTestCase {
         logger.infoClosure = { _, _, _, _ in }
         logger.prefixedClosure = { _ in logger }
         gliaEnv.coreSdk.createLogger = { _ in logger }
+        gliaEnv.gcd = .live
         gliaEnv.coreSdk.secureConversations.pendingStatus = { $0(.success(false)) }
         gliaEnv.conditionalCompilation.isDebug = { true }
         gliaEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }

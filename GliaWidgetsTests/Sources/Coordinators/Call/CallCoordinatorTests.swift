@@ -27,6 +27,11 @@ final class CallCoordinatorTests: XCTestCase {
         )
     }
 
+    override func tearDown() {
+        coordinator = nil
+        super.tearDown()
+    }
+
     func test_startGeneratesCallViewController() {
         let viewController = coordinator.start()
 

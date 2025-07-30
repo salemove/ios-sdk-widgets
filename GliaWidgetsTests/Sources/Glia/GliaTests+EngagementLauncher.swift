@@ -380,6 +380,7 @@ private extension GliaTests {
                 )
         }
         sdkEnv.print.printClosure = { _, _, _ in }
+        sdkEnv.gcd = .live
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
         logger.configureRemoteLogLevelClosure = { _ in }

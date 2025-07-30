@@ -10,7 +10,7 @@ extension ChatCoordinator.Environment {
         fileManager: .mock,
         data: .mock,
         date: { .mock },
-        gcd: .mock,
+        gcd: .live,
         uiScreen: .mock,
         createThumbnailGenerator: { .mock },
         createFileDownload: { file, storage, environment in .mock() },
@@ -21,7 +21,7 @@ extension ChatCoordinator.Environment {
         submitSurveyAnswer: { answers, surveyId, engagementId, completion in },
         uuid: { .mock },
         uiApplication: .mock,
-        fetchChatHistory: { completion in },
+        fetchChatHistory: { [] },
         createFileUploadListModel: { environment in .mock() },
         queueIds: [],
         listQueues: { completion in },
@@ -48,4 +48,55 @@ extension ChatCoordinator.Environment {
         markUnreadMessagesDelay: { .mock },
         combineScheduler: .mock
     )
+
+    static func mock(
+        gcd: GCD = .mock,
+        interactor: Interactor = .mock()
+    ) -> Self {
+        .init(
+            secureConversations: .mock,
+            fetchFile: { engagementFile, progress, completion in },
+            uploadFileToEngagement: { file, progress, completion in },
+            fileManager: .mock,
+            data: .mock,
+            date: { .mock },
+            gcd: gcd,
+            uiScreen: .mock,
+            createThumbnailGenerator: { .mock },
+            createFileDownload: { file, storage, environment in .mock() },
+            fromHistory: { false },
+            fetchSiteConfigurations: { completion in },
+            getCurrentEngagement: { .mock() },
+            getNonTransferredSecureConversationEngagement: { .mock() },
+            submitSurveyAnswer: { answers, surveyId, engagementId, completion in },
+            uuid: { .mock },
+            uiApplication: .mock,
+            fetchChatHistory: { [] },
+            createFileUploadListModel: { environment in .mock() },
+            queueIds: [],
+            listQueues: { completion in },
+            messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock,
+            isAuthenticated: { false },
+            interactor: interactor,
+            startSocketObservation: { },
+            stopSocketObservation: { },
+            createSendMessagePayload: { content, attachment in .mock() },
+            proximityManager: .mock,
+            log: .mock,
+            timerProviding: .mock,
+            snackBar: .mock,
+            notificationCenter: .mock,
+            maximumUploads: { 2 },
+            cameraDeviceManager: { .mock },
+            flipCameraButtonStyle: .nop,
+            alertManager: .mock(),
+            queuesMonitor: .mock(),
+            createEntryWidget: { _ in .mock() },
+            shouldShowLeaveSecureConversationDialog: { _ in false },
+            leaveCurrentSecureConversation: .nop,
+            switchToEngagement: .nop,
+            markUnreadMessagesDelay: { .mock },
+            combineScheduler: .mock
+        )
+    }
 }
