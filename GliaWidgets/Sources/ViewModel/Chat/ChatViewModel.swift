@@ -79,7 +79,7 @@ class ChatViewModel: EngagementViewModel {
         failedToDeliverStatusText: String,
         chatType: ChatType,
         replaceExistingEnqueueing: Bool,
-        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void,
+        aiScreenContextSummary: @escaping (@escaping (AiScreenContext?) -> Void) -> Void,
         environment: Environment,
         maximumUploads: () -> Int
     ) {
@@ -236,6 +236,28 @@ class ChatViewModel: EngagementViewModel {
         default:
             break
         }
+    }
+
+    override func enqueue(
+        engagementKind: EngagementKind,
+        replaceExisting: Bool,
+        aiScreenContextSummary: (@escaping (AiScreenContext?) -> Void) -> Void
+    ) {
+        interactor.enqueueForEngagement(
+            engagementKind: engagementKind,
+            replaceExisting: replaceExisting,
+            aiScreenContextSummary: aiScreenContextSummary,
+            success: { [weak self] summary in
+                if let summary, summary.aiResolved {
+                    self?.messageText = "AI resolved context is \(summary.type.rawValue)"
+                    self?.sendMessage()
+                    self?.messageText = ""
+                }
+            },
+            failure: { [weak self] error in
+                self?.handleError(error)
+            }
+        )
     }
 
     override func interactorEvent(_ event: InteractorEvent) {

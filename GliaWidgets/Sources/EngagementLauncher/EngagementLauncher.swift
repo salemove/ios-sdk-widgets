@@ -3,7 +3,11 @@ import Foundation
  /// `EngagementLauncher`class allows launching different types of engagements, such as chat,
  /// audio calls, video calls, and secure messaging.
 public final class EngagementLauncher {
-    typealias StartEngagementAction = (EngagementKind, @escaping ((AiScreenContext?) -> Void) -> Void, SceneProvider?) throws -> Void
+    typealias StartEngagementAction = (
+        EngagementKind,
+        @escaping (@escaping (AiScreenContext?) -> Void) -> Void,
+        SceneProvider?
+    ) throws -> Void
 
     private var startEngagement: StartEngagementAction
 
@@ -17,7 +21,7 @@ public final class EngagementLauncher {
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to
     ///     the first active foreground scene.
     public func startChat(
-        screenContext: @escaping ((AiScreenContext?) -> Void) -> Void,
+        screenContext: @escaping (@escaping (AiScreenContext?) -> Void) -> Void,
         sceneProvider: SceneProvider? = nil
     ) throws {
         try startEngagement(.chat, screenContext, sceneProvider)
@@ -29,7 +33,7 @@ public final class EngagementLauncher {
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to
     ///     the first active foreground scene.
     public func startAudioCall(
-        screenContext: @escaping ((AiScreenContext?) -> Void) -> Void,
+        screenContext: @escaping (@escaping (AiScreenContext?) -> Void) -> Void,
         sceneProvider: SceneProvider? = nil
     ) throws {
         try startEngagement(.audioCall, screenContext, sceneProvider)
@@ -41,7 +45,7 @@ public final class EngagementLauncher {
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to
     ///     the first active foreground scene.
     public func startVideoCall(
-        screenContext: @escaping ((AiScreenContext?) -> Void) -> Void,
+        screenContext: @escaping (@escaping (AiScreenContext?) -> Void) -> Void,
         sceneProvider: SceneProvider? = nil
     ) throws {
         try startEngagement(.videoCall, screenContext, sceneProvider)

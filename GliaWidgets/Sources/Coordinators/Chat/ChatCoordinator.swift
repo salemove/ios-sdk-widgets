@@ -38,7 +38,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     /// - has `false` in case when Chat screen was opened directly, for example
     /// when Chat engagement initiated and there is `hasPendingInteraction` returns `false`.
     private let skipTransferredSCHandling: Bool
-    private let aiScreenContextSummary: ((AiScreenContext?) -> Void) -> Void
+    private let aiScreenContextSummary: (@escaping (AiScreenContext?) -> Void) -> Void
     private weak var controller: ChatViewController?
 
     init(
@@ -53,7 +53,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         environment: Environment,
         startWithSecureTranscriptFlow: Bool,
         skipTransferredSCHandling: Bool,
-        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void
+        aiScreenContextSummary: @escaping (@escaping (AiScreenContext?) -> Void) -> Void
     ) {
         self.interactor = interactor
         self.viewFactory = viewFactory
@@ -78,7 +78,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     func start(
         replaceExistingEnqueueing: Bool,
-        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void
+        aiScreenContextSummary: @escaping (@escaping (AiScreenContext?) -> Void) -> Void
     ) -> ChatViewController {
         let viewController = makeChatViewController(
             replaceExistingEnqueueing: replaceExistingEnqueueing,
@@ -89,7 +89,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 
     private func makeChatViewController(
         replaceExistingEnqueueing: Bool,
-        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void
+        aiScreenContextSummary: @escaping (@escaping (AiScreenContext?) -> Void) -> Void
     ) -> ChatViewController {
         // We need to defer passing controller to transcript model,
         // because model will use it later, however controller
@@ -191,7 +191,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 extension ChatCoordinator {
     private func chatModel(
         replaceExistingEnqueueing: Bool,
-        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void
+        aiScreenContextSummary: @escaping (@escaping (AiScreenContext?) -> Void) -> Void
     ) -> ChatViewModel {
         let isTransferredSecureConversation = !skipTransferredSCHandling &&
         environment.getCurrentEngagement()?.isTransferredSecureConversation == true

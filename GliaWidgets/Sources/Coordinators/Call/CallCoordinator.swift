@@ -19,7 +19,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let call: Call
     private let unreadMessages: ObservableValue<Int>
     private let startAction: CallViewModel.StartAction
-    private let aiScreenContextSummary: ((AiScreenContext?) -> Void) -> Void
+    private let aiScreenContextSummary: (@escaping (AiScreenContext?) -> Void) -> Void
     private let environment: Environment
 
     init(
@@ -29,7 +29,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
         call: Call,
         unreadMessages: ObservableValue<Int>,
         startAction: CallViewModel.StartAction,
-        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void,
+        aiScreenContextSummary: @escaping (@escaping (AiScreenContext?) -> Void) -> Void,
         environment: Environment
     ) {
         self.interactor = interactor
@@ -64,7 +64,7 @@ private extension CallCoordinator {
         call: Call,
         startAction: CallViewModel.StartAction,
         replaceExistingEnqueueing: Bool,
-        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void
+        aiScreenContextSummary: @escaping (@escaping (AiScreenContext?) -> Void) -> Void
     ) -> CallViewController {
         environment.log.prefixed(Self.self).info("Create Call screen")
         let viewModel = CallViewModel(

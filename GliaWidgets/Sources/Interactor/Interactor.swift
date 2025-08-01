@@ -139,8 +139,8 @@ extension Interactor {
     func enqueueForEngagement(
         engagementKind: EngagementKind,
         replaceExisting: Bool,
-        aiScreenContextSummary: ((AiScreenContext?) -> Void) -> Void,
-        success: @escaping () -> Void,
+        aiScreenContextSummary: (@escaping (AiScreenContext?) -> Void) -> Void,
+        success: @escaping (AiScreenContext?) -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
         switch engagementKind {
@@ -160,11 +160,10 @@ extension Interactor {
             .map(CoreSdkClient.VisitorContext.AssetId.init(rawValue:))
             .map(CoreSdkClient.VisitorContext.ContextType.assetId)
             .map(CoreSdkClient.VisitorContext.init(_:))
-
-        aiScreenContextSummary { summmary in
+        aiScreenContextSummary { summary in
             self.environment.coreSdk.queueForEngagement(
                 .init(
-                    queueIds: queueIds ?? [],
+                    queueIds: self.queueIds ?? [],
                     visitorContext: coreSdkVisitorContext,
                     // shouldCloseAllQueues is `true` by default core sdk,
                     // here it is passed explicitly
@@ -173,7 +172,7 @@ extension Interactor {
                     engagementOptions: options
                 ),
                 replaceExisting,
-                summmary
+                summary
             ) { [weak self] result in
                 switch result {
                 case .failure(let error):
@@ -185,7 +184,7 @@ extension Interactor {
                     if case .enqueueing = self?.state {
                         self?.state = .enqueued(ticket, engagementKind)
                     }
-                    success()
+                    success(summary)
                 }
             }
         }

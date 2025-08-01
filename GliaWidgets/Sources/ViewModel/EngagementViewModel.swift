@@ -16,12 +16,12 @@ class EngagementViewModel: CommonEngagementModel {
     /// A flag indicating where enqueue will replace existing one.
     /// Used when 'Leave Current Conversation?' dialog is closed with 'Leave' button.
     let replaceExistingEnqueueing: Bool
-    let aiScreenContextSummary: ((AiScreenContext?) -> Void) -> Void
+    let aiScreenContextSummary: (@escaping (AiScreenContext?) -> Void) -> Void
 
     init(
         interactor: Interactor,
         replaceExistingEnqueueing: Bool,
-        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void,
+        aiScreenContextSummary: @escaping (@escaping (AiScreenContext?) -> Void) -> Void,
         environment: Environment
     ) {
         self.interactor = interactor
@@ -63,13 +63,13 @@ class EngagementViewModel: CommonEngagementModel {
     func enqueue(
         engagementKind: EngagementKind,
         replaceExisting: Bool,
-        aiScreenContextSummary: ((AiScreenContext?) -> Void) -> Void
+        aiScreenContextSummary: (@escaping (AiScreenContext?) -> Void) -> Void
     ) {
         interactor.enqueueForEngagement(
             engagementKind: engagementKind,
             replaceExisting: replaceExisting,
             aiScreenContextSummary: aiScreenContextSummary,
-            success: {},
+            success: { _ in },
             failure: { [weak self] error in
                 self?.handleError(error)
             }
@@ -158,7 +158,7 @@ class EngagementViewModel: CommonEngagementModel {
 }
 
 // MARK: - Private
-private extension EngagementViewModel {
+extension EngagementViewModel {
     private func closeTapped() {
         switch interactor.state {
         case .enqueueing, .enqueued:
@@ -174,7 +174,7 @@ private extension EngagementViewModel {
         }
     }
 
-    private func handleError(_ error: CoreSdkClient.SalemoveError) {
+    func handleError(_ error: CoreSdkClient.SalemoveError) {
         engagementAction?(.showAlert(.error(
             error: error.error,
             dismissed: endSession

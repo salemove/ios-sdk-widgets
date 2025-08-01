@@ -33,7 +33,7 @@ extension Glia {
         interactor: Interactor,
         features: Features,
         maximize: Bool,
-        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void
+        aiScreenContextSummary: @escaping (@escaping (AiScreenContext?) -> Void) -> Void
     ) {
         engagementRestorationState = .restoring
         // In this case, where engagement is restored, LO acknowledgement dialog

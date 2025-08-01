@@ -47,7 +47,7 @@ extension Glia {
         features: Features,
         viewFactory: ViewFactory,
         ongoingEngagementMediaStreams: Engagement.Media?,
-        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void
+        aiScreenContextSummary: @escaping (@escaping (AiScreenContext?) -> Void) -> Void
     ) throws {
         /// If during enqueued state the visitor initiates another engagement, we avoid cancelling the queue
         /// ticket and adding a new one, by monitoring the new engagement kind. If the engagement kind matches
@@ -168,7 +168,7 @@ extension Glia {
         sceneProvider: SceneProvider?,
         engagementKind: EngagementKind,
         features: Features,
-        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void,
+        aiScreenContextSummary: @escaping (@escaping (AiScreenContext?) -> Void) -> Void,
         maximize: Bool = true
     ) {
         let engagementLaunching: EngagementCoordinator.EngagementLaunching
@@ -268,7 +268,7 @@ extension Glia {
         snackBarStyle: Theme.SnackBarStyle,
         configuration: Configuration,
         interactor: Interactor,
-        aiScreenContextSummary: @escaping ((AiScreenContext?) -> Void) -> Void,
+        aiScreenContextSummary: @escaping (@escaping (AiScreenContext?) -> Void) -> Void,
         features: Features
     ) {
         if shoulShowSnackBar {
