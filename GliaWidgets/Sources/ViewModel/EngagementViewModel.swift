@@ -45,7 +45,14 @@ class EngagementViewModel: CommonEngagementModel {
         case .viewDidDisappear:
             isViewActive.value = false
         case .backTapped:
-            engagementDelegate?(.back)
+            switch interactor.state {
+            case .none, .ended:
+                closeTapped()
+            case .engaged where interactor.currentEngagement?.isTransferredSecureConversation == true:
+                closeTapped()
+            case .engaged, .enqueueing, .enqueued:
+                engagementDelegate?(.back)
+            }
         case .closeTapped:
             closeTapped()
         }
