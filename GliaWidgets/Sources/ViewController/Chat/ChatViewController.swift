@@ -57,13 +57,15 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         view.entryWidget = viewModel.entryWidget
 
         view.header.showBackButton()
-        switch viewModel {
+
+        let type = Self.currentChatModelType(viewModel)
+        switch type {
         case .chat:
             view.header.hideCloseAndEndButtons()
-        case .transcript:
+        case .secureTranscript, .chatToSecureTranscript:
             view.header.showCloseButton()
         }
-       
+
         view.numberOfSections = {
             viewModel.numberOfSections
         }
