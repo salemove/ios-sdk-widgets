@@ -458,18 +458,8 @@ class InteractorTests: XCTestCase {
         interactorEnv.coreSdk.configureWithConfiguration = { $1(.success(())) }
         let interactor = Interactor.mock(environment: interactorEnv)
 
-        interactor.send(messagePayload: .mock(content: "mock-message")) { result in
-            switch result {
-            case .success:
-                break
-            case let .failure(error):
-                XCTFail(error.localizedDescription)
-            }
-        }
+        _ = try await interactor.send(messagePayload: .mock(content: "mock-message"))
 
-        await waitUntil {
-            callbacks == [.sendMessageWithAttachment]
-        }
         XCTAssertEqual(callbacks, [.sendMessageWithAttachment])
     }
 
@@ -491,22 +481,19 @@ class InteractorTests: XCTestCase {
         interactorEnv.gcd = .live
         let interactor = Interactor.mock(environment: interactorEnv)
 
-        interactor.send(messagePayload: .mock(content: "mock-message")) { result in
-            switch result {
-            case .success:
-                callbacks.append(.success)
-            case let .failure(error):
-                switch error.error {
-                case let authError as CoreSdkClient.Authentication.Error where authError == .expiredAccessToken:
-                    callbacks.append(.expiredAccessToken)
-                default:
-                    callbacks.append(.unknownError)
-                }
+        do {
+            _ = try await interactor.send(messagePayload: .mock(content: "mock-message"))
+        } catch CoreSdkClient.Authentication.Error.expiredAccessToken {
+            callbacks.append(.expiredAccessToken)
+        } catch let error as CoreSdkClient.GliaCoreError {
+            switch error.error {
+            case let authError as CoreSdkClient.Authentication.Error where authError == .expiredAccessToken:
+                callbacks.append(.expiredAccessToken)
+            default:
+                callbacks.append(.unknownError)
             }
         }
-        await waitUntil {
-            callbacks == [.expiredAccessToken]
-        }
+
         XCTAssertEqual(callbacks, [.expiredAccessToken])
     }
     

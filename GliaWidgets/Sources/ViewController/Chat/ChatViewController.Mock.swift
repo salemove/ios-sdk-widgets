@@ -606,6 +606,7 @@ extension ChatViewController {
     // MARK: - Message Sending Failed State
     static func mockMessageSendingFailedState() throws -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
+        chatViewModelEnv.gcd = .live
         let messageUuid = UUID.incrementing
 
         chatViewModelEnv.createSendMessagePayload = {
@@ -613,9 +614,11 @@ extension ChatViewController {
         }
 
         var viewFactoryEnv = ViewFactory.Environment.mock
+        viewFactoryEnv.gcd = .live
         viewFactoryEnv.imageViewCache.getImageForKey = { _ in UIImage.mock }
 
         var interactorEnv = Interactor.Environment.mock
+        interactorEnv.gcd = .live
         interactorEnv.coreSdk.sendMessageWithMessagePayload = { _ in
             throw CoreSdkClient.GliaCoreError.mock()
         }

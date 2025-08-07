@@ -27,44 +27,59 @@ extension ChatViewModel {
         appendItem(item, to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
 
-        let success: (CoreSdkClient.Message) -> Void = { [weak self] message in
-            guard let self = self else { return }
-
-            self.updateCustomCard(
-                messageId: messageId,
-                selectedOptionValue: option.value,
-                isActive: false
-            )
-            self.replace(
-                outgoingMessage,
-                uploads: [],
-                with: message,
-                in: self.messagesSection
-            )
-            self.action?(.scrollToBottom(animated: true))
-        }
-
-        let failure: () -> Void = { [weak self] in
-            guard let self = self else { return }
-            self.updateCustomCard(
-                messageId: messageId,
-                selectedOptionValue: nil,
-                isActive: true
-            )
-            self.markMessageAsFailed(
-                outgoingMessage,
-                in: self.messagesSection
-            )
-        }
-
-        interactor.send(messagePayload: payload) { result in
-            switch result {
-            case let .success(message):
-                success(message)
-            case .failure:
-                failure()
+        Task {
+            do {
+                let message = try await interactor.send(messagePayload: payload)
+                await onSuccessSendSelectedCustomCardOption(
+                    message: message,
+                    messageId: messageId,
+                    outgoingMessage: outgoingMessage,
+                    option: option
+                )
+            } catch {
+                await onFailureSendSelectedCustomCardOption(
+                    messageId: messageId,
+                    outgoingMessage: outgoingMessage
+                )
             }
         }
+    }
+
+    @MainActor
+    func onSuccessSendSelectedCustomCardOption(
+        message: CoreSdkClient.Message,
+        messageId: MessageRenderer.Message.Identifier,
+        outgoingMessage: OutgoingMessage,
+        option: HtmlMetadata.Option
+    ) {
+        self.updateCustomCard(
+            messageId: messageId,
+            selectedOptionValue: option.value,
+            isActive: false
+        )
+        self.replace(
+            outgoingMessage,
+            uploads: [],
+            with: message,
+            in: self.messagesSection
+        )
+        self.action?(.scrollToBottom(animated: true))
+    }
+
+    @MainActor
+    func onFailureSendSelectedCustomCardOption(
+        messageId: MessageRenderer.Message.Identifier,
+        outgoingMessage: OutgoingMessage
+    ) {
+        updateCustomCard(
+            messageId: messageId,
+            selectedOptionValue: nil,
+            isActive: true
+        )
+        markMessageAsFailed(
+            outgoingMessage,
+            in: messagesSection
+        )
     }
 
     func updateCustomCard(
