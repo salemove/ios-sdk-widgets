@@ -723,7 +723,7 @@ class ChatViewModelTests: XCTestCase {
         interactor.environment.gcd.mainQueue.async = { $0() }
         interactor.environment.coreSdk.configureWithInteractor = { _ in }
         interactor.environment.coreSdk.configureWithConfiguration = { _, callback in callback(.success(())) }
-        interactor.environment.coreSdk.sendMessagePreview = { _, _ in }
+        interactor.environment.coreSdk.sendMessagePreview = { _ in true }
         interactor.environment.coreSdk.sendMessageWithMessagePayload = { _, completion in
             completion(.success(.mock(id: expectedMessageId)))
         }
@@ -783,7 +783,7 @@ class ChatViewModelTests: XCTestCase {
         interactor.environment.gcd.mainQueue.async = { $0() }
         interactor.environment.coreSdk.configureWithInteractor = { _ in }
         interactor.environment.coreSdk.configureWithConfiguration = { _, callback in callback(.success(())) }
-        interactor.environment.coreSdk.sendMessagePreview = { _, _ in }
+        interactor.environment.coreSdk.sendMessagePreview = { _ in true }
         interactor.environment.coreSdk.sendMessageWithMessagePayload = { [weak viewModel] _, completion in
             // Deliver message via socket before REST API response.
             viewModel?.interactorEvent(.receivedMessage(.mock(id: expectedMessageId)))
@@ -1040,7 +1040,7 @@ class ChatViewModelTests: XCTestCase {
         interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, callback in
             callback(.failure(.mock()))
         }
-        interactorEnv.coreSdk.sendMessagePreview = { _, _ in }
+        interactorEnv.coreSdk.sendMessagePreview = { _ in true }
         let interactor = Interactor.mock(environment: interactorEnv)
         interactor.state = .engaged(nil)
 
@@ -1072,11 +1072,12 @@ class ChatViewModelTests: XCTestCase {
 
     func test_engagementEndedByOperatorCallsEngagementAndDelegateActions() {
         var interactorEnv = Interactor.Environment.failing
-        interactorEnv.gcd.mainQueue = .mock
+        interactorEnv.gcd = .live
         let interactor = Interactor.mock(environment: interactorEnv)
         interactor.state = .ended(.byOperator)
 
         var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.gcd = .live
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
@@ -1161,15 +1162,17 @@ class ChatViewModelTests: XCTestCase {
 
     func test_closeActionDoesNotShowConfirmationIfThereIsTransferredSC() throws {
         var interactorEnv = Interactor.Environment.failing
-        interactorEnv.gcd.mainQueue = .mock
-        interactorEnv.coreSdk.endEngagement = { _ in
+        interactorEnv.gcd = .live
+        interactorEnv.coreSdk.endEngagement = {
             XCTFail("End engagement should not be called")
+            return false
         }
         let interactor = Interactor.mock(environment: interactorEnv)
         interactor.setCurrentEngagement(.mock(status: .transferring, capabilities: .init(text: true)))
         interactor.state = .engaged(nil)
 
         var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.gcd = .live
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock

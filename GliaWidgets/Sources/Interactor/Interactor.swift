@@ -187,8 +187,8 @@ extension Interactor {
         }
     }
 
-    func sendMessagePreview(_ message: String) {
-        environment.coreSdk.sendMessagePreview(message) { _, _ in }
+    func sendMessagePreview(_ message: String) async throws -> Bool {
+        try await environment.coreSdk.sendMessagePreview(message)
     }
 
     func send(
@@ -213,7 +213,15 @@ extension Interactor {
         case .engaged where currentEngagement?.isTransferredSecureConversation == true:
             completion(.success(()))
         case .engaged:
-            endEngagement(completion: completion)
+            Task {
+                do {
+                    try await endEngagement()
+                    completion(.success(()))
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+
         case .ended:
             completion(.success(()))
 
@@ -238,18 +246,10 @@ extension Interactor {
         }
     }
 
-    func endEngagement(completion: @escaping (Result<Void, Error>) -> Void) {
-        environment.coreSdk.endEngagement { [weak self] _, error in
-            guard let self else { return }
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                self.state = .ended(.byVisitor)
-                // Save engagement ended by visitor to fetch a survey
-                self.endedEngagement = self.environment.coreSdk.getCurrentEngagement()
-                completion(.success(()))
-            }
-        }
+    func endEngagement() async throws {
+        _ = try await environment.coreSdk.endEngagement()
+        self.state = .ended(.byVisitor)
+        self.endedEngagement = environment.coreSdk.getCurrentEngagement()
     }
 
     /**
