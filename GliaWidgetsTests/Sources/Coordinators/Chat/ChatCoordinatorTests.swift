@@ -5,21 +5,33 @@ import QuickLook
 @_spi(GliaWidgets) import GliaCoreSDK
 
 final class ChatCoordinatorTests: XCTestCase {
-    var coordinator: ChatCoordinator!
-    var navigationPresenter = NavigationPresenter(with: NavigationController())
+
+    var navigationPresenter: NavigationPresenter!
 
     override func setUp() {
-        coordinator = createCoordinator()
+        super.setUp()
+        navigationPresenter = NavigationPresenter(with: NavigationController())
+    }
+
+    override func tearDown() {
+        navigationPresenter = nil
+        super.tearDown()
     }
 
     func createCoordinator(
-        environment: ChatCoordinator.Environment = .mock,
+        environment: ChatCoordinator.Environment = .mock(gcd: .live),
         startWithSecureTranscriptFlow: Bool = false,
         skipTransferredSCHandling: Bool = false
     ) -> ChatCoordinator {
         return ChatCoordinator(
-            interactor: .mock(),
-            viewFactory: .mock(),
+            interactor: .mock(
+                environment: .init(
+                    coreSdk: .mock,
+                    queuesMonitor: .mock(),
+                    gcd: .live,
+                    log: .mock
+                )),
+            viewFactory: .mock(environment: .mock(gcd: .live)),
             navigationPresenter: navigationPresenter,
             call: .init(with: .mock()),
             unreadMessages: .init(with: 0),
@@ -33,6 +45,7 @@ final class ChatCoordinatorTests: XCTestCase {
     }
 
     func test_startGeneratesChatViewController() {
+        let coordinator = createCoordinator()
         let viewController = coordinator.start()
 
         XCTAssertNotNil(viewController)
@@ -41,6 +54,7 @@ final class ChatCoordinatorTests: XCTestCase {
     // View model
 
     func test_correctViewModelForChat() {
+        let coordinator = createCoordinator()
         let viewController = coordinator.start()
 
         switch viewController.viewModel {
@@ -67,6 +81,7 @@ final class ChatCoordinatorTests: XCTestCase {
     // "App would like to access the camera" dialog, which could
     // bring unintended consequences.
     func test_chatModelPickMedia() throws {
+        let coordinator = createCoordinator()
         let viewController = coordinator.start()
 
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.first as? UIWindowScene)
@@ -86,6 +101,7 @@ final class ChatCoordinatorTests: XCTestCase {
     }
 
     func test_chatModelPickFile() throws {
+        let coordinator = createCoordinator()
         let viewController = coordinator.start()
 
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.first as? UIWindowScene)
@@ -105,6 +121,7 @@ final class ChatCoordinatorTests: XCTestCase {
     }
 
     func test_chatModelMediaUpgradeAccepted() throws {
+        let coordinator = createCoordinator()
         let viewController = coordinator.start()
         let mediaOffer: CoreSdkClient.MediaUpgradeOffer = try .init(
             type: .audio,
@@ -137,8 +154,16 @@ final class ChatCoordinatorTests: XCTestCase {
     }
 
     func test_chatModelSecureTranscriptUpgradedToLiveChat() throws {
+        let coordinator = createCoordinator()
         let viewController = coordinator.start()
-        let mockedChatViewController: ChatViewController = .mock()
+        let mockedChatViewController: ChatViewController = .mock(
+            chatViewModel: .mock(
+                interactor: .mock(environment: .mock(gcd: .live)),
+                environment: .mock(gcd: .live)
+            ),
+            viewFactory: .mock(environment: .mock(gcd: .live)),
+            gcd: .live
+        )
 
         var calledEvents: [ChatCoordinator.DelegateEvent] = []
         coordinator.delegate = { event in
@@ -160,6 +185,7 @@ final class ChatCoordinatorTests: XCTestCase {
     }
 
     func test_chatModelShowFile() throws {
+        let coordinator = createCoordinator()
         let viewController = coordinator.start()
 
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.first as? UIWindowScene)
@@ -179,6 +205,7 @@ final class ChatCoordinatorTests: XCTestCase {
     }
 
     func test_chatModelCall() throws {
+        let coordinator = createCoordinator()
         let viewController = coordinator.start()
 
         switch viewController.viewModel {
@@ -190,6 +217,7 @@ final class ChatCoordinatorTests: XCTestCase {
     // Engagement delegate for chat model
 
     func test_chatModelBack() throws {
+        let coordinator = createCoordinator()
         let viewController = coordinator.start()
 
         var calledEvents: [ChatCoordinator.DelegateEvent] = []
@@ -209,6 +237,7 @@ final class ChatCoordinatorTests: XCTestCase {
     }
 
     func test_chatModelOpenLink() throws {
+        let coordinator = createCoordinator()
         let viewController = coordinator.start()
 
         var calledEvents: [ChatCoordinator.DelegateEvent] = []
@@ -232,6 +261,7 @@ final class ChatCoordinatorTests: XCTestCase {
     }
 
     func test_chatModelEngaged() throws {
+        let coordinator = createCoordinator()
         let viewController = coordinator.start()
         let urlString = URL.mock.absoluteString
 
@@ -254,6 +284,7 @@ final class ChatCoordinatorTests: XCTestCase {
     }
 
     func test_chatModelFinished() throws {
+        let coordinator = createCoordinator()
         let viewController = coordinator.start()
 
         var calledEvents: [ChatCoordinator.DelegateEvent] = []
@@ -549,14 +580,17 @@ final class ChatCoordinatorTests: XCTestCase {
     }
 
     func test_chatTypeWhenSkipTransferredSCHandlingIsFalseAndTransferredScExists() {
-        var environment = ChatCoordinator.Environment.mock
+        var environment = ChatCoordinator.Environment.mock(
+            gcd: .live,
+            interactor: .mock(environment: .mock(gcd: .live)),
+        )
         environment.getCurrentEngagement = {
             .mock(status: .transferring, capabilities: .init(text: true))
         }
         environment.isAuthenticated = { true }
         let coordinator = createCoordinator(
             environment: environment,
-            skipTransferredSCHandling: false
+            skipTransferredSCHandling: false,
         )
         let controller = coordinator.start()
         let chatModel: ChatViewModel
@@ -572,7 +606,10 @@ final class ChatCoordinatorTests: XCTestCase {
     }
 
     func test_chatTypeWhenSkipTransferredSCHandlingIsTrueAndTransferredScExists() {
-        var environment = ChatCoordinator.Environment.mock
+        var environment = ChatCoordinator.Environment.mock(
+            gcd: .live,
+            interactor: .mock(environment: .mock(gcd: .live))
+        )
         environment.getCurrentEngagement = {
             .mock(status: .transferring, capabilities: .init(text: true))
         }
@@ -595,7 +632,10 @@ final class ChatCoordinatorTests: XCTestCase {
     }
 
     func test_chatTypeWhenSkipTransferredSCHandlingIsFalseAndNoOngoingEngagement() {
-        var environment = ChatCoordinator.Environment.mock
+        var environment = ChatCoordinator.Environment.mock(
+            gcd: .live,
+            interactor: .mock(environment: .mock(gcd: .live))
+        )
         environment.getCurrentEngagement = { nil }
         environment.isAuthenticated = { true }
         let coordinator = createCoordinator(

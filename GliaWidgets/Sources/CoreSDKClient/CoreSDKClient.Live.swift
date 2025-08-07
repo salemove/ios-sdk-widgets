@@ -73,7 +73,18 @@ extension CoreSdkClient {
                     }
                 }
             },
-            sendMessageWithMessagePayload: GliaCore.sharedInstance.send(messagePayload:completion:),
+            sendMessageWithMessagePayload: { payload in
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.send(messagePayload: payload) { result in
+                        switch result {
+                        case let .success(message):
+                            continuation.resume(returning: message)
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
+                    }
+                }
+            },
             cancelQueueTicket: GliaCore.sharedInstance.cancel(queueTicket:completion:),
             endEngagement: {
                 try await withCheckedThrowingContinuation { continuation in
@@ -93,15 +104,15 @@ extension CoreSdkClient {
             fetchSiteConfigurations: GliaCore.sharedInstance.fetchSiteConfiguration(_:),
             submitSurveyAnswer: GliaCore.sharedInstance.submitSurveyAnswer(_:surveyId:engagementId:completion:),
             authentication: GliaCore.sharedInstance.authentication,
-            fetchChatHistory: { completion in
-                GliaCore.sharedInstance.fetchChatTranscript { result in
-                    switch result {
-                    case let .success(messages):
-                        completion(
-                            .success(messages.map { ChatMessage(with: $0) })
-                        )
-                    case let .failure(error):
-                        completion(.failure(error))
+            fetchChatHistory: {
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.fetchChatTranscript { result in
+                        switch result {
+                        case let .success(messages):
+                            continuation.resume(returning: messages.map { ChatMessage(with: $0) })
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
                     }
                 }
             },

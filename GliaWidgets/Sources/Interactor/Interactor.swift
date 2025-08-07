@@ -195,7 +195,22 @@ extension Interactor {
         messagePayload: CoreSdkClient.SendMessagePayload,
         completion: @escaping (Result<CoreSdkClient.Message, CoreSdkClient.GliaCoreError>) -> Void
     ) {
-        environment.coreSdk.sendMessageWithMessagePayload(messagePayload, completion)
+        Task {
+            do {
+                let result = try await environment.coreSdk.sendMessageWithMessagePayload(messagePayload)
+                environment.gcd.mainQueue.asyncIfNeeded {
+                    completion(.success(result))
+                }
+            } catch let error as CoreSdkClient.GliaCoreError {
+                environment.gcd.mainQueue.asyncIfNeeded {
+                    completion(.failure(error))
+                }
+            } catch {
+                environment.gcd.mainQueue.asyncIfNeeded {
+                    completion(.failure(.init(reason: error.localizedDescription)))
+                }
+            }
+        }
     }
 
     func endSession(completion: @escaping (Result<Void, Error>) -> Void) {

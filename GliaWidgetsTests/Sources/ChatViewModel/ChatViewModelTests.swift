@@ -7,6 +7,11 @@ class ChatViewModelTests: XCTestCase {
 
     var viewModel: ChatViewModel!
 
+    override func tearDown() {
+        viewModel = nil
+        super.tearDown()
+    }
+
     func test__choiceOptionSelected() throws {
 
         enum Call { case sendSelectedOptionValue }
@@ -35,7 +40,7 @@ class ChatViewModelTests: XCTestCase {
                 fileManager: fileManager,
                 data: .failing,
                 date: { Date.mock },
-                gcd: .failing,
+                gcd: .live,
                 uiScreen: .failing,
                 createThumbnailGenerator: { .failing },
                 createFileDownload: { _, _, _ in
@@ -52,7 +57,7 @@ class ChatViewModelTests: XCTestCase {
                 timerProviding: .mock,
                 uuid: { .mock },
                 uiApplication: .mock,
-                fetchChatHistory: { _ in },
+                fetchChatHistory: { [] },
                 fileUploadListStyle: .mock,
                 createFileUploadListModel: { _ in
                     .mock()
@@ -428,14 +433,14 @@ class ChatViewModelTests: XCTestCase {
         let messageContent = "Message"
 
         var environment: Interactor.Environment = .mock
-        environment.coreSdk.sendMessageWithMessagePayload = { _, completion in
+        environment.coreSdk.sendMessageWithMessagePayload = { _ in
             let coreSdkMessage = Message(
                 id: UUID().uuidString,
                 content: messageContent,
                 sender: MessageSender.mock,
                 metadata: nil
             )
-            completion(.success(coreSdkMessage))
+            return coreSdkMessage
         }
 
         // `sendMessageWithAttachment` goes through this method first, so if
@@ -577,7 +582,7 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertEqual(calls, [.scrollToBottom(animated: true)])
     }
 
-    func test_messagesIdsFromHistoryAreStoredInHistoryMessageIds() {
+    func test_messagesIdsFromHistoryAreStoredInHistoryMessageIds() async {
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
@@ -585,16 +590,21 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         let expectedMessageId = "expected_message_id".uppercased()
-        viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([.mock(id: expectedMessageId)]))
+        viewModelEnv.fetchChatHistory = {
+            [.mock(id: expectedMessageId)]
         }
+        viewModelEnv.gcd = .live
         viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         viewModel.start()
+
+        await waitUntil {
+            viewModel.historyMessageIds == [expectedMessageId]
+        }
         XCTAssertEqual(viewModel.historyMessageIds, [expectedMessageId])
     }
 
-    func test_messageReceivedFromSocketIsRemovedWhenSameMessageArrivesFromHistory() {
+    func test_messageReceivedFromSocketIsRemovedWhenSameMessageArrivesFromHistory() async {
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
@@ -602,9 +612,10 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         let expectedMessageId = "expected_message_id".uppercased()
-        viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([.mock(id: expectedMessageId)]))
+        viewModelEnv.fetchChatHistory = {
+            [.mock(id: expectedMessageId)]
         }
+        viewModelEnv.gcd = .live
         viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
 
@@ -612,6 +623,9 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.receivedMessageIds, [expectedMessageId])
 
         viewModel.start()
+        await waitUntil {
+            viewModel.historyMessageIds == [expectedMessageId]
+        }
         XCTAssertEqual(viewModel.historyMessageIds, [expectedMessageId])
         XCTAssertEqual(viewModel.receivedMessageIds, [])
         XCTAssertTrue(viewModel.messagesSection.items.isEmpty)
@@ -625,9 +639,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         let expectedMessageId = "expected_message_id"
-        viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([.mock(id: expectedMessageId)]))
-        }
+        viewModelEnv.fetchChatHistory = { [.mock(id: expectedMessageId)] }
+        viewModelEnv.gcd = .live
         viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         viewModel.start()
@@ -646,7 +659,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
-        viewModelEnv.fetchChatHistory = { _ in }
+        viewModelEnv.fetchChatHistory = { [] }
+        viewModelEnv.gcd = .live
         viewModelEnv.createEntryWidget = { _ in .mock() }
 
         let messageId = "message_id"
@@ -679,9 +693,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         let expectedMessageId = "expected_message_id"
-        viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([]))
-        }
+        viewModelEnv.fetchChatHistory = { [] }
+        viewModelEnv.gcd = .live
         viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         viewModel.isViewLoaded = true
@@ -706,9 +719,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.log = log
         let messageIdSuffix = "1D_123"
         let expectedMessageId = "expected_message_id"
-        viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([]))
-        }
+        viewModelEnv.fetchChatHistory = { [] }
+        viewModelEnv.gcd = .live
         viewModelEnv.createSendMessagePayload = {
             .mock(messageIdSuffix: messageIdSuffix, content: $0, attachment: $1)
         }
@@ -720,12 +732,12 @@ class ChatViewModelTests: XCTestCase {
         interactorLog.infoClosure = { _, _, _, _ in }
         interactorLog.prefixedClosure = { _ in interactorLog }
         interactor.environment.log = interactorLog
-        interactor.environment.gcd.mainQueue.async = { $0() }
+        interactor.environment.gcd = .live
         interactor.environment.coreSdk.configureWithInteractor = { _ in }
         interactor.environment.coreSdk.configureWithConfiguration = { _, callback in callback(.success(())) }
         interactor.environment.coreSdk.sendMessagePreview = { _ in true }
-        interactor.environment.coreSdk.sendMessageWithMessagePayload = { _, completion in
-            completion(.success(.mock(id: expectedMessageId)))
+        interactor.environment.coreSdk.sendMessageWithMessagePayload = { _ in
+            return .mock(id: expectedMessageId)
         }
         interactor.environment.coreSdk.queueForEngagement = { _, _, completion in
             completion(.success(.mock))
@@ -766,9 +778,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.log = log
         let messageIdSuffix = "1D_123"
         let expectedMessageId = "expected_message_id"
-        viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([]))
-        }
+        viewModelEnv.fetchChatHistory = { [] }
+        viewModelEnv.gcd = .live
         viewModelEnv.createSendMessagePayload = {
             .mock(messageIdSuffix: messageIdSuffix, content: $0, attachment: $1)
         }
@@ -780,14 +791,14 @@ class ChatViewModelTests: XCTestCase {
         interactorLog.prefixedClosure = { _ in log }
         interactorLog.infoClosure = { _, _, _, _ in }
         interactor.environment.log = interactorLog
-        interactor.environment.gcd.mainQueue.async = { $0() }
+        interactor.environment.gcd = .live
         interactor.environment.coreSdk.configureWithInteractor = { _ in }
         interactor.environment.coreSdk.configureWithConfiguration = { _, callback in callback(.success(())) }
         interactor.environment.coreSdk.sendMessagePreview = { _ in true }
-        interactor.environment.coreSdk.sendMessageWithMessagePayload = { [weak viewModel] _, completion in
+        interactor.environment.coreSdk.sendMessageWithMessagePayload = { [weak viewModel] _ in
             // Deliver message via socket before REST API response.
             viewModel?.interactorEvent(.receivedMessage(.mock(id: expectedMessageId)))
-            completion(.success(.mock(id: expectedMessageId)))
+            return .mock(id: expectedMessageId)
         }
         interactor.environment.coreSdk.queueForEngagement = { _, _, completion in
             completion(.success(.mock))
@@ -822,9 +833,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
-        viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([]))
-        }
+        viewModelEnv.fetchChatHistory = { [] }
+        viewModelEnv.gcd = .live
         viewModelEnv.createEntryWidget = { _ in .mock() }
 
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
@@ -1009,14 +1019,15 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertEqual(calls, [.quickReplyHidden])
     }
 
-    func test_pendingMessageGetsRemovedFromListWhenMessageIsSentSuccesfully() {
-        var interactorEnv = Interactor.Environment(coreSdk: .failing, queuesMonitor: .failing, gcd: .mock, log: .mock)
-        interactorEnv.coreSdk.sendMessageWithMessagePayload = { payload, callback in
-            callback(.success(.mock(id: payload.messageId.rawValue)))
+    func test_pendingMessageGetsRemovedFromListWhenMessageIsSentSuccesfully() async {
+        var interactorEnv = Interactor.Environment(coreSdk: .failing, queuesMonitor: .failing, gcd: .live, log: .mock)
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { payload in
+            return .mock(id: payload.messageId.rawValue)
         }
         let interactor = Interactor.mock(environment: interactorEnv)
         interactor.setCurrentEngagement(.mock())
         var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.gcd = .live
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
@@ -1032,13 +1043,17 @@ class ChatViewModelTests: XCTestCase {
         viewModel.setPendingMessagesForTesting(pendingMessages)
         XCTAssertEqual(pendingMessages, viewModel.getPendingMessageForTesting())
         viewModel.update(for: .engaged(.mock()))
+
+        await waitUntil {
+            viewModel.getPendingMessageForTesting().isEmpty
+        }
         XCTAssertTrue(viewModel.getPendingMessageForTesting().isEmpty)
     }
 
     func test_messageAttachmentIsKeptAfterFailureSending() throws {
         var interactorEnv = Interactor.Environment.mock
-        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, callback in
-            callback(.failure(.mock()))
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _ in
+            return .mock()
         }
         interactorEnv.coreSdk.sendMessagePreview = { _ in true }
         let interactor = Interactor.mock(environment: interactorEnv)
@@ -1249,7 +1264,7 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.shouldForceEnqueueing)
     }
 
-    func testLoadHistoryStartsEnqueueingWhenReplaceExistingEnqueueingIsTrue() throws {
+    func testLoadHistoryStartsEnqueueingWhenReplaceExistingEnqueueingIsTrue() async throws {
         var interactorEnv = Interactor.Environment.failing
         interactorEnv.gcd.mainQueue.async = { $0() }
 
@@ -1264,9 +1279,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.createEntryWidget = { _ in .mock() }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
-        viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([.mock()]))
-        }
+        viewModelEnv.fetchChatHistory = { [.mock()] }
+        viewModelEnv.gcd = .live
         viewModelEnv.getNonTransferredSecureConversationEngagement = { nil }
 
         let viewModel = ChatViewModel.mock(
@@ -1278,10 +1292,13 @@ class ChatViewModelTests: XCTestCase {
 
         viewModel.start()
 
+        await waitUntil {
+            interactor.state == .enqueueing(.chat)
+        }
         XCTAssertEqual(interactor.state, .enqueueing(.chat))
     }
 
-    func testLoadHistoryStartsEnqueueingWhenTranscriptIsEmpty() throws {
+    func testLoadHistoryStartsEnqueueingWhenTranscriptIsEmpty() async throws {
         var interactorEnv = Interactor.Environment.failing
         interactorEnv.gcd.mainQueue.async = { $0() }
 
@@ -1296,9 +1313,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.createEntryWidget = { _ in .mock() }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
-        viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([]))
-        }
+        viewModelEnv.fetchChatHistory = { [] }
+        viewModelEnv.gcd = .live
         viewModelEnv.getNonTransferredSecureConversationEngagement = { nil }
 
         let viewModel = ChatViewModel.mock(
@@ -1309,10 +1325,13 @@ class ChatViewModelTests: XCTestCase {
 
         viewModel.start()
 
+        await waitUntil {
+            interactor.state == .enqueueing(.chat)
+        }
         XCTAssertEqual(interactor.state, .enqueueing(.chat))
     }
 
-    func testLoadHistoryStartsEnqueueingWhenOngoingEngagementExists() throws {
+    func testLoadHistoryStartsEnqueueingWhenOngoingEngagementExists() async throws {
         var interactorEnv = Interactor.Environment.failing
         interactorEnv.gcd.mainQueue.async = { $0() }
 
@@ -1327,9 +1346,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.createEntryWidget = { _ in .mock() }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
-        viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([.mock()]))
-        }
+        viewModelEnv.fetchChatHistory = { [.mock()] }
+        viewModelEnv.gcd = .live
         viewModelEnv.getNonTransferredSecureConversationEngagement = { .mock() }
 
         let viewModel = ChatViewModel.mock(
@@ -1340,6 +1358,9 @@ class ChatViewModelTests: XCTestCase {
 
         viewModel.start()
 
+        await waitUntil {
+            interactor.state == .enqueueing(.chat)
+        }
         XCTAssertEqual(interactor.state, .enqueueing(.chat))
     }
 
@@ -1440,9 +1461,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
-        viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([]))
-        }
+        viewModelEnv.fetchChatHistory = { [] }
+        viewModelEnv.gcd = .live
         viewModelEnv.markUnreadMessagesDelay = { .zero }
         viewModelEnv.getCurrentEngagement = { .mock(actionOnEnd: .retain) }
         viewModelEnv.uiApplication.applicationState = { .active }
@@ -1474,9 +1494,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
-        viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([]))
-        }
+        viewModelEnv.fetchChatHistory = { [] }
+        viewModelEnv.gcd = .live
         viewModelEnv.markUnreadMessagesDelay = { .zero }
         viewModelEnv.getCurrentEngagement = { .mock(actionOnEnd: .showSurvey) }
         viewModelEnv.uiApplication.applicationState = { .active }
@@ -1508,9 +1527,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
-        viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([]))
-        }
+        viewModelEnv.fetchChatHistory = { [] }
+        viewModelEnv.gcd = .live
         viewModelEnv.markUnreadMessagesDelay = { .zero }
         viewModelEnv.getCurrentEngagement = { .mock(actionOnEnd: .retain) }
         viewModelEnv.uiApplication.applicationState = { .active }

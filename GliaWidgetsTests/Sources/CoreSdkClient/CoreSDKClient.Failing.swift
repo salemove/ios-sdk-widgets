@@ -24,7 +24,9 @@ extension CoreSdkClient {
             fail("\(Self.self).sendMessagePreview")
             throw NSError(domain: "CoreSdkClient", code: -1, userInfo: nil)
         },
-        sendMessageWithMessagePayload: { _, _ in fail("\(Self.self).sendMessageWithMessagePayload") },
+        sendMessageWithMessagePayload: { _ in fail("\(Self.self).sendMessageWithMessagePayload")
+            throw NSError(domain: "CoreSdkClient", code: -1, userInfo: nil)
+        },
         cancelQueueTicket: { _, _ in fail("cancelQueueTicket") },
         endEngagement: {
             fail("\(Self.self).endEngagement")
@@ -40,7 +42,10 @@ extension CoreSdkClient {
             fail("\(Self.self).authentication")
             return .mock
         },
-        fetchChatHistory: { _ in },
+        fetchChatHistory: {
+            fail("\(Self.self).fetchChatHistory")
+            throw NSError(domain: "Mock", code: -1)
+        },
         requestVisitorCode: { _ in
             fail("\(Self.self).requestVisitorCode")
             return .init()
