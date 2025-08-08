@@ -219,7 +219,8 @@ class ChatViewModel: EngagementViewModel {
                     } catch {
                         await self.onFailureSendPendingMessages(outgoingMessage: outgoingMessage)
                     }
-                }            }
+                }
+            }
         default:
             break
         }
