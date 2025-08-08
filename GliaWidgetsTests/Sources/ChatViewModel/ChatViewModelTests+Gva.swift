@@ -78,7 +78,7 @@ extension ChatViewModelTests {
         XCTAssertEqual(calls, expectedResult)
     }
 
-    func test_gvaPostbackButtonAction() {
+    func test_gvaPostbackButtonAction() async {
         let option = GvaOption.mock(text: "text", value: "value")
         var calls: [Call] = []
         var env = ChatViewModel.Environment.mock
@@ -90,8 +90,9 @@ extension ChatViewModelTests {
             .mock(content: content, attachment: attachment)
         }
         var interactorEnv = Interactor.Environment.mock
-        interactorEnv.coreSdk.sendMessageWithMessagePayload = { payload, _ in
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { payload in
             calls.append(.sendOption(payload.content, payload.attachment?.selectedOption))
+            return .mock()
         }
         let interactorMock = Interactor.mock(environment: interactorEnv)
         interactorMock.state = .engaged(nil)
@@ -99,18 +100,21 @@ extension ChatViewModelTests {
         viewModel = .mock(interactor: interactorMock, environment: env)
 
         viewModel.gvaOptionAction(for: option)()
-
-        XCTAssertEqual(calls, [.sendOption("text", "value")])
+        let expectedCalls: [Call] = [.sendOption("text", "value")]
+        await waitUntil {
+            calls == expectedCalls
+        }
+        XCTAssertEqual(calls, expectedCalls)
     }
 
     func test_gvaPostbackButtonActionTriggersStartEngagement() {
         let option = GvaOption.mock(text: "text", value: "value")
         var interactorEnv = Interactor.Environment.failing
         // To ensure `sendMessageWithMessagePayload` is not called in case of Postback Button
-        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, _ in
-            XCTFail("sendMessageWithMessagePayload should not be called")
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _ in
+            throw CoreSdkClient.GliaCoreError.mock()
         }
-        interactorEnv.gcd.mainQueue.async = { _ in }
+        interactorEnv.gcd = .live
         interactorEnv.coreSdk.queueForEngagement = { _, _, _ in }
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         interactorEnv.log.infoClosure = { _, _, _, _ in }
@@ -146,8 +150,19 @@ extension ChatViewModelTests {
         XCTAssertEqual(calls, [.showAlert])
     }
 
-    func test_deliveredGvaMessageStatus() {
-        func checkMessageStatuses(_ statuses: [String?]) {
+    func test_deliveredGvaMessageStatus() async {
+        func checkMessageStatuses(_ statuses: [String?], messagesSectionIndex: Int, testCase: XCTestCase) async {
+            await testCase.waitUntil {
+                // All messages have expected statuses?
+                statuses.enumerated().allSatisfy { idx, expectedStatus in
+                    let item = viewModel.item(for: idx, in: messagesSectionIndex)
+                    if case let .visitorMessage(_, status) = item.kind {
+                        return status == expectedStatus
+                    }
+                    return false
+                }
+            }
+            // Now assert, which will instantly pass (or fail if the state is wrong)
             statuses.enumerated().forEach {
                 let item = viewModel.item(for: $0.offset, in: messagesSectionIndex)
                 switch item.kind {
@@ -158,8 +173,8 @@ extension ChatViewModelTests {
                 }
             }
         }
-
         var env = ChatViewModel.Environment.mock
+        env.gcd = .live
         env.createSendMessagePayload = { content, attachment in
             .mock(
                 messageIdSuffix: attachment?.selectedOption ?? "mock",
@@ -168,13 +183,14 @@ extension ChatViewModelTests {
             )
         }
         var interactorEnv = Interactor.Environment.mock
-        interactorEnv.coreSdk.sendMessageWithMessagePayload = { payload, completion in
-            completion(.success(.mock(id: payload.messageId.rawValue)))
+        interactorEnv.gcd = .live
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { payload in
+            return .mock(id: payload.messageId.rawValue)
         }
         let interactorMock = Interactor.mock(environment: interactorEnv)
         interactorMock.state = .engaged(nil)
         let viewModel = ChatViewModel.mock(interactor: interactorMock, environment: env)
-
+        
         let messagesSectionIndex = 3
         let options: [GvaOption] = [
             .mock(value: "mock0"),
@@ -185,13 +201,13 @@ extension ChatViewModelTests {
         options.forEach { viewModel.gvaOptionAction(for: $0)() }
 
         let optionStatuses: [String?] = [nil, nil, "Delivered"]
-        checkMessageStatuses(optionStatuses)
+        await checkMessageStatuses(optionStatuses, messagesSectionIndex: messagesSectionIndex, testCase: self)
 
         viewModel.event(.messageTextChanged("text"))
         viewModel.event(.sendTapped)
 
         let statuses: [String?] = [nil, nil, nil, "Delivered"]
-        checkMessageStatuses(statuses)
+        await checkMessageStatuses(statuses, messagesSectionIndex: messagesSectionIndex, testCase: self)
     }
 }
 

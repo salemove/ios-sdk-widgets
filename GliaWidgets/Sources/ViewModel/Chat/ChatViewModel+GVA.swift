@@ -114,25 +114,32 @@ private extension ChatViewModel {
         appendItem(item, to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
 
-        interactor.send(messagePayload: outgoingMessage.payload) { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case let .success(message):
-                if !self.hasReceivedMessage(messageId: message.id) {
-                    self.registerReceivedMessage(messageId: message.id)
-                    self.replace(
-                        outgoingMessage,
-                        uploads: [],
-                        with: message,
-                        in: self.messagesSection
-                    )
-                }
-            case .failure:
-                self.markMessageAsFailed(
-                    outgoingMessage,
-                    in: self.messagesSection
+        Task {
+            do {
+                let message = try await interactor.send(messagePayload: outgoingMessage.payload)
+                await onSuccessSendMessage(
+                    message: message,
+                    outgoingMessage: outgoingMessage
                 )
+            } catch {
+                await onFailureSendMessage(outgoingMessage: outgoingMessage)
             }
+        }
+    }
+
+    @MainActor
+    func onSuccessSendMessage(
+        message: CoreSdkClient.Message,
+        outgoingMessage: OutgoingMessage
+    ) {
+        if !hasReceivedMessage(messageId: message.id) {
+            registerReceivedMessage(messageId: message.id)
+            replace(
+                outgoingMessage,
+                uploads: [],
+                with: message,
+                in: messagesSection
+            )
         }
     }
 }
