@@ -21,7 +21,7 @@ extension CoreSdkClient {
         sendFile: { _, _ in },
         cancelQueueTicket: { _, _ in },
         endEngagement: { true },
-        requestEngagedOperator: { _ in },
+        requestEngagedOperator: { [] },
         uploadFileToEngagement: { _, _, _ in },
         fetchFile: { _, _, _ in },
         getCurrentEngagement: { return nil },
