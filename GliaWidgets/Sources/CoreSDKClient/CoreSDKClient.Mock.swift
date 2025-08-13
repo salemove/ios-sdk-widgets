@@ -15,7 +15,7 @@ extension CoreSdkClient {
         updateVisitorInfo: { _ in true },
         configureWithInteractor: { _ in },
         getQueues: { _ in },
-        queueForEngagement: { _, _, _ in },
+        queueForEngagement: { _, _ in .mock },
         sendMessagePreview: { _ in true },
         sendMessageWithMessagePayload: { _ in .mock() },
         cancelQueueTicket: { _ in true },

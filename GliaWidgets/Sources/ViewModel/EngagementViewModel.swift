@@ -67,15 +67,17 @@ class EngagementViewModel: CommonEngagementModel {
 
     func start() {}
 
-    func enqueue(engagementKind: EngagementKind, replaceExisting: Bool) {
-        interactor.enqueueForEngagement(
-            engagementKind: engagementKind,
-            replaceExisting: replaceExisting,
-            success: {},
-            failure: { [weak self] error in
-                self?.handleError(error)
-            }
-        )
+    func enqueue(engagementKind: EngagementKind, replaceExisting: Bool) async {
+        do {
+            try await interactor.enqueueForEngagement(
+                engagementKind: engagementKind,
+                replaceExisting: replaceExisting
+            )
+        } catch let error as CoreSdkClient.GliaCoreError {
+            self.handleError(error)
+        } catch {
+            return
+        }
     }
 
     func interactorEvent(_ event: InteractorEvent) {
@@ -120,10 +122,13 @@ class EngagementViewModel: CommonEngagementModel {
                 switch result {
                 case let .success(site):
                     if site.mobileConfirmDialogEnabled == false || self.interactor.skipLiveObservationConfirmations {
-                        self.enqueue(
-                            engagementKind: engagementKind,
-                            replaceExisting: replaceExistingEnqueueing
-                        )
+                        Task { [weak self] in
+                            guard let self else { return }
+                            await self.enqueue(
+                                engagementKind: engagementKind,
+                                replaceExisting: replaceExistingEnqueueing
+                            )
+                        }
                     } else {
                         self.showLiveObservationConfirmation(in: engagementKind)
                     }
@@ -193,11 +198,13 @@ extension EngagementViewModel {
                 self?.engagementDelegate?(.openLink(link))
             },
             accepted: { [weak self] in
-                guard let self else { return }
-                enqueue(
-                    engagementKind: engagementKind,
-                    replaceExisting: replaceExistingEnqueueing
-                )
+                Task { [weak self] in
+                    guard let self else { return }
+                    await self.enqueue(
+                        engagementKind: engagementKind,
+                        replaceExisting: self.replaceExistingEnqueueing
+                    )
+                }
             },
             declined: { [weak self] in
                 Task { [weak self] in

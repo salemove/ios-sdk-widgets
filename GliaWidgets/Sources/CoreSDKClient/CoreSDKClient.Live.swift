@@ -50,17 +50,20 @@ extension CoreSdkClient {
                     completion(.failure(GliaError.internalError))
                 }
             },
-            queueForEngagement: { options, replaceExisting, completion in
-                let options = QueueForEngagementOptions(
-                    queueIds: options.queueIds,
-                    visitorContext: options.visitorContext,
-                    shouldCloseAllQueues: options.shouldCloseAllQueues,
-                    mediaType: options.mediaType,
-                    engagementOptions: options.engagementOptions
-                )
-                GliaCore.sharedInstance.queueForEngagement(
-                    using: options, replaceExisting: replaceExisting, completion: completion
-                )
+            queueForEngagement: { options, replaceExisting in
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.queueForEngagement(
+                        using: options,
+                        replaceExisting: replaceExisting
+                    ) { result in
+                        switch result {
+                        case let .success(queueTicket):
+                            continuation.resume(returning: queueTicket)
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
+                    }
+                }
             },
             sendMessagePreview: { message in
                 try await withCheckedThrowingContinuation { continuation in
