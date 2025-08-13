@@ -14,7 +14,7 @@ extension ChatViewModelTests {
             throw CoreSdkClient.GliaCoreError.mock()
         }
         interactorEnv.gcd.mainQueue.asyncIfNeeded = { _ in }
-        interactorEnv.coreSdk.queueForEngagement = { _, _, _ in }
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in .mock }
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         interactorEnv.coreSdk.sendMessageWithMessagePayload = { payload in
             calls.append(.sendOption(payload.content, payload.attachment?.selectedOption))
