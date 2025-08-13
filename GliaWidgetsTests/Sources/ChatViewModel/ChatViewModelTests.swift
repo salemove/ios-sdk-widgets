@@ -910,7 +910,7 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertEqual(interactor.state, .enqueued(.mock, .audioCall))
     }
 
-    func test_liveObservationDeclineTriggersNone() throws {
+    func test_liveObservationDeclineTriggersNone() async throws {
         enum Call {
             case queueForEngagement
         }
@@ -946,6 +946,11 @@ class ChatViewModelTests: XCTestCase {
         }
         interactor.state = .enqueueing(.audioCall)
         alertConfig?.declined()
+
+        /// Will be removed when AlertManager is refactored in MOB-4574
+        await waitUntil {
+            interactor.state == .ended(.byVisitor)
+        }
         XCTAssertEqual(interactor.state, .ended(.byVisitor))
         XCTAssertTrue(calls.isEmpty)
     }
@@ -1080,7 +1085,7 @@ class ChatViewModelTests: XCTestCase {
         }
     }
 
-    func test_engagementEndedByOperatorCallsEngagementAndDelegateActions() {
+    func test_engagementEndedByOperatorCallsEngagementAndDelegateActions() async {
         var interactorEnv = Interactor.Environment.failing
         interactorEnv.gcd = .live
         let interactor = Interactor.mock(environment: interactorEnv)
@@ -1122,6 +1127,12 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertEqual(calls, [.engagementActionShowAlertWithOperatorEndedEngagement])
         interactor.setEndedEngagement(.mock(actionOnEnd: .showSurvey))
         viewModel.interactorEvent(.stateChanged(.ended(.byOperator)))
+        await waitUntil {
+            calls == [
+                .engagementActionShowAlertWithOperatorEndedEngagement,
+                .engagementDelegateFinished
+            ]
+        }
         XCTAssertEqual(
             calls, [
                 .engagementActionShowAlertWithOperatorEndedEngagement,
@@ -1170,7 +1181,7 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertEqual(warnings, ["Engagement ended with unknown case '\(mockUnknownAction)'."])
     }
 
-    func test_closeActionDoesNotShowConfirmationIfThereIsTransferredSC() throws {
+    func test_closeActionDoesNotShowConfirmationIfThereIsTransferredSC() async throws {
         var interactorEnv = Interactor.Environment.failing
         interactorEnv.gcd = .live
         interactorEnv.coreSdk.endEngagement = {
@@ -1212,6 +1223,10 @@ class ChatViewModelTests: XCTestCase {
         }
 
         viewModel.event(.closeTapped)
+        /// Will be removed when AlertManager is refactored in MOB-4574
+        await waitUntil {
+            calls == [.engagementDelegateFinished]
+        }
         XCTAssertEqual(calls, [.engagementDelegateFinished])
     }
 
