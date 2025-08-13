@@ -195,51 +195,34 @@ extension Interactor {
         try await environment.coreSdk.sendMessageWithMessagePayload(messagePayload)
     }
 
-    func endSession(completion: @escaping (Result<Void, Error>) -> Void) {
+    @MainActor
+    func endSession() async throws {
         switch state {
         case .none:
-            completion(.success(()))
+            break
         case .enqueueing:
             state = .ended(.byVisitor)
-            completion(.success(()))
         case let .enqueued(ticket, _):
-            exitQueue(
-                ticket: ticket,
-                completion: completion
-            )
+            try await exitQueue(ticket: ticket)
         case .engaged where currentEngagement?.isTransferredSecureConversation == true:
-            completion(.success(()))
+            break
         case .engaged:
-            Task {
-                do {
-                    try await endEngagement()
-                    completion(.success(()))
-                } catch {
-                    completion(.failure(error))
-                }
-            }
-
+            try await endEngagement()
         case .ended:
-            completion(.success(()))
-
             // `cleanup` is called once survey fetching is already initiated,
             // so no need to store `endedEngagement` anymore.
             cleanup()
         }
     }
 
-    func exitQueue(
-        ticket: CoreSdkClient.QueueTicket,
-        completion: @escaping (Result<Void, Error>) -> Void
-) {
+    @MainActor
+    func exitQueue(ticket: CoreSdkClient.QueueTicket) async throws {
         environment.log.prefixed(Self.self).info("Cancel queue ticket")
-        environment.coreSdk.cancelQueueTicket(ticket) { [weak self] _, error in
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                self?.state = .ended(.byVisitor)
-                completion(.success(()))
-            }
+        do {
+            _ = try await environment.coreSdk.cancelQueueTicket(ticket)
+            state = .ended(.byVisitor)
+        } catch {
+            throw error
         }
     }
 
