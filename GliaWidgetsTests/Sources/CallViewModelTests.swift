@@ -469,7 +469,7 @@ class CallViewModelTests: XCTestCase {
         XCTAssertEqual(interactor.state, .enqueued(.mock, .audioCall))
     }
 
-    func test_liveObservationDeclineTriggersNone() throws {
+    func test_liveObservationDeclineTriggersNone() async throws {
         enum Call {
             case queueForEngagement
         }
@@ -505,6 +505,11 @@ class CallViewModelTests: XCTestCase {
         }
         interactor.state = .enqueueing(.audioCall)
         alertConfig?.declined()
+
+        /// Will be removed when AlertManager is refactored in MOB-4574
+        await waitUntil {
+            interactor.state == .ended(.byVisitor)
+        }
         XCTAssertEqual(interactor.state, .ended(.byVisitor))
         XCTAssertTrue(calls.isEmpty)
     }
