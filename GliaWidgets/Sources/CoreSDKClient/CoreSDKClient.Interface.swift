@@ -42,10 +42,7 @@ struct CoreSdkClient {
     var sendMessagePreview: (_ message: String) async throws -> Bool
     var sendMessageWithMessagePayload: (_ payload: SendMessagePayload) async throws -> Message
 
-    typealias CancelQueueTicket = (
-        _ queueTicket: Self.QueueTicket,
-        _ completion: @escaping GliaCoreSDK.SuccessBlock
-    ) -> Void
+    typealias CancelQueueTicket = (_ queueTicket: Self.QueueTicket) async throws -> Bool
 
     var cancelQueueTicket: CancelQueueTicket
 

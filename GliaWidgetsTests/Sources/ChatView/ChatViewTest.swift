@@ -48,7 +48,8 @@ final class ChatViewTest: XCTestCase {
         }
     }
 
-    func test_viewIsReleasedOnceModuleIsClosedWithResponseCardsInTranscript() throws {
+    @MainActor
+    func test_viewIsReleasedOnceModuleIsClosedWithResponseCardsInTranscript() async throws {
         guard #available(iOS 17, *) else {
             throw XCTSkip("""
                 This test does not pass on OS lower than iOS 17, but actual fix work well.
