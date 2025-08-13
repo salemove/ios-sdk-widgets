@@ -30,9 +30,12 @@ extension CoreSdkClient {
         cancelQueueTicket: { _, _ in fail("cancelQueueTicket") },
         endEngagement: {
             fail("\(Self.self).endEngagement")
-            throw NSError(domain: "Mock", code: -1)
+            throw NSError(domain: "endEngagement", code: -1)
         },
-        requestEngagedOperator: { _ in fail("\(Self.self).requestEngagedOperator") },
+        requestEngagedOperator: {
+            fail("\(Self.self).requestEngagedOperator")
+            throw NSError(domain: "requestEngagedOperator", code: -1)
+        },
         uploadFileToEngagement: { _, _, _ in fail("\(Self.self).uploadFileToEngagement") },
         fetchFile: { _, _, _ in fail("\(Self.self).fetchFile") },
         getCurrentEngagement: { return nil },

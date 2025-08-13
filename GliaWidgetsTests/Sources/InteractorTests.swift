@@ -365,14 +365,14 @@ class InteractorTests: XCTestCase {
 
         XCTAssertEqual(callbacks, [.endEngagement])
     }
-    
-    func test_startRequestsEngagedOperatorAndSetsStateToEngaged() throws {
+
+    func test_startRequestsEngagedOperatorAndSetsStateToEngaged() async throws {
         enum Callback: Equatable {
             case engaged
         }
         var callbacks: [Callback] = []
         var interactorEnv = Interactor.Environment.failing
-        interactorEnv.coreSdk.requestEngagedOperator = { $0([.mock()], nil) }
+        interactorEnv.coreSdk.requestEngagedOperator = { [.mock()] }
         interactorEnv.gcd = .mock
         let interactor = Interactor.mock(environment: interactorEnv)
 
@@ -388,11 +388,11 @@ class InteractorTests: XCTestCase {
             }
         }
 
-        interactor.start()
+        await interactor.start()
 
         XCTAssertEqual(callbacks, [.engaged])
     }
-    
+
     func test_endSetsStateToEnded() throws {
         enum Callback: Equatable {
             case ended

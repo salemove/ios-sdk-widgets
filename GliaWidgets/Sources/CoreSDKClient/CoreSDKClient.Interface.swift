@@ -50,10 +50,7 @@ struct CoreSdkClient {
     var cancelQueueTicket: CancelQueueTicket
 
     var endEngagement: () async throws -> Bool
-
-    typealias RequestEngagedOperator = (_ completion: @escaping Self.OperatorBlock) -> Void
-
-    var requestEngagedOperator: RequestEngagedOperator
+    var requestEngagedOperator: () async throws -> [GliaCoreSDK.Operator]?
 
     typealias UploadFileToEngagement = (
         _ file: Self.EngagementFile,

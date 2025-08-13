@@ -97,7 +97,17 @@ extension CoreSdkClient {
                     }
                 }
             },
-            requestEngagedOperator: GliaCore.sharedInstance.requestEngagedOperator(completion:),
+            requestEngagedOperator: {
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.requestEngagedOperator { success, error in
+                        if let error = error {
+                            continuation.resume(throwing: error)
+                        } else {
+                            continuation.resume(returning: success)
+                        }
+                    }
+                }
+            },
             uploadFileToEngagement: GliaCore.sharedInstance.uploadFileToEngagement(_:progress:completion:),
             fetchFile: GliaCore.sharedInstance.fetchFile(engagementFile:progress:completion:),
             getCurrentEngagement: GliaCore.sharedInstance.getCurrentEngagement,
