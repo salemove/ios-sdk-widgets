@@ -573,11 +573,10 @@ public class Glia {
             return
         }
 
-        interactor.endSession { [weak self] result in
-            guard let self else { return }
-
-            switch result {
-            case .success:
+        Task { [weak self] in
+            do {
+                try await interactor.endSession()
+                guard let self else { return }
                 guard let rootCoordinator = self.rootCoordinator else {
                     self.onEvent?(.ended)
                     completion(.success(()))
@@ -591,7 +590,7 @@ public class Glia {
                         completion(.success(()))
                     }
                 )
-            case .failure(let error):
+            } catch {
                 completion(.failure(error))
             }
         }

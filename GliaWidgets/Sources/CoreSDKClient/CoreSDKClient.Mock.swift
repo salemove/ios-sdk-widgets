@@ -19,7 +19,7 @@ extension CoreSdkClient {
         sendMessagePreview: { _ in true },
         sendMessageWithMessagePayload: { _ in .mock() },
         sendFile: { _, _ in },
-        cancelQueueTicket: { _, _ in },
+        cancelQueueTicket: { _ in true },
         endEngagement: { true },
         requestEngagedOperator: { [] },
         uploadFileToEngagement: { _, _, _ in },
