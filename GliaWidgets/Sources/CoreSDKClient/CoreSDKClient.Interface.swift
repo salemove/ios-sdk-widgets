@@ -50,10 +50,7 @@ struct CoreSdkClient {
 
     var sendFile: SendFile
 
-    typealias CancelQueueTicket = (
-        _ queueTicket: Self.QueueTicket,
-        _ completion: @escaping GliaCoreSDK.SuccessBlock
-    ) -> Void
+    typealias CancelQueueTicket = (_ queueTicket: Self.QueueTicket) async throws -> Bool
 
     var cancelQueueTicket: CancelQueueTicket
 

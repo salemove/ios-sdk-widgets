@@ -28,7 +28,10 @@ extension CoreSdkClient {
             throw NSError(domain: "CoreSdkClient", code: -1, userInfo: nil)
         },
         sendFile: { _, _ in fail("\(Self.self).sendFile") },
-        cancelQueueTicket: { _, _ in fail("cancelQueueTicket") },
+        cancelQueueTicket: { _ in
+            fail("cancelQueueTicket")
+            throw NSError(domain: "cancelQueueTicket", code: -1, userInfo: nil)
+        },
         endEngagement: {
             fail("\(Self.self).endEngagement")
             throw NSError(domain: "endEngagement", code: -1)
