@@ -503,7 +503,8 @@ final class GliaTests: XCTestCase {
         XCTAssertFalse(sdk.isConfigured)
     }
 
-    func test_engagementCoordinatorGetsDeallocated() throws {
+    @MainActor
+    func test_engagementCoordinatorGetsDeallocated() async throws {
         var environment = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
         logger.infoClosure = { _, _, _, _ in }
@@ -538,11 +539,18 @@ final class GliaTests: XCTestCase {
         try engagementLauncher.startChat()
         weak var rootCoordinator = sdk.rootCoordinator
         XCTAssertNotNil(rootCoordinator)
-        var endEngagementResult: Result<Void, Error>?
-        sdk.endEngagement { result in
-            endEngagementResult = result
+        let result: Result<Void, Error> = await withCheckedContinuation { continuation in
+            sdk.endEngagement { result in
+                continuation.resume(returning: result)
+            }
         }
-        XCTAssertNoThrow(try XCTUnwrap(endEngagementResult))
+
+        // Assert success and then deallocation.
+        XCTAssertNoThrow(try result.get())
+
+        // Give the runloop a chance if teardown happens on the next hop.
+        await Task.yield()
+
         XCTAssertNil(sdk.rootCoordinator)
         XCTAssertNil(rootCoordinator)
     }

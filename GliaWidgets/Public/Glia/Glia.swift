@@ -572,8 +572,14 @@ public class Glia {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
         }
-
-        interactor?.endSession(completion: completion)
+        Task {
+            do {
+                try await interactor?.endSession()
+                completion(.success(()))
+            } catch {
+                completion(.failure(error))
+            }
+        }
     }
 
     /// List all queues of the configured site. It is also possible to monitor queues changes with
