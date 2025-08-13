@@ -112,7 +112,7 @@ extension ChatViewModelTests {
             throw CoreSdkClient.GliaCoreError.mock()
         }
         interactorEnv.gcd = .live
-        interactorEnv.coreSdk.queueForEngagement = { _, _, _ in }
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in .mock }
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         interactorEnv.log.infoClosure = { _, _, _, _ in }
         interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }

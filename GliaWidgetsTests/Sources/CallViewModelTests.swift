@@ -433,11 +433,9 @@ class CallViewModelTests: XCTestCase {
         XCTAssertEqual(calls, [.showLiveObservationAlert])
     }
 
-    func test_liveObservationAllowTriggersEnqueue() throws {
+    func test_liveObservationAllowTriggersEnqueue() async throws {
         var interactorEnv: Interactor.Environment = .mock
-        interactorEnv.coreSdk.queueForEngagement = { _, _, completion in
-            completion(.success(.mock))
-        }
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in .mock }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
         var alertConfig: LiveObservation.Confirmation?
@@ -465,6 +463,11 @@ class CallViewModelTests: XCTestCase {
         }
         interactor.state = .enqueueing(.audioCall)
         alertConfig?.accepted()
+
+        await waitUntil {
+            interactor.state == .enqueued(.mock, .audioCall)
+        }
+        
         XCTAssertEqual(interactor.state, .enqueued(.mock, .audioCall))
     }
 
@@ -474,8 +477,9 @@ class CallViewModelTests: XCTestCase {
         }
         var calls: [Call] = []
         var interactorEnv: Interactor.Environment = .mock
-        interactorEnv.coreSdk.queueForEngagement = { _, _, _ in
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in
             calls.append(.queueForEngagement)
+            return .mock
         }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
