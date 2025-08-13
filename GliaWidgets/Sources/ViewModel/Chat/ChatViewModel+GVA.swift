@@ -60,8 +60,7 @@ extension ChatViewModel {
 
             case .engaged where shouldForceEnqueueing, .enqueueing, .ended, .none:
                 self.handle(pendingMessage: outgoingMessage)
-                self.enqueue(engagementKind: .chat, replaceExisting: false)
-
+                await self.enqueue(engagementKind: .chat, replaceExisting: false)
             case .engaged:
                 await self.sendMessage(outgoingMessage)
             }
