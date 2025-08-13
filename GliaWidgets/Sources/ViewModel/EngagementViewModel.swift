@@ -126,7 +126,11 @@ class EngagementViewModel: CommonEngagementModel {
                 case let .failure(error):
                     self.engagementAction?(.showAlert(.error(
                         error: error,
-                        dismissed: conditionallyEndSession
+                        dismissed: {
+                            Task { [weak self] in
+                                await self?.conditionallyEndSession()
+                            }
+                        }
                     )))
                 }
             }
@@ -135,19 +139,16 @@ class EngagementViewModel: CommonEngagementModel {
         }
     }
 
-    func endSession() {
-        interactor.endSession { [weak self] _ in
-            guard let self = self else { return }
-            self.environment.gcd.mainQueue.asyncIfNeeded {
-                self.engagementDelegate?(.finished)
-            }
-        }
+    @MainActor
+    func endSession() async {
+        try? await interactor.endSession()
+        self.engagementDelegate?(.finished)
     }
 
-    func conditionallyEndSession() {
+    func conditionallyEndSession() async {
         switch self.interactor.state {
         case .ended:
-            self.endSession()
+            await self.endSession()
         default:
             break
         }
@@ -164,21 +165,31 @@ private extension EngagementViewModel {
         switch interactor.state {
         case .enqueueing, .enqueued:
             engagementAction?(.showAlert(.leaveQueue(confirmed: { [weak self] in
-                self?.endSession()
+                Task { [weak self] in
+                    await self?.endSession()
+                }
             })))
         case .engaged where interactor.currentEngagement?.isTransferredSecureConversation == false:
             engagementAction?(.showAlert(.endEngagement(confirmed: { [weak self] in
-                self?.endSession()
+                Task { [weak self] in
+                    await self?.endSession()
+                }
             })))
         default:
-            endSession()
+            Task { [weak self] in
+                await self?.endSession()
+            }
         }
     }
 
     private func handleError(_ error: CoreSdkClient.SalemoveError) {
         engagementAction?(.showAlert(.error(
             error: error.error,
-            dismissed: endSession
+            dismissed: {
+                Task { [weak self] in
+                    await self?.endSession()
+                }
+            }
         )))
     }
 }
@@ -199,7 +210,9 @@ extension EngagementViewModel {
                 )
             },
             declined: { [weak self] in
-                self?.endSession()
+                Task { [weak self] in
+                    await self?.endSession()
+                }
             }
         ))
     }
