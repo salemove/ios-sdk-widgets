@@ -370,25 +370,25 @@ extension Interactor: CoreSdkClient.Interactable {
         notify(.receivedMessage(message))
     }
 
-    func start() {
-        environment.coreSdk.requestEngagedOperator { [weak self] operators, _ in
-            let engagedOperator = operators?.first
-            self?.state = .engaged(engagedOperator)
-        }
+    func start() async {
+        let operators = try? await environment.coreSdk.requestEngagedOperator()
+        let engagedOperator = operators?.first
+        state = .engaged(engagedOperator)
         currentEngagement = environment.coreSdk.getCurrentEngagement()
     }
 
     func start(engagement: CoreSdkClient.Engagement) {
         switch engagement.source {
         case .coreEngagement:
-            start()
-
+            Task {
+               await start()
+            }
         case .callVisualizer:
-            start()
-
+            Task {
+                await start()
+            }
         case .unknown(let type):
             debugPrint("Unknown engagement started (type='\(type)').")
-
         @unknown default:
             assertionFailure("Unexpected case in 'EngaagementSource' enum.")
         }
