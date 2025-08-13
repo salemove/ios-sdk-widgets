@@ -717,8 +717,9 @@ final class GliaTests: XCTestCase {
         XCTAssertFalse(try XCTUnwrap(sdk.pendingInteraction).hasPendingInteraction)
     }
 
-    func test_deauthenticateErasesInteractorState() throws {
-        let uuidGen = UUID.incrementing
+    @MainActor
+    func test_deauthenticateErasesInteractorState() async throws {
+        var uuidGen = UUID.incrementing
         var gliaEnv = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
@@ -736,7 +737,7 @@ final class GliaTests: XCTestCase {
             callback(.success(()))
         })
         gliaEnv.coreSdk.authentication = { _ in authentication }
-        gliaEnv.coreSdk.requestEngagedOperator = { $0([], nil) }
+        gliaEnv.coreSdk.requestEngagedOperator = { [] }
         gliaEnv.gcd.mainQueue.async = { $0() }
         gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
         gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
@@ -759,7 +760,7 @@ final class GliaTests: XCTestCase {
             theme: .mock()
         ) { _ in }
 
-        sdk.interactor?.start()
+        await sdk.interactor?.start()
 
         XCTAssertEqual(sdk.interactor?.state, .engaged(nil))
 
@@ -789,7 +790,7 @@ final class GliaTests: XCTestCase {
             completion(.success(()))
         })
         gliaEnv.coreSdk.authentication = { _ in authentication }
-        gliaEnv.coreSdk.requestEngagedOperator = { $0([], nil) }
+        gliaEnv.coreSdk.requestEngagedOperator = { [] }
         gliaEnv.gcd.mainQueue.async = { $0() }
         gliaEnv.gcd.mainQueue.asyncAfterDeadline = { _, _ in }
         gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }

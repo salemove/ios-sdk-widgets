@@ -197,7 +197,9 @@ extension CallVisualizer {
             }
             switch event {
             case let .upgradeOffer(offer, answer):
-                environment.coreSdk.requestEngagedOperator { operators, _ in
+                Task { @MainActor [weak self] in
+                    guard let self else { return }
+                    let operators = try? await self.environment.coreSdk.requestEngagedOperator()
                     self.environment.alertManager.present(
                         in: .global,
                         as: .mediaUpgrade(
