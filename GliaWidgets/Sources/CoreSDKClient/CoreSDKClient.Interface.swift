@@ -10,28 +10,14 @@ struct CoreSdkClient {
     var clearSession: () -> Void
     var localeProvider: LocaleProvider
 
-    typealias GetVisitorInfo = (_ completion: @escaping (Result<VisitorInfo, Error>) -> Void) -> Void
-
-    var getVisitorInfo: GetVisitorInfo
-    var getVisitorInfoDeprecated: (_ completion: @escaping (Result<GliaCore.VisitorInfo, Error>) -> Void) -> Void
-
-    typealias UpdateVisitorInfo = (
-        _ info: VisitorInfoUpdate,
-        _ completion: @escaping (Result<Bool, Error>) -> Void
-    ) -> Void
-
-    var updateVisitorInfo: UpdateVisitorInfo
-    var updateVisitorInfoDeprecated: (
-        _ info: GliaCoreSDK.VisitorInfoUpdate,
-        _ completion: @escaping (Result<Bool, Error>) -> Void
-    ) -> Void
-
     typealias ConfigureWithConfiguration = (
         _ sdkConfiguration: Self.Salemove.Configuration,
         _ completion: @escaping Self.ConfigureCompletion
     ) -> Void
 
     var configureWithConfiguration: ConfigureWithConfiguration
+    var getVisitorInfo: () async throws -> VisitorInfo
+    var updateVisitorInfo: (VisitorInfoUpdate) async throws -> Bool
 
     typealias ConfigureWithInteractor = (_ interactor: Self.Interactable) -> Void
 
@@ -51,42 +37,15 @@ struct CoreSdkClient {
 
     var queueForEngagement: QueueForEngagement
 
-    typealias RequestMediaUpgradeWithOffer = (
-        _ offer: Self.MediaUpgradeOffer,
-        _ completion: @escaping Self.SuccessBlock
-    ) -> Void
+    var sendMessagePreview: (_ message: String) async throws -> Bool
+    var sendMessageWithMessagePayload: (_ payload: SendMessagePayload) async throws -> Message
 
-    var requestMediaUpgradeWithOffer: RequestMediaUpgradeWithOffer
-
-    typealias SendMessagePreview = (
-        _ message: String,
-        _ completion: @escaping Self.SuccessBlock
-    ) -> Void
-
-    var sendMessagePreview: SendMessagePreview
-
-    typealias SendMessageWithMessagePayloadCallback = (Result<CoreSdkClient.Message, CoreSdkClient.GliaCoreError>) -> Void
-        typealias SendMessageWithMessagePayload = (
-            _ sendMessagePayload: Self.SendMessagePayload,
-            _ completion: @escaping SendMessageWithMessagePayloadCallback
-        ) -> Void
-
-    var sendMessageWithMessagePayload: SendMessageWithMessagePayload
-
-    typealias CancelQueueTicket = (
-        _ queueTicket: Self.QueueTicket,
-        _ completion: @escaping GliaCoreSDK.SuccessBlock
-    ) -> Void
+    typealias CancelQueueTicket = (_ queueTicket: Self.QueueTicket) async throws -> Bool
 
     var cancelQueueTicket: CancelQueueTicket
 
-    typealias EndEngagement = (_ completion: @escaping Self.SuccessBlock) -> Void
-
-    var endEngagement: EndEngagement
-
-    typealias RequestEngagedOperator = (_ completion: @escaping Self.OperatorBlock) -> Void
-
-    var requestEngagedOperator: RequestEngagedOperator
+    var endEngagement: () async throws -> Bool
+    var requestEngagedOperator: () async throws -> [GliaCoreSDK.Operator]?
 
     typealias UploadFileToEngagement = (
         _ file: Self.EngagementFile,
