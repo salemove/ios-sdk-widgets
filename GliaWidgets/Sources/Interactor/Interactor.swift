@@ -138,10 +138,8 @@ extension Interactor {
 
     func enqueueForEngagement(
         engagementKind: EngagementKind,
-        replaceExisting: Bool,
-        success: @escaping () -> Void,
-        failure: @escaping (CoreSdkClient.SalemoveError) -> Void
-    ) {
+        replaceExisting: Bool
+    ) async throws {
         switch engagementKind {
         case .chat:
              environment.log.prefixed(Self.self).info("Start queueing for chat engagement")
@@ -160,30 +158,27 @@ extension Interactor {
             .map(CoreSdkClient.VisitorContext.ContextType.assetId)
             .map(CoreSdkClient.VisitorContext.init(_:))
 
-        self.environment.coreSdk.queueForEngagement(
-            .init(
-                queueIds: queueIds ?? [],
-                visitorContext: coreSdkVisitorContext,
-                // shouldCloseAllQueues is `true` by default core sdk,
-                // here it is passed explicitly
-                shouldCloseAllQueues: true,
-                mediaType: engagementKind.mediaType,
-                engagementOptions: options
-            ),
-            replaceExisting
-        ) { [weak self] result in
-            switch result {
-            case .failure(let error):
-                self?.environment.log.prefixed(Self.self).info("Queue for engagement stopped due to error or empty queue")
-                self?.state = .ended(.byError)
-                failure(error)
-            case .success(let ticket):
-
-                if case .enqueueing = self?.state {
-                    self?.state = .enqueued(ticket, engagementKind)
-                }
-                success()
+        let engagementOptions: CoreSdkClient.QueueForEngagementOptions = .init(
+            queueIds: queueIds ?? [],
+            visitorContext: coreSdkVisitorContext,
+            // shouldCloseAllQueues is `true` by default core sdk,
+            // here it is passed explicitly
+            shouldCloseAllQueues: true,
+            mediaType: engagementKind.mediaType,
+            engagementOptions: options
+        )
+        do {
+            let ticket = try await environment.coreSdk.queueForEngagement(
+                engagementOptions,
+                replaceExisting
+            )
+            if case .enqueueing = state {
+                state = .enqueued(ticket, engagementKind)
             }
+        } catch {
+            self.environment.log.prefixed(Self.self).info("Queue for engagement stopped due to error or empty queue")
+            self.state = .ended(.byError)
+            throw error
         }
     }
 

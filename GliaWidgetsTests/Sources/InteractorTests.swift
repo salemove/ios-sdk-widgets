@@ -20,15 +20,16 @@ class InteractorTests: XCTestCase {
         super.tearDown()
     }
 
-    func test__enqueueForEngagement() throws {
+    func test__enqueueForEngagement() async throws {
         enum Call {
             case queueForEngagement
         }
         var coreSdkCalls = [Call]()
 
         var coreSdk = CoreSdkClient.failing
-        coreSdk.queueForEngagement = { _, _, _ in
+        coreSdk.queueForEngagement = { _, _ in
             coreSdkCalls.append(.queueForEngagement)
+            return .mock
         }
 
         var interactorEnv = Interactor.Environment(coreSdk: coreSdk, queuesMonitor: .mock(), gcd: .failing, log: .failing)
@@ -40,9 +41,7 @@ class InteractorTests: XCTestCase {
             environment: interactorEnv
         )
 
-        interactor.enqueueForEngagement(engagementKind: .chat, replaceExisting: false) {} failure: {
-            XCTFail($0.reason)
-        }
+        try await interactor.enqueueForEngagement(engagementKind: .chat, replaceExisting: false)
 
         XCTAssertEqual(coreSdkCalls, [.queueForEngagement])
     }
@@ -98,7 +97,7 @@ class InteractorTests: XCTestCase {
         XCTAssertEqual(callbacks, [.sendMessagePreview("mock")])
     }
 
-    func test_enqueueForEngagementSetsStateEnqueueing() throws {
+    func test_enqueueForEngagementSetsStateEnqueueing() async throws {
         enum Callback: Equatable {
             case enqueueing
         }
@@ -106,7 +105,7 @@ class InteractorTests: XCTestCase {
         var interactorEnv = Interactor.Environment.failing
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         interactorEnv.coreSdk.configureWithConfiguration = { $1(.success(())) }
-        interactorEnv.coreSdk.queueForEngagement = { _, _, _ in }
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in .mock }
         interactorEnv.log.infoClosure = { _, _, _, _ in }
         interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }
         interactorEnv.gcd = .mock
@@ -123,17 +122,15 @@ class InteractorTests: XCTestCase {
             }
         }
         interactor.state = .enqueueing(.chat)
-        interactor.enqueueForEngagement(
-            engagementKind: .chat, 
-            replaceExisting: false,
-            success: {},
-            failure: { XCTFail($0.reason) }
+        try await interactor.enqueueForEngagement(
+            engagementKind: .chat,
+            replaceExisting: false
         )
 
         XCTAssertEqual(callbacks, [.enqueueing])
     }
 
-    func test_enqueueForEngagementSuccessSetsStateEnqueued() throws {
+    func test_enqueueForEngagementSuccessSetsStateEnqueued() async throws {
         enum Callback: Equatable {
             case enqueued
         }
@@ -145,9 +142,7 @@ class InteractorTests: XCTestCase {
         interactorEnv.log = log
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         interactorEnv.coreSdk.configureWithConfiguration = { $1(.success(())) }
-        interactorEnv.coreSdk.queueForEngagement = { _, _, completion in
-            completion(.success(.mock))
-        }
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in .mock }
         interactorEnv.gcd = .mock
         let interactor = Interactor.mock(environment: interactorEnv)
 
@@ -163,17 +158,15 @@ class InteractorTests: XCTestCase {
         }
 
         interactor.state = .enqueued(.mock, .chat)
-        interactor.enqueueForEngagement(
-            engagementKind: .chat, 
-            replaceExisting: false,
-            success: {},
-            failure: { XCTFail($0.reason) }
+        try await interactor.enqueueForEngagement(
+            engagementKind: .chat,
+            replaceExisting: false
         )
 
         XCTAssertEqual(callbacks, [.enqueued])
     }
 
-    func test_enqueueForEngagementFailureSetsStateEnded() throws {
+    func test_enqueueForEngagementFailureSetsStateEnded() async throws {
         enum Callback: Equatable {
             case ended
             case failure
@@ -186,8 +179,8 @@ class InteractorTests: XCTestCase {
         interactorEnv.log = log
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         interactorEnv.coreSdk.configureWithConfiguration = { $1(.success(())) }
-        interactorEnv.coreSdk.queueForEngagement = { _, _, completion in
-            completion(.failure(.mock()))
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in
+            throw CoreSdkClient.GliaCoreError.mock()
         }
         interactorEnv.gcd = .mock
         let interactor = Interactor.mock(environment: interactorEnv)
@@ -203,12 +196,14 @@ class InteractorTests: XCTestCase {
             }
         }
 
-        interactor.enqueueForEngagement(
-            engagementKind: .chat, 
-            replaceExisting: false,
-            success: { XCTFail("Should not be successful") },
-            failure: { _ in callbacks.append(.failure) }
-        )
+        do {
+            try await interactor.enqueueForEngagement(
+                engagementKind: .chat,
+                replaceExisting: false
+            )
+        } catch {
+            callbacks.append(.failure)
+        }
 
         XCTAssertEqual(callbacks, [.ended, .failure])
     }
@@ -526,11 +521,9 @@ class InteractorTests: XCTestCase {
             engagementKind: .audioCall
         )
 
-        interactor.enqueueForEngagement(
-            engagementKind: .audioCall, 
-            replaceExisting: false,
-            success: {},
-            failure: { _ in }
+        try? await interactor.enqueueForEngagement(
+            engagementKind: .audioCall,
+            replaceExisting: false
         )
         XCTAssertEqual(interactor.state, .enqueued(mockQueueTicket, .audioCall))
 
@@ -547,11 +540,9 @@ class InteractorTests: XCTestCase {
             engagement: mockEngagement
         )
 
-        interactor.enqueueForEngagement(
-            engagementKind: .audioCall, 
-            replaceExisting: false,
-            success: {},
-            failure: { _ in }
+        try? await interactor.enqueueForEngagement(
+            engagementKind: .audioCall,
+            replaceExisting: false
         )
         XCTAssertEqual(interactor.state, .enqueued(mockQueueTicket, .audioCall))
 
@@ -573,11 +564,9 @@ class InteractorTests: XCTestCase {
             engagement: mockEngagement
         )
 
-        interactor.enqueueForEngagement(
-            engagementKind: .audioCall, 
-            replaceExisting: false,
-            success: {},
-            failure: { _ in }
+        try? await interactor.enqueueForEngagement(
+            engagementKind: .audioCall,
+            replaceExisting: false
         )
         XCTAssertEqual(interactor.state, .enqueued(mockQueueTicket, .audioCall))
 
@@ -590,7 +579,7 @@ class InteractorTests: XCTestCase {
         XCTAssertEqual(interactor.endedEngagement, nil)
     }
 
-    func test_cleanupResetsStateAndNilifiesEndedEngagement() {
+    func test_cleanupResetsStateAndNilifiesEndedEngagement() async {
         let mockQueueTicket = CoreSdkClient.QueueTicket.mock
         let mockEngagement = CoreSdkClient.Engagement.mock(id: UUID.mock.uuidString)
         let interactor = makeEnqueuingSetupInteractor(
@@ -599,11 +588,9 @@ class InteractorTests: XCTestCase {
             engagement: mockEngagement
         )
 
-        interactor.enqueueForEngagement(
+        try? await interactor.enqueueForEngagement(
             engagementKind: .audioCall,
-            replaceExisting: false,
-            success: {},
-            failure: { _ in }
+            replaceExisting: false
         )
         XCTAssertEqual(interactor.state, .enqueued(mockQueueTicket, .audioCall))
 
@@ -650,9 +637,7 @@ extension InteractorTests {
         engagement: CoreSdkClient.Engagement? = nil
     ) -> Interactor {
         var coreSdk = CoreSdkClient.failing
-        coreSdk.queueForEngagement = { _, _, completion in
-            completion(.success(queueTicket))
-        }
+        coreSdk.queueForEngagement = { _, _ in queueTicket }
         coreSdk.endEngagement = { true }
         coreSdk.getCurrentEngagement = {
             engagement
