@@ -54,6 +54,9 @@ extension ChatViewModelTests {
 
         await viewModel.asyncEvent(.retryMessageTapped(outgoingMessage))
 
+        await waitUntil {
+            calls == expectedCalls
+        }
         XCTAssertEqual(calls, expectedCalls)
         XCTAssertEqual(viewModel.messagesSection.itemCount, 3)
 
@@ -118,6 +121,9 @@ extension ChatViewModelTests {
 
         await viewModel.asyncEvent(.retryMessageTapped(outgoingMessage))
 
+        await waitUntil {
+            calls == expectedCalls
+        }
         XCTAssertEqual(calls, expectedCalls)
         XCTAssertEqual(viewModel.messagesSection.itemCount, 3)
 
@@ -214,6 +220,9 @@ extension ChatViewModelTests {
         )
         await viewModel.asyncEvent(.retryMessageTapped(outgoingMessage))
 
+        await waitUntil {
+            calls == expectedCalls
+        }
         XCTAssertEqual(calls, expectedCalls)
         XCTAssertEqual(viewModel.messagesSection.itemCount, 3)
 
@@ -326,6 +335,9 @@ extension ChatViewModelTests {
         )
         await viewModel.asyncEvent(.retryMessageTapped(outgoingMessage))
 
+        await waitUntil {
+            calls == expectedCalls
+        }
         XCTAssertEqual(calls, expectedCalls)
         XCTAssertEqual(viewModel.messagesSection.itemCount, 3)
 

@@ -438,48 +438,55 @@ extension ChatViewModel {
 
 extension ChatViewModel {
     private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
-        environment.fetchChatHistory { [weak self] result in
-            guard let self else { return }
-            let messages = (try? result.get()) ?? []
-            // Store message ids from history,
-            // to be able to discard duplicates
-            // delivered by sockets.
-            self.historyMessageIds = Set(messages.map(\.id).map { $0.uppercased() })
+        Task { [weak self] in
+            guard let self = self else { return }
+            let messages: [ChatMessage]
+            do {
+                messages = try await self.environment.fetchChatHistory()
+            } catch {
+                messages = []
+            }
+            environment.gcd.mainQueue.asyncIfNeeded {
+                // Store message ids from history,
+                // to be able to discard duplicates
+                // delivered by sockets.
+                self.historyMessageIds = Set(messages.map(\.id).map { $0.uppercased() })
 
-            // Remove all messages that have been already received from sockets
-            // in prior of those that have been received from history to avoid duplication.
-            let duplicatedIds = self.historyMessageIds.intersection(self.receivedMessageIds)
-            duplicatedIds.forEach { self.receivedMessageIds.remove($0) }
+                // Remove all messages that have been already received from sockets
+                // in prior of those that have been received from history to avoid duplication.
+                let duplicatedIds = self.historyMessageIds.intersection(self.receivedMessageIds)
+                duplicatedIds.forEach { self.receivedMessageIds.remove($0) }
 
-            self.messagesSection.removeAll { item in
-                switch item.kind {
-                case .visitorMessage(let chatMessage, _) where duplicatedIds.contains(chatMessage.id.uppercased()):
-                    return true
-                case .operatorMessage(let chatMessage, _, _) where duplicatedIds.contains(chatMessage.id.uppercased()):
-                    return true
-                default:
-                    return false
+                self.messagesSection.removeAll { item in
+                    switch item.kind {
+                    case .visitorMessage(let chatMessage, _) where duplicatedIds.contains(chatMessage.id.uppercased()):
+                        return true
+                    case .operatorMessage(let chatMessage, _, _) where duplicatedIds.contains(chatMessage.id.uppercased()):
+                        return true
+                    default:
+                        return false
+                    }
                 }
-            }
 
-            self.action?(.refreshSection(self.messagesSection.index))
+                self.action?(.refreshSection(self.messagesSection.index))
 
-            let items = messages.compactMap {
-                ChatItem(
-                    with: $0,
-                    isCustomCardSupported: self.isCustomCardSupported,
-                    fromHistory: self.environment.loadChatMessagesFromHistory()
-                )
-            }
-            if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
-                let props = button.options.map { self.quickReplyOption($0) }
-                self.action?(.quickReplyPropsUpdated(.shown(props)))
-            }
+                let items = messages.compactMap {
+                    ChatItem(
+                        with: $0,
+                        isCustomCardSupported: self.isCustomCardSupported,
+                        fromHistory: self.environment.loadChatMessagesFromHistory()
+                    )
+                }
+                if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
+                    let props = button.options.map { self.quickReplyOption($0) }
+                    self.action?(.quickReplyPropsUpdated(.shown(props)))
+                }
 
-            self.historySection.set(items)
-            self.action?(.refreshSection(self.historySection.index))
-            self.action?(.scrollToBottom(animated: false))
-            completion(messages)
+                self.historySection.set(items)
+                self.action?(.refreshSection(self.historySection.index))
+                self.action?(.scrollToBottom(animated: false))
+                completion(messages)
+            }
         }
     }
 }
