@@ -58,22 +58,21 @@ extension CallVisualizer {
             delegate(.propsUpdated(makeProps()))
         }
 
-        func requestVisitorCode() {
-            _ = environment.requestVisitorCode { [weak self] result in
-                switch result {
-                case let .success(code):
-                    self?.visitorCodeExpiresAt = code.expiresAt
-                    self?.viewState = .success(visitorCode: code.code)
-                case let .failure(error):
-                    self?.viewState = .error(refreshTap: Cmd { [weak self] in
-                        self?.environment.openTelemetry.logger.i(.visitorCodeButtonClicked) {
-                            $0[.buttonName] = .string(OtelButtonNames.refreshVisitorCode.rawValue)
-                        }
-                        self?.viewState = .loading
-                        self?.requestVisitorCode()
-                    })
-                    debugPrint("Error getting vistior code:", error.localizedDescription)
-                }
+        @MainActor
+        func requestVisitorCode() async {
+            do {
+                let visitorCode = try await environment.requestVisitorCode()
+                visitorCodeExpiresAt = visitorCode.expiresAt
+                viewState = .success(visitorCode: visitorCode.code)
+            } catch {
+                viewState = .error(refreshTap: AsyncCmd { [weak self] in
+					self?.environment.openTelemetry.logger.i(.visitorCodeButtonClicked) {
+                       $0[.buttonName] = .string(OtelButtonNames.refreshVisitorCode.rawValue)
+                    }
+                    self?.viewState = .loading
+                    await self?.requestVisitorCode()
+                })
+                debugPrint("Error getting vistior code:", error.localizedDescription)
             }
         }
 
@@ -88,7 +87,9 @@ extension CallVisualizer {
                     withTimeInterval: expirationDate.timeIntervalSinceNow,
                     repeats: false
                 ) { [weak self] _ in
-                    self?.requestVisitorCode()
+                    Task {
+                        await self?.requestVisitorCode()
+                    }
                 }
             }
         }
