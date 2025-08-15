@@ -703,6 +703,7 @@
 		C0029A5D2DC8E2F500603586 /* QueueStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0029A5C2DC8E2F000603586 /* QueueStatus.swift */; };
 		C0029A5F2DC8E31E00603586 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0029A5E2DC8E31700603586 /* MediaType.swift */; };
 		C004A98D2D772AD100750E3C /* SecureMessagingTopBannerView.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C004A98C2D772ABC00750E3C /* SecureMessagingTopBannerView.Environment.swift */; };
+		C00ADC842E4F1489001F2460 /* VisitorCode+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00ADC832E4F1481001F2460 /* VisitorCode+Extension.swift */; };
 		C00DE0AB2CD3847B005956B4 /* EntryWidgetViewLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00DE0AA2CD3847B005956B4 /* EntryWidgetViewLayoutTests.swift */; };
 		C00DE0AD2CD3BD53005956B4 /* EntryWidgetViewVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00DE0AC2CD3BD53005956B4 /* EntryWidgetViewVoiceOverTests.swift */; };
 		C00DE0AF2CD3BF35005956B4 /* EntryWidgetViewDynamicTypeFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00DE0AE2CD3BF35005956B4 /* EntryWidgetViewDynamicTypeFontTests.swift */; };
@@ -1785,6 +1786,7 @@
 		C0029A5C2DC8E2F000603586 /* QueueStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueStatus.swift; sourceTree = "<group>"; };
 		C0029A5E2DC8E31700603586 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
 		C004A98C2D772ABC00750E3C /* SecureMessagingTopBannerView.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureMessagingTopBannerView.Environment.swift; sourceTree = "<group>"; };
+		C00ADC832E4F1481001F2460 /* VisitorCode+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VisitorCode+Extension.swift"; sourceTree = "<group>"; };
 		C00DE0AA2CD3847B005956B4 /* EntryWidgetViewLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetViewLayoutTests.swift; sourceTree = "<group>"; };
 		C00DE0AC2CD3BD53005956B4 /* EntryWidgetViewVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetViewVoiceOverTests.swift; sourceTree = "<group>"; };
 		C00DE0AE2CD3BF35005956B4 /* EntryWidgetViewDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetViewDynamicTypeFontTests.swift; sourceTree = "<group>"; };
@@ -3958,6 +3960,7 @@
 		7594096D298D38C2008B173A /* VisitorCode */ = {
 			isa = PBXGroup;
 			children = (
+				C00ADC832E4F1481001F2460 /* VisitorCode+Extension.swift */,
 				7594096E298D38C2008B173A /* VisitorCodeViewModel.swift */,
 				7594096F298D38C2008B173A /* VisitorCodeView+NumberView.swift */,
 				75940970298D38C2008B173A /* VisitorCodeCoordinator+Environment.swift */,
@@ -6555,6 +6558,7 @@
 				C09046912B7D052B003C437C /* WelcomeStyle.MessageTextViewStyle.RemoteConfig.swift in Sources */,
 				1A60AFEC2566A0E700E53F53 /* NavigationController.swift in Sources */,
 				1A63B2ED257A312700508478 /* AlertCloseButtonProperties.swift in Sources */,
+				C00ADC842E4F1489001F2460 /* VisitorCode+Extension.swift in Sources */,
 				3100EEF5293E24C700D57F71 /* SecureConversations.WelcomeViewController.swift in Sources */,
 				C0D2F07329A4DC2000803B47 /* CallStyle.Mock.swift in Sources */,
 				C0D2F03B299149D600803B47 /* VideoCallViewModel.swift in Sources */,
