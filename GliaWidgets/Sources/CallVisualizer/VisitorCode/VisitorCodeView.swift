@@ -8,7 +8,7 @@ extension CallVisualizer {
                 case embedded
             }
             enum ViewState: Equatable {
-                case error(refreshTap: Cmd)
+                case error(refreshTap: AsyncCmd)
                 case loading
                 case success(visitorCode: String)
             }
@@ -35,7 +35,7 @@ extension CallVisualizer {
                 }
             }
 
-            var refreshButtonTap: Cmd? {
+            var refreshButtonTap: AsyncCmd? {
                 switch viewState {
                 case let .error(refreshButtonTap):
                     return refreshButtonTap
@@ -249,7 +249,9 @@ extension CallVisualizer {
         }
 
         @objc func refreshButtonTapped(_ sender: UIButton) {
-            self.props.refreshButtonTap?()
+            Task {
+                await self.props.refreshButtonTap?()
+            }
         }
     }
 }
