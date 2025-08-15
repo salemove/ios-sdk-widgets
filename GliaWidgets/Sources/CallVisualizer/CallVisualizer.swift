@@ -57,7 +57,9 @@ public final class CallVisualizer {
     ///
     public func showVisitorCodeViewController(from source: UIViewController) {
         environment.log.prefixed(Self.self).info("Show Visitor Code Dialog")
-        coordinator.showVisitorCodeViewController(by: .alert(source))
+        Task { @MainActor in
+            await coordinator.showVisitorCodeViewController(by: .alert(source))
+        }
     }
 
     /// Show VisitorCode embedded view for current Visitor.
@@ -81,9 +83,11 @@ public final class CallVisualizer {
         onEngagementAccepted: @escaping () -> Void
     ) {
         environment.log.prefixed(Self.self).info("Show Visitor Code Dialog")
-        coordinator.showVisitorCodeViewController(
-            by: .embedded(container, onEngagementAccepted: onEngagementAccepted)
-        )
+        Task {
+            await coordinator.showVisitorCodeViewController(
+                by: .embedded(container, onEngagementAccepted: onEngagementAccepted)
+            )
+        }
     }
 
     public func resume() {
