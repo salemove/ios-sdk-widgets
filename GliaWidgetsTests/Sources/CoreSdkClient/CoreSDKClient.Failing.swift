@@ -19,7 +19,10 @@ extension CoreSdkClient {
         },
         configureWithInteractor: { _ in fail("\(Self.self).configureWithInteractor") },
         getQueues: { _ in fail("\(Self.self).listQueues") },
-        queueForEngagement: { _, _, _ in fail("\(Self.self).queueForEngagement") },
+        queueForEngagement: { _, _ in
+            fail("\(Self.self).queueForEngagement")
+            throw NSError(domain: "queueForEngagement", code: -1, userInfo: nil)
+        },
         sendMessagePreview: { _ in
             fail("\(Self.self).sendMessagePreview")
             throw NSError(domain: "CoreSdkClient", code: -1, userInfo: nil)
@@ -49,9 +52,9 @@ extension CoreSdkClient {
             return .mock
         },
         fetchChatHistory: { _ in },
-        requestVisitorCode: { _ in
+        requestVisitorCode: {
             fail("\(Self.self).requestVisitorCode")
-            return .init()
+            throw NSError(domain: "requestVisitorCode", code: -1)
         },
         startSocketObservation: {
             fail("\(Self.self).startSocketObservation")

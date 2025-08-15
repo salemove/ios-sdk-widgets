@@ -732,9 +732,7 @@ class ChatViewModelTests: XCTestCase {
         interactor.environment.coreSdk.sendMessageWithMessagePayload = { _ in
             return .mock(id: expectedMessageId)
         }
-        interactor.environment.coreSdk.queueForEngagement = { _, _, completion in
-            completion(.success(.mock))
-        }
+        interactor.environment.coreSdk.queueForEngagement = { _, _ in .mock }
 
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
         viewModel.isViewLoaded = true
@@ -794,9 +792,7 @@ class ChatViewModelTests: XCTestCase {
             viewModel?.interactorEvent(.receivedMessage(.mock(id: expectedMessageId)))
             return .mock(id: expectedMessageId)
         }
-        interactor.environment.coreSdk.queueForEngagement = { _, _, completion in
-            completion(.success(.mock))
-        }
+        interactor.environment.coreSdk.queueForEngagement = { _, _ in .mock }
 
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
         viewModel.isViewLoaded = true
@@ -874,11 +870,9 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertEqual(calls, [.showLiveObservationAlert])
     }
 
-    func test_liveObservationAllowTriggersEnqueue() throws {
+    func test_liveObservationAllowTriggersEnqueue() async throws {
         var interactorEnv: Interactor.Environment = .mock
-        interactorEnv.coreSdk.queueForEngagement = { _, _, completion in
-            completion(.success(.mock))
-        }
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in .mock }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
         var alertConfig: GliaWidgets.LiveObservation.Confirmation?
@@ -907,6 +901,10 @@ class ChatViewModelTests: XCTestCase {
         }
         interactor.state = .enqueueing(.audioCall)
         alertConfig?.accepted()
+
+        await waitUntil {
+            interactor.state == .enqueued(.mock, .audioCall)
+        }
         XCTAssertEqual(interactor.state, .enqueued(.mock, .audioCall))
     }
 
@@ -916,8 +914,9 @@ class ChatViewModelTests: XCTestCase {
         }
         var calls: [Call] = []
         var interactorEnv: Interactor.Environment = .mock
-        interactorEnv.coreSdk.queueForEngagement = { _, _, _ in
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in
             calls.append(.queueForEngagement)
+            return .mock
         }
 
         let interactor: Interactor = .mock(environment: interactorEnv)

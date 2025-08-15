@@ -31,9 +31,8 @@ struct CoreSdkClient {
 
     typealias QueueForEngagement = (
         _ options: GliaCoreSDK.QueueForEngagementOptions,
-        _ replaceExisting: Bool,
-        _ completion: @escaping (Result<GliaCoreSDK.QueueTicket, GliaCoreSDK.GliaCoreError>) -> Void
-    ) -> Void
+        _ replaceExisting: Bool
+    ) async throws -> GliaCoreSDK.QueueTicket
 
     var queueForEngagement: QueueForEngagement
 
@@ -90,7 +89,7 @@ struct CoreSdkClient {
 
     var fetchChatHistory: FetchChatHistory
 
-    typealias RequestVisitorCode = (_ completion: @escaping (VisitorCodeBlock) -> Void) -> GliaCore.Cancellable
+    typealias RequestVisitorCode = () async throws -> VisitorCode
 
     var requestVisitorCode: RequestVisitorCode
 
@@ -333,6 +332,7 @@ extension CoreSdkClient {
     typealias EngagementChangedBlock = GliaCoreSDK.EngagementChangedBlock
     typealias AnyCombineScheduler = GliaCoreSDK.AnyCombineScheduler
     typealias AnyScheduler = GliaCoreSDK.AnyScheduler
+    typealias QueueForEngagementOptions = GliaCoreSDK.QueueForEngagementOptions
 }
 
 extension CoreSdkClient.AnyCombineScheduler {

@@ -45,7 +45,7 @@ extension CallVisualizer.Coordinator {
         environment.eventHandler(.maximized)
     }
 
-    func showVisitorCodeViewController(by presentation: CallVisualizer.Presentation) {
+    func showVisitorCodeViewController(by presentation: CallVisualizer.Presentation) async {
         let coordinator = CallVisualizer.VisitorCodeCoordinator(
             theme: environment.viewFactory.theme,
             environment: .create(with: environment),
@@ -67,7 +67,7 @@ extension CallVisualizer.Coordinator {
             }
         }
 
-        coordinator.start()
+        await coordinator.start()
 
         self.visitorCodeCoordinator = coordinator
     }
