@@ -10,14 +10,15 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
         coordinator = .init(environment: .mock)
     }
 
-    func test_showVisitorCodeViewController() throws {
+    @MainActor
+    func test_showVisitorCodeViewController() async throws {
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.first as? UIWindowScene)
         let window = scene.windows.first
         let oldRootViewController = window?.rootViewController
         window?.rootViewController = viewController
         defer { window?.rootViewController = oldRootViewController }
 
-        coordinator.showVisitorCodeViewController(by: .alert(viewController))
+        await coordinator.showVisitorCodeViewController(by: .alert(viewController))
 
         XCTAssertTrue(viewController.presentedViewController is CallVisualizer.VisitorCodeViewController)
     }
