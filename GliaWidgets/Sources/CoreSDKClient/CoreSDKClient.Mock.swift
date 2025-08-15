@@ -30,7 +30,7 @@ extension CoreSdkClient {
         authentication: { _ in .mock },
         fetchChatHistory: { _ in },
         fetchOlderChatHistory: { _, _ in },
-        requestVisitorCode: { _ in .mock },
+        requestVisitorCode: { try .mock() },
         startSocketObservation: {},
         stopSocketObservation: {},
         createSendMessagePayload: { _, _ in .mock() },
