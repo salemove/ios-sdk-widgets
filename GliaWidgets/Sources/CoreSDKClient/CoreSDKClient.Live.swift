@@ -140,7 +140,18 @@ extension CoreSdkClient {
                     }
                 }
             },
-            requestVisitorCode: GliaCore.sharedInstance.callVisualizer.requestVisitorCode(completion:),
+            requestVisitorCode: {
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.callVisualizer.requestVisitorCode { result in
+                        switch result {
+                        case let .success(visitorCode):
+                            continuation.resume(returning: visitorCode)
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
+                    }
+                }
+            },
             startSocketObservation: GliaCore.sharedInstance.startSocketObservation,
             stopSocketObservation: GliaCore.sharedInstance.stopSocketObservation,
             createSendMessagePayload: CoreSdkClient.SendMessagePayload.init(content:attachment:),
