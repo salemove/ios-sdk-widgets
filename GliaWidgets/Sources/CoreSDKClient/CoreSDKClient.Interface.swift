@@ -120,7 +120,7 @@ struct CoreSdkClient {
 
     var fetchOlderChatHistory: FetchOlderChatHistory
 
-    typealias RequestVisitorCode = (_ completion: @escaping (VisitorCodeBlock) -> Void) -> GliaCore.Cancellable
+    typealias RequestVisitorCode = () async throws -> VisitorCode
 
     var requestVisitorCode: RequestVisitorCode
 

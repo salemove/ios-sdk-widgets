@@ -54,9 +54,9 @@ extension CoreSdkClient {
         },
         fetchChatHistory: { _ in },
         fetchOlderChatHistory: { _, _ in },
-        requestVisitorCode: { _ in
+        requestVisitorCode: {
             fail("\(Self.self).requestVisitorCode")
-            return .init()
+            throw NSError(domain: "requestVisitorCode", code: -1)
         },
         startSocketObservation: {
             fail("\(Self.self).startSocketObservation")

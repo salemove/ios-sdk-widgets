@@ -17,7 +17,7 @@ extension CallVisualizer.Coordinator.Environment {
         presenter: .topViewController(application: .mock),
         bundleManaging: .live,
         timerProviding: .mock,
-        requestVisitorCode: { completion in .mock },
+        requestVisitorCode: { try .mock() },
         audioSession: .mock,
         date: { .mock },
         engagedOperator: { .mock() },
