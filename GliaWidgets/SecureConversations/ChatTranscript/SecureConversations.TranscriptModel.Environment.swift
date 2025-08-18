@@ -107,7 +107,7 @@ extension SecureConversations.TranscriptModel.Environment {
         fetchOlderChatHistory: @escaping CoreSdkClient.FetchOlderChatHistory = { _, _ in },
         uiApplication: UIKitBased.UIApplication = .mock,
         queueIds: [String] = [],
-        getQueues: @escaping CoreSdkClient.GetQueues = { _ in },
+        getQueues: @escaping CoreSdkClient.GetQueues = { [.mock()] },
         createFileUploadListModel: @escaping SecureConversations.FileUploadListViewModel.Create = { _ in .mock() },
         uuid: @escaping () -> UUID = { .mock },
         fileUploadListStyle: FileUploadListStyle = .mock,

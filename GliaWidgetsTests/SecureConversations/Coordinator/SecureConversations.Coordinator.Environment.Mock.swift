@@ -6,7 +6,7 @@ extension SecureConversations.Coordinator.Environment {
     static let mock = Self(
         secureConversations: .mock,
         queueIds: [],
-        listQueues: { completion in },
+        listQueues: { [.mock()] },
         createFileUploader: { maximumUploads, environment in .mock() },
         fileManager: .mock,
         data: .mock,

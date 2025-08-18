@@ -48,7 +48,10 @@ extension EngagementCoordinator.Environment {
         notificationCenter: .failing,
         fetchChatHistory: { _ in fail("\(Self.self).fetchChatHistory") },
         fetchOlderChatHistory: { _, _ in fail("\(Self.self).fetchOlderChatHistory") },
-        listQueues: { _ in fail("\(Self.self).listQueues") },
+        listQueues: {
+            fail("\(Self.self).getQueues")
+            throw NSError(domain: "getQueues", code: -1)
+        },
         createFileUploader: { _, _ in
             .failing
         },
