@@ -4,10 +4,14 @@ import XCTest
 
 final class SecureConversationsWelcomeViewModelTests: XCTestCase {
     typealias WelcomeViewModel = SecureConversations.WelcomeViewModel
-    var viewModel: WelcomeViewModel = .mock
+    var viewModel: WelcomeViewModel!
 
     override func setUp() {
         viewModel = .mock
+    }
+
+    override func tearDown() {
+        viewModel = nil
     }
 }
 
@@ -611,7 +615,7 @@ extension SecureConversationsWelcomeViewModelTests {
     func testAvailabilityAvailable() {
         let uuid = UUID.mock.uuidString
         var availability = SecureConversations.Availability.mock
-        availability.environment.getQueues = { completion in
+        availability.environment.getQueues = {
             let queue = Queue.mock(
                 id: uuid,
                 name: "",
@@ -619,7 +623,7 @@ extension SecureConversationsWelcomeViewModelTests {
                 isDefault: true,
                 media: [.messaging]
             )
-            completion(.success([queue]))
+            return [queue]
         }
         availability.environment.isAuthenticated = { true }
 
@@ -628,12 +632,12 @@ extension SecureConversationsWelcomeViewModelTests {
         XCTAssertEqual(viewModel.availabilityStatus, .available(.queues(queueIds: [])))
     }
 
-    func testAvailabilityUnavailableEmptyQueues() {
+    func testAvailabilityUnavailableEmptyQueues() async {
         var alertInputType: AlertInputType?
 
         let uuid = UUID.mock.uuidString
         var availability = SecureConversations.Availability.mock
-        availability.environment.getQueues = { completion in
+        availability.environment.getQueues = {
             let queue = Queue.mock(
                 id: uuid,
                 name: "",
@@ -641,7 +645,7 @@ extension SecureConversationsWelcomeViewModelTests {
                 isDefault: true,
                 media: [.text]
             )
-            completion(.success([queue]))
+            return [queue]
         }
 
         availability.environment.isAuthenticated = { true }
@@ -660,7 +664,7 @@ extension SecureConversationsWelcomeViewModelTests {
             availability: availability,
             delegate: delegate
         )
-
+        await viewModel.checkSecureConversationsAvailability()
         XCTAssertEqual(viewModel.availabilityStatus, .unavailable(.emptyQueue))
         let isValidInput: Bool
         if case .unavailableMessageCenter = alertInputType {
@@ -672,12 +676,12 @@ extension SecureConversationsWelcomeViewModelTests {
         XCTAssertTrue(isValidInput)
     }
 
-    func testAvailabilityUnavailableUnauthenticated() {
+    func testAvailabilityUnavailableUnauthenticated() async {
         var alertInputType: AlertInputType?
 
         let uuid = UUID.mock.uuidString
         var availability = SecureConversations.Availability.mock
-        availability.environment.getQueues = { completion in
+        availability.environment.getQueues = {
             let queue = Queue.mock(
                 id: uuid,
                 name: "",
@@ -685,7 +689,7 @@ extension SecureConversationsWelcomeViewModelTests {
                 isDefault: true,
                 media: [.messaging]
             )
-            completion(.success([queue]))
+            return [queue]
         }
 
         availability.environment.isAuthenticated = { false }
@@ -704,6 +708,7 @@ extension SecureConversationsWelcomeViewModelTests {
             availability: availability,
             delegate: delegate
         )
+        await viewModel.checkSecureConversationsAvailability()
 
         XCTAssertEqual(viewModel.availabilityStatus, .unavailable(.unauthenticated))
         let isValidInput: Bool
