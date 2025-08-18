@@ -6,10 +6,13 @@ import QuickLook
 
 final class ChatCoordinatorTests: XCTestCase {
     var coordinator: ChatCoordinator!
-    var navigationPresenter = NavigationPresenter(with: NavigationController())
 
     override func setUp() {
         coordinator = createCoordinator()
+    }
+
+    override func tearDown() {
+        coordinator = nil
     }
 
     func createCoordinator(
@@ -17,6 +20,7 @@ final class ChatCoordinatorTests: XCTestCase {
         startWithSecureTranscriptFlow: Bool = false,
         skipTransferredSCHandling: Bool = false
     ) -> ChatCoordinator {
+        let navigationPresenter = NavigationPresenter(with: NavigationController())
         return ChatCoordinator(
             interactor: .mock(),
             viewFactory: .mock(),
@@ -422,7 +426,8 @@ final class ChatCoordinatorTests: XCTestCase {
         XCTAssertEqual(chatType, .nonAuthenticated)
     }
 
-    func test_delegateEventUpgradesChatToSC() {
+    @MainActor
+    func test_delegateEventUpgradesChatToSC() async {
         let coordinator = createCoordinator(startWithSecureTranscriptFlow: false)
         let controller = coordinator.start()
         let chatModel: ChatViewModel
@@ -477,7 +482,7 @@ final class ChatCoordinatorTests: XCTestCase {
             XCTFail("Unexpected model of type \(type(of: model)). Expected \(SecureConversations.TranscriptModel.self)")
             return
         }
-
+        await transcriptModel.checkSecureConversationsAvailability()
         // Since `Section` does not conform to `Equatable`,
         // some extra checks are required to make sure
         // that migration happens as expected.
@@ -513,6 +518,8 @@ final class ChatCoordinatorTests: XCTestCase {
             case refreshAll
             case scrollToBottom
             case updateItemsUserImage
+            case transcript
+            case fileUploadListPropsUpdated
         }
 
         var calls: [Call] = []
@@ -530,6 +537,10 @@ final class ChatCoordinatorTests: XCTestCase {
                 calls.append(.setChoiceCardInputModeEnabled)
             case .scrollToBottom:
                 calls.append(.scrollToBottom)
+            case .transcript:
+                calls.append(.transcript)
+            case .fileUploadListPropsUpdated:
+                calls.append(.fileUploadListPropsUpdated)
             default:
                 XCTFail("Unexpected action \(action)")
             }

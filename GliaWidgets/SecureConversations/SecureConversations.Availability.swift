@@ -6,35 +6,26 @@ extension SecureConversations {
 
         var environment: Environment
 
-        func checkSecureConversationsAvailability(
-            for queueIds: [String],
-            completion: @escaping CompletionResult
-        ) {
+        func checkSecureConversationsAvailability(for queueIds: [String]) async throws -> Status {
             // if provided queueIds array contains invalid ids,
             // then log a warning message.
             let invalidIds = queueIds.filter { UUID(uuidString: $0) == nil }
             if !invalidIds.isEmpty {
                 environment.log.warning("Queue ID array for Secure Messaging contains invalid queue IDs: \(invalidIds).")
             }
-
-            environment.queuesMonitor.fetchQueues(queuesIds: queueIds) { result in
-                switch result {
-                case .success(let queues):
-                    self.checkQueues(fetchedQueues: queues, completion: completion)
-                case .failure(let error):
-                    completion(.failure(error))
-                }
+            do {
+                let queues = try await environment.queuesMonitor.fetchQueues(queuesIds: queueIds)
+                return await checkQueues(fetchedQueues: queues)
+            } catch {
+                throw error
             }
         }
 
-        private func checkQueues(
-            fetchedQueues: [Queue],
-            completion: (Result<Status, Error>) -> Void
-        ) {
+        @MainActor
+        private func checkQueues(fetchedQueues: [Queue]) async -> Status {
             guard environment.isAuthenticated() else {
                 environment.log.warning("Secure Messaging is unavailable because the visitor is not authenticated.")
-                completion(.success(.unavailable(.unauthenticated)))
-                return
+                return .unavailable(.unauthenticated)
             }
 
             let filteredQueues = fetchedQueues.filter(defaultPredicate)
@@ -45,18 +36,17 @@ extension SecureConversations {
                 // In case of "transferred SC" we should treat SC as available.
                 if let engagement = environment.getCurrentEngagement(),
                    engagement.isTransferredSecureConversation {
-                    completion(.success(.available(.transferred)))
-                    return
+                    return .available(.transferred)
                 }
 
                 environment.log.warning("Provided queue IDs do not match with queues that have status other than closed and support messaging.")
-                completion(.success(.unavailable(.emptyQueue)))
-                return
+
+                return .unavailable(.emptyQueue)
             }
             let queueIds = filteredQueues.map { $0.id }
 
             environment.log.info("Secure Messaging is available in queues with IDs: \(queueIds).")
-            completion(.success(.available(.queues(queueIds: queueIds))))
+            return .available(.queues(queueIds: queueIds))
         }
 
         private var defaultPredicate: (Queue) -> Bool {
@@ -149,7 +139,7 @@ extension SecureConversations.Availability {
 
 extension SecureConversations.Availability.Environment {
     static func mock(
-        listQueues: @escaping CoreSdkClient.GetQueues = { _ in },
+        listQueues: @escaping CoreSdkClient.GetQueues = { [.mock()] },
         isAuthenticated: @escaping () -> Bool = { false },
         log: CoreSdkClient.Logger = .mock,
         queuesMonitor: QueuesMonitor = .mock(),
