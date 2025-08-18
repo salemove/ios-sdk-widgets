@@ -25,9 +25,7 @@ struct CoreSdkClient {
 
     var configureWithInteractor: ConfigureWithInteractor
 
-    typealias GetQueues = (
-        _ completion: @escaping (Result<[Queue], Error>) -> Void
-    ) -> Void
+    typealias GetQueues = () async throws -> [Queue]
 
     var getQueues: GetQueues
 

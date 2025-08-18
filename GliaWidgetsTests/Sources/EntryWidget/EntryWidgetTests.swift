@@ -10,14 +10,13 @@ class EntryWidgetTests: XCTestCase {
         case start(EngagementKind)
     }
 
-    func test_secureMessagingIsHiddenWhenUserIsNotAuthenticated() {
+    @MainActor
+    func test_secureMessagingIsHiddenWhenUserIsNotAuthenticated() async throws {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
-        queueMonitorEnvironment.getQueues = { completion in
-            completion(.success([mockQueue]))
-        }
+        queueMonitorEnvironment.getQueues = { [mockQueue] }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
             return UUID.mock.uuidString
@@ -28,7 +27,7 @@ class EntryWidgetTests: XCTestCase {
         let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
         environment.queuesMonitor = queuesMonitor
 
-        queuesMonitor.fetchAndMonitorQueues()
+        _ = try await queuesMonitor.fetchAndMonitorQueues()
 
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
@@ -44,14 +43,13 @@ class EntryWidgetTests: XCTestCase {
         }
     }
 
-    func test_secureMessagingIsShownWhenUserIsAuthenticated() {
+    @MainActor
+    func test_secureMessagingIsShownWhenUserIsAuthenticated() async throws {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
-        queueMonitorEnvironment.getQueues = { completion in
-            completion(.success([mockQueue]))
-        }
+        queueMonitorEnvironment.getQueues = { [mockQueue] }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
             return UUID.mock.uuidString
@@ -60,7 +58,7 @@ class EntryWidgetTests: XCTestCase {
         let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
         environment.queuesMonitor = queuesMonitor
 
-        queuesMonitor.fetchAndMonitorQueues()
+        _ = try await queuesMonitor.fetchAndMonitorQueues()
 
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
@@ -75,14 +73,13 @@ class EntryWidgetTests: XCTestCase {
             XCTFail("Unexpected view state \(entryWidget.viewState)")
         }
     }
-    
-    func test__secureMessagingIsShownWhenUserIsAuthenticatedAndHasUnreadMessages() {
+
+    @MainActor
+    func test__secureMessagingIsShownWhenUserIsAuthenticatedAndHasUnreadMessages() async throws {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
-        queueMonitorEnvironment.getQueues = { completion in
-            completion(.success([mockQueue]))
-        }
+        queueMonitorEnvironment.getQueues = { [mockQueue] }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
             return UUID.mock.uuidString
@@ -97,7 +94,7 @@ class EntryWidgetTests: XCTestCase {
         environment.queuesMonitor = queuesMonitor
         environment.observeSecureUnreadMessageCount = observeMessageCount
 
-        queuesMonitor.fetchAndMonitorQueues()
+        _ = try await queuesMonitor.fetchAndMonitorQueues()
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
             configuration: .default,
@@ -155,15 +152,13 @@ class EntryWidgetTests: XCTestCase {
         XCTAssertEqual(envCalls, [.start(.messaging(.welcome))])
     }
     
-    func test_mediaTypesSortedWithNoFilters() {
+    func test_mediaTypesSortedWithNoFilters() async throws {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio, .video, .text])
 
         var environment = EntryWidget.Environment.mock()
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
-        queueMonitorEnvironment.getQueues = { completion in
-            completion(.success([mockQueue]))
-        }
+        queueMonitorEnvironment.getQueues = { [mockQueue] }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
             return UUID.mock.uuidString
@@ -175,7 +170,7 @@ class EntryWidgetTests: XCTestCase {
             return UUID.mock.uuidString
         }
 
-        queuesMonitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        _ = try await queuesMonitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
 
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
@@ -189,20 +184,18 @@ class EntryWidgetTests: XCTestCase {
         )
     }
     
-    func test_mediaTypesSortedAndFilteredIfUserNotAuthenticated() {
+    func test_mediaTypesSortedAndFilteredIfUserNotAuthenticated() async throws {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio, .video, .text])
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
-        queueMonitorEnvironment.getQueues = { completion in
-            completion(.success([mockQueue]))
-        }
+        queueMonitorEnvironment.getQueues = { [mockQueue] }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
             return UUID.mock.uuidString
         }
         let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
-        queuesMonitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
-        
+        _ = try await queuesMonitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+
         var environment = EntryWidget.Environment.mock()
         environment.queuesMonitor = queuesMonitor
         environment.observeSecureUnreadMessageCount = { result in
@@ -225,19 +218,17 @@ class EntryWidgetTests: XCTestCase {
         )
     }
     
-    func test_mediaTypesSortedAndFilteredSecureConversation() {
+    func test_mediaTypesSortedAndFilteredSecureConversation() async throws {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio, .video, .text])
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
-        queueMonitorEnvironment.getQueues = { completion in
-            completion(.success([mockQueue]))
-        }
+        queueMonitorEnvironment.getQueues = { [mockQueue] }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
             return UUID.mock.uuidString
         }
         let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
-        queuesMonitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        _ = try await queuesMonitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
 
         var environment = EntryWidget.Environment.mock()
         environment.queuesMonitor = queuesMonitor
@@ -258,19 +249,17 @@ class EntryWidgetTests: XCTestCase {
         )
     }
 
-    func test_messagingIsShownWhenHasPendingInteractionIsTrueAndQueueDoesNotSupportMessaging() {
+    func test_messagingIsShownWhenHasPendingInteractionIsTrueAndQueueDoesNotSupportMessaging() async throws {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, media: [.audio, .video, .text])
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
-        queueMonitorEnvironment.getQueues = { completion in
-            completion(.success([mockQueue]))
-        }
+        queueMonitorEnvironment.getQueues = { [mockQueue] }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
             return UUID.mock.uuidString
         }
         let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
-        queuesMonitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        _ = try await queuesMonitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
 
         var environment = EntryWidget.Environment.mock()
         environment.hasPendingInteractionPublisher = Just(true).eraseToAnyPublisher()
@@ -297,9 +286,7 @@ class EntryWidgetTests: XCTestCase {
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
-        queueMonitorEnvironment.getQueues = { completion in
-            completion(.success([mockQueue]))
-        }
+        queueMonitorEnvironment.getQueues = { [mockQueue] }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
             return UUID.mock.uuidString
@@ -326,9 +313,7 @@ class EntryWidgetTests: XCTestCase {
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
-        queueMonitorEnvironment.getQueues = { completion in
-            completion(.success([mockQueue]))
-        }
+        queueMonitorEnvironment.getQueues = { [mockQueue] }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
             return UUID.mock.uuidString
@@ -355,9 +340,7 @@ class EntryWidgetTests: XCTestCase {
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
-        queueMonitorEnvironment.getQueues = { completion in
-            completion(.success([mockQueue]))
-        }
+        queueMonitorEnvironment.getQueues = { [mockQueue] }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
             return UUID.mock.uuidString
@@ -384,9 +367,7 @@ class EntryWidgetTests: XCTestCase {
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
-        queueMonitorEnvironment.getQueues = { completion in
-            completion(.success([mockQueue]))
-        }
+        queueMonitorEnvironment.getQueues = { [mockQueue] }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
             return UUID.mock.uuidString
@@ -504,7 +485,8 @@ class EntryWidgetTests: XCTestCase {
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.video))
     }
 
-    func test_viewStateShowsMessagingWhenTransferredSCExists() {
+    @MainActor
+    func test_viewStateShowsMessagingWhenTransferredSCExists() async throws {
         var environment = EntryWidget.Environment.mock()
         let interactor: Interactor = .mock()
         interactor.state = .engaged(nil)
@@ -520,9 +502,7 @@ class EntryWidgetTests: XCTestCase {
         let mockQueue = Queue.mock(id: mockQueueId, media: [.text, .audio])
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
-        queueMonitorEnvironment.getQueues = { completion in
-            completion(.success([mockQueue]))
-        }
+        queueMonitorEnvironment.getQueues = { [mockQueue] }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
             return UUID.mock.uuidString
@@ -531,7 +511,7 @@ class EntryWidgetTests: XCTestCase {
         let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
         environment.queuesMonitor = queuesMonitor
 
-        queuesMonitor.fetchAndMonitorQueues()
+        _ = try await queuesMonitor.fetchAndMonitorQueues()
 
         let entryWidget = EntryWidget(
             queueIds: [],
@@ -552,9 +532,7 @@ class EntryWidgetTests: XCTestCase {
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
-        queueMonitorEnvironment.getQueues = { completion in
-            completion(.success([mockQueue]))
-        }
+        queueMonitorEnvironment.getQueues = { [mockQueue] }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
             return UUID.mock.uuidString
@@ -585,9 +563,7 @@ class EntryWidgetTests: XCTestCase {
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
-        queueMonitorEnvironment.getQueues = { completion in
-            completion(.success([mockQueue]))
-        }
+        queueMonitorEnvironment.getQueues = { [mockQueue] }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
             return UUID.mock.uuidString
@@ -621,9 +597,7 @@ class EntryWidgetTests: XCTestCase {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
-        queueMonitorEnvironment.getQueues = { completion in
-            completion(.success([mockQueue]))
-        }
+        queueMonitorEnvironment.getQueues = { [mockQueue] }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
             return UUID.mock.uuidString
@@ -647,14 +621,13 @@ class EntryWidgetTests: XCTestCase {
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.audio))
     }
 
-    func test_secureMessagingIsShownIfQueueIsUnstaffedOrFullAndSCAvailable() {
+    @MainActor
+    func test_secureMessagingIsShownIfQueueIsUnstaffedOrFullAndSCAvailable() async throws {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, status: .unstaffed, media: [.messaging, .audio, .video])
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
-        queueMonitorEnvironment.getQueues = { completion in
-            completion(.success([mockQueue]))
-        }
+        queueMonitorEnvironment.getQueues = { [mockQueue] }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
             return UUID.mock.uuidString
@@ -665,7 +638,7 @@ class EntryWidgetTests: XCTestCase {
         let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
         environment.queuesMonitor = queuesMonitor
 
-        queuesMonitor.fetchAndMonitorQueues()
+        _ = try await queuesMonitor.fetchAndMonitorQueues()
 
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
@@ -681,14 +654,13 @@ class EntryWidgetTests: XCTestCase {
         }
     }
 
-    func test_offlineIsShownIfQueueIsUnstaffedOrFullAndSCNotAvailable() {
+    @MainActor
+    func test_offlineIsShownIfQueueIsUnstaffedOrFullAndSCNotAvailable() async throws {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, status: .full, media: [.audio, .video])
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
-        queueMonitorEnvironment.getQueues = { completion in
-            completion(.success([mockQueue]))
-        }
+        queueMonitorEnvironment.getQueues = { [mockQueue] }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
             return UUID.mock.uuidString
@@ -699,7 +671,7 @@ class EntryWidgetTests: XCTestCase {
         let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
         environment.queuesMonitor = queuesMonitor
 
-        queuesMonitor.fetchAndMonitorQueues()
+        _ = try await queuesMonitor.fetchAndMonitorQueues()
 
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
@@ -712,14 +684,13 @@ class EntryWidgetTests: XCTestCase {
         XCTAssertEqual(entryWidget.viewState, .offline)
     }
 
-    func test_entryWidgetShowsMediaIfAnyQueueIsOpen() {
+    @MainActor
+    func test_entryWidgetShowsMediaIfAnyQueueIsOpen() async throws {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, status: .open, media: [.audio, .video])
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
-        queueMonitorEnvironment.getQueues = { completion in
-            completion(.success([mockQueue]))
-        }
+        queueMonitorEnvironment.getQueues = { [mockQueue] }
         queueMonitorEnvironment.subscribeForQueuesUpdates = { _, completion in
             completion(.success(mockQueue))
             return UUID.mock.uuidString
@@ -730,7 +701,7 @@ class EntryWidgetTests: XCTestCase {
         let queuesMonitor = QueuesMonitor(environment: queueMonitorEnvironment)
         environment.queuesMonitor = queuesMonitor
 
-        queuesMonitor.fetchAndMonitorQueues()
+        _ = try await queuesMonitor.fetchAndMonitorQueues()
 
         let entryWidget = EntryWidget(
             queueIds: [mockQueueId],
