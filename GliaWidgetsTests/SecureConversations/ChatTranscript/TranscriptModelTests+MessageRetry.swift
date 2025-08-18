@@ -5,7 +5,7 @@ extension SecureConversationsTranscriptModelTests {
     func testSendMessageRetrySuccess() async {
         let outgoingMessage = OutgoingMessage.mock()
         var calls: [Call] = []
-        let viewModel = createViewModel()
+        let viewModel = await createViewModel()
 
         viewModel.action = { action in
             switch action {
@@ -56,7 +56,7 @@ extension SecureConversationsTranscriptModelTests {
     func testSendMessageRetryFailure() async {
         let outgoingMessage = OutgoingMessage.mock()
         var calls: [Call] = []
-        let viewModel = createViewModel()
+        let viewModel = await createViewModel()
 
         viewModel.action = { action in
             switch action {
@@ -122,16 +122,16 @@ private extension SecureConversationsTranscriptModelTests {
         case scrollToBottom(Bool)
     }
 
-    func createViewModel() -> TranscriptModel {
+    func createViewModel() async -> TranscriptModel {
         var modelEnv = TranscriptModel.Environment.failing
-        var logger = CoreSdkClient.Logger.failing
+        var logger = CoreSdkClient.Logger.mock
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
         logger.warningClosure = { _, _, _, _ in }
         modelEnv.log = logger
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
-        modelEnv.getQueues = { callback in callback(.success([])) }
+        modelEnv.getQueues = { [] }
         modelEnv.uiApplication.canOpenURL = { _ in true }
         modelEnv.maximumUploads = { 2 }
         modelEnv.secureConversations.sendMessagePayload = { _, _, _ in .mock }
@@ -144,7 +144,7 @@ private extension SecureConversationsTranscriptModelTests {
             getCurrentEngagement: { .mock() }
         )
 
-        return TranscriptModel(
+        let model = TranscriptModel(
             isCustomCardSupported: false,
             environment: modelEnv,
             availability: .init(environment: availabilityEnv),
@@ -153,5 +153,7 @@ private extension SecureConversationsTranscriptModelTests {
             unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
+        await model.checkSecureConversationsAvailability()
+        return model
     }
 }

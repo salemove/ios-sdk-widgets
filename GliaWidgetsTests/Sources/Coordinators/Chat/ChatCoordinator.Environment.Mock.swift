@@ -24,7 +24,7 @@ extension ChatCoordinator.Environment {
         fetchChatHistory: { completion in },
         createFileUploadListModel: { environment in .mock() },
         queueIds: [],
-        listQueues: { completion in },
+        listQueues: { [.mock()] },
         messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock,
         isAuthenticated: { false },
         interactor: .mock(),

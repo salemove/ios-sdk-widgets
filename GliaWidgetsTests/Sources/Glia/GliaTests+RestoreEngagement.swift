@@ -45,7 +45,7 @@ extension GliaTests {
         }
         DependencyContainer.current.widgets.snackBar = snackBar
 
-        sdkEnv.coreSdk.getQueues = { callback in callback(.success([])) }
+        sdkEnv.coreSdk.getQueues = { [] }
         sdkEnv.coreSdk.subscribeForQueuesUpdates = { _, _ in
             return UUID.mock.uuidString
         }
