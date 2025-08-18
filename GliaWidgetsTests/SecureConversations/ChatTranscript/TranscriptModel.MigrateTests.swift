@@ -14,7 +14,7 @@ final class TranscriptModelMigrateTests: XCTestCase {
         fileUploadListModel.environment.uploader.limitReached.value = false
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
-        modelEnv.getQueues = { _ in }
+        modelEnv.getQueues = { [] }
         modelEnv.fetchSiteConfigurations = { _ in
             calls.append(.fetchSiteConfigurations)
         }
@@ -26,7 +26,7 @@ final class TranscriptModelMigrateTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             getQueues: modelEnv.getQueues,
             isAuthenticated: { true },
-            log: .failing,
+            log: .mock,
             queuesMonitor: .mock(getQueues: modelEnv.getQueues),
             getCurrentEngagement: { .mock() }
         )

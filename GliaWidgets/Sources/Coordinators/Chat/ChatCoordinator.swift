@@ -240,6 +240,7 @@ extension ChatCoordinator {
             delegate?(.minimize)
         case let .liveChatEngagementUpgradedToSecureMessaging(chatModel):
             let transcriptModel = self.transcriptModel(with: { [weak controller] in controller })
+            Task { await transcriptModel.checkSecureConversationsAvailability() }
             controller?.swapAndBindViewModel(.transcript(transcriptModel))
             transcriptModel.migrate(from: chatModel)
         }
@@ -274,7 +275,6 @@ extension ChatCoordinator {
             unreadMessages: unreadMessages,
             interactor: interactor
         )
-
         viewModel.shouldShowCard = viewFactory.messageRenderer?.shouldShowCard
         viewModel.isInteractableCard = viewFactory.messageRenderer?.isInteractable
         viewModel.engagementDelegate = { [weak self] event in
