@@ -24,7 +24,7 @@ extension EngagementCoordinator.Environment {
         uiScreen: .mock,
         notificationCenter: .mock,
         fetchChatHistory: { _ in },
-        listQueues: { _ in },
+        listQueues: { [.mock()] },
         createFileUploader: FileUploader.mock,
         createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:),
         messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock,

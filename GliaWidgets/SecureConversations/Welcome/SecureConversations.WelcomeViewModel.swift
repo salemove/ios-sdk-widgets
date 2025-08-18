@@ -11,6 +11,10 @@ extension SecureConversations {
             case waiting, loading
         }
 
+        enum StartMode {
+            case auto, manual
+        }
+
         static let messageTextLimit = 10_000
 
         var action: ((Action) -> Void)?
@@ -35,7 +39,8 @@ extension SecureConversations {
         init(
             environment: Environment,
             availability: Availability,
-            delegate: ((DelegateEvent) -> Void)? = nil
+            delegate: ((DelegateEvent) -> Void)? = nil,
+            startMode: StartMode = .auto
         ) {
             self.delegate = delegate
             self.environment = environment
@@ -55,28 +60,43 @@ extension SecureConversations {
                 }
             }
 
-            checkSecureConversationsAvailability()
+            if startMode == .auto {
+                Task { [weak self] in
+                    await self?.checkSecureConversationsAvailability()
+                }
+            }
+
             loadAttachmentAvailability()
             environment.startSocketObservation()
         }
 
-        private func checkSecureConversationsAvailability() {
-            availability.checkSecureConversationsAvailability(for: environment.queueIds) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(.available(.queues(queueIds))):
-                    self.environment.queueIds = queueIds
-                    self.availabilityStatus = .available(.queues(queueIds: queueIds))
-                case .success(.available(.transferred)):
-                    self.environment.queueIds = []
-                    self.availabilityStatus = .available(.transferred)
-                case .success(.unavailable(.emptyQueue)), .failure:
-                    self.availabilityStatus = .unavailable(.emptyQueue)
-                    self.delegate?(.showAlert(.unavailableMessageCenter()))
-                case .success(.unavailable(.unauthenticated)):
-                    self.availabilityStatus = .unavailable(.unauthenticated)
-                    self.delegate?(.showAlert(.unavailableMessageCenterForBeingUnauthenticated()))
+        @MainActor
+        func checkSecureConversationsAvailability() async {
+            do {
+                let status = try await availability.checkSecureConversationsAvailability(for: environment.queueIds)
+                switch status {
+                case .available(let availability):
+                    switch availability {
+                    case .transferred:
+                        self.environment.queueIds = []
+                        self.availabilityStatus = .available(.transferred)
+                    case let .queues(queueIds):
+                        self.environment.queueIds = queueIds
+                        self.availabilityStatus = .available(.queues(queueIds: queueIds))
+                    }
+                case let .unavailable(reason):
+                    switch reason {
+                    case .emptyQueue:
+                        self.availabilityStatus = .unavailable(.emptyQueue)
+                        self.delegate?(.showAlert(.unavailableMessageCenter()))
+                    case .unauthenticated:
+                        self.availabilityStatus = .unavailable(.unauthenticated)
+                        self.delegate?(.showAlert(.unavailableMessageCenterForBeingUnauthenticated()))
+                    }
                 }
+            } catch {
+                self.availabilityStatus = .unavailable(.emptyQueue)
+                self.delegate?(.showAlert(.unavailableMessageCenter()))
             }
         }
 

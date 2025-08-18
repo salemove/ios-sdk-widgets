@@ -103,7 +103,9 @@ class Interactor {
             .removeDuplicates()
             .compactMap { $0 }
             .sink { [weak self] queueIds in
-                self?.environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds)
+                Task { [weak self] in
+                    try? await self?.environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds)
+                }
             }
             .store(in: &cancellables)
     }
@@ -392,7 +394,9 @@ extension Interactor: CoreSdkClient.Interactable {
         // and it leads to fetchQueues failure that stops queues observing
         // Also when token expires CoreSDK makes force deauthentication which
         // allows to refetch the queues without errors
-        environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds ?? [])
+        Task {
+            _ = try? await environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds ?? [])
+        }
         notify(.error(error))
     }
 }
