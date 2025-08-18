@@ -35,19 +35,19 @@ extension CoreSdkClient {
                 }
             },
             configureWithInteractor: GliaCore.sharedInstance.configure(interactor:),
-            getQueues: { completion in
-                GliaCore.sharedInstance.listQueues { coreQueues, error in
-                    if let error {
-                        completion(.failure(error))
-                        return
+            getQueues: {
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.listQueues { coreQueues, error in
+                        if let error {
+                            continuation.resume(throwing: error)
+                        } else if let coreQueues {
+                            let queues = coreQueues.map { $0.asWidgetSDKQueue() }
+                            continuation.resume(returning: queues)
+                            return
+                        } else {
+                            continuation.resume(throwing: GliaError.internalError)
+                        }
                     }
-
-                    if let coreQueues {
-                        let queues = coreQueues.map { $0.asWidgetSDKQueue() }
-                        completion(.success(queues))
-                        return
-                    }
-                    completion(.failure(GliaError.internalError))
                 }
             },
             queueForEngagement: { options, replaceExisting in
