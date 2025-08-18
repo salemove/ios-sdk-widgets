@@ -40,7 +40,7 @@ private extension SecureConversationsTranscriptModelTests {
         modelEnv.log = logger
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
-        modelEnv.getQueues = { callback in callback(.success([])) }
+        modelEnv.getQueues = { [] }
         modelEnv.uiApplication.canOpenURL = { _ in true }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
