@@ -72,6 +72,7 @@ final class ChatViewTest: XCTestCase {
         coordinatorEnv.getCurrentEngagement = { nil }
         coordinatorEnv.isAuthenticated = { true }
         coordinatorEnv.maximumUploads = { 1 }
+        coordinatorEnv.gcd = .live
         coordinatorEnv.getNonTransferredSecureConversationEngagement = { nil }
         coordinatorEnv.gcd = .live
         var logger = CoreSdkClient.Logger.failing
@@ -82,19 +83,16 @@ final class ChatViewTest: XCTestCase {
         coordinatorEnv.createEntryWidget = { _ in .mock() }
         let options: [ChatChoiceCardOption] = [try .mock()]
         coordinatorEnv.fetchChatHistory = {
-            $0(
-                .success(
-                    [
-                        .mock(attachment: .mock(
-                            type: .singleChoice,
-                            files: [],
-                            imageUrl: nil,
-                            options: options
-                        ))
-                    ]
-                )
-            )
+            [
+                .mock(attachment: .mock(
+                    type: .singleChoice,
+                    files: [],
+                    imageUrl: nil,
+                    options: options
+                ))
+            ]
         }
+        coordinatorEnv.gcd = .live
         let coordinator = EngagementCoordinator.mock(
             engagementLaunching: .direct(kind: .chat),
             environment: coordinatorEnv
@@ -109,6 +107,10 @@ final class ChatViewTest: XCTestCase {
             controller == nil
         }
         XCTAssertNil(controller)
+
+        await waitUntil {
+            viewModel == nil
+        }
         XCTAssertNil(viewModel)
     }
 

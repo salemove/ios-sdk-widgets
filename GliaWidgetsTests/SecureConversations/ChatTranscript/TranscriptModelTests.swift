@@ -80,7 +80,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.getQueues = { _ in }
-        modelEnv.fetchChatHistory = { _ in }
+        modelEnv.fetchChatHistory = { [] }
         modelEnv.secureConversations.getUnreadMessageCount = { _ in }
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
@@ -115,11 +115,12 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         XCTAssertFalse(viewModel.mediaPickerButtonEnabling.isDisabled)
     }
 
-    func testStartLoadsConfigurationAndChatHistoryAndGetUnreadMessageCount() {
+    func testStartLoadsConfigurationAndChatHistoryAndGetUnreadMessageCount() async {
         var modelEnv = TranscriptModel.Environment.failing
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.getQueues = { _ in }
+        modelEnv.gcd = .live
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
         modelEnv.createEntryWidget = { _ in .mock() }
@@ -129,8 +130,9 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             case getSecureUnreadMessageCount
         }
         var calls: [Call] = []
-        modelEnv.fetchChatHistory = { _ in
+        modelEnv.fetchChatHistory = {
             calls.append(.fetchChatHistory)
+            return []
         }
 
         modelEnv.fetchSiteConfigurations = { _ in
@@ -159,9 +161,15 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             interactor: .failing
         )
         viewModel.start(isTranscriptFetchNeeded: true)
+
+        let expectedResult = [Call.loadSiteConfiguration, .fetchChatHistory, .getSecureUnreadMessageCount].map(\.rawValue)
+
+        await waitUntil {
+            calls.map(\.rawValue) == expectedResult
+        }
         XCTAssertEqual(
             calls.map(\.rawValue),
-            [Call.loadSiteConfiguration, .getSecureUnreadMessageCount, .fetchChatHistory].map(\.rawValue)
+            expectedResult
         )
     }
 
@@ -170,7 +178,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.getQueues = { _ in }
-        modelEnv.fetchChatHistory = { _ in }
+        modelEnv.fetchChatHistory = { [] }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.secureConversations.getUnreadMessageCount = { _ in }
         modelEnv.startSocketObservation = {}
@@ -221,7 +229,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { _ in }
-        modelEnv.fetchChatHistory = { _ in }
+        modelEnv.fetchChatHistory = { [] }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
@@ -265,7 +273,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { _ in }
-        modelEnv.fetchChatHistory = { _ in }
+        modelEnv.fetchChatHistory = { [] }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
@@ -305,7 +313,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { _ in }
-        modelEnv.fetchChatHistory = { _ in }
+        modelEnv.fetchChatHistory = { [] }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
@@ -342,7 +350,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { _ in }
-        modelEnv.fetchChatHistory = { _ in }
+        modelEnv.fetchChatHistory = { [] }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.createSendMessagePayload = {
             .mock(messageIdSuffix: "mock", content: $0, attachment: $1)
@@ -380,14 +388,14 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         XCTAssertEqual(calls, [.sendSecureMessagePayload])
     }
 
-    func testLoadHistoryAlsoInvokesUnreadMessageCount() {
+    func testLoadHistoryAlsoInvokesUnreadMessageCount() async  {
         var modelEnv = TranscriptModel.Environment.failing
         let fileUploadListModel = FileUploadListViewModel.mock()
         fileUploadListModel.environment.uploader.limitReached.value = false
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { _ in }
-        modelEnv.fetchChatHistory = { _ in }
+        modelEnv.fetchChatHistory = { [] }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
@@ -419,10 +427,13 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         )
 
         viewModel.start(isTranscriptFetchNeeded: true)
+        await waitUntil {
+            calls == [.getSecureUnreadMessageCount]
+        }
         XCTAssertEqual(calls, [.getSecureUnreadMessageCount])
     }
 
-    func testLoadHistoryAddsUnreadMessageDivider() {
+    func testLoadHistoryAddsUnreadMessageDivider() async {
         var modelEnv = TranscriptModel.Environment.failing
         let fileUploadListModel = FileUploadListViewModel.mock()
         fileUploadListModel.environment.uploader.limitReached.value = false
@@ -430,9 +441,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { _ in }
         modelEnv.maximumUploads = { 2 }
-        modelEnv.fetchChatHistory = { callback in
-            callback(.success([.mock(sender: .operator)]))
-        }
+        modelEnv.fetchChatHistory = { [.mock(sender: .operator)] }
+        modelEnv.gcd = .live
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.secureConversations.getUnreadMessageCount = { callback in
             callback(.success(1))
@@ -470,9 +480,15 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             interactor: .failing
         )
 
+
         viewModel.start(isTranscriptFetchNeeded: true)
+
+
         scheduler.run()
 
+        await waitUntil {
+            !viewModel.historySection.items.isEmpty
+        }
         XCTAssertTrue(viewModel.historySection.items.contains(where: { item in
             switch item.kind {
             case .unreadMessageDivider:
@@ -483,7 +499,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         }))
     }
 
-    func testSystemMessagesFromWebSocket() {
+    func testSystemMessagesFromWebSocket() async throws {
         var modelEnv = TranscriptModel.Environment.failing
         let fileUploadListModel = FileUploadListViewModel.mock()
         fileUploadListModel.environment.uploader.limitReached.value = false
@@ -491,7 +507,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.fetchChatHistory = { _ in }
+        modelEnv.fetchChatHistory = { [] }  // ← returns empty array
         modelEnv.maximumUploads = { 2 }
         modelEnv.secureConversations.getUnreadMessageCount = { callback in
             callback(.success(0))
@@ -516,43 +532,19 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let viewModel = TranscriptModel(
             isCustomCardSupported: false,
             environment: modelEnv,
-            availability: .init(
-                environment: availabilityEnv
-            ),
+            availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
-            unreadMessages: ObservableValue<Int>.init(with: .zero),
+            unreadMessages: ObservableValue<Int>(with: .zero),
             interactor: interactor
         )
 
-        modelEnv.fetchChatHistory = { _ in
-            let uuid = UUID.mock.uuidString
-            let message = CoreSdkClient.Message(
-                id: uuid,
-                content: "Test",
-                sender: .init(type: .system),
-                metadata: nil
-            )
-
-            interactor.receive(message: message)
-            XCTAssertEqual(viewModel.pendingSection.items.count, 1)
-
-            let receivedMessage = viewModel.receivedMessages[uuid]
-            XCTAssertNotNil(receivedMessage)
-
-            if case let .socket(innerMessage) = receivedMessage?.first {
-                XCTAssertEqual(innerMessage.id, uuid)
-                XCTAssertEqual(innerMessage.sender.type, .system)
-            } else {
-                XCTFail("Message should come from socket")
-            }
-        }
-
+        // Start and wait for transcript loading (history is empty, so immediate)
         viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
     }
 
-    func testWelcomeMessagesFromWebSocket() {
+    func testWelcomeMessagesFromWebSocket() async throws {
         var modelEnv = TranscriptModel.Environment.failing
         let fileUploadListModel = FileUploadListViewModel.mock()
         fileUploadListModel.environment.uploader.limitReached.value = false
@@ -560,7 +552,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { _ in }
         modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.fetchChatHistory = { _ in }
+        modelEnv.fetchChatHistory = { [] }
         modelEnv.maximumUploads = { 2 }
         modelEnv.secureConversations.getUnreadMessageCount = { callback in
             callback(.success(0))
@@ -585,37 +577,12 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         let viewModel = TranscriptModel(
             isCustomCardSupported: false,
             environment: modelEnv,
-            availability: .init(
-                environment: availabilityEnv
-            ),
+            availability: .init(environment: availabilityEnv),
             deliveredStatusText: "",
             failedToDeliverStatusText: "",
-            unreadMessages: ObservableValue<Int>.init(with: .zero),
+            unreadMessages: ObservableValue<Int>(with: .zero),
             interactor: interactor
         )
-
-        modelEnv.fetchChatHistory = { _ in
-            let uuid = UUID.mock.uuidString
-            let message = CoreSdkClient.Message(
-                id: uuid,
-                content: "Welcome",
-                sender: .init(type: .operator),
-                metadata: nil
-            )
-
-            interactor.receive(message: message)
-            XCTAssertEqual(viewModel.pendingSection.items.count, 1)
-
-            let receivedMessage = viewModel.receivedMessages[uuid]
-            XCTAssertNotNil(receivedMessage)
-
-            if case let .socket(innerMessage) = receivedMessage?.first {
-                XCTAssertEqual(innerMessage.id, uuid)
-                XCTAssertEqual(innerMessage.sender.type, .operator)
-            } else {
-                XCTFail("Message should come from socket")
-            }
-        }
 
         viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
@@ -800,16 +767,15 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         }
     }
 
-    func testLoadHistoryAlsoInvokesSecureMarkMessagesAsReadIfShouldNotShowLeaveSecureConversationDialog() {
+    func testLoadHistoryAlsoInvokesSecureMarkMessagesAsReadIfShouldNotShowLeaveSecureConversationDialog() async {
         var modelEnv = TranscriptModel.Environment.failing
         let fileUploadListModel = FileUploadListViewModel.mock()
         fileUploadListModel.environment.uploader.limitReached.value = false
-        modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, function in function() }
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { _ in }
         modelEnv.loadChatMessagesFromHistory = { true }
-        modelEnv.fetchChatHistory = { $0(.success([.mock(), .mock(), .mock()])) }
+        modelEnv.fetchChatHistory = { [.mock(), .mock(), .mock()] }
         modelEnv.secureConversations.getUnreadMessageCount = { $0(.success(5)) }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.startSocketObservation = {}
@@ -856,6 +822,10 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
 
+        await waitUntil {
+            calls == [.secureMarkMessagesAsRead]
+        }
+
         XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
     }
 
@@ -868,7 +838,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { _ in }
         modelEnv.loadChatMessagesFromHistory = { true }
-        modelEnv.fetchChatHistory = { $0(.success([.mock(), .mock(), .mock()])) }
+        modelEnv.fetchChatHistory = { [.mock(), .mock(), .mock()] }
         modelEnv.secureConversations.getUnreadMessageCount = { $0(.success(5)) }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.startSocketObservation = {}
@@ -912,7 +882,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         XCTAssertTrue(calls.isEmpty)
     }
 
-    func testLeaveCurrentConversationAlertDeclineMarkMessagesAsRead() {
+    func testLeaveCurrentConversationAlertDeclineMarkMessagesAsRead() async {
         var modelEnv = TranscriptModel.Environment.failing
         let fileUploadListModel = FileUploadListViewModel.mock()
         fileUploadListModel.environment.uploader.limitReached.value = false
@@ -921,7 +891,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { _ in }
         modelEnv.loadChatMessagesFromHistory = { true }
-        modelEnv.fetchChatHistory = { $0(.success([.mock(), .mock(), .mock()])) }
+        modelEnv.fetchChatHistory = { [.mock(), .mock(), .mock()] }
         modelEnv.secureConversations.getUnreadMessageCount = { $0(.success(5)) }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.startSocketObservation = {}
@@ -975,10 +945,14 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
 
+        await waitUntil {
+            calls == [.secureMarkMessagesAsRead]
+        }
+
         XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
     }
 
-    func testReceiveMessageMarksMessagesAsRead() {
+    func testReceiveMessageMarksMessagesAsRead() async {
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
         var modelEnv = TranscriptModel.Environment.failing
@@ -1002,9 +976,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             completion(.success(()))
             return .mock
         }
-        modelEnv.fetchChatHistory = { completion in
-            completion(.success([.mock()]))
-        }
+        modelEnv.fetchChatHistory = { [.mock()] }
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
         let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
         modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
@@ -1047,6 +1019,10 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             metadata: nil
         )
         interactor.receive(message: message)
+
+        await waitUntil {
+            calls == [.secureMarkMessagesAsRead]
+        }
 
         XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
     }

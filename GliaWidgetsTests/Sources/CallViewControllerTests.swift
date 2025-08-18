@@ -14,13 +14,12 @@ class CallViewControllerTests: XCTestCase {
         XCTAssertNil(weakViewController, "CallViewController not deinitilized")
     }
 
-    func testLiveObservationIndicatorIsPresented() throws {
+    @MainActor
+    func testLiveObservationIndicatorIsPresented() async throws {
         enum Call { case presentSnackBar }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
             mobileConfirmDialogEnabled: true,
@@ -66,6 +65,9 @@ class CallViewControllerTests: XCTestCase {
         viewController.loadView()
         interactor.state = .engaged(nil)
 
+        await waitUntil {
+            calls == [.presentSnackBar]
+        }
         XCTAssertEqual(calls, [.presentSnackBar])
     }
 
@@ -73,9 +75,7 @@ class CallViewControllerTests: XCTestCase {
         enum Call { case presentSnackBar }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
             mobileConfirmDialogEnabled: true,
@@ -128,9 +128,7 @@ class CallViewControllerTests: XCTestCase {
         enum Call { case presentSnackBar }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: false,
             mobileConfirmDialogEnabled: true,
