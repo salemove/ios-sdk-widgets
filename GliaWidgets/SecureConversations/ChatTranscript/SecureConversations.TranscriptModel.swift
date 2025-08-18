@@ -148,26 +148,31 @@ extension SecureConversations {
             uploader.limitReached.addObserver(self) { [weak self] limitReached, _ in
                 self?.action?(.pickMediaButtonEnabled(!limitReached))
             }
-            checkSecureConversationsAvailability()
         }
 
-        private func checkSecureConversationsAvailability() {
-            availability.checkSecureConversationsAvailability(for: environment.queueIds) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(.available(.queues(queueIds))):
-                    self.environment.queueIds = queueIds
-                    self.isSecureConversationsAvailable = true
-                    self.fileUploadListModel.isEnabled = true
-                case .success(.available(.transferred)):
-                    self.environment.queueIds = []
-                    self.isSecureConversationsAvailable = true
-                    self.fileUploadListModel.isEnabled = true
-                case .failure, .success(.unavailable(.emptyQueue)), .success(.unavailable(.unauthenticated)):
-                    // For chat screen we no longer show unavailability dialog, but unavailability banner instead.
+        @MainActor
+        func checkSecureConversationsAvailability() async {
+            do {
+                let status = try await availability.checkSecureConversationsAvailability(for: environment.queueIds)
+                switch status {
+                case .available(let availability):
+                    switch availability {
+                    case .transferred:
+                        self.environment.queueIds = []
+                        self.isSecureConversationsAvailable = true
+                        self.fileUploadListModel.isEnabled = true
+                    case let .queues(queueIds):
+                        self.environment.queueIds = queueIds
+                        self.isSecureConversationsAvailable = true
+                        self.fileUploadListModel.isEnabled = true
+                    }
+                case .unavailable:
                     self.isSecureConversationsAvailable = false
                     self.fileUploadListModel.isEnabled = false
                 }
+            } catch {
+                self.isSecureConversationsAvailable = false
+                self.fileUploadListModel.isEnabled = false
             }
         }
 

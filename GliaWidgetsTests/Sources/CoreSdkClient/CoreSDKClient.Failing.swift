@@ -18,7 +18,10 @@ extension CoreSdkClient {
             throw NSError(domain: "updateVisitorInfo", code: -1, userInfo: nil)
         },
         configureWithInteractor: { _ in fail("\(Self.self).configureWithInteractor") },
-        getQueues: { _ in fail("\(Self.self).listQueues") },
+        getQueues: {
+            fail("\(Self.self).getQueues")
+            throw NSError(domain: "getQueues", code: -1)
+        },
         queueForEngagement: { _, _ in
             fail("\(Self.self).queueForEngagement")
             throw NSError(domain: "queueForEngagement", code: -1, userInfo: nil)

@@ -112,7 +112,8 @@ final class ChatViewTest: XCTestCase {
         XCTAssertNil(viewModel)
     }
 
-    func test_isTopBannerHiddenWhenIsTopBannerAllowedIsFalse() throws {
+    @MainActor
+    func test_isTopBannerHiddenWhenIsTopBannerAllowedIsFalse() async throws {
         throw XCTSkip("""
                 This test should be un-skipped when injected combine scheduler will be added in EntryWidget in MOB-4077.
             """)
@@ -137,16 +138,14 @@ final class ChatViewTest: XCTestCase {
         let queueId = "queueId"
         let mockQueue = Queue.mock(id: queueId, media: [.text, .audio, .messaging])
         let queuesMonitor = QueuesMonitor.mock(
-            getQueues: {
-                $0(.success([mockQueue]))
-            },
+            getQueues: { [mockQueue] },
             subscribeForQueuesUpdates: { _, completion in
                 completion(.success(mockQueue))
                 return UUID.mock.uuidString
             },
             unsubscribeFromUpdates: nil
         )
-        queuesMonitor.fetchAndMonitorQueues(queuesIds: [queueId])
+        _ = try await queuesMonitor.fetchAndMonitorQueues(queuesIds: [queueId])
         entryWidgetEnv.queuesMonitor = queuesMonitor
         let entryWidget = EntryWidget(
             queueIds: [queueId],
