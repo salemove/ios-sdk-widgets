@@ -14,7 +14,7 @@ extension CoreSdkClient {
         getVisitorInfo: { .mock },
         updateVisitorInfo: { _ in true },
         configureWithInteractor: { _ in },
-        getQueues: { _ in },
+        getQueues: { [.mock()] },
         queueForEngagement: { _, _ in .mock },
         sendMessagePreview: { _ in true },
         sendMessageWithMessagePayload: { _ in .mock() },
@@ -490,26 +490,6 @@ extension CoreSdkClient.Site {
                         )
                     )
             )
-    }
-}
-
-extension Queue {
-    static func mock(
-        id: String = "",
-        name: String = "",
-        status: QueueStatus = .unknown(""),
-        isDefault: Bool = false,
-        media: [MediaType] = [],
-        lastUpdated: Date = Date()
-    ) -> Queue {
-        Queue(
-            id: id,
-            name: name,
-            status: status,
-            media: media,
-            isDefault: isDefault,
-            lastUpdated: lastUpdated
-        )
     }
 }
 

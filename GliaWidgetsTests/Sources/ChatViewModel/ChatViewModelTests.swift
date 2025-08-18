@@ -479,7 +479,8 @@ class ChatViewModelTests: XCTestCase {
         await viewModel.asyncEvent(.sendTapped)
     }
 
-    func testMigrateSetsExpectedFieldsFromTranscriptModelAndCallsActions() throws {
+    @MainActor
+    func testMigrateSetsExpectedFieldsFromTranscriptModelAndCallsActions() async throws {
         typealias TranscriptModel = SecureConversations.TranscriptModel
         typealias FileUploadListViewModel = SecureConversations.FileUploadListViewModel
         var fileManager = FoundationBased.FileManager.failing
@@ -493,7 +494,8 @@ class ChatViewModelTests: XCTestCase {
         var uploaderEnv = FileUploader.Environment.failing
         uploaderEnv.fileManager = fileManager
         let transcriptFileUploadListModelEnv = FileUploadListViewModel.Environment.failing(
-            uploader: .mock(environment: uploaderEnv)
+            uploader: .mock(environment: uploaderEnv),
+            scrollingBehaviour: .scrolling(.live)
         )
         let fileUpload = FileUpload.mock()
         fileUpload.environment.uploadFile = .toSecureMessaging({ _, _, _ in .mock })
@@ -501,7 +503,7 @@ class ChatViewModelTests: XCTestCase {
 
         let transcriptFileUploadListModel = FileUploadListViewModel(environment: transcriptFileUploadListModelEnv)
         transcriptModelEnv.createFileUploadListModel = { _ in transcriptFileUploadListModel }
-        transcriptModelEnv.getQueues = { callback in callback(.success([])) }
+        transcriptModelEnv.getQueues = { [] }
         transcriptModelEnv.maximumUploads = { 2 }
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
@@ -527,6 +529,7 @@ class ChatViewModelTests: XCTestCase {
             unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
+        await transcriptModel.checkSecureConversationsAvailability()
 
         transcriptModel.sections[transcriptModel.pendingSection.index].append(.init(kind: .unreadMessageDivider))
 
