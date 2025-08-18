@@ -27,7 +27,7 @@ class QueuesMonitorTests: XCTestCase {
     }
 
     // MARK: Fetch and Motitor queues
-    func test_fetchAndMonitorQueuesWithQueuesUpdatesWithQueuesList() {
+    func test_fetchAndMonitorQueuesWithQueuesUpdatesWithQueuesList() async throws {
         var envCalls: [Call] = []
         let expectedLogMessage = "Setting up queues. 1 out of 1 queues provided by an integrator match with site queues."
         var receivedLogMessage = ""
@@ -37,9 +37,9 @@ class QueuesMonitorTests: XCTestCase {
         monitor.environment.logger.infoClosure = { logMessage, _, _, _ in
             receivedLogMessage = logMessage as? String ?? ""
         }
-        monitor.environment.getQueues = { completion in
+        monitor.environment.getQueues = {
             envCalls.append(.getQueues)
-            completion(.success(mockQueues))
+            return mockQueues
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -56,14 +56,14 @@ class QueuesMonitorTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        _ = try await monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
 
         XCTAssertEqual(receivedQueues, expectedObservedQueues)
         XCTAssertEqual(envCalls, [.getQueues, .subscribeForQueuesUpdates])
         XCTAssertEqual(receivedLogMessage, expectedLogMessage)
     }
 
-    func test_fetchAndMonitorQueuesWithWrongQueueIdsReturnsUpdatesWithDefaultQueue() {
+    func test_fetchAndMonitorQueuesWithWrongQueueIdsReturnsUpdatesWithDefaultQueue() async throws {
         var envCalls: [Call] = []
         let expectedLogMessages = [
             "Setting up queues. 0 out of 1 queues provided by an integrator match with site queues.",
@@ -77,9 +77,9 @@ class QueuesMonitorTests: XCTestCase {
         monitor.environment.logger.infoClosure = { logMessage, _, _, _ in
             receivedLogMessage.append(logMessage as? String ?? "")
         }
-        monitor.environment.getQueues = { completion in
+        monitor.environment.getQueues = {
             envCalls.append(.getQueues)
-            completion(.success(mockQueues))
+            return mockQueues
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -96,14 +96,14 @@ class QueuesMonitorTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        monitor.fetchAndMonitorQueues(queuesIds: ["1"])
+        _ = try await monitor.fetchAndMonitorQueues(queuesIds: ["1"])
 
         XCTAssertEqual(receivedQueues, expectedObservedQueues)
         XCTAssertEqual(envCalls, [.getQueues, .subscribeForQueuesUpdates])
         XCTAssertEqual(expectedLogMessages, receivedLogMessage)
     }
 
-    func test_fetchAndMonitorQueuesgetQueuesReturnsError() {
+    func test_fetchAndMonitorQueuesgetQueuesReturnsError() async throws {
         var envCalls: [Call] = []
         let expectedErrorLog = "Setting up queues. Failed to get site queues: mock"
         var receivedErrorLog = ""
@@ -111,9 +111,9 @@ class QueuesMonitorTests: XCTestCase {
         monitor.environment.logger.errorClosure = { logMessage, _, _, _ in
             receivedErrorLog = logMessage as? String ?? ""
         }
-        monitor.environment.getQueues = { completion in
+        monitor.environment.getQueues = {
             envCalls.append(.getQueues)
-            completion(.failure(expectedError))
+            throw expectedError
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -129,14 +129,17 @@ class QueuesMonitorTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        monitor.fetchAndMonitorQueues(queuesIds: ["1"])
-
-        XCTAssertEqual(receivedError, expectedError)
+        do {
+            _ = try await monitor.fetchAndMonitorQueues(queuesIds: ["1"])
+            XCTFail("Test should throw error")
+        } catch {
+            XCTAssertEqual(receivedError, expectedError)
+            XCTAssertEqual(expectedErrorLog, receivedErrorLog)
+        }
         XCTAssertEqual(envCalls, [.getQueues])
-        XCTAssertEqual(expectedErrorLog, receivedErrorLog)
     }
 
-    func test_fetchAndMonitorQueuesWithQueuesAndReceiveUpdatedQueueSuccess() {
+    func test_fetchAndMonitorQueuesWithQueuesAndReceiveUpdatedQueueSuccess() async throws {
         var envCalls: [Call] = []
 
         let mockQueueId = "mock_queue_id"
@@ -148,9 +151,9 @@ class QueuesMonitorTests: XCTestCase {
         let expectedUpdatedQueue = Queue.mock(id: mockQueueId, status: .open, lastUpdated: date.advanced(by: 1))
         let mockQueues = [expectedObservedQueue, Queue.mock(id: UUID().uuidString)]
 
-        monitor.environment.getQueues = { completion in
+        monitor.environment.getQueues = {
             envCalls.append(.getQueues)
-            completion(.success(mockQueues))
+            return mockQueues
         }
         monitor.environment.subscribeForQueuesUpdates = { [expectedUpdatedQueue] _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -173,14 +176,14 @@ class QueuesMonitorTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        _ = try await monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
 
         XCTAssertEqual(receivedQueues, [expectedUpdatedQueue])
         XCTAssertEqual(receivedUpdatedQueue?.status, .open)
         XCTAssertEqual(envCalls, [.getQueues, .subscribeForQueuesUpdates])
     }
 
-    func test_fetchAndMonitorQueuesWithQueuesStopsPreviousMonitoring() {
+    func test_fetchAndMonitorQueuesWithQueuesStopsPreviousMonitoring() async throws {
         var envCalls: [Call] = []
 
         let mockQueueId = "mock_queue_id"
@@ -192,9 +195,9 @@ class QueuesMonitorTests: XCTestCase {
         let expectedUpdatedQueue = Queue.mock(id: mockQueueId, status: .open, lastUpdated: date.advanced(by: 1))
         let mockQueues = [expectedObservedQueue, Queue.mock(id: UUID().uuidString)]
 
-        monitor.environment.getQueues = { completion in
+        monitor.environment.getQueues = {
             envCalls.append(.getQueues)
-            completion(.success(mockQueues))
+            return mockQueues
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -220,8 +223,8 @@ class QueuesMonitorTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
-        monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        _ = try await monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        _ = try await monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
         XCTAssertEqual(receivedQueues, [expectedUpdatedQueue])
         XCTAssertEqual(receivedUpdatedQueue?.status, .open)
         XCTAssertEqual(
@@ -230,7 +233,7 @@ class QueuesMonitorTests: XCTestCase {
         )
     }
     
-    func test_fetchAndMonitorQueuesWithQueuesStopsPreviousMonitoringFailed() {
+    func test_fetchAndMonitorQueuesWithQueuesStopsPreviousMonitoringFailed() async throws {
         var envCalls: [Call] = []
 
         let mockQueueId = "mock_queue_id"
@@ -242,9 +245,9 @@ class QueuesMonitorTests: XCTestCase {
         let expectedUpdatedQueue = Queue.mock(id: mockQueueId, status: .open, lastUpdated: date.advanced(by: 1))
         let mockQueues = [expectedObservedQueue, Queue.mock(id: UUID().uuidString)]
 
-        monitor.environment.getQueues = { completion in
+        monitor.environment.getQueues = {
             envCalls.append(.getQueues)
-            completion(.success(mockQueues))
+            return mockQueues
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -271,8 +274,8 @@ class QueuesMonitorTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
-        monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        _ = try await monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        _ = try await monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
 
         XCTAssertEqual(receivedQueues, [expectedUpdatedQueue])
         XCTAssertEqual(receivedUpdatedQueue?.status, .open)
@@ -282,15 +285,15 @@ class QueuesMonitorTests: XCTestCase {
         )
     }
 
-    func test_fetchAndMonitorQueuesWithQueuesAndReceiveUpdatedQueueError() {
+    func test_fetchAndMonitorQueuesWithQueuesAndReceiveUpdatedQueueError() async throws {
         var envCalls: [Call] = []
 
         let expectedError = CoreSdkClient.SalemoveError.mock()
         let mockQueues = [Queue.mock()]
 
-        monitor.environment.getQueues = { completion in
+        monitor.environment.getQueues = {
             envCalls.append(.getQueues)
-            completion(.success(mockQueues))
+            return mockQueues
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -309,21 +312,21 @@ class QueuesMonitorTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        monitor.fetchAndMonitorQueues(queuesIds: [UUID().uuidString])
+        _ = try await monitor.fetchAndMonitorQueues(queuesIds: [UUID().uuidString])
 
         XCTAssertEqual(receivedError, expectedError)
         XCTAssertEqual(envCalls, [.getQueues, .subscribeForQueuesUpdates])
     }
 
     // MARK: Stop monitoring
-    func test_stopMonitoringReturnError() {
+    func test_stopMonitoringReturnError() async throws {
         var envCalls: [Call] = []
 
         let expectedError = CoreSdkClient.SalemoveError.mock()
 
-        monitor.environment.getQueues = { completion in
+        monitor.environment.getQueues = {
             envCalls.append(.getQueues)
-            completion(.success([]))
+            return []
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -335,7 +338,7 @@ class QueuesMonitorTests: XCTestCase {
             completion(expectedError)
         }
 
-        monitor.fetchAndMonitorQueues(queuesIds: ["1"])
+        _ = try await monitor.fetchAndMonitorQueues(queuesIds: ["1"])
 
         var receivedError: CoreSdkClient.SalemoveError?
         monitor.$state
@@ -353,12 +356,12 @@ class QueuesMonitorTests: XCTestCase {
         XCTAssertEqual(envCalls, [.getQueues, .subscribeForQueuesUpdates, .unsubscribeFromUpdates])
     }
 
-    func test_stopMonitoringSuccess() {
+    func test_stopMonitoringSuccess() async throws {
         var envCalls: [Call] = []
 
-        monitor.environment.getQueues = { completion in
+        monitor.environment.getQueues = {
             envCalls.append(.getQueues)
-            completion(.success([]))
+            return []
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -370,14 +373,14 @@ class QueuesMonitorTests: XCTestCase {
             completion(.mock())
         }
 
-        monitor.fetchAndMonitorQueues(queuesIds: ["1"])
+        _ = try await monitor.fetchAndMonitorQueues(queuesIds: ["1"])
 
         monitor.stopMonitoring()
 
         XCTAssertEqual(envCalls, [.getQueues, .subscribeForQueuesUpdates, .unsubscribeFromUpdates])
     }
 
-    func test_receiveOlderQueue_doesNotReplaceExistingQueue() {
+    func test_receiveOlderQueue_doesNotReplaceExistingQueue() async throws {
         var envCalls: [Call] = []
         let mockQueueId = "mock_queue_id"
         let existingQueue = Queue.mock(
@@ -389,9 +392,9 @@ class QueuesMonitorTests: XCTestCase {
             lastUpdated: Date(timeIntervalSinceNow: -1000)
         )
 
-        monitor.environment.getQueues = { completion in
+        monitor.environment.getQueues = {
             envCalls.append(.getQueues)
-            completion(.success([existingQueue]))
+            return [existingQueue]
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -409,14 +412,14 @@ class QueuesMonitorTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        _ = try await monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
 
         XCTAssertEqual(envCalls, [.getQueues, .subscribeForQueuesUpdates])
         XCTAssertEqual(receivedQueues?.count, 1)
         XCTAssertEqual(receivedQueues?.first?.lastUpdated, existingQueue.lastUpdated)
     }
 
-    func test_receiveNewerQueue_updatesExistingQueue() {
+    func test_receiveNewerQueue_updatesExistingQueue() async throws {
         var envCalls: [Call] = []
         let mockQueueId = "mock_queue_id"
 
@@ -430,9 +433,9 @@ class QueuesMonitorTests: XCTestCase {
             lastUpdated: Date() // now
         )
 
-        monitor.environment.getQueues = { completion in
+        monitor.environment.getQueues = {
             envCalls.append(.getQueues)
-            completion(.success([oldQueue]))
+            return [oldQueue]
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -451,14 +454,14 @@ class QueuesMonitorTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        _ = try await monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
 
         XCTAssertEqual(envCalls, [.getQueues, .subscribeForQueuesUpdates])
         XCTAssertEqual(receivedQueues?.count, 1)
         XCTAssertEqual(receivedQueues?.first?.lastUpdated, newerQueue.lastUpdated)
     }
 
-    func test_receiveQueueForUnknownId_appendsQueue() {
+    func test_receiveQueueForUnknownId_appendsQueue() async throws {
         var envCalls: [Call] = []
         let knownQueueId = "known_queue_id"
         let unknownQueueId = "unknown_queue_id"
@@ -471,9 +474,9 @@ class QueuesMonitorTests: XCTestCase {
             lastUpdated: Date()
         )
 
-        monitor.environment.getQueues = { completion in
+        monitor.environment.getQueues = {
             envCalls.append(.getQueues)
-            completion(.success([knownQueue]))
+            return [knownQueue]
         }
         monitor.environment.subscribeForQueuesUpdates = { _, completion in
             envCalls.append(.subscribeForQueuesUpdates)
@@ -492,7 +495,7 @@ class QueuesMonitorTests: XCTestCase {
             }
             .store(in: &cancellables)
 
-        monitor.fetchAndMonitorQueues(queuesIds: [knownQueueId])
+        _ = try await monitor.fetchAndMonitorQueues(queuesIds: [knownQueueId])
 
         XCTAssertEqual(envCalls, [.getQueues, .subscribeForQueuesUpdates])
         XCTAssertEqual(receivedQueues?.count, 2)
