@@ -8,20 +8,40 @@ extension CoreSdkClient {
         createAppDelegate: { .failing },
         clearSession: { fail("\(Self.self).clearSession") },
         localeProvider: .failing,
-        getVisitorInfo: { _ in fail("\(Self.self).getVisitorInfo") },
-        getVisitorInfoDeprecated: { _ in fail("\(Self.self).getVisitorInfoDeprecated")},
-        updateVisitorInfo: { _, _ in fail("\(Self.self).updateVisitorInfo") },
-        updateVisitorInfoDeprecated: { _, _ in fail("\(Self.self).updateVisitorInfoDeprecated") },
         configureWithConfiguration: { _, _ in fail("\(Self.self).configureWithConfiguration") },
+        getVisitorInfo: {
+            fail("\(Self.self).getVisitorInfo")
+            throw NSError(domain: "getVisitorInfo", code: -1, userInfo: nil)
+        },
+        updateVisitorInfo: { _ in
+            fail("\(Self.self).updateVisitorInfo")
+            throw NSError(domain: "updateVisitorInfo", code: -1, userInfo: nil)
+        },
         configureWithInteractor: { _ in fail("\(Self.self).configureWithInteractor") },
         getQueues: { _ in fail("\(Self.self).listQueues") },
-        queueForEngagement: { _, _, _ in fail("\(Self.self).queueForEngagement") },
-        requestMediaUpgradeWithOffer: { _, _ in fail("\(Self.self).requestMediaUpgradeWithOffer") },
-        sendMessagePreview: { _, _ in fail("\(Self.self).sendMessagePreview") },
-        sendMessageWithMessagePayload: { _, _ in fail("\(Self.self).sendMessageWithMessagePayload") },
-        cancelQueueTicket: { _, _ in fail("cancelQueueTicket") },
-        endEngagement: { _ in fail("\(Self.self).endEngagement") },
-        requestEngagedOperator: { _ in fail("\(Self.self).requestEngagedOperator") },
+        queueForEngagement: { _, _ in
+            fail("\(Self.self).queueForEngagement")
+            throw NSError(domain: "queueForEngagement", code: -1, userInfo: nil)
+        },
+        sendMessagePreview: { _ in
+            fail("\(Self.self).sendMessagePreview")
+            throw NSError(domain: "CoreSdkClient", code: -1, userInfo: nil)
+        },
+        sendMessageWithMessagePayload: { _ in fail("\(Self.self).sendMessageWithMessagePayload")
+            throw NSError(domain: "CoreSdkClient", code: -1, userInfo: nil)
+        },
+        cancelQueueTicket: { _ in
+            fail("cancelQueueTicket")
+            throw NSError(domain: "cancelQueueTicket", code: -1, userInfo: nil)
+        },
+        endEngagement: {
+            fail("\(Self.self).endEngagement")
+            throw NSError(domain: "endEngagement", code: -1)
+        },
+        requestEngagedOperator: {
+            fail("\(Self.self).requestEngagedOperator")
+            throw NSError(domain: "requestEngagedOperator", code: -1)
+        },
         uploadFileToEngagement: { _, _, _ in fail("\(Self.self).uploadFileToEngagement") },
         fetchFile: { _, _, _ in fail("\(Self.self).fetchFile") },
         getCurrentEngagement: { return nil },
@@ -32,9 +52,9 @@ extension CoreSdkClient {
             return .mock
         },
         fetchChatHistory: { _ in },
-        requestVisitorCode: { _ in
+        requestVisitorCode: {
             fail("\(Self.self).requestVisitorCode")
-            return .init()
+            throw NSError(domain: "requestVisitorCode", code: -1)
         },
         startSocketObservation: {
             fail("\(Self.self).startSocketObservation")
