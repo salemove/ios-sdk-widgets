@@ -13,7 +13,7 @@ final class AvailabilityTests: XCTestCase {
         let queueIds = [UUID.mock.uuidString]
         let availability = Availability(environment: env)
         do {
-            let availability = try await availability.checkSecureConversationsAvailability(for: queueIds)
+            _ = try await availability.checkSecureConversationsAvailability(for: queueIds)
             XCTFail("Expected failure, got success")
         } catch let error as CoreSdkClient.SalemoveError {
             XCTAssertEqual(error, expectedError)
