@@ -527,11 +527,11 @@ public class Glia {
             return
         }
 
-        environment.coreSdk.getQueues { result in
-            switch result {
-            case let .success(queues):
+        Task {
+            do {
+                let queues = try await environment.coreSdk.getQueues()
                 completion(.success(queues))
-            case let .failure(error):
+            } catch {
                 completion(.failure(error))
             }
         }
