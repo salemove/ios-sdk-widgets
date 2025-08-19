@@ -49,7 +49,6 @@ extension CoreSdkClient {
                         }
                     }
                 }
-
             },
             queueForEngagement: { options, replaceExisting in
                 try await withCheckedThrowingContinuation { continuation in
