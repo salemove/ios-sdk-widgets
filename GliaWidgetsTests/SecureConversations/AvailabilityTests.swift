@@ -34,12 +34,8 @@ final class AvailabilityTests: XCTestCase {
         env.getCurrentEngagement = { .mock() }
         let queueIds = [UUID.mock.uuidString]
         let availability = Availability(environment: env)
-        do {
-            let status = try await availability.checkSecureConversationsAvailability(for: queueIds)
-            XCTAssertEqual(status, .unavailable(.emptyQueue))
-        } catch {
-            XCTFail("Expected success, but got failure: \(error)")
-        }
+        let status = try await availability.checkSecureConversationsAvailability(for: queueIds)
+        XCTAssertEqual(status, .unavailable(.emptyQueue))
     }
 
     func testUnauthenticatedQueueStatus() async throws {
@@ -53,12 +49,8 @@ final class AvailabilityTests: XCTestCase {
         env.queuesMonitor = .mock(getQueues: env.getQueues)
         let queueIds = [UUID.mock.uuidString]
         let availability = Availability(environment: env)
-        do {
-            let status = try await availability.checkSecureConversationsAvailability(for: queueIds)
-            XCTAssertEqual(status, .unavailable(.unauthenticated))
-        } catch {
-            XCTFail("Expected success, but got failure: \(error)")
-        }
+        let status = try await availability.checkSecureConversationsAvailability(for: queueIds)
+        XCTAssertEqual(status, .unavailable(.unauthenticated))
     }
 
     func testAvailableQueueStatus() async throws {
@@ -73,15 +65,11 @@ final class AvailabilityTests: XCTestCase {
         env.isAuthenticated = { true }
         env.queuesMonitor = .mock(getQueues: env.getQueues)
         let availability = Availability(environment: env)
-        do {
-            let status = try await availability.checkSecureConversationsAvailability(for: [queueId])
-            switch status {
-            case .available(let queueIds):
-                XCTAssertEqual(queueIds, .queues(queueIds: [queueId]))
-            case .unavailable(let unavailabilityReason):
-                XCTFail("Result should be `.success(.available)`")
-            }
-        } catch {
+        let status = try await availability.checkSecureConversationsAvailability(for: [queueId])
+        switch status {
+        case .available(let queueIds):
+            XCTAssertEqual(queueIds, .queues(queueIds: [queueId]))
+        case .unavailable(let unavailabilityReason):
             XCTFail("Result should be `.success(.available)`")
         }
     }
@@ -100,12 +88,8 @@ final class AvailabilityTests: XCTestCase {
         env.queuesMonitor = .mock(getQueues: env.getQueues)
         env.getCurrentEngagement = { .mock() }
         let availability = Availability(environment: env)
-        do {
-            let status = try await availability.checkSecureConversationsAvailability(for: queueIds)
-            XCTAssertEqual(status, .unavailable(.emptyQueue))
-        } catch {
-            XCTFail("Expected success, but got failure: \(error)")
-        }
+        let status = try await availability.checkSecureConversationsAvailability(for: queueIds)
+        XCTAssertEqual(status, .unavailable(.emptyQueue))
     }
 
     func testEmptyQueueStatusIfQueueStatusIsClosed() async throws {
@@ -122,12 +106,8 @@ final class AvailabilityTests: XCTestCase {
         env.queuesMonitor = .mock(getQueues: env.getQueues)
         env.getCurrentEngagement = { .mock() }
         let availability = Availability(environment: env)
-        do {
-            let status = try await availability.checkSecureConversationsAvailability(for: [queueId])
-            XCTAssertEqual(status, .unavailable(.emptyQueue))
-        } catch {
-            XCTFail("Expected success, but got failure: \(error)")
-        }
+        let status = try await availability.checkSecureConversationsAvailability(for: [queueId])
+        XCTAssertEqual(status, .unavailable(.emptyQueue))
     }
 
     func testEmptyQueueStatusIfMediaDoesNotContainMessaging() async throws {
@@ -144,12 +124,8 @@ final class AvailabilityTests: XCTestCase {
         env.isAuthenticated = { true }
         env.queuesMonitor = .mock(getQueues: env.getQueues)
         let availability = Availability(environment: env)
-        do {
-            let status = try await availability.checkSecureConversationsAvailability(for: [queueId])
-            XCTAssertEqual(status, .unavailable(.emptyQueue))
-        } catch {
-            XCTFail("Expected success, but got failure: \(error)")
-        }
+        let status = try await availability.checkSecureConversationsAvailability(for: [queueId])
+        XCTAssertEqual(status, .unavailable(.emptyQueue))
     }
 
     func testAvailableStatusIfNoQueueIsPassed() async throws {
@@ -165,14 +141,10 @@ final class AvailabilityTests: XCTestCase {
         env.isAuthenticated = { true }
         env.queuesMonitor = .mock(getQueues: env.getQueues)
         let availability = Availability(environment: env)
-        do {
-            let status = try await availability.checkSecureConversationsAvailability(for: [])
-            if case let .available(.queues(queueIds)) = status {
-                XCTAssertTrue(true)
-            } else {
-                XCTFail("Result should be `.success(.available)`")
-            }
-        } catch {
+        let status = try await availability.checkSecureConversationsAvailability(for: [])
+        if case let .available(.queues(queueIds)) = status {
+            XCTAssertTrue(true)
+        } else {
             XCTFail("Result should be `.success(.available)`")
         }
     }
@@ -190,12 +162,8 @@ final class AvailabilityTests: XCTestCase {
         env.queuesMonitor = .mock(getQueues: env.getQueues)
         env.getCurrentEngagement = { .mock() }
         let availability = Availability(environment: env)
-        do {
-            let status = try await availability.checkSecureConversationsAvailability(for: [])
-            XCTAssertEqual(status, .unavailable(.emptyQueue))
-        } catch {
-            XCTFail("Expected success, but got failure: \(error)")
-        }
+        let status = try await availability.checkSecureConversationsAvailability(for: [])
+        XCTAssertEqual(status, .unavailable(.emptyQueue))
     }
 
     func testAvailableStatusIfTransferredAndCapabilitiesTextTrue() async throws {
@@ -212,11 +180,7 @@ final class AvailabilityTests: XCTestCase {
         env.isAuthenticated = { true }
         env.queuesMonitor = .mock(getQueues: env.getQueues)
         let availability = Availability(environment: env)
-        do {
-            let status = try await availability.checkSecureConversationsAvailability(for: [])
-            XCTAssertEqual(status, .available(.transferred))
-        } catch {
-            XCTFail("Result should be `.success(.available)`. Got `\(error)` instead.")
-        }
+        let status = try await availability.checkSecureConversationsAvailability(for: [])
+        XCTAssertEqual(status, .available(.transferred))
     }
 }
