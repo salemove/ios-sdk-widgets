@@ -224,6 +224,9 @@ extension EngagementCoordinator {
         guard let engagement = interactor.endedEngagement,
                 engagement.actionOnEnd == .showSurvey,
                 surveyPresentation == .presentSurvey else {
+            environment.log.prefixed(Self.self).info(
+                "Dismiss Glia screen without showing survey. On end action: \(String(describing: interactor.endedEngagement?.actionOnEnd))"
+            )
             dismissGliaViewController()
             return
         }
@@ -241,6 +244,7 @@ extension EngagementCoordinator {
                     dismissGliaViewController: dismissGliaViewController
                 )
             case .success(.none):
+                environment.log.prefixed(Self.self).info("Survey loaded with no content")
                 dismissGliaViewController()
             case let .failure(error):
                 presentSurveyError(error, dismissGliaViewController: dismissGliaViewController)
