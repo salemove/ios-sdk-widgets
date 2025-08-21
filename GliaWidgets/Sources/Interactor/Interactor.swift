@@ -76,7 +76,7 @@ class Interactor {
     let visitorContext: Configuration.VisitorContext?
     @Published private(set) var currentEngagement: CoreSdkClient.Engagement?
 
-    // Used to save engagement ended by operator to fetch a survey
+    // Used to save ended engagement to fetch a survey
     private(set) var endedEngagement: CoreSdkClient.Engagement?
 
     private var observers = [() -> (AnyObject?, EventHandler)]()
@@ -248,8 +248,6 @@ extension Interactor {
                 completion(.failure(error))
             } else {
                 self.state = .ended(.byVisitor)
-                // Save engagement ended by visitor to fetch a survey
-                self.endedEngagement = self.environment.coreSdk.getCurrentEngagement()
                 completion(.success(()))
             }
         }
@@ -274,6 +272,10 @@ extension Interactor: CoreSdkClient.Interactable {
     var onEngagementChanged: CoreSdkClient.EngagementChangedBlock {
         return { [weak self] engagement in
             self?.currentEngagement = engagement
+            if let engagement {
+                // Save non-nil engagement ended to fetch a survey
+                self?.endedEngagement = engagement
+            }
         }
     }
 
