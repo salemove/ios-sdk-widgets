@@ -2855,10 +2855,6 @@
 		1A60AFC12566857200E53F53 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				C0193DD82D957D0500801CF6 /* PushNotifications */,
-				2198B7AA2CAEB13E002C442B /* QueuesMonitor */,
-				215A25922CA44D900013023E /* EngagementLauncher */,
-				C0F3DE352C69F4A700DE6D7B /* EntryWidget */,
 				C0D6C9E72C09C70B00D4709B /* AlertManager */,
 				C4794E6E270673FC00F989F7 /* Animation */,
 				75940965298D38B6008B173A /* BundleManaging */,
