@@ -15,7 +15,7 @@ on:
 jobs:
   build:
     name: Create PR, draft release, and build xcframework
-    runs-on: macos-latest
+    runs-on: macos-14
     permissions:
       contents: write
       pull-requests: write
