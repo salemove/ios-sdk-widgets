@@ -126,7 +126,7 @@ class EngagementViewModel: CommonEngagementModel {
                 case let .failure(error):
                     self.engagementAction?(.showAlert(.error(
                         error: error,
-                        dismissed: conditionallyEndSession
+                        dismissed: endSession
                     )))
                 }
             }
@@ -138,15 +138,6 @@ class EngagementViewModel: CommonEngagementModel {
     func endSession() {
         interactor.endSession { [weak self] _ in
             self?.engagementDelegate?(.finished)
-        }
-    }
-
-    func conditionallyEndSession() {
-        switch self.interactor.state {
-        case .ended:
-            self.endSession()
-        default:
-            break
         }
     }
 
