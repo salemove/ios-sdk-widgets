@@ -71,6 +71,8 @@ class ChatView: EngagementView {
         return CGRect(x: x, y: y, width: width, height: height)
     }
 
+    let topContentShadowView = UIView()
+    let topContentShadowGradient = CAGradientLayer()
     // Made internal for Snapshot test purposes
     @Published private(set) var isTopBannerExpanded = false
     @Published private(set) var isTopBannerHidden = true
@@ -124,6 +126,14 @@ class ChatView: EngagementView {
     override func layoutSubviews() {
         super.layoutSubviews()
         moveCallBubbleVisible()
+        topContentShadowGradient.frame = topContentShadowView.bounds
+        topContentShadowGradient.startPoint = CGPoint(x: 0.5, y: 0.0)
+        topContentShadowGradient.endPoint   = CGPoint(x: 0.5, y: 1.0)
+        topContentShadowGradient.colors = [
+            UIColor.black.withAlphaComponent(0.1).cgColor,
+            UIColor.clear.cgColor
+        ]
+        topContentShadowGradient.locations = [0, 1]
     }
 
     override func setup() {
