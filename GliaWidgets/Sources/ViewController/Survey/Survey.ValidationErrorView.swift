@@ -6,7 +6,7 @@ extension Survey {
             $0.numberOfLines = 0
         }
         let validationImage = UIImageView().make {
-            $0.image = Asset.surveyValidationError.image
+            $0.image = Asset.surveyValidationError.image.withRenderingMode(.alwaysTemplate)
         }
         lazy var validationMessageHStack = UIStackView.make(.horizontal, spacing: 8)(
             validationImage,
@@ -15,7 +15,7 @@ extension Survey {
 
         private let style: Theme.SurveyStyle.ValidationError
 
-        // MARK: - Lifycycle
+        // MARK: - Lifecycle
 
         init(style: Theme.SurveyStyle.ValidationError) {
             self.style = style
@@ -33,6 +33,7 @@ extension Survey {
             accessibilityElements = [validationMessageHStack]
             isAccessibilityElement = true
 
+            validationImage.tintColor = .init(hex: style.color)
             validationMessage.textColor = .init(hex: style.color)
             validationMessage.font = style.font
             validationMessage.text = style.message

@@ -57,6 +57,10 @@ public extension Theme.SurveyStyle {
                 configuration: configuration?.title,
                 assetsBuilder: assetsBuilder
             )
+            error.apply(
+                configuration: configuration?.error,
+                assetsBuilder: assetsBuilder
+            )
             applyTintColorConfiguration(configuration?.tintColor)
         }
 
