@@ -74,13 +74,10 @@ extension Survey.ViewController.Props {
                 updateProps(validate(props: currentProps, setQuestion: { questions[$0] = $1 }))
                 return
             }
-
-            submitSurveyAnswer(
-                currentProps.toCoreSdkAnswers(),
-                sdkSurvey.id,
-                engagementId
-            ) { result in
-                guard case .failure(let error) = result else { return completion() }
+            do {
+                try await submitSurveyAnswer(currentProps.toCoreSdkAnswers(), sdkSurvey.id, engagementId)
+                completion()
+            } catch {
                 onError(error)
             }
         }

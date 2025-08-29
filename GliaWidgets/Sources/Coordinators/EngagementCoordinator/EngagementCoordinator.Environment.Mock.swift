@@ -19,7 +19,7 @@ extension EngagementCoordinator.Environment {
         fetchSiteConfigurations: { _ in },
         getCurrentEngagement: { nil },
         getNonTransferredSecureConversationEngagement: { return nil },
-        submitSurveyAnswer: { _, _, _, _ in },
+        submitSurveyAnswer: { _, _, _ in },
         uiApplication: .mock,
         uiScreen: .mock,
         notificationCenter: .mock,
