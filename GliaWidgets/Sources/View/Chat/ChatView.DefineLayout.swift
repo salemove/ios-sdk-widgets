@@ -17,6 +17,19 @@ extension ChatView {
         addSubview(tableAndIndicatorStack)
         tableAndIndicatorStack.translatesAutoresizingMaskIntoConstraints = false
         constraints += tableAndIndicatorStack.layoutInSuperview(edges: .horizontal)
+        addSubview(topContentShadowView)
+        topContentShadowView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += [
+            topContentShadowView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            topContentShadowView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            topContentShadowView.topAnchor.constraint(equalTo: tableAndIndicatorStack.topAnchor),
+            topContentShadowView.heightAnchor.constraint(equalToConstant: 12)
+        ]
+        topContentShadowView.isUserInteractionEnabled = false
+        topContentShadowView.backgroundColor = .clear
+        if topContentShadowGradient.superlayer == nil {
+            topContentShadowView.layer.addSublayer(topContentShadowGradient)
+        }
 
         constraints += [
             typingIndicatorView.leadingAnchor.constraint(equalTo: typingIndicatorContainer.leadingAnchor, constant: 10),
