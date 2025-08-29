@@ -28,8 +28,9 @@ extension SecureConversations.TranscriptModel.Environment {
         },
         uiApplication: .failing,
         queueIds: [],
-        getQueues: { _ in
-            fail("\(Self.self).listQueues")
+        getQueues: {
+            fail("\(Self.self).getQueues")
+            throw NSError(domain: "getQueues", code: -1)
         },
         createFileUploadListModel: { _ in
             fail("\(Self.self).createFileUploadListModel")

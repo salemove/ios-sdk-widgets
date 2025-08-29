@@ -148,26 +148,31 @@ extension SecureConversations {
             uploader.limitReached.addObserver(self) { [weak self] limitReached, _ in
                 self?.action?(.pickMediaButtonEnabled(!limitReached))
             }
-            checkSecureConversationsAvailability()
         }
 
-        private func checkSecureConversationsAvailability() {
-            availability.checkSecureConversationsAvailability(for: environment.queueIds) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(.available(.queues(queueIds))):
-                    self.environment.queueIds = queueIds
-                    self.isSecureConversationsAvailable = true
-                    self.fileUploadListModel.isEnabled = true
-                case .success(.available(.transferred)):
-                    self.environment.queueIds = []
-                    self.isSecureConversationsAvailable = true
-                    self.fileUploadListModel.isEnabled = true
-                case .failure, .success(.unavailable(.emptyQueue)), .success(.unavailable(.unauthenticated)):
-                    // For chat screen we no longer show unavailability dialog, but unavailability banner instead.
+        @MainActor
+        func checkSecureConversationsAvailability() async {
+            do {
+                let status = try await availability.checkSecureConversationsAvailability(for: environment.queueIds)
+                switch status {
+                case .available(let availability):
+                    switch availability {
+                    case .transferred:
+                        self.environment.queueIds = []
+                        self.isSecureConversationsAvailable = true
+                        self.fileUploadListModel.isEnabled = true
+                    case let .queues(queueIds):
+                        self.environment.queueIds = queueIds
+                        self.isSecureConversationsAvailable = true
+                        self.fileUploadListModel.isEnabled = true
+                    }
+                case .unavailable:
                     self.isSecureConversationsAvailable = false
                     self.fileUploadListModel.isEnabled = false
                 }
+            } catch {
+                self.isSecureConversationsAvailable = false
+                self.fileUploadListModel.isEnabled = false
             }
         }
 
@@ -206,14 +211,29 @@ extension SecureConversations {
             }
         }
 
+        @MainActor
+        func asyncEvent(_ event: ChatViewModel.AsyncEvent) async {
+            switch event {
+            case .sendTapped:
+                sendMessage()
+            case .customCardOptionSelected:
+                break
+            case let .gvaButtonTapped(option):
+                gvaOptionAction(for: option)()
+            case let .retryMessageTapped(message):
+                retryMessageSending(message)
+            case .choiceOptionSelected:
+                // Not supported for transcript.
+                break
+            }
+        }
+
         func event(_ event: Event) {
             switch event {
             case .viewDidLoad:
                 isViewLoaded = true
             case .messageTextChanged(let text):
                 messageText = text
-            case .sendTapped:
-                sendMessage()
             case .removeUploadTapped(let upload):
                 removeUpload(upload)
             case .pickMediaTapped:
@@ -225,20 +245,10 @@ extension SecureConversations {
                 fileTapped(file)
             case .downloadTapped(let download):
                 downloadTapped(download)
-            case .choiceOptionSelected:
-                // Not supported for transcript.
-                break
             case .chatScrolled(let bottomReached):
                 isChatScrolledToBottom.value = bottomReached
             case .linkTapped(let url):
                 linkTapped(url)
-            case .customCardOptionSelected:
-                // Not supported for transcript.
-                break
-            case let .gvaButtonTapped(option):
-                gvaOptionAction(for: option)()
-            case let .retryMessageTapped(message):
-                retryMessageSending(message)
             }
         }
 
