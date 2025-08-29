@@ -11,9 +11,13 @@ extension Survey {
         let title = UILabel().make {
             $0.numberOfLines = 0
         }
-        let textView = UITextView().make {
-            $0.clipsToBounds = true
-        }
+        lazy var textView = PlaceholderTextView(
+            style: .init(
+                text: style.option.normalText,
+                placeholder: style.placeholder,
+                accessibility: .init(isFontScalingEnabled: style.accessibility.isFontScalingEnabled)
+            )
+        ).make { $0.clipsToBounds = true }
         lazy var validationError = ValidationErrorView(style: style.error)
         lazy var contentStack = UIStackView.make(.vertical, spacing: 16)(
             title,
@@ -69,16 +73,14 @@ extension Survey {
             textView.accessibilityHint = props.accessibility.fieldHint
 
             textView.text = props.value
+            textView.placeholder = props.placeholder
             validationError.isHidden = !props.showValidationError
 
-            let textViewStyle = props.showValidationError ?
-            style.option.highlightedLayer :
-            style.option.normalLayer
+            let layerStyle = layerStyle()
+            renderLayerStyle(layerStyle)
 
-            renderTextViewStyle(textViewStyle)
-
-            textView.textColor = UIColor(hex: style.text.color)
-            textView.font = style.text.font
+            let textStyle = textStyle()
+            renderTextStyle(textStyle)
 
             setFontScalingEnabled(
                 style.accessibility.isFontScalingEnabled,
@@ -86,11 +88,31 @@ extension Survey {
             )
         }
 
-        func renderTextViewStyle(_ style: Theme.Layer) {
-            textView.layer.cornerRadius = style.cornerRadius
-            textView.layer.borderColor = style.borderColor
-            textView.layer.borderWidth = style.borderWidth
-            style.background.unwrap { colorType in
+        func layerStyle() -> Theme.Layer {
+            if textView.isFirstResponder {
+                return style.option.selectedLayer
+            } else if props.showValidationError {
+                return style.option.highlightedLayer
+            } else {
+                return style.option.normalLayer
+            }
+        }
+
+        func textStyle() -> Theme.Text {
+            if textView.isFirstResponder {
+                return style.option.selectedText
+            } else if props.showValidationError {
+                return style.option.highlightedText
+            } else {
+                return style.option.normalText
+            }
+        }
+
+        func renderLayerStyle(_ layer: Theme.Layer) {
+            textView.layer.cornerRadius = layer.cornerRadius
+            textView.layer.borderColor = layer.borderColor
+            textView.layer.borderWidth = layer.borderWidth
+            layer.background.unwrap { colorType in
                 switch colorType {
                 case .fill(let color):
                     textView.backgroundColor = color
@@ -98,6 +120,14 @@ extension Survey {
                     textView.layer.insertSublayer(makeGradientBackground(colors: colors), at: 0)
                 }
             }
+        }
+
+        func renderTextStyle(_ text: Theme.Text) {
+            textView.applyStyle(.init(
+                text: text,
+                placeholder: style.placeholder,
+                accessibility: .init(isFontScalingEnabled: style.accessibility.isFontScalingEnabled)
+            ))
         }
 
         // MARK: - Private
@@ -111,6 +141,7 @@ extension Survey.InputQuestionView {
         let id: String
         var title: String
         var value: String
+        var placeholder: String
         var isRequired: Bool
         var showValidationError: Bool
         var textDidChange: (String) -> Void
@@ -126,6 +157,7 @@ extension Survey.InputQuestionView {
             id: String,
             title: String,
             value: String = "",
+            placeholder: String = "",
             isRequired: Bool = false,
             showValidationError: Bool = false,
             textDidChange: @escaping (String) -> Void = { _ in },
@@ -135,6 +167,7 @@ extension Survey.InputQuestionView {
             self.id = id
             self.title = title
             self.value = value
+            self.placeholder = placeholder
             self.isRequired = isRequired
             self.showValidationError = showValidationError
             self.textDidChange = textDidChange
@@ -150,7 +183,8 @@ extension Survey.InputQuestionView: UITextViewDelegate {
     }
 
     func textViewDidBeginEditing(_ textView: UITextView) {
-        renderTextViewStyle(style.option.selectedLayer)
+        renderLayerStyle(style.option.selectedLayer)
+        renderTextStyle(style.option.selectedText)
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {

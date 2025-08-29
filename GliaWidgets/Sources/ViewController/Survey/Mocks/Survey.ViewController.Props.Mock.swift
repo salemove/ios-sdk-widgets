@@ -138,12 +138,14 @@ extension Survey.ViewController.Props {
 
     static func makeInputPropsMock(
         value: String = "Feedback",
+        placeholder: String = "",
         showValidationError: Bool = false
     ) -> Survey.InputQuestionView.Props {
         .init(
             id: UUID().uuidString,
             title: "Question title",
             value: value,
+            placeholder: placeholder,
             isRequired: true,
             showValidationError: showValidationError,
             accessibility: .init(

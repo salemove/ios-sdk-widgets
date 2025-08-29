@@ -257,6 +257,7 @@ extension Survey.ViewController.Props {
         var inputProps = Survey.InputQuestionView.Props(
             id: sdkQuestion.id.rawValue,
             title: sdkQuestion.text,
+            placeholder: Localization.General.comment,
             isRequired: sdkQuestion.required,
             accessibility: .init(
                 titleValue: accessibilityValue,

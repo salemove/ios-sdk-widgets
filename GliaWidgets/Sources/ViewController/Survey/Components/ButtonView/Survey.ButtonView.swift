@@ -57,7 +57,6 @@ extension Survey {
             isAccessibilityElement = true
             accessibilityTraits = .button
 
-            value.font = style.font
             setFontScalingEnabled(
                 style.accessibility.isFontScalingEnabled,
                 for: value
@@ -67,10 +66,10 @@ extension Survey {
         override func defineLayout() {
             super.defineLayout()
             NSLayoutConstraint.activate([
-                value.topAnchor.constraint(equalTo: topAnchor, constant: 0),
-                value.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-                value.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
-                value.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)
+                value.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+                value.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+                value.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+                value.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
             ])
         }
 
@@ -92,15 +91,15 @@ extension Survey {
         }
 
         func updateActiveState() {
-            value.layer.cornerRadius = style.normalLayer.cornerRadius
-            value.layer.borderWidth = style.normalLayer.borderWidth
-            value.layer.borderColor = style.normalLayer.borderColor
+            layer.cornerRadius = style.normalLayer.cornerRadius
+            layer.borderWidth = style.normalLayer.borderWidth
+            layer.borderColor = style.normalLayer.borderColor
             value.textColor = .init(hex: style.normalText.color)
             value.font = style.normalText.font
             if let hex = style.normalLayer.background {
                 switch hex {
                 case .fill(let color):
-                    value.backgroundColor = color
+                    backgroundColor = color
                 case .gradient(let colors):
                     makeGradientBackground(
                         colors: colors,
@@ -108,20 +107,20 @@ extension Survey {
                     )
                 }
             } else {
-                value.backgroundColor = .clear
+                backgroundColor = .clear
             }
         }
 
         func updateSelectedState() {
-            value.layer.cornerRadius = style.selectedLayer.cornerRadius
-            value.layer.borderWidth = style.selectedLayer.borderWidth
-            value.layer.borderColor = style.selectedLayer.borderColor
+            layer.cornerRadius = style.selectedLayer.cornerRadius
+            layer.borderWidth = style.selectedLayer.borderWidth
+            layer.borderColor = style.selectedLayer.borderColor
             value.textColor = .init(hex: style.selectedText.color)
             value.font = style.selectedText.font
             if let hex = style.selectedLayer.background {
                 switch hex {
                 case .fill(let color):
-                    value.backgroundColor = color
+                    backgroundColor = color
                 case .gradient(let colors):
                     makeGradientBackground(
                         colors: colors,
@@ -129,20 +128,20 @@ extension Survey {
                     )
                 }
             } else {
-                value.backgroundColor = .clear
+                backgroundColor = .clear
             }
         }
 
         func updateHighlightedState() {
-            value.layer.cornerRadius = style.highlightedLayer.cornerRadius
-            value.layer.borderWidth = style.highlightedLayer.borderWidth
-            value.layer.borderColor = style.highlightedLayer.borderColor
+            layer.cornerRadius = style.highlightedLayer.cornerRadius
+            layer.borderWidth = style.highlightedLayer.borderWidth
+            layer.borderColor = style.highlightedLayer.borderColor
             value.textColor = .init(hex: style.highlightedText.color)
             value.font = style.highlightedText.font
             if let hex = style.highlightedLayer.background {
                 switch hex {
                 case .fill(let color):
-                    value.backgroundColor = color
+                    backgroundColor = color
                 case .gradient(let colors):
                     makeGradientBackground(
                         colors: colors,
@@ -150,7 +149,7 @@ extension Survey {
                     )
                 }
             } else {
-                value.backgroundColor = .clear
+                backgroundColor = .clear
             }
         }
 

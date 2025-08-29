@@ -194,6 +194,7 @@ extension RemoteConfiguration {
 
     struct OptionButton: Codable {
         let font: Font?
+        let placeholder: Text?
         let highlightedLayer: Layer?
         let highlightedText: Text?
         let normalLayer: Layer?
@@ -203,9 +204,8 @@ extension RemoteConfiguration {
     }
 
     struct SurveyInputQuestion: Codable {
-        let background: Layer?
-        let option: OptionButton?
-        let text, title: Text?
+        let inputField: OptionButton?
+        let title: Text?
     }
 
     struct SurveyScaleQuestion: Codable {

@@ -481,6 +481,7 @@
 		8492F91B2CAD6ADE00242691 /* ChatViewModelTests+MessageRetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492F91A2CAD6ADE00242691 /* ChatViewModelTests+MessageRetry.swift */; };
 		8497C1E82E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8497C1E72E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift */; };
 		84A318A12869ECFC00CA1DE5 /* Unavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A318A02869ECFC00CA1DE5 /* Unavailable.swift */; };
+		84B21DF32E604E220048AB64 /* PlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B21DF22E604E220048AB64 /* PlaceholderTextView.swift */; };
 		84C24CF82B8353A00089A388 /* ProcessInfoHandling.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C24CF72B8353A00089A388 /* ProcessInfoHandling.Interface.swift */; };
 		84C24CFA2B83541F0089A388 /* ProcessInfoHandling.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C24CF92B83541F0089A388 /* ProcessInfoHandling.Mock.swift */; };
 		84C24CFC2B8354A80089A388 /* ProcessInfoHandling.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C24CFB2B8354A80089A388 /* ProcessInfoHandling.Live.swift */; };
@@ -1558,6 +1559,7 @@
 		8492F91A2CAD6ADE00242691 /* ChatViewModelTests+MessageRetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModelTests+MessageRetry.swift"; sourceTree = "<group>"; };
 		8497C1E72E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleChoiceQuestionViewTests.swift; sourceTree = "<group>"; };
 		84A318A02869ECFC00CA1DE5 /* Unavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unavailable.swift; sourceTree = "<group>"; };
+		84B21DF22E604E220048AB64 /* PlaceholderTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTextView.swift; sourceTree = "<group>"; };
 		84C24CF72B8353A00089A388 /* ProcessInfoHandling.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoHandling.Interface.swift; sourceTree = "<group>"; };
 		84C24CF92B83541F0089A388 /* ProcessInfoHandling.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoHandling.Mock.swift; sourceTree = "<group>"; };
 		84C24CFB2B8354A80089A388 /* ProcessInfoHandling.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoHandling.Live.swift; sourceTree = "<group>"; };
@@ -2739,6 +2741,7 @@
 		1A60AF6A25656C1E00E53F53 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				84B21DF12E604E0E0048AB64 /* PlaceholderTextView */,
 				C06A7580296EC841006B69A2 /* NumberSlot */,
 				EB2CBB0E27D89F6B004F178E /* OnHoldOverlay */,
 				1A4674A525E905960078FA1C /* AttachmentList */,
@@ -4440,6 +4443,14 @@
 			path = SingleChoiceQuestionView;
 			sourceTree = "<group>";
 		};
+		84B21DF12E604E0E0048AB64 /* PlaceholderTextView */ = {
+			isa = PBXGroup;
+			children = (
+				84B21DF22E604E220048AB64 /* PlaceholderTextView.swift */,
+			);
+			path = PlaceholderTextView;
+			sourceTree = "<group>";
+		};
 		84C24CF62B8353840089A388 /* ProcessInfoHandling */ = {
 			isa = PBXGroup;
 			children = (
@@ -5747,9 +5758,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5764,9 +5779,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TestingApp/Pods-TestingApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TestingApp/Pods-TestingApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5781,9 +5800,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -6006,6 +6029,7 @@
 				C09046FC2B7E1107003C437C /* Theme.ChoiceCardStyle.Options.RemoteConfig.swift in Sources */,
 				C0D6CA592C19BE9D00D4709B /* FilePickerController.Envrionment.swift in Sources */,
 				7594093F298D376B008B173A /* RemoteConfiguration+Chat.swift in Sources */,
+				84B21DF32E604E220048AB64 /* PlaceholderTextView.swift in Sources */,
 				C09047232B7E1B7F003C437C /* GvaGalleryCardStyle.TextStyle.RemoteConfig.swift in Sources */,
 				9A3E1D9427B6C29C005634EB /* ChatEngagementFile.Mock.swift in Sources */,
 				210150782CC14E8200294BA4 /* QueuesMonitor.Environment.Mock.swift in Sources */,

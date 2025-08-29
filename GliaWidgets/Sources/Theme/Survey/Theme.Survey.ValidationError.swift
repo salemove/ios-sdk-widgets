@@ -29,5 +29,20 @@ public extension Theme.SurveyStyle {
                 )
             )
         }
+
+        /// Apply validation error style from remote configuration
+        mutating func apply(
+            configuration: RemoteConfiguration.Text?,
+            assetsBuilder: RemoteConfiguration.AssetsBuilder
+        ) {
+            configuration?.foreground?.value
+                .first
+                .unwrap { color = $0 }
+
+            UIFont.convertToFont(
+                uiFont: assetsBuilder.fontBuilder(configuration?.font),
+                textStyle: .caption1
+            ).unwrap { font = $0 }
+        }
     }
 }
