@@ -31,7 +31,7 @@ extension SecureConversations.Coordinator.Environment {
         uploadFileToEngagement: { file, progress, completion in },
         getCurrentEngagement: { .mock() },
         getNonTransferredSecureConversationEngagement: { .mock() },
-        submitSurveyAnswer: { answers, surveyId, engagementId, completion in },
+        submitSurveyAnswer: { answers, surveyId, engagementId in },
         interactor: .mock(),
         messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock,
         isAuthenticated: { true },

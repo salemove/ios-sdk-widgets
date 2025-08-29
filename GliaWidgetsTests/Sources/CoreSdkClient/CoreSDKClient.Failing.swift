@@ -49,7 +49,10 @@ extension CoreSdkClient {
         fetchFile: { _, _, _ in fail("\(Self.self).fetchFile") },
         getCurrentEngagement: { return nil },
         fetchSiteConfigurations: { _ in fail("\(Self.self).fetchSiteConfigurations") },
-        submitSurveyAnswer: { _, _, _, _ in },
+        submitSurveyAnswer: { _, _, _ in
+            fail("\(Self.self).submitSurveyAnswer")
+            throw NSError(domain: "submitSurveyAnswer", code: -1)
+        },
         authentication: { _ in
             fail("\(Self.self).authentication")
             return .mock
