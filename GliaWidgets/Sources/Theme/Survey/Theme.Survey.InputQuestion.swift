@@ -12,6 +12,9 @@ public extension Theme.SurveyStyle {
         /// Text style.
         public var text: Theme.Text
 
+        /// Placeholder style.
+        public var placeholder: Theme.Text
+
         /// Validation error style.
         public var error: ValidationError
 
@@ -43,7 +46,7 @@ public extension Theme.SurveyStyle {
                         cornerRadius: 4
                     ),
                     selectedText: .init(
-                        color: color.baseLight.hex,
+                        color: color.baseDark.hex,
                         font: font.bodyText,
                         textStyle: .body,
                         accessibility: .init(isFontScalingEnabled: true)
@@ -76,6 +79,12 @@ public extension Theme.SurveyStyle {
                     textStyle: .footnote,
                     accessibility: .init(isFontScalingEnabled: true)
                 ),
+                placeholder: .init(
+                    color: color.baseNormal.hex,
+                    font: font.bodyText,
+                    textStyle: .footnote,
+                    accessibility: .init(isFontScalingEnabled: true)
+                ),
                 error: .default(color: color, font: font),
                 accessibility: .init(isFontScalingEnabled: true)
             )
@@ -91,11 +100,19 @@ public extension Theme.SurveyStyle {
                 assetsBuilder: assetsBuilder
             )
             text.apply(
-                configuration: configuration?.text,
+                configuration: configuration?.inputField?.normalText,
+                assetsBuilder: assetsBuilder
+            )
+            placeholder.apply(
+                configuration: configuration?.inputField?.placeholder,
                 assetsBuilder: assetsBuilder
             )
             option.apply(
-                configuration: configuration?.option,
+                configuration: configuration?.inputField,
+                assetsBuilder: assetsBuilder
+            )
+            error.apply(
+                configuration: configuration?.inputField?.error,
                 assetsBuilder: assetsBuilder
             )
         }

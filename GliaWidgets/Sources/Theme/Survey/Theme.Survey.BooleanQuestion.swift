@@ -82,6 +82,10 @@ public extension Theme.SurveyStyle {
                 configuration: configuration?.optionButton,
                 assetsBuilder: assetsBuilder
             )
+            error.apply(
+                configuration: configuration?.optionButton?.error,
+                assetsBuilder: assetsBuilder
+            )
         }
     }
 }

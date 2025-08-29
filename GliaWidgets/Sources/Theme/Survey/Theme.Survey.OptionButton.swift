@@ -24,7 +24,7 @@ extension Theme.SurveyStyle {
         /// Title font.
         public var font: UIFont
 
-        /// Text style ot the title.
+        /// Text style of the title.
         public var textStyle: UIFont.TextStyle
 
         /// Accessibility related properties.
@@ -38,7 +38,7 @@ extension Theme.SurveyStyle {
         ///   - highlightedText: Title text style when option is highlighted.
         ///   - highlightedLayer: Layer style when option is highlighted.
         ///   - font: Title font.
-        ///   - textStyle: Text style ot the title.
+        ///   - textStyle: Text style of the title.
         ///   - accessibility: Accessibility related properties.
         ///
         public init(
