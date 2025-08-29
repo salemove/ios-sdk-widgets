@@ -72,9 +72,8 @@ struct CoreSdkClient {
         (
             _ answers: [GliaCoreSDK.Survey.Answer],
             _ surveyId: GliaCoreSDK.Survey.Id,
-            _ engagementId: String,
-            _ completion: @escaping (Result<Void, GliaCoreSDK.GliaCoreError>) -> Void
-        ) -> Void
+            _ engagementId: String
+        ) async throws -> Void
     )
 
     var submitSurveyAnswer: SubmitSurveyAnswer
