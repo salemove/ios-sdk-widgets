@@ -18,7 +18,7 @@ extension ChatCoordinator.Environment {
         fetchSiteConfigurations: { completion in },
         getCurrentEngagement: { .mock() }, 
         getNonTransferredSecureConversationEngagement: { .mock() },
-        submitSurveyAnswer: { answers, surveyId, engagementId, completion in },
+        submitSurveyAnswer: { answers, surveyId, engagementId in },
         uuid: { .mock },
         uiApplication: .mock,
         fetchChatHistory: { completion in },
