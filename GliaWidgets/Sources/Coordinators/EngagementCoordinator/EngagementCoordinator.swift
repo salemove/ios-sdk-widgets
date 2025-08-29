@@ -293,9 +293,12 @@ extension EngagementCoordinator {
             submitSurveyAnswer: { [environment] answers, surveyId, engagementId in
                 environment.log.prefixed(Self.self).info("Submit survey answers")
                 // The survey is best effort, so a failure is only logged.
-                environment.submitSurveyAnswer(answers, surveyId, engagementId) { result in
-                    guard case let .failure(error) = result else { return }
-                    environment.log.prefixed(Self.self).error("Submitting survey answers failed: \(error.reason)")
+                Task {
+                    do {
+                        try await environment.submitSurveyAnswer(answers, surveyId, engagementId)
+                    } catch {
+                        environment.log.prefixed(Self.self).error("Submitting survey answers failed: \(error)")
+                    }
                 }
             },
             cancel: { [weak self] in
