@@ -5,7 +5,7 @@ extension Survey {
         struct Props {
             let header: String
             var questionsProps: [QuestionPropsProtocol]
-            var submit: (Props) -> Void
+            var submit: (Props) async -> Void
             var cancell: () -> Void
             var endEditing: () -> Void
 
@@ -63,7 +63,9 @@ extension Survey {
 
         @objc
         private func submit(sender: UIButton) {
-            props.submit(props)
+            Task {
+                await props.submit(props)
+            }
         }
 
         @objc
