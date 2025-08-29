@@ -135,7 +135,11 @@ class EngagementViewModel: CommonEngagementModel {
                 case let .failure(error):
                     self.engagementAction?(.showAlert(.error(
                         error: error,
-                        dismissed: endSession
+                        dismissed: {
+                            Task { [weak self] in
+                                await self?.endSession()
+                            }
+                        }
                     )))
                 }
             }
