@@ -212,9 +212,9 @@
 		3100EEFD293F757E00D57F71 /* SecureConversations.WelcomeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100EEFC293F757E00D57F71 /* SecureConversations.WelcomeStyle.swift */; };
 		3100EEFF293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100EEFE293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift */; };
 		3115D45C29A4FD3F00D99561 /* SecureConversations.Availability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3115D45B29A4FD3F00D99561 /* SecureConversations.Availability.swift */; };
-		3115EFBA2BC960B500B24D5A /* (null) in Sources */ = {isa = PBXBuildFile; };
-		3117EBA22B9B041100F520D8 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		3117EBA42B9B426200F520D8 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		3115EFBA2BC960B500B24D5A /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		3117EBA22B9B041100F520D8 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		3117EBA42B9B426200F520D8 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		311C03352B5588C0002E4FF8 /* SecureConversations.CoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311C03342B5588C0002E4FF8 /* SecureConversations.CoordinatorTests.swift */; };
 		311CAFCD29F8FAE20067B59F /* SecureConversations.TranscriptModel.CustomCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311CAFCC29F8FAE20067B59F /* SecureConversations.TranscriptModel.CustomCard.swift */; };
 		313EBD552943116E008E9597 /* SecureConversations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313EBD542943116E008E9597 /* SecureConversations.swift */; };
@@ -481,6 +481,7 @@
 		8492F91B2CAD6ADE00242691 /* ChatViewModelTests+MessageRetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492F91A2CAD6ADE00242691 /* ChatViewModelTests+MessageRetry.swift */; };
 		8497C1E82E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8497C1E72E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift */; };
 		84A318A12869ECFC00CA1DE5 /* Unavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A318A02869ECFC00CA1DE5 /* Unavailable.swift */; };
+		84B21DF32E604E220048AB64 /* PlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B21DF22E604E220048AB64 /* PlaceholderTextView.swift */; };
 		84C24CF82B8353A00089A388 /* ProcessInfoHandling.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C24CF72B8353A00089A388 /* ProcessInfoHandling.Interface.swift */; };
 		84C24CFA2B83541F0089A388 /* ProcessInfoHandling.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C24CF92B83541F0089A388 /* ProcessInfoHandling.Mock.swift */; };
 		84C24CFC2B8354A80089A388 /* ProcessInfoHandling.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C24CFB2B8354A80089A388 /* ProcessInfoHandling.Live.swift */; };
@@ -1558,6 +1559,7 @@
 		8492F91A2CAD6ADE00242691 /* ChatViewModelTests+MessageRetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModelTests+MessageRetry.swift"; sourceTree = "<group>"; };
 		8497C1E72E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleChoiceQuestionViewTests.swift; sourceTree = "<group>"; };
 		84A318A02869ECFC00CA1DE5 /* Unavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unavailable.swift; sourceTree = "<group>"; };
+		84B21DF22E604E220048AB64 /* PlaceholderTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTextView.swift; sourceTree = "<group>"; };
 		84C24CF72B8353A00089A388 /* ProcessInfoHandling.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoHandling.Interface.swift; sourceTree = "<group>"; };
 		84C24CF92B83541F0089A388 /* ProcessInfoHandling.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoHandling.Mock.swift; sourceTree = "<group>"; };
 		84C24CFB2B8354A80089A388 /* ProcessInfoHandling.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoHandling.Live.swift; sourceTree = "<group>"; };
@@ -2739,6 +2741,7 @@
 		1A60AF6A25656C1E00E53F53 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				84B21DF12E604E0E0048AB64 /* PlaceholderTextView */,
 				C06A7580296EC841006B69A2 /* NumberSlot */,
 				EB2CBB0E27D89F6B004F178E /* OnHoldOverlay */,
 				1A4674A525E905960078FA1C /* AttachmentList */,
@@ -4440,6 +4443,14 @@
 			path = SingleChoiceQuestionView;
 			sourceTree = "<group>";
 		};
+		84B21DF12E604E0E0048AB64 /* PlaceholderTextView */ = {
+			isa = PBXGroup;
+			children = (
+				84B21DF22E604E220048AB64 /* PlaceholderTextView.swift */,
+			);
+			path = PlaceholderTextView;
+			sourceTree = "<group>";
+		};
 		84C24CF62B8353840089A388 /* ProcessInfoHandling */ = {
 			isa = PBXGroup;
 			children = (
@@ -6006,6 +6017,7 @@
 				C09046FC2B7E1107003C437C /* Theme.ChoiceCardStyle.Options.RemoteConfig.swift in Sources */,
 				C0D6CA592C19BE9D00D4709B /* FilePickerController.Envrionment.swift in Sources */,
 				7594093F298D376B008B173A /* RemoteConfiguration+Chat.swift in Sources */,
+				84B21DF32E604E220048AB64 /* PlaceholderTextView.swift in Sources */,
 				C09047232B7E1B7F003C437C /* GvaGalleryCardStyle.TextStyle.RemoteConfig.swift in Sources */,
 				9A3E1D9427B6C29C005634EB /* ChatEngagementFile.Mock.swift in Sources */,
 				210150782CC14E8200294BA4 /* QueuesMonitor.Environment.Mock.swift in Sources */,
@@ -6646,7 +6658,7 @@
 				8492F9192CAD329800242691 /* TranscriptModelTests+MessageRetry.swift in Sources */,
 				8491AF602AA1EBB600CC3E72 /* TranscriptModelTests+URLs.swift in Sources */,
 				9A8130C427D9099F00220BBD /* FileDownload.Environment.Failing.swift in Sources */,
-				3117EBA22B9B041100F520D8 /* (null) in Sources */,
+				3117EBA22B9B041100F520D8 /* BuildFile in Sources */,
 				31CCE3E52BCE8F3A00F92535 /* CallVisualizer.Coordinator.Environment.Mock.swift in Sources */,
 				31CCE3E72BCE8F3A00F92535 /* VisitorCodeCoordinatorTests.swift in Sources */,
 				AF29811029E06E830005BD55 /* Availability.Environment.Failing.swift in Sources */,
@@ -6672,7 +6684,7 @@
 				EB9ADB552828E66B00FAE8A4 /* CallTests.swift in Sources */,
 				AF9DB22E2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift in Sources */,
 				AF9DB23128905A1D00A0C442 /* ViewFactory.Environment.Failing.swift in Sources */,
-				3117EBA42B9B426200F520D8 /* (null) in Sources */,
+				3117EBA42B9B426200F520D8 /* BuildFile in Sources */,
 				848570512BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift in Sources */,
 				9A3E1DA027BA7B9F005634EB /* FileSystemStorageTests.swift in Sources */,
 				EB9ADB5A2829089F00FAE8A4 /* ChatItem+Equatable.swift in Sources */,
@@ -6702,7 +6714,7 @@
 				2100B4842CB8143400AC7527 /* QueuesMonitor.Failing.swift in Sources */,
 				3146C9432AB1851C0047D8CC /* LocalizationTests.swift in Sources */,
 				8492F9172CAD2F2000242691 /* TranscriptModelTests+ResponseCard.swift in Sources */,
-				3115EFBA2BC960B500B24D5A /* (null) in Sources */,
+				3115EFBA2BC960B500B24D5A /* BuildFile in Sources */,
 				216D310B2CF790980019CA9E /* EntryWidget.Mock.swift in Sources */,
 				9AE05CB62805D2CB00871321 /* Interactor.Environment.Failing.swift in Sources */,
 				846429862A45DB4100943BD6 /* AlertViewController.Kind+Mock.swift in Sources */,
