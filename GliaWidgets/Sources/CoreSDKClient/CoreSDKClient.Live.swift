@@ -126,7 +126,18 @@ extension CoreSdkClient {
             fetchFile: GliaCore.sharedInstance.fetchFile(engagementFile:progress:completion:),
             getCurrentEngagement: GliaCore.sharedInstance.getCurrentEngagement,
             fetchSiteConfigurations: GliaCore.sharedInstance.fetchSiteConfiguration(_:),
-            submitSurveyAnswer: GliaCore.sharedInstance.submitSurveyAnswer(_:surveyId:engagementId:completion:),
+            submitSurveyAnswer: { answers, surveyId, engagementId in
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.submitSurveyAnswer(answers, surveyId: surveyId, engagementId: engagementId) { result in
+                        switch result {
+                        case .success:
+                            continuation.resume()
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
+                    }
+                }
+            },
             authentication: GliaCore.sharedInstance.authentication,
             fetchChatHistory: { completion in
                 GliaCore.sharedInstance.fetchChatTranscript { result in

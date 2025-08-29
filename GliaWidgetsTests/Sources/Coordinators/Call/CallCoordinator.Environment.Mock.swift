@@ -18,7 +18,7 @@ extension CallCoordinator.Environment {
         getCurrentEngagement: { .mock() },
         getNonTransferredSecureConversationEngagement: { .mock() },
         timerProviding: .mock,
-        submitSurveyAnswer: { answers, surveyId, engagementId, completion in },
+        submitSurveyAnswer: { answers, surveyId, engagementId in },
         uuid: { .mock },
         uiApplication: .mock,
         uiScreen: .mock,

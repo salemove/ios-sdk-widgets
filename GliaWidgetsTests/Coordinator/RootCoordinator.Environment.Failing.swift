@@ -40,8 +40,9 @@ extension EngagementCoordinator.Environment {
             fail("\(Self.self).getNonTransferredSecureConversationEngagement")
             return nil
         },
-        submitSurveyAnswer: { _, _, _, _ in
+        submitSurveyAnswer: { _, _, _ in
             fail("\(Self.self).submitSurveyAnswer")
+            throw NSError(domain: "submitSurveyAnswer", code: -1)
         },
         uiApplication: .failing,
         uiScreen: .failing,
