@@ -161,7 +161,7 @@ extension CoreSdkClient.SecureConversations {
         _ completion: @escaping (Result<EngagementFileInformation, Swift.Error>) -> Void
     ) -> Cancellable
 
-    typealias GetUnreadMessageCount = (_ callback: @escaping (Result<Int, Error>) -> Void) -> Void
+    typealias GetUnreadMessageCount = () async throws -> Int
 
     typealias MarkMessagesAsRead = (_ callback: @escaping (Result<Void, Error>) -> Void) -> Cancellable
 
