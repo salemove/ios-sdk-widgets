@@ -12,13 +12,20 @@ public struct SecureConversations {
     /// - Parameter completion: A callback that will return a `Result` with the number of unread
     /// secure conversation messages on success, or `Swift.Error` on failure.
     public func getUnreadMessageCount(_ callback: @escaping (Result<Int, Error>) -> Void) {
+        Task {
+            do {
+                let unreadMessageCount = try await environment.coreSdk.secureConversations.getUnreadMessageCount()
+                callback(.success(unreadMessageCount))
+            } catch {
+                callback(.failure(error))
+            }
+        }
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "getUnreadMessageCount",
             methodParams: ["callback"]
         )
-        environment.coreSdk.secureConversations.getUnreadMessageCount(callback)
     }
 
     /// Observes the count of unread messages sent through secure conversations.
