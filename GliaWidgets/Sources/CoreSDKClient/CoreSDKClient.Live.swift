@@ -193,7 +193,18 @@ extension CoreSdkClient.SecureConversations {
     static let live = Self(
         sendMessagePayload: GliaCore.sharedInstance.secureConversations.send(secureMessagePayload:queueIds:completion:),
         uploadFile: GliaCore.sharedInstance.secureConversations.uploadFile(_:progress:completion:),
-        getUnreadMessageCount: GliaCore.sharedInstance.secureConversations.getUnreadMessageCount(completion:),
+        getUnreadMessageCount: {
+            try await withCheckedThrowingContinuation { continuation in
+                GliaCore.sharedInstance.secureConversations.getUnreadMessageCount { result in
+                    switch result {
+                    case let .success(count):
+                        continuation.resume(returning: count)
+                    case let .failure(error):
+                        continuation.resume(throwing: error)
+                    }
+                }
+            }
+        },
         markMessagesAsRead: GliaCore.sharedInstance.secureConversations.markMessagesAsRead(completion:),
         downloadFile: GliaCore.sharedInstance.secureConversations.downloadFile(_:progress:completion:),
         subscribeForUnreadMessageCount: GliaCore.sharedInstance.secureConversations.subscribeToUnreadMessageCount(completion:),

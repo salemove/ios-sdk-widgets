@@ -518,7 +518,7 @@ final class GliaTests: XCTestCase {
         environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
         var engCoordEnvironment = EngagementCoordinator.Environment.engagementCoordEnvironmentWithKeyWindow
         engCoordEnvironment.fileManager = .mock
         environment.createRootCoordinator = { _, _, _, _, _, _ in EngagementCoordinator.mock(environment: engCoordEnvironment) }
