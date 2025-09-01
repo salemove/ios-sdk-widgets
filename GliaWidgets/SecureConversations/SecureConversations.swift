@@ -11,7 +11,14 @@ public struct SecureConversations {
     /// - Parameter completion: A callback that will return a `Result` with the number of unread
     /// secure conversation messages on success, or `Swift.Error` on failure.
     public func getUnreadMessageCount(_ callback: @escaping (Result<Int, Error>) -> Void) {
-        environment.coreSdk.secureConversations.getUnreadMessageCount(callback)
+        Task {
+            do {
+                let unreadMessageCount = try await environment.coreSdk.secureConversations.getUnreadMessageCount()
+                callback(.success(unreadMessageCount))
+            } catch {
+                callback(.failure(error))
+            }
+        }
     }
 
     /// Observes the count of unread messages sent through secure conversations.
