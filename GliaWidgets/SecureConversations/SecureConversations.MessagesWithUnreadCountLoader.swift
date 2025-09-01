@@ -17,64 +17,91 @@ extension SecureConversations {
         var environment: Environment
 
         func loadMessagesWithUnreadCount(callback: @escaping (Result<MessagesWithUnreadCount, Error>) -> Void) {
-            typealias ReactiveSwift = CoreSdkClient.ReactiveSwift
-            let unreadCountTimeoutProducer = ReactiveSwift.SignalProducer<Void, Never>(value: ())
-            let unreadCountRequestSource = ReactiveSwift.Signal<Result<Int, Error>, Never>.pipe()
-            let unreadCountTimeoutSource = ReactiveSwift.Signal<Result<Int, Error>, Never>.pipe()
-            // In case if `unreadCount` will never be delivered,
-            // (for example if sockets are disconnected, because
-            // `unreadCount` is based on sockets)
-            // we will still receive callback by timeout.
-            let unreadCountRequestWithTimeoutSource = ReactiveSwift.Signal.merge(
-                unreadCountRequestSource.output,
-                unreadCountTimeoutSource.output
-            ).take(first: 1)
+            let stateQueue = DispatchQueue(label: "MessagesWithUnreadCountLoader.state")
+            var didCallback = false
+            var messagesResult: Result<[ChatMessage], Error>?
+            var unreadResult: Result<Int, Error>?
 
-            let messagesSource = ReactiveSwift.Signal<Result<[ChatMessage], CoreSdkClient.SalemoveError>, Never>.pipe()
-
-            let combined = ReactiveSwift.Signal.zip(
-                messagesSource.output,
-                unreadCountRequestWithTimeoutSource
-            )
-
-            unreadCountTimeoutProducer
-                .delay(Self.unreadCountFallbackTimeoutSeconds, on: environment.scheduler)
-                .startWithCompleted {
-                    unreadCountTimeoutSource.input.send(value: .failure(TimeoutError()))
-                }
-
-            combined
-                .observe(on: environment.scheduler)
-                .observeValues { messageResult, unreadCountResult in
-                    callback(
-                        Self.messageWithUnreadCountResult(
-                            messageResult: messageResult.mapError { $0 as Error },
-                            unreadCountResult: unreadCountResult
-                        )
+            func finishIfReady() {
+                stateQueue.async {
+                    guard !didCallback,
+                          let m = messagesResult,
+                          let u = unreadResult
+                    else { return }
+                    didCallback = true
+                    let combined = Self.messageWithUnreadCountResult(
+                        messageResult: m,
+                        unreadCountResult: u
                     )
+                    DispatchQueue.main.async {
+                        callback(combined)
+                    }
                 }
+            }
 
-            environment.getSecureUnreadMessageCount(unreadCountRequestSource.input.send(value:))
-            environment.fetchChatHistory(messagesSource.input.send(value:))
+            Task {
+                do {
+                    let count = try await Self.withTimeout(seconds: Self.unreadCountFallbackTimeoutSeconds) {
+                        try await environment.getSecureUnreadMessageCount()
+                    }
+                    stateQueue.async {
+                        unreadResult = .success(count)
+                        finishIfReady()
+                    }
+                } catch {
+                    stateQueue.async {
+                        unreadResult = .failure(error)
+                        finishIfReady()
+                    }
+                }
+            }
+
+            environment.fetchChatHistory { (result: Result<[ChatMessage], CoreSdkClient.SalemoveError>) in
+                let mapped: Result<[ChatMessage], Error> = result.mapError { $0 as Error }
+                stateQueue.async {
+                    messagesResult = mapped
+                    finishIfReady()
+                }
+            }
         }
 
         static func messageWithUnreadCountResult(
             messageResult: Result<[ChatMessage], Error>,
             unreadCountResult: Result<Int, Error>
         ) -> Result<MessagesWithUnreadCount, Error> {
-                // Without messages unread count does not make much sense,
-                // that is why we prefer to report error for messages in case
-                // of failure for both requests. Same for success - ignore
-                // unreadCount failure in case of successful loading of messages.
-                switch (messageResult, unreadCountResult) {
-                case let (.success(messages), .success(unreadCount)):
-                    return .success(MessagesWithUnreadCount(messages: messages, unreadCount: unreadCount))
-                case let (.success(messages), .failure):
-                    return .success(MessagesWithUnreadCount(messages: messages, unreadCount: .zero))
-                case let (.failure(error), .failure), let (.failure(error), .success):
-                    return .failure(error)
-                }
+            // Without messages unread count does not make much sense,
+            // that is why we prefer to report error for messages in case
+            // of failure for both requests. Same for success - ignore
+            // unreadCount failure in case of successful loading of messages.
+            switch (messageResult, unreadCountResult) {
+            case let (.success(messages), .success(unreadCount)):
+                return .success(MessagesWithUnreadCount(messages: messages, unreadCount: unreadCount))
+            case let (.success(messages), .failure):
+                return .success(MessagesWithUnreadCount(messages: messages, unreadCount: .zero))
+            case let (.failure(error), .failure), let (.failure(error), .success):
+                return .failure(error)
             }
+        }
+
+        private static func withTimeout<T>(
+            seconds: TimeInterval,
+            operation: @escaping () async throws -> T
+        ) async throws -> T {
+            try await withThrowingTaskGroup(of: T.self) { group in
+                group.addTask { try await operation() }
+                group.addTask {
+                    try await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+                    throw TimeoutError()
+                }
+
+                guard let first = try await group.next() else {
+                    throw TimeoutError()
+                }
+
+                group.cancelAll()
+                return first
+            }
+        }
     }
 }
 

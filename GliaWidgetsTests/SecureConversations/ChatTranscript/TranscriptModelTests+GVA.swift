@@ -114,7 +114,7 @@ extension SecureConversationsTranscriptModelTests {
         XCTAssertEqual(calls, [.showAlert])
     }
 
-    func test_quickReplyIsShownWhenItIsLastMessage() throws {
+    func test_quickReplyIsShownWhenItIsLastMessage() async throws {
         enum Call { case quickReply }
         var calls: [Call] = []
 
@@ -144,7 +144,7 @@ extension SecureConversationsTranscriptModelTests {
         modelEnv.fetchChatHistory = { $0(.success([message])) }
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        modelEnv.secureConversations.getUnreadMessageCount = { 0 }
         modelEnv.startSocketObservation = {}
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
         let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
@@ -173,6 +173,11 @@ extension SecureConversationsTranscriptModelTests {
         }
         viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
+
+        // Will be removed when fetchChatHistory is converted to async
+        await waitUntil {
+            calls == [.quickReply]
+        }
 
         XCTAssertEqual(calls, [.quickReply])
     }

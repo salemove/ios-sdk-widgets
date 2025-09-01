@@ -102,8 +102,9 @@ extension CoreSdkClient.SecureConversations {
             fail("\(Self.self).uploadFile")
             return .mock
         },
-        getUnreadMessageCount: { _ in
+        getUnreadMessageCount: {
             fail("\(Self.self).getUnreadMessageCount")
+            throw NSError(domain: "getUnreadMessageCount", code: -1)
         },
         markMessagesAsRead: { _ in
             fail("\(Self.self).markMessagesAsRead")
