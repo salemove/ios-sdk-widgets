@@ -97,7 +97,11 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             // from view did load initiating socket events observation and loading
             // chat transcript. Now, because of migration back from chat to SC is
             // possible we need to call `start` here.
-            start = { transcriptModel.start(isTranscriptFetchNeeded: true) }
+            start = {
+                Task {
+                    await transcriptModel.start(isTranscriptFetchNeeded: true)
+                }
+            }
         } else {
             model = .chat(chatModel(replaceExistingEnqueueing: replaceExistingEnqueueing))
             start = {}
