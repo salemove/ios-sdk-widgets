@@ -4,18 +4,16 @@ extension Survey {
     final class ContentView: BaseView {
         // MARK: - Survey questions container
 
+        lazy var headerContainerView = UIView().makeView()
         lazy var header = UILabel().make {
             $0.numberOfLines = 0
             $0.textAlignment = .center
         }
-        let scrollView = UIScrollView().makeView {
+        let scrollView = UIScrollView().makeView()
+        lazy var surveyItemsStack = UIStackView.make(.vertical, spacing: 24)()
+        lazy var contentContainerView = UIView().makeView {
             $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         }
-        lazy var surveyItemsStack = UIStackView.make(.vertical, spacing: 24)()
-        lazy var contentContainerStackView = UIStackView.make(.vertical, spacing: 24)(
-            header,
-            surveyItemsStack
-        )
 
         // MARK: - Button container
 
@@ -53,11 +51,15 @@ extension Survey {
         override func setup() {
             super.setup()
 
-            addSubview(scrollView)
-            scrollView.addSubview(contentContainerStackView)
+            addSubview(contentContainerView)
+            contentContainerView.addSubview(headerContainerView)
+            contentContainerView.addSubview(scrollView)
+            contentContainerView.addSubview(buttonContainer)
 
+            headerContainerView.addSubview(header)
+            scrollView.addSubview(surveyItemsStack)
             buttonContainer.addSubview(buttonStackView)
-            addSubview(buttonContainer)
+
             addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapToHideKeyboard)))
         }
 
@@ -73,35 +75,49 @@ extension Survey {
             submitButton.titleLabel?.translatesAutoresizingMaskIntoConstraints = false
 
             var constraints: [NSLayoutConstraint] = []; defer { constraints.activate() }
-            constraints += scrollView.topAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.topAnchor)
-            constraints += scrollView.leadingAnchor.constraint(equalTo: leadingAnchor)
-            constraints += scrollView.trailingAnchor.constraint(equalTo: trailingAnchor)
+
+            constraints += header.layoutInSuperview(insets: .init(top: 24, left: 24, bottom: 24, right: 24))
+
+            constraints += contentContainerView.topAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.topAnchor)
+            constraints += contentContainerView.leadingAnchor.constraint(equalTo: leadingAnchor)
+            constraints += contentContainerView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            constraints += contentContainerView.bottomAnchor.constraint(equalTo: bottomAnchor)
+
+            constraints += headerContainerView.topAnchor.constraint(equalTo: contentContainerView.topAnchor)
+            constraints += headerContainerView.leadingAnchor.constraint(equalTo: contentContainerView.leadingAnchor)
+            constraints += headerContainerView.trailingAnchor.constraint(equalTo: contentContainerView.trailingAnchor)
+
+            constraints += scrollView.topAnchor.constraint(equalTo: headerContainerView.bottomAnchor)
+            constraints += scrollView.leadingAnchor.constraint(equalTo: contentContainerView.leadingAnchor)
+            constraints += scrollView.trailingAnchor.constraint(equalTo: contentContainerView.trailingAnchor)
             constraints += scrollView.bottomAnchor.constraint(equalTo: buttonContainer.topAnchor)
             constraints += scrollView.frameLayoutGuide.heightAnchor.constraint(
-                equalTo: contentContainerStackView.heightAnchor,
-                constant: Self.contentPadding * 2
-            ).priority(.defaultLow)
-            constraints += contentContainerStackView.topAnchor.constraint(
-                equalTo: scrollView.topAnchor,
+                equalTo: surveyItemsStack.heightAnchor,
                 constant: Self.contentPadding
+            ).priority(.defaultLow)
+            constraints += surveyItemsStack.topAnchor.constraint(
+                equalTo: scrollView.topAnchor
             )
-            constraints += contentContainerStackView.leadingAnchor.constraint(
+            constraints += surveyItemsStack.leadingAnchor.constraint(
                 equalTo: scrollView.leadingAnchor,
                 constant: Self.contentPadding
             )
-            constraints += contentContainerStackView.trailingAnchor.constraint(
+            constraints += surveyItemsStack.trailingAnchor.constraint(
                 equalTo: scrollView.frameLayoutGuide.trailingAnchor,
                 constant: -Self.contentPadding
             )
-            constraints += contentContainerStackView.heightAnchor.constraint(
+            constraints += surveyItemsStack.heightAnchor.constraint(
                 equalTo: scrollView.contentLayoutGuide.heightAnchor,
-                constant: -2 * Self.contentPadding
+                constant: -Self.contentPadding
             )
 
-            constraints += buttonContainer.bottomAnchor.constraint(equalTo: bottomAnchor).identifier(.bottom)
-            constraints += buttonContainer.leadingAnchor.constraint(equalTo: leadingAnchor)
-            constraints += buttonContainer.trailingAnchor.constraint(equalTo: trailingAnchor)
-            constraints += buttonStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -Self.contentPadding)
+            constraints += buttonContainer.bottomAnchor
+                .constraint(equalTo: contentContainerView.bottomAnchor)
+                .identifier(.bottom)
+            constraints += buttonContainer.leadingAnchor.constraint(equalTo: contentContainerView.leadingAnchor)
+            constraints += buttonContainer.trailingAnchor.constraint(equalTo: contentContainerView.trailingAnchor)
+            let constant = -(Self.contentPadding + safeAreaInsets.bottom)
+            constraints += buttonStackView.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: constant)
             constraints += buttonStackView.topAnchor.constraint(equalTo: buttonContainer.topAnchor, constant: Self.contentPadding)
             constraints += buttonStackView.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor, constant: Self.contentPadding)
             constraints += buttonStackView.trailingAnchor.constraint(equalTo: buttonContainer.trailingAnchor, constant: -Self.contentPadding)
@@ -120,10 +136,10 @@ extension Survey {
             _updateUi?()
         }
         func showKeyboard(keyboardHeight: CGFloat) {
-            constraints.constraints(with: .bottom).first?.constant = -keyboardHeight
+            contentContainerView.constraints.constraints(with: .bottom).first?.constant = -keyboardHeight
         }
         func hideKeyboard() {
-            constraints.constraints(with: .bottom).first?.constant = 0
+            contentContainerView.constraints.constraints(with: .bottom).first?.constant = 0
         }
 
         var _updateUi: (() -> Void)?
@@ -137,14 +153,14 @@ extension Survey {
                 theme.survey.layer.background.map { type in
                     switch type {
                     case .fill(color: let color):
-                        this.scrollView.backgroundColor = color
+                        this.contentContainerView.backgroundColor = color
                         this.buttonContainer.backgroundColor = color
                     case .gradient(colors: let colors):
-                        this.scrollView.layer.insertSublayer(this.makeGradientBackground(colors: colors), at: 0)
-                        this.buttonContainer.layer.insertSublayer(this.makeGradientBackground(colors: colors), at: 0)
+                        this.contentContainerView.makeGradientBackground(colors: colors)
+                        this.buttonContainer.makeGradientBackground(colors: colors)
                     }
                 }
-                this.scrollView.layer.cornerRadius = theme.survey.layer.cornerRadius
+                this.contentContainerView.layer.cornerRadius = theme.survey.layer.cornerRadius
 
                 this.cancelButton.update(with: theme.survey.cancelButton)
                 this.submitButton.update(with: theme.survey.submitButton)

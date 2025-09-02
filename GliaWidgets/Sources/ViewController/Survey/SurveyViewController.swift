@@ -177,7 +177,8 @@ extension Survey.ViewController {
             let endValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey],
             let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] {
             let endRect = view.convert((endValue as AnyObject).cgRectValue, from: view.window)
-            contentView.showKeyboard(keyboardHeight: endRect.height)
+            let height = endRect.height - (view.window?.safeAreaInsets.bottom ?? 0)
+            contentView.showKeyboard(keyboardHeight: height)
             let duration = (durationValue as AnyObject).doubleValue ?? 0.3
             UIView.animate(withDuration: duration) {
                 self.view.layoutIfNeeded()
