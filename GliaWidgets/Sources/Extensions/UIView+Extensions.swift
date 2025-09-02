@@ -46,4 +46,34 @@ extension UIView {
         layer.borderWidth = background.borderWidth
         return self
     }
+
+    /// Recursively searches for the first responder within the view's subview hierarchy.
+    ///
+    /// This method traverses the view's subviews to find the view that is currently
+    /// the first responder. It's useful for locating the active text input field
+    /// or other interactive element that has control.
+    ///
+    /// - Returns: The view that is the first responder, or `nil` if no descendant
+    ///            view is the first responder.
+    func firstResponderDescendant() -> UIView? {
+        if isFirstResponder { return self }
+        for s in subviews { if let r = s.firstResponderDescendant() { return r } }
+        return nil
+    }
+
+    /// Search for superview in view hierarchy using predicate closure.
+    /// This is useful when we need to get access from cell to table view for
+    /// example.
+    /// - Parameter predicate: Closure that receives view, as parameter,
+    /// to be inspected by the predicate. `superview` traversal is stopped when there's no `superview`
+    /// or if `superview` matches predicate.
+    /// - Returns: View that matches predicate or nil otherwise.
+    func superview(by predicate: (UIView) -> Bool) -> UIView? {
+        guard let superview else { return nil }
+        if predicate(superview) {
+            return superview
+        } else {
+            return superview.superview(by: predicate)
+        }
+    }
 }
