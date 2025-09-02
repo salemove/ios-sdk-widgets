@@ -174,15 +174,52 @@ extension Survey.ViewController {
     @objc
     func keyboardWillShow(notification: NSNotification) {
         if let userInfo = notification.userInfo,
-            let endValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey],
-            let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] {
+           let endValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey],
+           let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] {
             let endRect = view.convert((endValue as AnyObject).cgRectValue, from: view.window)
             let height = endRect.height - (view.window?.safeAreaInsets.bottom ?? 0)
             contentView.showKeyboard(keyboardHeight: height)
             let duration = (durationValue as AnyObject).doubleValue ?? 0.3
-            UIView.animate(withDuration: duration) {
+            UIView.animate(withDuration: duration, animations: {
                 self.view.layoutIfNeeded()
-            }
+            }, completion: { _ in
+                self.ensureVisibleFirstResponder()
+            })
         }
+    }
+
+    private func ensureVisibleFirstResponder() {
+        guard let responder = view.firstResponderDescendant() else { return }
+        let scrollView = contentView.scrollView
+
+        // Finds the nearest ancestor view that is a Survey.InputQuestionView,
+        // defaulting to the responder itself.
+        // This is used to scroll the entire input container into view,
+        // including its title, when the keyboard is displayed.
+        let focus = responder.superview(by: { $0 is Survey.InputQuestionView }) ?? responder
+        let rect = focus.convert(focus.bounds, to: scrollView)
+
+        let topPad: CGFloat = 24
+        let bottomPad: CGFloat = 16
+
+        let scrollViewHeight = scrollView.bounds.height
+
+        let visibleTop = scrollView.contentOffset.y + topPad
+        let visibleBottom = scrollView.contentOffset.y + scrollViewHeight - bottomPad
+
+        var newY = scrollView.contentOffset.y
+
+        if rect.minY < visibleTop {
+            newY = rect.minY - topPad
+        } else if rect.maxY > visibleBottom {
+            newY = rect.maxY - scrollViewHeight + bottomPad
+        } else {
+            return
+        }
+
+        newY = max(0, min(newY, scrollView.contentSize.height - scrollViewHeight))
+        let newOffset = CGPoint(x: scrollView.contentOffset.x, y: newY)
+
+        scrollView.setContentOffset(newOffset, animated: true)
     }
 }
