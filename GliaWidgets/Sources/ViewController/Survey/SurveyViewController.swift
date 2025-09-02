@@ -162,7 +162,7 @@ extension Survey.ViewController {
     @objc
     func keyboardWillHide(notification: NSNotification) {
         if let userInfo = notification.userInfo,
-            let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] {
+           let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] {
             contentView.hideKeyboard()
             let duration = (durationValue as AnyObject).doubleValue ?? 0.3
             UIView.animate(withDuration: duration) {
