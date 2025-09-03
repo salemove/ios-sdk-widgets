@@ -4,7 +4,17 @@ extension Survey {
     final class ContentView: BaseView {
         // MARK: - Survey questions container
 
-        lazy var headerContainerView = UIView().makeView()
+        lazy var headerContainerView = UIView().makeView {
+            $0.backgroundColor = .clear
+            $0.layer.masksToBounds = false
+            $0.layer.shadowColor = UIColor.black.cgColor
+            $0.layer.shadowOpacity = 0.15
+            $0.layer.shadowOffset = .zero
+            $0.layer.shadowRadius = 8
+        }
+        private let headerBackgroundView = UIView().makeView {
+            $0.layer.masksToBounds = true
+        }
         lazy var header = UILabel().make {
             $0.numberOfLines = 0
             $0.textAlignment = .center
@@ -52,11 +62,12 @@ extension Survey {
             super.setup()
 
             addSubview(contentContainerView)
-            contentContainerView.addSubview(headerContainerView)
             contentContainerView.addSubview(scrollView)
+            contentContainerView.addSubview(headerContainerView)
             contentContainerView.addSubview(buttonContainer)
 
-            headerContainerView.addSubview(header)
+            headerContainerView.addSubview(headerBackgroundView)
+            headerBackgroundView.addSubview(header)
             scrollView.addSubview(surveyItemsStack)
             buttonContainer.addSubview(buttonStackView)
 
@@ -79,6 +90,11 @@ extension Survey {
             constraints += header.layoutInSuperview(insets: .init(top: 24, left: 24, bottom: 24, right: 24))
 
             constraints += contentContainerView.topAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.topAnchor)
+            constraints += headerBackgroundView.topAnchor.constraint(equalTo: headerContainerView.topAnchor)
+            constraints += headerBackgroundView.leadingAnchor.constraint(equalTo: headerContainerView.leadingAnchor)
+            constraints += headerBackgroundView.trailingAnchor.constraint(equalTo: headerContainerView.trailingAnchor)
+            constraints += headerBackgroundView.bottomAnchor.constraint(equalTo: headerContainerView.bottomAnchor)
+
             constraints += contentContainerView.leadingAnchor.constraint(equalTo: leadingAnchor)
             constraints += contentContainerView.trailingAnchor.constraint(equalTo: trailingAnchor)
             constraints += contentContainerView.bottomAnchor.constraint(equalTo: bottomAnchor)
@@ -155,12 +171,16 @@ extension Survey {
                     case .fill(color: let color):
                         this.contentContainerView.backgroundColor = color
                         this.buttonContainer.backgroundColor = color
+                        this.headerBackgroundView.backgroundColor = color
                     case .gradient(colors: let colors):
                         this.contentContainerView.makeGradientBackground(colors: colors)
                         this.buttonContainer.makeGradientBackground(colors: colors)
+                        this.headerBackgroundView.makeGradientBackground(colors: colors)
                     }
                 }
                 this.contentContainerView.layer.cornerRadius = theme.survey.layer.cornerRadius
+                this.headerBackgroundView.layer.cornerRadius = theme.survey.layer.cornerRadius
+                this.headerBackgroundView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
 
                 this.cancelButton.update(with: theme.survey.cancelButton)
                 this.submitButton.update(with: theme.survey.submitButton)
