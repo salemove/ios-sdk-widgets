@@ -205,7 +205,18 @@ extension CoreSdkClient.SecureConversations {
                 }
             }
         },
-        markMessagesAsRead: GliaCore.sharedInstance.secureConversations.markMessagesAsRead(completion:),
+        markMessagesAsRead: {
+            try await withCheckedThrowingContinuation { continuation in
+                GliaCore.sharedInstance.secureConversations.markMessagesAsRead { result in
+                    switch result {
+                    case .success:
+                        continuation.resume()
+                    case let .failure(error):
+                        continuation.resume(throwing: error)
+                    }
+                }
+            }
+        },
         downloadFile: GliaCore.sharedInstance.secureConversations.downloadFile(_:progress:completion:),
         subscribeForUnreadMessageCount: GliaCore.sharedInstance.secureConversations.subscribeToUnreadMessageCount(completion:),
         unsubscribeFromUnreadMessageCount: GliaCore.sharedInstance.secureConversations.unsubscribeFromUnreadMessageCount,
