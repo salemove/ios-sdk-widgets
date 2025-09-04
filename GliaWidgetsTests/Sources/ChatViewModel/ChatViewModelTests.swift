@@ -1468,7 +1468,7 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertEqual(calls, [.showCloseButton, .refreshAll])
     }
 
-    func test_messageReceivedMarksAsReadIfOnEndIsRetain() {
+    func test_messageReceivedMarksAsReadIfOnEndIsRetain() async {
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
         var viewModelEnv = ChatViewModel.Environment.failing()
@@ -1486,10 +1486,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.notificationCenter.publisherForNotification = { _ in
             Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        viewModelEnv.secureConversations.markMessagesAsRead = { completion in
+        viewModelEnv.secureConversations.markMessagesAsRead = {
             calls.append(.secureMarkMessagesAsRead)
-            completion(.success(()))
-            return .mock
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
@@ -1499,6 +1497,10 @@ class ChatViewModelTests: XCTestCase {
 
         viewModel.interactorEvent(.receivedMessage(.mock(sender: .init(type: .operator))))
 
+        // To-do will be removed when combine and async/await bridge is implemented
+        await waitUntil {
+            calls == [.secureMarkMessagesAsRead]
+        }
         XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
     }
     
@@ -1520,10 +1522,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.notificationCenter.publisherForNotification = { _ in
             Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        viewModelEnv.secureConversations.markMessagesAsRead = { completion in
+        viewModelEnv.secureConversations.markMessagesAsRead = {
             calls.append(.secureMarkMessagesAsRead)
-            completion(.success(()))
-            return .mock
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
@@ -1554,10 +1554,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.notificationCenter.publisherForNotification = { _ in
             Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        viewModelEnv.secureConversations.markMessagesAsRead = { completion in
+        viewModelEnv.secureConversations.markMessagesAsRead = {
             calls.append(.secureMarkMessagesAsRead)
-            completion(.success(()))
-            return .mock
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
@@ -1570,7 +1568,7 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertTrue(calls.isEmpty)
     }
     
-    func test_markMessagesAsRead() {
+    func test_markMessagesAsRead() async {
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
         var viewModelEnv = ChatViewModel.Environment.failing()
@@ -1583,16 +1581,19 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.notificationCenter.publisherForNotification = { _ in
             Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        viewModelEnv.secureConversations.markMessagesAsRead = { completion in
+        viewModelEnv.secureConversations.markMessagesAsRead = {
             calls.append(.secureMarkMessagesAsRead)
-            completion(.success(()))
-            return .mock
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         viewModel.event(EngagementViewModel.Event.viewDidAppear)
 
         viewModel.markMessagesAsRead()
+
+        // To-do will be removed when combine and async/await bridge is implemented
+        await waitUntil {
+            calls == [.secureMarkMessagesAsRead]
+        }
 
         XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
     }
@@ -1611,10 +1612,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.notificationCenter.publisherForNotification = { _ in
             Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        viewModelEnv.secureConversations.markMessagesAsRead = { completion in
+        viewModelEnv.secureConversations.markMessagesAsRead = {
             calls.append(.secureMarkMessagesAsRead)
-            completion(.success(()))
-            return .mock
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
@@ -1638,10 +1637,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.notificationCenter.publisherForNotification = { type in
             Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        viewModelEnv.secureConversations.markMessagesAsRead = { completion in
+        viewModelEnv.secureConversations.markMessagesAsRead = {
             calls.append(.secureMarkMessagesAsRead)
-            completion(.success(()))
-            return .mock
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
@@ -1670,10 +1667,8 @@ class ChatViewModelTests: XCTestCase {
             }
             return Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        viewModelEnv.secureConversations.markMessagesAsRead = { completion in
+        viewModelEnv.secureConversations.markMessagesAsRead = {
             calls.append(.secureMarkMessagesAsRead)
-            completion(.success(()))
-            return .mock
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
@@ -1684,7 +1679,7 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertTrue(calls.isEmpty)
     }
     
-    func test_markMessagesAsReadNotTriggerIfApplicationGoForeground() {
+    func test_markMessagesAsReadNotTriggerIfApplicationGoForeground() async {
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
         var viewModelEnv = ChatViewModel.Environment.failing()
@@ -1702,10 +1697,8 @@ class ChatViewModelTests: XCTestCase {
             }
             return Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        viewModelEnv.secureConversations.markMessagesAsRead = { completion in
+        viewModelEnv.secureConversations.markMessagesAsRead = {
             calls.append(.secureMarkMessagesAsRead)
-            completion(.success(()))
-            return .mock
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
@@ -1714,6 +1707,10 @@ class ChatViewModelTests: XCTestCase {
         viewModel.markMessagesAsRead()
         notificationPublisher.send(.init(name: UIApplication.willEnterForegroundNotification))
 
+        // To-do will be removed when combine and async/await bridge is implemented
+        await waitUntil {
+            calls == [.secureMarkMessagesAsRead]
+        }
         XCTAssertEqual(calls, [.secureMarkMessagesAsRead])
     }
     
@@ -1731,10 +1728,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.notificationCenter.publisherForNotification = { type in
             Empty<Notification, Never>().eraseToAnyPublisher()
         }
-        viewModelEnv.secureConversations.markMessagesAsRead = { completion in
+        viewModelEnv.secureConversations.markMessagesAsRead = {
             calls.append(.secureMarkMessagesAsRead)
-            completion(.success(()))
-            return .mock
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
