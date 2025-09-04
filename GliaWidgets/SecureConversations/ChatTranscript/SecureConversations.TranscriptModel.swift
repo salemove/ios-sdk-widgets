@@ -800,36 +800,31 @@ extension SecureConversations.TranscriptModel: ApplicationVisibilityTracker {
             delayScheduler: environment.combineScheduler.global
         )
         .sink { [weak self] _ in
-            self?.performMarkMessagesAsReadRequest()
+            Task {
+                try? await self?.performMarkMessagesAsReadRequest()
+            }
         }
         .store(in: &markMessagesAsReadCancellables)
     }
 
-    fileprivate func performMarkMessagesAsReadRequest() {
-        _ = environment.secureConversations.markMessagesAsRead { [weak self] result in
-            guard let self else { return }
-
-            switch result {
-            case .success:
-                historySection.removeAll(where: {
-                    if case .unreadMessageDivider = $0.kind {
-                        return true
-                    }
-
-                    return false
-                })
-
-                action?(.refreshSection(self.historySection.index, animated: true))
-
-                if isChatScrolledToBottom.value {
-                    action?(.scrollToBottom(animated: true))
-                }
-
-                unreadMessages.value = 0
-            case .failure:
-                break
+    @MainActor
+    fileprivate func performMarkMessagesAsReadRequest() async throws {
+        try await environment.secureConversations.markMessagesAsRead()
+        historySection.removeAll(where: {
+            if case .unreadMessageDivider = $0.kind {
+                return true
             }
+
+            return false
+        })
+
+        action?(.refreshSection(self.historySection.index, animated: true))
+
+        if isChatScrolledToBottom.value {
+            action?(.scrollToBottom(animated: true))
         }
+
+        unreadMessages.value = 0
     }
 }
 
