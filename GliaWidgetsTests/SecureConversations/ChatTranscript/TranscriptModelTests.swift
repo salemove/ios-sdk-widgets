@@ -833,10 +833,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.uiApplication.applicationState = { .active }
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
-        modelEnv.secureConversations.markMessagesAsRead = { completion in
+        modelEnv.secureConversations.markMessagesAsRead = {
             calls.append(.secureMarkMessagesAsRead)
-            completion(.success(()))
-            return .mock
         }
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
         modelEnv.markUnreadMessagesDelay = { .zero }
@@ -895,10 +893,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
-        modelEnv.secureConversations.markMessagesAsRead = { completion in
+        modelEnv.secureConversations.markMessagesAsRead = {
             calls.append(.secureMarkMessagesAsRead)
-            completion(.success(()))
-            return .mock
         }
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in true }
         modelEnv.markUnreadMessagesDelay = { .zero }
@@ -949,10 +945,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
-        modelEnv.secureConversations.markMessagesAsRead = { completion in
+        modelEnv.secureConversations.markMessagesAsRead = {
             calls.append(.secureMarkMessagesAsRead)
-            completion(.success(()))
-            return .mock
         }
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in true }
         modelEnv.leaveCurrentSecureConversation = .nop
@@ -1019,10 +1013,8 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.createEntryWidget = { _ in .mock() }
         modelEnv.uiApplication.applicationState = { .active }
-        modelEnv.secureConversations.markMessagesAsRead = { completion in
+        modelEnv.secureConversations.markMessagesAsRead = {
             calls.append(.secureMarkMessagesAsRead)
-            completion(.success(()))
-            return .mock
         }
         modelEnv.fetchChatHistory = { completion in
             completion(.success([.mock()]))

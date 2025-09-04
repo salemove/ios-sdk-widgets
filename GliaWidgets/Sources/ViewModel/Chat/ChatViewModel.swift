@@ -1179,7 +1179,9 @@ extension ChatViewModel: ApplicationVisibilityTracker {
             delayScheduler: environment.combineScheduler.global
         )
         .sink { [weak self] _ in
-            _ = self?.environment.secureConversations.markMessagesAsRead { _ in }
+            Task {
+                try? await self?.environment.secureConversations.markMessagesAsRead()
+            }
         }
         .store(in: &markMessagesAsReadCancellables)
     }
