@@ -45,7 +45,7 @@ extension CoreSdkClient.SecureConversations {
         sendMessagePayload: { _, _, _ in .mock },
         uploadFile: { _, _, _ in .mock },
         getUnreadMessageCount: { 0 },
-        markMessagesAsRead: { _ in .mock },
+        markMessagesAsRead: {},
         downloadFile: { _, _, _ in .mock },
         subscribeForUnreadMessageCount: { _ in UUID.mock.uuidString },
         unsubscribeFromUnreadMessageCount: { _ in },
