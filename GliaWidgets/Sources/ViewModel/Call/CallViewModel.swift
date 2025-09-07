@@ -74,17 +74,23 @@ class CallViewModel: EngagementViewModel, ViewModel {
         environment.proximityManager.stop()
     }
 
-    func event(_ event: Event) {
+    func asyncEvent(_ event: AsyncEvent) async {
         switch event {
         case .viewDidLoad:
-            start()
+            await start()
+        }
+    }
+
+    func event(_ event: Event) {
+        switch event {
         case .callButtonTapped(let button):
             callButtonTapped(button)
         }
     }
 
-    override func start() {
-        super.start()
+    @MainActor
+    override func start() async {
+        await super.start()
 
         subscribeOnNetworkReachabilityChanges()
         subscribeOnCallQualityChanges()
@@ -532,8 +538,11 @@ extension CallViewModel {
         case inactive
     }
 
-    enum Event {
+    enum AsyncEvent {
         case viewDidLoad
+    }
+
+    enum Event {
         case callButtonTapped(CallButton)
     }
 

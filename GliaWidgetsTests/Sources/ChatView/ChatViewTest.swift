@@ -82,18 +82,14 @@ final class ChatViewTest: XCTestCase {
         coordinatorEnv.createEntryWidget = { _ in .mock() }
         let options: [ChatChoiceCardOption] = [try .mock()]
         coordinatorEnv.fetchChatHistory = {
-            $0(
-                .success(
-                    [
-                        .mock(attachment: .mock(
-                            type: .singleChoice,
-                            files: [],
-                            imageUrl: nil,
-                            options: options
-                        ))
-                    ]
-                )
-            )
+            [
+                .mock(attachment: .mock(
+                    type: .singleChoice,
+                    files: [],
+                    imageUrl: nil,
+                    options: options
+                ))
+            ]
         }
         let coordinator = EngagementCoordinator.mock(
             engagementLaunching: .direct(kind: .chat),

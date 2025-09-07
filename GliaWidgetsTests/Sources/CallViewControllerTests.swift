@@ -18,9 +18,7 @@ class CallViewControllerTests: XCTestCase {
         enum Call { case presentSnackBar }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
             mobileConfirmDialogEnabled: true,
@@ -73,9 +71,7 @@ class CallViewControllerTests: XCTestCase {
         enum Call { case presentSnackBar }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
             mobileConfirmDialogEnabled: true,
@@ -127,9 +123,7 @@ class CallViewControllerTests: XCTestCase {
         enum Call { case presentSnackBar }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: false,
             mobileConfirmDialogEnabled: true,

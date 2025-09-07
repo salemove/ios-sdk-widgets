@@ -4,38 +4,45 @@ import SnapshotTesting
 import XCTest
 
 final class CallViewControllerVoiceOverTests: SnapshotTestCase {
-    func test_audioCallQueueState() throws {
-        let viewController = try CallViewController.mockAudioCallQueueState()
+    @MainActor
+    func test_audioCallQueueState() async throws {
+        let viewController = try await CallViewController.mockAudioCallQueueState()
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 
-    func test_audioCallConnectingState() throws {
-        let viewController = try CallViewController.mockAudioCallConnectingState()
+    @MainActor
+    func test_audioCallConnectingState() async throws {
+        let viewController = try await CallViewController.mockAudioCallConnectingState()
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 
-    func test_audioCallConnectedState() throws {
-        let viewController = try CallViewController.mockAudioCallConnectedState()
+    @MainActor
+    func test_audioCallConnectedState() async throws {
+        let viewController = try await CallViewController.mockAudioCallConnectedState()
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 
-    func test_mockVideoCallConnectingState() throws {
-        let viewController = try CallViewController.mockVideoCallConnectingState()
+    @MainActor
+    func test_mockVideoCallConnectingState() async throws {
+        let viewController = try await CallViewController.mockVideoCallConnectingState()
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 
-    func test_mockVideoCallQueueState() throws {
-        let viewController = try CallViewController.mockVideoCallQueueState()
+    @MainActor
+    func test_mockVideoCallQueueState() async throws {
+        let viewController = try await CallViewController.mockVideoCallQueueState()
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 
-    func test_mockVideoCallConnectedState() throws {
-        let viewController = try CallViewController.mockVideoCallConnectedState()
+    @MainActor
+    func test_mockVideoCallConnectedState() async throws {
+        let viewController = try await CallViewController.mockVideoCallConnectedState()
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 
-    func test_mockVideoCallConnectedStateWithFlipToBackCameraButton() throws {
-        let viewController = try CallViewController.mockVideoCallConnectedStateWithFlipToBackCameraButton()
+    @MainActor
+    func test_mockVideoCallConnectedStateWithFlipToBackCameraButton() async throws {
+        let viewController = try await CallViewController.mockVideoCallConnectedStateWithFlipToBackCameraButton()
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 }
