@@ -2,7 +2,6 @@ import Foundation
 
 extension ChatViewModel: ViewModel {
     enum Event {
-        case viewDidLoad
         case messageTextChanged(String)
         case removeUploadTapped(FileUpload)
         case pickMediaTapped
@@ -15,6 +14,7 @@ extension ChatViewModel: ViewModel {
     }
 
     enum AsyncEvent {
+        case viewDidLoad
         case sendTapped
         case customCardOptionSelected(
             option: HtmlMetadata.Option,
@@ -77,6 +77,9 @@ extension ChatViewModel: ViewModel {
         case showFile(LocalFile)
         case call
         case minimize
+    }
+
+    enum AsyncDelegateEvent {
         case liveChatEngagementUpgradedToSecureMessaging(ChatViewModel)
     }
 
