@@ -82,7 +82,7 @@ struct CoreSdkClient {
 
     var authentication: CreateAuthentication
 
-    typealias FetchChatHistory = (_ completion: @escaping (Result<[ChatMessage], GliaCoreSDK.GliaCoreError>) -> Void) -> Void
+    typealias FetchChatHistory = () async throws -> [ChatMessage]
 
     var fetchChatHistory: FetchChatHistory
 
