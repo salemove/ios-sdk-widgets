@@ -388,20 +388,20 @@ class CallViewModelTests: XCTestCase {
         XCTAssertEqual(call.kind.value, .audio)
     }
 
-    func test_startMethodDoesNotHandleInteractorStateEnded() {
+    func test_startMethodDoesNotHandleInteractorStateEnded() async {
         let interactor: Interactor = .mock()
         interactor.state = .ended(.byOperator)
         let call: Call = .mock()
         let viewModel: CallViewModel = .mock(interactor: interactor, call: call)
 
         XCTAssertEqual(call.state.value, .none)
-        viewModel.start()
+        await viewModel.start()
 
         XCTAssertEqual(call.state.value, .none)
     }
-    func test_viewModelStartDoesNotInitiateEnqueuingWithStartActionAsEngagement() {
+    func test_viewModelStartDoesNotInitiateEnqueuingWithStartActionAsEngagement() async {
         let viewModel: CallViewModel = .mock()
-        viewModel.start()
+        await viewModel.start()
 
         XCTAssertEqual(viewModel.interactor.state, .none)
     }
@@ -518,7 +518,7 @@ class CallViewModelTests: XCTestCase {
         XCTAssertTrue(calls.isEmpty)
     }
 
-    func test_proximityManagerStartsAndStops() {
+    func test_proximityManagerStartsAndStops() async {
         enum Call: Equatable { case isIdleTimerDisabled(Bool), isProximityMonitoringEnabled(Bool) }
         var calls: [Call] = []
         var env = CallViewModel.Environment.failing()
@@ -539,7 +539,7 @@ class CallViewModelTests: XCTestCase {
             replaceExistingEnqueueing: false
         )
 
-        viewModel.event(.viewDidLoad)
+        await viewModel.asyncEvent(.viewDidLoad)
 
         XCTAssertEqual(calls, [
             .isIdleTimerDisabled(true),

@@ -2,7 +2,7 @@
 import XCTest
 
 final class TranscriptModelMigrateTests: XCTestCase {
-    func test_migrateCallsStartsSocketObservationAndFetchesSiteConfiguration() {
+    func test_migrateCallsStartsSocketObservationAndFetchesSiteConfiguration() async {
         typealias TranscriptModel = SecureConversations.TranscriptModel
         typealias FileUploadListViewModel = SecureConversations.FileUploadListViewModel
         enum Call {
@@ -47,7 +47,7 @@ final class TranscriptModelMigrateTests: XCTestCase {
             interactor: interactor
         )
 
-        viewModel.migrate(from: .mock())
+        await viewModel.migrate(from: .mock())
         XCTAssertEqual(calls, [.startSocketObservation, .fetchSiteConfigurations])
     }
 }
