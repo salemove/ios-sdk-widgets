@@ -37,9 +37,7 @@ class ChatViewControllerTests: XCTestCase {
         }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
 
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
@@ -86,9 +84,7 @@ class ChatViewControllerTests: XCTestCase {
         }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
             mobileConfirmDialogEnabled: true,
@@ -148,9 +144,7 @@ class ChatViewControllerTests: XCTestCase {
         }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
             mobileConfirmDialogEnabled: true,
@@ -197,9 +191,7 @@ class ChatViewControllerTests: XCTestCase {
         }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: false,
             mobileConfirmDialogEnabled: true,
@@ -247,9 +239,7 @@ class ChatViewControllerTests: XCTestCase {
         }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
 
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,

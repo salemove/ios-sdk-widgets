@@ -65,7 +65,7 @@ class EngagementViewModel: CommonEngagementModel {
 
     func viewWillAppear() {}
 
-    func start() {}
+    func start() async {}
 
     func enqueue(engagementKind: EngagementKind, replaceExisting: Bool) async {
         do {
