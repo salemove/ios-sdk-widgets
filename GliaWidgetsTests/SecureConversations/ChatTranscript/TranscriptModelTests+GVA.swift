@@ -141,7 +141,7 @@ extension SecureConversationsTranscriptModelTests {
             ChatMessage.self,
             from: Data(json)
         )
-        modelEnv.fetchChatHistory = { $0(.success([message])) }
+        modelEnv.fetchChatHistory = { [message] }
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.secureConversations.getUnreadMessageCount = { 0 }
@@ -171,13 +171,8 @@ extension SecureConversationsTranscriptModelTests {
             guard case .quickReplyPropsUpdated = action else { return }
             calls.append(.quickReply)
         }
-        viewModel.start(isTranscriptFetchNeeded: true)
+        await viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
-
-        // Will be removed when fetchChatHistory is converted to async
-        await waitUntil {
-            calls == [.quickReply]
-        }
 
         XCTAssertEqual(calls, [.quickReply])
     }

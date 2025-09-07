@@ -37,7 +37,9 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.event(.viewDidLoad)
+        Task { [weak self] in
+            await self?.viewModel.asyncEvent(.viewDidLoad)
+        }
     }
 
     override func viewDidLayoutSubviews() {
