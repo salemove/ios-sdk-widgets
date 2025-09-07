@@ -140,9 +140,11 @@ extension CoreSdkClient {
                 }
             },
             authentication: GliaCore.sharedInstance.authentication,
-            fetchChatHistory: { completion in
-                GliaCore.sharedInstance.fetchChatTranscript { result in
-                    completion(result.map(CoreSdkClient.ChatHistoryPage.init(with:)))
+            fetchChatHistory: {
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.fetchChatTranscript { result in
+                        continuation.resume(with: result.map(CoreSdkClient.ChatHistoryPage.init(with:)))
+                    }
                 }
             },
             fetchOlderChatHistory: { olderPage, completion in

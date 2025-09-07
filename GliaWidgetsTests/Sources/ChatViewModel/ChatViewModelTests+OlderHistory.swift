@@ -28,7 +28,7 @@ extension ChatViewModelTests {
         var viewModelEnv = Self.olderHistoryEnvironment(fetchOlderChatHistory: { _, _ in
             XCTFail("Unexpected fetchOlderChatHistory")
         })
-        viewModelEnv.fetchChatHistory = { $0(.failure(CoreSdkClient.GliaCoreError(reason: "offline"))) }
+        viewModelEnv.fetchChatHistory = { throw CoreSdkClient.GliaCoreError(reason: "offline") }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         let spy = OlderHistoryActionSpy()
         viewModel.action = { spy.actions.append($0) }
@@ -229,7 +229,7 @@ extension ChatViewModelTests {
         log: CoreSdkClient.Logger = .mock
     ) -> ChatViewModel.Environment {
         var viewModelEnv = ChatViewModel.Environment.failing(
-            fetchChatHistory: { $0(.success(.init(messages: history, olderPage: olderPage))) },
+            fetchChatHistory: { .init(messages: history, olderPage: olderPage) },
             fetchOlderChatHistory: fetchOlderChatHistory
         )
         viewModelEnv.createFileUploadListModel = { _ in .mock() }

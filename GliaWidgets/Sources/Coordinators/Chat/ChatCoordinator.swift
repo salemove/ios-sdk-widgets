@@ -212,8 +212,22 @@ extension ChatCoordinator {
         viewModel.delegate = { [weak self] event in
             self?.handleDelegateEvent(event: event)
         }
+        viewModel.asyncDelegate = { [weak self] event in
+            await self?.handleAsyncDelegateEvent(event)
+        }
 
         return viewModel
+    }
+
+    @MainActor
+    private func handleAsyncDelegateEvent(_ event: ChatViewModel.AsyncDelegateEvent) async {
+        switch event {
+        case let .liveChatEngagementUpgradedToSecureMessaging(chatModel):
+            let transcriptModel = self.transcriptModel(with: { [weak controller] in controller })
+            await transcriptModel.checkSecureConversationsAvailability()
+            controller?.swapAndBindViewModel(.transcript(transcriptModel))
+            await transcriptModel.migrate(from: chatModel)
+        }
     }
 
     private func handleDelegateEvent(event: ChatViewModel.DelegateEvent) {
@@ -242,11 +256,6 @@ extension ChatCoordinator {
             delegate?(.call)
         case .minimize:
             delegate?(.minimize)
-        case let .liveChatEngagementUpgradedToSecureMessaging(chatModel):
-            let transcriptModel = self.transcriptModel(with: { [weak controller] in controller })
-            Task { await transcriptModel.checkSecureConversationsAvailability() }
-            controller?.swapAndBindViewModel(.transcript(transcriptModel))
-            transcriptModel.migrate(from: chatModel)
         }
     }
 

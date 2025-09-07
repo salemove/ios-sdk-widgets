@@ -137,9 +137,10 @@ final class ChatCoordinatorTests: XCTestCase {
         }
     }
 
-    func test_chatModelSecureTranscriptUpgradedToLiveChat() throws {
+    @MainActor
+    func test_chatModelSecureTranscriptUpgradedToLiveChat() async throws {
         let viewController = coordinator.start()
-        let mockedChatViewController: ChatViewController = .mock()
+        let mockedChatViewController: ChatViewController = await .mock()
 
         var calledEvents: [ChatCoordinator.DelegateEvent] = []
         coordinator.delegate = { event in
@@ -471,7 +472,7 @@ final class ChatCoordinatorTests: XCTestCase {
         chatModel.messagesSection.append(.init(kind: .mock(kind: .transferring)))
         chatModel.messagesSection.append(.init(kind: .mock(kind: .unreadMessageDivider)))
 
-        chatModel.delegate?(.liveChatEngagementUpgradedToSecureMessaging(chatModel))
+        await chatModel.asyncDelegate?(.liveChatEngagementUpgradedToSecureMessaging(chatModel))
 
         let transcriptModel: SecureConversations.TranscriptModel
 
