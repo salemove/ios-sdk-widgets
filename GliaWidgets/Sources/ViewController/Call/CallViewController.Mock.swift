@@ -10,8 +10,8 @@ extension CallViewController {
         gcd: GCD = .mock,
         snackBar: SnackBar = .mock,
         alertManager: AlertManager = .mock()
-    ) -> CallViewController {
-        .init(
+    ) async -> CallViewController {
+        let controller: CallViewController = .init(
             viewModel: viewModel,
             environment: .init(
 				viewFactory: viewFactory,
@@ -23,9 +23,11 @@ extension CallViewController {
                 alertManager: alertManager
             )
         )
+        await viewModel.start()
+        return controller
     }
 
-    static func mockAudioCallQueueState() throws -> CallViewController {
+    static func mockAudioCallQueueState() async throws -> CallViewController {
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(environment: interactorEnv)
         let callKind = CallKind.audio
@@ -46,12 +48,12 @@ extension CallViewController {
             theme: theme,
             environment: viewFactEnv
         )
-        let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
+        let viewController = await CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
         viewModel.action?(.queue)
         return viewController
     }
 
-    static func mockAudioCallConnectingState() throws -> CallViewController {
+    static func mockAudioCallConnectingState() async throws -> CallViewController {
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(environment: interactorEnv)
         let callKind = CallKind.audio
@@ -71,12 +73,12 @@ extension CallViewController {
             theme: theme,
             environment: viewFactEnv
         )
-        let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
+        let viewController = await CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
         viewModel.action?(.connecting(name: "Blob The Operator", imageUrl: nil))
         return viewController
     }
 
-    static func mockAudioCallConnectedState() throws -> CallViewController {
+    static func mockAudioCallConnectedState() async throws -> CallViewController {
         var interactorEnv = Interactor.Environment.mock
         interactorEnv.coreSdk.configureWithConfiguration = { _, callback in
             callback(.success(()))
@@ -117,14 +119,14 @@ extension CallViewController {
             theme: theme,
             environment: viewFactEnv
         )
-        let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
+        let viewController = await CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
         call.updateAudioStream(with: remoteAudioStream)
         call.updateAudioStream(with: localAudioStream)
         viewModel.action?(.connected(name: "Blob The Operator", imageUrl: nil))
         return viewController
     }
 
-    static func mockVideoCallConnectingState() throws -> CallViewController {
+    static func mockVideoCallConnectingState() async throws -> CallViewController {
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(environment: interactorEnv)
         let callKind = CallKind.video(direction: .oneWay)
@@ -153,7 +155,7 @@ extension CallViewController {
             theme: theme,
             environment: viewFactEnv
         )
-        let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
+        let viewController = await CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
         let operatorImageURL = URL.mock
             .appendingPathComponent("operator")
             .appendingPathComponent("123")
@@ -163,7 +165,7 @@ extension CallViewController {
         return viewController
     }
 
-    static func mockVideoCallQueueState() throws -> CallViewController {
+    static func mockVideoCallQueueState() async throws -> CallViewController {
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(environment: interactorEnv)
         let callKind = CallKind.video(direction: .oneWay)
@@ -184,12 +186,12 @@ extension CallViewController {
             theme: theme,
             environment: viewFactEnv
         )
-        let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
+        let viewController = await CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
         viewModel.action?(.queue)
         return viewController
     }
 
-    static func mockVideoCallConnectedState() throws -> CallViewController {
+    static func mockVideoCallConnectedState() async throws -> CallViewController {
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(environment: interactorEnv)
         let callKind = CallKind.video(direction: .oneWay)
@@ -216,7 +218,7 @@ extension CallViewController {
             theme: theme,
             environment: viewFactEnv
         )
-        let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
+        let viewController = await CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
 
         call.updateVideoStream(with: CoreSdkClient.MockVideoStreamable.mock())
         call.state.value = .started
@@ -230,7 +232,7 @@ extension CallViewController {
         return viewController
     }
 
-    static func mockVideoCallConnectedStateWithFlipToBackCameraButton() throws -> CallViewController {
+    static func mockVideoCallConnectedStateWithFlipToBackCameraButton() async throws -> CallViewController {
         let interactorEnv = Interactor.Environment.mock
         let interactor = Interactor.mock(environment: interactorEnv)
         let callKind = CallKind.video(direction: .oneWay)
@@ -264,7 +266,7 @@ extension CallViewController {
             theme: theme,
             environment: viewFactEnv
         )
-        let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
+        let viewController = await CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
 
         call.updateVideoStream(with: CoreSdkClient.MockVideoStreamable.mock())
         call.state.value = .started

@@ -4,9 +4,11 @@ import Combine
 class ChatViewModel: EngagementViewModel {
     typealias ActionCallback = (Action) -> Void
     typealias DelegateCallback = (DelegateEvent) -> Void
+    typealias AsyncDelegateCallback = (AsyncDelegateEvent) async -> Void
 
     var action: ActionCallback?
     var delegate: DelegateCallback?
+    var asyncDelegate: AsyncDelegateCallback?
     // Used to check whether custom card contains interactable metadata.
     var isInteractableCard: ((MessageRenderer.Message) -> Bool)?
     // Used to check whether custom card should be hidden.
@@ -154,19 +156,13 @@ class ChatViewModel: EngagementViewModel {
         }
     }
 
-    override func start() {
-        super.start()
-
-        loadHistory { [weak self] history in
-            guard let self = self else { return }
-            // We only proceed to considering enqueue flow if `startAction` is about starting of engagement.
-            guard case .startEngagement = self.startAction else { return }
-            // We enqueue eagerly in case if this is the first engagement for visitor (by  evaluating previous chat history)
-            // or in case if engagement has been restored.
-
-            if history.isEmpty || self.environment.getNonTransferredSecureConversationEngagement() != nil || self.replaceExistingEnqueueing {
-                self.interactor.state = .enqueueing(.chat)
-            }
+    @MainActor
+    override func start() async {
+        await super.start()
+        let history = await loadHistory()
+        guard case .startEngagement = self.startAction else { return }
+        if history.isEmpty || self.environment.getNonTransferredSecureConversationEngagement() != nil || self.replaceExistingEnqueueing {
+            self.interactor.state = .enqueueing(.chat)
         }
     }
 
@@ -326,6 +322,9 @@ extension ChatViewModel {
     @MainActor
     func asyncEvent(_ event: AsyncEvent) async {
         switch event {
+        case .viewDidLoad:
+            await start()
+            isViewLoaded = true
         case .sendTapped:
             await sendMessage()
             action?(.quickReplyPropsUpdated(.hidden))
@@ -342,9 +341,6 @@ extension ChatViewModel {
 
     func event(_ event: Event) {
         switch event {
-        case .viewDidLoad:
-            start()
-            isViewLoaded = true
         case .messageTextChanged(let text):
             messageText = text
         case .removeUploadTapped(let upload):
@@ -437,50 +433,50 @@ extension ChatViewModel {
 // MARK: History
 
 extension ChatViewModel {
-    private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
-        environment.fetchChatHistory { [weak self] result in
-            guard let self else { return }
-            let messages = (try? result.get()) ?? []
-            // Store message ids from history,
-            // to be able to discard duplicates
-            // delivered by sockets.
-            self.historyMessageIds = Set(messages.map(\.id).map { $0.uppercased() })
+    @MainActor
+    private func loadHistory() async -> [ChatMessage] {
+        let messages = (try? await environment.fetchChatHistory()) ?? []
 
-            // Remove all messages that have been already received from sockets
-            // in prior of those that have been received from history to avoid duplication.
-            let duplicatedIds = self.historyMessageIds.intersection(self.receivedMessageIds)
-            duplicatedIds.forEach { self.receivedMessageIds.remove($0) }
+        // Store message ids from history,
+        // to be able to discard duplicates
+        // delivered by sockets.
+        self.historyMessageIds = Set(messages.map(\.id).map { $0.uppercased() })
 
-            self.messagesSection.removeAll { item in
-                switch item.kind {
-                case .visitorMessage(let chatMessage, _) where duplicatedIds.contains(chatMessage.id.uppercased()):
-                    return true
-                case .operatorMessage(let chatMessage, _, _) where duplicatedIds.contains(chatMessage.id.uppercased()):
-                    return true
-                default:
-                    return false
-                }
+        // Remove all messages that have been already received from sockets
+        // in prior of those that have been received from history to avoid duplication.
+        let duplicatedIds = self.historyMessageIds.intersection(self.receivedMessageIds)
+        duplicatedIds.forEach { self.receivedMessageIds.remove($0) }
+
+        self.messagesSection.removeAll { item in
+            switch item.kind {
+            case .visitorMessage(let chatMessage, _) where duplicatedIds.contains(chatMessage.id.uppercased()):
+                return true
+            case .operatorMessage(let chatMessage, _, _) where duplicatedIds.contains(chatMessage.id.uppercased()):
+                return true
+            default:
+                return false
             }
-
-            self.action?(.refreshSection(self.messagesSection.index))
-
-            let items = messages.compactMap {
-                ChatItem(
-                    with: $0,
-                    isCustomCardSupported: self.isCustomCardSupported,
-                    fromHistory: self.environment.loadChatMessagesFromHistory()
-                )
-            }
-            if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
-                let props = button.options.map { self.quickReplyOption($0) }
-                self.action?(.quickReplyPropsUpdated(.shown(props)))
-            }
-
-            self.historySection.set(items)
-            self.action?(.refreshSection(self.historySection.index))
-            self.action?(.scrollToBottom(animated: false))
-            completion(messages)
         }
+
+        self.action?(.refreshSection(self.messagesSection.index))
+
+        let items = messages.compactMap {
+            ChatItem(
+                with: $0,
+                isCustomCardSupported: self.isCustomCardSupported,
+                fromHistory: self.environment.loadChatMessagesFromHistory()
+            )
+        }
+        if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
+            let props = button.options.map { self.quickReplyOption($0) }
+            self.action?(.quickReplyPropsUpdated(.shown(props)))
+        }
+
+        self.historySection.set(items)
+        self.action?(.refreshSection(self.historySection.index))
+        self.action?(.scrollToBottom(animated: false))
+
+        return messages
     }
 }
 
