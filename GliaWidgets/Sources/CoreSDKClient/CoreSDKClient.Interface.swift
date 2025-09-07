@@ -106,7 +106,7 @@ struct CoreSdkClient {
         }
     }
 
-    typealias FetchChatHistory = (_ completion: @escaping (Result<ChatHistoryPage, GliaCoreSDK.GliaCoreError>) -> Void) -> Void
+    typealias FetchChatHistory = () async throws -> ChatHistoryPage
 
     var fetchChatHistory: FetchChatHistory
 

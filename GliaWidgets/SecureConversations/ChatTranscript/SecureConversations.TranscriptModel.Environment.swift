@@ -103,7 +103,7 @@ extension SecureConversations.TranscriptModel.Environment {
         createThumbnailGenerator: @escaping () -> QuickLookBased.ThumbnailGenerator = { .mock },
         createFileDownload: @escaping FileDownloader.CreateFileDownload = { _, _, _ in .mock() },
         loadChatMessagesFromHistory: @escaping () -> Bool = { false },
-        fetchChatHistory: @escaping CoreSdkClient.FetchChatHistory = { _ in },
+        fetchChatHistory: @escaping CoreSdkClient.FetchChatHistory = { .init(messages: []) },
         fetchOlderChatHistory: @escaping CoreSdkClient.FetchOlderChatHistory = { _, _ in },
         uiApplication: UIKitBased.UIApplication = .mock,
         queueIds: [String] = [],

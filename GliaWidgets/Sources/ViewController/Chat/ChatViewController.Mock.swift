@@ -12,8 +12,8 @@ extension ChatViewController {
         gcd: GCD = .mock,
         notificationCenter: FoundationBased.NotificationCenter = .mock,
         alertManager: AlertManager = .mock()
-    ) -> ChatViewController {
-        ChatViewController(
+    ) async -> ChatViewController {
+        let controller = ChatViewController(
             viewModel: .chat(chatViewModel),
             environment: .init(
                 timerProviding: timerProviding,
@@ -23,26 +23,28 @@ extension ChatViewController {
                 alertManager: alertManager
             )
         )
+        await chatViewModel.start()
+        return controller
     }
 
     // MARK: - Empty State
-    static func mockEmptyScreen() -> ChatViewController {
+    static func mockEmptyScreen() async -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
-        return .mock(chatViewModel: chatViewModel)
+        return await .mock(chatViewModel: chatViewModel)
     }
 
     // MARK: - Enqueue State
-    static func mockEnqueueScreen() -> ChatViewController {
+    static func mockEnqueueScreen() async -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
-        return .mock(chatViewModel: chatViewModel)
+        return await .mock(chatViewModel: chatViewModel)
     }
 
     // MARK: - Messages from Chat Storage
-    static func mockHistoryMessagesScreen(hasOlderChatHistory: Bool = false) -> ChatViewController {
+    static func mockHistoryMessagesScreen(hasOlderChatHistory: Bool = false) async -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         var fileManager = FoundationBased.FileManager.mock
         fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
@@ -192,22 +194,22 @@ extension ChatViewController {
             )
         ]
         let olderPage = hasOlderChatHistory ? CoreSdkClient.OlderChatHistoryPage(url: "/api/v2/interactions/participants?p=mock") : nil
-        chatViewModelEnv.fetchChatHistory = { $0(.success(.init(messages: messages, olderPage: olderPage))) }
+        chatViewModelEnv.fetchChatHistory = { .init(messages: messages, olderPage: olderPage) }
         let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
         var factoryEnv = ViewFactory.Environment.mock
         factoryEnv.data.dataWithContentsOfFileUrl = { _ in UIImage.mock.pngData() ?? Data() }
         factoryEnv.imageViewCache.getImageForKey = { _ in  .mock }
         let viewFactory = ViewFactory.mock(environment: factoryEnv)
-        let controller: ChatViewController = .mock(chatViewModel: chatViewModel, viewFactory: viewFactory)
+        let controller: ChatViewController = await .mock(chatViewModel: chatViewModel, viewFactory: viewFactory)
         controller.view.updateConstraints()
         return controller
     }
 
     // MARK: - Visitor Uploaded File States
-    static func mockVisitorFileUploadStates() throws -> ChatViewController {
+    static func mockVisitorFileUploadStates() async throws -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
-        chatViewModelEnv.fetchChatHistory = { $0(.success(.init(messages: []))) }
+        chatViewModelEnv.fetchChatHistory = { .init(messages: []) }
         var interEnv = Interactor.Environment.mock
         interEnv.coreSdk.configureWithConfiguration = { _, callback in
             callback(.success(()))
@@ -222,7 +224,7 @@ extension ChatViewController {
         }
 
         let chatViewModel = ChatViewModel.mock(interactor: interactor, environment: chatViewModelEnv)
-        let controller: ChatViewController = .mock(chatViewModel: chatViewModel)
+        let controller: ChatViewController = await .mock(chatViewModel: chatViewModel)
         chatViewModel.action?(.setMessageText("Input Message Mock"))
         let localFileURL = URL.mockFilePath.appendingPathComponent("image").appendingPathExtension("png")
         var fileManager = FoundationBased.FileManager.mock
@@ -278,7 +280,7 @@ extension ChatViewController {
     }
 
     // MARK: - Choice Card States
-    static func mockChoiceCard() throws -> ChatViewController {
+    static func mockChoiceCard() async throws -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [URL.mock] }
         chatViewModelEnv.loadChatMessagesFromHistory = { true }
@@ -309,13 +311,13 @@ extension ChatViewController {
                 downloads: []
             )
         ]
-        chatViewModelEnv.fetchChatHistory = { $0(.success(.init(messages: messages))) }
+        chatViewModelEnv.fetchChatHistory = { .init(messages: messages) }
 
         var viewFactoryEnv = ViewFactory.Environment.mock
         viewFactoryEnv.imageViewCache.getImageForKey = { _ in UIImage.mock }
 
         let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
-        let controller = ChatViewController.mock(
+        let controller = await ChatViewController.mock(
             chatViewModel: chatViewModel,
             viewFactory: .init(
                 with: .mock(),
@@ -330,7 +332,7 @@ extension ChatViewController {
 
     // MARK: - Glia Virtual Assistant Persistent Button State
 
-    static func mockGvaPersistentButton() throws -> ChatViewController {
+    static func mockGvaPersistentButton() async throws -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [URL.mock] }
         chatViewModelEnv.loadChatMessagesFromHistory = { true }
@@ -357,13 +359,13 @@ extension ChatViewController {
             )
         ]
 
-        chatViewModelEnv.fetchChatHistory = { $0(.success(.init(messages: messages))) }
+        chatViewModelEnv.fetchChatHistory = { .init(messages: messages) }
 
         var viewFactoryEnv = ViewFactory.Environment.mock
         viewFactoryEnv.imageViewCache.getImageForKey = { _ in UIImage.mock }
 
         let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
-        let controller = ChatViewController.mock(
+        let controller = await ChatViewController.mock(
             chatViewModel: chatViewModel,
             viewFactory: .init(
                 with: .mock(),
@@ -376,7 +378,7 @@ extension ChatViewController {
         return controller
     }
 
-    static func mockGvaResponseText() throws -> ChatViewController {
+    static func mockGvaResponseText() async throws -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [URL.mock] }
         chatViewModelEnv.loadChatMessagesFromHistory = { true }
@@ -403,13 +405,13 @@ extension ChatViewController {
             )
         ]
 
-        chatViewModelEnv.fetchChatHistory = { $0(.success(.init(messages: messages))) }
+        chatViewModelEnv.fetchChatHistory = { .init(messages: messages) }
 
         var viewFactoryEnv = ViewFactory.Environment.mock
         viewFactoryEnv.imageViewCache.getImageForKey = { _ in nil }
 
         let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
-        let controller = ChatViewController.mock(
+        let controller = await ChatViewController.mock(
             chatViewModel: chatViewModel,
             viewFactory: .init(
                 with: .mock(),
@@ -422,7 +424,7 @@ extension ChatViewController {
         return controller
     }
 
-    static func mockGvaGalleryCards() throws -> ChatViewController {
+    static func mockGvaGalleryCards() async throws -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [URL.mock] }
         chatViewModelEnv.loadChatMessagesFromHistory = { true }
@@ -449,13 +451,13 @@ extension ChatViewController {
             )
         ]
 
-        chatViewModelEnv.fetchChatHistory = { $0(.success(.init(messages: messages))) }
+        chatViewModelEnv.fetchChatHistory = { .init(messages: messages) }
 
         var viewFactoryEnv = ViewFactory.Environment.mock
         viewFactoryEnv.imageViewCache.getImageForKey = { _ in UIImage.mock }
 
         let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
-        let controller = ChatViewController.mock(
+        let controller = await ChatViewController.mock(
             chatViewModel: chatViewModel,
             viewFactory: .init(
                 with: .mock(),
@@ -469,10 +471,10 @@ extension ChatViewController {
     }
 
     // MARK: - Visitor File Download States
-    static func mockVisitorFileDownloadStates(completion: ([ChatMessage]) -> Void) throws -> ChatViewController {
+    static func mockVisitorFileDownloadStates(completion: ([ChatMessage]) -> Void) async throws -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
-        chatViewModelEnv.fetchChatHistory = { $0(.success(.init(messages: []))) }
+        chatViewModelEnv.fetchChatHistory = { .init(messages: []) }
         let messages: [ChatMessage] =
         (0 ..< 4).map { idx in
             ChatMessage.mock(
@@ -502,14 +504,14 @@ extension ChatViewController {
                 downloads: []
             )
         }
-        chatViewModelEnv.fetchChatHistory = { $0(.success(.init(messages: messages))) }
+        chatViewModelEnv.fetchChatHistory = { .init(messages: messages) }
         var interEnv = Interactor.Environment.mock
         interEnv.coreSdk.configureWithConfiguration = { _, callback in
             callback(.success(()))
         }
         let interactor = Interactor.mock(environment: interEnv)
         let chatViewModel = ChatViewModel.mock(interactor: interactor, environment: chatViewModelEnv)
-        let controller = ChatViewController.mock(chatViewModel: chatViewModel)
+        let controller = await ChatViewController.mock(chatViewModel: chatViewModel)
         controller.view.updateConstraints()
         completion(messages)
         return controller
@@ -627,8 +629,7 @@ extension ChatViewController {
             failedToDeliverStatusText: "Failed to send. Tap on the message to retry.",
             environment: chatViewModelEnv
         )
-        chatViewModel.interactor.state = .engaged(nil)
-        let controller = ChatViewController.mock(
+        let controller = await ChatViewController.mock(
             chatViewModel: chatViewModel,
             viewFactory: .init(
                 with: .mock(),
@@ -636,6 +637,8 @@ extension ChatViewController {
                 environment: viewFactoryEnv
             )
         )
+        try await Task.sleep(nanoseconds: 1_000_000_000)
+        chatViewModel.interactor.state = .engaged(nil)
         try await Task.sleep(nanoseconds: 1_000_000_000)
         await chatViewModel.invokeSetTextAndSendMessage(text: "mock")
         await chatViewModel.invokeSetTextAndSendMessage(text: "mock mock")

@@ -42,8 +42,9 @@ extension ChatViewModel.Environment {
                 return .mock
             },
             uiApplication: .failing,
-            fetchChatHistory: fetchChatHistory ?? { _ in
+            fetchChatHistory: fetchChatHistory ?? {
                 fail("\(Self.self).fetchChatHistory")
+                throw NSError(domain: "fetchChatHistory", code: -1)
             },
             fetchOlderChatHistory: fetchOlderChatHistory ?? { _, _ in
                 fail("\(Self.self).fetchOlderChatHistory")

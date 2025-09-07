@@ -23,7 +23,7 @@ extension CallCoordinator.Environment {
         uiApplication: .mock,
         uiScreen: .mock,
         notificationCenter: .mock,
-        fetchChatHistory: { completion in },
+        fetchChatHistory: { .init(messages: []) },
         fetchOlderChatHistory: { _, _ in },
         createFileUploadListModel: { environment in .mock() },
         createSendMessagePayload: { content, attachment in .mock() },

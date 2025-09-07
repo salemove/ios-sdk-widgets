@@ -219,6 +219,8 @@ extension SecureConversations {
         @MainActor
         func asyncEvent(_ event: ChatViewModel.AsyncEvent) async {
             switch event {
+            case .viewDidLoad:
+                isViewLoaded = true
             case .sendTapped:
                 sendMessage()
             case .customCardOptionSelected:
@@ -235,8 +237,6 @@ extension SecureConversations {
 
         func event(_ event: Event) {
             switch event {
-            case .viewDidLoad:
-                isViewLoaded = true
             case .messageTextChanged(let text):
                 messageText = text
             case .removeUploadTapped(let upload):
@@ -261,16 +261,17 @@ extension SecureConversations {
 
         /// Starts socket observation, fetches site configuration and loads chat history if needed.
         /// - Parameter isTranscriptFetchNeeded: A flag indicating whether chat history will be loaded.
-        func start(isTranscriptFetchNeeded: Bool) {
+        @MainActor
+        func start(isTranscriptFetchNeeded: Bool) async {
+            environment.startSocketObservation()
             fetchSiteConfigurations()
 
             guard isTranscriptFetchNeeded else {
                 return
             }
 
-            loadHistory { [weak self] _ in
-                self?.showLeaveConversationDialogIfNeeded()
-            }
+            await loadHistory()
+            showLeaveConversationDialogIfNeeded()
         }
 
         deinit {
@@ -605,49 +606,46 @@ extension SecureConversations.TranscriptModel {
 
 // MARK: History
 extension SecureConversations.TranscriptModel {
-    private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
-        environment.openTelemetry.logger.i(.chatScreenHistoryLoading)
-        transcriptMessageLoader.loadMessagesWithUnreadCount { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case let .success(messagesWithUnreadCount):
-                environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
-                    $0[.messageCount] = .string("\(messagesWithUnreadCount.messages.count)")
-                }
-                let items: [ChatItem] = messagesWithUnreadCount.messages.compactMap {
-                    ChatItem(
-                        with: $0,
-                        isCustomCardSupported: self.isCustomCardSupported,
-                        fromHistory: self.environment.loadChatMessagesFromHistory()
-                    )
-                }
-
-                let itemsWithDivider = Self.dividedChatItemsForUnreadCount(
-                    chatItems: items,
-                    unreadCount: messagesWithUnreadCount.unreadCount,
-                    divider: ChatItem(kind: .unreadMessageDivider)
-                )
-
-                self.hasUnreadMessages = messagesWithUnreadCount.unreadCount > 0
-                self.historySection.set(itemsWithDivider)
-                self.action?(.refreshSection(self.historySection.index))
-                self.action?(.scrollToBottom(animated: false))
-                self.olderHistoryLoader.replaceOlderPage(messagesWithUnreadCount.olderPage)
-                self.action?(.olderHistoryStateUpdated(canLoad: self.olderHistoryLoader.canLoad, isLoading: false))
-                completion(messagesWithUnreadCount.messages)
-                markMessagesAsRead(
-                    with: self.hasUnreadMessages && !environment.shouldShowLeaveSecureConversationDialog(.transcriptOpened)
-                )
-
-                if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
-                    let props = button.options.compactMap { [weak self] in self?.quickReplyOption($0) }
-                    self.action?(.quickReplyPropsUpdated(.shown(props)))
-                }
-            case .failure:
-                self.olderHistoryLoader.replaceOlderPage(nil)
-                self.action?(.olderHistoryStateUpdated(canLoad: false, isLoading: false))
-                completion([])
+    @MainActor
+    private func loadHistory() async {
+        do {
+            let messagesWithUnreadCount = try await transcriptMessageLoader.loadMessagesWithUnreadCount()
+			environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
+                $0[.messageCount] = .string("\(messagesWithUnreadCount.messages.count)")
             }
+            let items: [ChatItem] = messagesWithUnreadCount.messages.compactMap {
+                ChatItem(
+                    with: $0,
+                    isCustomCardSupported: self.isCustomCardSupported,
+                    fromHistory: self.environment.loadChatMessagesFromHistory()
+                )
+            }
+
+            let itemsWithDivider = Self.dividedChatItemsForUnreadCount(
+                chatItems: items,
+                unreadCount: messagesWithUnreadCount.unreadCount,
+                divider: ChatItem(kind: .unreadMessageDivider)
+            )
+
+            self.hasUnreadMessages = messagesWithUnreadCount.unreadCount > 0
+            self.historySection.set(itemsWithDivider)
+            self.action?(.refreshSection(self.historySection.index))
+            self.action?(.scrollToBottom(animated: false))
+            self.olderHistoryLoader.replaceOlderPage(messagesWithUnreadCount.olderPage)
+            self.action?(.olderHistoryStateUpdated(canLoad: self.olderHistoryLoader.canLoad, isLoading: false))
+            markMessagesAsRead(
+                with: self.hasUnreadMessages && !environment.shouldShowLeaveSecureConversationDialog(.transcriptOpened)
+            )
+
+            if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
+                let props = button.options.compactMap { [weak self] in self?.quickReplyOption($0) }
+                self.action?(.quickReplyPropsUpdated(.shown(props)))
+            }
+            return
+        } catch {
+            self.olderHistoryLoader.replaceOlderPage(nil)
+            self.action?(.olderHistoryStateUpdated(canLoad: false, isLoading: false))
+            return
         }
     }
 
@@ -921,9 +919,10 @@ extension SecureConversations.TranscriptModel {
 }
 
 extension SecureConversations.TranscriptModel {
+    @MainActor
     func migrate(
         from chatModel: ChatViewModel
-    ) {
+    ) async {
         clearSections(sections)
         // Filter out items that are not reflected in transcript
         let items = chatModel.sections.flatMap(\.items).filter {
@@ -984,7 +983,7 @@ extension SecureConversations.TranscriptModel {
         engagementAction?(.showCloseButton)
         // Since we only need to start socket observation,
         // we skip chat transcript loading.
-        start(isTranscriptFetchNeeded: false)
+        await start(isTranscriptFetchNeeded: false)
         showLeaveConversationDialogIfNeeded()
 
         markMessagesAsRead(with: unreadMessages.value > 0)

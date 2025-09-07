@@ -22,7 +22,7 @@ extension SecureConversations.Coordinator.Environment {
         fetchFile: { engagementFile, progress, completion in },
         createFileDownload: { file, storage, environment in .mock() },
         loadChatMessagesFromHistory: { true },
-        fetchChatHistory: { completion in },
+        fetchChatHistory: { .init(messages: []) },
         fetchOlderChatHistory: { _, _ in },
         fetchSiteConfigurations: { completion in },
         chatCall: .init(with: .mock()),

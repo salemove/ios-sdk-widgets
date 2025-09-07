@@ -93,7 +93,7 @@ extension SecureConversationsTranscriptModelTests {
     func test_loadHistoryFailureLeavesNoKeyAndDetachesPullToLoad() {
         let result = loadHistoryInTranscriptModel(
             olderPage: nil,
-            fetchChatHistory: { $0(.failure(CoreSdkClient.GliaCoreError(reason: "offline"))) }
+            fetchChatHistory: { throw CoreSdkClient.GliaCoreError(reason: "offline") }
         )
 
         XCTAssertNil(result.model.olderHistoryLoader.olderPage)

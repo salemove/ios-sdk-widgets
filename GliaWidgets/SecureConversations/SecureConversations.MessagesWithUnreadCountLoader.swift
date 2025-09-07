@@ -17,70 +17,17 @@ extension SecureConversations {
 
         var environment: Environment
 
-        func loadMessagesWithUnreadCount(callback: @escaping (Result<MessagesWithUnreadCount, Error>) -> Void) {
-            let stateQueue = DispatchQueue(label: "MessagesWithUnreadCountLoader.state")
-            var didCallback = false
-            var messagesResult: Result<CoreSdkClient.ChatHistoryPage, Error>?
-            var unreadResult: Result<Int, Error>?
+        func loadMessagesWithUnreadCount() async throws -> MessagesWithUnreadCount {
+            async let unreadTask: Int = unreadCountWithTimeout()
+            let page = try await environment.fetchChatHistory()
+            let unreadCount = (try? await unreadTask) ?? 0
 
-            func finishIfReady() {
-                stateQueue.async {
-                    guard !didCallback,
-                          let m = messagesResult,
-                          let u = unreadResult
-                    else { return }
-                    didCallback = true
-                    let combined = Self.messageWithUnreadCountResult(
-                        messageResult: m,
-                        unreadCountResult: u
-                    )
-                    DispatchQueue.main.async {
-                        callback(combined)
-                    }
-                }
-            }
-
-            Task {
-                do {
-                    let count = try await Self.withTimeout(seconds: Self.unreadCountFallbackTimeoutSeconds) {
-                        try await environment.getSecureUnreadMessageCount()
-                    }
-                    stateQueue.async {
-                        unreadResult = .success(count)
-                        finishIfReady()
-                    }
-                } catch {
-                    stateQueue.async {
-                        unreadResult = .failure(error)
-                        finishIfReady()
-                    }
-                }
-            }
-
-            environment.fetchChatHistory { result in
-                let mapped: Result<CoreSdkClient.ChatHistoryPage, Error> = result.mapError { $0 as Error }
-                stateQueue.async {
-                    messagesResult = mapped
-                    finishIfReady()
-                }
-            }
+            return MessagesWithUnreadCount(messages: page.messages, unreadCount: unreadCount, olderPage: page.olderPage)
         }
 
-        static func messageWithUnreadCountResult(
-            messageResult: Result<CoreSdkClient.ChatHistoryPage, Error>,
-            unreadCountResult: Result<Int, Error>
-        ) -> Result<MessagesWithUnreadCount, Error> {
-            // Without messages unread count does not make much sense,
-            // that is why we prefer to report error for messages in case
-            // of failure for both requests. Same for success - ignore
-            // unreadCount failure in case of successful loading of messages.
-            switch (messageResult, unreadCountResult) {
-            case let (.success(page), .success(unreadCount)):
-                return .success(MessagesWithUnreadCount(messages: page.messages, unreadCount: unreadCount, olderPage: page.olderPage))
-            case let (.success(page), .failure):
-                return .success(MessagesWithUnreadCount(messages: page.messages, unreadCount: .zero, olderPage: page.olderPage))
-            case let (.failure(error), .failure), let (.failure(error), .success):
-                return .failure(error)
+        private func unreadCountWithTimeout() async throws -> Int {
+            try await Self.withTimeout(seconds: Self.unreadCountFallbackTimeoutSeconds) {
+                try await environment.getSecureUnreadMessageCount()
             }
         }
 
