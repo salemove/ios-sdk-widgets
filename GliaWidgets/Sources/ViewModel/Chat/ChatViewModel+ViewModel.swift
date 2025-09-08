@@ -7,8 +7,6 @@ extension ChatViewModel: ViewModel {
         case pickMediaTapped
         case callBubbleTapped
         case fileTapped(LocalFile)
-        case downloadTapped(FileDownload)
-
         case chatScrolled(bottomReached: Bool)
         case linkTapped(URL)
         case loadOlderHistoryRequested
@@ -24,6 +22,7 @@ extension ChatViewModel: ViewModel {
         case gvaButtonTapped(GvaOption)
         case retryMessageTapped(OutgoingMessage)
         case choiceOptionSelected(ChatChoiceCardOption, String)
+        case downloadTapped(FileDownload)
     }
 
     enum Action {

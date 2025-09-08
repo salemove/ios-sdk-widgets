@@ -5,7 +5,7 @@ import Foundation
 extension ChatCoordinator.Environment {
     static var mock = Self(
         secureConversations: .mock,
-        fetchFile: { engagementFile, progress, completion in },
+        fetchFile: { engagementFile, progress in .mock() },
         uploadFileToEngagement: { file, progress, completion in },
         fileManager: .mock,
         data: .mock,
