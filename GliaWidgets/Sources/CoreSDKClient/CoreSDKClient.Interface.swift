@@ -149,9 +149,8 @@ extension CoreSdkClient.SecureConversations {
 
     typealias SendPayload = (
         _ secureMessagePayload: SendMessagePayload,
-        _ queueIds: [String],
-        _ completion: @escaping (Result<Message, Error>) -> Void
-    ) -> Cancellable
+        _ queueIds: [String]
+    ) async throws -> Message
 
     typealias UploadFile = (
         _ file: EngagementFile,
