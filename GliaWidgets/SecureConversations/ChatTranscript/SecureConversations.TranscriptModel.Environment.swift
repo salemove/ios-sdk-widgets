@@ -91,7 +91,7 @@ extension SecureConversations.TranscriptModel.Environment {
 extension SecureConversations.TranscriptModel.Environment {
     static func mock(
         secureConversations: CoreSdkClient.SecureConversations = .mock,
-        fetchFile: @escaping CoreSdkClient.FetchFile = { _, _, _ in },
+        fetchFile: @escaping CoreSdkClient.FetchFile = { _, _ in .mock() },
         fileManager: FoundationBased.FileManager = .mock,
         data: FoundationBased.Data = .mock,
         date: @escaping () -> Date = { .mock },
