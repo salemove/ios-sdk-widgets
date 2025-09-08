@@ -7,8 +7,9 @@ extension ChatViewModel.Environment {
     ) -> Self {
         .init(
             secureConversations: .failing,
-            fetchFile: { _, _, _ in
+            fetchFile: { _, _ in
                 fail("\(Self.self).fetchFile")
+                throw NSError(domain: "fetchFile", code: -1)
             },
             uploadFileToEngagement: { _, _, _ in
                 fail("\(Self.self).uploadFileToEngagement")

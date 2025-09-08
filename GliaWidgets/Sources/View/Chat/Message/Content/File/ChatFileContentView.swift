@@ -8,14 +8,14 @@ class ChatFileContentView: UIView {
 
     private let style: ChatFileContentStyle
     private let content: Content
-    private let tap: () -> Void
+    private let tap: () async -> Void
     let accessibilityProperties: ChatFileContentView.AccessibilityProperties
 
     init(
         with style: ChatFileContentStyle,
         content: Content,
         accessibilityProperties: ChatFileContentView.AccessibilityProperties,
-        tap: @escaping () -> Void
+        tap: @escaping () async -> Void
     ) {
         self.style = style
         self.content = content
@@ -62,7 +62,9 @@ class ChatFileContentView: UIView {
     func layout() {}
 
     @objc private func tapped() {
-        tap()
+        Task {
+            await tap()
+        }
     }
 }
 

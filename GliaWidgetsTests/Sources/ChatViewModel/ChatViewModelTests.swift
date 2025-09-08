@@ -35,7 +35,7 @@ class ChatViewModelTests: XCTestCase {
             replaceExistingEnqueueing: false,
             environment: .init(
                 secureConversations: .failing,
-                fetchFile: { _, _, _ in },
+                fetchFile: { _, _ in .mock() },
                 uploadFileToEngagement: { _, _, _ in },
                 fileManager: fileManager,
                 data: .failing,
