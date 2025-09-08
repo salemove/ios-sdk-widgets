@@ -19,7 +19,7 @@ extension SecureConversations.Coordinator.Environment {
         notificationCenter: .mock,
         createFileUploadListModel: { environment in .mock() },
         viewFactory: .mock(),
-        fetchFile: { engagementFile, progress, completion in },
+        fetchFile: { engagementFile, progress in .mock() },
         createFileDownload: { file, storage, environment in .mock() },
         loadChatMessagesFromHistory: { true },
         fetchChatHistory: { [] },
