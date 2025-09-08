@@ -24,8 +24,8 @@ class FileDownloadTests: XCTestCase {
         }
 
         let env = FetchFile.Environment(
-            fetchFile: { _, _, _ in },
-            downloadSecureFile: { _, _, _ in .mock }
+            fetchFile: { _, _ in .mock() },
+            downloadSecureFile: { _, _ in .mock() }
         )
 
         func evaluateFile(_ file: CoreSdkClient.EngagementFile) -> Fetch {

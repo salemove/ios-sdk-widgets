@@ -5,7 +5,7 @@ import Foundation
 extension CallCoordinator.Environment {
     static let mock = Self(
         secureConversations: .mock,
-        fetchFile: { engagementFile, progress, completion in },
+        fetchFile: { engagementFile, progress in .mock() },
         uploadFileToEngagement: { file, progress, completion in },
         fileManager: .mock,
         data: .mock,

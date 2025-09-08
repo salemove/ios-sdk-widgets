@@ -46,7 +46,10 @@ extension CoreSdkClient {
             throw NSError(domain: "requestEngagedOperator", code: -1)
         },
         uploadFileToEngagement: { _, _, _ in fail("\(Self.self).uploadFileToEngagement") },
-        fetchFile: { _, _, _ in fail("\(Self.self).fetchFile") },
+        fetchFile: { _, _ in
+            fail("\(Self.self).fetchFile")
+            throw NSError(domain: "fetchFile", code: -1)
+        },
         getCurrentEngagement: { return nil },
         fetchSiteConfigurations: { _ in fail("\(Self.self).fetchSiteConfigurations") },
         submitSurveyAnswer: { _, _, _ in
@@ -110,9 +113,9 @@ extension CoreSdkClient.SecureConversations {
             fail("\(Self.self).markMessagesAsRead")
             throw NSError(domain: "markMessagesAsRead", code: -1)
         },
-        downloadFile: { _, _, _ in
+        downloadFile: { _, _ in
             fail("\(Self.self).downloadFile")
-            return .mock
+            throw NSError(domain: "downloadFile", code: -1)
         },
         subscribeForUnreadMessageCount: { _ in
             fail("\(Self.self).subscribeForUnreadMessageCount")
