@@ -42,7 +42,7 @@ extension CoreSdkClient {
 
 extension CoreSdkClient.SecureConversations {
     static let mock = Self(
-        sendMessagePayload: { _, _, _ in .mock },
+        sendMessagePayload: { _, _ in .mock() },
         uploadFile: { _, _, _ in .mock },
         getUnreadMessageCount: { 0 },
         markMessagesAsRead: {},
