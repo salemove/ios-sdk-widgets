@@ -346,7 +346,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         XCTAssertTrue(viewModel.validateMessage())
     }
 
-    func testSendMessageUsesSecureEndpoint() {
+    func testSendMessageUsesSecureEndpoint() async {
         var modelEnv = TranscriptModel.Environment.failing
         let fileUploadListModel = FileUploadListViewModel.mock()
         fileUploadListModel.environment.uploader.limitReached.value = false
@@ -363,9 +363,9 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createEntryWidget = { _ in .mock() }
         enum Call: Equatable { case sendSecureMessagePayload }
         var calls: [Call] = []
-        modelEnv.secureConversations.sendMessagePayload = { _, _, _ in
+        modelEnv.secureConversations.sendMessagePayload = { _, _ in
             calls.append(.sendSecureMessagePayload)
-            return .mock
+            return .mock()
         }
         let availabilityEnv = SecureConversations.Availability.Environment(
             getQueues: modelEnv.getQueues,
@@ -388,7 +388,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         )
 
         viewModel.event(.messageTextChanged(nonEmptyText))
-        viewModel.sendMessage()
+        await viewModel.sendMessage()
         XCTAssertEqual(calls, [.sendSecureMessagePayload])
     }
 
