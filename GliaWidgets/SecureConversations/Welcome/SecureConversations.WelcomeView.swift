@@ -179,7 +179,9 @@ extension SecureConversations {
 
         @objc func handleSendMessageButtonTap() {
             if let sendMessageButtonProps = props.sendMessageButton {
-                Props.SendMessageButton.UIKitProps(sendMessageButtonProps).tap?()
+                Task {
+                    await Props.SendMessageButton.UIKitProps(sendMessageButtonProps).tap?()
+                }
             }
         }
 
@@ -470,7 +472,7 @@ extension SecureConversations.WelcomeView {
         }
 
         enum SendMessageButton: Equatable {
-            case active(Cmd)
+            case active(AsyncCmd)
             case loading
             case disabled
         }
