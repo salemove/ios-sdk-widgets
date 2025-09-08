@@ -21,7 +21,6 @@ extension GliaTests {
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
         sdkEnv.coreSdk.createLogger = { _ in logger }
-        sdkEnv.coreSdk.secureConversations.pendingStatus = { _ in }
         sdkEnv.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
         sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         sdkEnv.conditionalCompilation.isDebug = { true }
@@ -200,7 +199,6 @@ extension GliaTests {
             completion(.success(()))
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        environment.coreSdk.secureConversations.pendingStatus = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
         environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
@@ -468,7 +466,6 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.secureConversations.pendingStatus = { $0(.success(true)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
@@ -517,7 +514,6 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.secureConversations.pendingStatus = { $0(.success(false)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
@@ -559,7 +555,6 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.secureConversations.pendingStatus = { $0(.success(true)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
@@ -608,7 +603,6 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.secureConversations.pendingStatus = { $0(.success(false)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
