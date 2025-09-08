@@ -336,6 +336,8 @@ extension ChatViewModel {
             await retryMessageSending(message)
         case .choiceOptionSelected(let option, let messageId):
             await sendChoiceCardResponse(option, to: messageId)
+        case .downloadTapped(let download):
+            await downloadTapped(download)
         }
     }
 
@@ -351,8 +353,6 @@ extension ChatViewModel {
             delegate?(.call)
         case .fileTapped(let file):
             fileTapped(file)
-        case .downloadTapped(let download):
-            downloadTapped(download)
         case .chatScrolled(let bottomReached):
             isChatScrolledToBottom.value = bottomReached
         case .linkTapped(let url):
@@ -925,16 +925,17 @@ extension ChatViewModel {
         environment.uiApplication.open(url)
     }
 
-    private func downloadTapped(_ download: FileDownload) {
+    @MainActor
+    private func downloadTapped(_ download: FileDownload) async {
         switch download.state.value {
         case .none:
-            download.startDownload()
+            await download.startDownload()
         case .downloading:
             break
         case .downloaded(let file):
             delegate?(.showFile(file))
         case .error:
-            download.startDownload()
+            await download.startDownload()
         }
     }
 }

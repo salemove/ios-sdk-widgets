@@ -4,8 +4,9 @@
 extension SecureConversations.TranscriptModel.Environment {
     static let failing = SecureConversations.TranscriptModel.Environment(
         secureConversations: .failing,
-        fetchFile: { _, _, _ in
+        fetchFile: { _, _ in
             fail("\(Self.self).fetchFile")
+            throw NSError(domain: "fetchFile", code: -1)
         },
         fileManager: .failing,
         data: .failing,
