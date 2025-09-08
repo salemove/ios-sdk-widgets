@@ -242,7 +242,7 @@ extension SecureConversations.SendMessageButton.Props {
 
 extension SecureConversations.WelcomeView.Props.SendMessageButton {
     struct UIKitProps: Equatable {
-        var tap: Cmd?
+        var tap: AsyncCmd?
         var isLoading: Bool
         var isEnabled: Bool
 
