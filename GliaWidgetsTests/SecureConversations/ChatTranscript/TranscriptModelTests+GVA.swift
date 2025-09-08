@@ -2,7 +2,7 @@
 import XCTest
 
 extension SecureConversationsTranscriptModelTests {
-    func test_gvaDeepLinkActionCallsMinimize() {
+    func test_gvaDeepLinkActionCallsMinimize() async {
         let option: GvaOption = .mock(url: "mock://mock.self", urlTarget: "self")
         var calls: [Call] = []
         let viewModel = createViewModel()
@@ -17,12 +17,12 @@ extension SecureConversationsTranscriptModelTests {
         }
         viewModel.environment.uiApplication.open = { _ in }
 
-        viewModel.gvaOptionAction(for: option)()
+        await viewModel.gvaOptionAction(for: option)()
 
         XCTAssertEqual(calls, [.minimize])
     }
 
-    func test_gvaDeepLinkActionDoesNotCallMinimize() {
+    func test_gvaDeepLinkActionDoesNotCallMinimize() async {
         let option: GvaOption = .mock(url: "mock://mock.modal", urlTarget: "modal")
         var calls: [Call] = []
         let viewModel = createViewModel()
@@ -37,11 +37,11 @@ extension SecureConversationsTranscriptModelTests {
         }
         viewModel.environment.uiApplication.open = { _ in }
 
-        viewModel.gvaOptionAction(for: option)()
+        await viewModel.gvaOptionAction(for: option)()
         XCTAssertTrue(calls.isEmpty)
     }
 
-    func test_gvaLinkButtonAction() {
+    func test_gvaLinkButtonAction() async{
         let options: [GvaOption] = [
             .mock(url: "http://mock.mock"),
             .mock(url: "https://mock.mock"),
@@ -57,12 +57,13 @@ extension SecureConversationsTranscriptModelTests {
         viewModel.environment.uiApplication.open = { url in
             calls.append(.openUrl(url.absoluteString))
         }
-        viewModel.environment.secureConversations.sendMessagePayload = { payload, _, _ in
+        viewModel.environment.secureConversations.sendMessagePayload = { payload, _ in
             calls.append(.sendOption(payload.content, payload.attachment?.selectedOption))
-            return .mock
+            return .mock()
         }
-        options.forEach {
-            viewModel.gvaOptionAction(for: $0)()
+
+        for option in options {
+            await viewModel.gvaOptionAction(for: option)()
         }
 
         let expectedResult: [Call] = [
@@ -76,7 +77,7 @@ extension SecureConversationsTranscriptModelTests {
         XCTAssertEqual(calls, expectedResult)
     }
 
-    func test_gvaPostbackButtonAction() {
+    func test_gvaPostbackButtonAction() async {
         let option = GvaOption.mock(text: "text", value: "value")
         var calls: [Call] = []
         let viewModel = createViewModel()
@@ -84,9 +85,9 @@ extension SecureConversationsTranscriptModelTests {
         viewModel.environment.uiApplication.open = { url in
             calls.append(.openUrl(url.absoluteString))
         }
-        viewModel.environment.secureConversations.sendMessagePayload = { payload, _, _ in
+        viewModel.environment.secureConversations.sendMessagePayload = { payload, _ in
             calls.append(.sendOption(payload.content, payload.attachment?.selectedOption))
-            return .mock
+            return .mock()
         }
         viewModel.environment.createSendMessagePayload = {
             .mock(
@@ -95,12 +96,12 @@ extension SecureConversationsTranscriptModelTests {
                 attachment: $1
             )
         }
-        viewModel.gvaOptionAction(for: option)()
+        await viewModel.gvaOptionAction(for: option)()
 
         XCTAssertEqual(calls, [.sendOption("text", "value")])
     }
 
-    func test_broadcastEventAction() {
+    func test_broadcastEventAction() async {
         let option = GvaOption.mock(text: "text", destinationPdBroadcastEvent: "mock")
         var calls: [Call] = []
         let viewModel = createViewModel()
@@ -109,7 +110,7 @@ extension SecureConversationsTranscriptModelTests {
             calls.append(.showAlert)
         }
 
-        viewModel.gvaOptionAction(for: option)()
+        await viewModel.gvaOptionAction(for: option)()
 
         XCTAssertEqual(calls, [.showAlert])
     }
