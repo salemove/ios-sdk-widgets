@@ -90,7 +90,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             viewModel.event(.fileTapped(file))
         }
         view.downloadTapped = { download in
-            viewModel.event(.downloadTapped(download))
+            await viewModel.asyncEvent(.downloadTapped(download))
         }
         view.callBubbleTapped = {
             viewModel.event(.callBubbleTapped)
