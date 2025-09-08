@@ -217,13 +217,13 @@ extension SecureConversations {
             case .viewDidLoad:
                 isViewLoaded = true
             case .sendTapped:
-                sendMessage()
+                await sendMessage()
             case .customCardOptionSelected:
                 break
             case let .gvaButtonTapped(option):
-                gvaOptionAction(for: option)()
+                await gvaOptionAction(for: option)()
             case let .retryMessageTapped(message):
-                retryMessageSending(message)
+                await retryMessageSending(message)
             case .choiceOptionSelected:
                 // Not supported for transcript.
                 break
@@ -296,7 +296,8 @@ extension SecureConversations.TranscriptModel {
 
 // MARK: Message management
 extension SecureConversations.TranscriptModel {
-    func sendMessage() {
+    @MainActor
+    func sendMessage() async {
         guard validateMessage() else { return }
 
         let uploads = fileUploadListModel.succeededUploads
@@ -318,20 +319,14 @@ extension SecureConversations.TranscriptModel {
             animated: true
         )
 
-        _ = environment.secureConversations.sendMessagePayload(
-            outgoingMessage.payload,
-            environment.queueIds
-        ) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case let .success(message):
-                self.receiveMessage(from: .api(message, outgoingMessage: outgoingMessage))
-            case .failure:
-                self.markMessageAsFailed(
-                    outgoingMessage,
-                    in: self.pendingSection
-                )
-            }
+        do {
+            let message = try await environment.secureConversations.sendMessagePayload(
+                outgoingMessage.payload,
+                environment.queueIds
+            )
+            receiveMessage(from: .api(message, outgoingMessage: outgoingMessage))
+        } catch {
+            markMessageAsFailed(outgoingMessage, in: pendingSection)
         }
 
         // Clear inputs, thus disabling them
@@ -366,7 +361,8 @@ extension SecureConversations.TranscriptModel {
 
 // MARK: Message sending retry
 extension SecureConversations.TranscriptModel {
-    private func retryMessageSending(_ outgoingMessage: OutgoingMessage) {
+    @MainActor
+    private func retryMessageSending(_ outgoingMessage: OutgoingMessage) async {
         removeMessage(
             outgoingMessage,
             in: pendingSection
@@ -376,20 +372,14 @@ extension SecureConversations.TranscriptModel {
         appendItem(item, to: pendingSection, animated: true)
         action?(.scrollToBottom(animated: true))
 
-        _ = environment.secureConversations.sendMessagePayload(
-            outgoingMessage.payload,
-            environment.queueIds
-        ) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case let .success(message):
-                self.receiveMessage(from: .api(message, outgoingMessage: outgoingMessage))
-            case .failure:
-                self.markMessageAsFailed(
-                    outgoingMessage,
-                    in: self.pendingSection
-                )
-            }
+        do {
+            let message = try await environment.secureConversations.sendMessagePayload(
+                outgoingMessage.payload,
+                environment.queueIds
+            )
+            receiveMessage(from: .api(message, outgoingMessage: outgoingMessage))
+        } catch {
+            markMessageAsFailed(outgoingMessage, in: pendingSection)
         }
     }
 }
