@@ -6,7 +6,7 @@ import Foundation
 extension ChatViewModel.Environment {
     static let mock = Self(
         secureConversations: .mock,
-        fetchFile: { _, _, _ in },
+        fetchFile: { _, _ in .mock() },
         uploadFileToEngagement: { _, _, _ in },
         fileManager: .mock,
         data: .mock,
