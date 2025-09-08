@@ -77,6 +77,7 @@ extension Survey {
                 isRequired: props.isRequired,
                 text: props.title
             )
+            title.textAlignment = style.title.alignment
 
             title.accessibilityLabel = props.title
             title.accessibilityValue = props.accessibility.value

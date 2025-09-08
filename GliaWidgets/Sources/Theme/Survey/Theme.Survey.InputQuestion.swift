@@ -30,6 +30,7 @@ public extension Theme.SurveyStyle {
                     color: color.baseDark.hex,
                     font: font.mediumSubtitle1,
                     textStyle: .headline,
+                    alignment: .left,
                     accessibility: .init(isFontScalingEnabled: true)
                 ),
                 option: .init(
@@ -37,6 +38,7 @@ public extension Theme.SurveyStyle {
                         color: color.baseDark.hex,
                         font: font.bodyText,
                         textStyle: .body,
+                        alignment: .left,
                         accessibility: .init(isFontScalingEnabled: true)
                     ),
                     normalLayer: .init(
@@ -49,6 +51,7 @@ public extension Theme.SurveyStyle {
                         color: color.baseDark.hex,
                         font: font.bodyText,
                         textStyle: .body,
+                        alignment: .left,
                         accessibility: .init(isFontScalingEnabled: true)
                     ),
                     selectedLayer: .init(
@@ -61,6 +64,7 @@ public extension Theme.SurveyStyle {
                         color: color.systemNegative.hex,
                         font: font.bodyText,
                         textStyle: .body,
+                        alignment: .left,
                         accessibility: .init(isFontScalingEnabled: true)
                     ),
                     highlightedLayer: .init(
@@ -83,6 +87,7 @@ public extension Theme.SurveyStyle {
                     color: color.baseNormal.hex,
                     font: font.bodyText,
                     textStyle: .footnote,
+                    alignment: .left,
                     accessibility: .init(isFontScalingEnabled: true)
                 ),
                 error: .default(color: color, font: font),
