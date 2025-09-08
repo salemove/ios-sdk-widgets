@@ -334,8 +334,8 @@ extension ChatViewModel {
     func asyncEvent(_ event: AsyncEvent) async {
         switch event {
         case .viewDidLoad:
-            await start()
             isViewLoaded = true
+            await start()
         case .sendTapped:
             await sendMessage()
             action?(.quickReplyPropsUpdated(.hidden))
