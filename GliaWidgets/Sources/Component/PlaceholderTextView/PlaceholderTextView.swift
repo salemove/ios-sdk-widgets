@@ -1,5 +1,10 @@
 import UIKit
 
+private extension CGFloat {
+    static let placeholderVerticalInset: CGFloat = 4
+    static let placeholderHorizontalInset: CGFloat = 8
+}
+
 final class PlaceholderTextView: UITextView {
     private var style: Style {
         didSet {
@@ -44,25 +49,37 @@ final class PlaceholderTextView: UITextView {
         renderStyle()
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        let width = bounds.width - 2 * .placeholderHorizontalInset
+        let size = placeholderLabel.sizeThatFits(
+            CGSize(
+                width: width,
+                height: .greatestFiniteMagnitude
+            )
+        )
+        placeholderLabel.frame = .init(
+            x: .placeholderVerticalInset,
+            y: .placeholderHorizontalInset,
+            width: width,
+            height: size.height - 2 * .placeholderVerticalInset
+        )
+    }
+
     private func setupPlaceholder() {
         addSubview(placeholderLabel)
-
-        // Add constraints to position the label
-        placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            placeholderLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 4),
-            placeholderLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
-            placeholderLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8)
-        ])
-
         renderStyle()
     }
 
     private func renderStyle() {
         placeholderLabel.font = style.placeholder.font
         placeholderLabel.textColor = UIColor(hex: style.placeholder.color)
+        placeholderLabel.textAlignment = style.placeholder.alignment
+
         font = style.text.font
         textColor = UIColor(hex: style.text.color)
+        textAlignment = style.text.alignment
     }
 }
 

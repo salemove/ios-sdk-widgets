@@ -24,6 +24,7 @@ public extension Theme.SurveyStyle {
                     color: color.baseDark.hex,
                     font: font.mediumSubtitle1,
                     textStyle: .headline,
+                    alignment: .left,
                     accessibility: .init(isFontScalingEnabled: true)
                 ),
                 option: .init(

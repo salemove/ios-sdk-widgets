@@ -68,6 +68,7 @@ extension Survey {
                 text: props.title
             )
 
+            title.textAlignment = style.title.alignment
             title.accessibilityLabel = props.title
             title.accessibilityValue = props.accessibility.titleValue
             textView.accessibilityHint = props.accessibility.fieldHint
