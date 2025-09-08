@@ -49,7 +49,6 @@ extension CoreSdkClient.SecureConversations {
         downloadFile: { _, _, _ in .mock },
         subscribeForUnreadMessageCount: { _ in UUID.mock.uuidString },
         unsubscribeFromUnreadMessageCount: { _ in },
-        pendingStatus: { $0(.success(false)) },
         observePendingStatus: { _ in nil },
         unsubscribeFromPendingStatus: { _ in }
     )

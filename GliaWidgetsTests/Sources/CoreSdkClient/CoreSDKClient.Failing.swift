@@ -121,9 +121,6 @@ extension CoreSdkClient.SecureConversations {
         unsubscribeFromUnreadMessageCount: { _ in
             fail("\(Self.self).unsubscribeFromUnreadCount")
         },
-        pendingStatus: { _ in
-            fail("\(Self.self).pendingStatus")
-        },
         observePendingStatus: { _ in
             fail("\(Self.self).observePendingStatus")
             return nil
