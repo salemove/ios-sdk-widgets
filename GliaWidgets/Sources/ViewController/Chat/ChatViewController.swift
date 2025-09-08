@@ -168,8 +168,8 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         }
         view.downloadTapped = { [weak self] download in
             guard let self else { return }
-            environment.openTelemetry.logger.i(.chatScreenFileDownloading) {
                 $0[.fileId] = .string(download.file.id ?? "null")
+            environment.openTelemetry.logger.i(.chatScreenFileDownloading) {
             }
             download.state.addObserver(self) { [weak self] state, _ in
                 if case .downloaded = state {
@@ -178,7 +178,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                     }
                 }
             }
-            viewModel.event(.downloadTapped(download))
+            await viewModel.asyncEvent(.downloadTapped(download))
         }
         view.callBubbleTapped = {
             viewModel.event(.callBubbleTapped)
