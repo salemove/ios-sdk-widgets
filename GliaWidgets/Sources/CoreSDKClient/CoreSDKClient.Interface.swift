@@ -136,7 +136,6 @@ extension CoreSdkClient {
         var downloadFile: DownloadFile
         var subscribeForUnreadMessageCount: SubscribeForUnreadMessageCount
         var unsubscribeFromUnreadMessageCount: UnsubscribeFromUnreadCount
-        var pendingStatus: PendingStatus
         var observePendingStatus: ObservePendingStatus
         var unsubscribeFromPendingStatus: UnsubscribeFromPendingStatus
     }
@@ -173,8 +172,6 @@ extension CoreSdkClient.SecureConversations {
     ) -> String?
 
     typealias UnsubscribeFromUnreadCount = (String) -> Void
-
-    typealias PendingStatus = (_ callback: @escaping (Result<Bool, Error>) -> Void) -> Void
 
     typealias ObservePendingStatus = (_ callback: @escaping (Result<Bool, Error>) -> Void) -> String?
 
