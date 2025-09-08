@@ -124,6 +124,8 @@ extension Survey {
             }
             value.font = style.title.font
             value.textColor = .init(hex: textStyle.color)
+            value.textAlignment = style.title.alignment
+
 			checkImageView.tintColor = checkedTintColor
         }
 
