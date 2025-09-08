@@ -54,9 +54,8 @@ struct CoreSdkClient {
 
     typealias FetchFile = (
         _ engagementFile: Self.EngagementFile,
-        _ progress: Self.EngagementFileProgressBlock?,
-        _ completion: @escaping Self.EngagementFileFetchCompletionBlock
-    ) -> Void
+        _ progress: Self.EngagementFileProgressBlock?
+    ) async throws -> GliaCoreSDK.EngagementFileData
 
     var fetchFile: FetchFile
 
@@ -163,9 +162,8 @@ extension CoreSdkClient.SecureConversations {
 
     typealias DownloadFile = (
         _ file: EngagementFile,
-        _ progress: @escaping EngagementFileProgressBlock,
-        _ completion: @escaping (Result<EngagementFileData, Error>) -> Void
-    ) -> Cancellable
+        _ progress: @escaping EngagementFileProgressBlock
+    ) async throws -> EngagementFileData
 
     typealias SubscribeForUnreadMessageCount = (
         _ completion: @escaping (Result<Int?, Error>) -> Void
