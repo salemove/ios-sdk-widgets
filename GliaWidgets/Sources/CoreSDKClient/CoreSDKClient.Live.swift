@@ -235,7 +235,6 @@ extension CoreSdkClient.SecureConversations {
         downloadFile: GliaCore.sharedInstance.secureConversations.downloadFile(_:progress:completion:),
         subscribeForUnreadMessageCount: GliaCore.sharedInstance.secureConversations.subscribeToUnreadMessageCount(completion:),
         unsubscribeFromUnreadMessageCount: GliaCore.sharedInstance.secureConversations.unsubscribeFromUnreadMessageCount,
-        pendingStatus: GliaCore.sharedInstance.secureConversations.pendingSecureConversationStatus,
         observePendingStatus: GliaCore.sharedInstance.secureConversations.subscribeToPendingSecureConversationStatus,
         unsubscribeFromPendingStatus: { GliaCore.sharedInstance.secureConversations.unsubscribeFromPendingSecureConversationStatus($0) }
     )
