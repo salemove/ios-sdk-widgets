@@ -19,7 +19,7 @@ class ChatView: EngagementView {
     var numberOfRows: ((Int) -> Int?)?
     var itemForRow: ((Int, Int) -> ChatItem?)?
     var fileTapped: ((LocalFile) -> Void)?
-    var downloadTapped: ((FileDownload) -> Void)?
+    var downloadTapped: ((FileDownload) async -> Void)?
     var callBubbleTapped: (() -> Void)?
     var choiceOptionSelected: ((ChatChoiceCardOption, String) async -> Void)!
     var chatScrolledToBottom: ((Bool) -> Void)?
@@ -781,7 +781,7 @@ extension ChatView {
             ),
             animated: false
         )
-        view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
+        view.downloadTapped = { [weak self] in await self?.downloadTapped?($0) }
         view.linkTapped = { [weak self] in self?.linkTapped?($0) }
         view.showsOperatorImage = showsImage
         view.setOperatorImage(fromUrl: imageUrl, animated: false)
@@ -890,7 +890,7 @@ extension ChatView {
             ),
             animated: false
         )
-        view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
+        view.downloadTapped = { [weak self] in await self?.downloadTapped?($0) }
         view.linkTapped = { [weak self] in self?.linkTapped?($0) }
         view.status = status
 
@@ -1010,7 +1010,7 @@ extension ChatView {
             ),
             animated: false
         )
-        view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
+        view.downloadTapped = { [weak self] in await self?.downloadTapped?($0) }
         view.linkTapped = { [weak self] in self?.linkTapped?($0) }
         view.showsOperatorImage = showImage
         view.setOperatorImage(fromUrl: imageUrl, animated: false)
@@ -1041,7 +1041,7 @@ extension ChatView {
             animated: false
         )
         view.onOptionTapped = { [weak self] in await self?.gvaButtonTapped?($0) }
-        view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
+        view.downloadTapped = { [weak self] in await self?.downloadTapped?($0) }
         view.linkTapped = { [weak self] in self?.linkTapped?($0) }
         view.showsOperatorImage = showImage
         view.setOperatorImage(fromUrl: imageUrl, animated: false)

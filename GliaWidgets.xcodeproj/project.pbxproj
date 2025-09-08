@@ -758,6 +758,7 @@
 		C02248A72AD53DDA00CC4930 /* LiveObservationConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02248A62AD53DDA00CC4930 /* LiveObservationConfirmation.swift */; };
 		C02248AA2AD53E6100CC4930 /* LiveObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02248A92AD53E6100CC4930 /* LiveObservation.swift */; };
 		C034EEED2CAAB525002650B8 /* EntryWidgetStyle.RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C034EEEC2CAAB525002650B8 /* EntryWidgetStyle.RemoteConfig.swift */; };
+		C0363F8B2E6F3C9C00D51D93 /* EngagementFileData+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0363F8A2E6F3C9000D51D93 /* EngagementFileData+Extension.swift */; };
 		C039FA7F2B19EB6E00DFD0E0 /* MediaPickerLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C039FA7E2B19EB6E00DFD0E0 /* MediaPickerLayoutTests.swift */; };
 		C039FA812B19ECBA00DFD0E0 /* MediaPickerDynamicFontTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C039FA802B19ECBA00DFD0E0 /* MediaPickerDynamicFontTests.swift */; };
 		C039FA832B19ED7D00DFD0E0 /* MediaPickerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C039FA822B19ED7D00DFD0E0 /* MediaPickerVoiceOverTests.swift */; };
@@ -1911,6 +1912,7 @@
 		C02248A62AD53DDA00CC4930 /* LiveObservationConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveObservationConfirmation.swift; sourceTree = "<group>"; };
 		C02248A92AD53E6100CC4930 /* LiveObservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveObservation.swift; sourceTree = "<group>"; };
 		C034EEEC2CAAB525002650B8 /* EntryWidgetStyle.RemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidgetStyle.RemoteConfig.swift; sourceTree = "<group>"; };
+		C0363F8A2E6F3C9000D51D93 /* EngagementFileData+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EngagementFileData+Extension.swift"; sourceTree = "<group>"; };
 		C039FA7E2B19EB6E00DFD0E0 /* MediaPickerLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerLayoutTests.swift; sourceTree = "<group>"; };
 		C039FA802B19ECBA00DFD0E0 /* MediaPickerDynamicFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerDynamicFontTests.swift; sourceTree = "<group>"; };
 		C039FA822B19ED7D00DFD0E0 /* MediaPickerVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerVoiceOverTests.swift; sourceTree = "<group>"; };
@@ -2471,6 +2473,7 @@
 		1A1E309425F8CA3400850E68 /* Download */ = {
 			isa = PBXGroup;
 			children = (
+				C0363F8A2E6F3C9000D51D93 /* EngagementFileData+Extension.swift */,
 				1A1E309525F8CA4400850E68 /* FileDownload.swift */,
 				9A3E1D8927B6B824005634EB /* FileDownload.Environment.Interface.swift */,
 				9A3E1D8B27B6B888005634EB /* FileDownload.Environment.Mock.swift */,
@@ -6776,6 +6779,7 @@
 				1A0C143625B85C3300B00695 /* CallView.swift in Sources */,
 				1AA738A72578DD0300E1120F /* ConnectStatusStyle.swift in Sources */,
 				755D186529A6A4E20009F5E8 /* WelcomeStyle.TitleStyle.swift in Sources */,
+				C0363F8B2E6F3C9C00D51D93 /* EngagementFileData+Extension.swift in Sources */,
 				7594094C298D37E8008B173A /* Glia.Environment.Interface.swift in Sources */,
 				9A19926427D3BA3A00161AAE /* GCD.Live.swift in Sources */,
 				755D187929A6A6F80009F5E8 /* WelcomeStyle.FilePickerButtonStyle.swift in Sources */,
