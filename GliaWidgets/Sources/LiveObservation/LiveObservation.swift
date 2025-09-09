@@ -8,6 +8,11 @@ public struct LiveObservation {
     ///
     /// This method is used to hide sensitive data from the screen by pausing live observation.
     public func pause() {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "pause"
+        )
         environment.coreSdk.liveObservation.pause()
     }
 
@@ -15,18 +20,11 @@ public struct LiveObservation {
     ///
     /// This method resumes live observation session after it has been paused.
     public func resume() {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "resume"
+        )
         environment.coreSdk.liveObservation.resume()
-    }
-}
-
-extension LiveObservation {
-    struct Environment {
-        let coreSdk: CoreSdkClient
-    }
-}
-
-extension LiveObservation.Environment {
-    static func create(with environment: Glia.Environment) -> Self {
-        .init(coreSdk: environment.coreSdk)
     }
 }

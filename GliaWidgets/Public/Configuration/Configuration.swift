@@ -90,6 +90,20 @@ public extension Configuration {
                 return .siteApiKey(id: id, secret: secret)
             }
         }
+
+        var id: String {
+            switch self {
+            case .siteApiKey(let id, _):
+                return id
+            }
+        }
+
+        var secret: String {
+            switch self {
+            case .siteApiKey(_, let secret):
+                return secret
+            }
+        }
     }
 }
 

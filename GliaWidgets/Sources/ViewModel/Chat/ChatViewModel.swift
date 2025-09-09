@@ -144,6 +144,13 @@ class ChatViewModel: EngagementViewModel {
         uploader.limitReached.addObserver(self) { [weak self] limitReached, _ in
             self?.action?(.pickMediaButtonEnabled(!limitReached))
         }
+        isViewActive.addObserver(self) { [weak self] isViewActive, _ in
+            if isViewActive {
+                self?.environment.openTelemetry.logger.i(.chatScreenShown)
+            } else {
+                self?.environment.openTelemetry.logger.i(.chatScreenClosed)
+            }
+        }
     }
 
     override func viewDidAppear() {
@@ -417,9 +424,13 @@ extension ChatViewModel {
 
 extension ChatViewModel {
     private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
+        environment.openTelemetry.logger.i(.chatScreenHistoryLoading)
         environment.fetchChatHistory { [weak self] result in
             guard let self else { return }
             let messages = (try? result.get()) ?? []
+            environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
+                $0[.messageCount] = .string("\(messages.count)")
+            }
             // Store message ids from history,
             // to be able to discard duplicates
             // delivered by sockets.
@@ -640,10 +651,35 @@ extension ChatViewModel {
     }
 
     func addChatItemToMessagesSection(
-            evaluating message: ChatMessage,
-            replacingWith receivedMessage: CoreSdkClient.Message,
-            _ item: ChatItem
+        evaluating message: ChatMessage,
+        replacingWith receivedMessage: CoreSdkClient.Message,
+        _ item: ChatItem
     ) {
+        defer {
+            switch item.kind {
+            case .gvaGallery, .gvaQuickReply, .gvaPersistentButton:
+                environment.openTelemetry.logger.i(.chatScreenGvaMessageShown) {
+                    $0[.messageId] = .string(receivedMessage.id)
+                }
+            case .customCard:
+                environment.openTelemetry.logger.i(.chatScreenCustomCardShown) {
+                    $0[.messageId] = .string(receivedMessage.id)
+                }
+            case .choiceCard:
+                environment.openTelemetry.logger.i(.chatScreenSingleChoiceShown) {
+                    $0[.messageId] = .string(receivedMessage.id)
+                }
+            default:
+                environment.openTelemetry.logger.i(.chatScreenMessageShown) {
+                    $0[.messageId] = .string(receivedMessage.id)
+                    $0[.messageSender] = .string(receivedMessage.sender.type.rawValue)
+
+                    // The same values. Needed?
+                    $0[.messageType] = .string(receivedMessage.sender.type.rawValue)
+                }
+            }
+        }
+
         // In order keep visitor session in sync between
         // multiple devices/web we need to treat visitor messages
         // with extra checks:
@@ -806,7 +842,20 @@ extension ChatViewModel {
 
 extension ChatViewModel {
     private func presentMediaPicker() {
+        let logMediaSourceSelection = { [weak self] (kind: AttachmentSourceItemKind) in
+            self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
+                switch kind {
+                case .photoLibrary:
+                    $0[.buttonName] = .string(OtelButtonNames.selectFromLibrary.rawValue)
+                case .takePhoto:
+                    $0[.buttonName] = .string(OtelButtonNames.takePhoto.rawValue)
+                case .browse:
+                    $0[.buttonName] = .string(OtelButtonNames.browseFiles.rawValue)
+                }
+            }
+        }
         let itemSelected = { (kind: AttachmentSourceItemKind) in
+            logMediaSourceSelection(kind)
             let media = ObservableValue<MediaPickerEvent>(with: .none)
             media.addObserver(self) { [weak self] event, _ in
                 guard let self = self else { return }

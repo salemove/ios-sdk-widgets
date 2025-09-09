@@ -28,4 +28,17 @@ public enum Environment {
             return .custom(url)
         }
     }
+
+    var rawValue: String {
+        switch self {
+        case .usa:
+            return "us"
+        case .europe:
+            return "eu"
+        case .beta:
+            return "beta"
+        case .custom(let url):
+            return url.absoluteString
+        }
+    }
 }

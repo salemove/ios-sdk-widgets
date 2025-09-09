@@ -95,6 +95,9 @@ extension SecureConversations {
                         fileUpload: fileUpload,
                         style: style.item,
                         removeTapped: Cmd { [weak self] in
+                            self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
+                                $0[.buttonName] = .string(OtelButtonNames.removeAttachment.rawValue)
+                            }
                             self?.removeUpload(fileUpload)
                         },
                         isEnabled: isEnabled
