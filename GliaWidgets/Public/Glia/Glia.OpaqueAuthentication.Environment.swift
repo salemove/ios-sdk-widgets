@@ -1,8 +1,10 @@
 import Foundation
+@_spi(GliaWidgets) import GliaCoreSDK
 
 extension Glia.Authentication {
     struct Environment {
         var log: CoreSdkClient.Logger
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 
