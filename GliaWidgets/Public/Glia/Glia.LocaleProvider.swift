@@ -1,11 +1,18 @@
 import Foundation
+import GliaCoreSDK
 
 extension Glia {
     /// Locale provider is used for retrieving remote strings for associated key
     public final class LocaleProvider {
         let locale: (String) -> String?
 
-        init(locale: @escaping (String) -> String?) {
+        private let environment: Environment
+
+        init(
+            environment: Environment = Environment(),
+            locale: @escaping (String) -> String?
+        ) {
+            self.environment = environment
             self.locale = locale
         }
     }
@@ -16,6 +23,18 @@ extension Glia.LocaleProvider {
     /// - Parameter key: String value which remote string is associated with.
     /// - Returns: `String` value if exists, otherwise returns `nil`
     public func getRemoteString(_ key: String) -> String? {
-        locale(key)
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "getRemoteString",
+            methodParams: "key"
+        )
+        return locale(key)
+    }
+}
+
+extension Glia.LocaleProvider {
+    struct Environment {
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }

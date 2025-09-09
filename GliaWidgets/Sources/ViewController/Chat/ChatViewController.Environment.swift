@@ -1,4 +1,5 @@
 import Foundation
+import GliaCoreSDK
 
 extension ChatViewController {
     struct Environment {
@@ -8,6 +9,7 @@ extension ChatViewController {
         var snackBar: SnackBar
         var notificationCenter: FoundationBased.NotificationCenter
         var alertManager: AlertManager
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 

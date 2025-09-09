@@ -500,6 +500,11 @@
 		84D5B9622A14F33400807F92 /* QuickLookBased.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5B9612A14F33400807F92 /* QuickLookBased.Live.swift */; };
 		84D5B9642A151B6100807F92 /* QuickLookBased.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5B9632A151B6100807F92 /* QuickLookBased.Mock.swift */; };
 		84D5B9662A15204400807F92 /* QuickLookBased.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D5B9652A15204400807F92 /* QuickLookBased.Failing.swift */; };
+		84EF48C72E703D8C001973EB /* EngagementLauncher.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EF48C62E703D8C001973EB /* EngagementLauncher.Environment.swift */; };
+		84EF48C92E703F33001973EB /* LiveObservation.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EF48C82E703F33001973EB /* LiveObservation.Environment.swift */; };
+		84EF48CB2E7057C4001973EB /* PushNotifications.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EF48CA2E7057C4001973EB /* PushNotifications.Environment.swift */; };
+		84EF48CE2E706449001973EB /* OpenTelemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EF48CD2E706449001973EB /* OpenTelemetry.swift */; };
+		84EF48D02E706A13001973EB /* MediaPickerController.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EF48CF2E706A13001973EB /* MediaPickerController.Environment.swift */; };
 		84EFB05B28AA90220005E270 /* CustomCardContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EFB05A28AA90220005E270 /* CustomCardContainerView.swift */; };
 		84EFB05D28AA992D0005E270 /* WebMessageCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EFB05C28AA992D0005E270 /* WebMessageCardView.swift */; };
 		9A0B7D1727DA6B74006D8637 /* Interactor.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0B7D1627DA6B74006D8637 /* Interactor.Mock.swift */; };
@@ -1578,6 +1583,11 @@
 		84D5B9612A14F33400807F92 /* QuickLookBased.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookBased.Live.swift; sourceTree = "<group>"; };
 		84D5B9632A151B6100807F92 /* QuickLookBased.Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookBased.Mock.swift; sourceTree = "<group>"; };
 		84D5B9652A15204400807F92 /* QuickLookBased.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookBased.Failing.swift; sourceTree = "<group>"; };
+		84EF48C62E703D8C001973EB /* EngagementLauncher.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EngagementLauncher.Environment.swift; sourceTree = "<group>"; };
+		84EF48C82E703F33001973EB /* LiveObservation.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveObservation.Environment.swift; sourceTree = "<group>"; };
+		84EF48CA2E7057C4001973EB /* PushNotifications.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotifications.Environment.swift; sourceTree = "<group>"; };
+		84EF48CD2E706449001973EB /* OpenTelemetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenTelemetry.swift; sourceTree = "<group>"; };
+		84EF48CF2E706A13001973EB /* MediaPickerController.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerController.Environment.swift; sourceTree = "<group>"; };
 		84EFB05A28AA90220005E270 /* CustomCardContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCardContainerView.swift; sourceTree = "<group>"; };
 		84EFB05C28AA992D0005E270 /* WebMessageCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebMessageCardView.swift; sourceTree = "<group>"; };
 		8D290338F398470BB3BE0F26 /* Pods_GliaWidgetsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GliaWidgetsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2552,6 +2562,7 @@
 			isa = PBXGroup;
 			children = (
 				1A4674CC25ED08A30078FA1C /* MediaPickerController.swift */,
+				84EF48CF2E706A13001973EB /* MediaPickerController.Environment.swift */,
 			);
 			path = MediaPicker;
 			sourceTree = "<group>";
@@ -2841,6 +2852,7 @@
 				7594095B298D3889008B173A /* MessageRenderer */,
 				9AE9E4B627E1E30500BFE239 /* MockHelpers.swift */,
 				1A0C9ADE25C9623800815406 /* Observable */,
+				84EF48CC2E70641D001973EB /* OpenTelemetry */,
 				1A60AFEF2566A4A700E53F53 /* Presenter */,
 				84C24CF62B8353840089A388 /* ProcessInfoHandling */,
 				C05E3EDC29C99DEE0013BC81 /* ProximityManager */,
@@ -3328,6 +3340,7 @@
 			isa = PBXGroup;
 			children = (
 				215A25912CA44D900013023E /* EngagementLauncher.swift */,
+				84EF48C62E703D8C001973EB /* EngagementLauncher.Environment.swift */,
 			);
 			path = EngagementLauncher;
 			sourceTree = "<group>";
@@ -4516,6 +4529,14 @@
 			path = QuickLookBased;
 			sourceTree = "<group>";
 		};
+		84EF48CC2E70641D001973EB /* OpenTelemetry */ = {
+			isa = PBXGroup;
+			children = (
+				84EF48CD2E706449001973EB /* OpenTelemetry.swift */,
+			);
+			path = OpenTelemetry;
+			sourceTree = "<group>";
+		};
 		84EFB05928AA8FFD0005E270 /* CustomCard */ = {
 			isa = PBXGroup;
 			children = (
@@ -4765,6 +4786,7 @@
 			isa = PBXGroup;
 			children = (
 				C0193DD92D957D1200801CF6 /* PushNotifications.swift */,
+				84EF48CA2E7057C4001973EB /* PushNotifications.Environment.swift */,
 			);
 			path = PushNotifications;
 			sourceTree = "<group>";
@@ -4773,6 +4795,7 @@
 			isa = PBXGroup;
 			children = (
 				C02248A92AD53E6100CC4930 /* LiveObservation.swift */,
+				84EF48C82E703F33001973EB /* LiveObservation.Environment.swift */,
 				C02248A62AD53DDA00CC4930 /* LiveObservationConfirmation.swift */,
 			);
 			path = LiveObservation;
@@ -5803,7 +5826,71 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		FD48EDBB30AE8FC3EB0EBE87 /* [CP] Embed Pods Frameworks */ = {
+		CD1D59964F198C62FCEC5F3A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GliaWidgets-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E7FB3473FEE62051545E008E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EFE1810C8D2EA8B8D10EBFFE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TestingApp/Pods-TestingApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TestingApp/Pods-TestingApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TestingApp/Pods-TestingApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F8A86F5086E3A8593CC5DD6F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -5884,6 +5971,7 @@
 				1A1E309F25F8E44300850E68 /* FileDownloader.swift in Sources */,
 				AFF441272CD533E40088B1C5 /* ChatMessageEntryStateStyle.Accessibility.swift in Sources */,
 				C0D2F06E29A4DADE00803B47 /* VideoCallVIewModel.Environment.Mock.swift in Sources */,
+				84EF48C72E703D8C001973EB /* EngagementLauncher.Environment.swift in Sources */,
 				C0D6CA612C19C4D900D4709B /* OnHoldOverlayVisualEffectView.Environment.swift in Sources */,
 				C0D2F07C29A4E47200803B47 /* ConnectOperatorView.Mock.swift in Sources */,
 				C08D776028F583D7000461E5 /* Array+Extensions.swift in Sources */,
@@ -6053,6 +6141,7 @@
 				C0D2F06829A4B71C00803B47 /* VideoCallViewModel.Mock.swift in Sources */,
 				AFEF5C6F29928DB0005C3D8D /* SecureConversations.FileUploadView.swift in Sources */,
 				C0D6CA092C18451800D4709B /* CallViewController.Environment.swift in Sources */,
+				84EF48D02E706A13001973EB /* MediaPickerController.Environment.swift in Sources */,
 				84D5B9622A14F33400807F92 /* QuickLookBased.Live.swift in Sources */,
 				C09047152B7E18E7003C437C /* Theme.Text.Accessibility.swift in Sources */,
 				216D311F2CFE2F050019CA9E /* MediaTypeItemStyle.Mock.swift in Sources */,
@@ -6089,6 +6178,7 @@
 				AF4698082BE3EEF30046766B /* FlipCameraButton.swift in Sources */,
 				7594098C298D38C2008B173A /* CallVisualizer.Environment.swift in Sources */,
 				1A1E309B25F8E1F700850E68 /* DataStorage.swift in Sources */,
+				84EF48CB2E7057C4001973EB /* PushNotifications.Environment.swift in Sources */,
 				AF6AB34D298A9F2500003645 /* SecureConversations.FileUploadListViewModel.swift in Sources */,
 				2100B4872CB91E7B00AC7527 /* CancelBag.swift in Sources */,
 				C0D6CA292C199A4700D4709B /* UnreadMessageIndicatorView.Environment.swift in Sources */,
@@ -6252,6 +6342,7 @@
 				C09047722B7E255E003C437C /* UnreadMessageDividerStyle.Accessibility.swift in Sources */,
 				C09047132B7E187E003C437C /* Theme.Text.RemoteConfig.swift in Sources */,
 				C090466F2B7CD1F6003C437C /* WelcomeStyle.SendButton.EnabledStyle.swift in Sources */,
+				84EF48C92E703F33001973EB /* LiveObservation.Environment.swift in Sources */,
 				C0D2F08229A4E75200803B47 /* Header.Mock.swift in Sources */,
 				C09047562B7E21F0003C437C /* MessageCenterFileUploadListStyle.Equatable.swift in Sources */,
 				C09047502B7E215E003C437C /* FileUploadStateStyle.Equatable.swift in Sources */,
@@ -6324,6 +6415,7 @@
 				1A0C143125B8547200B00695 /* EngagementStyle.swift in Sources */,
 				C09047362B7E1DEF003C437C /* FileUploadStyle.RemoteConfig.swift in Sources */,
 				7594098B298D38C2008B173A /* CallVisualizer.Presentation.swift in Sources */,
+				84EF48CE2E706449001973EB /* OpenTelemetry.swift in Sources */,
 				C06152DA2AB1BC4300063BF8 /* OrientationManager.swift in Sources */,
 				9AB061C1280EFE09008960FA /* ChatFileDownloadStyle.Accessibility.swift in Sources */,
 				C090473C2B7E1F41003C437C /* FileUploadErrorStateStyle.swift in Sources */,

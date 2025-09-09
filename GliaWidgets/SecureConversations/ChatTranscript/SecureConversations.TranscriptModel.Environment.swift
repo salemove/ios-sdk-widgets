@@ -40,6 +40,7 @@ extension SecureConversations.TranscriptModel {
         var notificationCenter: FoundationBased.NotificationCenter
         var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
         var combineScheduler: CoreSdkClient.AnyCombineScheduler
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 

@@ -15,6 +15,7 @@ extension EntryWidget {
         var interactorPublisher: AnyPublisher<Interactor?, Never>
         var onCallVisualizerResume: () -> Void
         var combineScheduler: CoreSdkClient.AnyCombineScheduler
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 

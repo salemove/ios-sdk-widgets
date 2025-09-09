@@ -1,4 +1,5 @@
 import Foundation
+import GliaCoreSDK
 
 extension EngagementViewModel {
     struct Environment {
@@ -36,6 +37,7 @@ extension EngagementViewModel {
         var topBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle
         var switchToEngagement: Command<EngagementKind>
         var shouldShowLeaveSecureConversationDialog: (SecureConversations.ShouldShowLeaveCurrentConversationSource) -> Bool
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 

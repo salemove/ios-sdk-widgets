@@ -466,7 +466,20 @@ extension SecureConversations.TranscriptModel {
 // MARK: Handling of file-picker
 extension SecureConversations.TranscriptModel {
     private func presentMediaPicker() {
+        let logMediaSourceSelection = { [weak self] (kind: AttachmentSourceItemKind) in
+            self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
+                switch kind {
+                case .photoLibrary:
+                    $0[.buttonName] = .string(OtelButtonNames.selectFromLibrary.rawValue)
+                case .takePhoto:
+                    $0[.buttonName] = .string(OtelButtonNames.takePhoto.rawValue)
+                case .browse:
+                    $0[.buttonName] = .string(OtelButtonNames.browseFiles.rawValue)
+                }
+            }
+        }
         let itemSelected = { [weak self] (kind: AttachmentSourceItemKind) in
+            logMediaSourceSelection(kind)
             let media = ObservableValue<MediaPickerEvent>(with: .none)
             guard let self = self else { return }
             media.addObserver(self) { [weak self] event, _ in
@@ -564,10 +577,14 @@ extension SecureConversations.TranscriptModel {
 // MARK: History
 extension SecureConversations.TranscriptModel {
     private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
+        environment.openTelemetry.logger.i(.chatScreenHistoryLoading)
         transcriptMessageLoader.loadMessagesWithUnreadCount { [weak self] result in
             guard let self else { return }
             switch result {
             case let .success(messagesWithUnreadCount):
+                environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
+                    $0[.messageCount] = .string("\(messagesWithUnreadCount.messages.count)")
+                }
                 let items: [ChatItem] = messagesWithUnreadCount.messages.compactMap {
                     ChatItem(
                         with: $0,
@@ -745,28 +762,38 @@ extension SecureConversations.TranscriptModel {
 
     private func entryWidgetMediaTypeSelected(_ item: EntryWidget.MediaTypeItem) {
         action?(.switchToEngagement)
-        let switchToEngagement = { [weak self] in
-            let kind: EngagementKind
-            switch item.type {
-            case .video:
-                kind = .videoCall
-            case .audio:
-                kind = .audioCall
-            case .chat:
-                kind = .chat
-            case .secureMessaging:
-                kind = .messaging(.welcome)
-            case .callVisualizer:
-                return
+
+        let logMediaTypeSelection: (OtelButtonNames) -> Void = { [weak self] selection in
+            self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
+                $0[.buttonName] = .string(selection.rawValue)
             }
-            self?.environment.switchToEngagement(kind)
         }
+
+        let kind: EngagementKind
+        switch item.type {
+        case .video:
+            logMediaTypeSelection(.scTopBannerVideo)
+            kind = .videoCall
+        case .audio:
+            logMediaTypeSelection(.scTopBannerAudio)
+            kind = .audioCall
+        case .chat:
+            logMediaTypeSelection(.scTopBannerChat)
+            kind = .chat
+        case .secureMessaging:
+            logMediaTypeSelection(.topBannerUnknown)
+            kind = .messaging(.welcome)
+        case .callVisualizer:
+            logMediaTypeSelection(.topBannerUnknown)
+            return
+        }
+
         if environment.shouldShowLeaveSecureConversationDialog(.entryWidgetTopBanner) {
-            engagementAction?(.showAlert(.leaveCurrentConversation {
-                switchToEngagement()
+            engagementAction?(.showAlert(.leaveCurrentConversation { [weak self] in
+                self?.environment.switchToEngagement(kind)
             }))
         } else {
-            switchToEngagement()
+            environment.switchToEngagement(kind)
         }
     }
 }

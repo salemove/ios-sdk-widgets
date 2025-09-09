@@ -1,5 +1,6 @@
 import AVFoundation
 import Foundation
+import GliaCoreSDK
 
 extension Glia {
     /// `Environment` is a dependency container that solves the problem exchanging live dependencies to mocked ones during unit testing.
@@ -55,6 +56,7 @@ extension Glia {
         var isAuthenticated: () -> Bool
         var dismissManager: GliaPresenter.DismissManager
         var combineScheduler: CoreSdkClient.AnyCombineScheduler
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 
