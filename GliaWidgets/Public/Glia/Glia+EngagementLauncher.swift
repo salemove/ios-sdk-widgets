@@ -9,6 +9,11 @@ extension Glia {
     /// - Returns:
     ///   - `EngagementLauncher` instance.
     public func getEngagementLauncher(queueIds: [String]) throws -> EngagementLauncher {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "getEngagementLauncher(queueIds:)"
+        )
         @discardableResult
         func getConfiguration() throws -> Configuration {
             guard let configuration else {

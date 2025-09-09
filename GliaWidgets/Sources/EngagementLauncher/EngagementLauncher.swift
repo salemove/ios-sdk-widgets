@@ -6,8 +6,13 @@ public final class EngagementLauncher {
     typealias StartEngagementAction = (EngagementKind, SceneProvider?) throws -> Void
 
     private var startEngagement: StartEngagementAction
+    private var environment: Environment
 
-    init(startEngagement: @escaping StartEngagementAction) {
+    init(
+        environment: Environment = Environment(),
+        startEngagement: @escaping StartEngagementAction
+    ) {
+        self.environment = environment
         self.startEngagement = startEngagement
     }
 
@@ -17,6 +22,11 @@ public final class EngagementLauncher {
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to
     ///     the first active foreground scene.
     public func startChat(sceneProvider: SceneProvider? = nil) throws {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "startChat(sceneProvider:)"
+        )
         try startEngagement(.chat, sceneProvider)
     }
 
@@ -26,6 +36,11 @@ public final class EngagementLauncher {
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to
     ///     the first active foreground scene.
     public func startAudioCall(sceneProvider: SceneProvider? = nil) throws {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "startAudioCall(sceneProvider:)"
+        )
         try startEngagement(.audioCall, sceneProvider)
     }
 
@@ -35,6 +50,11 @@ public final class EngagementLauncher {
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to
     ///     the first active foreground scene.
     public func startVideoCall(sceneProvider: SceneProvider? = nil) throws {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "startVideoCall(sceneProvider:)"
+        )
         try startEngagement(.videoCall, sceneProvider)
     }
 
@@ -44,12 +64,20 @@ public final class EngagementLauncher {
     ///   - sceneProvider: Used to provide `UIWindowScene` to the framework. Defaults to
     ///     the first active foreground scene.
     public func startSecureMessaging(sceneProvider: SceneProvider? = nil) throws {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "startSecureMessaging(sceneProvider:)"
+        )
         try startEngagement(.messaging(.welcome), sceneProvider)
     }
 }
 
 extension EngagementLauncher {
-    func startSecureMessaging(initialScreen: SecureConversations.InitialScreen, sceneProvider: SceneProvider? = nil) throws {
+    func startSecureMessaging(
+        initialScreen: SecureConversations.InitialScreen,
+        sceneProvider: SceneProvider? = nil
+    ) throws {
         try startEngagement(.messaging(initialScreen), sceneProvider)
     }
 }

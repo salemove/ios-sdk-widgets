@@ -71,6 +71,11 @@ extension Glia {
     /// configures logging environment and cleans up UI and navigation states as necessary.
     ///
     public func authentication(with behavior: Glia.Authentication.Behavior) throws -> Authentication {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "authentication(with:)"
+        )
         let auth = try environment.coreSdk.authentication(behavior.toCoreSdk())
 
         return .init(
@@ -256,6 +261,11 @@ extension Glia.Authentication {
         accessToken: AccessToken?,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "authenticate(idToken:accessToken:completion:)"
+        )
         self.authenticateWithIdToken(
             idToken,
             accessToken,
@@ -269,14 +279,27 @@ extension Glia.Authentication {
     ///   - shouldStopPushNotifications: Boolean that indicates whether to stop Push Notifications after deauthentication or not.
     ///   - completion: Completion handler.
     ///
-    public func deauthenticate(shouldStopPushNotifications: Bool = false, completion: @escaping (Result<Void, Error>) -> Void) {
+    public func deauthenticate(
+        shouldStopPushNotifications: Bool = false,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "deauthenticate(shouldStopPushNotifications:completion:)"
+        )
         self.deauthenticateWithCallback(shouldStopPushNotifications, completion)
     }
 
     /// Initialize placeholder instance.
     /// Useful during unit testing.
     public var isAuthenticated: Bool {
-        self.isAuthenticatedClosure()
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "isAuthenticated"
+        )
+        return self.isAuthenticatedClosure()
     }
 
     /// Refresh access token
@@ -291,6 +314,11 @@ extension Glia.Authentication {
         accessToken: AccessToken?,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "refresh(idToken:accessToken:completion:)"
+        )
         self.refresh(idToken, accessToken, completion)
     }
 }

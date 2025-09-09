@@ -56,6 +56,11 @@ public final class CallVisualizer {
     ///   - source: The current `viewController` to present from.
     ///
     public func showVisitorCodeViewController(from source: UIViewController) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "showVisitorCodeViewController(from:)"
+        )
         environment.log.prefixed(Self.self).info("Show Visitor Code Dialog")
         coordinator.showVisitorCodeViewController(by: .alert(source))
     }
@@ -80,6 +85,11 @@ public final class CallVisualizer {
         into container: UIView,
         onEngagementAccepted: @escaping () -> Void
     ) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "embedVisitorCodeView(into:onEngagementAccepted:)"
+        )
         environment.log.prefixed(Self.self).info("Show Visitor Code Dialog")
         coordinator.showVisitorCodeViewController(
             by: .embedded(container, onEngagementAccepted: onEngagementAccepted)
@@ -87,6 +97,11 @@ public final class CallVisualizer {
     }
 
     public func resume() {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "resume"
+        )
         coordinator.resume()
     }
 }

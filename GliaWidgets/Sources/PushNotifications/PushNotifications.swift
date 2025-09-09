@@ -18,6 +18,11 @@ public struct PushNotifications {
         application: UIApplication,
         deviceToken: Data
     ) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "applicationDidRegisterForRemoteNotificationsWithDeviceToken(application:deviceToken:)"
+        )
         environment.coreSdk.pushNotifications.applicationDidRegisterForRemoteNotificationsWithDeviceToken(
             application,
             deviceToken
@@ -36,6 +41,11 @@ public struct PushNotifications {
         application: UIApplication,
         error: any Error
     ) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "applicationDidFailToRegisterForRemoteNotificationsWithError(application:error:)"
+        )
         environment.coreSdk.pushNotifications.applicationDidFailToRegisterForRemoteNotificationsWithError(
             application,
             error
@@ -57,6 +67,11 @@ public struct PushNotifications {
         willPresent: UNNotification,
         completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
     ) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "userNotificationCenterWillPresent(center:willPresent:completionHandler:)"
+        )
         environment.coreSdk.pushNotifications.userNotificationCenterWillPresent(
             center,
             willPresent,
@@ -79,6 +94,11 @@ public struct PushNotifications {
         didReceive: UNNotificationResponse,
         completionHandler: @escaping () -> Void
     ) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "userNotificationCenterDidReceiveResponse(center:didReceive:completionHandler:)"
+        )
         environment.coreSdk.pushNotifications.userNotificationCenterDidReceiveResponse(
             center,
             didReceive,
@@ -94,6 +114,11 @@ public struct PushNotifications {
     /// - Parameter handler: An optional `PushActionBlock` closure used as a callback for push actions.
     ///
     public func setPushHandler(_ handler: GliaCoreSDK.PushActionBlock?) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "setPushHandler(_:)"
+        )
         environment.coreSdk.pushNotifications.setPushHandler(handler)
     }
 
@@ -103,18 +128,11 @@ public struct PushNotifications {
     ///   - types: array of PushnotificationType
     ///
     public func subscribeTo(_ types: [PushNotificationsType]) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "subscribeTo(_:)"
+        )
         environment.coreSdk.pushNotifications.subscribeTo(types)
-    }
-}
-
-extension PushNotifications {
-    struct Environment {
-        let coreSdk: CoreSdkClient
-    }
-}
-
-extension PushNotifications.Environment {
-    static func create(with environment: Glia.Environment) -> Self {
-        .init(coreSdk: environment.coreSdk)
     }
 }

@@ -95,7 +95,14 @@ public class Glia {
     public static let sharedInstance = Glia(environment: .live)
 
     /// Current engagement media type.
-    public var engagement: EngagementKind { return rootCoordinator?.engagementLaunching.currentKind ?? .none }
+    public var engagement: EngagementKind {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "engagement"
+        )
+        return rootCoordinator?.engagementLaunching.currentKind ?? .none
+    }
 
     /// Used to monitor engagement state changes.
     public var onEvent: ((GliaEvent) -> Void)?
@@ -223,6 +230,8 @@ public class Glia {
                 }
                 .store(in: &cancelBag)
         }
+
+        environment.openTelemetry.logger.i(.widgetsSdkSetup)
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
@@ -247,9 +256,24 @@ public class Glia {
         features: Features = .all,
         completion: @escaping (Result<Void, Error>) -> Void
     ) throws {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "configure"
+        )
+
         guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
-            throw GliaError.configuringDuringEngagementIsNotAllowed
+            let error = GliaError.configuringDuringEngagementIsNotAllowed
+            environment.openTelemetry.logger.e(
+                .widgetsSdkConfigured,
+                // TODO: - Align error message
+                message: "configuring during engagement is not allowed",
+                error: error
+            )
+            throw error
         }
+
+        environment.openTelemetry.logger.i(.widgetsSdkConfiguring)
 
         if configuration.isWhiteLabelApp {
             theme.showsPoweredBy = false
@@ -316,6 +340,7 @@ public class Glia {
                             interactorPublisher: Just(interactor).eraseToAnyPublisher()
                         ))
                         startObservingInteractorEvents()
+                        environment.openTelemetry.logger.i(.widgetsSdkConfiguring)
                         completion(.success(()))
                     } catch let error as SecureConversations.PendingInteraction.Error {
                         switch error {
@@ -366,6 +391,11 @@ public class Glia {
     /// during ongoing engagement. If you do so, the chat bubble appears.
     ///
     public func minimize() {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "minimize"
+        )
         rootCoordinator?.minimize()
     }
 
@@ -374,6 +404,11 @@ public class Glia {
     /// Use this function for resuming engagement view if bubble is hidden
     /// programmatically and you need to present engagement view.
     public func resume() throws {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "resume"
+        )
         guard engagement != .none else { throw GliaError.engagementNotExist }
         rootCoordinator?.maximize()
     }
@@ -386,6 +421,11 @@ public class Glia {
     ///   - messageRenderer: Custom message renderer.
     ///
     public func setChatMessageRenderer(messageRenderer: MessageRenderer?) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "setChatMessageRenderer(messageRenderer:)"
+        )
         self.messageRenderer = messageRenderer
     }
 
@@ -399,6 +439,11 @@ public class Glia {
     ///   will occur otherwise.
     ///
     public func clearVisitorSession(_ completion: @escaping (Result<Void, Error>) -> Void) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "clearVisitorSession(_:)"
+        )
         loggerPhase.logger.prefixed(Self.self).info("Clear visitor session")
         guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
             completion(.failure(GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed))
@@ -431,6 +476,11 @@ public class Glia {
     ///   this method, because `GliaError.sdkIsNotConfigured` will occur otherwise.
     ///
     public func getVisitorInfo(completion: @escaping (Result<VisitorInfo, Error>) -> Void) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "getVisitorInfo(completion:)"
+        )
         guard configuration != nil else {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
@@ -470,6 +520,11 @@ public class Glia {
         _ info: VisitorInfoUpdate,
         completion: @escaping (Result<Bool, Error>) -> Void
     ) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "updateVisitorInfo(_:completion:)"
+        )
         guard configuration != nil else {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
@@ -479,6 +534,11 @@ public class Glia {
 
     /// Ends active engagement if existing and closes Widgets SDK UI (includes bubble).
     public func endEngagement(_ completion: @escaping (Result<Void, Error>) -> Void) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "endEngagement(_:)"
+        )
         loggerPhase.logger.prefixed(Self.self).info("End engagement by integrator")
 
         defer {
@@ -502,6 +562,11 @@ public class Glia {
     ///   - completion: A callback that will return the Result struct with `Queue` list or `GliaCoreError`.
     ///
     public func getQueues(_ completion: @escaping (Result<[Queue], Error>) -> Void) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "getQueues(_:)"
+        )
         guard configuration != nil else {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
@@ -524,6 +589,11 @@ public class Glia {
     ///
     @_spi(CortexFinancial)
     public func configureLogLevel(level: GliaCoreSDK.LogLevel) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "configureLogLevel(level:)"
+        )
         environment.coreSdk.configureLogLevel(level)
     }
 }

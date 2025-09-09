@@ -1,4 +1,5 @@
 import Foundation
+@_spi(GliaWidgets) import GliaCoreSDK
 
 /// Namespace for all secure conversations functionality
 public struct SecureConversations {
@@ -11,6 +12,11 @@ public struct SecureConversations {
     /// - Parameter completion: A callback that will return a `Result` with the number of unread
     /// secure conversation messages on success, or `Swift.Error` on failure.
     public func getUnreadMessageCount(_ callback: @escaping (Result<Int, Error>) -> Void) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "getUnreadMessageCount(_:)"
+        )
         environment.coreSdk.secureConversations.getUnreadMessageCount(callback)
     }
 
@@ -26,6 +32,11 @@ public struct SecureConversations {
     /// A unique callback ID or `nil` if callback was not registered due to error.
     /// This callback ID could be used to usubscribe from Secure Conversation unread messages count updates.
     public func subscribeSecureUnreadMessageCount(_ completion: @escaping (Result<Int?, Error>) -> Void) -> String? {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "subscribeSecureUnreadMessageCount(_:)"
+        )
         return environment.coreSdk.secureConversations.subscribeForUnreadMessageCount(completion)
     }
 
@@ -33,6 +44,11 @@ public struct SecureConversations {
     /// 
     /// - Parameter subscriptionToken: Subscription token produced by `subscribeToUnreadMessageCount` method.
     public func unsubscribeSecureUnreadMessageCount(_ subscriptionToken: String) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "unsubscribeSecureUnreadMessageCount(_:)"
+        )
         return environment.coreSdk.secureConversations.unsubscribeFromUnreadMessageCount(subscriptionToken)
     }
 }
@@ -40,6 +56,7 @@ public struct SecureConversations {
 extension SecureConversations {
     struct Environment {
         let coreSdk: CoreSdkClient
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 

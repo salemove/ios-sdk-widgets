@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+@_spi(GliaWidgets) import GliaCoreSDK
 
 extension CallVisualizer {
     struct Environment {
@@ -32,6 +33,7 @@ extension CallVisualizer {
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var alertManager: AlertManager
         var combineScheduler: CoreSdkClient.AnyCombineScheduler
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 
