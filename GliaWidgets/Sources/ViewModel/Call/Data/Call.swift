@@ -142,6 +142,9 @@ class Call {
 
         if stream.isRemote {
             stream.onHold = { [weak self] in
+                self?.environment.openTelemetry.logger.i(.mediaOnHold) { builder in
+                    builder[.mediaType] = .string("audio")
+                }
                 self?.isVisitorOnHold.value = $0
             }
         }
@@ -156,6 +159,9 @@ class Call {
 
         if stream.isRemote {
             stream.onHold = { [weak self] in
+                self?.environment.openTelemetry.logger.i(.mediaOnHold) { builder in
+                    builder[.mediaType] = .string("video")
+                }
                 self?.isVisitorOnHold.value = $0
             }
         }
@@ -166,9 +172,15 @@ class Call {
             if $0.isPaused {
                 self.hasVisitorTurnedOffVideo = false
                 $0.resume()
+                self.environment.openTelemetry.logger.i(.mediaResumed) { builder in
+                    builder[.mediaType] = .string("video")
+                }
             } else {
                 self.hasVisitorTurnedOffVideo = true
                 $0.pause()
+                self.environment.openTelemetry.logger.i(.mediaPaused) { builder in
+                    builder[.mediaType] = .string("video")
+                }
             }
         }
     }
@@ -178,9 +190,15 @@ class Call {
             if $0.isMuted {
                 self.hasVisitorMutedAudio = false
                 $0.unmute()
+                self.environment.openTelemetry.logger.i(.mediaResumed) { builder in
+                    builder[.mediaType] = .string("audio")
+                }
             } else {
                 self.hasVisitorMutedAudio = true
                 $0.mute()
+                self.environment.openTelemetry.logger.i(.mediaPaused) { builder in
+                    builder[.mediaType] = .string("audio")
+                }
             }
         }
     }

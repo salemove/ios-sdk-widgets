@@ -1,9 +1,11 @@
 import Foundation
+import GliaCoreSDK
 
 extension FileUpload {
     struct Environment {
         var uploadFile: UploadFile
         var uuid: () -> UUID
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 

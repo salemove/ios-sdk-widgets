@@ -78,22 +78,42 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         view.messageEntryView.textChanged = { text in
             viewModel.event(.messageTextChanged(text))
         }
-        view.messageEntryView.sendTapped = {
+        view.messageEntryView.sendTapped = { [weak self] in
+            self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
+                $0[.buttonName] = .string(OtelButtonNames.send.rawValue)
+            }
             viewModel.event(.sendTapped)
         }
-        view.messageEntryView.pickMediaTapped = {
+        view.messageEntryView.pickMediaTapped = { [weak self] in
+            self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
+                $0[.buttonName] = .string(OtelButtonNames.addAttachment.rawValue)
+            }
             viewModel.event(.pickMediaTapped)
         }
         view.fileTapped = { file in
             viewModel.event(.fileTapped(file))
         }
-        view.downloadTapped = { download in
+        view.downloadTapped = { [weak self] download in
+            guard let self else { return }
+            environment.openTelemetry.logger.i(.chatScreenFileDownloading) {
+                $0[.fileId] = .string(download.file.id ?? "null")
+            }
+            download.state.addObserver(self) { [weak self] state, _ in
+                if case .downloaded = state {
+                    self?.environment.openTelemetry.logger.i(.chatScreenFileDownloaded) {
+                        $0[.fileId] = .string(download.file.id ?? "null")
+                    }
+                }
+            }
             viewModel.event(.downloadTapped(download))
         }
         view.callBubbleTapped = {
             viewModel.event(.callBubbleTapped)
         }
-        view.choiceOptionSelected = { option, messageId in
+        view.choiceOptionSelected = { [weak self] option, messageId in
+            self?.environment.openTelemetry.logger.i(.chatScreenSingleChoiceAnswered) {
+                $0[.messageId] = .string(messageId)
+            }
             viewModel.event(.choiceOptionSelected(option, messageId))
         }
         view.chatScrolledToBottom = { bottomReached in
@@ -102,15 +122,24 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         view.linkTapped = { url in
             viewModel.event(.linkTapped(url))
         }
-        view.selectCustomCardOption = { option, messageId in
+        view.selectCustomCardOption = { [weak self] option, messageId in
+            self?.environment.openTelemetry.logger.i(.chatScreenCustomCardAction) {
+                $0[.messageId] = .string(messageId.rawValue)
+            }
             viewModel.event(.customCardOptionSelected(option: option, messageId: messageId))
         }
 
-        view.gvaButtonTapped = { option in
+        view.gvaButtonTapped = { [weak self] option in
+            self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
+                $0[.buttonName] = .string(OtelButtonNames.gva.rawValue)
+            }
             viewModel.event(.gvaButtonTapped(option))
         }
 
-        view.retryMessageTapped = { message in
+        view.retryMessageTapped = { [weak self] message in
+            self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
+                $0[.buttonName] = .string(OtelButtonNames.retry.rawValue)
+            }
             viewModel.event(.retryMessageTapped(message))
         }
 
@@ -230,12 +259,24 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         using viewModel: SecureConversations.ChatWithTranscriptModel
     ) -> ChatViewController.Props {
         let chatTheme = viewFactory.theme.chat
+        let logButtonClickedEvent: (OtelButtonNames) -> Void = { [weak self] buttonName in
+            self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
+                $0[.buttonName] = .init(buttonName.rawValue)
+            }
+        }
         let endEvent = Cmd { [weak self] in
             self?.view.endEditing(true)
+            logButtonClickedEvent(.end)
             viewModel.event(EngagementViewModel.Event.closeTapped)
         }
-        let backEvent = Cmd { viewModel.event(EngagementViewModel.Event.backTapped) }
-        let closeEvent = Cmd { viewModel.event(EngagementViewModel.Event.closeTapped) }
+        let backEvent = Cmd {
+            logButtonClickedEvent(.back)
+            viewModel.event(EngagementViewModel.Event.backTapped)
+        }
+        let closeEvent = Cmd {
+            logButtonClickedEvent(.close)
+            viewModel.event(EngagementViewModel.Event.closeTapped)
+        }
 
         let chatHeaderBackButton = chatTheme.header.backButton.map {
             HeaderButton.Props(tap: backEvent, style: $0)

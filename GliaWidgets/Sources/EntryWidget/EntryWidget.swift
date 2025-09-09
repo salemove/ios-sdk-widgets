@@ -115,6 +115,12 @@ public extension EntryWidget {
     ///
     /// - Parameter viewController: The `UIViewController` in which the widget will be shown as a sheet.
     func show(in viewController: UIViewController) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "show",
+            methodParams: "viewController"
+        )
         if hasPendingInteraction {
             do {
                 try environment.engagementLauncher.startSecureMessaging()
@@ -130,11 +136,22 @@ public extension EntryWidget {
     ///
     /// - Parameter view: The `UIView` in which the widget will be embedded.
     func embed(in view: UIView) {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "embed",
+            methodParams: "view"
+        )
         showView(in: view)
     }
 
     /// Hides the widget, dismissing any presented sheets and stopping queue monitoring.
     func hide() {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "hide"
+        )
         hostedViewController?.dismiss(animated: true, completion: nil)
         hostedViewController = nil
     }

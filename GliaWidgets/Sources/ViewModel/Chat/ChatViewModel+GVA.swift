@@ -39,6 +39,10 @@ extension ChatViewModel {
         .init { [weak self] in
             guard let self else { return }
 
+            environment.openTelemetry.logger.i(.chatScreenGvaMessageAction) {
+                $0[.actionType] = .string(OtelGvaActionTypes.postBack.rawValue)
+            }
+
             let attachment = CoreSdkClient.Attachment(
                 type: .singleChoiceResponse,
                 selectedOption: option.value,
@@ -76,12 +80,22 @@ private extension ChatViewModel {
                 self.environment.uiApplication.open(url)
             }
 
+            let logGvaAction: (OtelGvaActionTypes) -> Void = { [weak self] actionType in
+                self?.environment.openTelemetry.logger.i(.chatScreenGvaMessageAction) {
+                    $0[.actionType] = .string(actionType.rawValue)
+                }
+            }
+
+            // "tel" ,"mailto" and "http(s)"-based links should be opened by UIApplication
             switch url.scheme?.lowercased() {
-            case URLScheme.tel.rawValue,
-                URLScheme.mailto.rawValue,
-                URLScheme.http.rawValue,
-                URLScheme.https.rawValue:
-                // "tel" ,"mailto" and "http(s)"-based links should be opened by UIApplication
+            case URLScheme.tel.rawValue:
+                logGvaAction(.phone)
+                openUrl(url)
+            case URLScheme.mailto.rawValue:
+                logGvaAction(.email)
+                openUrl(url)
+            case URLScheme.http.rawValue, URLScheme.https.rawValue:
+                logGvaAction(.url)
                 openUrl(url)
 
             default:
@@ -92,8 +106,10 @@ private extension ChatViewModel {
                 case String.gvaOptionUrlTargetSelf:
                     // In case of urlTarget "self" we need to minimize Glia UI
                     self.delegate?(.minimize)
+                    logGvaAction(.url)
                     openUrl(url)
                 case String.gvaOptionUrlTargetModal:
+                    logGvaAction(.url)
                     openUrl(url)
                 default:
                     return

@@ -10,7 +10,13 @@ extension Glia {
     /// - Returns:
     ///   - `EntryWidget` instance.
     public func getEntryWidget(queueIds: [String]) throws -> EntryWidget {
-        try getEntryWidget(queueIds: queueIds, configuration: .default)
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "getEntryWidget",
+            methodParams: "queueIds"
+        )
+        return try getEntryWidget(queueIds: queueIds, configuration: .default)
     }
 
     func getEntryWidget(queueIds: [String], configuration: EntryWidget.Configuration) throws -> EntryWidget {
