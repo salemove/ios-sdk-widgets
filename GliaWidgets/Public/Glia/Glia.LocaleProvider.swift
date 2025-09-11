@@ -26,7 +26,8 @@ extension Glia.LocaleProvider {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "getRemoteString(_:)"
+            methodName: "getRemoteString",
+            methodParams: "key"
         )
         return locale(key)
     }

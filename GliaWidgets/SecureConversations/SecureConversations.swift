@@ -15,7 +15,8 @@ public struct SecureConversations {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "getUnreadMessageCount(_:)"
+            methodName: "getUnreadMessageCount",
+            methodParams: "callback"
         )
         environment.coreSdk.secureConversations.getUnreadMessageCount(callback)
     }
@@ -35,7 +36,8 @@ public struct SecureConversations {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "subscribeSecureUnreadMessageCount(_:)"
+            methodName: "subscribeSecureUnreadMessageCount)",
+            methodParams: "completion"
         )
         return environment.coreSdk.secureConversations.subscribeForUnreadMessageCount(completion)
     }
@@ -47,7 +49,8 @@ public struct SecureConversations {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "unsubscribeSecureUnreadMessageCount(_:)"
+            methodName: "unsubscribeSecureUnreadMessageCount(_:)",
+            methodParams: "subscriptionToken"
         )
         return environment.coreSdk.secureConversations.unsubscribeFromUnreadMessageCount(subscriptionToken)
     }
