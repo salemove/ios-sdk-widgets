@@ -74,7 +74,8 @@ extension Glia {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "authentication(with:)"
+            methodName: "authentication",
+            methodParams: "behavior"
         )
         let auth = try environment.coreSdk.authentication(behavior.toCoreSdk())
 
@@ -264,7 +265,8 @@ extension Glia.Authentication {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "authenticate(idToken:accessToken:completion:)"
+            methodName: "authenticate",
+            methodParams: "idToken", "accessToken", "completion"
         )
         self.authenticateWithIdToken(
             idToken,
@@ -286,7 +288,8 @@ extension Glia.Authentication {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "deauthenticate(shouldStopPushNotifications:completion:)"
+            methodName: "deauthenticate",
+            methodParams: "shouldStopPushNotifications", "completion"
         )
         self.deauthenticateWithCallback(shouldStopPushNotifications, completion)
     }
@@ -317,7 +320,8 @@ extension Glia.Authentication {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "refresh(idToken:accessToken:completion:)"
+            methodName: "refresh",
+            methodParams: "idToken", "accessToken", "completion"
         )
         self.refresh(idToken, accessToken, completion)
     }

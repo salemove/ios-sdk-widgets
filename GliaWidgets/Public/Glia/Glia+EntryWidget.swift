@@ -13,7 +13,8 @@ extension Glia {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "getEntryWidget(queueIds:)"
+            methodName: "getEntryWidget",
+            methodParams: "queueIds"
         )
         return try getEntryWidget(queueIds: queueIds, configuration: .default)
     }

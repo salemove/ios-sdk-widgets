@@ -259,7 +259,8 @@ public class Glia {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "configure"
+            methodName: "configure",
+            methodParams: "configuration", "theme", "uiConfig", "assetsBuilder", "features", "completion"
         )
 
         guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
@@ -424,7 +425,8 @@ public class Glia {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "setChatMessageRenderer(messageRenderer:)"
+            methodName: "setChatMessageRenderer",
+            methodParams: "messageRenderer"
         )
         self.messageRenderer = messageRenderer
     }
@@ -442,7 +444,8 @@ public class Glia {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "clearVisitorSession(_:)"
+            methodName: "clearVisitorSession",
+            methodParams: "completion"
         )
         loggerPhase.logger.prefixed(Self.self).info("Clear visitor session")
         guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
@@ -479,7 +482,8 @@ public class Glia {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "getVisitorInfo(completion:)"
+            methodName: "getVisitorInfo",
+            methodParams: "completion"
         )
         guard configuration != nil else {
             completion(.failure(GliaError.sdkIsNotConfigured))
@@ -523,7 +527,8 @@ public class Glia {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "updateVisitorInfo(_:completion:)"
+            methodName: "updateVisitorInfo",
+            methodParams: "info", "completion"
         )
         guard configuration != nil else {
             completion(.failure(GliaError.sdkIsNotConfigured))
@@ -537,7 +542,8 @@ public class Glia {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "endEngagement(_:)"
+            methodName: "endEngagement",
+            methodParams: "completion"
         )
         loggerPhase.logger.prefixed(Self.self).info("End engagement by integrator")
 
@@ -565,7 +571,8 @@ public class Glia {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "getQueues(_:)"
+            methodName: "getQueues",
+            methodParams: "completion"
         )
         guard configuration != nil else {
             completion(.failure(GliaError.sdkIsNotConfigured))
@@ -592,7 +599,8 @@ public class Glia {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "configureLogLevel(level:)"
+            methodName: "configureLogLevel",
+            methodParams: "level"
         )
         environment.coreSdk.configureLogLevel(level)
     }

@@ -12,7 +12,8 @@ extension Glia {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "getEngagementLauncher(queueIds:)"
+            methodName: "getEngagementLauncher",
+            methodParams: "queueIds"
         )
         @discardableResult
         func getConfiguration() throws -> Configuration {
