@@ -806,7 +806,20 @@ extension ChatViewModel {
 
 extension ChatViewModel {
     private func presentMediaPicker() {
+        let logMediaSourceSelection = { [weak self] (kind: AttachmentSourceItemKind) in
+            self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
+                switch kind {
+                case .photoLibrary:
+                    $0[.buttonName] = .string(OtelButtonNames.selectFromLibrary.rawValue)
+                case .takePhoto:
+                    $0[.buttonName] = .string(OtelButtonNames.takePhoto.rawValue)
+                case .browse:
+                    $0[.buttonName] = .string(OtelButtonNames.browseFiles.rawValue)
+                }
+            }
+        }
         let itemSelected = { (kind: AttachmentSourceItemKind) in
+            logMediaSourceSelection(kind)
             let media = ObservableValue<MediaPickerEvent>(with: .none)
             media.addObserver(self) { [weak self] event, _ in
                 guard let self = self else { return }
