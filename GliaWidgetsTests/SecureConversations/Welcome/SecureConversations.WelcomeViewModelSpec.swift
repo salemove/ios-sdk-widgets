@@ -135,9 +135,9 @@ extension SecureConversationsWelcomeViewModelTests {
 
 // Send message
 extension SecureConversationsWelcomeViewModelTests {
-    func testSuccessfulMessageSend() {
+    func testSuccessfulMessageSend() async {
         var isCalled = false
-        viewModel.environment.secureConversations.sendMessagePayload = { _, _, completion in
+        viewModel.environment.secureConversations.sendMessagePayload = { _, _ in
             let mockedMessage = CoreSdkClient.Message(
                 id: UUID.mock.uuidString,
                 content: "Content",
@@ -145,9 +145,7 @@ extension SecureConversationsWelcomeViewModelTests {
                 metadata: nil
             )
 
-            completion(.success(mockedMessage))
-
-            return .mock
+            return mockedMessage
         }
 
         viewModel.delegate = { event in
@@ -158,19 +156,17 @@ extension SecureConversationsWelcomeViewModelTests {
             }
         }
 
-        viewModel.sendMessageCommand()
+        await viewModel.sendMessageCommand()
 
         XCTAssertEqual(viewModel.sendMessageRequestState, .waiting)
         XCTAssertTrue(isCalled)
     }
 
-    func testFailedMessageSend() {
+    func testFailedMessageSend() async {
         var isCalled = false
         var alertInputType: AlertInputType?
-        viewModel.environment.secureConversations.sendMessagePayload = { _, _, completion in
-            completion(.failure(CoreSdkClient.GliaCoreError(reason: "")))
-
-            return .mock
+        viewModel.environment.secureConversations.sendMessagePayload = { _, _ in
+            throw CoreSdkClient.GliaCoreError(reason: "")
         }
 
         viewModel.delegate = { event in
@@ -182,7 +178,7 @@ extension SecureConversationsWelcomeViewModelTests {
             }
         }
 
-        viewModel.sendMessageCommand()
+        await viewModel.sendMessageCommand()
 
         XCTAssertEqual(viewModel.sendMessageRequestState, .waiting)
         XCTAssertTrue(isCalled)

@@ -22,7 +22,7 @@ extension CoreSdkClient {
         endEngagement: { true },
         requestEngagedOperator: { [] },
         uploadFileToEngagement: { _, _, _ in },
-        fetchFile: { _, _, _ in },
+        fetchFile: { _, _ in .mock() },
         getCurrentEngagement: { return nil },
         fetchSiteConfigurations: { _ in },
         submitSurveyAnswer: { _, _, _ in },
@@ -42,14 +42,13 @@ extension CoreSdkClient {
 
 extension CoreSdkClient.SecureConversations {
     static let mock = Self(
-        sendMessagePayload: { _, _, _ in .mock },
+        sendMessagePayload: { _, _ in .mock() },
         uploadFile: { _, _, _ in .mock },
         getUnreadMessageCount: { 0 },
         markMessagesAsRead: {},
-        downloadFile: { _, _, _ in .mock },
+        downloadFile: { _, _ in .mock() },
         subscribeForUnreadMessageCount: { _ in UUID.mock.uuidString },
         unsubscribeFromUnreadMessageCount: { _ in },
-        pendingStatus: { $0(.success(false)) },
         observePendingStatus: { _ in nil },
         unsubscribeFromPendingStatus: { _ in }
     )

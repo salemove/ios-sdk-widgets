@@ -28,8 +28,8 @@ extension SecureConversations {
 
         let fileUploadListModel: FileUploadListViewModel
 
-        lazy var sendMessageCommand = Cmd { [weak self] in
-            self?.sendMessage()
+        lazy var sendMessageCommand = AsyncCmd { [weak self] in
+            await self?.sendMessage()
         }
 
         init(
@@ -110,7 +110,8 @@ extension SecureConversations {
 
 // MARK: - Send Message
 private extension SecureConversations.WelcomeViewModel {
-    func sendMessage() {
+    @MainActor
+    func sendMessage() async {
         let queueIds = environment.queueIds
 
         sendMessageRequestState = .loading
@@ -119,19 +120,15 @@ private extension SecureConversations.WelcomeViewModel {
             messageText,
             fileUploadListModel.attachment
         )
-
-        _ = environment.secureConversations.sendMessagePayload(
-            payload,
-            queueIds
-        ) { [weak self] result in
-            self?.sendMessageRequestState = .waiting
-
-            switch result {
-            case .success:
-                self?.delegate?(.confirmationScreenRequested)
-            case let .failure(error):
-                self?.delegate?(.showAlert(.error(error: error)))
-            }
+        sendMessageRequestState = .waiting
+        do {
+            let message = try await environment.secureConversations.sendMessagePayload(
+                payload,
+                queueIds
+            )
+            delegate?(.confirmationScreenRequested)
+        } catch {
+            delegate?(.showAlert(.error(error: error)))
         }
     }
     func loadAttachmentAvailability() {

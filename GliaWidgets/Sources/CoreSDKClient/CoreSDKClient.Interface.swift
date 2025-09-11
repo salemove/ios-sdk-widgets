@@ -54,9 +54,8 @@ struct CoreSdkClient {
 
     typealias FetchFile = (
         _ engagementFile: Self.EngagementFile,
-        _ progress: Self.EngagementFileProgressBlock?,
-        _ completion: @escaping Self.EngagementFileFetchCompletionBlock
-    ) -> Void
+        _ progress: Self.EngagementFileProgressBlock?
+    ) async throws -> GliaCoreSDK.EngagementFileData
 
     var fetchFile: FetchFile
 
@@ -136,7 +135,6 @@ extension CoreSdkClient {
         var downloadFile: DownloadFile
         var subscribeForUnreadMessageCount: SubscribeForUnreadMessageCount
         var unsubscribeFromUnreadMessageCount: UnsubscribeFromUnreadCount
-        var pendingStatus: PendingStatus
         var observePendingStatus: ObservePendingStatus
         var unsubscribeFromPendingStatus: UnsubscribeFromPendingStatus
     }
@@ -149,9 +147,8 @@ extension CoreSdkClient.SecureConversations {
 
     typealias SendPayload = (
         _ secureMessagePayload: SendMessagePayload,
-        _ queueIds: [String],
-        _ completion: @escaping (Result<Message, Error>) -> Void
-    ) -> Cancellable
+        _ queueIds: [String]
+    ) async throws -> Message
 
     typealias UploadFile = (
         _ file: EngagementFile,
@@ -165,17 +162,14 @@ extension CoreSdkClient.SecureConversations {
 
     typealias DownloadFile = (
         _ file: EngagementFile,
-        _ progress: @escaping EngagementFileProgressBlock,
-        _ completion: @escaping (Result<EngagementFileData, Error>) -> Void
-    ) -> Cancellable
+        _ progress: @escaping EngagementFileProgressBlock
+    ) async throws -> EngagementFileData
 
     typealias SubscribeForUnreadMessageCount = (
         _ completion: @escaping (Result<Int?, Error>) -> Void
     ) -> String?
 
     typealias UnsubscribeFromUnreadCount = (String) -> Void
-
-    typealias PendingStatus = (_ callback: @escaping (Result<Bool, Error>) -> Void) -> Void
 
     typealias ObservePendingStatus = (_ callback: @escaping (Result<Bool, Error>) -> Void) -> String?
 
