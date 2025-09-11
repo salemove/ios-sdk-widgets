@@ -502,6 +502,7 @@
 		84EF48C92E703F33001973EB /* LiveObservation.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EF48C82E703F33001973EB /* LiveObservation.Environment.swift */; };
 		84EF48CB2E7057C4001973EB /* PushNotifications.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EF48CA2E7057C4001973EB /* PushNotifications.Environment.swift */; };
 		84EF48CE2E706449001973EB /* OpenTelemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EF48CD2E706449001973EB /* OpenTelemetry.swift */; };
+		84EF48D02E706A13001973EB /* MediaPickerController.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EF48CF2E706A13001973EB /* MediaPickerController.Environment.swift */; };
 		84EFB05B28AA90220005E270 /* CustomCardContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EFB05A28AA90220005E270 /* CustomCardContainerView.swift */; };
 		84EFB05D28AA992D0005E270 /* WebMessageCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EFB05C28AA992D0005E270 /* WebMessageCardView.swift */; };
 		9A0B7D1727DA6B74006D8637 /* Interactor.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0B7D1627DA6B74006D8637 /* Interactor.Mock.swift */; };
@@ -1584,6 +1585,7 @@
 		84EF48C82E703F33001973EB /* LiveObservation.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveObservation.Environment.swift; sourceTree = "<group>"; };
 		84EF48CA2E7057C4001973EB /* PushNotifications.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotifications.Environment.swift; sourceTree = "<group>"; };
 		84EF48CD2E706449001973EB /* OpenTelemetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenTelemetry.swift; sourceTree = "<group>"; };
+		84EF48CF2E706A13001973EB /* MediaPickerController.Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerController.Environment.swift; sourceTree = "<group>"; };
 		84EFB05A28AA90220005E270 /* CustomCardContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCardContainerView.swift; sourceTree = "<group>"; };
 		84EFB05C28AA992D0005E270 /* WebMessageCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebMessageCardView.swift; sourceTree = "<group>"; };
 		949993C221DE4C7528A49687 /* Pods_TestingApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TestingApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2557,6 +2559,7 @@
 			isa = PBXGroup;
 			children = (
 				1A4674CC25ED08A30078FA1C /* MediaPickerController.swift */,
+				84EF48CF2E706A13001973EB /* MediaPickerController.Environment.swift */,
 			);
 			path = MediaPicker;
 			sourceTree = "<group>";
@@ -6063,6 +6066,7 @@
 				C0D2F06829A4B71C00803B47 /* VideoCallViewModel.Mock.swift in Sources */,
 				AFEF5C6F29928DB0005C3D8D /* SecureConversations.FileUploadView.swift in Sources */,
 				C0D6CA092C18451800D4709B /* CallViewController.Environment.swift in Sources */,
+				84EF48D02E706A13001973EB /* MediaPickerController.Environment.swift in Sources */,
 				84D5B9622A14F33400807F92 /* QuickLookBased.Live.swift in Sources */,
 				C09047152B7E18E7003C437C /* Theme.Text.Accessibility.swift in Sources */,
 				216D311F2CFE2F050019CA9E /* MediaTypeItemStyle.Mock.swift in Sources */,
