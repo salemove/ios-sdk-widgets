@@ -192,7 +192,21 @@ extension CoreSdkClient {
 
 extension CoreSdkClient.SecureConversations {
     static let live = Self(
-        sendMessagePayload: GliaCore.sharedInstance.secureConversations.send(secureMessagePayload:queueIds:completion:),
+        sendMessagePayload: { secureMessagePayload, queueIds in
+            try await withCheckedThrowingContinuation { continuation in
+                _ = GliaCore.sharedInstance.secureConversations.send(
+                    secureMessagePayload: secureMessagePayload,
+                    queueIds: queueIds
+                ) { result in
+                    switch result {
+                    case let .success(count):
+                        continuation.resume(returning: count)
+                    case let .failure(error):
+                        continuation.resume(throwing: error)
+                    }
+                }
+            }
+        },
         uploadFile: GliaCore.sharedInstance.secureConversations.uploadFile(_:progress:completion:),
         getUnreadMessageCount: {
             try await withCheckedThrowingContinuation { continuation in
@@ -221,7 +235,6 @@ extension CoreSdkClient.SecureConversations {
         downloadFile: GliaCore.sharedInstance.secureConversations.downloadFile(_:progress:completion:),
         subscribeForUnreadMessageCount: GliaCore.sharedInstance.secureConversations.subscribeToUnreadMessageCount(completion:),
         unsubscribeFromUnreadMessageCount: GliaCore.sharedInstance.secureConversations.unsubscribeFromUnreadMessageCount,
-        pendingStatus: GliaCore.sharedInstance.secureConversations.pendingSecureConversationStatus,
         observePendingStatus: GliaCore.sharedInstance.secureConversations.subscribeToPendingSecureConversationStatus,
         unsubscribeFromPendingStatus: { GliaCore.sharedInstance.secureConversations.unsubscribeFromPendingSecureConversationStatus($0) }
     )

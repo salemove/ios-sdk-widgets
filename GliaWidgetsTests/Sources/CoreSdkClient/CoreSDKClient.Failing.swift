@@ -94,9 +94,9 @@ extension CoreSdkClient {
 
 extension CoreSdkClient.SecureConversations {
     static let failing = Self(
-        sendMessagePayload: { _, _, _ in
+        sendMessagePayload: { _, _ in
             fail("\(Self.self).sendMessagePayload")
-            return .mock
+            throw NSError(domain: "sendMessagePayload", code: -1)
         },
         uploadFile: { _, _, _ in
             fail("\(Self.self).uploadFile")
@@ -120,9 +120,6 @@ extension CoreSdkClient.SecureConversations {
         },
         unsubscribeFromUnreadMessageCount: { _ in
             fail("\(Self.self).unsubscribeFromUnreadCount")
-        },
-        pendingStatus: { _ in
-            fail("\(Self.self).pendingStatus")
         },
         observePendingStatus: { _ in
             fail("\(Self.self).observePendingStatus")
