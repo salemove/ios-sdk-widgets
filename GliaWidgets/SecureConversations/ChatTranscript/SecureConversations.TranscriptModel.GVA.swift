@@ -8,7 +8,7 @@ private extension String {
 extension SecureConversations.TranscriptModel {
     func quickReplyOption(_ gvaOption: GvaOption) -> QuickReplyButtonCell.Props {
         let action = AsyncCmd { [weak self] in
-            self?.gvaOptionAction(for: gvaOption)()
+            await self?.gvaOptionAction(for: gvaOption)()
             self?.action?(.quickReplyPropsUpdated(.hidden))
         }
         return .init(
@@ -17,7 +17,7 @@ extension SecureConversations.TranscriptModel {
         )
     }
 
-    func gvaOptionAction(for option: GvaOption) -> Cmd {
+    func gvaOptionAction(for option: GvaOption) -> AsyncCmd {
         // If `option.destinationPdBroadcastEvent` is specified,
         // this is broadcast event button, which is not supported
         // on mobile. So an alert should be shown.
@@ -38,13 +38,13 @@ extension SecureConversations.TranscriptModel {
 
 // MARK: - Private
 private extension SecureConversations.TranscriptModel {
-    func postbackButtonAction(for option: GvaOption) -> Cmd {
+    func postbackButtonAction(for option: GvaOption) -> AsyncCmd {
         .init { [weak self] in
-            self?.sendGvaOption(option)
+            await self?.sendGvaOption(option)
         }
     }
 
-    func urlButtonAction(url: URL, urlTarget: String?) -> Cmd {
+    func urlButtonAction(url: URL, urlTarget: String?) -> AsyncCmd {
         .init { [weak self] in
             guard let self else { return }
 
@@ -80,14 +80,15 @@ private extension SecureConversations.TranscriptModel {
         }
     }
 
-    func broadcastEventButtonAction() -> Cmd {
+    func broadcastEventButtonAction() -> AsyncCmd {
         .init { [weak self] in
             guard let self else { return }
             self.engagementAction?(.showAlert(.unsupportedGvaBroadcastError()))
         }
     }
 
-    func sendGvaOption(_ option: GvaOption) {
+    @MainActor
+    func sendGvaOption(_ option: GvaOption) async {
         let attachment = CoreSdkClient.Attachment(
             type: .singleChoiceResponse,
             selectedOption: option.value,
@@ -105,25 +106,22 @@ private extension SecureConversations.TranscriptModel {
             animated: true
         )
 
-        _ = environment.secureConversations.sendMessagePayload(
-            outgoingMessage.payload,
-            environment.queueIds
-        ) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case let .success(message):
-                self.replace(
-                    outgoingMessage,
-                    uploads: [],
-                    with: message,
-                    in: self.pendingSection
-                )
-            case let .failure(error):
-                self.markMessageAsFailed(
-                    outgoingMessage,
-                    in: self.pendingSection
-                )
-            }
+        do {
+            let message = try await environment.secureConversations.sendMessagePayload(
+                outgoingMessage.payload,
+                environment.queueIds
+            )
+            replace(
+                outgoingMessage,
+                uploads: [],
+                with: message,
+                in: pendingSection
+            )
+        } catch {
+            markMessageAsFailed(
+                outgoingMessage,
+                in: pendingSection
+            )
         }
     }
 }
