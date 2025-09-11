@@ -144,6 +144,13 @@ class ChatViewModel: EngagementViewModel {
         uploader.limitReached.addObserver(self) { [weak self] limitReached, _ in
             self?.action?(.pickMediaButtonEnabled(!limitReached))
         }
+        isViewActive.addObserver(self) { [weak self] isViewActive, _ in
+            if isViewActive {
+                self?.environment.openTelemetry.logger.i(.chatScreenShown)
+            } else {
+                self?.environment.openTelemetry.logger.i(.chatScreenClosed)
+            }
+        }
     }
 
     override func viewDidAppear() {
