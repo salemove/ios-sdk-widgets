@@ -467,6 +467,9 @@ extension ChatView {
 
     private func topBannerViewButtonCommand() -> Command<Bool> {
         .init { [weak self] isExpanded in
+            self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
+                $0[.buttonName] = .string(OtelButtonNames.scTopBanner.rawValue)
+            }
             self?.isTopBannerExpanded = isExpanded
         }
     }
