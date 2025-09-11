@@ -106,7 +106,10 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             viewModel.event(.customCardOptionSelected(option: option, messageId: messageId))
         }
 
-        view.gvaButtonTapped = { option in
+        view.gvaButtonTapped = { [weak self] option in
+            self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
+                $0[.buttonName] = .string(OtelButtonNames.gva.rawValue)
+            }
             viewModel.event(.gvaButtonTapped(option))
         }
 

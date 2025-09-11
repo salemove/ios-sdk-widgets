@@ -17,3 +17,7 @@ extension DependencyContainer.Widgets {
         set { self[OpenTelemetry.Key.self] = newValue }
     }
 }
+
+typealias OtelButtonNames = GliaCoreSDK.OtelButtonNames
+typealias OtelDialogNames = GliaCoreSDK.OtelDialogNames
+typealias OtelGvaActionTypes = GliaCoreSDK.OtelGvaActionTypes
