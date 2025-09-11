@@ -78,7 +78,10 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         view.messageEntryView.textChanged = { text in
             viewModel.event(.messageTextChanged(text))
         }
-        view.messageEntryView.sendTapped = {
+        view.messageEntryView.sendTapped = { [weak self] in
+            self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
+                $0[.buttonName] = .string(OtelButtonNames.send.rawValue)
+            }
             viewModel.event(.sendTapped)
         }
         view.messageEntryView.pickMediaTapped = { [weak self] in
@@ -247,12 +250,24 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         using viewModel: SecureConversations.ChatWithTranscriptModel
     ) -> ChatViewController.Props {
         let chatTheme = viewFactory.theme.chat
+        let logButtonClickedEvent: (OtelButtonNames) -> Void = { [weak self] buttonName in
+            self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
+                $0[.buttonName] = .init(buttonName.rawValue)
+            }
+        }
         let endEvent = Cmd { [weak self] in
             self?.view.endEditing(true)
+            logButtonClickedEvent(.end)
             viewModel.event(EngagementViewModel.Event.closeTapped)
         }
-        let backEvent = Cmd { viewModel.event(EngagementViewModel.Event.backTapped) }
-        let closeEvent = Cmd { viewModel.event(EngagementViewModel.Event.closeTapped) }
+        let backEvent = Cmd {
+            logButtonClickedEvent(.back)
+            viewModel.event(EngagementViewModel.Event.backTapped)
+        }
+        let closeEvent = Cmd {
+            logButtonClickedEvent(.close)
+            viewModel.event(EngagementViewModel.Event.closeTapped)
+        }
 
         let chatHeaderBackButton = chatTheme.header.backButton.map {
             HeaderButton.Props(tap: backEvent, style: $0)
