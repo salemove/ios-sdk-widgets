@@ -114,14 +114,14 @@ extension SecureConversationsTranscriptModelTests {
         XCTAssertEqual(calls, [.showAlert])
     }
 
-    func test_quickReplyIsShownWhenItIsLastMessage() throws {
+    func test_quickReplyIsShownWhenItIsLastMessage() async throws {
         enum Call { case quickReply }
         var calls: [Call] = []
 
         var modelEnv = TranscriptModel.Environment.failing
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
-        modelEnv.getQueues = { callback in callback(.success([])) }
+        modelEnv.getQueues = { [] }
         modelEnv.uiApplication.canOpenURL = { _ in true }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
@@ -141,10 +141,10 @@ extension SecureConversationsTranscriptModelTests {
             ChatMessage.self,
             from: Data(json)
         )
-        modelEnv.fetchChatHistory = { $0(.success([message])) }
+        modelEnv.fetchChatHistory = { [message] }
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        modelEnv.secureConversations.getUnreadMessageCount = { 0 }
         modelEnv.startSocketObservation = {}
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
         let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
@@ -171,7 +171,7 @@ extension SecureConversationsTranscriptModelTests {
             guard case .quickReplyPropsUpdated = action else { return }
             calls.append(.quickReply)
         }
-        viewModel.start(isTranscriptFetchNeeded: true)
+        await viewModel.start(isTranscriptFetchNeeded: true)
         scheduler.run()
 
         XCTAssertEqual(calls, [.quickReply])
@@ -195,7 +195,7 @@ private extension SecureConversationsTranscriptModelTests {
         modelEnv.log = logger
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
-        modelEnv.getQueues = { callback in callback(.success([])) }
+        modelEnv.getQueues = { [] }
         modelEnv.uiApplication.canOpenURL = { _ in true }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }

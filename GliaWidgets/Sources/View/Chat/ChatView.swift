@@ -21,12 +21,12 @@ class ChatView: EngagementView {
     var fileTapped: ((LocalFile) -> Void)?
     var downloadTapped: ((FileDownload) -> Void)?
     var callBubbleTapped: (() -> Void)?
-    var choiceOptionSelected: ((ChatChoiceCardOption, String) -> Void)!
+    var choiceOptionSelected: ((ChatChoiceCardOption, String) async -> Void)!
     var chatScrolledToBottom: ((Bool) -> Void)?
     var linkTapped: ((URL) -> Void)?
-    var selectCustomCardOption: ((HtmlMetadata.Option, MessageRenderer.Message.Identifier) -> Void)?
-    var gvaButtonTapped: ((GvaOption) -> Void)?
-    var retryMessageTapped: ((OutgoingMessage) -> Void)?
+    var selectCustomCardOption: ((HtmlMetadata.Option, MessageRenderer.Message.Identifier) async -> Void)?
+    var gvaButtonTapped: ((GvaOption) async -> Void)?
+    var retryMessageTapped: ((OutgoingMessage) async -> Void)?
     lazy var secureMessagingTopBannerView = SecureMessagingTopBannerView(
         isExpanded: $isTopBannerExpanded,
         environment: .create(with: environment)
@@ -584,7 +584,9 @@ extension ChatView: WebMessageCardViewDelegate {
         selectedOption: HtmlMetadata.Option,
         for messageId: MessageRenderer.Message.Identifier
     ) {
-        selectCustomCardOption?(selectedOption, messageId)
+        Task {
+            await selectCustomCardOption?(selectedOption, messageId)
+        }
     }
 
     func didCallMobileAction(_ view: WebMessageCardView, action: String) {
@@ -767,7 +769,7 @@ extension ChatView {
         let choiceCard = ChoiceCard(with: message, isActive: isActive)
         view.showsOperatorImage = showsImage
         view.setOperatorImage(fromUrl: imageUrl, animated: false)
-        view.onOptionTapped = { [weak self] in self?.choiceOptionSelected($0, message.id) }
+        view.onOptionTapped = { [weak self] in await self?.choiceOptionSelected($0, message.id) }
         view.appendContent(.choiceCard(choiceCard), animated: false)
         return .choiceCard(view)
     }
@@ -824,7 +826,7 @@ extension ChatView {
         view.error = error
         if error != nil {
             view.messageTapped = { [weak self] in
-                self?.retryMessageTapped?(message)
+                await self?.retryMessageTapped?(message)
             }
         }
         return .outgoingMessage(view)
@@ -1028,7 +1030,7 @@ extension ChatView {
             ),
             animated: false
         )
-        view.onOptionTapped = { [weak self] in self?.gvaButtonTapped?($0) }
+        view.onOptionTapped = { [weak self] in await self?.gvaButtonTapped?($0) }
         view.downloadTapped = { [weak self] in self?.downloadTapped?($0) }
         view.linkTapped = { [weak self] in self?.linkTapped?($0) }
         view.showsOperatorImage = showImage

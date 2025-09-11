@@ -37,7 +37,9 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.event(.viewDidLoad)
+        Task { [weak self] in
+            await self?.viewModel.asyncEvent(.viewDidLoad)
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -79,7 +81,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             viewModel.event(.messageTextChanged(text))
         }
         view.messageEntryView.sendTapped = {
-            viewModel.event(.sendTapped)
+            await viewModel.asyncEvent(.sendTapped)
         }
         view.messageEntryView.pickMediaTapped = {
             viewModel.event(.pickMediaTapped)
@@ -94,7 +96,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             viewModel.event(.callBubbleTapped)
         }
         view.choiceOptionSelected = { option, messageId in
-            viewModel.event(.choiceOptionSelected(option, messageId))
+            await viewModel.asyncEvent(.choiceOptionSelected(option, messageId))
         }
         view.chatScrolledToBottom = { bottomReached in
             viewModel.event(.chatScrolled(bottomReached: bottomReached))
@@ -103,15 +105,15 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             viewModel.event(.linkTapped(url))
         }
         view.selectCustomCardOption = { option, messageId in
-            viewModel.event(.customCardOptionSelected(option: option, messageId: messageId))
+            await viewModel.asyncEvent(.customCardOptionSelected(option: option, messageId: messageId))
         }
 
         view.gvaButtonTapped = { option in
-            viewModel.event(.gvaButtonTapped(option))
+            await viewModel.asyncEvent(.gvaButtonTapped(option))
         }
 
         view.retryMessageTapped = { message in
-            viewModel.event(.retryMessageTapped(message))
+            await viewModel.asyncEvent(.retryMessageTapped(message))
         }
 
         var viewModel = viewModel

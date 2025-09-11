@@ -13,11 +13,11 @@ extension ChatViewModelTests {
 
         var interactorEnv = Interactor.Environment.failing
         // To ensure `sendMessageWithMessagePayload` is not called in case of Postback Button
-        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, _ in
-            XCTFail("createSendMessagePayload should not be called")
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _ in
+            throw GliaCoreError.mock()
         }
         interactorEnv.gcd.mainQueue.async = { $0() }
-        interactorEnv.coreSdk.queueForEngagement = { _, _, _ in }
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in .mock }
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         var log = interactorEnv.log
         log.prefixedClosure = { _ in log }

@@ -23,13 +23,15 @@ extension SecureConversations.TranscriptModel.Environment {
             fail("\(Self.self).loadChatMessagesFromHistory")
             return false
         },
-        fetchChatHistory: { _ in
+        fetchChatHistory: {
             fail("\(Self.self).fetchChatHistory")
+            throw NSError(domain: "fetchChatHistory", code: -1)
         },
         uiApplication: .failing,
         queueIds: [],
-        getQueues: { _ in
-            fail("\(Self.self).listQueues")
+        getQueues: {
+            fail("\(Self.self).getQueues")
+            throw NSError(domain: "getQueues", code: -1)
         },
         createFileUploadListModel: { _ in
             fail("\(Self.self).createFileUploadListModel")

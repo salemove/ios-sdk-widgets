@@ -148,26 +148,31 @@ extension SecureConversations {
             uploader.limitReached.addObserver(self) { [weak self] limitReached, _ in
                 self?.action?(.pickMediaButtonEnabled(!limitReached))
             }
-            checkSecureConversationsAvailability()
         }
 
-        private func checkSecureConversationsAvailability() {
-            availability.checkSecureConversationsAvailability(for: environment.queueIds) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(.available(.queues(queueIds))):
-                    self.environment.queueIds = queueIds
-                    self.isSecureConversationsAvailable = true
-                    self.fileUploadListModel.isEnabled = true
-                case .success(.available(.transferred)):
-                    self.environment.queueIds = []
-                    self.isSecureConversationsAvailable = true
-                    self.fileUploadListModel.isEnabled = true
-                case .failure, .success(.unavailable(.emptyQueue)), .success(.unavailable(.unauthenticated)):
-                    // For chat screen we no longer show unavailability dialog, but unavailability banner instead.
+        @MainActor
+        func checkSecureConversationsAvailability() async {
+            do {
+                let status = try await availability.checkSecureConversationsAvailability(for: environment.queueIds)
+                switch status {
+                case .available(let availability):
+                    switch availability {
+                    case .transferred:
+                        self.environment.queueIds = []
+                        self.isSecureConversationsAvailable = true
+                        self.fileUploadListModel.isEnabled = true
+                    case let .queues(queueIds):
+                        self.environment.queueIds = queueIds
+                        self.isSecureConversationsAvailable = true
+                        self.fileUploadListModel.isEnabled = true
+                    }
+                case .unavailable:
                     self.isSecureConversationsAvailable = false
                     self.fileUploadListModel.isEnabled = false
                 }
+            } catch {
+                self.isSecureConversationsAvailable = false
+                self.fileUploadListModel.isEnabled = false
             }
         }
 
@@ -206,14 +211,29 @@ extension SecureConversations {
             }
         }
 
-        func event(_ event: Event) {
+        @MainActor
+        func asyncEvent(_ event: ChatViewModel.AsyncEvent) async {
             switch event {
             case .viewDidLoad:
                 isViewLoaded = true
-            case .messageTextChanged(let text):
-                messageText = text
             case .sendTapped:
                 sendMessage()
+            case .customCardOptionSelected:
+                break
+            case let .gvaButtonTapped(option):
+                gvaOptionAction(for: option)()
+            case let .retryMessageTapped(message):
+                retryMessageSending(message)
+            case .choiceOptionSelected:
+                // Not supported for transcript.
+                break
+            }
+        }
+
+        func event(_ event: Event) {
+            switch event {
+            case .messageTextChanged(let text):
+                messageText = text
             case .removeUploadTapped(let upload):
                 removeUpload(upload)
             case .pickMediaTapped:
@@ -225,26 +245,17 @@ extension SecureConversations {
                 fileTapped(file)
             case .downloadTapped(let download):
                 downloadTapped(download)
-            case .choiceOptionSelected:
-                // Not supported for transcript.
-                break
             case .chatScrolled(let bottomReached):
                 isChatScrolledToBottom.value = bottomReached
             case .linkTapped(let url):
                 linkTapped(url)
-            case .customCardOptionSelected:
-                // Not supported for transcript.
-                break
-            case let .gvaButtonTapped(option):
-                gvaOptionAction(for: option)()
-            case let .retryMessageTapped(message):
-                retryMessageSending(message)
             }
         }
 
         /// Starts socket observation, fetches site configuration and loads chat history if needed.
         /// - Parameter isTranscriptFetchNeeded: A flag indicating whether chat history will be loaded.
-        func start(isTranscriptFetchNeeded: Bool) {
+        @MainActor
+        func start(isTranscriptFetchNeeded: Bool) async {
             environment.startSocketObservation()
             fetchSiteConfigurations()
 
@@ -252,9 +263,8 @@ extension SecureConversations {
                 return
             }
 
-            loadHistory { [weak self] _ in
-                self?.showLeaveConversationDialogIfNeeded()
-            }
+            await loadHistory()
+            showLeaveConversationDialogIfNeeded()
         }
 
         deinit {
@@ -563,41 +573,39 @@ extension SecureConversations.TranscriptModel {
 
 // MARK: History
 extension SecureConversations.TranscriptModel {
-    private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
-        transcriptMessageLoader.loadMessagesWithUnreadCount { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case let .success(messagesWithUnreadCount):
-                let items: [ChatItem] = messagesWithUnreadCount.messages.compactMap {
-                    ChatItem(
-                        with: $0,
-                        isCustomCardSupported: self.isCustomCardSupported,
-                        fromHistory: self.environment.loadChatMessagesFromHistory()
-                    )
-                }
-
-                let itemsWithDivider = Self.dividedChatItemsForUnreadCount(
-                    chatItems: items,
-                    unreadCount: messagesWithUnreadCount.unreadCount,
-                    divider: ChatItem(kind: .unreadMessageDivider)
+    @MainActor
+    private func loadHistory() async {
+        do {
+            let messagesWithUnreadCount = try await transcriptMessageLoader.loadMessagesWithUnreadCount()
+            let items: [ChatItem] = messagesWithUnreadCount.messages.compactMap {
+                ChatItem(
+                    with: $0,
+                    isCustomCardSupported: self.isCustomCardSupported,
+                    fromHistory: self.environment.loadChatMessagesFromHistory()
                 )
-
-                self.hasUnreadMessages = messagesWithUnreadCount.unreadCount > 0
-                self.historySection.set(itemsWithDivider)
-                self.action?(.refreshSection(self.historySection.index))
-                self.action?(.scrollToBottom(animated: false))
-                completion(messagesWithUnreadCount.messages)
-                markMessagesAsRead(
-                    with: self.hasUnreadMessages && !environment.shouldShowLeaveSecureConversationDialog(.transcriptOpened)
-                )
-
-                if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
-                    let props = button.options.compactMap { [weak self] in self?.quickReplyOption($0) }
-                    self.action?(.quickReplyPropsUpdated(.shown(props)))
-                }
-            case .failure:
-                completion([])
             }
+
+            let itemsWithDivider = Self.dividedChatItemsForUnreadCount(
+                chatItems: items,
+                unreadCount: messagesWithUnreadCount.unreadCount,
+                divider: ChatItem(kind: .unreadMessageDivider)
+            )
+
+            self.hasUnreadMessages = messagesWithUnreadCount.unreadCount > 0
+            self.historySection.set(itemsWithDivider)
+            self.action?(.refreshSection(self.historySection.index))
+            self.action?(.scrollToBottom(animated: false))
+            markMessagesAsRead(
+                with: self.hasUnreadMessages && !environment.shouldShowLeaveSecureConversationDialog(.transcriptOpened)
+            )
+
+            if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
+                let props = button.options.compactMap { [weak self] in self?.quickReplyOption($0) }
+                self.action?(.quickReplyPropsUpdated(.shown(props)))
+            }
+            return
+        } catch {
+            return
         }
     }
 
@@ -790,36 +798,31 @@ extension SecureConversations.TranscriptModel: ApplicationVisibilityTracker {
             delayScheduler: environment.combineScheduler.global
         )
         .sink { [weak self] _ in
-            self?.performMarkMessagesAsReadRequest()
+            Task {
+                try? await self?.performMarkMessagesAsReadRequest()
+            }
         }
         .store(in: &markMessagesAsReadCancellables)
     }
 
-    fileprivate func performMarkMessagesAsReadRequest() {
-        _ = environment.secureConversations.markMessagesAsRead { [weak self] result in
-            guard let self else { return }
-
-            switch result {
-            case .success:
-                historySection.removeAll(where: {
-                    if case .unreadMessageDivider = $0.kind {
-                        return true
-                    }
-
-                    return false
-                })
-
-                action?(.refreshSection(self.historySection.index, animated: true))
-
-                if isChatScrolledToBottom.value {
-                    action?(.scrollToBottom(animated: true))
-                }
-
-                unreadMessages.value = 0
-            case .failure:
-                break
+    @MainActor
+    fileprivate func performMarkMessagesAsReadRequest() async throws {
+        try await environment.secureConversations.markMessagesAsRead()
+        historySection.removeAll(where: {
+            if case .unreadMessageDivider = $0.kind {
+                return true
             }
+
+            return false
+        })
+
+        action?(.refreshSection(self.historySection.index, animated: true))
+
+        if isChatScrolledToBottom.value {
+            action?(.scrollToBottom(animated: true))
         }
+
+        unreadMessages.value = 0
     }
 }
 
@@ -859,9 +862,10 @@ extension SecureConversations.TranscriptModel {
 }
 
 extension SecureConversations.TranscriptModel {
+    @MainActor
     func migrate(
         from chatModel: ChatViewModel
-    ) {
+    ) async {
         clearSections(sections)
         // Filter out items that are not reflected in transcript
         let items = chatModel.sections.flatMap(\.items).filter {
@@ -921,7 +925,7 @@ extension SecureConversations.TranscriptModel {
         engagementAction?(.showCloseButton)
         // Since we only need to start socket observation,
         // we skip chat transcript loading.
-        start(isTranscriptFetchNeeded: false)
+        await start(isTranscriptFetchNeeded: false)
         showLeaveConversationDialogIfNeeded()
 
         markMessagesAsRead(with: unreadMessages.value > 0)
