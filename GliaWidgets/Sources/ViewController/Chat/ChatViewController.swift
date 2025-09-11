@@ -136,7 +136,10 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             viewModel.event(.gvaButtonTapped(option))
         }
 
-        view.retryMessageTapped = { message in
+        view.retryMessageTapped = { [weak self] message in
+            self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
+                $0[.buttonName] = .string(OtelButtonNames.retry.rawValue)
+            }
             viewModel.event(.retryMessageTapped(message))
         }
 
