@@ -3,6 +3,7 @@ import AVFoundation
 
 final class MediaPickerController: NSObject {
     let viewModel: MediaPickerViewModel
+    private let environment: Environment
 
     private var viewController: UIImagePickerController {
         let source = UIImagePickerController.SourceType(with: viewModel.source)
@@ -17,7 +18,11 @@ final class MediaPickerController: NSObject {
         return imagePicker
     }
 
-    init(viewModel: MediaPickerViewModel) {
+    init(
+        environment: Environment = Environment(),
+        viewModel: MediaPickerViewModel
+    ) {
+        self.environment = environment
         self.viewModel = viewModel
     }
 
@@ -58,7 +63,14 @@ final class MediaPickerController: NSObject {
     private func checkCameraPermission(_ completion: @escaping (UIViewController) -> Void) {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .notDetermined:
+            environment.openTelemetry.logger.i(.devicePermissionRequesting) { builder in
+                builder[.permission] = .string("camera")
+            }
             AVCaptureDevice.requestAccess(for: .video) { [weak self] granted in
+                self?.environment.openTelemetry.logger.i(.devicePermissionOutcome) { builder in
+                    builder[.permission] = .string("camera")
+                    builder[.outcome] = .bool(granted)
+                }
                 if granted {
                     DispatchQueue.main.async {
                         self?.checkCameraPermission(completion)
