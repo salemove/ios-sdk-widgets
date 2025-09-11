@@ -40,6 +40,9 @@ extension SecureConversations.TranscriptModel {
 private extension SecureConversations.TranscriptModel {
     func postbackButtonAction(for option: GvaOption) -> Cmd {
         .init { [weak self] in
+            self?.environment.openTelemetry.logger.i(.chatScreenGvaMessageAction) {
+                $0[.actionType] = .string(OtelGvaActionTypes.postBack.rawValue)
+            }
             self?.sendGvaOption(option)
         }
     }
@@ -49,17 +52,27 @@ private extension SecureConversations.TranscriptModel {
             guard let self else { return }
 
             let openUrl = { [weak self] url in
-                guard let self = self else { return }
+                guard let self else { return }
                 guard self.environment.uiApplication.canOpenURL(url) else { return }
                 self.environment.uiApplication.open(url)
             }
 
+            let logGvaAction: (OtelGvaActionTypes) -> Void = { [weak self] actionType in
+                self?.environment.openTelemetry.logger.i(.chatScreenGvaMessageAction) {
+                    $0[.actionType] = .string(actionType.rawValue)
+                }
+            }
+
+            // "tel" ,"mailto" and "http(s)"-based links should be opened by UIApplication
             switch url.scheme?.lowercased() {
-            case URLScheme.tel.rawValue,
-                URLScheme.mailto.rawValue,
-                URLScheme.http.rawValue,
-                URLScheme.https.rawValue:
-                // "tel" ,"mailto" and "http(s)"-based links should be opened by UIApplication
+            case URLScheme.tel.rawValue:
+                logGvaAction(.phone)
+                openUrl(url)
+            case URLScheme.mailto.rawValue:
+                logGvaAction(.email)
+                openUrl(url)
+            case URLScheme.http.rawValue, URLScheme.https.rawValue:
+                logGvaAction(.url)
                 openUrl(url)
 
             default:
@@ -70,8 +83,10 @@ private extension SecureConversations.TranscriptModel {
                 case String.gvaOptionUrlTargetSelf:
                     // In case of urlTarget "self" we need to minimize Glia UI
                     self.delegate?(.minimize)
+                    logGvaAction(.url)
                     openUrl(url)
                 case String.gvaOptionUrlTargetModal:
+                    logGvaAction(.url)
                     openUrl(url)
                 default:
                     return
@@ -83,6 +98,9 @@ private extension SecureConversations.TranscriptModel {
     func broadcastEventButtonAction() -> Cmd {
         .init { [weak self] in
             guard let self else { return }
+            self.environment.openTelemetry.logger.i(.chatScreenGvaMessageAction) {
+                $0[.actionType] = .string(OtelGvaActionTypes.broadcastEvent.rawValue)
+            }
             self.engagementAction?(.showAlert(.unsupportedGvaBroadcastError()))
         }
     }
@@ -118,7 +136,7 @@ private extension SecureConversations.TranscriptModel {
                     with: message,
                     in: self.pendingSection
                 )
-            case let .failure(error):
+            case .failure:
                 self.markMessageAsFailed(
                     outgoingMessage,
                     in: self.pendingSection

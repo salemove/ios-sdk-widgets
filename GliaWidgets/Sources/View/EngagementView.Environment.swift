@@ -1,4 +1,5 @@
 import Foundation
+@_spi(GliaWidgets) import GliaCoreSDK
 
 extension EngagementView {
     struct Environment {
@@ -10,6 +11,7 @@ extension EngagementView {
         var uiApplication: UIKitBased.UIApplication
         var uiScreen: UIKitBased.UIScreen
         var combineScheduler: CoreSdkClient.AnyCombineScheduler
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 
