@@ -145,6 +145,9 @@ class ChatView: EngagementView {
         tableView.contentInset = Constants.chatTableViewInsets
         tableView.register(cell: ChatItemCell.self)
         unreadMessageIndicatorView.tapped = { [weak self] in
+            self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
+                $0[.buttonName] = .string(OtelButtonNames.newMessagesIndicator.rawValue)
+            }
             self?.scrollToBottom(animated: true)
         }
         tableAndIndicatorStack.axis = .vertical
