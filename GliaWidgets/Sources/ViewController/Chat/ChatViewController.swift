@@ -81,13 +81,27 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         view.messageEntryView.sendTapped = {
             viewModel.event(.sendTapped)
         }
-        view.messageEntryView.pickMediaTapped = {
+        view.messageEntryView.pickMediaTapped = { [weak self] in
+            self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
+                $0[.buttonName] = .string(OtelButtonNames.addAttachment.rawValue)
+            }
             viewModel.event(.pickMediaTapped)
         }
         view.fileTapped = { file in
             viewModel.event(.fileTapped(file))
         }
-        view.downloadTapped = { download in
+        view.downloadTapped = { [weak self] download in
+            guard let self else { return }
+            environment.openTelemetry.logger.i(.chatScreenFileDownloading) {
+                $0[.fileId] = .string(download.file.id ?? "null")
+            }
+            download.state.addObserver(self) { [weak self] state, _ in
+                if case .downloaded = state {
+                    self?.environment.openTelemetry.logger.i(.chatScreenFileDownloaded) {
+                        $0[.fileId] = .string(download.file.id ?? "null")
+                    }
+                }
+            }
             viewModel.event(.downloadTapped(download))
         }
         view.callBubbleTapped = {

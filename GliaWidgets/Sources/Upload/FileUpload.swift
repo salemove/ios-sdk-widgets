@@ -1,6 +1,7 @@
 import Foundation
 
 class FileUpload {
+    typealias FileUploadResult = Result<CoreSdkClient.EngagementFileInformation, Swift.Error>
     enum Error {
         case fileTooBig
         case unsupportedFileType
@@ -65,6 +66,10 @@ class FileUpload {
     }
 
     func startUpload() {
+        // TODO: - Move to CoreSDK???
+        environment.openTelemetry.logger.i(.chatScreenFileUploading) { _ in
+            // TODO: - file id does not exist until uploading is finished. Need to rewrite as on Android.
+        }
         let file = CoreSdkClient.EngagementFile(url: localFile.url)
         let progress = ObservableValue<Double>(with: 0)
         let onProgress: CoreSdkClient.EngagementFileProgressBlock = {
@@ -72,10 +77,15 @@ class FileUpload {
                 progress.value = $0.fractionCompleted
             }
         }
-        let onCompletion: (Result<CoreSdkClient.EngagementFileInformation, Swift.Error>) -> Void = { result in
+        let onCompletion: (FileUploadResult) -> Void = { [weak self] result in
+            guard let self else { return }
             switch result {
             case let .success(engagementFile):
                 let storageID = "\(engagementFile.id)/\(self.localFile.url.lastPathComponent)"
+                // TODO: - Move to CoreSDK???
+                self.environment.openTelemetry.logger.i(.chatScreenFileUploaded) {
+                    $0[.fileId] = .string(engagementFile.id)
+                }
                 self.storage.store(from: self.localFile.url, for: storageID)
                 self.state.value = .uploaded(file: engagementFile)
             case let .failure(error):

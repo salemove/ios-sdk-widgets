@@ -1,8 +1,11 @@
+@_spi(GliaWidgets) import GliaCoreSDK
+
 extension SecureConversations.FileUploadListViewModel {
     struct Environment {
         var uploader: FileUploader
         var style: SecureConversations.FileUploadListView.Style
         var scrollingBehaviour: ScrollingBehaviour
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 
