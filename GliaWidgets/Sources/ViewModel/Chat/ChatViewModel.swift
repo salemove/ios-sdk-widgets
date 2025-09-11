@@ -651,6 +651,13 @@ extension ChatViewModel {
             replacingWith receivedMessage: CoreSdkClient.Message,
             _ item: ChatItem
     ) {
+        environment.openTelemetry.logger.i(.chatScreenMessageShown) {
+            $0[.messageId] = .string(receivedMessage.id)
+            $0[.messageSender] = .string(receivedMessage.sender.type.rawValue)
+
+            // The same values. Needed?
+            $0[.messageType] = .string(receivedMessage.sender.type.rawValue)
+        }
         // In order keep visitor session in sync between
         // multiple devices/web we need to treat visitor messages
         // with extra checks:
