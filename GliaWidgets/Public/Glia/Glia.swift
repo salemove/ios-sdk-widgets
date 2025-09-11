@@ -170,6 +170,8 @@ public class Glia {
         self.environment = environment
         self.theme = Theme()
 
+        environment.openTelemetry.setGlobalAttribute(.string(StaticValues.sdkVersion), forKey: .sdkWidgetsVersion)
+
         do {
             let logger = try environment.coreSdk.createLogger(CoreSdkClient.Logger.loggerParameters)
             if environment.conditionalCompilation.isDebug() {
