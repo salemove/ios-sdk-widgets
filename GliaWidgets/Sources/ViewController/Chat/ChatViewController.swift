@@ -110,7 +110,10 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         view.callBubbleTapped = {
             viewModel.event(.callBubbleTapped)
         }
-        view.choiceOptionSelected = { option, messageId in
+        view.choiceOptionSelected = { [weak self] option, messageId in
+            self?.environment.openTelemetry.logger.i(.chatScreenSingleChoiceAnswered) {
+                $0[.messageId] = .string(messageId)
+            }
             viewModel.event(.choiceOptionSelected(option, messageId))
         }
         view.chatScrolledToBottom = { bottomReached in
@@ -119,7 +122,10 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         view.linkTapped = { url in
             viewModel.event(.linkTapped(url))
         }
-        view.selectCustomCardOption = { option, messageId in
+        view.selectCustomCardOption = { [weak self] option, messageId in
+            self?.environment.openTelemetry.logger.i(.chatScreenCustomCardAction) {
+                $0[.messageId] = .string(messageId.rawValue)
+            }
             viewModel.event(.customCardOptionSelected(option: option, messageId: messageId))
         }
 
