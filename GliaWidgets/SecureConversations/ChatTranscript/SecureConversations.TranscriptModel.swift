@@ -758,28 +758,38 @@ extension SecureConversations.TranscriptModel {
 
     private func entryWidgetMediaTypeSelected(_ item: EntryWidget.MediaTypeItem) {
         action?(.switchToEngagement)
-        let switchToEngagement = { [weak self] in
-            let kind: EngagementKind
-            switch item.type {
-            case .video:
-                kind = .videoCall
-            case .audio:
-                kind = .audioCall
-            case .chat:
-                kind = .chat
-            case .secureMessaging:
-                kind = .messaging(.welcome)
-            case .callVisualizer:
-                return
+
+        let logMediaTypeSelection: (OtelButtonNames) -> Void = { [weak self] selection in
+            self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
+                $0[.buttonName] = .string(selection.rawValue)
             }
-            self?.environment.switchToEngagement(kind)
         }
+
+        let kind: EngagementKind
+        switch item.type {
+        case .video:
+            logMediaTypeSelection(.scTopBannerVideo)
+            kind = .videoCall
+        case .audio:
+            logMediaTypeSelection(.scTopBannerAudio)
+            kind = .audioCall
+        case .chat:
+            logMediaTypeSelection(.scTopBannerChat)
+            kind = .chat
+        case .secureMessaging:
+            logMediaTypeSelection(.topBannerUnknown)
+            kind = .messaging(.welcome)
+        case .callVisualizer:
+            logMediaTypeSelection(.topBannerUnknown)
+            return
+        }
+
         if environment.shouldShowLeaveSecureConversationDialog(.entryWidgetTopBanner) {
-            engagementAction?(.showAlert(.leaveCurrentConversation {
-                switchToEngagement()
+            engagementAction?(.showAlert(.leaveCurrentConversation { [weak self] in
+                self?.environment.switchToEngagement(kind)
             }))
         } else {
-            switchToEngagement()
+            environment.switchToEngagement(kind)
         }
     }
 }
