@@ -25,7 +25,8 @@ public final class EngagementLauncher {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "startChat(sceneProvider:)"
+            methodName: "startChat",
+            methodParams: "sceneProvider"
         )
         try startEngagement(.chat, sceneProvider)
     }
@@ -39,7 +40,8 @@ public final class EngagementLauncher {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "startAudioCall(sceneProvider:)"
+            methodName: "startAudioCall",
+            methodParams: "sceneProvider"
         )
         try startEngagement(.audioCall, sceneProvider)
     }
@@ -53,7 +55,8 @@ public final class EngagementLauncher {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "startVideoCall(sceneProvider:)"
+            methodName: "startVideoCall",
+            methodParams: "sceneProvider"
         )
         try startEngagement(.videoCall, sceneProvider)
     }
@@ -67,7 +70,8 @@ public final class EngagementLauncher {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "startSecureMessaging(sceneProvider:)"
+            methodName: "startSecureMessaging",
+            methodParams: "sceneProvider"
         )
         try startEngagement(.messaging(.welcome), sceneProvider)
     }

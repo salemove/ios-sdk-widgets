@@ -21,7 +21,8 @@ public struct PushNotifications {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "applicationDidRegisterForRemoteNotificationsWithDeviceToken(application:deviceToken:)"
+            methodName: "applicationDidRegisterForRemoteNotificationsWithDeviceToken",
+            methodParams: "application", "deviceToken"
         )
         environment.coreSdk.pushNotifications.applicationDidRegisterForRemoteNotificationsWithDeviceToken(
             application,
@@ -44,7 +45,8 @@ public struct PushNotifications {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "applicationDidFailToRegisterForRemoteNotificationsWithError(application:error:)"
+            methodName: "applicationDidFailToRegisterForRemoteNotificationsWithError",
+            methodParams: "application", "error"
         )
         environment.coreSdk.pushNotifications.applicationDidFailToRegisterForRemoteNotificationsWithError(
             application,
@@ -70,7 +72,8 @@ public struct PushNotifications {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "userNotificationCenterWillPresent(center:willPresent:completionHandler:)"
+            methodName: "userNotificationCenterWillPresent",
+            methodParams: "center", "willPresent", "completionHandler"
         )
         environment.coreSdk.pushNotifications.userNotificationCenterWillPresent(
             center,
@@ -97,7 +100,8 @@ public struct PushNotifications {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "userNotificationCenterDidReceiveResponse(center:didReceive:completionHandler:)"
+            methodName: "userNotificationCenterDidReceiveResponse",
+            methodParams: "center", "didReceive", "completionHandler"
         )
         environment.coreSdk.pushNotifications.userNotificationCenterDidReceiveResponse(
             center,
@@ -117,7 +121,8 @@ public struct PushNotifications {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "setPushHandler(_:)"
+            methodName: "setPushHandler",
+            methodParams: "handler"
         )
         environment.coreSdk.pushNotifications.setPushHandler(handler)
     }
@@ -131,7 +136,8 @@ public struct PushNotifications {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "subscribeTo(_:)"
+            methodName: "subscribeTo",
+            methodParams: "types"
         )
         environment.coreSdk.pushNotifications.subscribeTo(types)
     }

@@ -59,7 +59,8 @@ public final class CallVisualizer {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "showVisitorCodeViewController(from:)"
+            methodName: "showVisitorCodeViewController",
+            methodParams: "source"
         )
         environment.log.prefixed(Self.self).info("Show Visitor Code Dialog")
         coordinator.showVisitorCodeViewController(by: .alert(source))
@@ -88,7 +89,8 @@ public final class CallVisualizer {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "embedVisitorCodeView(into:onEngagementAccepted:)"
+            methodName: "embedVisitorCodeView",
+            methodParams: "container", "onEngagementAccepted"
         )
         environment.log.prefixed(Self.self).info("Show Visitor Code Dialog")
         coordinator.showVisitorCodeViewController(
