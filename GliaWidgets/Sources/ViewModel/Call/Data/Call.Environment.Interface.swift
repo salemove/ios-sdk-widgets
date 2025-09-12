@@ -1,5 +1,5 @@
 import Foundation
-@_spi(GliaWidgets) import GliaCoreSDK
+import GliaCoreSDK
 
 extension Call {
     struct Environment {

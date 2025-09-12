@@ -1,4 +1,4 @@
-@_spi(GliaWidgets) import GliaCoreSDK
+import GliaCoreSDK
 
 extension SecureConversations.FileUploadListViewModel {
     struct Environment {

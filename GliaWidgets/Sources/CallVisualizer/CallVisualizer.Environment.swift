@@ -1,6 +1,6 @@
 import Foundation
 import Combine
-@_spi(GliaWidgets) import GliaCoreSDK
+import GliaCoreSDK
 
 extension CallVisualizer {
     struct Environment {
