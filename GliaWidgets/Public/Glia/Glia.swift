@@ -171,6 +171,7 @@ public class Glia {
         self.theme = Theme()
 
         environment.openTelemetry.setGlobalAttribute(.string(StaticValues.sdkVersion), forKey: .sdkWidgetsVersion)
+        environment.openTelemetry.logger.i(.widgetsSdkSetup)
 
         do {
             let logger = try environment.coreSdk.createLogger(CoreSdkClient.Logger.loggerParameters)
@@ -232,8 +233,6 @@ public class Glia {
                 }
                 .store(in: &cancelBag)
         }
-
-        environment.openTelemetry.logger.i(.widgetsSdkSetup)
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
@@ -267,16 +266,15 @@ public class Glia {
 
         guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
             let error = GliaError.configuringDuringEngagementIsNotAllowed
-            environment.openTelemetry.logger.e(
-                .widgetsSdkConfigured,
-                // TODO: - Align error message
-                message: "configuring during engagement is not allowed",
-                error: error
-            )
+            environment.openTelemetry.logger.e(.widgetsSdkConfigured, error: error)
             throw error
         }
 
-        environment.openTelemetry.logger.i(.widgetsSdkConfiguring)
+        environment.openTelemetry.logger.i(.widgetsSdkConfiguring) {
+            $0[.apiKeyId] = .string(configuration.authorizationMethod.id)
+            $0[.environment] = .string(configuration.environment.rawValue)
+            $0[.localeCode] = .string(configuration.manualLocaleOverride ?? "N/A")
+        }
 
         if configuration.isWhiteLabelApp {
             theme.showsPoweredBy = false
@@ -343,7 +341,7 @@ public class Glia {
                             interactorPublisher: Just(interactor).eraseToAnyPublisher()
                         ))
                         startObservingInteractorEvents()
-                        environment.openTelemetry.logger.i(.widgetsSdkConfiguring)
+                        environment.openTelemetry.logger.i(.widgetsSdkConfigured)
                         completion(.success(()))
                     } catch let error as SecureConversations.PendingInteraction.Error {
                         switch error {
