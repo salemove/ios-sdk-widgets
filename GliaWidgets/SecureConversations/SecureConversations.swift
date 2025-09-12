@@ -1,5 +1,5 @@
 import Foundation
-@_spi(GliaWidgets) import GliaCoreSDK
+import GliaCoreSDK
 
 /// Namespace for all secure conversations functionality
 public struct SecureConversations {
