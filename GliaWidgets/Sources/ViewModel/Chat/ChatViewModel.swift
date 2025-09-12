@@ -424,9 +424,13 @@ extension ChatViewModel {
 
 extension ChatViewModel {
     private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
+        environment.openTelemetry.logger.i(.chatScreenHistoryLoading)
         environment.fetchChatHistory { [weak self] result in
             guard let self else { return }
             let messages = (try? result.get()) ?? []
+            environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
+                $0[.messageCount] = .string("\(messages.count)")
+            }
             // Store message ids from history,
             // to be able to discard duplicates
             // delivered by sockets.
