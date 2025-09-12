@@ -651,17 +651,35 @@ extension ChatViewModel {
     }
 
     func addChatItemToMessagesSection(
-            evaluating message: ChatMessage,
-            replacingWith receivedMessage: CoreSdkClient.Message,
-            _ item: ChatItem
+        evaluating message: ChatMessage,
+        replacingWith receivedMessage: CoreSdkClient.Message,
+        _ item: ChatItem
     ) {
-        environment.openTelemetry.logger.i(.chatScreenMessageShown) {
-            $0[.messageId] = .string(receivedMessage.id)
-            $0[.messageSender] = .string(receivedMessage.sender.type.rawValue)
+        defer {
+            switch item.kind {
+            case .gvaGallery, .gvaQuickReply, .gvaPersistentButton:
+                environment.openTelemetry.logger.i(.chatScreenGvaMessageShown) {
+                    $0[.messageId] = .string(receivedMessage.id)
+                }
+            case .customCard:
+                environment.openTelemetry.logger.i(.chatScreenCustomCardShown) {
+                    $0[.messageId] = .string(receivedMessage.id)
+                }
+            case .choiceCard:
+                environment.openTelemetry.logger.i(.chatScreenSingleChoiceShown) {
+                    $0[.messageId] = .string(receivedMessage.id)
+                }
+            default:
+                environment.openTelemetry.logger.i(.chatScreenMessageShown) {
+                    $0[.messageId] = .string(receivedMessage.id)
+                    $0[.messageSender] = .string(receivedMessage.sender.type.rawValue)
 
-            // The same values. Needed?
-            $0[.messageType] = .string(receivedMessage.sender.type.rawValue)
+                    // The same values. Needed?
+                    $0[.messageType] = .string(receivedMessage.sender.type.rawValue)
+                }
+            }
         }
+
         // In order keep visitor session in sync between
         // multiple devices/web we need to treat visitor messages
         // with extra checks:
