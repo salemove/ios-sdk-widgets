@@ -577,10 +577,14 @@ extension SecureConversations.TranscriptModel {
 // MARK: History
 extension SecureConversations.TranscriptModel {
     private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
+        environment.openTelemetry.logger.i(.chatScreenHistoryLoading)
         transcriptMessageLoader.loadMessagesWithUnreadCount { [weak self] result in
             guard let self else { return }
             switch result {
             case let .success(messagesWithUnreadCount):
+                environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
+                    $0[.messageCount] = .string("\(messagesWithUnreadCount.messages.count)")
+                }
                 let items: [ChatItem] = messagesWithUnreadCount.messages.compactMap {
                     ChatItem(
                         with: $0,
