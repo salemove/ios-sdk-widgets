@@ -160,17 +160,9 @@ private extension EngagementViewModel {
     private func closeTapped() {
         switch interactor.state {
         case .enqueueing, .enqueued:
-            engagementAction?(.showAlert(.leaveQueue(confirmed: { [weak self] in
-                Task { [weak self] in
-                    await self?.endSession()
-                }
-            })))
+            engagementAction?(.showAlert(.leaveQueue(confirmed: endSession)))
         case .engaged where interactor.currentEngagement?.isTransferredSecureConversation == false:
-            engagementAction?(.showAlert(.endEngagement(confirmed: { [weak self] in
-                Task { [weak self] in
-                    await self?.endSession()
-                }
-            })))
+            engagementAction?(.showAlert(.endEngagement(confirmed: endSession)))
         default:
             Task { [weak self] in
                 await self?.endSession()
@@ -199,18 +191,14 @@ extension EngagementViewModel {
                 self?.engagementDelegate?(.openLink(link))
             },
             accepted: { [weak self] in
-                Task { [weak self] in
-                    guard let self else { return }
-                    await self.enqueue(
-                        engagementKind: engagementKind,
-                        replaceExisting: self.replaceExistingEnqueueing
-                    )
-                }
+                guard let self else { return }
+                await self.enqueue(
+                    engagementKind: engagementKind,
+                    replaceExisting: self.replaceExistingEnqueueing
+                )
             },
             declined: { [weak self] in
-                Task { [weak self] in
-                    await self?.endSession()
-                }
+                await self?.endSession()
             }
         ))
     }
@@ -240,8 +228,8 @@ extension EngagementViewModel {
         case showCloseButton
         case showLiveObservationConfirmation(
             link: (WebViewController.Link) -> Void,
-            accepted: () -> Void,
-            declined: () -> Void
+            accepted: () async -> Void,
+            declined: () async -> Void
         )
         case showAlert(AlertInputType)
     }

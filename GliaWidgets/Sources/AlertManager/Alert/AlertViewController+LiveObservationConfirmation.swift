@@ -4,8 +4,8 @@ extension AlertViewController {
     func makeLiveObservationAlertView(
         with conf: ConfirmationAlertConfiguration,
         link: @escaping (WebViewController.Link) -> Void,
-        accepted: @escaping () -> Void,
-        declined: @escaping () -> Void
+        accepted: @escaping () async -> Void,
+        declined: @escaping () async -> Void
     ) -> AlertView {
         let alertView = viewFactory.makeAlertView()
         alertView.title = conf.title
@@ -15,10 +15,10 @@ extension AlertViewController {
 
         let alertStyle = viewFactory.theme.alert
         var declineButtonStyle = alertStyle.negativeAction
-        declineButtonStyle.title = conf.negativeTitle ?? ""
+        declineButtonStyle.title = conf.negativeTitle
 
         var acceptButtonStyle = alertStyle.positiveAction
-        acceptButtonStyle.title = conf.positiveTitle ?? ""
+        acceptButtonStyle.title = conf.positiveTitle
 
         if let firstLinkButton = linkButton(
             for: conf.firstLinkButtonUrl,
@@ -39,14 +39,24 @@ extension AlertViewController {
         let declineButton = ActionButton(
             props: .init(
                 style: declineButtonStyle,
-                tap: .init { [weak self] in self?.dismiss(animated: true, completion: declined) }
+                tap: .async(
+                    .init { [weak self] in
+                        await declined()
+                        self?.dismiss(animated: true)
+                    }
+                )
             )
         )
 
         let acceptButton = ActionButton(
             props: .init(
                 style: acceptButtonStyle,
-                tap: .init { [weak self] in self?.dismiss(animated: true, completion: accepted) }
+                tap: .async(
+                    .init { [weak self] in
+                        await accepted()
+                        self?.dismiss(animated: true)
+                    }
+                )
             )
         )
         alertView.addActionView(declineButton)
@@ -68,7 +78,9 @@ extension AlertViewController {
             props: .init(
                 style: style,
                 height: 45,
-                tap: .init { action((title: style.title, url: buttonUrl)) }
+                tap: .sync(
+                    .init { action((title: style.title, url: buttonUrl)) }
+                )
             )
         )
     }
