@@ -56,9 +56,7 @@ final class GvaPersistentButtonView: OperatorChatMessageView {
                 text: option.text
             )
             optionView.tap = { [weak self] in
-                Task {
-                    await self?.onOptionTapped(option)
-                }
+                await self?.onOptionTapped(option)
             }
             return optionView
         }
