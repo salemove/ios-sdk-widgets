@@ -891,11 +891,8 @@ class ChatViewModelTests: XCTestCase {
             }
         }
         interactor.state = .enqueueing(.audioCall)
-        alertConfig?.accepted()
+        await alertConfig?.accepted()
 
-        await waitUntil {
-            interactor.state == .enqueued(.mock, .audioCall)
-        }
         XCTAssertEqual(interactor.state, .enqueued(.mock, .audioCall))
     }
 
@@ -935,12 +932,8 @@ class ChatViewModelTests: XCTestCase {
             }
         }
         interactor.state = .enqueueing(.audioCall)
-        alertConfig?.declined()
+        await alertConfig?.declined()
 
-        /// Will be removed when AlertManager is refactored in MOB-4574
-        await waitUntil {
-            interactor.state == .ended(.byVisitor)
-        }
         XCTAssertEqual(interactor.state, .ended(.byVisitor))
         XCTAssertTrue(calls.isEmpty)
     }

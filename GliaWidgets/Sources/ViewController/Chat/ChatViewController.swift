@@ -271,7 +271,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         let chatHeader = Header.Props(
             title: chatTheme.title,
             effect: .none,
-            endButton: .init(style: chatTheme.header.endButton, tap: endEvent, accessibilityIdentifier: "header_end_button"),
+            endButton: .init(style: chatTheme.header.endButton, tap: .sync(endEvent), accessibilityIdentifier: "header_end_button"),
             backButton: chatHeaderBackButton,
             closeButton: .init(tap: closeEvent, style: chatTheme.header.closeButton),
             style: chatTheme.header
@@ -280,7 +280,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         let secureTranscriptHeader = Header.Props(
             title: chatTheme.secureTranscriptTitle,
             effect: .none,
-            endButton: .init(style: chatTheme.secureTranscriptHeader.endButton, tap: endEvent, accessibilityIdentifier: "header_end_button"),
+            endButton: .init(style: chatTheme.secureTranscriptHeader.endButton, tap: .sync(endEvent), accessibilityIdentifier: "header_end_button"),
             backButton: nil,
             closeButton: .init(tap: closeEvent, style: chatTheme.secureTranscriptHeader.closeButton),
             style: chatTheme.secureTranscriptHeader

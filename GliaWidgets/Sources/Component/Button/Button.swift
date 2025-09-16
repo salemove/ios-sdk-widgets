@@ -1,7 +1,7 @@
 import UIKit
 
 class Button: AdjustedTouchAreaButton {
-    var tap: (() -> Void)?
+    var tap: (() async -> Void)?
 
     var touchAreaInsets: TouchAreaInsets?
 
@@ -15,7 +15,7 @@ class Button: AdjustedTouchAreaButton {
     private let kind: ButtonKind
     private var activityIndicator: UIActivityIndicatorView?
 
-    init(kind: ButtonKind, tap: (() -> Void)? = nil) {
+    init(kind: ButtonKind, tap: (() async -> Void)? = nil) {
         self.kind = kind
         self.tap = tap
         super.init(touchAreaInsets: kind.properties.touchAreaInsets)
@@ -58,6 +58,8 @@ class Button: AdjustedTouchAreaButton {
     private func layout() {}
 
     @objc private func tapped() {
-        tap?()
+        Task {
+            await tap?()
+        }
     }
 }
