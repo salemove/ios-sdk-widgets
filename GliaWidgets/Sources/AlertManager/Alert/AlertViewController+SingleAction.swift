@@ -4,7 +4,7 @@ extension AlertViewController {
     func makeSingleActionAlertView(
         with conf: SingleActionAlertConfiguration,
         accessibilityIdentifier: String,
-        actionTapped: @escaping () -> Void
+        actionTapped: @escaping () async -> Void
     ) -> AlertView {
         let alertView = viewFactory.makeAlertView()
         alertView.title = conf.title
@@ -15,7 +15,12 @@ extension AlertViewController {
         let button = ActionButton(
             props: .init(
                 style: buttonStyle,
-                tap: .init { [weak self] in self?.dismiss(animated: true); actionTapped() },
+                tap: .async(
+                    .init { [weak self] in
+                        self?.dismiss(animated: true)
+                        await actionTapped()
+                    }
+                ),
                 accessibilityIdentifier: accessibilityIdentifier
             )
         )

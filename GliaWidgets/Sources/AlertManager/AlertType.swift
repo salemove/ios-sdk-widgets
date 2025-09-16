@@ -4,17 +4,17 @@ enum AlertType {
     case message(
         conf: MessageAlertConfiguration,
         accessibilityIdentifier: String?,
-        dismissed: (() -> Void)?
+        dismissed: (() async -> Void)?
     )
     case criticalError(
         conf: MessageAlertConfiguration,
         accessibilityIdentifier: String?,
-        dismissed: (() -> Void)?
+        dismissed: (() async -> Void)?
     )
     case confirmation(
         conf: ConfirmationAlertConfiguration,
         accessibilityIdentifier: String,
-        confirmed: () -> Void
+        confirmed: () async -> Void
     )
     case leaveConversation(
         conf: ConfirmationAlertConfiguration,
@@ -25,7 +25,7 @@ enum AlertType {
     case singleAction(
         conf: SingleActionAlertConfiguration,
         accessibilityIdentifier: String,
-        actionTapped: () -> Void
+        actionTapped: () async -> Void
     )
     case singleMediaUpgrade(
         SingleMediaUpgradeAlertConfiguration,
@@ -35,8 +35,8 @@ enum AlertType {
     case liveObservationConfirmation(
         ConfirmationAlertConfiguration,
         link: (WebViewController.Link) -> Void,
-        accepted: () -> Void,
-        declined: () -> Void
+        accepted: () async -> Void,
+        declined: () async -> Void
     )
     case systemAlert(
         conf: SettingsAlertConfiguration,
