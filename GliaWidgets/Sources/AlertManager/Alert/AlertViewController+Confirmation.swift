@@ -46,9 +46,9 @@ extension AlertViewController {
     func makeConfirmationAlertView(
         with conf: ConfirmationAlertConfiguration,
         accessibilityIdentifier: String,
-        confirmed: @escaping () -> Void
+        confirmed: @escaping () async -> Void
     ) -> AlertView {
-        let alertView = makeAlertView(
+        let alertView = makeAsyncAlertView(
             with: conf,
             accessibilityIdentifier: accessibilityIdentifier,
             confirmed: confirmed
@@ -68,14 +68,19 @@ extension AlertViewController {
         let declineButton: ActionButton = ActionButton(
             props: .init(
                 style: negativeButtonStyle,
-                tap: .init { [weak self] in self?.dismiss(animated: true) },
+                tap: .init { [weak self] in
+                    self?.dismiss(animated: true)
+                },
                 accessibilityIdentifier: "alert_negative_button"
             )
         )
-        let confirmButton = ActionButton(
-            props: ActionButton.Props(
+        let confirmButton = AsyncActionButton(
+            props: .init(
                 style: positiveButtonStyle,
-                tap: .init { [weak self] in self?.dismiss(animated: true) { confirmed() } },
+                tap: .init { [weak self] in
+                    await confirmed()
+                    self?.dismiss(animated: true)
+                },
                 accessibilityIdentifier: "alert_positive_button"
             )
         )
@@ -89,6 +94,20 @@ extension AlertViewController {
         with conf: ConfirmationAlertConfiguration,
         accessibilityIdentifier: String,
         confirmed: @escaping () -> Void
+    ) -> AlertView {
+        let alertView = viewFactory.makeAlertView()
+        alertView.title = conf.title
+        alertView.message = conf.message
+        alertView.showsPoweredBy = conf.showsPoweredBy
+        alertView.accessibilityIdentifier = accessibilityIdentifier
+
+        return alertView
+    }
+
+    private func makeAsyncAlertView(
+        with conf: ConfirmationAlertConfiguration,
+        accessibilityIdentifier: String,
+        confirmed: @escaping () async -> Void
     ) -> AlertView {
         let alertView = viewFactory.makeAlertView()
         alertView.title = conf.title

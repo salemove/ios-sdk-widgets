@@ -83,8 +83,8 @@ class EngagementViewController: UIViewController {
 
     private func showLiveObservationConfirmation(
         link: @escaping (WebViewController.Link) -> Void,
-        accepted: @escaping () -> Void,
-        declined: @escaping () -> Void
+        accepted: @escaping () async -> Void,
+        declined: @escaping () async -> Void
     ) {
         let config: LiveObservation.Confirmation = .init(
             link: link,
