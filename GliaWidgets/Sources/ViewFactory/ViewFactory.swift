@@ -49,7 +49,7 @@ class ViewFactory {
             header: .init(
                 title: theme.chat.title,
                 effect: .none,
-                endButton: .init(style: theme.chat.header.endButton, tap: endCmd, accessibilityIdentifier: "header_end_button"),
+                endButton: .init(style: theme.chat.header.endButton, tap: .sync(endCmd), accessibilityIdentifier: "header_end_button"),
                 backButton: backButton,
                 closeButton: .init(tap: closeCmd, style: theme.chat.header.closeButton),
                 style: theme.chat.header
@@ -86,7 +86,7 @@ class ViewFactory {
             header: .init(
                 title: "",
                 effect: .none,
-                endButton: .init(style: theme.call.header.endButton, tap: endCmd, accessibilityIdentifier: "header_end_button"),
+                endButton: .init(style: theme.call.header.endButton, tap: .sync(endCmd), accessibilityIdentifier: "header_end_button"),
                 backButton: backButton,
                 closeButton: .init(tap: closeCmd, style: theme.call.header.closeButton),
                 style: theme.call.header

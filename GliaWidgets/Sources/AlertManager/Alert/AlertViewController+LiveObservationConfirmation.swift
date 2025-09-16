@@ -5,8 +5,8 @@ extension AlertViewController {
         with conf: ConfirmationAlertConfiguration,
         link1: @escaping (WebViewController.Link) -> Void,
         link2: @escaping (WebViewController.Link) -> Void,
-        accepted: @escaping () -> Void,
-        declined: @escaping () -> Void
+        accepted: @escaping () async -> Void,
+        declined: @escaping () async -> Void
     ) -> AlertView {
         let alertView = viewFactory.makeAlertView()
         alertView.title = conf.title
@@ -40,14 +40,24 @@ extension AlertViewController {
         let declineButton = ActionButton(
             props: .init(
                 style: declineButtonStyle,
-                tap: .init { [weak self] in self?.dismiss(animated: true, completion: declined) }
+                tap: .async(
+                    .init { [weak self] in
+                        await declined()
+                        self?.dismiss(animated: true)
+                    }
+                )
             )
         )
 
         let acceptButton = ActionButton(
             props: .init(
                 style: acceptButtonStyle,
-                tap: .init { [weak self] in self?.dismiss(animated: true, completion: accepted) }
+                tap: .async(
+                    .init { [weak self] in
+                        await accepted()
+                        self?.dismiss(animated: true)
+                    }
+                )
             )
         )
         alertView.addActionView(declineButton)
@@ -69,7 +79,9 @@ extension AlertViewController {
             props: .init(
                 style: style,
                 height: 45,
-                tap: .init { action((title: style.title, url: buttonUrl)) }
+                tap: .sync(
+                    .init { action((title: style.title, url: buttonUrl)) }
+                )
             )
         )
     }
