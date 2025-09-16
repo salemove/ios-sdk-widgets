@@ -40,7 +40,9 @@ class ChatViewModel: EngagementViewModel {
     private(set) var messageText = "" {
         didSet {
             validateMessage()
-            sendMessagePreview(messageText)
+            Task {
+                await sendMessagePreview(messageText)
+            }
             action?(.setMessageText(messageText))
         }
     }
@@ -554,10 +556,8 @@ extension ChatViewModel {
         self.receivedMessageIds.contains(messageId.uppercased())
     }
 
-    private func sendMessagePreview(_ message: String) {
-        Task {
-            _ = try? await interactor.sendMessagePreview(message)
-        }
+    private func sendMessagePreview(_ message: String) async {
+        _ = try? await interactor.sendMessagePreview(message)
     }
 
     private func sendOutgoingMessage(
