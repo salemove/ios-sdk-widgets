@@ -4,8 +4,8 @@ extension AlertViewController {
     func makeLiveObservationAlertView(
         with conf: ConfirmationAlertConfiguration,
         link: @escaping (WebViewController.Link) -> Void,
-        accepted: @escaping () -> Void,
-        declined: @escaping () -> Void
+        accepted: @escaping () async -> Void,
+        declined: @escaping () async -> Void
     ) -> AlertView {
         let alertView = viewFactory.makeAlertView()
         alertView.title = conf.title
@@ -36,17 +36,23 @@ extension AlertViewController {
             alertView.addLinkButton(secondLinkButton)
         }
 
-        let declineButton = ActionButton(
+        let declineButton = AsyncActionButton(
             props: .init(
                 style: declineButtonStyle,
-                tap: .init { [weak self] in self?.dismiss(animated: true, completion: declined) }
+                tap: .init { [weak self] in
+                    await declined()
+                    self?.dismiss(animated: true)
+                }
             )
         )
 
-        let acceptButton = ActionButton(
+        let acceptButton = AsyncActionButton(
             props: .init(
                 style: acceptButtonStyle,
-                tap: .init { [weak self] in self?.dismiss(animated: true, completion: accepted) }
+                tap: .init { [weak self] in
+                    await accepted()
+                    self?.dismiss(animated: true)
+                }
             )
         )
         alertView.addActionView(declineButton)
