@@ -8,7 +8,7 @@ class CustomSegmentedControl: UIControl {
     weak var delegate: CustomSegmentedControlDelegate?
 
     private var buttons = [UIButton]()
-    private (set) var selectedSegmentIndex = 0
+    private(set) var selectedSegmentIndex = 0
 
     var segments: [String] = [] {
         didSet {
