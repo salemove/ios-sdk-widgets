@@ -21,11 +21,7 @@ extension ChatViewModel {
 
         case .ended(.byOperator):
             func handleOperatorEndedEngagement() {
-                engagementAction?(.showAlert(.operatorEndedEngagement(action: { [weak self] in
-                    Task { [weak self] in
-                        await self?.endSession()
-                    }
-                })))
+                engagementAction?(.showAlert(.operatorEndedEngagement(action: endSession)))
             }
 
             // When operator ends engagement, `endedEngagement` supposed to be
