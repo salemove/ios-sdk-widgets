@@ -147,7 +147,14 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
                 withAction: .engagement(mediaType: mediaType),
                 replaceExistingEnqueueing: replaceExistingEnqueueing
             )
-            interactor.state = .enqueueing(engagementKind)
+
+            // We don't want to change the Interactor state to `enqueueing` again
+            // if were already engaged and we are restoring ongoing engagement.
+            // This breaks the buttons states on the Call screen.
+            if !(interactor.isEngaged && Glia.sharedInstance.engagementRestorationState == .restoring) {
+                interactor.state = .enqueueing(engagementKind)
+            }
+
             let chatViewController = startChat(
                 withAction: .none,
                 showsCallBubble: true,
