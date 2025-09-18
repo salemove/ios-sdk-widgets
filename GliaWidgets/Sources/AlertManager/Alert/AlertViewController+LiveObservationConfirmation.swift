@@ -3,7 +3,8 @@ import UIKit
 extension AlertViewController {
     func makeLiveObservationAlertView(
         with conf: ConfirmationAlertConfiguration,
-        link: @escaping (WebViewController.Link) -> Void,
+        link1: @escaping (WebViewController.Link) -> Void,
+        link2: @escaping (WebViewController.Link) -> Void,
         accepted: @escaping () -> Void,
         declined: @escaping () -> Void
     ) -> AlertView {
@@ -15,15 +16,15 @@ extension AlertViewController {
 
         let alertStyle = viewFactory.theme.alert
         var declineButtonStyle = alertStyle.negativeAction
-        declineButtonStyle.title = conf.negativeTitle ?? ""
+        declineButtonStyle.title = conf.negativeTitle
 
         var acceptButtonStyle = alertStyle.positiveAction
-        acceptButtonStyle.title = conf.positiveTitle ?? ""
+        acceptButtonStyle.title = conf.positiveTitle
 
         if let firstLinkButton = linkButton(
             for: conf.firstLinkButtonUrl,
             style: alertStyle.firstLinkAction,
-            action: .init(closure: link)
+            action: .init(closure: link1)
         ) {
             alertView.addLinkButton(firstLinkButton)
         }
@@ -31,7 +32,7 @@ extension AlertViewController {
         if let secondLinkButton = linkButton(
             for: conf.secondLinkButtonUrl,
             style: alertStyle.secondLinkAction,
-            action: .init(closure: link)
+            action: .init(closure: link2)
         ) {
             alertView.addLinkButton(secondLinkButton)
         }

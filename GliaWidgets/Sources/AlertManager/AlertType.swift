@@ -4,53 +4,65 @@ enum AlertType {
     case message(
         conf: MessageAlertConfiguration,
         accessibilityIdentifier: String?,
-        dismissed: (() -> Void)?
+        dismissed: (() -> Void)?,
+        onClose: () -> Void
     )
     case criticalError(
         conf: MessageAlertConfiguration,
         accessibilityIdentifier: String?,
-        dismissed: (() -> Void)?
+        dismissed: (() -> Void)?,
+        onClose: () -> Void
     )
     case confirmation(
         conf: ConfirmationAlertConfiguration,
         accessibilityIdentifier: String,
-        confirmed: () -> Void
+        confirmed: () -> Void,
+        dismissed: (() -> Void)?,
+        onClose: () -> Void
     )
     case leaveConversation(
         conf: ConfirmationAlertConfiguration,
         accessibilityIdentifier: String,
         confirmed: () -> Void,
-        declined: (() -> Void)?
+        declined: (() -> Void)?,
+        onClose: () -> Void
     )
     case singleAction(
         conf: SingleActionAlertConfiguration,
         accessibilityIdentifier: String,
-        actionTapped: () -> Void
+        actionTapped: () -> Void,
+        onClose: () -> Void
     )
     case singleMediaUpgrade(
         SingleMediaUpgradeAlertConfiguration,
         accepted: () -> Void,
-        declined: () -> Void
+        declined: () -> Void,
+        onClose: () -> Void
     )
     case liveObservationConfirmation(
         ConfirmationAlertConfiguration,
-        link: (WebViewController.Link) -> Void,
+        link1: (WebViewController.Link) -> Void,
+        link2: (WebViewController.Link) -> Void,
         accepted: () -> Void,
-        declined: () -> Void
+        declined: () -> Void,
+        onClose: () -> Void
     )
     case systemAlert(
         conf: SettingsAlertConfiguration,
-        cancelled: (() -> Void)?
+        cancelled: (() -> Void)?,
+        onClose: () -> Void
     )
     case view(
         conf: MessageAlertConfiguration,
         accessibilityIdentifier: String?,
-        dismissed: (() -> Void)?
+        dismissed: (() -> Void)?,
+        onClose: () -> Void
     )
     case requestPushNotificationsPermissions(
         conf: ConfirmationAlertConfiguration,
         accepted: () -> Void,
-        declined: () -> Void
+        declined: () -> Void,
+        onClose: () -> Void
     )
 
     /// Indicating presentation priority of an alert.
@@ -63,6 +75,22 @@ enum AlertType {
             return .high
         case .message, .systemAlert, .view, .leaveConversation:
             return .regular
+        }
+    }
+
+    var onCloseAction: () -> Void {
+        switch self {
+        case .message(_, _, _, let onClose),
+                .criticalError(_, _, _, let onClose),
+                .confirmation(_, _, _, _, let onClose),
+                .leaveConversation(_, _, _, _, let onClose),
+                .singleAction(_, _, _, let onClose),
+                .singleMediaUpgrade(_, _, _, let onClose),
+                .liveObservationConfirmation(_, _, _, _, _, let onClose),
+                .systemAlert(_, _, let onClose),
+                .view(_, _, _, let onClose),
+                .requestPushNotificationsPermissions(_, _, _, let onClose):
+            return onClose
         }
     }
 }
