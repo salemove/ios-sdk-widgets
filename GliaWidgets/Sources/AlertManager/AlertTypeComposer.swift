@@ -126,85 +126,146 @@ private extension AlertManager.AlertTypeComposer {
     }
 
     func queueClosedAlertType(dismissed: (() -> Void)? = nil) -> AlertType {
-        .message(
+        logDialogShown(dialog: .queueIsClosed)
+        return .message(
             conf: theme.alertConfiguration.operatorsUnavailable,
             accessibilityIdentifier: "alert_queue_closed",
-            dismissed: dismissed
+            dismissed: {
+                logButtonClicked(button: .close, dialog: .queueIsClosed)
+                dismissed?()
+            }, onClose: {
+                logDialogClosed(dialog: .queueIsClosed)
+            }
         )
     }
 
     func queueFullAlertType(dismissed: (() -> Void)? = nil) -> AlertType {
+        logDialogShown(dialog: .queueIsClosed)
         environment.log.prefixed(Self.self).info("Show No More Operators Dialog")
         return .message(
             conf: theme.alertConfiguration.operatorsUnavailable,
             accessibilityIdentifier: "alert_queue_full",
-            dismissed: dismissed
+            dismissed: {
+                logButtonClicked(button: .close, dialog: .queueIsClosed)
+                dismissed?()
+            }, onClose: {
+                logDialogClosed(dialog: .queueIsClosed)
+            }
         )
     }
 
     func unexpectedErrorAlertType(dismissed: (() -> Void)? = nil) -> AlertType {
         environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
+        logDialogShown(dialog: .unexpectedError)
         return .message(
             conf: theme.alertConfiguration.unexpectedError,
             accessibilityIdentifier: nil,
-            dismissed: dismissed
+            dismissed: {
+                logButtonClicked(button: .close, dialog: .unexpectedError)
+                dismissed?()
+            }, onClose: {
+                logDialogClosed(dialog: .unexpectedError)
+            }
         )
     }
 
     func expiredAccessTokenAlertType(dismissed: (() -> Void)? = nil) -> AlertType {
         environment.log.prefixed(Self.self).info("Show authentication error Dialog")
+        logDialogShown(dialog: .unauthenticatedError)
         return .criticalError(
             conf: theme.alertConfiguration.expiredAccessTokenError,
             accessibilityIdentifier: "alert_expired_access_token",
-            dismissed: dismissed
+            dismissed: {
+                logButtonClicked(button: .close, dialog: .unauthenticatedError)
+                dismissed?()
+            }, onClose: {
+                logDialogClosed(dialog: .unauthenticatedError)
+            }
         )
     }
 
     func mediaTypeNotAvailableAlertType(dismissed: (() -> Void)? = nil) -> AlertType {
-        .message(
+        logDialogShown(dialog: .unavailableMediaSource)
+        return .message(
             conf: theme.alertConfiguration.mediaSourceNotAvailable,
             accessibilityIdentifier: nil,
-            dismissed: dismissed
+            dismissed: {
+                logButtonClicked(button: .close, dialog: .unavailableMediaSource)
+
+                dismissed?()
+            }, onClose: {
+                logDialogClosed(dialog: .unavailableMediaSource)
+            }
         )
     }
 
     func noCameraPermissionAlertType(dismissed: (() -> Void)? = nil) -> AlertType {
-        .systemAlert(
+        logDialogShown(dialog: .additionalPermissionsRequest)
+        return .systemAlert(
             conf: theme.alertConfiguration.cameraSettings,
-            cancelled: dismissed
+            cancelled: {
+                logButtonClicked(button: .close, dialog: .additionalPermissionsRequest)
+                dismissed?()
+            }, onClose: {
+                logDialogClosed(dialog: .additionalPermissionsRequest)
+            }
         )
     }
 
     func noMicrophonePermissionAlertType(dismissed: (() -> Void)? = nil) -> AlertType {
-        .systemAlert(
+        logDialogShown(dialog: .additionalPermissionsRequest)
+        return .systemAlert(
             conf: theme.alertConfiguration.microphoneSettings,
-            cancelled: dismissed
+            cancelled: {
+                logButtonClicked(button: .close, dialog: .additionalPermissionsRequest)
+                dismissed?()
+            }, onClose: {
+                logDialogClosed(dialog: .additionalPermissionsRequest)
+            }
         )
     }
 
     func unsupportedGvaBroadcastErrorAlertType(dismissed: (() -> Void)? = nil) -> AlertType {
-        .message(
+        logDialogShown(dialog: .unsupportedGvaBroadcast)
+        return .message(
             conf: theme.alertConfiguration.unsupportedGvaBroadcastError,
             accessibilityIdentifier: nil,
-            dismissed: dismissed
+            dismissed: {
+                logButtonClicked(button: .ok, dialog: .unsupportedGvaBroadcast)
+                dismissed?()
+            }, onClose: {
+                logDialogClosed(dialog: .unsupportedGvaBroadcast)
+            }
         )
     }
 
     func unavailableMessageCenterAlertType(dismissed: (() -> Void)? = nil) -> AlertType {
         environment.log.prefixed(Self.self).info("Show Message Center Unavailable Dialog")
+        logDialogShown(dialog: .secureConversationUnavailableError)
         return .view(
             conf: theme.alertConfiguration.unavailableMessageCenter,
             accessibilityIdentifier: "unavailable_message_center_alert_identifier",
-            dismissed: dismissed
+            dismissed: {
+                logButtonClicked(button: .negative, dialog: .secureConversationUnavailableError)
+                dismissed?()
+            }, onClose: {
+                logDialogClosed(dialog: .secureConversationUnavailableError)
+            }
         )
     }
 
     func unavailableMessageCenterForBeingUnauthenticatedAlertType(dismissed: (() -> Void)? = nil) -> AlertType {
         self.environment.log.prefixed(Self.self).info("Show Unauthenticated Dialog")
+        logDialogShown(dialog: .unauthenticatedError)
         return .view(
             conf: theme.alertConfiguration.unavailableMessageCenterForBeingUnauthenticated,
             accessibilityIdentifier: "unavailable_message_center_alert_identifier",
-            dismissed: dismissed
+            dismissed: {
+                logButtonClicked(button: .negative, dialog: .unauthenticatedError)
+                dismissed?()
+            }, onClose: {
+                logDialogClosed(dialog: .unauthenticatedError)
+            }
         )
     }
 
@@ -213,38 +274,78 @@ private extension AlertManager.AlertTypeComposer {
         accepted: @escaping () -> Void,
         declined: @escaping () -> Void
     ) -> AlertType {
-        .liveObservationConfirmation(
+        logDialogShown(dialog: .liveObservationConfirmation)
+        return .liveObservationConfirmation(
             theme.alertConfiguration.liveObservationConfirmation,
-            link: link,
-            accepted: accepted,
-            declined: declined
+            link1: {
+                logButtonClicked(button: .liveObservationLink1, dialog: .liveObservationConfirmation)
+                link($0)
+            },
+            link2: {
+                logButtonClicked(button: .liveObservationLink2, dialog: .liveObservationConfirmation)
+                link($0)
+            },
+            accepted: {
+                logButtonClicked(button: .positive, dialog: .liveObservationConfirmation)
+                accepted()
+            },
+            declined: {
+                logButtonClicked(button: .negative, dialog: .liveObservationConfirmation)
+                declined()
+            }, onClose: {
+                logDialogClosed(dialog: .liveObservationConfirmation)
+            }
         )
     }
 
     func operatorEndedEngagementAlertType(action: @escaping () -> Void) -> AlertType {
         environment.log.prefixed(Self.self).info("Show Engagement Ended Dialog")
+        logDialogShown(dialog: .engagementEnded)
         return .singleAction(
             conf: theme.alertConfiguration.operatorEndedEngagement,
             accessibilityIdentifier: "alert_close_engagementEnded",
-            actionTapped: action
+            actionTapped: {
+                logButtonClicked(button: .ok, dialog: .engagementEnded)
+                action()
+            }, onClose: {
+                logDialogClosed(dialog: .engagementEnded)
+            }
         )
     }
 
     func leaveQueueAlertType(confirmed: @escaping () -> Void) -> AlertType {
         environment.log.prefixed(Self.self).info("Show Exit Queue Dialog")
+        logDialogShown(dialog: .leaveQueueConfirmation)
         return .confirmation(
             conf: theme.alertConfiguration.leaveQueue,
             accessibilityIdentifier: "alert_confirmation_leaveQueue",
-            confirmed: confirmed
+            confirmed: {
+                logButtonClicked(button: .positive, dialog: .leaveQueueConfirmation)
+                confirmed()
+            },
+            dismissed: {
+                logButtonClicked(button: .negative, dialog: .leaveQueueConfirmation)
+            }, onClose: {
+                logDialogClosed(dialog: .leaveQueueConfirmation)
+            }
         )
     }
 
     func endEngagementAlertType(confirmed: @escaping () -> Void) -> AlertType {
         environment.log.prefixed(Self.self).info("Show End Engagement Dialog")
+        logDialogShown(dialog: .leaveEngagementConfirmation)
         return .confirmation(
             conf: theme.alertConfiguration.endEngagement,
             accessibilityIdentifier: "alert_confirmation_endEngagement",
-            confirmed: confirmed
+            confirmed: {
+                logButtonClicked(button: .positive, dialog: .leaveEngagementConfirmation)
+                confirmed()
+            },
+            dismissed: {
+                logButtonClicked(button: .negative, dialog: .leaveEngagementConfirmation)
+            }, onClose: {
+                logDialogClosed(dialog: .leaveEngagementConfirmation)
+            }
         )
     }
 
@@ -256,12 +357,14 @@ private extension AlertManager.AlertTypeComposer {
         answer: @escaping CoreSdkClient.AnswerWithSuccessBlock
     ) throws -> AlertType {
         let acceptedOffer: () -> Void = {
+            logButtonClicked(button: .positive, dialog: .mediaUpgradeConfirmation, mediaOffer: offer)
             self.environment.log.prefixed(Self.self).info("Upgrade offer accepted by visitor")
             accepted?()
             answer(true, nil)
         }
 
         let declinedOffer: () -> Void = {
+            logButtonClicked(button: .negative, dialog: .mediaUpgradeConfirmation, mediaOffer: offer)
             self.environment.log.prefixed(Self.self).info("Upgrade offer declined by visitor")
             declined?()
             answer(false, nil)
@@ -287,20 +390,37 @@ private extension AlertManager.AlertTypeComposer {
             throw GliaError.internalError
         }
 
+        logDialogShown(dialog: .mediaUpgradeConfirmation, mediaOffer: offer)
+
         return .singleMediaUpgrade(
             configuration,
             accepted: acceptedOffer,
-            declined: declinedOffer
+            declined: declinedOffer,
+            onClose: {
+                logDialogClosed(dialog: .mediaUpgradeConfirmation, mediaOffer: offer)
+            }
         )
     }
 
-    func leaveCurrentConversationAlertType(confirmed: @escaping () -> Void, declined: (() -> Void)?) -> AlertType {
+    func leaveCurrentConversationAlertType(
+        confirmed: @escaping () -> Void,
+        declined: (() -> Void)?
+    ) -> AlertType {
         environment.log.prefixed(Self.self).info("Show Leave Current Conversations Dialog")
+        logDialogShown(dialog: .leaveSecureConversationsConfirmation)
         return .leaveConversation(
             conf: theme.alertConfiguration.leaveCurrentConversation,
             accessibilityIdentifier: "alert_confirmation_leaveCurrentConversation",
-            confirmed: confirmed,
-            declined: declined
+            confirmed: {
+                logButtonClicked(button: .positive, dialog: .leaveSecureConversationsConfirmation)
+                confirmed()
+            },
+            declined: {
+                logButtonClicked(button: .negative, dialog: .leaveSecureConversationsConfirmation)
+                declined?()
+            }, onClose: {
+                logDialogClosed(dialog: .leaveSecureConversationsConfirmation)
+            }
         )
     }
 
@@ -309,10 +429,73 @@ private extension AlertManager.AlertTypeComposer {
         declined: @escaping () -> Void
     ) -> AlertType {
         environment.log.prefixed(Self.self).info("Show Push Notifications Intermediate Dialog")
+        logDialogShown(dialog: .allowPushNotification)
         return .requestPushNotificationsPermissions(
             conf: theme.alertConfiguration.pushNotificationsPermissions,
-            accepted: accepted,
-            declined: declined
+            accepted: {
+                logButtonClicked(button: .positive, dialog: .allowPushNotification)
+                accepted()
+            },
+            declined: {
+                logButtonClicked(button: .negative, dialog: .allowPushNotification)
+                declined()
+            }, onClose: {
+                logDialogClosed(dialog: .allowPushNotification)
+            }
         )
+    }
+}
+
+extension AlertManager.AlertTypeComposer {
+    func logDialogShown(
+        dialog: OtelDialogNames,
+        mediaOffer: CoreSdkClient.MediaUpgradeOffer? = nil
+    ) {
+        logEvent(
+            event: .dialogShown,
+            dialog: dialog,
+            mediaOffer: mediaOffer
+        )
+    }
+
+    func logDialogClosed(
+        dialog: OtelDialogNames,
+        mediaOffer: CoreSdkClient.MediaUpgradeOffer? = nil
+    ) {
+        logEvent(
+            event: .dialogClosed,
+            dialog: dialog,
+            mediaOffer: mediaOffer
+        )
+    }
+
+    func logButtonClicked(
+        button: OtelButtonNames,
+        dialog: OtelDialogNames,
+        mediaOffer: CoreSdkClient.MediaUpgradeOffer? = nil
+    ) {
+        logEvent(
+            event: .dialogButtonClicked,
+            dialog: dialog,
+            button: button,
+            mediaOffer: mediaOffer
+        )
+    }
+
+    private func logEvent(
+        event: OtelLogEvents,
+        dialog: OtelDialogNames,
+        button: OtelButtonNames? = nil,
+        mediaOffer: CoreSdkClient.MediaUpgradeOffer? = nil
+    ) {
+        environment.openTelemetry.logger.i(event) {
+            $0[.dialogName] = .string(dialog.rawValue)
+            if let button {
+                $0[.buttonName] = .string(button.rawValue)
+            }
+            if let offerAttribute = mediaOffer?.otelAttribute {
+                $0[.mediaUpgradeOffer] = offerAttribute
+            }
+        }
     }
 }

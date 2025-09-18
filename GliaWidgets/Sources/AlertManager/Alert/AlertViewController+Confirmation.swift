@@ -46,13 +46,19 @@ extension AlertViewController {
     func makeConfirmationAlertView(
         with conf: ConfirmationAlertConfiguration,
         accessibilityIdentifier: String,
-        confirmed: @escaping () -> Void
+        confirmed: @escaping () -> Void,
+        dismissed: (() -> Void)?
     ) -> AlertView {
         let alertView = makeAlertView(
             with: conf,
             accessibilityIdentifier: accessibilityIdentifier,
             confirmed: confirmed
         )
+        alertView.closeTapped = { [weak self] in
+            self?.dismiss(animated: true) {
+                dismissed?()
+            }
+        }
         let alertStyle = viewFactory.theme.alert
         var negativeButtonStyle = alertStyle.negativeAction
         var positiveButtonStyle = alertStyle.positiveAction
