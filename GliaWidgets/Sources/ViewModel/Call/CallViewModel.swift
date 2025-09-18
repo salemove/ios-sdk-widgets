@@ -61,6 +61,13 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
             self?.setVisitorOnHold(isOnHold)
         }
+        isViewActive.addObserver(self) { [weak self] isViewActive, _ in
+            if isViewActive {
+                self?.environment.openTelemetry.logger.i(.callScreenShown)
+            } else {
+                self?.environment.openTelemetry.logger.i(.callScreenClosed)
+            }
+        }
     }
 
     deinit {
@@ -287,6 +294,7 @@ extension CallViewModel {
 
 extension CallViewModel {
     private func showRemoteVideo(with stream: CoreSdkClient.VideoStreamable) {
+        environment.openTelemetry.logger.i(.callScreenOperatorVideoShown)
         action?(.switchToVideoMode)
         action?(.setRemoteVideo(stream.getStreamView()))
         stream.playVideo()
@@ -296,6 +304,7 @@ extension CallViewModel {
         action?(.switchToVideoMode)
         action?(.setLocalVideo(stream.getStreamView()))
         guard call.isVisitorOnHold.value == false else { return }
+        environment.openTelemetry.logger.i(.callScreenVisitorVideoShown)
         stream.playVideo()
         // For now, camera manager is available only when corresponding
         // local stream is available, that is why camera button presence
@@ -453,14 +462,19 @@ extension CallViewModel {
     private func callButtonTapped(_ button: CallButton) {
         switch button {
         case .chat:
+            logButtonClicked(.chat)
             delegate?(.chat)
         case .video:
+            logButtonClicked(.video)
             toggleVideo()
         case .mute:
+            logButtonClicked(.mute)
             toggleMute()
         case .speaker:
+            logButtonClicked(.speaker)
             toggleSpeaker()
         case .minimize:
+            logButtonClicked(.minimize)
             delegate?(.minimize)
         }
     }
@@ -479,6 +493,15 @@ extension CallViewModel {
     private func toggleSpeaker() {
         call.toggleSpeaker()
         updateSpeakerButton()
+    }
+}
+
+// MARK: - OpenTelemetry
+extension CallViewModel {
+    private func logButtonClicked(_ button: OtelButtonNames) {
+        environment.openTelemetry.logger.i(.callScreenButtonClicked) {
+            $0[.buttonName] = .string(button.rawValue)
+        }
     }
 }
 

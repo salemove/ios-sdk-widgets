@@ -23,9 +23,18 @@ final class CallViewController: EngagementViewController {
 
     override public func loadView() {
         let view = viewFactory.makeCallView(
-            endCmd: .init { [weak self] in self?.viewModel.event(.closeTapped) },
-            closeCmd: .init { [weak self] in self?.viewModel.event(.closeTapped) },
-            backCmd: .init { [weak self] in self?.viewModel.event(.backTapped) }
+            endCmd: .init { [weak self] in
+                self?.logButtonClicked(.end)
+                self?.viewModel.event(.closeTapped)
+            },
+            closeCmd: .init { [weak self] in
+                self?.logButtonClicked(.close)
+                self?.viewModel.event(.closeTapped)
+            },
+            backCmd: .init { [weak self] in
+                self?.logButtonClicked(.back)
+                self?.viewModel.event(.backTapped)
+            }
         )
         self.view = view
 
@@ -153,6 +162,15 @@ private extension CallViewController {
             gcd: environment.gcd,
             notificationCenter: environment.notificationCenter
         )
+    }
+}
+
+// MARK: - OpenTelemetry
+extension CallViewController {
+    private func logButtonClicked(_ button: OtelButtonNames) {
+        environment.openTelemetry.logger.i(.callScreenButtonClicked) {
+            $0[.buttonName] = .string(button.rawValue)
+        }
     }
 }
 
