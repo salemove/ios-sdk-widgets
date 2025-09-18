@@ -1,4 +1,5 @@
 import Foundation
+import GliaCoreSDK
 
 extension CallViewController {
     struct Environment {
@@ -9,6 +10,7 @@ extension CallViewController {
         var gcd: GCD
         var snackBar: SnackBar
         var alertManager: AlertManager
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 
