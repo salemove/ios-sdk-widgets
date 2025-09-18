@@ -1,8 +1,10 @@
 import Foundation
+import GliaCoreSDK
 
 extension AlertManager.AlertTypeComposer {
     struct Environment {
         let log: CoreSdkClient.Logger
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 
