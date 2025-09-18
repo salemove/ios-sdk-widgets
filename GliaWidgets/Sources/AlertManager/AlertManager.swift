@@ -78,6 +78,7 @@ extension AlertManager {
 
     func dismissCurrentAlert() {
         guard let alertViewController = alertViewController else { return }
+        alertViewController.dismiss(animated: true)
         cleanup()
     }
 }
@@ -97,13 +98,14 @@ private extension AlertManager {
     ) {
         let alertViewController = createAlertViewController(type: type)
         alertViewController.onDismissed = { [weak self] in
+            type.onCloseAction()
             self?.cleanup()
         }
         guard isAlertReplacable(offer: alertViewController) else { return }
         self.alertViewController = alertViewController
         self.currentAlert = input
         switch type {
-        case let .systemAlert(conf, cancelled):
+        case let .systemAlert(conf, cancelled, _):
             let alert = createSystemAlert(
                 conf: conf,
                 cancelled: cancelled
@@ -153,6 +155,7 @@ private extension AlertManager {
     ) {
         let alertViewController = createAlertViewController(type: type)
         alertViewController.onDismissed = { [weak self] in
+            type.onCloseAction()
             self?.cleanup()
         }
         guard isAlertReplacable(offer: alertViewController) else { return }
@@ -208,7 +211,6 @@ private extension AlertManager {
     }
 
     func cleanup() {
-        alertViewController?.dismiss(animated: true)
         alertViewController = nil
         alertWindow?.isHidden = true
         alertWindow = nil

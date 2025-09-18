@@ -35,7 +35,7 @@ class AlertViewController: UIViewController, Replaceable {
         super.loadView()
         let view = UIView()
 
-        if case let AlertType.message(conf, _, _) = type, !conf.shouldShowCloseButton {
+        if case let AlertType.message(conf, _, _, _) = type, !conf.shouldShowCloseButton {
             view.backgroundColor = UIColor.clear
             view.isUserInteractionEnabled = false
         } else {
@@ -98,41 +98,43 @@ class AlertViewController: UIViewController, Replaceable {
     // swiftlint:disable:next function_body_length
     private func makeAlertView() -> AlertView? {
         switch type {
-        case let .message(conf, accessibilityIdentifier, dismissed):
+        case let .message(conf, accessibilityIdentifier, dismissed, _):
             return makeMessageAlertView(
                 with: conf,
                 accessibilityIdentifier: accessibilityIdentifier,
                 dismissed: dismissed
             )
-        case let .confirmation(conf, accessibilityIdentifier, confirmed):
+        case let .confirmation(conf, accessibilityIdentifier, confirmed, dismissed, _):
             return makeConfirmationAlertView(
                 with: conf,
                 accessibilityIdentifier: accessibilityIdentifier,
-                confirmed: confirmed
+                confirmed: confirmed,
+                dismissed: dismissed
             )
-        case let .leaveConversation(conf, accessibilityIdentifier, confirmed, declined):
+        case let .leaveConversation(conf, accessibilityIdentifier, confirmed, declined, _):
             return makeLeaveConversationAlertView(
                 with: conf,
                 accessibilityIdentifier: accessibilityIdentifier,
                 confirmed: confirmed,
                 declined: declined
             )
-        case let .singleAction(conf, accessibilityIdentifier, actionTapped):
+        case let .singleAction(conf, accessibilityIdentifier, actionTapped, _):
             return makeSingleActionAlertView(
                 with: conf,
                 accessibilityIdentifier: accessibilityIdentifier,
                 actionTapped: actionTapped
             )
-        case let .singleMediaUpgrade(conf, accepted, declined):
+        case let .singleMediaUpgrade(conf, accepted, declined, _):
             return makeMediaUpgradeAlertView(
                 with: conf,
                 accepted: accepted,
                 declined: declined
             )
-        case let .liveObservationConfirmation(conf, link, accepted, declined):
+        case let .liveObservationConfirmation(conf, link1, link2, accepted, declined, _):
             return makeLiveObservationAlertView(
                 with: conf,
-                link: link,
+                link1: link1,
+                link2: link2,
                 accepted: accepted,
                 declined: declined
             )
@@ -141,19 +143,19 @@ class AlertViewController: UIViewController, Replaceable {
             /// displayed as UIAlertController and not AlertView. We only need
             /// this case to differenciate between alert types.
             return nil
-        case let .view(conf, accessibilityIdentifier, dismissed):
+        case let .view(conf, accessibilityIdentifier, dismissed, _):
             return makeMessageAlertView(
                 with: conf,
                 accessibilityIdentifier: accessibilityIdentifier,
                 dismissed: dismissed
             )
-        case let .criticalError(conf, accessibilityIdentifier, dismissed):
+        case let .criticalError(conf, accessibilityIdentifier, dismissed, _):
             return makeMessageAlertView(
                 with: conf,
                 accessibilityIdentifier: accessibilityIdentifier,
                 dismissed: dismissed
             )
-        case let .requestPushNotificationsPermissions(conf, accepted, declined):
+        case let .requestPushNotificationsPermissions(conf, accepted, declined, _):
             return makeRequestPNPermissionsAlertView(
                 with: conf,
                 accepted: accepted,
