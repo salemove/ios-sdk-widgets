@@ -1,7 +1,7 @@
 import Foundation
 
 extension SecureConversations.WelcomeViewController {
-    struct Environemnt {
+    struct Environment {
         let gcd: GCD
         let uiScreen: UIKitBased.UIScreen
         let notificationCenter: FoundationBased.NotificationCenter
@@ -9,7 +9,7 @@ extension SecureConversations.WelcomeViewController {
     }
 }
 
-extension SecureConversations.WelcomeViewController.Environemnt {
+extension SecureConversations.WelcomeViewController.Environment {
     static func create(with environment: SecureConversations.Coordinator.Environment) -> Self {
         .init(
             gcd: environment.gcd,
@@ -21,7 +21,7 @@ extension SecureConversations.WelcomeViewController.Environemnt {
 }
 
 #if DEBUG
-extension SecureConversations.WelcomeViewController.Environemnt {
+extension SecureConversations.WelcomeViewController.Environment {
     static func mock(
         gcd: GCD = .mock,
         uiScreen: UIKitBased.UIScreen = .mock,

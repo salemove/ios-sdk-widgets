@@ -1,4 +1,5 @@
 import Foundation
+import GliaCoreSDK
 
 extension SecureConversations.WelcomeViewModel {
     struct Environment {
@@ -16,6 +17,7 @@ extension SecureConversations.WelcomeViewModel {
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var log: CoreSdkClient.Logger
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 
