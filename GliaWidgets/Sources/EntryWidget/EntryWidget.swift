@@ -152,6 +152,7 @@ public extension EntryWidget {
             className: Self.self,
             methodName: "hide"
         )
+        environment.openTelemetry.logger.i(.entryWidgetDismissed)
         hostedViewController?.dismiss(animated: true, completion: nil)
         hostedViewController = nil
     }
@@ -182,6 +183,7 @@ extension EntryWidget {
             configurationAction(mediaTypeItem)
             return
         }
+        logEngagementTypeSelection(mediaTypeItem.type)
         hideViewIfNecessary {
             do {
                 switch mediaTypeItem.type {
@@ -255,6 +257,7 @@ private extension EntryWidget {
             completion()
             return
         }
+        environment.openTelemetry.logger.i(.entryWidgetDismissed)
         hostedViewController?.dismiss(animated: true, completion: completion)
         hostedViewController = nil
     }
@@ -276,6 +279,7 @@ private extension EntryWidget {
     }
 
     func showView(in parentView: UIView) {
+        environment.openTelemetry.logger.i(.entryWidgetShown)
         parentView.subviews.forEach { $0.removeFromSuperview() }
         let model = makeViewModel(showHeader: false)
         let view = makeView(model: model)
@@ -459,6 +463,26 @@ private extension EntryWidget {
         case .failed(let error):
             environment.log.prefixed(Self.self).error("Setting up queues. Failed to get site queues \(error)")
             return .error
+        }
+    }
+}
+
+// MARK: - OpenTelemetry
+extension EntryWidget {
+    private func logEngagementTypeSelection(_ type: EngagementType) {
+        environment.openTelemetry.logger.i(.entryWidgetItemClicked) {
+            switch type {
+            case .chat:
+                $0[.itemType] = .string(OtelEntryWidgetItemTypes.chat.rawValue)
+            case .audio:
+                $0[.itemType] = .string(OtelEntryWidgetItemTypes.audio.rawValue)
+            case .video:
+                $0[.itemType] = .string(OtelEntryWidgetItemTypes.video.rawValue)
+            case .secureMessaging:
+                $0[.itemType] = .string(OtelEntryWidgetItemTypes.secureMessaging.rawValue)
+            case .callVisualizer:
+                $0[.itemType] = .string(OtelEntryWidgetItemTypes.callVisualizer.rawValue)
+            }
         }
     }
 }
