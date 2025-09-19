@@ -1,9 +1,11 @@
 import Foundation
+import GliaCoreSDK
 
 extension SecureConversations.ConfirmationViewSwiftUI.Model {
     struct Environment {
         var orientationManager: OrientationManager
         var uiApplication: UIKitBased.UIApplication
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 

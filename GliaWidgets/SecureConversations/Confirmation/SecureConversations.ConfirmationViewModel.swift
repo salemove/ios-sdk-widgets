@@ -4,6 +4,7 @@ import Combine
 
 extension SecureConversations.ConfirmationViewSwiftUI {
     final class Model: ObservableObject {
+        private var isViewActive = ObservableValue<Bool>(with: false)
         @Published private(set) var orientation: UIInterfaceOrientation
         let environment: Environment
         let style: SecureConversations.ConfirmationStyle
@@ -24,6 +25,13 @@ extension SecureConversations.ConfirmationViewSwiftUI {
             orientationManager.$orientation.sink { [weak self] orientation in
                 self?.orientation = orientation
             }.store(in: &self.cancellables)
+            isViewActive.addObserver(self) { [weak self] isViewActive, _ in
+                if isViewActive {
+                    self?.environment.openTelemetry.logger.i(.scConfirmationScreenShown)
+                } else {
+                    self?.environment.openTelemetry.logger.i(.scConfirmationScreenClosed)
+                }
+            }
         }
     }
 }
@@ -33,9 +41,15 @@ extension SecureConversations.ConfirmationViewSwiftUI.Model {
     func event(_ event: Event) {
         switch event {
         case .closeTapped:
+            logButtonClicked(.close)
             delegate?(.closeTapped)
         case .chatTranscriptScreenRequested:
+            logButtonClicked(.checkMessages)
             delegate?(.chatTranscriptScreenRequested)
+        case .viewDidAppear:
+            isViewActive.value = true
+        case .viewDidDisappear:
+            isViewActive.value = false
         }
     }
 }
@@ -52,7 +66,7 @@ extension SecureConversations.ConfirmationViewSwiftUI.Model {
 
         let closeButtonProps: HeaderButtonSwiftUI.Model = .init(
             tap: Cmd(closure: { [weak self] in
-                self?.delegate?(.closeTapped)
+                self?.event(.closeTapped)
             }),
             style: style.header.closeButton,
             accessibilityIdentifier: "header_close_button",
@@ -74,11 +88,22 @@ extension SecureConversations.ConfirmationViewSwiftUI.Model {
     }
 }
 
+// MARK: - OpenTelemetry
+extension SecureConversations.ConfirmationViewSwiftUI.Model {
+    private func logButtonClicked(_ button: OtelButtonNames) {
+        environment.openTelemetry.logger.i(.scConfirmationScreenButtonClicked) {
+            $0[.buttonName] = .string(button.rawValue)
+        }
+    }
+}
+
 // MARK: - Objects
 extension SecureConversations.ConfirmationViewSwiftUI.Model {
     enum Event {
         case closeTapped
         case chatTranscriptScreenRequested
+        case viewDidAppear
+        case viewDidDisappear
     }
 
     enum DelegateEvent {

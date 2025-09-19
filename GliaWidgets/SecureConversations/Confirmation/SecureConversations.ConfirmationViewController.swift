@@ -33,5 +33,16 @@ extension SecureConversations {
                 hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             ])
         }
+
+        override func viewDidAppear(_ animated: Bool) {
+            super.viewDidAppear(animated)
+            model.event(.viewDidAppear)
+        }
+
+        override func viewDidDisappear(_ animated: Bool) {
+            super.viewDidDisappear(animated)
+
+            model.event(.viewDidDisappear)
+        }
     }
 }
