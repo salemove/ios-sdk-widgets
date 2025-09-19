@@ -22,6 +22,7 @@ extension SecureConversations {
         /// Flag indicating attachment(s) availability.
         /// By default attachments are not available, until site configurations are fetched.
         private(set) var isAttachmentsAvailable: Bool = false { didSet { reportChange() } }
+        private var isViewActive = ObservableValue<Bool>(with: false)
         var availabilityStatus: Availability.Status = .available(.queues(queueIds: [])) { didSet { reportChange() } }
         var messageInputState: MessageInputState = .normal { didSet { reportChange() } }
         var sendMessageRequestState: SendMessageRequestState = .waiting { didSet { reportChange() } }
@@ -29,6 +30,7 @@ extension SecureConversations {
         let fileUploadListModel: FileUploadListViewModel
 
         lazy var sendMessageCommand = Cmd { [weak self] in
+            self?.logButtonClicked(.send)
             self?.sendMessage()
         }
 
@@ -58,6 +60,13 @@ extension SecureConversations {
             checkSecureConversationsAvailability()
             loadAttachmentAvailability()
             environment.startSocketObservation()
+            isViewActive.addObserver(self) { [weak self] isViewActive, _ in
+                if isViewActive {
+                    self?.environment.openTelemetry.logger.i(.scWelcomeScreenShown)
+                } else {
+                    self?.environment.openTelemetry.logger.i(.scWelcomeScreenClosed)
+                }
+            }
         }
 
         private func checkSecureConversationsAvailability() {
@@ -86,6 +95,10 @@ extension SecureConversations {
                 delegate?(.backTapped)
             case .closeTapped:
                 delegate?(.closeTapped)
+            case .viewDidAppear:
+                isViewActive.value = true
+            case .viewDidDisappear:
+                isViewActive.value = false
             }
         }
 
@@ -149,13 +162,13 @@ extension SecureConversations.WelcomeViewModel {
     func props() -> Props {
         let welcomeStyle = environment.welcomeStyle
 
-        let messageLenghtWarning = messageText.count > Self.messageTextLimit ? welcomeStyle
+        let messageLengthWarning = messageText.count > Self.messageTextLimit ? welcomeStyle
             .messageWarningStyle.messageLengthLimitText
             .withTextLength(String(SecureConversations.WelcomeViewModel.messageTextLimit))
         : ""
 
         let warningMessage = WelcomeViewProps.WarningMessage(
-            text: messageLenghtWarning,
+            text: messageLengthWarning,
             animated: true
         )
 
@@ -163,7 +176,10 @@ extension SecureConversations.WelcomeViewModel {
         let props: Props = .welcome(
             .init(
                 style: Self.welcomeStyle(for: self),
-                checkMessageButtonTap: Cmd { [weak self] in self?.delegate?(.transcriptRequested) },
+                checkMessageButtonTap: Cmd { [weak self] in
+                    self?.logButtonClicked(.checkMessages)
+                    self?.delegate?(.transcriptRequested)
+                },
                 filePickerButton: Self.filePickerButtonState(for: self),
                 sendMessageButton: sendMessageButton,
                 messageTextViewProps: Self.textViewState(for: self),
@@ -198,6 +214,7 @@ extension SecureConversations.WelcomeViewModel {
             filePickerButton = WelcomeViewProps.FilePickerButton(
                 isEnabled: isFilePickerEnabled,
                 tap: Command { originView in
+                    instance.logButtonClicked(.addAttachment)
                     instance.presentMediaPicker(from: originView)
                 }
             )
@@ -311,7 +328,10 @@ extension SecureConversations.WelcomeViewModel {
     ) -> Header.Props {
         let backButton = style.header.backButton.map {
             HeaderButton.Props(
-                tap: Cmd { [weak instance] in instance?.delegate?(.backTapped) },
+                tap: Cmd { [weak instance] in
+                    instance?.logButtonClicked(.back)
+                    instance?.delegate?(.backTapped)
+                },
                 style: $0
             )
         }
@@ -322,7 +342,10 @@ extension SecureConversations.WelcomeViewModel {
             endButton: .init(),
             backButton: backButton,
             closeButton: .init(
-                tap: Cmd { [weak instance] in instance?.delegate?(.closeTapped) },
+                tap: Cmd { [weak instance] in
+                    instance?.logButtonClicked(.close)
+                    instance?.delegate?(.closeTapped)
+                },
                 style: style.header.closeButton
             ),
             style: style.header
@@ -334,6 +357,8 @@ extension SecureConversations.WelcomeViewModel {
     enum Event {
         case backTapped
         case closeTapped
+        case viewDidAppear
+        case viewDidDisappear
     }
 
     enum Action {
@@ -364,7 +389,18 @@ extension SecureConversations.WelcomeViewModel {
 // MARK: - Media Picker
 extension SecureConversations.WelcomeViewModel {
     func presentMediaPicker(from originView: UIView) {
+        let logMediaSourceSelection = { [weak self] (kind: AttachmentSourceItemKind) in
+            switch kind {
+            case .photoLibrary:
+                self?.logButtonClicked(.selectFromLibrary)
+            case .takePhoto:
+                self?.logButtonClicked(.takePhoto)
+            case .browse:
+                self?.logButtonClicked(.browseFiles)
+            }
+        }
         let itemSelected = { (kind: AttachmentSourceItemKind) in
+            logMediaSourceSelection(kind)
             let media = Command<MediaPickerEvent> { [weak self] event in
                 guard let self = self else { return }
                 switch event {
@@ -451,6 +487,15 @@ extension SecureConversations.WelcomeViewModel {
 
     private func removeUpload(_ upload: FileUpload) {
         fileUploadListModel.removeUpload(upload)
+    }
+}
+
+// MARK: - OpenTelemetry
+extension SecureConversations.WelcomeViewModel {
+    private func logButtonClicked(_ button: OtelButtonNames) {
+        environment.openTelemetry.logger.i(.scWelcomeScreenButtonClicked) {
+            $0[.buttonName] = .string(button.rawValue)
+        }
     }
 }
 
