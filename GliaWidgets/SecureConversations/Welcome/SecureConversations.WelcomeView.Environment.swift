@@ -9,7 +9,7 @@ extension SecureConversations.WelcomeView {
 }
 
 extension SecureConversations.WelcomeView.Environemnt {
-    static func create(with environment: SecureConversations.WelcomeViewController.Environemnt) -> Self {
+    static func create(with environment: SecureConversations.WelcomeViewController.Environment) -> Self {
         .init(
             gcd: environment.gcd,
             uiScreen: environment.uiScreen,

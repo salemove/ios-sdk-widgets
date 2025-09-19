@@ -7,7 +7,6 @@ extension SecureConversations {
         private let viewFactory: ViewFactory
         private let navigationPresenter: NavigationPresenter
         private let environment: Environment
-        private(set) var viewModel: SecureConversations.WelcomeViewModel?
         private(set) var selectedPickerController: SelectedPickerController?
         private var messagingInitialScreen: SecureConversations.InitialScreen
 
@@ -52,6 +51,7 @@ extension SecureConversations {
 
             let controller = SecureConversations.WelcomeViewController(
                 viewFactory: viewFactory,
+                viewModel: viewModel,
                 props: viewModel.props(),
                 environment: .create(with: environment)
             )
@@ -59,9 +59,6 @@ extension SecureConversations {
             viewModel.delegate = { [weak self, weak controller] event in
                 self?.bindDelegate(to: event, controller: controller)
             }
-
-            // Store view model, so that it would not be deallocated.
-            self.viewModel = viewModel
 
             return controller
         }
