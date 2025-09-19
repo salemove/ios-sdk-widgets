@@ -10,16 +10,19 @@ extension SecureConversations {
         }
 
         let viewFactory: ViewFactory
-        let environment: Environemnt
+        let environment: Environment
+        private let viewModel: WelcomeViewModel
 
         init(
             viewFactory: ViewFactory,
+            viewModel: WelcomeViewModel,
             props: Props,
-            environment: Environemnt
+            environment: Environment
         ) {
             self.viewFactory = viewFactory
             self.props = props
             self.environment = environment
+            self.viewModel = viewModel
             super.init(nibName: nil, bundle: nil)
         }
 
@@ -31,6 +34,16 @@ extension SecureConversations {
         override func loadView() {
             super.loadView()
             renderProps()
+        }
+
+        override func viewDidAppear(_ animated: Bool) {
+            super.viewDidAppear(animated)
+            viewModel.event(.viewDidAppear)
+        }
+
+        override func viewDidDisappear(_ animated: Bool) {
+            super.viewDidDisappear(animated)
+            viewModel.event(.viewDidDisappear)
         }
 
         func renderProps() {
