@@ -10,83 +10,39 @@ struct CoreSdkClient {
     var clearSession: () -> Void
     var localeProvider: LocaleProvider
 
-    typealias GetVisitorInfo = (_ completion: @escaping (Result<VisitorInfo, Error>) -> Void) -> Void
-
-    var getVisitorInfo: GetVisitorInfo
-    var getVisitorInfoDeprecated: (_ completion: @escaping (Result<GliaCore.VisitorInfo, Error>) -> Void) -> Void
-
-    typealias UpdateVisitorInfo = (
-        _ info: VisitorInfoUpdate,
-        _ completion: @escaping (Result<Bool, Error>) -> Void
-    ) -> Void
-
-    var updateVisitorInfo: UpdateVisitorInfo
-    var updateVisitorInfoDeprecated: (
-        _ info: GliaCoreSDK.VisitorInfoUpdate,
-        _ completion: @escaping (Result<Bool, Error>) -> Void
-    ) -> Void
-
     typealias ConfigureWithConfiguration = (
         _ sdkConfiguration: Self.Salemove.Configuration,
         _ completion: @escaping Self.ConfigureCompletion
     ) -> Void
 
     var configureWithConfiguration: ConfigureWithConfiguration
+    var getVisitorInfo: () async throws -> VisitorInfo
+    var updateVisitorInfo: (VisitorInfoUpdate) async throws -> Bool
 
     typealias ConfigureWithInteractor = (_ interactor: Self.Interactable) -> Void
 
     var configureWithInteractor: ConfigureWithInteractor
 
-    typealias GetQueues = (
-        _ completion: @escaping (Result<[Queue], Error>) -> Void
-    ) -> Void
+    typealias GetQueues = () async throws -> [Queue]
 
     var getQueues: GetQueues
 
     typealias QueueForEngagement = (
         _ options: GliaCoreSDK.QueueForEngagementOptions,
-        _ replaceExisting: Bool,
-        _ completion: @escaping (Result<GliaCoreSDK.QueueTicket, GliaCoreSDK.GliaCoreError>) -> Void
-    ) -> Void
+        _ replaceExisting: Bool
+    ) async throws -> GliaCoreSDK.QueueTicket
 
     var queueForEngagement: QueueForEngagement
 
-    typealias RequestMediaUpgradeWithOffer = (
-        _ offer: Self.MediaUpgradeOffer,
-        _ completion: @escaping Self.SuccessBlock
-    ) -> Void
+    var sendMessagePreview: (_ message: String) async throws -> Bool
+    var sendMessageWithMessagePayload: (_ payload: SendMessagePayload) async throws -> Message
 
-    var requestMediaUpgradeWithOffer: RequestMediaUpgradeWithOffer
-
-    typealias SendMessagePreview = (
-        _ message: String,
-        _ completion: @escaping Self.SuccessBlock
-    ) -> Void
-
-    var sendMessagePreview: SendMessagePreview
-
-    typealias SendMessageWithMessagePayloadCallback = (Result<CoreSdkClient.Message, CoreSdkClient.GliaCoreError>) -> Void
-        typealias SendMessageWithMessagePayload = (
-            _ sendMessagePayload: Self.SendMessagePayload,
-            _ completion: @escaping SendMessageWithMessagePayloadCallback
-        ) -> Void
-
-    var sendMessageWithMessagePayload: SendMessageWithMessagePayload
-
-    typealias CancelQueueTicket = (
-        _ queueTicket: Self.QueueTicket,
-        _ completion: @escaping GliaCoreSDK.SuccessBlock
-    ) -> Void
+    typealias CancelQueueTicket = (_ queueTicket: Self.QueueTicket) async throws -> Bool
 
     var cancelQueueTicket: CancelQueueTicket
 
-    typealias EndEngagement = (_ completion: @escaping Self.SuccessBlock) -> Void
-
-    var endEngagement: EndEngagement
-
-    typealias RequestEngagedOperator = (_ completion: @escaping Self.OperatorBlock) -> Void
-
-    var requestEngagedOperator: RequestEngagedOperator
+    var endEngagement: () async throws -> Bool
+    var requestEngagedOperator: () async throws -> [GliaCoreSDK.Operator]?
 
     typealias UploadFileToEngagement = (
         _ file: Self.EngagementFile,
@@ -98,9 +54,8 @@ struct CoreSdkClient {
 
     typealias FetchFile = (
         _ engagementFile: Self.EngagementFile,
-        _ progress: Self.EngagementFileProgressBlock?,
-        _ completion: @escaping Self.EngagementFileFetchCompletionBlock
-    ) -> Void
+        _ progress: Self.EngagementFileProgressBlock?
+    ) async throws -> GliaCoreSDK.EngagementFileData
 
     var fetchFile: FetchFile
 
@@ -116,9 +71,8 @@ struct CoreSdkClient {
         (
             _ answers: [GliaCoreSDK.Survey.Answer],
             _ surveyId: GliaCoreSDK.Survey.Id,
-            _ engagementId: String,
-            _ completion: @escaping (Result<Void, GliaCoreSDK.GliaCoreError>) -> Void
-        ) -> Void
+            _ engagementId: String
+        ) async throws -> Void
     )
 
     var submitSurveyAnswer: SubmitSurveyAnswer
@@ -127,11 +81,11 @@ struct CoreSdkClient {
 
     var authentication: CreateAuthentication
 
-    typealias FetchChatHistory = (_ completion: @escaping (Result<[ChatMessage], GliaCoreSDK.GliaCoreError>) -> Void) -> Void
+    typealias FetchChatHistory = () async throws -> [ChatMessage]
 
     var fetchChatHistory: FetchChatHistory
 
-    typealias RequestVisitorCode = (_ completion: @escaping (VisitorCodeBlock) -> Void) -> GliaCore.Cancellable
+    typealias RequestVisitorCode = () async throws -> VisitorCode
 
     var requestVisitorCode: RequestVisitorCode
 
@@ -181,7 +135,6 @@ extension CoreSdkClient {
         var downloadFile: DownloadFile
         var subscribeForUnreadMessageCount: SubscribeForUnreadMessageCount
         var unsubscribeFromUnreadMessageCount: UnsubscribeFromUnreadCount
-        var pendingStatus: PendingStatus
         var observePendingStatus: ObservePendingStatus
         var unsubscribeFromPendingStatus: UnsubscribeFromPendingStatus
     }
@@ -194,9 +147,8 @@ extension CoreSdkClient.SecureConversations {
 
     typealias SendPayload = (
         _ secureMessagePayload: SendMessagePayload,
-        _ queueIds: [String],
-        _ completion: @escaping (Result<Message, Error>) -> Void
-    ) -> Cancellable
+        _ queueIds: [String]
+    ) async throws -> Message
 
     typealias UploadFile = (
         _ file: EngagementFile,
@@ -204,23 +156,20 @@ extension CoreSdkClient.SecureConversations {
         _ completion: @escaping (Result<EngagementFileInformation, Swift.Error>) -> Void
     ) -> Cancellable
 
-    typealias GetUnreadMessageCount = (_ callback: @escaping (Result<Int, Error>) -> Void) -> Void
+    typealias GetUnreadMessageCount = () async throws -> Int
 
-    typealias MarkMessagesAsRead = (_ callback: @escaping (Result<Void, Error>) -> Void) -> Cancellable
+    typealias MarkMessagesAsRead = () async throws -> Void
 
     typealias DownloadFile = (
         _ file: EngagementFile,
-        _ progress: @escaping EngagementFileProgressBlock,
-        _ completion: @escaping (Result<EngagementFileData, Error>) -> Void
-    ) -> Cancellable
+        _ progress: @escaping EngagementFileProgressBlock
+    ) async throws -> EngagementFileData
 
     typealias SubscribeForUnreadMessageCount = (
         _ completion: @escaping (Result<Int?, Error>) -> Void
     ) -> String?
 
     typealias UnsubscribeFromUnreadCount = (String) -> Void
-
-    typealias PendingStatus = (_ callback: @escaping (Result<Bool, Error>) -> Void) -> Void
 
     typealias ObservePendingStatus = (_ callback: @escaping (Result<Bool, Error>) -> Void) -> String?
 
@@ -374,6 +323,7 @@ extension CoreSdkClient {
     typealias EngagementChangedBlock = GliaCoreSDK.EngagementChangedBlock
     typealias AnyCombineScheduler = GliaCoreSDK.AnyCombineScheduler
     typealias AnyScheduler = GliaCoreSDK.AnyScheduler
+    typealias QueueForEngagementOptions = GliaCoreSDK.QueueForEngagementOptions
 }
 
 extension CoreSdkClient.AnyCombineScheduler {

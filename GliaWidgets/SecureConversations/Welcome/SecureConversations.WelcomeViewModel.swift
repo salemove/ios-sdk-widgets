@@ -28,8 +28,8 @@ extension SecureConversations {
 
         let fileUploadListModel: FileUploadListViewModel
 
-        lazy var sendMessageCommand = Cmd { [weak self] in
-            self?.sendMessage()
+        lazy var sendMessageCommand = AsyncCmd { [weak self] in
+            await self?.sendMessage()
         }
 
         init(
@@ -55,28 +55,37 @@ extension SecureConversations {
                 }
             }
 
-            checkSecureConversationsAvailability()
             loadAttachmentAvailability()
             environment.startSocketObservation()
         }
 
-        private func checkSecureConversationsAvailability() {
-            availability.checkSecureConversationsAvailability(for: environment.queueIds) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(.available(.queues(queueIds))):
-                    self.environment.queueIds = queueIds
-                    self.availabilityStatus = .available(.queues(queueIds: queueIds))
-                case .success(.available(.transferred)):
-                    self.environment.queueIds = []
-                    self.availabilityStatus = .available(.transferred)
-                case .success(.unavailable(.emptyQueue)), .failure:
-                    self.availabilityStatus = .unavailable(.emptyQueue)
-                    self.delegate?(.showAlert(.unavailableMessageCenter()))
-                case .success(.unavailable(.unauthenticated)):
-                    self.availabilityStatus = .unavailable(.unauthenticated)
-                    self.delegate?(.showAlert(.unavailableMessageCenterForBeingUnauthenticated()))
+        @MainActor
+        func checkSecureConversationsAvailability() async {
+            do {
+                let status = try await availability.checkSecureConversationsAvailability(for: environment.queueIds)
+                switch status {
+                case .available(let availability):
+                    switch availability {
+                    case .transferred:
+                        self.environment.queueIds = []
+                        self.availabilityStatus = .available(.transferred)
+                    case let .queues(queueIds):
+                        self.environment.queueIds = queueIds
+                        self.availabilityStatus = .available(.queues(queueIds: queueIds))
+                    }
+                case let .unavailable(reason):
+                    switch reason {
+                    case .emptyQueue:
+                        self.availabilityStatus = .unavailable(.emptyQueue)
+                        self.delegate?(.showAlert(.unavailableMessageCenter()))
+                    case .unauthenticated:
+                        self.availabilityStatus = .unavailable(.unauthenticated)
+                        self.delegate?(.showAlert(.unavailableMessageCenterForBeingUnauthenticated()))
+                    }
                 }
+            } catch {
+                self.availabilityStatus = .unavailable(.emptyQueue)
+                self.delegate?(.showAlert(.unavailableMessageCenter()))
             }
         }
 
@@ -101,7 +110,8 @@ extension SecureConversations {
 
 // MARK: - Send Message
 private extension SecureConversations.WelcomeViewModel {
-    func sendMessage() {
+    @MainActor
+    func sendMessage() async {
         let queueIds = environment.queueIds
 
         sendMessageRequestState = .loading
@@ -110,19 +120,15 @@ private extension SecureConversations.WelcomeViewModel {
             messageText,
             fileUploadListModel.attachment
         )
-
-        _ = environment.secureConversations.sendMessagePayload(
-            payload,
-            queueIds
-        ) { [weak self] result in
-            self?.sendMessageRequestState = .waiting
-
-            switch result {
-            case .success:
-                self?.delegate?(.confirmationScreenRequested)
-            case let .failure(error):
-                self?.delegate?(.showAlert(.error(error: error)))
-            }
+        sendMessageRequestState = .waiting
+        do {
+            let message = try await environment.secureConversations.sendMessagePayload(
+                payload,
+                queueIds
+            )
+            delegate?(.confirmationScreenRequested)
+        } catch {
+            delegate?(.showAlert(.error(error: error)))
         }
     }
     func loadAttachmentAvailability() {

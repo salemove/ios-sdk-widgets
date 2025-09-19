@@ -91,7 +91,7 @@ extension SecureConversations.TranscriptModel.Environment {
 extension SecureConversations.TranscriptModel.Environment {
     static func mock(
         secureConversations: CoreSdkClient.SecureConversations = .mock,
-        fetchFile: @escaping CoreSdkClient.FetchFile = { _, _, _ in },
+        fetchFile: @escaping CoreSdkClient.FetchFile = { _, _ in .mock() },
         fileManager: FoundationBased.FileManager = .mock,
         data: FoundationBased.Data = .mock,
         date: @escaping () -> Date = { .mock },
@@ -100,10 +100,10 @@ extension SecureConversations.TranscriptModel.Environment {
         createThumbnailGenerator: @escaping () -> QuickLookBased.ThumbnailGenerator = { .mock },
         createFileDownload: @escaping FileDownloader.CreateFileDownload = { _, _, _ in .mock() },
         loadChatMessagesFromHistory: @escaping () -> Bool = { false },
-        fetchChatHistory: @escaping CoreSdkClient.FetchChatHistory = { _ in },
+        fetchChatHistory: @escaping CoreSdkClient.FetchChatHistory = { [] },
         uiApplication: UIKitBased.UIApplication = .mock,
         queueIds: [String] = [],
-        getQueues: @escaping CoreSdkClient.GetQueues = { _ in },
+        getQueues: @escaping CoreSdkClient.GetQueues = { [.mock()] },
         createFileUploadListModel: @escaping SecureConversations.FileUploadListViewModel.Create = { _ in .mock() },
         uuid: @escaping () -> UUID = { .mock },
         fileUploadListStyle: FileUploadListStyle = .mock,
