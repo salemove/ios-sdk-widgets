@@ -6,7 +6,7 @@ extension Survey {
             let header: String
             var questionsProps: [QuestionPropsProtocol]
             var submit: (Props) -> Void
-            var cancell: () -> Void
+            var cancel: () -> Void
             var endEditing: () -> Void
 
             init(
@@ -19,7 +19,7 @@ extension Survey {
                 self.header = header
                 self.questionsProps = props
                 self.submit = submit
-                self.cancell = cancel
+                self.cancel = cancel
                 self.endEditing = endEditing
             }
         }
@@ -56,19 +56,31 @@ extension Survey {
             super.viewDidLoad()
             render()
             contentView.submitButton.addTarget(self, action: #selector(submit), for: .touchUpInside)
-            contentView.cancelButton.addTarget(self, action: #selector(cancell), for: .touchUpInside)
+            contentView.cancelButton.addTarget(self, action: #selector(cancel), for: .touchUpInside)
             subscribeToNotification(UIResponder.keyboardWillShowNotification, selector: #selector(keyboardWillShow))
             subscribeToNotification(UIResponder.keyboardWillHideNotification, selector: #selector(keyboardWillHide))
+            environment.openTelemetry.logger.i(.surveyScreenShown)
+        }
+
+        override func viewDidDisappear(_ animated: Bool) {
+            super.viewDidDisappear(animated)
+            environment.openTelemetry.logger.i(.surveyScreenClosed)
         }
 
         @objc
         private func submit(sender: UIButton) {
+            environment.openTelemetry.logger.i(.surveyScreenButtonClicked) {
+                $0[.buttonName] = .string(OtelButtonNames.submit.rawValue)
+            }
             props.submit(props)
         }
 
         @objc
-        private func cancell(sender: UIButton) {
-            props.cancell()
+        private func cancel(sender: UIButton) {
+            environment.openTelemetry.logger.i(.surveyScreenButtonClicked) {
+                $0[.buttonName] = .string(OtelButtonNames.cancel.rawValue)
+            }
+            props.cancel()
         }
 
         func render() {
