@@ -1,9 +1,11 @@
 import Foundation
+import GliaCoreSDK
 
 extension Survey.ViewController {
     struct Environment {
         var notificationCenter: FoundationBased.NotificationCenter
         var log: CoreSdkClient.Logger
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 
