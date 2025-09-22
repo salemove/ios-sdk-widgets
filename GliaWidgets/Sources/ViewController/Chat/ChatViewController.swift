@@ -261,7 +261,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         let chatTheme = viewFactory.theme.chat
         let logButtonClickedEvent: (OtelButtonNames) -> Void = { [weak self] buttonName in
             self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
-                $0[.buttonName] = .init(buttonName.rawValue)
+                $0[.buttonName] = .string(buttonName.rawValue)
             }
         }
         let endEvent = Cmd { [weak self] in
