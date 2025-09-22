@@ -1,4 +1,5 @@
 import Foundation
+import GliaCoreSDK
 
 extension CallVisualizer.VideoCallViewModel {
     struct Environment {
@@ -15,6 +16,7 @@ extension CallVisualizer.VideoCallViewModel {
         var log: CoreSdkClient.Logger
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var flipCameraButtonStyle: FlipCameraButtonStyle
+        @Dependency(\.widgets.openTelemetry) var openTelemetry
     }
 }
 
