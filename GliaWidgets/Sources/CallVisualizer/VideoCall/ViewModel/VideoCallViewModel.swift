@@ -314,6 +314,9 @@ private extension CallVisualizer.VideoCallViewModel {
         call.toggleVideo()
         updateVideoButton()
         updateLocalVideoVisible()
+        environment.openTelemetry.logger.i(.callScreenButtonClicked) {
+            $0[.buttonName] = .string(OtelButtonNames.video.rawValue)
+        }
     }
 
     func setButtonState(kind: CallButton.Kind, state: CallButton.State) {

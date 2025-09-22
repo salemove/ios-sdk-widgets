@@ -39,6 +39,16 @@ extension CallVisualizer {
             super.viewDidLoad()
             props.viewDidLoad()
         }
+
+        override func viewDidAppear(_ animated: Bool) {
+            super.viewDidAppear(animated)
+            environment.openTelemetry.logger.i(.callScreenShown)
+        }
+
+        override func viewDidDisappear(_ animated: Bool) {
+            super.viewDidDisappear(animated)
+            environment.openTelemetry.logger.i(.callScreenClosed)
+        }
     }
 }
 
