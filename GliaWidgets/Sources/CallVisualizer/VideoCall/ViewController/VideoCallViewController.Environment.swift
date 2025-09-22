@@ -1,9 +1,11 @@
 import Foundation
+import GliaCoreSDK
 
 extension CallVisualizer.VideoCallViewController {
     struct Environment {
         var videoCallView: CallVisualizer.VideoCallView.Environment
         var notificationCenter: FoundationBased.NotificationCenter
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 
