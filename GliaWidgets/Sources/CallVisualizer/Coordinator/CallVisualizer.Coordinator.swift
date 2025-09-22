@@ -57,6 +57,7 @@ extension CallVisualizer.Coordinator {
             case .closeTap:
                 self?.visitorCodeCoordinator = nil
                 self?.environment.log.prefixed(Self.self).info("Dismiss Visitor Code Dialog")
+                self?.environment.openTelemetry.logger.i(.visitorCodeClosed)
             case .engagementAccepted:
                 switch coordinator.presentation {
                 case let .embedded(_, onEngagementAccepted: callback):
@@ -68,7 +69,7 @@ extension CallVisualizer.Coordinator {
         }
 
         coordinator.start()
-
+        self.environment.openTelemetry.logger.i(.visitorCodeShown)
         self.visitorCodeCoordinator = coordinator
     }
 
@@ -217,6 +218,7 @@ extension CallVisualizer.Coordinator {
         if let visitorCode = visitorCodeCoordinator?.codeViewController {
             visitorCode.dismiss(animated: true, completion: completion)
             visitorCodeCoordinator = nil
+            environment.openTelemetry.logger.i(.visitorCodeClosed)
         } else {
             completion?()
         }

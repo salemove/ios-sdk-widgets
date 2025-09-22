@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import GliaCoreSDK
 
 extension CallVisualizer.Coordinator {
     struct Environment {
@@ -28,6 +29,7 @@ extension CallVisualizer.Coordinator {
         var snackBar: SnackBar
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var alertManager: AlertManager
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 
