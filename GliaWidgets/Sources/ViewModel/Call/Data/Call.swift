@@ -143,7 +143,7 @@ class Call {
         if stream.isRemote {
             stream.onHold = { [weak self] in
                 self?.environment.openTelemetry.logger.i(.mediaOnHold) { builder in
-                    builder[.mediaType] = .string("audio")
+                    builder[.mediaType] = .string(OtelMediaTypes.remoteAudio.rawValue)
                 }
                 self?.isVisitorOnHold.value = $0
             }
@@ -160,7 +160,7 @@ class Call {
         if stream.isRemote {
             stream.onHold = { [weak self] in
                 self?.environment.openTelemetry.logger.i(.mediaOnHold) { builder in
-                    builder[.mediaType] = .string("video")
+                    builder[.mediaType] = .string(OtelMediaTypes.remoteVideo.rawValue)
                 }
                 self?.isVisitorOnHold.value = $0
             }
@@ -173,13 +173,13 @@ class Call {
                 self.hasVisitorTurnedOffVideo = false
                 $0.resume()
                 self.environment.openTelemetry.logger.i(.mediaResumed) { builder in
-                    builder[.mediaType] = .string("video")
+                    builder[.mediaType] = .string(OtelMediaTypes.localVideo.rawValue)
                 }
             } else {
                 self.hasVisitorTurnedOffVideo = true
                 $0.pause()
                 self.environment.openTelemetry.logger.i(.mediaPaused) { builder in
-                    builder[.mediaType] = .string("video")
+                    builder[.mediaType] = .string(OtelMediaTypes.localVideo.rawValue)
                 }
             }
         }
@@ -191,13 +191,13 @@ class Call {
                 self.hasVisitorMutedAudio = false
                 $0.unmute()
                 self.environment.openTelemetry.logger.i(.mediaResumed) { builder in
-                    builder[.mediaType] = .string("audio")
+                    builder[.mediaType] = .string(OtelMediaTypes.localAudio.rawValue)
                 }
             } else {
                 self.hasVisitorMutedAudio = true
                 $0.mute()
                 self.environment.openTelemetry.logger.i(.mediaPaused) { builder in
-                    builder[.mediaType] = .string("audio")
+                    builder[.mediaType] = .string(OtelMediaTypes.localAudio.rawValue)
                 }
             }
         }

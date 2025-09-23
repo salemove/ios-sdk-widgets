@@ -7,4 +7,6 @@ typealias OtelAttributeValue = GliaCoreSDK.OtelAttributeValue
 typealias OtelButtonNames = GliaCoreSDK.OtelButtonNames
 typealias OtelDialogNames = GliaCoreSDK.OtelDialogNames
 typealias OtelGvaActionTypes = GliaCoreSDK.OtelGvaActionTypes
-typealias OtelEntryWidgetItemTypes = GliaCoreSDK.OtelEntryWidgetItemTypes
+typealias OtelEngagementTypes = GliaCoreSDK.OtelEngagementTypes
+typealias OtelEngagementSources = GliaCoreSDK.OtelEngagementSources
+typealias OtelMediaTypes = GliaCoreSDK.OtelMediaTypes
