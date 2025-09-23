@@ -200,27 +200,27 @@ private extension AlertManager.AlertTypeComposer {
     }
 
     func noCameraPermissionAlertType(dismissed: (() -> Void)? = nil) -> AlertType {
-        logDialogShown(dialog: .additionalPermissionsRequest)
+        logDialogShown(dialog: .missingPermission)
         return .systemAlert(
             conf: theme.alertConfiguration.cameraSettings,
             cancelled: {
-                logButtonClicked(button: .close, dialog: .additionalPermissionsRequest)
+                logButtonClicked(button: .close, dialog: .missingPermission)
                 dismissed?()
             }, onClose: {
-                logDialogClosed(dialog: .additionalPermissionsRequest)
+                logDialogClosed(dialog: .missingPermission)
             }
         )
     }
 
     func noMicrophonePermissionAlertType(dismissed: (() -> Void)? = nil) -> AlertType {
-        logDialogShown(dialog: .additionalPermissionsRequest)
+        logDialogShown(dialog: .missingPermission)
         return .systemAlert(
             conf: theme.alertConfiguration.microphoneSettings,
             cancelled: {
-                logButtonClicked(button: .close, dialog: .additionalPermissionsRequest)
+                logButtonClicked(button: .close, dialog: .missingPermission)
                 dismissed?()
             }, onClose: {
-                logDialogClosed(dialog: .additionalPermissionsRequest)
+                logDialogClosed(dialog: .missingPermission)
             }
         )
     }
@@ -278,11 +278,11 @@ private extension AlertManager.AlertTypeComposer {
         return .liveObservationConfirmation(
             theme.alertConfiguration.liveObservationConfirmation,
             link1: {
-                logButtonClicked(button: .liveObservationLink1, dialog: .liveObservationConfirmation)
+                logButtonClicked(button: .engagementConfirmationLink1, dialog: .liveObservationConfirmation)
                 link($0)
             },
             link2: {
-                logButtonClicked(button: .liveObservationLink2, dialog: .liveObservationConfirmation)
+                logButtonClicked(button: .engagementConfirmationLink2, dialog: .liveObservationConfirmation)
                 link($0)
             },
             accepted: {
@@ -494,7 +494,7 @@ extension AlertManager.AlertTypeComposer {
                 $0[.buttonName] = .string(button.rawValue)
             }
             if let offerAttribute = mediaOffer?.otelAttribute {
-                $0[.mediaUpgradeOffer] = offerAttribute
+                $0[.engagementType] = offerAttribute
             }
         }
     }

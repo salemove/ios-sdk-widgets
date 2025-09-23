@@ -465,13 +465,21 @@ extension CallViewModel {
             logButtonClicked(.chat)
             delegate?(.chat)
         case .video:
-            logButtonClicked(.video)
+            if call.hasVisitorTurnedOffVideo {
+                logButtonClicked(.videoOn)
+            } else {
+                logButtonClicked(.videoOff)
+            }
             toggleVideo()
         case .mute:
             logButtonClicked(.mute)
             toggleMute()
         case .speaker:
-            logButtonClicked(.speaker)
+            if call.audioPortOverride == .speaker {
+                logButtonClicked(.speakerOff)
+            } else {
+                logButtonClicked(.speakerOn)
+            }
             toggleSpeaker()
         case .minimize:
             logButtonClicked(.minimize)

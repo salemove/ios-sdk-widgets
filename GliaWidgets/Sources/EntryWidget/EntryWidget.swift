@@ -473,15 +473,15 @@ extension EntryWidget {
         environment.openTelemetry.logger.i(.entryWidgetItemClicked) {
             switch type {
             case .chat:
-                $0[.itemType] = .string(OtelEntryWidgetItemTypes.chat.rawValue)
+                $0[.engagementType] = .string(OtelEngagementTypes.chat.rawValue)
             case .audio:
-                $0[.itemType] = .string(OtelEntryWidgetItemTypes.audio.rawValue)
+                $0[.engagementType] = .string(OtelEngagementTypes.audio.rawValue)
             case .video:
-                $0[.itemType] = .string(OtelEntryWidgetItemTypes.video.rawValue)
+                $0[.engagementType] = .string(OtelEngagementTypes.twoWayVideo.rawValue)
             case .secureMessaging:
-                $0[.itemType] = .string(OtelEntryWidgetItemTypes.secureMessaging.rawValue)
+                $0[.engagementType] = .string(OtelEngagementTypes.secureMessaging.rawValue)
             case .callVisualizer:
-                $0[.itemType] = .string(OtelEntryWidgetItemTypes.callVisualizer.rawValue)
+                $0[.engagementType] = .string(OtelEngagementTypes.callVisualizer.rawValue)
             }
         }
     }
