@@ -311,12 +311,14 @@ private extension CallVisualizer.VideoCallViewModel {
     }
 
     func toggleVideo() {
+        environment.openTelemetry.logger.i(.callScreenButtonClicked) { [weak self] in
+            guard let self else { return }
+            let button: OtelButtonNames = call.hasVisitorTurnedOffVideo ? .videoOn : .videoOff
+            $0[.buttonName] = .string(button.rawValue)
+        }
         call.toggleVideo()
         updateVideoButton()
         updateLocalVideoVisible()
-        environment.openTelemetry.logger.i(.callScreenButtonClicked) {
-            $0[.buttonName] = .string(OtelButtonNames.video.rawValue)
-        }
     }
 
     func setButtonState(kind: CallButton.Kind, state: CallButton.State) {
