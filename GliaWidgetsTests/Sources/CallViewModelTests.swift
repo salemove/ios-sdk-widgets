@@ -405,7 +405,7 @@ class CallViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.interactor.state, .none)
     }
 
-    func test_liveObservationAlertPresentationInitiatedWhenInteractorStateIsEnqueuing() throws {
+    func test_liveObservationAlertPresentationInitiatedWhenInteractorStateIsEnqueuing() async throws {
         enum Call {
             case showLiveObservationAlert
         }
@@ -414,9 +414,7 @@ class CallViewModelTests: XCTestCase {
         let site: CoreSdkClient.Site = try .mock()
 
         var viewModelEnvironment: EngagementViewModel.Environment = .mock
-        viewModelEnvironment.fetchSiteConfigurations = { completion in
-            completion(.success(site))
-        }
+        viewModelEnvironment.fetchSiteConfigurations = { site }
         let viewModel: ChatViewModel = .mock(
             interactor: interactor,
             environment: viewModelEnvironment
@@ -430,6 +428,11 @@ class CallViewModelTests: XCTestCase {
             }
         }
         interactor.state = .enqueueing(.audioCall)
+
+        // Will be removed when async state observing is implemented
+        await waitUntil {
+            calls == [.showLiveObservationAlert]
+        }
         XCTAssertEqual(calls, [.showLiveObservationAlert])
     }
 
@@ -442,9 +445,7 @@ class CallViewModelTests: XCTestCase {
         let site: CoreSdkClient.Site = try .mock()
 
         var viewModelEnvironment: EngagementViewModel.Environment = .mock
-        viewModelEnvironment.fetchSiteConfigurations = { completion in
-            completion(.success(site))
-        }
+        viewModelEnvironment.fetchSiteConfigurations = { site }
         let viewModel: ChatViewModel = .mock(
             interactor: interactor,
             environment: viewModelEnvironment
@@ -461,9 +462,14 @@ class CallViewModelTests: XCTestCase {
                 XCTFail("Unexpected action \(action).")
             }
         }
+        await viewModel.start()
         interactor.state = .enqueueing(.audioCall)
-        await alertConfig?.accepted()
 
+        // Will be removed when async state observing is implemented
+        await waitUntil {
+            interactor.state == .enqueueing(.audioCall)
+        }
+        await alertConfig?.accepted()
         XCTAssertEqual(interactor.state, .enqueued(.mock, .audioCall))
     }
 
@@ -483,9 +489,7 @@ class CallViewModelTests: XCTestCase {
         let site: CoreSdkClient.Site = try .mock()
 
         var viewModelEnvironment: EngagementViewModel.Environment = .mock
-        viewModelEnvironment.fetchSiteConfigurations = { completion in
-            completion(.success(site))
-        }
+        viewModelEnvironment.fetchSiteConfigurations = { site }
         let viewModel: ChatViewModel = .mock(
             interactor: interactor,
             environment: viewModelEnvironment
@@ -503,6 +507,11 @@ class CallViewModelTests: XCTestCase {
             }
         }
         interactor.state = .enqueueing(.audioCall)
+
+        // Will be removed when async state observing is implemented
+        await waitUntil {
+            alertConfig != nil
+        }
         await alertConfig?.declined()
 
         XCTAssertEqual(interactor.state, .ended(.byVisitor))

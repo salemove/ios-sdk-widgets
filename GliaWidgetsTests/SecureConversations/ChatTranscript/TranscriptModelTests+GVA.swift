@@ -144,7 +144,7 @@ extension SecureConversationsTranscriptModelTests {
         )
         modelEnv.fetchChatHistory = { [message] }
         modelEnv.loadChatMessagesFromHistory = { true }
-        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.fetchSiteConfigurations = { try .mock() }
         modelEnv.secureConversations.getUnreadMessageCount = { 0 }
         modelEnv.startSocketObservation = {}
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
