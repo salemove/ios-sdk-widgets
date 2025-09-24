@@ -138,8 +138,9 @@ extension CallVisualizer {
         coordinator.handleAcceptedUpgrade()
     }
 
-    func handleEngagementRequest(request: CoreSdkClient.Request, answer: Command<Bool>) {
-        coordinator.handleEngagementRequest(request: request, answer: answer)
+    @MainActor
+    func handleEngagementRequest(request: CoreSdkClient.Request, answer: Command<Bool>) async {
+        await coordinator.handleEngagementRequest(request: request, answer: answer)
     }
 
     func addVideoStream(stream: CoreSdkClient.VideoStreamable) {
@@ -152,8 +153,9 @@ extension CallVisualizer {
         delegate?(.engagementEnded)
     }
 
-    func handleRestoredEngagement() {
-        coordinator.showSnackBarIfNeeded()
+    @MainActor
+    func handleRestoredEngagement() async {
+        await coordinator.showSnackBarIfNeeded()
     }
 
     func restoreVideoIfPossible() {
@@ -193,7 +195,9 @@ extension CallVisualizer {
             else {
                 switch event {
                 case let .onEngagementRequest(request, answer):
-                    handleEngagementRequest(request: request, answer: answer)
+                    Task {
+                        await self.handleEngagementRequest(request: request, answer: answer)
+                    }
                 default:
                     break
                 }

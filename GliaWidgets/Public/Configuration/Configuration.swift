@@ -136,7 +136,7 @@ extension Configuration {
         /// Push notifications are configured for production environment.
         case production
 
-        var coreSdk: CoreSdkClient.Salemove.Configuration.PushNotifications {
+        var coreSdk: CoreSdkClient.Configuration.PushNotifications {
             switch self {
             case .disabled:
                 return .disabled

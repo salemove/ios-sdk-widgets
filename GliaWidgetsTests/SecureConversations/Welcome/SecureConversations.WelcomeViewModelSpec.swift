@@ -70,19 +70,17 @@ extension SecureConversationsWelcomeViewModelTests {
 
 // Is attachment available
 extension SecureConversationsWelcomeViewModelTests {
-    func testIsAttachmentAvailable() throws {
+    func testIsAttachmentAvailable() async throws {
         var environment: WelcomeViewModel.Environment = .mock()
         let site: CoreSdkClient.Site = try .mock(
             allowedFileContentTypes: ["image/jpeg"],
             allowedFileSenders: .init(operator: true, visitor: true)
         )
 
-        environment.fetchSiteConfigurations = { completion in
-            completion(.success(site))
-        }
+        environment.fetchSiteConfigurations = { site }
 
         viewModel = .init(environment: environment, availability: .mock)
-
+        await viewModel.start()
         XCTAssertTrue(viewModel.isAttachmentsAvailable)
     }
 
@@ -92,19 +90,17 @@ extension SecureConversationsWelcomeViewModelTests {
             allowedFileSenders: .init(operator: true, visitor: false)
         )
 
-        environment.fetchSiteConfigurations = { completion in
-            completion(.success(site))
-        }
+        environment.fetchSiteConfigurations = { site }
 
         viewModel = .init(environment: environment, availability: .mock)
 
         XCTAssertFalse(viewModel.isAttachmentsAvailable)
     }
 
-    func testIsAttachmentAvailableFailed() {
+    func testIsAttachmentAvailableFailed() async {
         var environment: WelcomeViewModel.Environment = .mock()
-        environment.fetchSiteConfigurations = { completion in
-            completion(.failure(CoreSdkClient.GliaCoreError(reason: "")))
+        environment.fetchSiteConfigurations = {
+            throw CoreSdkClient.GliaCoreError(reason: "")
         }
 
         var isCalled = false
@@ -120,6 +116,7 @@ extension SecureConversationsWelcomeViewModelTests {
         }
 
         viewModel = .init(environment: environment, availability: .mock, delegate: delegate)
+        await viewModel.start()
 
         XCTAssertTrue(isCalled)
         let isValidInput: Bool
@@ -255,18 +252,17 @@ extension SecureConversationsWelcomeViewModelTests {
         }
     }
 
-    func testFilePickerButtonIsAvailable() throws {
+    func testFilePickerButtonIsAvailable() async throws {
         var environment: WelcomeViewModel.Environment = .mock()
         let site: CoreSdkClient.Site = try .mock(
             allowedFileContentTypes: ["image/jpeg"],
             allowedFileSenders: .init(operator: true, visitor: true)
         )
 
-        environment.fetchSiteConfigurations = { completion in
-            completion(.success(site))
-        }
+        environment.fetchSiteConfigurations = { site }
 
         viewModel = .init(environment: environment, availability: .mock)
+        await viewModel.start()
         viewModel.availabilityStatus = .available(.queues(queueIds: []))
 
         if case .welcome(let props) = viewModel.props() {

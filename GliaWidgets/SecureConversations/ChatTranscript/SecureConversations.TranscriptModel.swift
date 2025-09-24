@@ -258,7 +258,7 @@ extension SecureConversations {
         @MainActor
         func start(isTranscriptFetchNeeded: Bool) async {
             environment.startSocketObservation()
-            fetchSiteConfigurations()
+            await fetchSiteConfigurations()
 
             guard isTranscriptFetchNeeded else {
                 return
@@ -569,17 +569,14 @@ extension SecureConversations.TranscriptModel {
 
 // MARK: Site Confgurations
 extension SecureConversations.TranscriptModel {
-    func fetchSiteConfigurations() {
-        environment.fetchSiteConfigurations { [weak self] result in
-            guard let self = self else { return }
-
-            switch result {
-            case .success(let site):
-                self.siteConfiguration = site
-                self.action?(.setAttachmentButtonEnabling(self.mediaPickerButtonEnabling))
-            case let .failure(error):
-                self.engagementAction?(.showAlert(.error(error: error)))
-            }
+    @MainActor
+    func fetchSiteConfigurations() async {
+        do {
+            let site = try await environment.fetchSiteConfigurations()
+            self.siteConfiguration = site
+            self.action?(.setAttachmentButtonEnabling(self.mediaPickerButtonEnabling))
+        } catch {
+            self.engagementAction?(.showAlert(.error(error: error)))
         }
     }
 }
