@@ -24,7 +24,7 @@ extension SecureConversations.Coordinator.Environment {
         loadChatMessagesFromHistory: { true },
         fetchChatHistory: { .init(messages: []) },
         fetchOlderChatHistory: { _, _ in },
-        fetchSiteConfigurations: { completion in },
+        fetchSiteConfigurations: { try .mock() },
         chatCall: .init(with: .mock()),
         unreadMessages: .init(with: 0),
         showsCallBubble: true,

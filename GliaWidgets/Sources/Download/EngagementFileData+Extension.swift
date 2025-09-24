@@ -1,14 +1,15 @@
-import GliaCoreSDK
+import Foundation
 
 #if DEBUG
-extension EngagementFileData {
-    public convenience init(data: Data) {
+extension CoreSdkClient.EngagementFileData {
+    convenience init(data: Data) {
         self.init(data: data)
     }
 
-    public static func mock() -> EngagementFileData {
-        let sampleData = "mock file content".data(using: .utf8)!
-        return EngagementFileData(data: sampleData)
+    static func mock() -> CoreSdkClient.EngagementFileData {
+        let payload = "mock file content"
+        let json = Data(payload.utf8)
+        return .init(data: json)
     }
 }
 #endif

@@ -612,7 +612,7 @@ extension GliaTests {
         environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
         environment.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in nil }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
-        environment.coreSdk.fetchSiteConfigurations = { _ in }
+        environment.coreSdk.fetchSiteConfigurations = { try .mock() }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
