@@ -646,6 +646,8 @@ extension ChatView {
         self.callBubble = callBubble
 
         addSubview(callBubble)
+
+        environment.openTelemetry.logger.i(.bubbleShown)
     }
 
     private func moveCallBubble(_ translation: CGPoint, animated: Bool) {
