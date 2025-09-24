@@ -22,7 +22,7 @@ extension ChatViewModel.Environment {
                 )
         },
         loadChatMessagesFromHistory: { true },
-        fetchSiteConfigurations: { _ in },
+        fetchSiteConfigurations: { try .mock() },
         getCurrentEngagement: { return nil },
         getNonTransferredSecureConversationEngagement: { return nil },
         timerProviding: .mock,

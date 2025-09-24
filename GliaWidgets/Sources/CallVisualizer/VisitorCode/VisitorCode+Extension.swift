@@ -1,8 +1,8 @@
-import GliaCoreSDK
+import Foundation
 
 #if DEBUG
-extension VisitorCode {
-    public init(code: String, expiresAt: Date) throws {
+extension CoreSdkClient.VisitorCode {
+    init(code: String, expiresAt: Date) throws {
         let payload = """
         {
             "code": "\(code)",
@@ -13,13 +13,13 @@ extension VisitorCode {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
 
-        self = try decoder.decode(VisitorCode.self, from: json)
+        self = try decoder.decode(CoreSdkClient.VisitorCode.self, from: json)
     }
 }
 
-extension VisitorCode {
-    static func mock() throws -> VisitorCode {
-        try VisitorCode(
+extension CoreSdkClient.VisitorCode {
+    static func mock() throws -> CoreSdkClient.VisitorCode {
+        try .init(
             code: "123456",
             expiresAt: Date().addingTimeInterval(3600)
         )

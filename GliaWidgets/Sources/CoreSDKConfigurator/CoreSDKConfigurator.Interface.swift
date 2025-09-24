@@ -10,7 +10,7 @@ extension CoreSDKConfigurator {
         .init(
             configureWithInteractor: coreSdk.configureWithInteractor,
             configureWithConfiguration: { configuration, completion in
-                let sdkConfiguration = try CoreSdkClient.Salemove.Configuration(
+                let sdkConfiguration = try CoreSdkClient.Configuration(
                     siteId: configuration.site,
                     region: configuration.environment.region,
                     authorizingMethod: configuration.authorizationMethod.coreAuthorizationMethod,
