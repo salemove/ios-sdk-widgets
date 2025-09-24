@@ -24,7 +24,7 @@ extension CoreSdkClient {
         uploadFileToEngagement: { _, _, _ in },
         fetchFile: { _, _ in .mock() },
         getCurrentEngagement: { return nil },
-        fetchSiteConfigurations: { _ in },
+        fetchSiteConfigurations: { try .mock() },
         submitSurveyAnswer: { _, _, _ in },
         authentication: { _ in .mock },
         fetchChatHistory: { [] },
@@ -112,14 +112,14 @@ extension CoreSdkClient.EngagementFile {
     }
 }
 
-extension CoreSdkClient.Salemove.Configuration {
+extension CoreSdkClient.Configuration {
     static func mock(
         siteId: String = "mocked-id",
-        region: CoreSdkClient.Salemove.Region = .us,
-        authMethod: CoreSdkClient.Salemove.AuthorizationMethod = .mock,
+        region: CoreSdkClient.Region = .us,
+        authMethod: CoreSdkClient.AuthorizationMethod = .mock,
         suppressPushNotificationsPermissionRequestDuringAuthentication: Bool = false
     ) throws -> Self {
-        try CoreSdkClient.Salemove.Configuration(
+        try CoreSdkClient.Configuration(
             siteId: siteId,
             region: region,
             authorizingMethod: authMethod,
@@ -128,7 +128,7 @@ extension CoreSdkClient.Salemove.Configuration {
     }
 }
 
-extension CoreSdkClient.Salemove.AuthorizationMethod {
+extension CoreSdkClient.AuthorizationMethod {
     static let mock = Self.siteApiKey(id: "mockSiteApiKeyId", secret: "mockSiteApiKeySecret")
 }
 

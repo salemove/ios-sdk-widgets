@@ -56,8 +56,6 @@ extension SecureConversations {
                     self?.reportChange()
                 }
             }
-
-            loadAttachmentAvailability()
             environment.startSocketObservation()
             isViewActive.addObserver(self) { [weak self] isViewActive, _ in
                 if isViewActive {
@@ -66,6 +64,11 @@ extension SecureConversations {
                     self?.environment.openTelemetry.logger.i(.scWelcomeScreenClosed)
                 }
             }
+        }
+
+        func start() async {
+            await checkSecureConversationsAvailability()
+            await loadAttachmentAvailability()
         }
 
         @MainActor
@@ -135,7 +138,7 @@ private extension SecureConversations.WelcomeViewModel {
         )
         sendMessageRequestState = .waiting
         do {
-            let message = try await environment.secureConversations.sendMessagePayload(
+            _ = try await environment.secureConversations.sendMessagePayload(
                 payload,
                 queueIds
             )
@@ -144,14 +147,14 @@ private extension SecureConversations.WelcomeViewModel {
             delegate?(.showAlert(.error(error: error)))
         }
     }
-    func loadAttachmentAvailability() {
-        environment.fetchSiteConfigurations { [weak self] result in
-            switch result {
-            case let .success(site):
-                self?.isAttachmentsAvailable = site.allowedFileSenders.visitor
-            case let .failure(error):
-                self?.delegate?(.showAlert(.error(error: error)))
-            }
+
+    @MainActor
+    func loadAttachmentAvailability() async {
+        do {
+            let site = try await environment.fetchSiteConfigurations()
+            isAttachmentsAvailable = site.allowedFileSenders.visitor
+        } catch {
+            delegate?(.showAlert(.error(error: error)))
         }
     }
 }

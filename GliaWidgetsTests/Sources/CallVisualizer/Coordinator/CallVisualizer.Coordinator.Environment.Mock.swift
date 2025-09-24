@@ -1,7 +1,6 @@
 import Foundation
 @_spi(GliaWidgets) import GliaCoreSDK
 @testable import GliaWidgets
-@_spi(GliaWidgets) import GliaCoreSDK
 
 extension CallVisualizer.Coordinator.Environment {
     static let mock: Self = .init(
@@ -26,7 +25,7 @@ extension CallVisualizer.Coordinator.Environment {
         proximityManager: .mock,
         log: .mock,
         interactorPublisher: .mock(.mock()),
-        fetchSiteConfigurations: { completion in },
+        fetchSiteConfigurations: { try .mock() },
         snackBar: .mock,
         cameraDeviceManager: { .mock },
         alertManager: .mock()

@@ -14,7 +14,7 @@ public enum Environment {
     /// Custom environment. For development use.
     case custom(URL)
 
-    var region: CoreSdkClient.Salemove.Region {
+    var region: CoreSdkClient.Region {
         switch self {
         case .usa:
             return .us
