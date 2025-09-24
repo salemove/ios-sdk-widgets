@@ -108,7 +108,7 @@ extension SecureConversations.TranscriptModel.Environment {
         createFileUploadListModel: @escaping SecureConversations.FileUploadListViewModel.Create = { _ in .mock() },
         uuid: @escaping () -> UUID = { .mock },
         fileUploadListStyle: FileUploadListStyle = .mock,
-        fetchSiteConfigurations: @escaping CoreSdkClient.FetchSiteConfigurations = { _ in },
+        fetchSiteConfigurations: @escaping CoreSdkClient.FetchSiteConfigurations = { try .mock() },
         messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler = CoreSdkClient.ReactiveSwift.TestScheduler(),
         interactor: Interactor = .mock(),
         startSocketObservation: @escaping CoreSdkClient.StartSocketObservation = {},
