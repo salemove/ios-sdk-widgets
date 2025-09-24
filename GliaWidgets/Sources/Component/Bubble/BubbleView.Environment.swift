@@ -1,4 +1,5 @@
 import Foundation
+import GliaCoreSDK
 
 extension BubbleView {
     struct Environment {
@@ -6,6 +7,7 @@ extension BubbleView {
         var uuid: () -> UUID
         var gcd: GCD
         var imageViewCache: ImageView.Cache
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 

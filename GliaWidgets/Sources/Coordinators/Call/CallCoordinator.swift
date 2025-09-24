@@ -94,8 +94,11 @@ private extension CallCoordinator {
             delegate?(.back)
         case let .openLink(link):
             delegate?(.openLink(link))
-        case .engaged(let url):
-            delegate?(.engaged(operatorImageUrl: url))
+        case .engaged:
+            // There is no need update operator image in the bubble via
+            // `engagementDelegate?(.engaged(operatorImageUrl: url))`
+            // because it keeps updated through ChatCoordinator.
+            break
         case .finished:
             delegate?(.finished)
         }

@@ -1,4 +1,5 @@
 import Foundation
+import GliaCoreSDK
 
 extension GliaViewController {
     struct Environment {
@@ -10,6 +11,7 @@ extension GliaViewController {
             _ animations: @escaping () -> Void,
             _ completion: @escaping (Bool) -> Void
         ) -> Void
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
 
         func withAnimation(
             animated: Bool,

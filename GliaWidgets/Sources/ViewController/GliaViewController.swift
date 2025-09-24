@@ -11,7 +11,16 @@ public enum GliaViewControllerEvent {
 
 class GliaViewController: UIViewController {
     var bubbleKind: BubbleKind = .userImage(url: nil) {
-        didSet { bubbleWindow?.bubbleKind = bubbleKind }
+        willSet {
+            environment.openTelemetry.logger.i(.bubbleStateChanged) {
+                guard let self else { return }
+                guard case .userImage = newValue else { return }
+                $0[.newState] = .string(OtelBubbleStates.operatorConnected.rawValue)
+            }
+        }
+        didSet {
+            bubbleWindow?.bubbleKind = bubbleKind
+        }
     }
 
     private var delegate: ((GliaViewControllerEvent) -> Void)?
@@ -49,6 +58,7 @@ class GliaViewController: UIViewController {
 
     func maximize(animated: Bool) {
         environment.log.prefixed(Self.self).info("Bubble: hide application-only bubble")
+        environment.openTelemetry.logger.i(.bubbleHidden)
         environment.withAnimation(
             animated: animated,
             animations: { [weak self] in
@@ -72,6 +82,8 @@ class GliaViewController: UIViewController {
         guard let bubbleView = bubbleView else {
             return
         }
+
+        environment.openTelemetry.logger.i(.bubbleShown)
         bubbleView.kind = bubbleKind
 
         let bubbleWindow = makeBubbleWindow(bubbleView: bubbleView)

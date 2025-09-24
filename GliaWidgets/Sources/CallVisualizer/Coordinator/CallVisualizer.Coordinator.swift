@@ -282,12 +282,14 @@ private extension CallVisualizer.Coordinator {
         if bubbleView.superview == nil {
             bubbleView.frame = .init(origin: .init(x: parent.frame.maxX, y: parent.frame.maxY), size: bubbleSize)
             parent.addSubview(bubbleView)
+            environment.openTelemetry.logger.i(.bubbleShown)
             updateBubblePosition()
         }
     }
 
     func removeBubbleView() {
         bubbleView.removeFromSuperview()
+        environment.openTelemetry.logger.i(.bubbleHidden)
     }
 
     func updateBubblePosition(translation: CGPoint = .zero) {
