@@ -473,7 +473,7 @@ extension ChatViewModel {
         environment.alertManager.present(
             in: .global,
             as: .mediaUpgrade(
-                operators: interactor.engagedOperator?.name ?? "",
+                operators: interactor.engagedOperator?.firstName ?? "",
                 offer: offer,
                 accepted: { [weak self] in
                     self?.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
