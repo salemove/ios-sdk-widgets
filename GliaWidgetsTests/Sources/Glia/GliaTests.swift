@@ -183,7 +183,7 @@ final class GliaTests: XCTestCase {
         sdk.interactor?.setEndedEngagement(.mock(source: .callVisualizer))
         sdk.interactor?.state = .ended(.byOperator)
 
-        /// Since interactor is created only after visitor code is requested, 
+        /// Since interactor is created only after visitor code is requested,
         /// we can be sure that if this test succeeds, interactor observer is
         /// added successfully, because observer method is called during
         /// interactor creation.
@@ -832,6 +832,78 @@ final class GliaTests: XCTestCase {
                 accessToken: nil
             ) { _ in }
 
+        XCTAssertEqual(messages, ["Show Push Notifications Intermediate Dialog"])
+    }
+
+    func test_my_awesome() throws {
+        var uuidGen = UUID.incrementing
+        var gliaEnv = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        logger.infoClosure = { _, _, _, _ in }
+        logger.prefixedClosure = { _ in logger }
+        gliaEnv.coreSdk.createLogger = { _ in logger }
+        gliaEnv.coreSdk.secureConversations.pendingStatus = { $0(.success(false)) }
+        gliaEnv.conditionalCompilation.isDebug = { true }
+        gliaEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
+        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in uuidGen().uuidString }
+        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+        let authentication = CoreSdkClient.Authentication(authenticateWithIdToken: { _, _, intermediateDialogCallback, completion in
+            intermediateDialogCallback({ _ in })
+            completion(.success(()))
+        })
+        gliaEnv.coreSdk.authentication = { _ in authentication }
+        gliaEnv.coreSdk.requestEngagedOperator = { $0([], nil) }
+        gliaEnv.gcd.mainQueue.async = { $0() }
+        gliaEnv.gcd.mainQueue.asyncAfterDeadline = { $1() }
+        gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
+        gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
+        gliaEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _ in
+            EngagementCoordinator.mock(
+                engagementLaunching: engagementLaunching,
+                environment: .engagementCoordEnvironmentWithKeyWindow
+            )
+        }
+
+        let sdk = Glia(environment: gliaEnv)
+
+        var alertManagerEnv = AlertManager.Environment.failing()
+        var log = CoreSdkClient.Logger.failing
+        log.prefixedClosure = { _ in log }
+        var messages: [String] = []
+        log.infoClosure = { message, _, _, _ in
+            messages.append("\(message)")
+        }
+        alertManagerEnv.log = log
+        alertManagerEnv.uiApplication.connectionScenes = { [] }
+        alertManagerEnv.uiApplication.applicationState = { .inactive }
+        sdk.alertManager = .failing(environment: alertManagerEnv, viewFactory: .mock())
+        sdk.alertManager.setViewControllerPresentationAnimated(false)
+
+        sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            sdk.environment.coreSdk.getCurrentEngagement = { .mock() }
+            completion(.success(()))
+        }
+
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+
+        sdk.queuesMonitor = .mock()
+
+        let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
+        try engagementLauncher.startChat()
+
+        try sdk.authentication(with: .allowedDuringEngagement)
+            .authenticate(
+                with: "IdToken",
+                accessToken: nil
+            ) { _ in }
+
+        XCTAssertEqual(try XCTUnwrap(sdk.interactor?.state), .none)
         XCTAssertEqual(messages, ["Show Push Notifications Intermediate Dialog"])
     }
 }
