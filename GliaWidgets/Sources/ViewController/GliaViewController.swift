@@ -13,7 +13,6 @@ class GliaViewController: UIViewController {
     var bubbleKind: BubbleKind = .userImage(url: nil) {
         willSet {
             environment.openTelemetry.logger.i(.bubbleStateChanged) {
-                guard let self else { return }
                 guard case .userImage = newValue else { return }
                 $0[.newState] = .string(OtelBubbleStates.operatorConnected.rawValue)
             }
