@@ -11,12 +11,14 @@ public enum GliaViewControllerEvent {
 
 class GliaViewController: UIViewController {
     var bubbleKind: BubbleKind = .userImage(url: nil) {
-        didSet {
-            environment.openTelemetry.logger.i(.bubbleStateChanged) { [weak self] in
+        willSet {
+            environment.openTelemetry.logger.i(.bubbleStateChanged) {
                 guard let self else { return }
-                guard case .userImage = bubbleKind else { return }
+                guard case .userImage = newValue else { return }
                 $0[.newState] = .string(OtelBubbleStates.operatorConnected.rawValue)
             }
+        }
+        didSet {
             bubbleWindow?.bubbleKind = bubbleKind
         }
     }
