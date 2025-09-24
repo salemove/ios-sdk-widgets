@@ -51,7 +51,10 @@ extension CoreSdkClient {
             throw NSError(domain: "fetchFile", code: -1)
         },
         getCurrentEngagement: { return nil },
-        fetchSiteConfigurations: { _ in fail("\(Self.self).fetchSiteConfigurations") },
+        fetchSiteConfigurations: {
+            fail("\(Self.self).fetchSiteConfigurations")
+            throw NSError(domain: "fetchSiteConfigurations", code: -1)
+        },
         submitSurveyAnswer: { _, _, _ in
             fail("\(Self.self).submitSurveyAnswer")
             throw NSError(domain: "submitSurveyAnswer", code: -1)

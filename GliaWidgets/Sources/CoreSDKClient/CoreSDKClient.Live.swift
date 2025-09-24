@@ -137,7 +137,18 @@ extension CoreSdkClient {
                 }
             },
             getCurrentEngagement: GliaCore.sharedInstance.getCurrentEngagement,
-            fetchSiteConfigurations: GliaCore.sharedInstance.fetchSiteConfiguration(_:),
+            fetchSiteConfigurations: {
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.fetchSiteConfiguration { result in
+                        switch result {
+                        case let .success(site):
+                            continuation.resume(returning: site)
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
+                    }
+                }
+            },
             submitSurveyAnswer: { answers, surveyId, engagementId in
                 try await withCheckedThrowingContinuation { continuation in
                     GliaCore.sharedInstance.submitSurveyAnswer(answers, surveyId: surveyId, engagementId: engagementId) { result in

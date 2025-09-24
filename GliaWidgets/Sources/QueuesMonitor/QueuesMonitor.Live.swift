@@ -1,5 +1,4 @@
 import Foundation
-import GliaCoreSDK
 import Combine
 
 final class QueuesMonitor {

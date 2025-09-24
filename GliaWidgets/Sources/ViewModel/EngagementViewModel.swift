@@ -117,29 +117,21 @@ class EngagementViewModel: CommonEngagementModel {
             disposeBag.disposeAll()
 
         case let .enqueueing(engagementKind):
-            environment.fetchSiteConfigurations { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(site):
+            Task {
+                do {
+                    let site = try await environment.fetchSiteConfigurations()
                     if site.mobileConfirmDialogEnabled == false || self.interactor.skipLiveObservationConfirmations {
-                        Task { [weak self] in
-                            guard let self else { return }
-                            await self.enqueue(
-                                engagementKind: engagementKind,
-                                replaceExisting: replaceExistingEnqueueing
-                            )
-                        }
+                        await enqueue(
+                            engagementKind: engagementKind,
+                            replaceExisting: replaceExistingEnqueueing
+                        )
                     } else {
                         self.showLiveObservationConfirmation(in: engagementKind)
                     }
-                case let .failure(error):
-                    self.engagementAction?(.showAlert(.error(
+                } catch {
+                    engagementAction?(.showAlert(.error(
                         error: error,
-                        dismissed: {
-                            Task { [weak self] in
-                                await self?.endSession()
-                            }
-                        }
+                        dismissed: endSession
                     )))
                 }
             }
