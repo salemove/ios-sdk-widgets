@@ -1,5 +1,4 @@
 import Foundation
-import GliaCoreSDK
 
 enum ChatMessageSender: Int, Codable {
     case visitor = 0
@@ -115,7 +114,7 @@ class ChatMessage: Codable {
         try container.encode(sender, forKey: .sender)
         try container.encode(content, forKey: .content)
         try container.encode(attachment, forKey: .attachment)
-        let metadata = try? metadata?.decode([String: AnyCodable].self)
+        let metadata = try? metadata?.decode([String: CoreSdkClient.AnyCodable].self)
         try container.encode(metadata, forKey: .metadata)
     }
 

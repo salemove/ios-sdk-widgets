@@ -1,5 +1,4 @@
 import Foundation
-import GliaCoreSDK
 
 /// The information for updating Visitor
 public struct VisitorInfoUpdate {
@@ -64,7 +63,7 @@ public struct VisitorInfoUpdate {
 }
 
 extension VisitorInfoUpdate {
-    func asCoreSdkVisitorInfoUpdate() -> GliaCoreSDK.VisitorInfoUpdate {
+    func asCoreSdkVisitorInfoUpdate() -> CoreSdkClient.CoreVisitorInfoUpdate {
         .init(
             name: name,
             email: email,

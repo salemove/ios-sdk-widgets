@@ -31,8 +31,9 @@ extension ChatViewModel.Environment {
                 fail("\(Self.self).loadChatMessagesFromHistory")
                 return true
             },
-            fetchSiteConfigurations: { _ in
+            fetchSiteConfigurations: {
                 fail("\(Self.self).fetchSiteConfigurations")
+                throw NSError(domain: "fetchSiteConfigurations", code: -1)
             },
             getCurrentEngagement: { nil },
             getNonTransferredSecureConversationEngagement: { nil },

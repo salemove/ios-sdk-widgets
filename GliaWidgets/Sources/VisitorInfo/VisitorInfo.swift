@@ -1,5 +1,4 @@
 import Foundation
-import GliaCoreSDK
 
 public struct VisitorInfo: Equatable, Decodable {
     /// Visitor's name
@@ -33,7 +32,7 @@ public struct VisitorInfo: Equatable, Decodable {
     public let externalId: String?
 }
 
-extension GliaCore.VisitorInfo {
+extension CoreSdkClient.CoreVisitorInfo {
     func asWidgetSdkVisitorInfo() -> VisitorInfo {
         .init(
             name: name,

@@ -44,9 +44,7 @@ class ChatViewControllerTests: XCTestCase {
             mobileConfirmDialogEnabled: true,
             mobileObservationIndicationEnabled: true
         )
-        viewModelEnv.fetchSiteConfigurations = { completion in
-            completion(.success(site))
-        }
+        viewModelEnv.fetchSiteConfigurations = { site }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
@@ -78,7 +76,8 @@ class ChatViewControllerTests: XCTestCase {
         XCTAssertEqual(calls, [.presentCriticalErrorAlert])
     }
 
-    func testLiveObservationIndicatorIsPresented() throws {
+    @MainActor
+    func testLiveObservationIndicatorIsPresented() async throws {
         enum Call: Equatable {
             case presentSnackBar, prefixedLog(String)
         }
@@ -90,9 +89,7 @@ class ChatViewControllerTests: XCTestCase {
             mobileConfirmDialogEnabled: true,
             mobileObservationIndicationEnabled: true
         )
-        viewModelEnv.fetchSiteConfigurations = { completion in
-            completion(.success(site))
-        }
+        viewModelEnv.fetchSiteConfigurations = { site }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
@@ -124,12 +121,19 @@ class ChatViewControllerTests: XCTestCase {
         )
         viewController.loadView()
         interactor.state = .engaged(nil)
+
+        let expectedCalls: [Call] = [
+            .prefixedLog("ChatViewModel"),
+            .prefixedLog("ChatViewModel"),
+            .presentSnackBar
+        ]
+
+        // Will be removed when async state observing is implemented
+        await waitUntil {
+            calls == expectedCalls
+        }
         XCTAssertEqual(
-            calls, [
-                .prefixedLog("ChatViewModel"),
-                .presentSnackBar,
-                .prefixedLog("ChatViewModel")
-            ]
+            calls, expectedCalls
         )
     }
 
@@ -145,9 +149,7 @@ class ChatViewControllerTests: XCTestCase {
             mobileConfirmDialogEnabled: true,
             mobileObservationIndicationEnabled: false
         )
-        viewModelEnv.fetchSiteConfigurations = { completion in
-            completion(.success(site))
-        }
+        viewModelEnv.fetchSiteConfigurations = { site }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
@@ -193,9 +195,7 @@ class ChatViewControllerTests: XCTestCase {
             mobileConfirmDialogEnabled: true,
             mobileObservationIndicationEnabled: true
         )
-        viewModelEnv.fetchSiteConfigurations = { completion in
-            completion(.success(site))
-        }
+        viewModelEnv.fetchSiteConfigurations = { site }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
@@ -243,9 +243,7 @@ class ChatViewControllerTests: XCTestCase {
             mobileConfirmDialogEnabled: true,
             mobileObservationIndicationEnabled: true
         )
-        viewModelEnv.fetchSiteConfigurations = { completion in
-            completion(.success(site))
-        }
+        viewModelEnv.fetchSiteConfigurations = { site }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }

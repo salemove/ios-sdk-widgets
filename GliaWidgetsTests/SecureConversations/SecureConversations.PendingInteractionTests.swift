@@ -2,7 +2,6 @@
 @_spi(GliaWidgets) import GliaCoreSDK
 import Combine
 import XCTest
-@_spi(GliaWidgets) import GliaCoreSDK
 
 final class SecureConversationsPendingInteractionTests: XCTestCase {
     func test_hasPendingInteractionGetChanged() throws {

@@ -43,8 +43,9 @@ extension SecureConversations.TranscriptModel.Environment {
             return .mock
         },
         fileUploadListStyle: .mock,
-        fetchSiteConfigurations: { _ in
+        fetchSiteConfigurations: {
             fail("\(Self.self).fetchSiteConfigurations")
+            throw NSError(domain: "fetchSiteConfigurations", code: -1)
         },
         messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.TestScheduler(startDate: .mock),
         interactor: .mock(),

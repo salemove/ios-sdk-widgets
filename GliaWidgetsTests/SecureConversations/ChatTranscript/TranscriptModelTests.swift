@@ -88,9 +88,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createEntryWidget = { _ in .mock() }
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
         let site = try CoreSdkClient.Site.mock(allowedFileSenders: .mock(visitor: true))
-        modelEnv.fetchSiteConfigurations = { callback in
-            callback(.success(site))
-        }
+        modelEnv.fetchSiteConfigurations = { site }
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             getQueues: modelEnv.getQueues,
@@ -140,8 +138,9 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             return []
         }
 
-        modelEnv.fetchSiteConfigurations = { _ in
+        modelEnv.fetchSiteConfigurations = {
             calls.append(.loadSiteConfiguration)
+            return try .mock()
         }
 
         modelEnv.secureConversations.getUnreadMessageCount = {
@@ -183,7 +182,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.getQueues = { [] }
         modelEnv.fetchChatHistory = { [] }
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
-        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.fetchSiteConfigurations = { try .mock() }
         modelEnv.secureConversations.getUnreadMessageCount = { 0 }
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
@@ -234,7 +233,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { [] }
         modelEnv.fetchChatHistory = { [] }
-        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.fetchSiteConfigurations = { try .mock() }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
         let availabilityEnv = SecureConversations.Availability.Environment(
@@ -278,7 +277,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { [] }
         modelEnv.fetchChatHistory = { [] }
-        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.fetchSiteConfigurations = { try .mock() }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
         let availabilityEnv = SecureConversations.Availability.Environment(
@@ -318,7 +317,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { [] }
         modelEnv.fetchChatHistory = { [] }
-        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.fetchSiteConfigurations = { try .mock() }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
         let availabilityEnv = SecureConversations.Availability.Environment(
@@ -355,7 +354,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { [] }
         modelEnv.fetchChatHistory = { [] }
-        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.fetchSiteConfigurations = { try .mock() }
         modelEnv.createSendMessagePayload = {
             .mock(messageIdSuffix: "mock", content: $0, attachment: $1)
         }
@@ -400,7 +399,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { [] }
         modelEnv.fetchChatHistory = { [] }
-        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.fetchSiteConfigurations = { try .mock() }
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
@@ -449,7 +448,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.getQueues = { [] }
         modelEnv.maximumUploads = { 2 }
         modelEnv.fetchChatHistory = { [.mock(sender: .operator)] }
-        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.fetchSiteConfigurations = { try .mock() }
         modelEnv.secureConversations.getUnreadMessageCount = { 1 }
         modelEnv.startSocketObservation = {}
         modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, _ in }
@@ -504,7 +503,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { [] }
-        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.fetchSiteConfigurations = { try .mock() }
         modelEnv.fetchChatHistory = { [] }
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
         modelEnv.maximumUploads = { 2 }
@@ -574,7 +573,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { [] }
-        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.fetchSiteConfigurations = { try .mock() }
         modelEnv.fetchChatHistory = { [] }
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
         modelEnv.maximumUploads = { 2 }
@@ -820,7 +819,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.fetchChatHistory = { [.mock(), .mock(), .mock()] }
         modelEnv.secureConversations.getUnreadMessageCount = { 5 }
-        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.fetchSiteConfigurations = { try .mock() }
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
@@ -881,7 +880,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.fetchChatHistory = { [.mock(), .mock(), .mock()] }
         modelEnv.secureConversations.getUnreadMessageCount = { 5 }
-        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.fetchSiteConfigurations = { try .mock() }
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
@@ -932,7 +931,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.fetchChatHistory = { [.mock(), .mock(), .mock()] }
         modelEnv.secureConversations.getUnreadMessageCount = { 5 }
-        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.fetchSiteConfigurations = { try .mock() }
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
@@ -1001,7 +1000,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { [] }
-        modelEnv.fetchSiteConfigurations = { _ in }
+        modelEnv.fetchSiteConfigurations = { try .mock() }
         modelEnv.secureConversations.getUnreadMessageCount = { 1 }
         modelEnv.maximumUploads = { 2 }
         modelEnv.startSocketObservation = {}

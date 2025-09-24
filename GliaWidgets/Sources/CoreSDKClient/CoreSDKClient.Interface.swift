@@ -9,64 +9,60 @@ struct CoreSdkClient {
     var createAppDelegate: () -> AppDelegate
     var clearSession: () -> Void
     var localeProvider: LocaleProvider
-
-    typealias ConfigureWithConfiguration = (
-        _ sdkConfiguration: Self.Salemove.Configuration,
-        _ completion: @escaping Self.ConfigureCompletion
-    ) -> Void
-
     var configureWithConfiguration: ConfigureWithConfiguration
     var getVisitorInfo: () async throws -> VisitorInfo
     var updateVisitorInfo: (VisitorInfoUpdate) async throws -> Bool
-
-    typealias ConfigureWithInteractor = (_ interactor: Self.Interactable) -> Void
-
     var configureWithInteractor: ConfigureWithInteractor
-
-    typealias GetQueues = () async throws -> [Queue]
-
     var getQueues: GetQueues
-
-    typealias QueueForEngagement = (
-        _ options: GliaCoreSDK.QueueForEngagementOptions,
-        _ replaceExisting: Bool
-    ) async throws -> GliaCoreSDK.QueueTicket
-
     var queueForEngagement: QueueForEngagement
-
     var sendMessagePreview: (_ message: String) async throws -> Bool
     var sendMessageWithMessagePayload: (_ payload: SendMessagePayload) async throws -> Message
-
-    typealias CancelQueueTicket = (_ queueTicket: Self.QueueTicket) async throws -> Bool
-
     var cancelQueueTicket: CancelQueueTicket
-
     var endEngagement: () async throws -> Bool
     var requestEngagedOperator: () async throws -> [GliaCoreSDK.Operator]?
+    var uploadFileToEngagement: UploadFileToEngagement
+    var fetchFile: FetchFile
+    var getCurrentEngagement: GetCurrentEngagement
+    var fetchSiteConfigurations: FetchSiteConfigurations
+    var submitSurveyAnswer: SubmitSurveyAnswer
+    var authentication: CreateAuthentication
+    var fetchChatHistory: FetchChatHistory
+    var requestVisitorCode: RequestVisitorCode
+    var startSocketObservation: StartSocketObservation
+    var stopSocketObservation: StopSocketObservation
+    var createSendMessagePayload: CreateSendMessagePayload
+    var createLogger: CreateLogger
+    var getCameraDeviceManageable: GetCameraDeviceManageable
+    var subscribeForQueuesUpdates: SubscribeForQueuesUpdates
+    var unsubscribeFromUpdates: UnsubscribeFromUpdates
+    var configureLogLevel: (LogLevel) -> Void
+}
 
-    typealias UploadFileToEngagement = (
-        _ file: Self.EngagementFile,
-        _ progress: Self.EngagementFileProgressBlock?,
-        _ completion: @escaping Self.EngagementFileCompletionBlock
+extension CoreSdkClient {
+    typealias ConfigureWithConfiguration = (
+        _ sdkConfiguration: GliaCore.Configuration,
+        _ completion: @escaping ConfigureCompletion
     ) -> Void
 
-    var uploadFileToEngagement: UploadFileToEngagement
-
+    typealias ConfigureWithInteractor = (_ interactor: Interactable) -> Void
+    typealias GetQueues = () async throws -> [Queue]
+    typealias QueueForEngagement = (
+        _ options: QueueForEngagementOptions,
+        _ replaceExisting: Bool
+    ) async throws -> QueueTicket
+    typealias CancelQueueTicket = (_ queueTicket: QueueTicket) async throws -> Bool
+    typealias UploadFileToEngagement = (
+        _ file: EngagementFile,
+        _ progress: EngagementFileProgressBlock?,
+        _ completion: @escaping EngagementFileCompletionBlock
+    ) -> Void
     typealias FetchFile = (
-        _ engagementFile: Self.EngagementFile,
-        _ progress: Self.EngagementFileProgressBlock?
-    ) async throws -> GliaCoreSDK.EngagementFileData
+        _ engagementFile: EngagementFile,
+        _ progress: EngagementFileProgressBlock?
+    ) async throws -> EngagementFileData
 
-    var fetchFile: FetchFile
-
-    typealias GetCurrentEngagement = () -> Self.Engagement?
-
-    var getCurrentEngagement: GetCurrentEngagement
-
-    typealias FetchSiteConfigurations = (_ completion: @escaping (Result<Self.Site, Error>) -> Void) -> Void
-
-    var fetchSiteConfigurations: FetchSiteConfigurations
-
+    typealias GetCurrentEngagement = () -> Engagement?
+    typealias FetchSiteConfigurations = () async throws -> Site
     typealias SubmitSurveyAnswer = (
         (
             _ answers: [GliaCoreSDK.Survey.Answer],
@@ -74,56 +70,22 @@ struct CoreSdkClient {
             _ engagementId: String
         ) async throws -> Void
     )
-
-    var submitSurveyAnswer: SubmitSurveyAnswer
-
     typealias CreateAuthentication = (_ behaviour: AuthenticationBehavior) throws -> Authentication
-
-    var authentication: CreateAuthentication
-
     typealias FetchChatHistory = () async throws -> [ChatMessage]
-
-    var fetchChatHistory: FetchChatHistory
-
     typealias RequestVisitorCode = () async throws -> VisitorCode
-
-    var requestVisitorCode: RequestVisitorCode
-
     typealias StartSocketObservation = () -> Void
-
-    var startSocketObservation: StartSocketObservation
-
     typealias StopSocketObservation = () -> Void
-
-    var stopSocketObservation: StopSocketObservation
-
     typealias CreateSendMessagePayload = (_ content: String, _ attachment: Attachment?) -> SendMessagePayload
-
-    var createSendMessagePayload: CreateSendMessagePayload
-
     typealias CreateLogger = ([String: String]) throws -> Logger
-
-    var createLogger: CreateLogger
-
     typealias GetCameraDeviceManageable = () throws -> CameraDeviceManageableClient
-
-    var getCameraDeviceManageable: GetCameraDeviceManageable
-
     typealias SubscribeForQueuesUpdates = (
         _ queueIds: [String],
         _ completion: @escaping (Result<Queue, Error>) -> Void
     ) -> String?
-
-    var subscribeForQueuesUpdates: SubscribeForQueuesUpdates
-
     typealias UnsubscribeFromUpdates = (
         _ queueCallbackId: String,
         _ onError: @escaping (GliaCoreSDK.GliaCoreError) -> Void
     ) -> Void
-
-    var unsubscribeFromUpdates: UnsubscribeFromUpdates
-
-    var configureLogLevel: (LogLevel) -> Void
 }
 
 extension CoreSdkClient {
@@ -248,7 +210,6 @@ extension CoreSdkClient {
 }
 
 extension CoreSdkClient {
-    typealias AnswerBlock = GliaCoreSDK.AnswerBlock
     typealias AnswerWithSuccessBlock = GliaCoreSDK.AnswerWithSuccessBlock
     typealias Attachment = GliaCoreSDK.Attachment
     typealias AttachmentType = GliaCoreSDK.AttachmentType
@@ -258,7 +219,6 @@ extension CoreSdkClient {
     typealias EngagementFile = GliaCoreSDK.EngagementFile
     typealias EngagementFileCompletionBlock = GliaCoreSDK.EngagementFileCompletionBlock
     typealias EngagementFileData = GliaCoreSDK.EngagementFileData
-    typealias EngagementFileFetchCompletionBlock = GliaCoreSDK.EngagementFileFetchCompletionBlock
     typealias EngagementFileInformation = GliaCoreSDK.EngagementFileInformation
     typealias EngagementFileProgressBlock = GliaCoreSDK.EngagementFileProgressBlock
     typealias EngagementOptions = GliaCoreSDK.EngagementOptions
@@ -268,41 +228,33 @@ extension CoreSdkClient {
     typealias GeneralError = GliaCoreSDK.GeneralError
     typealias GliaCoreError = GliaCoreSDK.GliaCoreError
     typealias ConfigurationProcessError = GliaCoreSDK.GliaCore.ConfigurationProcessError
+    typealias Configuration = GliaCore.Configuration
     typealias Interactable = GliaCoreSDK.Interactable
     typealias MediaDirection = GliaCoreSDK.MediaDirection
-    typealias MediaError = GliaCoreSDK.MediaError
     typealias MediaType = GliaCoreSDK.MediaType
     typealias MediaUgradeOfferBlock = GliaCoreSDK.MediaUgradeOfferBlock
     typealias MediaUpgradeOffer = GliaCoreSDK.MediaUpgradeOffer
     typealias MediaUpdateBlock = GliaCoreSDK.MediaUpdateBlock
     typealias Message = GliaCoreSDK.Message
     typealias MessageSender = GliaCoreSDK.MessageSender
-    typealias MessageBlock = GliaCoreSDK.MessageBlock
     typealias MessagesUpdateBlock = GliaCoreSDK.MessagesUpdateBlock
     typealias Operator = GliaCoreSDK.Operator
     typealias OperatorPicture = GliaCoreSDK.OperatorPicture
-    typealias OperatorBlock = GliaCoreSDK.OperatorBlock
     typealias OperatorTypingStatus = GliaCoreSDK.OperatorTypingStatus
     typealias OperatorTypingStatusUpdate = GliaCoreSDK.OperatorTypingStatusUpdate
+    typealias CoreQueue = GliaCoreSDK.Queue
     typealias QueueError = GliaCoreSDK.QueueError
-    typealias QueueState = GliaCoreSDK.QueueState
-    typealias QueueStatus = GliaCoreSDK.QueueStatus
-    typealias QueueRequestBlock = GliaCoreSDK.QueueRequestBlock
     typealias QueueTicket = GliaCoreSDK.QueueTicket
-    typealias QueueTicketBlock = GliaCoreSDK.QueueTicketBlock
     typealias RequestOfferBlock = GliaCoreSDK.RequestOfferBlock
-    typealias RequestAnswerBlock = GliaCoreSDK.RequestAnswerBlock
-    typealias Salemove = GliaCoreSDK.GliaCore
+//    typealias GliaCore = GliaCoreSDK.GliaCore
     typealias SalemoveError = GliaCoreSDK.GliaCoreError
     typealias SingleChoiceOption = GliaCoreSDK.SingleChoiceOption
     typealias StreamableOnHoldHandler = GliaCoreSDK.StreamableOnHoldHandler
     typealias StreamView = GliaCoreSDK.StreamView
     typealias SuccessBlock = GliaCoreSDK.SuccessBlock
-    typealias VideoScalingOptions = GliaCoreSDK.VideoScalingOptions
     typealias VideoStreamable = GliaCoreSDK.VideoStreamable
     typealias VideoStreamAddedBlock = GliaCoreSDK.VideoStreamAddedBlock
     typealias VisitorContext = GliaCoreSDK.VisitorContext
-    typealias ContextType = GliaCoreSDK.VisitorContext.ContextType
     typealias Engagement = GliaCoreSDK.Engagement
     typealias Site = GliaCoreSDK.Site
     typealias Survey = GliaCoreSDK.Survey
@@ -310,21 +262,24 @@ extension CoreSdkClient {
     typealias Authentication = GliaCoreSDK.GliaCore.Authentication
     typealias AuthenticationBehavior = GliaCoreSDK.GliaCore.Authentication.Behavior
     typealias EngagementEndingReason = GliaCoreSDK.EngagementEndingReason
-    typealias VisitorCodeBlock = (Result<VisitorCode, Swift.Error>)
-    typealias EngagementSource = GliaCoreSDK.EngagementSource
     typealias Cancellable = GliaCore.Cancellable
     typealias ReactiveSwift = GliaCoreDependency.ReactiveSwift
     typealias SendMessagePayload = GliaCoreSDK.SendMessagePayload
     typealias ConfigureCompletion = GliaCoreSDK.GliaCore.ConfigureCompletion
     typealias Logging = GliaCoreSDK.Logging
-    typealias LogConfigurable = GliaCoreSDK.LogConfigurable
-    typealias LoggingError = GliaCoreSDK.LoggingError
     typealias LogLevel = GliaCoreSDK.LogLevel
     typealias Request = GliaCoreSDK.Request
     typealias EngagementChangedBlock = GliaCoreSDK.EngagementChangedBlock
     typealias AnyCombineScheduler = GliaCoreSDK.AnyCombineScheduler
     typealias AnyScheduler = GliaCoreSDK.AnyScheduler
     typealias QueueForEngagementOptions = GliaCoreSDK.QueueForEngagementOptions
+    typealias Region = GliaCore.Region
+    typealias AuthorizationMethod = GliaCore.AuthorizationMethod
+    typealias VisitorCode = GliaCoreSDK.VisitorCode
+    typealias Tagged = GliaCoreSDK.Tagged
+    typealias CoreVisitorInfo = GliaCore.VisitorInfo
+    typealias CoreVisitorInfoUpdate = GliaCoreSDK.VisitorInfoUpdate
+    typealias AnyCodable = GliaCoreSDK.AnyCodable
 }
 
 extension CoreSdkClient.AnyCombineScheduler {

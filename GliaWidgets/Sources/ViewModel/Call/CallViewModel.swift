@@ -122,7 +122,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
             showConnecting()
             let operatorName = interactor.engagedOperator?.firstName ?? Localization.Engagement.defaultOperator
             action?(.setOperatorName(operatorName))
-            showSnackBarIfNeeded()
+            Task {
+                await showSnackBarIfNeeded()
+            }
         case .ended:
             call.end()
         default:
@@ -227,16 +229,14 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    func showSnackBarIfNeeded() {
-        environment.fetchSiteConfigurations { [weak self] result in
-            switch result {
-            case let .success(site):
-                guard site.mobileObservationEnabled == true else { return }
-                guard site.mobileObservationIndicationEnabled == true else { return }
-                self?.action?(.showSnackBarView)
-            default: return
-            }
-        }
+    @MainActor
+    func showSnackBarIfNeeded() async {
+        do {
+            let site = try await environment.fetchSiteConfigurations()
+            guard site.mobileObservationEnabled == true else { return }
+            guard site.mobileObservationIndicationEnabled == true else { return }
+            action?(.showSnackBarView)
+        } catch {}
     }
 
     override func interactorEvent(_ event: InteractorEvent) {

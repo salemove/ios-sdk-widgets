@@ -18,7 +18,7 @@ extension SecureConversations.WelcomeViewModel.Environment {
         fileUploader: FileUploader = .mock(),
         uiApplication: UIKitBased.UIApplication = .mock,
         createFileUploadListModel: @escaping SecureConversations.FileUploadListViewModel.Create = { _ in .mock() },
-        fetchSiteConfigurations: @escaping CoreSdkClient.FetchSiteConfigurations = { _ in },
+        fetchSiteConfigurations: @escaping CoreSdkClient.FetchSiteConfigurations = { try .mock() },
         startSocketObservation: @escaping CoreSdkClient.StartSocketObservation = {},
         stopSocketObservation: @escaping CoreSdkClient.StopSocketObservation = {},
         getCurrentEngagement: @escaping CoreSdkClient.GetCurrentEngagement = { .mock() },
