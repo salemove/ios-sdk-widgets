@@ -203,7 +203,9 @@ class ChatViewModel: EngagementViewModel {
             action?(.scrollToBottom(animated: false))
             action?(.setMessageEntryEnabled(true))
 
-            fetchSiteConfigurations()
+            Task {
+                await fetchSiteConfigurations()
+            }
 
             pendingMessages.forEach { [weak self] outgoingMessage in
                 guard let self else { return }
@@ -1080,20 +1082,17 @@ extension ChatViewModel {
 // MARK: Site Configurations
 
 extension ChatViewModel {
-    func fetchSiteConfigurations() {
-        environment.fetchSiteConfigurations { [weak self] result in
-            guard let self = self else { return }
-
-            switch result {
-            case .success(let site):
-                self.siteConfiguration = site
-                self.action?(
-                    .setAttachmentButtonEnabling(self.mediaPickerButtonEnabling)
-                )
-                self.showSnackBarIfNeeded()
-            case let .failure(error):
-                self.engagementAction?(.showAlert(.error(error: error)))
-            }
+    @MainActor
+    func fetchSiteConfigurations() async {
+        do {
+            let site = try await environment.fetchSiteConfigurations()
+            siteConfiguration = site
+            action?(
+                .setAttachmentButtonEnabling(mediaPickerButtonEnabling)
+            )
+            showSnackBarIfNeeded()
+        } catch {
+            engagementAction?(.showAlert(.error(error: error)))
         }
     }
 }

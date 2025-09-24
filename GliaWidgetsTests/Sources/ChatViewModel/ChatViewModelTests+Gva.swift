@@ -127,7 +127,7 @@ extension ChatViewModelTests {
         env.createFileUploadListModel = { _ in .mock() }
         env.createSendMessagePayload = { _, _ in .mock() }
         env.createEntryWidget = { _ in .mock() }
-        env.fetchSiteConfigurations = { _ in }
+        env.fetchSiteConfigurations = { try .mock() }
         viewModel = .mock(interactor: interactorMock, environment: env)
         await viewModel.gvaOptionAction(for: option)()
         viewModel.interactor.state = .enqueueing(.chat)
