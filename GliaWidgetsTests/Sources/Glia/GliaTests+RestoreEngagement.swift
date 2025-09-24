@@ -2,8 +2,8 @@
 import XCTest
 
 extension GliaTests {
-
-    func test_skipLiveObservationConfirmations() throws {
+    @MainActor
+    func test_skipLiveObservationConfirmations() async throws {
         var sdkEnv = Glia.Environment.failing
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         let rootCoordinator = EngagementCoordinator.mock(
@@ -23,7 +23,7 @@ extension GliaTests {
         sdkEnv.coreSdk.createLogger = { _ in logger }
         sdkEnv.gcd.mainQueue.async = { $0() }
         let siteMock = try CoreSdkClient.Site.mock()
-        sdkEnv.coreSdk.fetchSiteConfigurations = { callback in callback(.success(siteMock)) }
+        sdkEnv.coreSdk.fetchSiteConfigurations = { siteMock }
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
@@ -61,7 +61,7 @@ extension GliaTests {
         }
 
         let engagement = CoreSdkClient.Engagement.mock()
-        sdk.restoreOngoingEngagement(
+        await sdk.restoreOngoingEngagement(
             configuration: .mock(),
             currentEngagement: engagement,
             interactor: interactor,
@@ -215,7 +215,7 @@ extension GliaTests {
         logger.infoClosure = { _, _, _, _ in }
         sdkEnv.coreSdk.createLogger = { _ in logger }
         let siteMock = try CoreSdkClient.Site.mock()
-        sdkEnv.coreSdk.fetchSiteConfigurations = { callback in callback(.success(siteMock)) }
+        sdkEnv.coreSdk.fetchSiteConfigurations = { siteMock }
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
@@ -262,6 +262,10 @@ extension GliaTests {
         }
         interactor.state = .engaged(.mock())
 
+        // Will be removed when async state observing is implemented
+        await waitUntil {
+            sdk.rootCoordinator?.gliaViewController != nil
+        }
         XCTAssertNotNil(sdk.rootCoordinator?.gliaViewController)
         XCTAssertEqual(calls, [.engagementStarted, .minimized, .snackBarPresent])
     }
@@ -281,7 +285,7 @@ extension GliaTests {
         logger.infoClosure = { _, _, _, _ in }
         sdkEnv.coreSdk.createLogger = { _ in logger }
         let siteMock = try CoreSdkClient.Site.mock()
-        sdkEnv.coreSdk.fetchSiteConfigurations = { callback in callback(.success(siteMock)) }
+        sdkEnv.coreSdk.fetchSiteConfigurations = { siteMock }
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
@@ -320,7 +324,8 @@ extension GliaTests {
         XCTAssertNil(sdk.rootCoordinator?.gliaViewController)
     }
 
-    func test_sdkRestoresMessagingWhenOngoingEngagementExistsAndPendingInteractionIsTrue() throws {
+    @MainActor
+    func test_sdkRestoresMessagingWhenOngoingEngagementExistsAndPendingInteractionIsTrue() async throws {
         enum Call {
             case snackBarPresent
             case engagementStarted
@@ -346,7 +351,7 @@ extension GliaTests {
         logger.infoClosure = { _, _, _, _ in }
         sdkEnv.coreSdk.createLogger = { _ in logger }
         let siteMock = try CoreSdkClient.Site.mock()
-        sdkEnv.coreSdk.fetchSiteConfigurations = { callback in callback(.success(siteMock)) }
+        sdkEnv.coreSdk.fetchSiteConfigurations = { siteMock }
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
@@ -389,6 +394,10 @@ extension GliaTests {
         }
         interactor.state = .engaged(.mock())
 
+        // Will be removed when async state observing is implemented
+        await waitUntil {
+            sdk.rootCoordinator?.gliaViewController != nil
+        }
         XCTAssertNotNil(sdk.rootCoordinator?.gliaViewController)
         XCTAssertEqual(launching, .direct(kind: .messaging(.chatTranscript)))
         XCTAssertEqual(calls, [.engagementStarted, .minimized, .snackBarPresent])

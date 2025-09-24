@@ -88,7 +88,7 @@ final class GliaTests: XCTestCase {
         }
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
-        gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
+        gliaEnv.coreSdk.fetchSiteConfigurations = { try .mock() }
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         let sdk = Glia(environment: gliaEnv)
         sdk.onEvent = {
@@ -515,6 +515,7 @@ final class GliaTests: XCTestCase {
         environment.coreSDKConfigurator.configureWithConfiguration = { _, callback in
             callback(.success(()))
         }
+        environment.snackBar.present = { _, _, _, _, _, _, _ in }
         environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
@@ -726,7 +727,7 @@ final class GliaTests: XCTestCase {
 
     @MainActor
     func test_deauthenticateErasesInteractorState() async throws {
-        var uuidGen = UUID.incrementing
+        let uuidGen = UUID.incrementing
         var gliaEnv = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
@@ -735,6 +736,7 @@ final class GliaTests: XCTestCase {
         logger.infoClosure = { _, _, _, _ in }
         logger.prefixedClosure = { _ in logger }
         gliaEnv.coreSdk.createLogger = { _ in logger }
+        gliaEnv.snackBar.present = { _, _, _, _, _, _, _ in }
         gliaEnv.conditionalCompilation.isDebug = { true }
         gliaEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in uuidGen().uuidString }
@@ -745,7 +747,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSdk.authentication = { _ in authentication }
         gliaEnv.coreSdk.requestEngagedOperator = { [] }
         gliaEnv.gcd.mainQueue.async = { $0() }
-        gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
+        gliaEnv.coreSdk.fetchSiteConfigurations = { try .mock() }
         gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
         gliaEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _, _ in
             EngagementCoordinator.mock(
@@ -753,7 +755,10 @@ final class GliaTests: XCTestCase {
                 environment: .engagementCoordEnvironmentWithKeyWindow
             )
         }
-
+        let window = UIWindow(frame: .zero)
+        window.rootViewController = .init()
+        window.makeKeyAndVisible()
+        gliaEnv.uiApplication.windows = { [window] }
         let sdk = Glia(environment: gliaEnv)
 
         sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
@@ -798,7 +803,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSdk.requestEngagedOperator = { [] }
         gliaEnv.gcd.mainQueue.async = { $0() }
         gliaEnv.gcd.mainQueue.asyncAfterDeadline = { _, _ in }
-        gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
+        gliaEnv.coreSdk.fetchSiteConfigurations = { try .mock() }
         gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
         gliaEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _, _ in
             EngagementCoordinator.mock(
