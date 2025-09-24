@@ -130,7 +130,11 @@ class CallViewModel: EngagementViewModel, ViewModel {
             action?(.queue)
         case .engaged:
             showConnecting()
-            showSnackBarIfNeeded()
+            let operatorName = interactor.engagedOperator?.firstName ?? Localization.Engagement.defaultOperator
+            action?(.setOperatorName(operatorName))
+            Task {
+                await showSnackBarIfNeeded()
+            }
         case .ended:
             call.end()
         default:
@@ -235,18 +239,15 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    func showSnackBarIfNeeded() {
-        environment.fetchSiteConfigurations { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case let .success(site):
-                guard site.mobileObservationEnabled == true else { return }
-                guard site.mobileObservationIndicationEnabled == true else { return }
-                let style = self.environment.viewFactory.theme.call.snackBar
-                self.engagementAction?(.showSnackBarView(dismissTiming: .default, style: style))
-            default: return
-            }
-        }
+    @MainActor
+    func showSnackBarIfNeeded() async {
+        do {
+            let site = try await environment.fetchSiteConfigurations()
+            guard site.mobileObservationEnabled == true else { return }
+            guard site.mobileObservationIndicationEnabled == true else { return }
+            let style = self.environment.viewFactory.theme.call.snackBar
+            self.engagementAction?(.showSnackBarView(dismissTiming: .default, style: style))
+        } catch {}
     }
 
     override func interactorEvent(_ event: InteractorEvent) {

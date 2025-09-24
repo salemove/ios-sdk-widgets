@@ -1,6 +1,6 @@
-import GliaCoreSDK
+import Foundation
 
-public typealias MessageMetadata = GliaCoreSDK.Message.Metadata
+typealias MessageMetadata = CoreSdkClient.Message.Metadata
 
 struct HtmlMetadata: Decodable {
     let html: String
