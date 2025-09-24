@@ -1,5 +1,4 @@
 import Foundation
-import GliaCoreSDK
 
 public struct Queue: Equatable {
     /// Queue identifier
@@ -41,7 +40,7 @@ public struct Queue: Equatable {
     }
 }
 
-extension GliaCoreSDK.Queue {
+extension CoreSdkClient.CoreQueue {
     func asWidgetSDKQueue() -> Queue {
         .init(
             id: self.id,

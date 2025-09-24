@@ -15,8 +15,9 @@ final class TranscriptModelMigrateTests: XCTestCase {
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { [] }
-        modelEnv.fetchSiteConfigurations = { _ in
+        modelEnv.fetchSiteConfigurations = {
             calls.append(.fetchSiteConfigurations)
+            return try .mock()
         }
         modelEnv.maximumUploads = { 2 }
 

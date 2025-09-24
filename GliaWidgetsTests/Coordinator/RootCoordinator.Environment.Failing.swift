@@ -30,8 +30,9 @@ extension EngagementCoordinator.Environment {
             return true
         },
         timerProviding: .failing,
-        fetchSiteConfigurations: { _ in
+        fetchSiteConfigurations: {
             fail("\(Self.self).fetchSiteConfigurations")
+            throw NSError(domain: "fetchSiteConfigurations", code: -1)
         },
         getCurrentEngagement: {
             fail("\(Self.self).getCurrentEngagement")
