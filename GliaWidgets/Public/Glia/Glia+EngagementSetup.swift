@@ -1,5 +1,4 @@
 import Foundation
-import GliaCoreSDK
 
 extension Glia {
     /// Set up and returns parameters needed to start or restore engagement
@@ -46,7 +45,7 @@ extension Glia {
         interactor: Interactor,
         features: Features,
         viewFactory: ViewFactory,
-        ongoingEngagementMediaStreams: Engagement.Media?
+        ongoingEngagementMediaStreams: CoreSdkClient.Engagement.Media?
     ) throws {
         /// If during enqueued state the visitor initiates another engagement, we avoid cancelling the queue
         /// ticket and adding a new one, by monitoring the new engagement kind. If the engagement kind matches
@@ -233,7 +232,9 @@ extension Glia {
             rootCoordinator = nil
             // If engagement was started/restored while visitor was
             // on SecureConversation Confirmation screen, we need to restore the bubble.
-            restoreOngoingEngagementIfPresent()
+            Task {
+               await restoreOngoingEngagementIfPresent()
+            }
         case .minimized:
             onEvent?(.minimized)
         case .maximized:
@@ -243,7 +244,7 @@ extension Glia {
 
     private func handleOngoingCallVisualizer(
         from engagementKind: EngagementKind,
-        ongoingEngagement: Engagement,
+        ongoingEngagement: CoreSdkClient.Engagement,
         snackBarStyle: Theme.SnackBarStyle
     ) {
         if engagementKind == .videoCall && ongoingEngagement.mediaStreams.video != nil {
@@ -258,7 +259,7 @@ extension Glia {
 
     private func handleOngoingEngagement(
         shoulShowSnackBar: Bool,
-        ongoingEngagement: Engagement,
+        ongoingEngagement: CoreSdkClient.Engagement,
         snackBarStyle: Theme.SnackBarStyle,
         configuration: Configuration,
         interactor: Interactor,
@@ -273,13 +274,15 @@ extension Glia {
             if let rootCoordinator {
                 rootCoordinator.maximize()
             } else {
-                self.restoreOngoingEngagement(
-                    configuration: configuration,
-                    currentEngagement: ongoingEngagement,
-                    interactor: interactor,
-                    features: features,
-                    maximize: true
-                )
+                Task {
+                    await self.restoreOngoingEngagement(
+                        configuration: configuration,
+                        currentEngagement: ongoingEngagement,
+                        interactor: interactor,
+                        features: features,
+                        maximize: true
+                    )
+                }
             }
         }
     }
@@ -317,13 +320,13 @@ extension Glia {
     struct EngagementParameters {
         let viewFactory: ViewFactory
         let interactor: Interactor
-        let ongoingEngagementMediaStreams: Engagement.Media?
+        let ongoingEngagementMediaStreams: CoreSdkClient.Engagement.Media?
         let features: Features
         let configuration: Configuration
     }
 }
 
-extension GliaCoreSDK.Engagement.Media {
+extension CoreSdkClient.Engagement.Media {
     var containsMediaDirection: Bool {
         audio != nil || video != nil
     }

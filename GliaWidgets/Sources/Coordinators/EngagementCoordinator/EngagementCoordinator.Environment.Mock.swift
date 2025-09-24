@@ -16,7 +16,7 @@ extension EngagementCoordinator.Environment {
         createFileDownload: { _, _, _ in .mock() },
         loadChatMessagesFromHistory: { false },
         timerProviding: .mock,
-        fetchSiteConfigurations: { _ in },
+        fetchSiteConfigurations: { try .mock() },
         getCurrentEngagement: { nil },
         getNonTransferredSecureConversationEngagement: { return nil },
         submitSurveyAnswer: { _, _, _ in },

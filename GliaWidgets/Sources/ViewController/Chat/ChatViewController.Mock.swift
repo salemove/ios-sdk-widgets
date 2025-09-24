@@ -1,7 +1,6 @@
 #if DEBUG
 import Foundation
 import UIKit
-import GliaCoreSDK
 
 // swiftlint:disable function_body_length
 extension ChatViewController {
@@ -344,7 +343,7 @@ extension ChatViewController {
 
         let jsonData = mockGvaPersistentButtonJson() ?? Data()
         let metadataContainer = try CoreSdkMessageMetadataContainer(jsonData: jsonData, jsonDecoder: .init())
-        let metadata = Message.Metadata(container: metadataContainer.container)
+        let metadata = CoreSdkClient.Message.Metadata(container: metadataContainer.container)
 
         let messages: [ChatMessage] = [
             .mock(
@@ -390,7 +389,7 @@ extension ChatViewController {
 
         let jsonData = mockGvaResponseTextJson() ?? Data()
         let metadataContainer = try CoreSdkMessageMetadataContainer(jsonData: jsonData, jsonDecoder: .init())
-        let metadata = Message.Metadata(container: metadataContainer.container)
+        let metadata = CoreSdkClient.Message.Metadata(container: metadataContainer.container)
 
         let messages: [ChatMessage] = [
             .mock(
@@ -436,7 +435,7 @@ extension ChatViewController {
 
         let jsonData = mockGvaGalleryCardJson() ?? Data()
         let metadataContainer = try CoreSdkMessageMetadataContainer(jsonData: jsonData, jsonDecoder: .init())
-        let metadata = Message.Metadata(container: metadataContainer.container)
+        let metadata = CoreSdkClient.Message.Metadata(container: metadataContainer.container)
 
         let messages: [ChatMessage] = [
             .mock(
@@ -704,11 +703,11 @@ extension ChatViewController {
 /// This container can be used when message metadata is needed in
 /// tests.
 struct CoreSdkMessageMetadataContainer: Decodable {
-    let container: KeyedDecodingContainer<GliaCoreSDK.Message.Metadata.CodingKeys>
+    let container: KeyedDecodingContainer<CoreSdkClient.Message.Metadata.CodingKeys>
 
     init(from decoder: Decoder) throws {
         self.container = try decoder.container(
-            keyedBy: GliaCoreSDK.Message.Metadata.CodingKeys.self
+            keyedBy: CoreSdkClient.Message.Metadata.CodingKeys.self
         )
     }
 

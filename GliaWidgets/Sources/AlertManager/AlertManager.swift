@@ -77,7 +77,7 @@ extension AlertManager {
     }
 
     func dismissCurrentAlert() {
-        guard let alertViewController = alertViewController else { return }
+        guard alertViewController != nil else { return }
         cleanup()
     }
 }
