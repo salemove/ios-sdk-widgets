@@ -272,7 +272,7 @@ extension EngagementCoordinatorTests {
     func createCoordinator(
         with engagementLaunching: EngagementCoordinator.EngagementLaunching
     ) -> EngagementCoordinator {
-        var env = EngagementCoordinator.Environment.mock
+        var env = EngagementCoordinator.Environment.mock()
         env.dismissManager.dismissViewControllerAnimateWithCompletion = { _, _, completion in
             completion?()
         }

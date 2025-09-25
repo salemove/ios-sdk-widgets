@@ -877,7 +877,6 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSdk.authentication = { _ in authentication }
         gliaEnv.coreSdk.requestEngagedOperator = { $0([], nil) }
         gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
-
         gliaEnv.gcd.mainQueue.async = { $0() }
         gliaEnv.gcd.mainQueue.asyncAfterDeadline = { dispatchTime, action in
             DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
@@ -959,13 +958,12 @@ final class GliaTests: XCTestCase {
 
         XCTAssertEqual(interactor.state, .engaged(nil))
 
-        // Auth
+//         Auth
 //        let expectation = XCTestExpectation(description: "SDK did authenticate")
 //        try sdk.authentication(with: .allowedDuringEngagement)
 //            .authenticate(
 //                with: "IdToken",
-//                accessToken: nil
-//            ) { _ in
+//                accessToken: nil) { _ in
 //                expectation.fulfill()
 //            }
 //
@@ -974,7 +972,7 @@ final class GliaTests: XCTestCase {
 //        sdk.interactor?.start(engagement: CoreSdkClient.Engagement.mock())
 //
 //        wait(for: [expectation], timeout: 5.0)
-//
+
 //        state = try XCTUnwrap(sdk.interactor?.state)
 //        switch state {
 //        case .engaged: break
