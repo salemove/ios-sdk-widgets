@@ -881,18 +881,32 @@ final class GliaTests: XCTestCase {
         gliaEnv.uiApplication.windows = { [window] }
         gliaEnv.gcd.mainQueue.async = { $0() }
         gliaEnv.gcd.mainQueue.asyncAfterDeadline = { dispatchTime, action in
-//            DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
+            DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
                 action()
-//            }
-        }
-        let site: CoreSdkClient.Site = try .mock(mobileConfirmDialogEnabled: false)
-        var env: EngagementCoordinator.Environment = .engagementCoordEnvironmentWithKeyWindow
-        env.fetchSiteConfigurations = { completion in
-            completion(.success((site)))
+            }
         }
 
         let viewFactory: ViewFactory = .mock()
-        let interactor = Interactor.mock()
+        let interactor: Interactor = .mock()
+        let queuesMonitor: QueuesMonitor = .mock()
+
+        var alertManagerEnv = AlertManager.Environment.failing()
+        alertManagerEnv.log = logger
+        alertManagerEnv.uiApplication.connectionScenes = { [] }
+        alertManagerEnv.uiApplication.applicationState = { .active }
+
+        var env: EngagementCoordinator.Environment = .mock
+        let alertManager: AlertManager = .failing(
+            environment: alertManagerEnv,
+            viewFactory: viewFactory
+        )
+        alertManager.setViewControllerPresentationAnimated(false)
+        env.alertManager = alertManager
+        env.queuesMonitor = queuesMonitor
+        let site: CoreSdkClient.Site = try .mock(mobileConfirmDialogEnabled: false)
+        env.fetchSiteConfigurations = { completion in
+            completion(.success((site)))
+        }
         interactor.environment.coreSdk.queueForEngagement = { _, _, completion in
             completion(.success(.mock))
         }
@@ -907,16 +921,8 @@ final class GliaTests: XCTestCase {
 
         // Create SDK
         let sdk = Glia(environment: gliaEnv)
-
-        var alertManagerEnv = AlertManager.Environment.failing()
-        alertManagerEnv.log = logger
-        alertManagerEnv.uiApplication.connectionScenes = { [] }
-        alertManagerEnv.uiApplication.applicationState = { .active}
-        sdk.alertManager = .failing(
-            environment: alertManagerEnv,
-            viewFactory: viewFactory
-        )
-        sdk.alertManager.setViewControllerPresentationAnimated(false)
+        sdk.alertManager = alertManager
+        sdk.
         sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
@@ -927,10 +933,10 @@ final class GliaTests: XCTestCase {
             theme: .mock()
         ) { _ in }
 
-        XCTAssertEqual(interactor.state, .engaged(nil))
+        XCTAssertEqual(interactor.state, .none)
 
         // Audio Call
-        sdk.queuesMonitor = .mock()
+        sdk.queuesMonitor = queuesMonitor
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
         try engagementLauncher.startAudioCall()
         let engagement: CoreSdkClient.Engagement = .mock(
