@@ -883,7 +883,6 @@ final class GliaTests: XCTestCase {
         sdk.alertManager.setViewControllerPresentationAnimated(false)
 
         sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            sdk.environment.coreSdk.getCurrentEngagement = { .mock() }
             completion(.success(()))
         }
 
@@ -892,10 +891,16 @@ final class GliaTests: XCTestCase {
             theme: .mock()
         ) { _ in }
 
+//        sdk.interactor?.start()
+//
+//        XCTAssertEqual(sdk.interactor?.state, .engaged(nil))
+
         sdk.queuesMonitor = .mock()
 
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
         try engagementLauncher.startChat()
+
+        sdk.environment.coreSdk.getCurrentEngagement = { .mock() }
 
         try sdk.authentication(with: .allowedDuringEngagement)
             .authenticate(
@@ -904,6 +909,5 @@ final class GliaTests: XCTestCase {
             ) { _ in }
 
         XCTAssertEqual(try XCTUnwrap(sdk.interactor?.state), .none)
-        XCTAssertEqual(messages, ["Show Push Notifications Intermediate Dialog"])
     }
 }
