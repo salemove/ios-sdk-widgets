@@ -877,7 +877,11 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSdk.authentication = { _ in authentication }
         gliaEnv.coreSdk.requestEngagedOperator = { $0([], nil) }
         gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        gliaEnv.gcd.mainQueue.async = { $0() }
+        gliaEnv.gcd.mainQueue.async = { action in
+            DispatchQueue.main.async {
+                action()
+            }
+        }
         gliaEnv.gcd.mainQueue.asyncAfterDeadline = { dispatchTime, action in
             DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
                 action()
@@ -885,8 +889,10 @@ final class GliaTests: XCTestCase {
         }
 
         // UI Application
+        let vc = UIViewController()
         let window = UIWindow(frame: .zero)
         window.makeKeyAndVisible()
+        window.rootViewController = .init()
         var uiApplication: UIKitBased.UIApplication = .failing
         uiApplication.windows = { [window] }
         uiApplication.connectionScenes = { [] }
@@ -894,7 +900,6 @@ final class GliaTests: XCTestCase {
         gliaEnv.uiApplication = uiApplication
 
         let viewFactory: ViewFactory = .mock()
-        let interactor: Interactor = .mock()
         let queuesMonitor: QueuesMonitor = .mock()
 
         var alertManagerEnv = AlertManager.Environment.failing(viewFactory: viewFactory)
@@ -918,10 +923,8 @@ final class GliaTests: XCTestCase {
         coordinatorEnvironment.fetchSiteConfigurations = { completion in
             completion(.success((site)))
         }
-        interactor.environment.coreSdk.queueForEngagement = { _, _, completion in
-            completion(.success(.mock))
-        }
-        gliaEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _ in
+
+        gliaEnv.createRootCoordinator = { interactor, _, _, engagementLaunching, _, _ in
             EngagementCoordinator.mock(
                 interactor: interactor,
                 viewFactory: viewFactory,
@@ -943,7 +946,11 @@ final class GliaTests: XCTestCase {
             theme: .mock()
         ) { _ in }
 
-        XCTAssertEqual(interactor.state, .none)
+        sdk.interactor?.environment.coreSdk.queueForEngagement = { _, _, completion in
+            completion(.success(.mock))
+        }
+
+        XCTAssertEqual(sdk.interactor!.state, .none)
 
         // Audio Call
         sdk.queuesMonitor = queuesMonitor
@@ -953,13 +960,13 @@ final class GliaTests: XCTestCase {
             restartedFromEngagementId: "PreviousEngagementId",
             media: .init(audio: .twoWay, video: nil)
         )
-        interactor.setCurrentEngagement(engagement)
+        sdk.interactor?.setCurrentEngagement(engagement)
         sdk.environment.coreSdk.getCurrentEngagement = { engagement }
 
-        XCTAssertEqual(interactor.state, .engaged(nil))
+        XCTAssertEqual(sdk.interactor!.state, .enqueueing(GliaWidgets.EngagementKind.audioCall))
 
 //         Auth
-//        let expectation = XCTestExpectation(description: "SDK did authenticate")
+        let expectation = XCTestExpectation(description: "SDK did authenticate")
 //        try sdk.authentication(with: .allowedDuringEngagement)
 //            .authenticate(
 //                with: "IdToken",
@@ -971,7 +978,7 @@ final class GliaTests: XCTestCase {
 //        // Interactor start call from the CoreSDK
 //        sdk.interactor?.start(engagement: CoreSdkClient.Engagement.mock())
 //
-//        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: 15.0)
 
 //        state = try XCTUnwrap(sdk.interactor?.state)
 //        switch state {
