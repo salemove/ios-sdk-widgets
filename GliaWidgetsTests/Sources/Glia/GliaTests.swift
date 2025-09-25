@@ -845,9 +845,12 @@ final class GliaTests: XCTestCase {
 
 
     func test_my_awesome() throws {
-        // Configure CoreSDK
         var uuidGen = UUID.incrementing
+
+        // Glia.Environment
         var gliaEnv = Glia.Environment.failing
+        gliaEnv.conditionalCompilation.isDebug = { true }
+
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
         logger.configureRemoteLogLevelClosure = { _ in }
@@ -856,13 +859,11 @@ final class GliaTests: XCTestCase {
         logger.warningClosure = { _, _, _, _ in }
         logger.prefixedClosure = { _ in logger }
         gliaEnv.coreSdk.createLogger = { _ in logger }
-        gliaEnv.conditionalCompilation.isDebug = { true }
+
         gliaEnv.coreSdk.secureConversations.pendingStatus = { $0(.success(false)) }
         gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
         gliaEnv.coreSdk.getQueues = { callback in callback(.success([])) }
-        gliaEnv.coreSdk.subscribeForQueuesUpdates = { _, _ in
-            return uuidGen().uuidString
-        }
+        gliaEnv.coreSdk.subscribeForQueuesUpdates = { _, _ in return uuidGen().uuidString }
         gliaEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in uuidGen().uuidString }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
@@ -876,9 +877,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSdk.authentication = { _ in authentication }
         gliaEnv.coreSdk.requestEngagedOperator = { $0([], nil) }
         gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        let window = UIWindow(frame: .zero)
-        window.makeKeyAndVisible()
-        gliaEnv.uiApplication.windows = { [window] }
+
         gliaEnv.gcd.mainQueue.async = { $0() }
         gliaEnv.gcd.mainQueue.asyncAfterDeadline = { dispatchTime, action in
             DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
@@ -886,25 +885,38 @@ final class GliaTests: XCTestCase {
             }
         }
 
+        // UI Application
+        let window = UIWindow(frame: .zero)
+        window.makeKeyAndVisible()
+        var uiApplication: UIKitBased.UIApplication = .failing
+        uiApplication.windows = { [window] }
+        uiApplication.connectionScenes = { [] }
+        uiApplication.applicationState = { .active }
+        gliaEnv.uiApplication = uiApplication
+
         let viewFactory: ViewFactory = .mock()
         let interactor: Interactor = .mock()
         let queuesMonitor: QueuesMonitor = .mock()
 
-        var alertManagerEnv = AlertManager.Environment.failing()
+        var alertManagerEnv = AlertManager.Environment.failing(viewFactory: viewFactory)
         alertManagerEnv.log = logger
-        alertManagerEnv.uiApplication.connectionScenes = { [] }
-        alertManagerEnv.uiApplication.applicationState = { .active }
+        alertManagerEnv.uiApplication = uiApplication
 
-        var env: EngagementCoordinator.Environment = .mock
         let alertManager: AlertManager = .failing(
             environment: alertManagerEnv,
             viewFactory: viewFactory
         )
+        var coordinatorEnvironment: EngagementCoordinator.Environment = .mock(
+            uiApplication: uiApplication,
+            alertManager: alertManager,
+            queuesMonitor: queuesMonitor
+        )
+
         alertManager.setViewControllerPresentationAnimated(false)
-        env.alertManager = alertManager
-        env.queuesMonitor = queuesMonitor
+        coordinatorEnvironment.alertManager = alertManager
+        coordinatorEnvironment.queuesMonitor = queuesMonitor
         let site: CoreSdkClient.Site = try .mock(mobileConfirmDialogEnabled: false)
-        env.fetchSiteConfigurations = { completion in
+        coordinatorEnvironment.fetchSiteConfigurations = { completion in
             completion(.success((site)))
         }
         interactor.environment.coreSdk.queueForEngagement = { _, _, completion in
@@ -915,14 +927,13 @@ final class GliaTests: XCTestCase {
                 interactor: interactor,
                 viewFactory: viewFactory,
                 engagementLaunching: engagementLaunching,
-                environment: env
+                environment: coordinatorEnvironment
             )
         }
 
         // Create SDK
         let sdk = Glia(environment: gliaEnv)
         sdk.alertManager = alertManager
-        sdk.
         sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
