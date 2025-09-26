@@ -92,6 +92,16 @@ extension EntryWidget {
             case .callVisualizer: return "callVisualizer"
             }
         }
+
+        var toOtelAttribute: OtelEngagementTypes {
+            switch self {
+            case .video: return .twoWayVideo
+            case .audio: return .audio
+            case .chat: return .chat
+            case .secureMessaging: return .secureMessaging
+            case .callVisualizer: return .callVisualizer
+            }
+        }
     }
 }
 
