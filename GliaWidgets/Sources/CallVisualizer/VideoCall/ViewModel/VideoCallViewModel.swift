@@ -424,7 +424,8 @@ private extension CallVisualizer.VideoCallViewModel {
                 true,
                 getCameraDeviceManager: environment.cameraDeviceManager,
                 log: environment.log,
-                flipCameraButtonStyle: environment.flipCameraButtonStyle
+                flipCameraButtonStyle: environment.flipCameraButtonStyle,
+                openTelemetry: environment.openTelemetry
             ) { [weak self] in
                 self?.flipCameraAccLabelWithTap = $0
             }
@@ -434,7 +435,8 @@ private extension CallVisualizer.VideoCallViewModel {
                 false,
                 getCameraDeviceManager: environment.cameraDeviceManager,
                 log: environment.log,
-                flipCameraButtonStyle: environment.flipCameraButtonStyle
+                flipCameraButtonStyle: environment.flipCameraButtonStyle,
+                openTelemetry: environment.openTelemetry
             ) { [weak self] in
                 self?.flipCameraAccLabelWithTap = $0
             }
