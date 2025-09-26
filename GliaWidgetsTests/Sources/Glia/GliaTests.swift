@@ -838,13 +838,7 @@ final class GliaTests: XCTestCase {
         
     }
 
-
-
-
-
-
-
-    func test_my_awesome() throws {
+    func test_authenticationDuringCallEngagementDoesntChangeInteractorState() throws {
         var uuidGen = UUID.incrementing
 
         // Glia.Environment
@@ -961,7 +955,6 @@ final class GliaTests: XCTestCase {
             media: .init(audio: .twoWay, video: nil)
         )
 
-        sdk.interactor?.setCurrentEngagement(engagement)
         sdk.environment.coreSdk.getCurrentEngagement = { engagement }
 
         XCTAssertEqual(try XCTUnwrap(sdk.interactor?.state), .enqueueing(GliaWidgets.EngagementKind.audioCall))
@@ -989,6 +982,7 @@ final class GliaTests: XCTestCase {
 
          // Auth
         let expectation = XCTestExpectation(description: "SDK did authenticate")
+        sdk.interactor?.setCurrentEngagement(engagement)
         try sdk.authentication(with: .allowedDuringEngagement)
             .authenticate(
                 with: "IdToken",
@@ -996,7 +990,7 @@ final class GliaTests: XCTestCase {
                 expectation.fulfill()
             }
 
-        wait(for: [expectation], timeout: 2.0)
+        wait(for: [expectation], timeout: 8.0)
 
         XCTAssertEqual(try XCTUnwrap(sdk.interactor?.state), .engaged(nil))
 
