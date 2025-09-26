@@ -313,7 +313,8 @@ extension CallViewModel {
             true,
             getCameraDeviceManager: environment.cameraDeviceManager,
             log: environment.log,
-            flipCameraButtonStyle: environment.flipCameraButtonStyle
+            flipCameraButtonStyle: environment.flipCameraButtonStyle,
+            openTelemetry: environment.openTelemetry
         ) { [weak self] flipCameraAccLabelWithCallback in
             self?.action?(.setCameraFlip(flipCameraAccLabelWithCallback))
         }
@@ -329,7 +330,8 @@ extension CallViewModel {
             false,
             getCameraDeviceManager: environment.cameraDeviceManager,
             log: environment.log,
-            flipCameraButtonStyle: environment.flipCameraButtonStyle
+            flipCameraButtonStyle: environment.flipCameraButtonStyle,
+            openTelemetry: environment.openTelemetry
         ) { [weak self] flipCameraAccLabelWithCallback in
             self?.action?(.setCameraFlip(flipCameraAccLabelWithCallback))
         }
