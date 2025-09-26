@@ -330,15 +330,19 @@ public class Glia {
                 guard let currentEngagement = self.environment.coreSdk.getNonTransferredSecureConversationEngagement() else { return }
 
                 if currentEngagement.source == .callVisualizer {
-                    self.callVisualizer.handleRestoredEngagement()
+                    Task {
+                        await self.callVisualizer.handleRestoredEngagement()
+                    }
                 } else {
-                    self.restoreOngoingEngagement(
-                        configuration: configuration,
-                        currentEngagement: currentEngagement,
-                        interactor: interactor,
-                        features: features,
-                        maximize: false
-                    )
+                    Task {
+                        await self.restoreOngoingEngagement(
+                            configuration: configuration,
+                            currentEngagement: currentEngagement,
+                            interactor: interactor,
+                            features: features,
+                            maximize: false
+                        )
+                    }
                 }
             case .failure(let error):
                 typealias ProcessError = CoreSdkClient.ConfigurationProcessError
@@ -585,7 +589,9 @@ extension Glia {
                 case .engaged = interactorState
             else { return }
 
-            self?.restoreOngoingEngagementIfPresent()
+            Task {
+                await self?.restoreOngoingEngagementIfPresent()
+            }
         }
     }
 

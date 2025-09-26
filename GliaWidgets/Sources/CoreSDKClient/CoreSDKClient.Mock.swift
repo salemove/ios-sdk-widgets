@@ -24,7 +24,7 @@ extension CoreSdkClient {
         uploadFileToEngagement: { _, _, _ in },
         fetchFile: { _, _ in .mock() },
         getCurrentEngagement: { return nil },
-        fetchSiteConfigurations: { _ in },
+        fetchSiteConfigurations: { try .mock() },
         submitSurveyAnswer: { _, _, _ in },
         authentication: { _ in .mock },
         fetchChatHistory: { [] },

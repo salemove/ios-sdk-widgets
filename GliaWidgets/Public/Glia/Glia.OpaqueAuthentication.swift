@@ -157,13 +157,15 @@ extension Glia {
                    let configuration = self?.configuration, prevEngagementIsNotPresent,
                    let interactor {
                     self?.closeRootCoordinator()
-                    self?.restoreOngoingEngagement(
-                        configuration: configuration,
-                        currentEngagement: ongoingEngagement,
-                        interactor: interactor,
-                        features: self?.features ?? .all,
-                        maximize: false
-                    )
+                    Task {
+                        await self?.restoreOngoingEngagement(
+                            configuration: configuration,
+                            currentEngagement: ongoingEngagement,
+                            interactor: interactor,
+                            features: self?.features ?? .all,
+                            maximize: false
+                        )
+                    }
                 } else {
                     // Handle authentication with possibility to restart engagement.
                     self?.restartEngagementIfNeeded(

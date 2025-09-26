@@ -15,7 +15,7 @@ extension ChatCoordinator.Environment {
         createThumbnailGenerator: { .mock },
         createFileDownload: { file, storage, environment in .mock() },
         fromHistory: { false },
-        fetchSiteConfigurations: { completion in },
+        fetchSiteConfigurations: { try .mock() },
         getCurrentEngagement: { .mock() }, 
         getNonTransferredSecureConversationEngagement: { .mock() },
         submitSurveyAnswer: { answers, surveyId, engagementId in },

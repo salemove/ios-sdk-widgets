@@ -63,7 +63,7 @@ struct CoreSdkClient {
 
     var getCurrentEngagement: GetCurrentEngagement
 
-    typealias FetchSiteConfigurations = (_ completion: @escaping (Result<Self.Site, Error>) -> Void) -> Void
+    typealias FetchSiteConfigurations = () async throws -> Site
 
     var fetchSiteConfigurations: FetchSiteConfigurations
 

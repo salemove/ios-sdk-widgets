@@ -233,7 +233,9 @@ extension Glia {
             rootCoordinator = nil
             // If engagement was started/restored while visitor was
             // on SecureConversation Confirmation screen, we need to restore the bubble.
-            restoreOngoingEngagementIfPresent()
+            Task {
+               await restoreOngoingEngagementIfPresent()
+            }
         case .minimized:
             onEvent?(.minimized)
         case .maximized:
@@ -273,13 +275,15 @@ extension Glia {
             if let rootCoordinator {
                 rootCoordinator.maximize()
             } else {
-                self.restoreOngoingEngagement(
-                    configuration: configuration,
-                    currentEngagement: ongoingEngagement,
-                    interactor: interactor,
-                    features: features,
-                    maximize: true
-                )
+                Task {
+                    await self.restoreOngoingEngagement(
+                        configuration: configuration,
+                        currentEngagement: ongoingEngagement,
+                        interactor: interactor,
+                        features: features,
+                        maximize: true
+                    )
+                }
             }
         }
     }
