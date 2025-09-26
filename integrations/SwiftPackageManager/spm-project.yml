@@ -8,7 +8,7 @@ targets:
   SpmSampleApp:
     type: application
     platform: iOS
-    deploymentTarget: "14.0"
+    deploymentTarget: "15.5"
     info:
       path: Sources/Info.plist
     sources: [Sources]
