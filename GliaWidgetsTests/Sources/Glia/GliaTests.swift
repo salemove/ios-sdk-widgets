@@ -183,7 +183,7 @@ final class GliaTests: XCTestCase {
         sdk.interactor?.setEndedEngagement(.mock(source: .callVisualizer))
         sdk.interactor?.state = .ended(.byOperator)
 
-        /// Since interactor is created only after visitor code is requested, 
+        /// Since interactor is created only after visitor code is requested,
         /// we can be sure that if this test succeeds, interactor observer is
         /// added successfully, because observer method is called during
         /// interactor creation.
@@ -832,6 +832,166 @@ final class GliaTests: XCTestCase {
                 accessToken: nil
             ) { _ in }
 
+
+
         XCTAssertEqual(messages, ["Show Push Notifications Intermediate Dialog"])
+        
+    }
+
+    func test_authenticationDuringCallEngagementDoesntChangeInteractorState() throws {
+        var uuidGen = UUID.incrementing
+
+        // Glia.Environment
+        var gliaEnv = Glia.Environment.failing
+        gliaEnv.conditionalCompilation.isDebug = { true }
+
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        logger.infoClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }
+        logger.prefixedClosure = { _ in logger }
+        gliaEnv.coreSdk.createLogger = { _ in logger }
+
+        gliaEnv.coreSdk.secureConversations.pendingStatus = { $0(.success(false)) }
+        gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
+        gliaEnv.coreSdk.getQueues = { callback in callback(.success([])) }
+        gliaEnv.coreSdk.subscribeForQueuesUpdates = { _, _ in return uuidGen().uuidString }
+        gliaEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
+        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in uuidGen().uuidString }
+        gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+        gliaEnv.coreSdk.queueForEngagement = { _, _, completion in
+            completion(.success(.mock))
+        }
+        let authentication = CoreSdkClient.Authentication(authenticateWithIdToken: { _, _, intermediateDialogCallback, completion in
+            intermediateDialogCallback({ _ in })
+            completion(.success(()))
+        })
+        gliaEnv.coreSdk.authentication = { _ in authentication }
+        gliaEnv.coreSdk.requestEngagedOperator = { $0([], nil) }
+        gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
+        gliaEnv.gcd.mainQueue.async = { action in
+            DispatchQueue.main.async {
+                action()
+            }
+        }
+        gliaEnv.gcd.mainQueue.asyncAfterDeadline = { dispatchTime, action in
+            DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
+                action()
+            }
+        }
+
+        // UI Application
+        let vc = UIViewController()
+        let window = UIWindow(frame: .zero)
+        window.makeKeyAndVisible()
+        window.rootViewController = .init()
+        var uiApplication: UIKitBased.UIApplication = .failing
+        uiApplication.windows = { [window] }
+        uiApplication.connectionScenes = { [] }
+        uiApplication.applicationState = { .active }
+        gliaEnv.uiApplication = uiApplication
+
+        let viewFactory: ViewFactory = .mock()
+        let queuesMonitor: QueuesMonitor = .mock()
+
+        var alertManagerEnv = AlertManager.Environment.failing(viewFactory: viewFactory)
+        alertManagerEnv.log = logger
+        alertManagerEnv.uiApplication = uiApplication
+
+        let alertManager: AlertManager = .failing(
+            environment: alertManagerEnv,
+            viewFactory: viewFactory
+        )
+        var coordinatorEnvironment: EngagementCoordinator.Environment = .mock(
+            uiApplication: uiApplication,
+            alertManager: alertManager,
+            queuesMonitor: queuesMonitor
+        )
+
+        alertManager.setViewControllerPresentationAnimated(false)
+        coordinatorEnvironment.alertManager = alertManager
+        coordinatorEnvironment.queuesMonitor = queuesMonitor
+        let site: CoreSdkClient.Site = try .mock(mobileConfirmDialogEnabled: false)
+        coordinatorEnvironment.fetchSiteConfigurations = { completion in
+            completion(.success((site)))
+        }
+
+        gliaEnv.createRootCoordinator = { interactor, _, _, engagementLaunching, _, _ in
+            EngagementCoordinator.mock(
+                interactor: interactor,
+                viewFactory: viewFactory,
+                engagementLaunching: engagementLaunching,
+                environment: coordinatorEnvironment
+            )
+        }
+
+        // Create SDK
+        let sdk = Glia(environment: gliaEnv)
+        sdk.alertManager = alertManager
+        sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.success(()))
+        }
+
+        // Configure
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+
+        sdk.interactor?.environment.coreSdk.queueForEngagement = { _, _, completion in
+            completion(.success(.mock))
+        }
+
+        XCTAssertEqual(try XCTUnwrap(sdk.interactor?.state), .none)
+
+        // Audio Call
+        sdk.queuesMonitor = queuesMonitor
+        let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
+        try engagementLauncher.startAudioCall()
+        let engagement: CoreSdkClient.Engagement = .mock(
+            restartedFromEngagementId: "PreviousEngagementId",
+            media: .init(audio: .twoWay, video: nil)
+        )
+
+        sdk.environment.coreSdk.getCurrentEngagement = { engagement }
+
+        XCTAssertEqual(try XCTUnwrap(sdk.interactor?.state), .enqueueing(GliaWidgets.EngagementKind.audioCall))
+
+        let interactorStateChanged = XCTestExpectation(description: "Interactor state should be enqueued")
+
+        sdk.interactor?.addObserver(self, handler: { event in
+            switch event {
+            case .stateChanged(let state):
+                if case .enqueued = state {
+                    interactorStateChanged.fulfill()
+                }
+            default: return
+            }
+        })
+
+        wait(for: [interactorStateChanged], timeout: 2.0)
+
+        XCTAssertEqual(try XCTUnwrap(sdk.interactor?.state), .enqueued(.mock, .audioCall))
+
+        // Start the engaged
+        sdk.interactor?.start(engagement: CoreSdkClient.Engagement.mock())
+
+        XCTAssertEqual(try XCTUnwrap(sdk.interactor?.state), .engaged(nil))
+
+        // Auth
+        let expectation = XCTestExpectation(description: "SDK did authenticate")
+        sdk.interactor?.setCurrentEngagement(engagement)
+        try sdk.authentication(with: .allowedDuringEngagement)
+            .authenticate(
+                with: "IdToken",
+                accessToken: nil) { _ in
+                expectation.fulfill()
+            }
+
+        wait(for: [expectation], timeout: 15.0)
+
+        XCTAssertEqual(try XCTUnwrap(sdk.interactor?.state), .engaged(nil))
     }
 }

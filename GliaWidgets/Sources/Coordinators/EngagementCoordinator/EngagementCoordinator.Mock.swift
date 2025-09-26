@@ -6,7 +6,7 @@ extension EngagementCoordinator {
         sceneProvider: SceneProvider? = nil,
         engagementLaunching: EngagementCoordinator.EngagementLaunching = .direct(kind: .audioCall),
         features: Features = .all,
-        environment: Environment = .mock
+        environment: Environment = .mock()
     ) -> EngagementCoordinator {
         EngagementCoordinator(
             interactor: interactor,
