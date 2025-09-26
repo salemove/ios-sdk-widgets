@@ -69,7 +69,14 @@ extension CallVisualizer.Coordinator {
         }
 
         coordinator.start()
-        self.environment.openTelemetry.logger.i(.visitorCodeShown)
+        self.environment.openTelemetry.logger.i(.visitorCodeShown) {
+            switch presentation {
+            case .embedded:
+                $0[.viewType] = .string(OtelViewTypes.embedded.rawValue)
+            case .alert:
+                $0[.viewType] = .string(OtelViewTypes.dialog.rawValue)
+            }
+        }
         self.visitorCodeCoordinator = coordinator
     }
 
