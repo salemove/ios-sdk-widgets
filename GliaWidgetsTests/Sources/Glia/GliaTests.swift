@@ -996,10 +996,10 @@ final class GliaTests: XCTestCase {
                 expectation.fulfill()
             }
 
-        wait(for: [expectation], timeout: 15.0)
+        wait(for: [expectation], timeout: 2.0)
 
         XCTAssertEqual(try XCTUnwrap(sdk.interactor?.state), .engaged(nil))
-        
+
 //        state = try XCTUnwrap(sdk.interactor?.state)
 //        switch state {
 //        case .engaged: break
