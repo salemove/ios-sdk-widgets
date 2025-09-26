@@ -965,6 +965,23 @@ final class GliaTests: XCTestCase {
 
         XCTAssertEqual(sdk.interactor!.state, .enqueueing(GliaWidgets.EngagementKind.audioCall))
 
+        let interactorStateChanged = XCTestExpectation(description: "Interactor state should be enqueued")
+
+        sdk.interactor?.addObserver(self, handler: { event in
+            switch event {
+            case .stateChanged(let state):
+                if case .enqueued = state {
+                    interactorStateChanged.fulfill()
+                }
+            default: return
+            }
+        })
+
+        wait(for: [interactorStateChanged], timeout: 2.0)
+
+        XCTAssertEqual(sdk.interactor!.state, .enqueued(.mock, .audioCall))
+
+
 //         Auth
         let expectation = XCTestExpectation(description: "SDK did authenticate")
 //        try sdk.authentication(with: .allowedDuringEngagement)
@@ -977,7 +994,7 @@ final class GliaTests: XCTestCase {
 //
 //        // Interactor start call from the CoreSDK
 //        sdk.interactor?.start(engagement: CoreSdkClient.Engagement.mock())
-//
+
         wait(for: [expectation], timeout: 15.0)
 
 //        state = try XCTUnwrap(sdk.interactor?.state)
