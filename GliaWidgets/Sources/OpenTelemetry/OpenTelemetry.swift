@@ -11,3 +11,5 @@ typealias OtelEngagementTypes = GliaCoreSDK.OtelEngagementTypes
 typealias OtelEngagementSources = GliaCoreSDK.OtelEngagementSources
 typealias OtelMediaTypes = GliaCoreSDK.OtelMediaTypes
 typealias OtelBubbleStates = GliaCoreSDK.OtelBubbleStates
+typealias OtelViewTypes = GliaCoreSDK.OtelViewTypes
+typealias OtelEntryWidgetStates = GliaCoreSDK.OtelEntryWidgetStates
