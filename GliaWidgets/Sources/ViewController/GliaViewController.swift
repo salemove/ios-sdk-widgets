@@ -14,7 +14,7 @@ class GliaViewController: UIViewController {
         willSet {
             environment.openTelemetry.logger.i(.bubbleStateChanged) {
                 guard case .userImage = newValue else { return }
-                $0[.newState] = .string(OtelBubbleStates.operatorConnected.rawValue)
+                $0[.bubbleState] = .string(OtelBubbleStates.operatorConnected.rawValue)
             }
         }
         didSet {

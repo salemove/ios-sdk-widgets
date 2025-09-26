@@ -72,7 +72,7 @@ class BubbleView: BaseView {
     func showOnHoldView() {
         onHoldView.removeFromSuperview()
         environment.openTelemetry.logger.i(.bubbleStateChanged) {
-            $0[.newState] = .string(OtelBubbleStates.onHold.rawValue)
+            $0[.bubbleState] = .string(OtelBubbleStates.onHold.rawValue)
         }
         // In case of badge-view being shown
         // place on-hold view under it.
@@ -85,7 +85,7 @@ class BubbleView: BaseView {
 
     func hideOnHoldView() {
         environment.openTelemetry.logger.i(.bubbleStateChanged) {
-            $0[.newState] = .string(OtelBubbleStates.operatorConnected.rawValue)
+            $0[.bubbleState] = .string(OtelBubbleStates.operatorConnected.rawValue)
         }
         onHoldView.removeFromSuperview()
     }
