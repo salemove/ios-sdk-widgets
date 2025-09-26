@@ -3,38 +3,44 @@ import SnapshotTesting
 import XCTest
 
 final class ChatViewControllerLayoutTests: SnapshotTestCase {
-    func test_messagesFromHistory() {
-        let viewController = ChatViewController.mockHistoryMessagesScreen()
+    @MainActor
+    func test_messagesFromHistory() async {
+        let viewController = await ChatViewController.mockHistoryMessagesScreen()
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
-    func test_visitorUploadedFileStates() throws {
-        let viewController = try ChatViewController.mockVisitorFileUploadStates()
+    @MainActor
+    func test_visitorUploadedFileStates() async throws {
+        let viewController = try await ChatViewController.mockVisitorFileUploadStates()
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
-    func test_choiceCard() throws {
-        let viewController = try ChatViewController.mockChoiceCard()
+    @MainActor
+    func test_choiceCard() async throws {
+        let viewController = try await ChatViewController.mockChoiceCard()
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
-    func test_gvaPersistentButton() throws {
-        let viewController = try ChatViewController.mockGvaPersistentButton()
+    @MainActor
+    func test_gvaPersistentButton() async throws {
+        let viewController = try await ChatViewController.mockGvaPersistentButton()
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
-    func test_gvaResponseText() throws {
-        let viewController = try ChatViewController.mockGvaResponseText()
+    @MainActor
+    func test_gvaResponseText() async throws {
+        let viewController = try await ChatViewController.mockGvaResponseText()
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
-    func test_gvaGalleryCard() throws {
-        let viewController = try ChatViewController.mockGvaGalleryCards()
+    @MainActor
+    func test_gvaGalleryCard() async throws {
+        let viewController = try await ChatViewController.mockGvaGalleryCards()
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
@@ -56,9 +62,10 @@ final class ChatViewControllerLayoutTests: SnapshotTestCase {
         view.assertSnapshot(as: .image, in: .landscape)
     }
 
-    func test_visitorFileDownloadStates() throws {
+    @MainActor
+    func test_visitorFileDownloadStates() async throws {
         var chatMessages: [ChatMessage] = []
-        let viewController = try ChatViewController.mockVisitorFileDownloadStates { messages in
+        let viewController = try await ChatViewController.mockVisitorFileDownloadStates { messages in
             chatMessages = messages
         }
         viewController.view.frame = UIScreen.main.bounds
@@ -73,8 +80,9 @@ final class ChatViewControllerLayoutTests: SnapshotTestCase {
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
-    func test_messageSendingFailedState() throws {
-        let viewController = try ChatViewController.mockMessageSendingFailedState()
+    @MainActor
+    func test_messageSendingFailedState() async throws {
+        let viewController = try await ChatViewController.mockMessageSendingFailedState()
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
