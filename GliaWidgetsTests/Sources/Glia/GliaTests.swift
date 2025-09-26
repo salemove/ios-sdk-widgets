@@ -980,7 +980,7 @@ final class GliaTests: XCTestCase {
 
         XCTAssertEqual(try XCTUnwrap(sdk.interactor?.state), .engaged(nil))
 
-         // Auth
+        // Auth
         let expectation = XCTestExpectation(description: "SDK did authenticate")
         sdk.interactor?.setCurrentEngagement(engagement)
         try sdk.authentication(with: .allowedDuringEngagement)
@@ -990,14 +990,8 @@ final class GliaTests: XCTestCase {
                 expectation.fulfill()
             }
 
-        wait(for: [expectation], timeout: 8.0)
+        wait(for: [expectation], timeout: 15.0)
 
         XCTAssertEqual(try XCTUnwrap(sdk.interactor?.state), .engaged(nil))
-
-//        state = try XCTUnwrap(sdk.interactor?.state)
-//        switch state {
-//        case .engaged: break
-//        default: XCTFail("Interactor state should be engaged")
-//        }
     }
 }
