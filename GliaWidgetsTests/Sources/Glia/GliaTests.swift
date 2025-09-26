@@ -950,7 +950,7 @@ final class GliaTests: XCTestCase {
             completion(.success(.mock))
         }
 
-        XCTAssertEqual(sdk.interactor!.state, .none)
+        XCTAssertEqual(try XCTUnwrap(sdk.interactor?.state), .none)
 
         // Audio Call
         sdk.queuesMonitor = queuesMonitor
@@ -960,10 +960,11 @@ final class GliaTests: XCTestCase {
             restartedFromEngagementId: "PreviousEngagementId",
             media: .init(audio: .twoWay, video: nil)
         )
+
         sdk.interactor?.setCurrentEngagement(engagement)
         sdk.environment.coreSdk.getCurrentEngagement = { engagement }
 
-        XCTAssertEqual(sdk.interactor!.state, .enqueueing(GliaWidgets.EngagementKind.audioCall))
+        XCTAssertEqual(try XCTUnwrap(sdk.interactor?.state), .enqueueing(GliaWidgets.EngagementKind.audioCall))
 
         let interactorStateChanged = XCTestExpectation(description: "Interactor state should be enqueued")
 
@@ -979,24 +980,26 @@ final class GliaTests: XCTestCase {
 
         wait(for: [interactorStateChanged], timeout: 2.0)
 
-        XCTAssertEqual(sdk.interactor!.state, .enqueued(.mock, .audioCall))
+        XCTAssertEqual(try XCTUnwrap(sdk.interactor?.state), .enqueued(.mock, .audioCall))
 
+        // Start the engaged
+        sdk.interactor?.start(engagement: CoreSdkClient.Engagement.mock())
 
-//         Auth
+        XCTAssertEqual(try XCTUnwrap(sdk.interactor?.state), .engaged(nil))
+
+         // Auth
         let expectation = XCTestExpectation(description: "SDK did authenticate")
-//        try sdk.authentication(with: .allowedDuringEngagement)
-//            .authenticate(
-//                with: "IdToken",
-//                accessToken: nil) { _ in
-//                expectation.fulfill()
-//            }
-//
-//
-//        // Interactor start call from the CoreSDK
-//        sdk.interactor?.start(engagement: CoreSdkClient.Engagement.mock())
+        try sdk.authentication(with: .allowedDuringEngagement)
+            .authenticate(
+                with: "IdToken",
+                accessToken: nil) { _ in
+                expectation.fulfill()
+            }
 
         wait(for: [expectation], timeout: 15.0)
 
+        XCTAssertEqual(try XCTUnwrap(sdk.interactor?.state), .engaged(nil))
+        
 //        state = try XCTUnwrap(sdk.interactor?.state)
 //        switch state {
 //        case .engaged: break
