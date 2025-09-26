@@ -10,6 +10,7 @@ extension CallViewModel {
         getCameraDeviceManager: @escaping CoreSdkClient.GetCameraDeviceManageable,
         log: CoreSdkClient.Logger,
         flipCameraButtonStyle: FlipCameraButtonStyle,
+        openTelemetry: OpenTelemetry,
         callback: @escaping (VideoStreamView.FlipCameraAccLabelWithTap?) -> Void
     ) {
         let flipCameraAccLabelWithCallback: VideoStreamView.FlipCameraAccLabelWithTap?
@@ -35,7 +36,11 @@ extension CallViewModel {
             // selected device, provide empty string for it.
             let propsAccessibility = (currentDevice?.facing).map(accessibility.flipCameraButtonPropsAccessibility(for:)) ?? .nop
 
-            flipCameraAccLabelWithCallback = !visible ? nil : (propsAccessibility, Cmd {
+            flipCameraAccLabelWithCallback = !visible ? nil : (propsAccessibility, Cmd { [weak openTelemetry] in
+                guard let openTelemetry else { return }
+                openTelemetry.logger.i(.callScreenButtonClicked) {
+                    $0[.buttonName] = .string(OtelButtonNames.flipCamera.rawValue)
+                }
                 // Actualize current device again during callback execution
                 // to avoid stale data.
                 let currentDevice = cameraDeviceManager.currentCameraDevice()
@@ -56,6 +61,7 @@ extension CallViewModel {
                         getCameraDeviceManager: getCameraDeviceManager,
                         log: log,
                         flipCameraButtonStyle: flipCameraButtonStyle,
+                        openTelemetry: openTelemetry,
                         callback: callback
                     )
                 } else {
