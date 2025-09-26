@@ -272,6 +272,9 @@ private extension EntryWidget {
         )
 
         viewModel.retryMonitoring = { [weak self] in
+            self?.environment.openTelemetry.logger.i(.entryWidgetButtonClicked) {
+                $0[.buttonName] = .string(OtelButtonNames.retryLoadEntryWidgetItems.rawValue)
+            }
             self?.viewState = .loading
         }
 
@@ -279,7 +282,9 @@ private extension EntryWidget {
     }
 
     func showView(in parentView: UIView) {
-        environment.openTelemetry.logger.i(.entryWidgetShown)
+        environment.openTelemetry.logger.i(.entryWidgetShown) {
+            $0[.viewType] = .string(OtelViewTypes.embedded.rawValue)
+        }
         parentView.subviews.forEach { $0.removeFromSuperview() }
         let model = makeViewModel(showHeader: false)
         let view = makeView(model: model)
@@ -304,6 +309,9 @@ private extension EntryWidget {
     }
 
     func showSheet(in parentViewController: UIViewController) {
+        environment.openTelemetry.logger.i(.entryWidgetShown) {
+            $0[.viewType] = .string(OtelViewTypes.bottomSheet.rawValue)
+        }
         let model = makeViewModel(showHeader: true)
         let view = makeView(model: model).accessibilityAction(.escape, {
             self.hide()
@@ -347,9 +355,32 @@ private extension EntryWidget {
     }
 
     func observeViewState(_ receiveValue: @escaping (ViewState) -> Void) {
+        let logViewStateChanged: (ViewState) -> Void = { [weak self] state in
+            self?.environment.openTelemetry.logger.i(.entryWidgetStateChanged) {
+                switch state {
+                case .loading:
+                    $0[.entryWidgetState] = .string(OtelEntryWidgetStates.loading.rawValue)
+                case .offline:
+                    $0[.entryWidgetState] = .string(OtelEntryWidgetStates.offline.rawValue)
+                case .mediaTypes(let mediaTypes):
+                    $0[.entryWidgetState] = .string(OtelEntryWidgetStates.items.rawValue)
+                    let otelItems: [String] = mediaTypes
+                        .map(\.type)
+                        .map(\.toOtelAttribute)
+                        .map(\.rawValue)
+                    $0[.entryWidgetItems] = .stringArray(otelItems)
+                case .ongoingEngagement(let mediaType):
+                    $0[.entryWidgetState] = .string(OtelEntryWidgetStates.ongoingEngagement.rawValue)
+                    $0[.engagementType] = .string(mediaType.toOtelAttribute.rawValue)
+                case .error:
+                    $0[.entryWidgetState] = .string(OtelEntryWidgetStates.error.rawValue)
+                }
+            }
+            receiveValue(state)
+        }
         $viewState
             .receive(on: RunLoop.main)
-            .sink(receiveValue: receiveValue)
+            .sink(receiveValue: logViewStateChanged)
             .store(in: &cancellables)
     }
 
@@ -471,18 +502,7 @@ private extension EntryWidget {
 extension EntryWidget {
     private func logEngagementTypeSelection(_ type: EngagementType) {
         environment.openTelemetry.logger.i(.entryWidgetItemClicked) {
-            switch type {
-            case .chat:
-                $0[.engagementType] = .string(OtelEngagementTypes.chat.rawValue)
-            case .audio:
-                $0[.engagementType] = .string(OtelEngagementTypes.audio.rawValue)
-            case .video:
-                $0[.engagementType] = .string(OtelEngagementTypes.twoWayVideo.rawValue)
-            case .secureMessaging:
-                $0[.engagementType] = .string(OtelEngagementTypes.secureMessaging.rawValue)
-            case .callVisualizer:
-                $0[.engagementType] = .string(OtelEngagementTypes.callVisualizer.rawValue)
-            }
+            $0[.engagementType] = .string(type.toOtelAttribute.rawValue)
         }
     }
 }
