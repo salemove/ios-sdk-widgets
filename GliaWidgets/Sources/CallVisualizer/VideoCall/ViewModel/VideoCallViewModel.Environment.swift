@@ -16,7 +16,7 @@ extension CallVisualizer.VideoCallViewModel {
         var log: CoreSdkClient.Logger
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var flipCameraButtonStyle: FlipCameraButtonStyle
-        @Dependency(\.widgets.openTelemetry) var openTelemetry
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 
