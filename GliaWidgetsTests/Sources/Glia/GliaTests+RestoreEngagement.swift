@@ -2,6 +2,7 @@
 import XCTest
 
 extension GliaTests {
+
     func test_skipLiveObservationConfirmations() throws {
         var sdkEnv = Glia.Environment.failing
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
@@ -9,7 +10,7 @@ extension GliaTests {
             engagementLaunching: .direct(kind: .chat),
             environment: .engagementCoordEnvironmentWithKeyWindow
         )
-        sdkEnv.createRootCoordinator = { _, _, _, _, _, _ in
+        sdkEnv.createRootCoordinator = { _, _, _, _, _, _, _ in
             rootCoordinator
         }
         sdkEnv.print.printClosure = { _, _, _ in }
@@ -67,6 +68,7 @@ extension GliaTests {
             features: .all,
             maximize: false
         )
+        
 
         try XCTAssertTrue(XCTUnwrap(sdk.interactor?.skipLiveObservationConfirmations))
         XCTAssertEqual(calls, [.snackBarPresent])
@@ -80,10 +82,126 @@ extension GliaTests {
         try XCTAssertFalse(XCTUnwrap(sdk.interactor?.skipLiveObservationConfirmations))
     }
 
+    func test_restoreOngoingIfPresentShouldNotRestoreIfCoordinatorisPresent() throws {
+        // CoreSDK mock
+        var sdkEnv = Glia.Environment.failing
+        sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+        let rootCoordinator = EngagementCoordinator.mock(
+            engagementLaunching: .direct(kind: .chat),
+            environment: .engagementCoordEnvironmentWithKeyWindow
+        )
+        sdkEnv.createRootCoordinator = { _, _, _, _, _, _, _ in
+            rootCoordinator
+        }
+        sdkEnv.print.printClosure = { _, _, _ in }
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }
+        sdkEnv.coreSdk.createLogger = { _ in logger }
+        sdkEnv.gcd.mainQueue.async = { $0() }
+        sdkEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
+        let siteMock = try CoreSdkClient.Site.mock()
+        sdkEnv.coreSdk.fetchSiteConfigurations = { callback in callback(.success(siteMock)) }
+        sdkEnv.conditionalCompilation.isDebug = { true }
+        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.success(()))
+        }
+        sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+
+        let window = UIWindow(frame: .zero)
+        window.rootViewController = .init()
+        window.makeKeyAndVisible()
+        sdkEnv.uiApplication.windows = { [window] }
+        sdkEnv.coreSdk.getQueues = { callback in callback(.success([])) }
+        sdkEnv.coreSdk.subscribeForQueuesUpdates = { _, _ in
+            return UUID.mock.uuidString
+        }
+        let engagement = CoreSdkClient.Engagement.mock()
+        let engagmentStarted = Boxed<Bool>(value: false)
+        sdkEnv.coreSdk.getCurrentEngagement = { [engagmentStarted] in
+            engagmentStarted.value ? engagement : nil
+        }
+
+        // WidgetSDK
+        let sdk = Glia(environment: sdkEnv)
+        try sdk.configure(with: .mock(), features: .all) { _ in }
+
+        // Start chat engagement
+        let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
+        try engagementLauncher.startChat()
+        engagmentStarted.value = true
+
+        // try restore
+        sdk.restoreOngoingEngagementIfPresent()
+
+        XCTAssertNotEqual(sdk.engagementRestorationState, .restored)
+    }
+
+    func test_restoreOngoingIfPresentShouldNotRestoreIfWeAlreadyRestoring() throws {
+        // CoreSDK mock
+        var sdkEnv = Glia.Environment.failing
+        sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+        let rootCoordinator = EngagementCoordinator.mock(
+            engagementLaunching: .direct(kind: .chat),
+            environment: .engagementCoordEnvironmentWithKeyWindow
+        )
+        sdkEnv.createRootCoordinator = { _, _, _, _, _, _, _ in
+            rootCoordinator
+        }
+        sdkEnv.print.printClosure = { _, _, _ in }
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }
+        sdkEnv.coreSdk.createLogger = { _ in logger }
+        sdkEnv.gcd.mainQueue.async = { $0() }
+        sdkEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
+        let siteMock = try CoreSdkClient.Site.mock()
+        sdkEnv.coreSdk.fetchSiteConfigurations = { callback in callback(.success(siteMock)) }
+        sdkEnv.conditionalCompilation.isDebug = { true }
+        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.success(()))
+        }
+        sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+
+        let window = UIWindow(frame: .zero)
+        window.rootViewController = .init()
+        window.makeKeyAndVisible()
+        sdkEnv.uiApplication.windows = { [window] }
+        sdkEnv.coreSdk.getQueues = { callback in callback(.success([])) }
+        sdkEnv.coreSdk.subscribeForQueuesUpdates = { _, _ in
+            return UUID.mock.uuidString
+        }
+        let engagement = CoreSdkClient.Engagement.mock()
+        let configured = Boxed<Bool>(value: false)
+        sdkEnv.coreSdk.getCurrentEngagement = { [configured] in
+            configured.value ? engagement : nil
+        }
+
+        // WidgetSDK
+        let sdk = Glia(environment: sdkEnv)
+        try sdk.configure(with: .mock(), features: .all) { _ in
+            configured.value = true
+        }
+
+        // Set restoring engagement state
+        sdk.engagementRestorationState = .restoring
+
+        // try restore
+        sdk.restoreOngoingEngagementIfPresent()
+
+        XCTAssertNotEqual(sdk.engagementRestorationState, .restored)
+    }
+
     func test_restoreOngoingSecureConversationEngagement() throws {
         var sdkEnv = Glia.Environment.failing
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
-        sdkEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _ in
+        sdkEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _, _ in
             EngagementCoordinator.mock(
                 engagementLaunching: engagementLaunching,
                 environment: .engagementCoordEnvironmentWithKeyWindow
@@ -151,7 +269,7 @@ extension GliaTests {
     func test_sdkDoesNotRestoreOngoingTransferredSecureConversation() throws {
         var sdkEnv = Glia.Environment.failing
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
-        sdkEnv.createRootCoordinator = { _, _, _, _, _, _ in
+        sdkEnv.createRootCoordinator = { _, _, _, _, _, _, _ in
             XCTFail("SDK should not create root coordinator")
             return .mock()
         }
@@ -213,7 +331,7 @@ extension GliaTests {
         var sdkEnv = Glia.Environment.failing
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         var launching: EngagementCoordinator.EngagementLaunching?
-        sdkEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _ in
+        sdkEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _, _ in
             launching = engagementLaunching
             return EngagementCoordinator.mock(
                 engagementLaunching: engagementLaunching,

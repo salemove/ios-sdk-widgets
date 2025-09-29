@@ -11,7 +11,7 @@ extension GliaTests {
             engagementLaunching: .direct(kind: .chat),
             environment: .engagementCoordEnvironmentWithKeyWindow
         )
-        sdkEnv.createRootCoordinator = { _, _, _, _, _, _ in
+        sdkEnv.createRootCoordinator = { _, _, _, _, _, _, _ in
             rootCoordinator
         }
         sdkEnv.print.printClosure = { _, _, _ in }
@@ -97,7 +97,7 @@ extension GliaTests {
         logger.configureRemoteLogLevelClosure = { _ in }
         environment.coreSdk.createLogger = { _ in logger }
         environment.conditionalCompilation.isDebug = { false }
-        environment.createRootCoordinator = { _, _, _, _, _, _ in
+        environment.createRootCoordinator = { _, _, _, _, _, _, _ in
                 .mock(environment: .engagementCoordEnvironmentWithKeyWindow)
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
@@ -135,7 +135,7 @@ extension GliaTests {
         environment.conditionalCompilation.isDebug = { true }
         var resultingViewFactory: ViewFactory?
 
-        environment.createRootCoordinator = { _, viewFactory, _, _, _, _ in
+        environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in
             resultingViewFactory = viewFactory
 
             return .mock(
@@ -182,7 +182,7 @@ extension GliaTests {
         var environment = Glia.Environment.failing
         var resultingViewFactory: ViewFactory?
 
-        environment.createRootCoordinator = { _, viewFactory, _, _, _, _ in
+        environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in
             resultingViewFactory = viewFactory
 
             return .mock(
@@ -249,7 +249,7 @@ extension GliaTests {
 
         var resultingViewFactory: ViewFactory?
 
-        environment.createRootCoordinator = { _, viewFactory, _, _, _, _ in
+        environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in
             resultingViewFactory = viewFactory
 
             return .mock(
@@ -301,7 +301,7 @@ extension GliaTests {
         environment.print = .mock
         var resultingViewFactory: ViewFactory?
 
-        environment.createRootCoordinator = { _, viewFactory, _, _, _, _ in
+        environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in
             resultingViewFactory = viewFactory
 
             return .mock(
@@ -353,7 +353,7 @@ extension GliaTests {
 
         var resultingViewFactory: ViewFactory?
 
-        environment.createRootCoordinator = { _, viewFactory, _, _, _, _ in
+        environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in
             resultingViewFactory = viewFactory
 
             return .mock(
@@ -411,7 +411,7 @@ extension GliaTests {
 
         var resultingViewFactory: ViewFactory?
 
-        environment.createRootCoordinator = { _, viewFactory, _, _, _, _ in
+        environment.createRootCoordinator = { _, viewFactory, _, _, _, _, _ in
             resultingViewFactory = viewFactory
 
             return .mock(
@@ -462,7 +462,7 @@ extension GliaTests {
         let engagementKind = EngagementKind.chat
         var engagementLaunching: EngagementCoordinator.EngagementLaunching = .direct(kind: engagementKind)
 
-        environment.createRootCoordinator = { _, _, _, launching, _, _ in
+        environment.createRootCoordinator = { _, _, _, launching, _, _, _ in
             engagementLaunching = launching
             return .mock(environment: .engagementCoordEnvironmentWithKeyWindow)
         }
@@ -511,7 +511,7 @@ extension GliaTests {
         let engagementKind = EngagementKind.chat
         var engagementLaunching: EngagementCoordinator.EngagementLaunching = .direct(kind: engagementKind)
 
-        environment.createRootCoordinator = { _, _, _, launching, _, _ in
+        environment.createRootCoordinator = { _, _, _, launching, _, _, _ in
             engagementLaunching = launching
             return .mock(environment: .engagementCoordEnvironmentWithKeyWindow)
         }
@@ -553,7 +553,7 @@ extension GliaTests {
         let engagementKind = EngagementKind.messaging(.welcome)
         var engagementLaunching: EngagementCoordinator.EngagementLaunching = .direct(kind: engagementKind)
 
-        environment.createRootCoordinator = { _, _, _, launching, _, _ in
+        environment.createRootCoordinator = { _, _, _, launching, _, _, _ in
             engagementLaunching = launching
             return .mock(environment: .engagementCoordEnvironmentWithKeyWindow)
         }
@@ -602,7 +602,7 @@ extension GliaTests {
 
         var engagementLaunching: EngagementCoordinator.EngagementLaunching = .direct(kind: .audioCall)
 
-        environment.createRootCoordinator = { _, _, _, launching, _, _ in
+        environment.createRootCoordinator = { _, _, _, launching, _, _, _ in
             engagementLaunching = launching
             return .mock(environment: .engagementCoordEnvironmentWithKeyWindow)
         }
@@ -649,7 +649,7 @@ extension GliaTests {
 
 extension EngagementCoordinator.Environment: Transformable {
     static var engagementCoordEnvironmentWithKeyWindow: Self {
-        EngagementCoordinator.Environment.mock.transform {
+        EngagementCoordinator.Environment.mock().transform {
             $0.uiApplication = .failing.transform { $0.windows = { [ .mock() ] } }
         }
     }

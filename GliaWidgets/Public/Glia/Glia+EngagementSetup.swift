@@ -187,13 +187,15 @@ extension Glia {
             // If user presses Leave button, then ChatTranscript screen will be replaced with proper Chat/Call screen.
             engagementLaunching = .indirect(kind: .messaging(.chatTranscript), initialKind: engagementKind)
         }
-
         rootCoordinator = self.environment.rootCoordinator(
             interactor: interactor,
             viewFactory: viewFactory,
             sceneProvider: sceneProvider,
             engagementLaunching: engagementLaunching,
             features: features,
+            engagementRestorationState: { [weak self] in
+                return self?.engagementRestorationState ?? .none
+            },
             environment: .create(
                 with: environment,
                 loggerPhase: loggerPhase,
