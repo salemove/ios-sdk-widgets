@@ -6,7 +6,8 @@ extension EngagementCoordinator {
         sceneProvider: SceneProvider? = nil,
         engagementLaunching: EngagementCoordinator.EngagementLaunching = .direct(kind: .audioCall),
         features: Features = .all,
-        environment: Environment = .mock
+        engagementRestorationState: @escaping () -> (EngagementRestorationState) = { .none },
+        environment: Environment = .mock()
     ) -> EngagementCoordinator {
         EngagementCoordinator(
             interactor: interactor,
@@ -14,6 +15,7 @@ extension EngagementCoordinator {
             sceneProvider: sceneProvider,
             engagementLaunching: engagementLaunching,
             features: features,
+            engagementRestorationState: engagementRestorationState,
             environment: environment
         )
     }

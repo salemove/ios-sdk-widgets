@@ -63,7 +63,7 @@ private extension GliaTests {
             setSecureMessageAction: { mockSCMessagePushAction = $0 },
             secureMessageAction: { mockSCMessagePushAction }
         )
-        sdkEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _ in
+        sdkEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _, _ in
                 .mock(
                     engagementLaunching: engagementLaunching,
                     environment: .engagementCoordEnvironmentWithKeyWindow

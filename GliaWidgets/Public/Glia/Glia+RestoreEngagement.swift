@@ -14,7 +14,7 @@ extension Glia {
         else { return }
 
         // Restore only if rootCoordinator is `nil`, meaning Glia screen is not set up.
-        guard rootCoordinator == nil else { return }
+        guard rootCoordinator == nil, engagementRestorationState != .restoring else { return }
 
         restoreOngoingEngagement(
             configuration: configuration,

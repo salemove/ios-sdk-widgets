@@ -27,7 +27,7 @@ extension Glia.Environment {
         uiScreen: .failing,
         uiDevice: .failing,
         notificationCenter: .failing,
-        createRootCoordinator: { _, _, _, _, _, _ in
+        createRootCoordinator: { _, _, _, _, _, _, _ in
             fail("\(Self.self).createRootCoordinator")
             return .mock(
                 interactor: .mock(environment: .failing),

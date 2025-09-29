@@ -54,6 +54,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let kBubbleViewSize: CGFloat = 60.0
     let features: Features
     private let environment: Environment
+    private var engagementRestorationState: () -> (EngagementRestorationState)
 
     init(
         interactor: Interactor,
@@ -61,6 +62,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         sceneProvider: SceneProvider?,
         engagementLaunching: EngagementLaunching,
         features: Features,
+        engagementRestorationState: @escaping () -> (EngagementRestorationState),
         environment: Environment
     ) {
         self.interactor = interactor
@@ -75,6 +77,7 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         )
         self.navigationPresenter = NavigationPresenter(with: navigationController)
         self.features = features
+        self.engagementRestorationState = engagementRestorationState
         self.environment = environment
         navigationController.modalPresentationStyle = .fullScreen
         navigationController.isNavigationBarHidden = true
@@ -147,7 +150,15 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
                 withAction: .engagement(mediaType: mediaType),
                 replaceExistingEnqueueing: replaceExistingEnqueueing
             )
-            interactor.state = .enqueueing(engagementKind)
+
+            // Do not set the state back to `enqueueing` if we are already engaged
+            // and simply restoring the session. This situation occurs when a user
+            // authenticates during an active call, and preventing this state change
+            // avoids breaking the UI controls on the Call screen.
+            if !(interactor.isEngaged && engagementRestorationState() == .restoring) {
+                interactor.state = .enqueueing(engagementKind)
+            }
+
             let chatViewController = startChat(
                 withAction: .none,
                 showsCallBubble: true,

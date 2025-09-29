@@ -260,19 +260,58 @@ final class EngagementCoordinatorTests: XCTestCase {
 
         XCTAssertEqual(calledEvents.last, .closed)
     }
+
+    func test_startingCallCoordinatorShouldChangeInteractorStateToEnguqed() throws {
+        let coordinator = createCoordinator(withKind: .audioCall)
+        var calledEvents: [EngagementCoordinator.DelegateEvent] = []
+
+        coordinator.delegate = { event in
+            calledEvents.append(event)
+        }
+
+        coordinator.start()
+
+        XCTAssertEqual(coordinator.interactor.state, .enqueueing(.audioCall))
+
+        XCTAssertEqual(calledEvents.count, 1)
+        XCTAssertEqual(calledEvents.first, .started)
+    }
+
+    func test_startingCallCoordinatorShoulNotChangeInteractorStateIfAlreadyEngagedAndRestoring() throws {
+        let engagementRestorationState: () -> (EngagementRestorationState) = {
+            .restoring
+        }
+        let coordinator = createCoordinator(withKind: .audioCall, engagementRestorationState: engagementRestorationState)
+        var calledEvents: [EngagementCoordinator.DelegateEvent] = []
+
+        coordinator.delegate = { event in
+            calledEvents.append(event)
+        }
+
+        coordinator.interactor.state = .engaged(nil)
+
+        coordinator.start()
+
+        XCTAssertEqual(coordinator.interactor.state, .engaged(nil))
+
+        XCTAssertEqual(calledEvents.count, 1)
+        XCTAssertEqual(calledEvents.first, .started)
+    }
 }
 
 extension EngagementCoordinatorTests {
     func createCoordinator(
-        withKind engagementKind: EngagementKind = .chat
+        withKind engagementKind: EngagementKind = .chat,
+        engagementRestorationState: @escaping () -> (EngagementRestorationState) = { .none }
     ) -> EngagementCoordinator {
-        return createCoordinator(with: .direct(kind: engagementKind))
+        return createCoordinator(with: .direct(kind: engagementKind), engagementRestorationState: engagementRestorationState)
     }
 
     func createCoordinator(
-        with engagementLaunching: EngagementCoordinator.EngagementLaunching
+        with engagementLaunching: EngagementCoordinator.EngagementLaunching,
+        engagementRestorationState: @escaping () -> (EngagementRestorationState) = { .none }
     ) -> EngagementCoordinator {
-        var env = EngagementCoordinator.Environment.mock
+        var env = EngagementCoordinator.Environment.mock()
         env.dismissManager.dismissViewControllerAnimateWithCompletion = { _, _, completion in
             completion?()
         }
@@ -286,6 +325,7 @@ extension EngagementCoordinatorTests {
             sceneProvider: MockedSceneProvider(),
             engagementLaunching: engagementLaunching,
             features: [],
+            engagementRestorationState: engagementRestorationState,
             environment: env
         )
     }
