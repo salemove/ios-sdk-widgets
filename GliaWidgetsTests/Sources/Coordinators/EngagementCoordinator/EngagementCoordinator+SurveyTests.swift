@@ -32,6 +32,7 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
             sceneProvider: nil,
             engagementLaunching: .direct(kind: .audioCall),
             features: [],
+            engagementRestorationState: { .none },
             environment: engagementCoordinatorEnv
         )
         coordinator.end(surveyPresentation: .presentSurvey)

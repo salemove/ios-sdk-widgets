@@ -183,7 +183,7 @@ final class GliaTests: XCTestCase {
         sdk.interactor?.setEndedEngagement(.mock(source: .callVisualizer))
         sdk.interactor?.state = .ended(.byOperator)
 
-        /// Since interactor is created only after visitor code is requested, 
+        /// Since interactor is created only after visitor code is requested,
         /// we can be sure that if this test succeeds, interactor observer is
         /// added successfully, because observer method is called during
         /// interactor creation.
@@ -520,7 +520,7 @@ final class GliaTests: XCTestCase {
         environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
         var engCoordEnvironment = EngagementCoordinator.Environment.engagementCoordEnvironmentWithKeyWindow
         engCoordEnvironment.fileManager = .mock
-        environment.createRootCoordinator = { _, _, _, _, _, _ in EngagementCoordinator.mock(environment: engCoordEnvironment) }
+        environment.createRootCoordinator = { _, _, _, _, _, _, _ in EngagementCoordinator.mock(environment: engCoordEnvironment) }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -740,7 +740,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.gcd.mainQueue.async = { $0() }
         gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
         gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        gliaEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _ in
+        gliaEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _, _ in
             EngagementCoordinator.mock(
                 engagementLaunching: engagementLaunching,
                 environment: .engagementCoordEnvironmentWithKeyWindow
@@ -794,7 +794,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.gcd.mainQueue.asyncAfterDeadline = { _, _ in }
         gliaEnv.coreSdk.fetchSiteConfigurations = { _ in }
         gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        gliaEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _ in
+        gliaEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _, _ in
             EngagementCoordinator.mock(
                 engagementLaunching: engagementLaunching,
                 environment: .engagementCoordEnvironmentWithKeyWindow
@@ -832,6 +832,9 @@ final class GliaTests: XCTestCase {
                 accessToken: nil
             ) { _ in }
 
+
+
         XCTAssertEqual(messages, ["Show Push Notifications Intermediate Dialog"])
+        
     }
 }
