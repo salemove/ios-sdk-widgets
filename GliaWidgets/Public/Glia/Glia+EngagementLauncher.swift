@@ -13,7 +13,7 @@ extension Glia {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "getEngagementLauncher",
-            methodParams: "queueIds"
+            methodParams: ["queueIds"]
         )
         @discardableResult
         func getConfiguration() throws -> Configuration {

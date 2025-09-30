@@ -27,7 +27,7 @@ extension Glia.LocaleProvider {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "getRemoteString",
-            methodParams: "key"
+            methodParams: ["key"]
         )
         return locale(key)
     }

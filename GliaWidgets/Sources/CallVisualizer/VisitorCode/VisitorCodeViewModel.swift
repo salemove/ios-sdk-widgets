@@ -10,6 +10,9 @@ extension CallVisualizer {
         var visitorCodeExpiresAt: Date?
         var viewState: VisitorCodeView.Props.ViewState = .loading {
             didSet {
+                environment.openTelemetry.logger.i(.visitorCodeStateChanged) { builder in
+                    builder[.visitorCodeState] = .string(self.viewState.otelAttributeValue)
+                }
                 notifyPropsUpdated()
                 scheduleVisitorCodeRefresh()
             }
@@ -32,7 +35,12 @@ extension CallVisualizer {
 
             switch presentation {
             case .alert:
-                viewType = .alert(closeButtonTap: Cmd { [weak self] in self?.delegate(.closeButtonTap) })
+                viewType = .alert(closeButtonTap: Cmd { [weak self] in
+                    self?.environment.openTelemetry.logger.i(.visitorCodeButtonClicked) {
+                        $0[.buttonName] = .string(OtelButtonNames.closeVisitorCode.rawValue)
+                    }
+                    self?.delegate(.closeButtonTap)
+                })
             case .embedded:
                 viewType = .embedded
             }
@@ -58,6 +66,9 @@ extension CallVisualizer {
                     self?.viewState = .success(visitorCode: code.code)
                 case let .failure(error):
                     self?.viewState = .error(refreshTap: Cmd { [weak self] in
+                        self?.environment.openTelemetry.logger.i(.visitorCodeButtonClicked) {
+                            $0[.buttonName] = .string(OtelButtonNames.refreshVisitorCode.rawValue)
+                        }
                         self?.viewState = .loading
                         self?.requestVisitorCode()
                     })
