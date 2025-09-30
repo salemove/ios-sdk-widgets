@@ -261,7 +261,7 @@ public class Glia {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "configure",
-            methodParams: "configuration", "theme", "uiConfig", "assetsBuilder", "features", "completion"
+            methodParams: ["configuration", "theme", "uiConfig", "assetsBuilder", "features", "completion"]
         )
 
         guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
@@ -426,7 +426,7 @@ public class Glia {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "setChatMessageRenderer",
-            methodParams: "messageRenderer"
+            methodParams: ["messageRenderer"]
         )
         self.messageRenderer = messageRenderer
     }
@@ -445,7 +445,7 @@ public class Glia {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "clearVisitorSession",
-            methodParams: "completion"
+            methodParams: ["completion"]
         )
         loggerPhase.logger.prefixed(Self.self).info("Clear visitor session")
         guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
@@ -483,7 +483,7 @@ public class Glia {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "getVisitorInfo",
-            methodParams: "completion"
+            methodParams: ["completion"]
         )
         guard configuration != nil else {
             completion(.failure(GliaError.sdkIsNotConfigured))
@@ -528,7 +528,7 @@ public class Glia {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "updateVisitorInfo",
-            methodParams: "info", "completion"
+            methodParams: ["info", "completion"]
         )
         guard configuration != nil else {
             completion(.failure(GliaError.sdkIsNotConfigured))
@@ -543,7 +543,7 @@ public class Glia {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "endEngagement",
-            methodParams: "completion"
+            methodParams: ["completion"]
         )
         loggerPhase.logger.prefixed(Self.self).info("End engagement by integrator")
 
@@ -572,7 +572,7 @@ public class Glia {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "getQueues",
-            methodParams: "completion"
+            methodParams: ["completion"]
         )
         guard configuration != nil else {
             completion(.failure(GliaError.sdkIsNotConfigured))
@@ -600,7 +600,7 @@ public class Glia {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "configureLogLevel",
-            methodParams: "level"
+            methodParams: ["level"]
         )
         environment.coreSdk.configureLogLevel(level)
     }

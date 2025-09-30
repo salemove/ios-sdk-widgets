@@ -14,7 +14,7 @@ extension Glia {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "getEntryWidget",
-            methodParams: "queueIds"
+            methodParams: ["queueIds"]
         )
         return try getEntryWidget(queueIds: queueIds, configuration: .default)
     }

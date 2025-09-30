@@ -16,7 +16,7 @@ public struct SecureConversations {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "getUnreadMessageCount",
-            methodParams: "callback"
+            methodParams: ["callback"]
         )
         environment.coreSdk.secureConversations.getUnreadMessageCount(callback)
     }
@@ -37,7 +37,7 @@ public struct SecureConversations {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "subscribeSecureUnreadMessageCount)",
-            methodParams: "completion"
+            methodParams: ["completion"]
         )
         return environment.coreSdk.secureConversations.subscribeForUnreadMessageCount(completion)
     }
@@ -50,7 +50,7 @@ public struct SecureConversations {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "unsubscribeSecureUnreadMessageCount(_:)",
-            methodParams: "subscriptionToken"
+            methodParams: ["subscriptionToken"]
         )
         return environment.coreSdk.secureConversations.unsubscribeFromUnreadMessageCount(subscriptionToken)
     }
