@@ -119,7 +119,7 @@ public extension EntryWidget {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "show",
-            methodParams: "viewController"
+            methodParams: ["viewController"]
         )
         if hasPendingInteraction {
             do {
@@ -140,7 +140,7 @@ public extension EntryWidget {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "embed",
-            methodParams: "view"
+            methodParams: ["view"]
         )
         showView(in: view)
     }

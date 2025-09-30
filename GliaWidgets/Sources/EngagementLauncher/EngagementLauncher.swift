@@ -26,7 +26,7 @@ public final class EngagementLauncher {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "startChat",
-            methodParams: "sceneProvider"
+            methodParams: ["sceneProvider"]
         )
         try startEngagement(.chat, sceneProvider)
     }
@@ -41,7 +41,7 @@ public final class EngagementLauncher {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "startAudioCall",
-            methodParams: "sceneProvider"
+            methodParams: ["sceneProvider"]
         )
         try startEngagement(.audioCall, sceneProvider)
     }
@@ -56,7 +56,7 @@ public final class EngagementLauncher {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "startVideoCall",
-            methodParams: "sceneProvider"
+            methodParams: ["sceneProvider"]
         )
         try startEngagement(.videoCall, sceneProvider)
     }
@@ -71,7 +71,7 @@ public final class EngagementLauncher {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "startSecureMessaging",
-            methodParams: "sceneProvider"
+            methodParams: ["sceneProvider"]
         )
         try startEngagement(.messaging(.welcome), sceneProvider)
     }
