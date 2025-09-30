@@ -22,7 +22,7 @@ public struct PushNotifications {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "applicationDidRegisterForRemoteNotificationsWithDeviceToken",
-            methodParams: "application", "deviceToken"
+            methodParams: ["application", "deviceToken"]
         )
         environment.coreSdk.pushNotifications.applicationDidRegisterForRemoteNotificationsWithDeviceToken(
             application,
@@ -46,7 +46,7 @@ public struct PushNotifications {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "applicationDidFailToRegisterForRemoteNotificationsWithError",
-            methodParams: "application", "error"
+            methodParams: ["application", "error"]
         )
         environment.coreSdk.pushNotifications.applicationDidFailToRegisterForRemoteNotificationsWithError(
             application,
@@ -73,7 +73,7 @@ public struct PushNotifications {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "userNotificationCenterWillPresent",
-            methodParams: "center", "willPresent", "completionHandler"
+            methodParams: ["center", "willPresent", "completionHandler"]
         )
         environment.coreSdk.pushNotifications.userNotificationCenterWillPresent(
             center,
@@ -101,7 +101,7 @@ public struct PushNotifications {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "userNotificationCenterDidReceiveResponse",
-            methodParams: "center", "didReceive", "completionHandler"
+            methodParams: ["center", "didReceive", "completionHandler"]
         )
         environment.coreSdk.pushNotifications.userNotificationCenterDidReceiveResponse(
             center,
@@ -122,7 +122,7 @@ public struct PushNotifications {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "setPushHandler",
-            methodParams: "handler"
+            methodParams: ["handler"]
         )
         environment.coreSdk.pushNotifications.setPushHandler(handler)
     }
@@ -137,7 +137,7 @@ public struct PushNotifications {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "subscribeTo",
-            methodParams: "types"
+            methodParams: ["types"]
         )
         environment.coreSdk.pushNotifications.subscribeTo(types)
     }

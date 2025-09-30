@@ -11,6 +11,14 @@ extension CallVisualizer {
                 case error(refreshTap: Cmd)
                 case loading
                 case success(visitorCode: String)
+
+                var otelAttributeValue: String {
+                    switch self {
+                    case .loading: return OtelVisitorCodeStates.loading.rawValue
+                    case .error: return OtelVisitorCodeStates.error.rawValue
+                    case .success: return OtelVisitorCodeStates.codeShown.rawValue
+                    }
+                }
             }
 
             let viewState: ViewState

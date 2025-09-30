@@ -1,9 +1,11 @@
 import Foundation
+@_spi(GliaWidgets) import GliaCoreSDK
 
 extension CallVisualizer.VisitorCodeViewModel {
     struct Environment {
         var timerProviding: FoundationBased.Timer.Providing
         var requestVisitorCode: CoreSdkClient.RequestVisitorCode
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 }
 

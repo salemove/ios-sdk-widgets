@@ -60,7 +60,7 @@ public final class CallVisualizer {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "showVisitorCodeViewController",
-            methodParams: "source"
+            methodParams: ["source"]
         )
         environment.log.prefixed(Self.self).info("Show Visitor Code Dialog")
         coordinator.showVisitorCodeViewController(by: .alert(source))
@@ -90,7 +90,7 @@ public final class CallVisualizer {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "embedVisitorCodeView",
-            methodParams: "container", "onEngagementAccepted"
+            methodParams: ["container", "onEngagementAccepted"]
         )
         environment.log.prefixed(Self.self).info("Show Visitor Code Dialog")
         coordinator.showVisitorCodeViewController(

@@ -75,7 +75,7 @@ extension Glia {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "authentication",
-            methodParams: "behavior"
+            methodParams: ["behavior"]
         )
         let auth = try environment.coreSdk.authentication(behavior.toCoreSdk())
 
@@ -266,7 +266,7 @@ extension Glia.Authentication {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "authenticate",
-            methodParams: "idToken", "accessToken", "completion"
+            methodParams: ["idToken", "accessToken", "completion"]
         )
         self.authenticateWithIdToken(
             idToken,
@@ -289,7 +289,7 @@ extension Glia.Authentication {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "deauthenticate",
-            methodParams: "shouldStopPushNotifications", "completion"
+            methodParams: ["shouldStopPushNotifications", "completion"]
         )
         self.deauthenticateWithCallback(shouldStopPushNotifications, completion)
     }
@@ -321,7 +321,7 @@ extension Glia.Authentication {
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "refresh",
-            methodParams: "idToken", "accessToken", "completion"
+            methodParams: ["idToken", "accessToken", "completion"]
         )
         self.refresh(idToken, accessToken, completion)
     }
