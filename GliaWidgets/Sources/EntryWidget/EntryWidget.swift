@@ -379,6 +379,7 @@ private extension EntryWidget {
             receiveValue(state)
         }
         $viewState
+            .removeDuplicates()
             .receive(on: RunLoop.main)
             .sink(receiveValue: logViewStateChanged)
             .store(in: &cancellables)
