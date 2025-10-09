@@ -40,8 +40,18 @@ let package = Package(
         ),
         .binaryTarget(
             name: "GliaWidgetsSDKXcf",
-            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/3.2.2/GliaWidgetsXcf.xcframework.zip",
-            checksum: "ba7a99859aa7cb980c8764a563d647d0a7d4422058ac95e013bbbfa239498e9f"
+            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/3.3.0/GliaWidgetsXcf.xcframework.zip",
+            checksum: "b9b2b72b78348a450a5f6ade881ccc850d87ece68ef78a1e6de667c373067b2a"
+        ),
+        .binaryTarget(
+            name: "GliaOpenTelemetry",
+            url: "https://github.com/salemove/ios-bundle/releases/download/2.1.5/GliaOpenTelemetry.xcframework.zip",
+            checksum: "83bbe10c66d60b4bfba91494a22b4fb71788206c5827df02c7aa1727a1d75f97"
+        ),
+        .binaryTarget(
+            name: "PhoenixChannelsClient",
+            url: "https://github.com/salemove/ios-bundle/releases/download/2.1.5/PhoenixChannelsClient.xcframework.zip",
+            checksum: "5c6bff89a535d4ecf58ac26f221953b80772f2ae1680e01aa1fa1802743233e8"
         ),
         .target(
             name: "GliaWidgets",
@@ -49,7 +59,9 @@ let package = Package(
                 .target(name: "GliaCoreDependency"),
                 .target(name: "TwilioVoice"),
                 .target(name: "WebRTC"),
-                .target(name: "GliaCoreSDK")
+                .target(name: "GliaCoreSDK"),
+                .target(name: "GliaOpenTelemetry"),
+                .target(name: "PhoenixChannelsClient")
             ],
             path: "GliaWidgets",
             exclude: [
