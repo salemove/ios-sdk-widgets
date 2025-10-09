@@ -47,3 +47,24 @@ extension SecureConversations.WelcomeViewModel.Environment {
         )
     }
 }
+
+#if DEBUG
+extension SecureConversations.WelcomeViewModel.Environment {
+    static let mock = Self(
+        secureConversations: .mock,
+        welcomeStyle: Theme.mock().secureConversationsWelcomeStyle,
+        queueIds: [],
+        listQueues: { _ in },
+        fileUploader: .mock(),
+        uiApplication: .mock,
+        createFileUploadListModel: { _ in  .mock() },
+        fetchSiteConfigurations: { _ in },
+        startSocketObservation: { },
+        stopSocketObservation: { },
+        getCurrentEngagement: { .mock() },
+        uploadFileToEngagement: { _, _, _ in },
+        createSendMessagePayload: { _, _ in .mock() },
+        log: .mock
+    )
+}
+#endif

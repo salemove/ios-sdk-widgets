@@ -44,7 +44,8 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
             }
         }
 
-        coordinator.viewModel?.delegate?(.backTapped)
+        let viewController = coordinator.start() as? SecureConversations.WelcomeViewController
+        viewController?.viewModel.delegate?(.backTapped)
     }
 
     func test_closeTapped() {
@@ -56,19 +57,22 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
             }
         }
 
-        coordinator.viewModel?.delegate?(.backTapped)
+        let viewController = coordinator.start() as? SecureConversations.WelcomeViewController
+        viewController?.viewModel.delegate?(.closeTapped)
     }
 
     func test_renderProps() throws {
         let welcomeViewController = try XCTUnwrap(coordinator.start() as? SecureConversations.WelcomeViewController)
-        coordinator.viewModel?.delegate?(.renderProps(.mock))
+
+        welcomeViewController.viewModel.delegate?(.renderProps(.mock))
 
         XCTAssertEqual(.mock, welcomeViewController.props)
     }
 
     func test_confirmationScreenRequested() {
         _ = coordinator.start()
-        coordinator.viewModel?.delegate?(.confirmationScreenRequested)
+        let viewController = coordinator.start() as? SecureConversations.WelcomeViewController
+        viewController?.viewModel.delegate?(.confirmationScreenRequested)
         let confirmationViewController = navigationPresenter.viewControllers
             .last as? SecureConversations.ConfirmationViewController
 
@@ -82,7 +86,7 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
         let oldRootViewController = window?.rootViewController
         window?.rootViewController = welcomeViewController
         defer { window?.rootViewController = oldRootViewController }
-        coordinator.viewModel?.delegate?(
+        welcomeViewController.viewModel.delegate?(
             .mediaPickerRequested(
                 from: welcomeViewController.view,
                 callback: { _ in }
@@ -97,11 +101,11 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
     // "App would like to access the camera" dialog, which could
     // bring unintended consequences.
     func test_pickMedia() {
-        _ = coordinator.start()
+        let viewController = coordinator.start() as? SecureConversations.WelcomeViewController
 
         XCTAssertNil(coordinator.selectedPickerController)
 
-        coordinator.viewModel?.delegate?(.pickMedia(.nop))
+        viewController?.viewModel.delegate?(.pickMedia(.nop))
         XCTAssertNotNil(coordinator.selectedPickerController)
         
         switch coordinator.selectedPickerController {
@@ -112,11 +116,11 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
     }
 
     func test_pickFile() {
-        _ = coordinator.start()
+        let viewController = coordinator.start() as? SecureConversations.WelcomeViewController
 
         XCTAssertNil(coordinator.selectedPickerController)
 
-        coordinator.viewModel?.delegate?(.pickFile(.nop))
+        viewController?.viewModel.delegate?(.pickFile(.nop))
         XCTAssertNotNil(coordinator.selectedPickerController)
 
         switch coordinator.selectedPickerController {
@@ -133,7 +137,7 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
         window?.rootViewController = welcomeViewController
         defer { window?.rootViewController = oldRootViewController }
 
-        coordinator.viewModel?.delegate?(.showAlert(.mediaSourceNotAvailable()))
+        welcomeViewController.viewModel.delegate?(.showAlert(.mediaSourceNotAvailable()))
 
         let presentedViewController = welcomeViewController.presentedViewController as? AlertViewController
 
@@ -148,7 +152,7 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
         window?.rootViewController = welcomeViewController
         defer { window?.rootViewController = oldRootViewController }
 
-        coordinator.viewModel?.delegate?(.showAlert(.unavailableMessageCenter()))
+        welcomeViewController.viewModel.delegate?(.showAlert(.unavailableMessageCenter()))
 
         let presentedViewController = welcomeViewController.children.first { $0 is AlertViewController }
 
@@ -163,16 +167,16 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
         window?.rootViewController = welcomeViewController
         defer { window?.rootViewController = oldRootViewController }
 
-        coordinator.viewModel?.delegate?(.showAlert(.cameraSettings()))
+        welcomeViewController.viewModel.delegate?(.showAlert(.cameraSettings()))
 
         let presentedViewController = welcomeViewController.presentedViewController as? UIAlertController
 
         XCTAssertNotNil(presentedViewController)
     }
 
-    func test_transcriptRequested() {
-        _ = coordinator.start()
-        coordinator.viewModel?.delegate?(.transcriptRequested)
+    func test_transcriptRequested() throws {
+        let welcomeViewController = try XCTUnwrap(coordinator.start() as? SecureConversations.WelcomeViewController)
+        welcomeViewController.viewModel.delegate?(.transcriptRequested)
         let transcriptViewController = navigationPresenter.viewControllers
             .last as? ChatViewController
 
