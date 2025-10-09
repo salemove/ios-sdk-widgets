@@ -13,6 +13,7 @@ final class SecureConversationsWelcomeScreenDynamicTypeFontTests: SnapshotTestCa
         )
         let viewController = SecureConversations.WelcomeViewController(
             viewFactory: .mock(theme: theme, messageRenderer: nil, environment: .mock),
+            viewModel: .init(environment: .mock, availability: .mock()),
             props: .welcome(props),
             environment: .mock(gcd: .live)
         )
@@ -30,6 +31,7 @@ final class SecureConversationsWelcomeScreenDynamicTypeFontTests: SnapshotTestCa
         )
         let viewController = SecureConversations.WelcomeViewController(
             viewFactory: .mock(theme: theme, messageRenderer: nil, environment: .mock),
+            viewModel: .init(environment: .mock, availability: .mock()),
             props: .welcome(props),
             environment: .mock(gcd: .live)
         )
@@ -41,6 +43,7 @@ final class SecureConversationsWelcomeScreenDynamicTypeFontTests: SnapshotTestCa
         let props = Self.makeWelcomeProps(theme: theme.secureConversationsWelcome, warningMessage: "This is warning message")
         let viewController = SecureConversations.WelcomeViewController(
             viewFactory: .mock(theme: theme, messageRenderer: nil, environment: .mock),
+            viewModel: .init(environment: .mock, availability: .mock()),
             props: .welcome(props),
             environment: .mock(gcd: .live)
         )

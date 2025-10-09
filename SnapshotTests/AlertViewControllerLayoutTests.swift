@@ -7,7 +7,8 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
         let alert = alert(ofKind: .singleMediaUpgrade(
             .mock(),
             accepted: {},
-            declined: {}
+            declined: {},
+            onClose: {}
         ))
         alert.assertSnapshot(as: .image, in: .portrait)
         alert.assertSnapshot(as: .image, in: .landscape)
@@ -17,7 +18,8 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
         let alert = alert(ofKind: .message(
             conf: .mock(),
             accessibilityIdentifier: nil,
-            dismissed: {}
+            dismissed: {},
+            onClose: {}
         ))
         alert.assertSnapshot(as: .image, in: .portrait)
         alert.assertSnapshot(as: .image, in: .landscape)
@@ -27,7 +29,8 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
         let alert = alert(ofKind: .singleAction(
             conf: .mock(),
             accessibilityIdentifier: "mocked-accessibility-identifier",
-            actionTapped: {}
+            actionTapped: {},
+            onClose: {}
         ))
         alert.assertSnapshot(as: .image, in: .portrait)
         alert.assertSnapshot(as: .image, in: .landscape)
@@ -44,9 +47,11 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
     func test_liveObservationConfirmationAlert() {
         let alert = alert(ofKind: .liveObservationConfirmation(
             .liveObservationMock(),
-            link: { _ in },
-            accepted: {},
-            declined: {}
+            link1: { _ in },
+            link2: {_ in },
+            accepted: { },
+            declined: {},
+            onClose: {}
         ))
 
         alert.assertSnapshot(as: .image, in: .portrait)
@@ -56,9 +61,12 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
     func test_liveObservationConfirmationAlertWithLinks() {
         let alert = alert(ofKind: .liveObservationConfirmation(
             .liveObservationWithLinksMock(),
-            link: { _ in },
+            link1: { _ in },
+            link2: { _ in },
             accepted: {},
-            declined: {}
+            declined: {},
+            onClose: {}
+
         ))
 
         alert.assertSnapshot(as: .image, in: .portrait)
@@ -70,7 +78,8 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
             conf: .leaveConversationMock(),
             accessibilityIdentifier: "mocked-accessibility-identifier",
             confirmed: {},
-            declined: {}
+            declined: {},
+            onClose: {}
         ))
 
         alert.assertSnapshot(as: .image, in: .portrait)

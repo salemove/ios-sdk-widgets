@@ -680,6 +680,7 @@ class CallViewModelTests: XCTestCase {
             getCameraDeviceManager: { cameraDeviceManager },
             log: .failing,
             flipCameraButtonStyle: .nop,
+            openTelemetry: .mock(configuration: .init(domain: "")),
             callback: { _ in
                 calls.append(.callback)
             }
@@ -718,6 +719,7 @@ class CallViewModelTests: XCTestCase {
             getCameraDeviceManager: { cameraDeviceManager },
             log: .failing,
             flipCameraButtonStyle: style,
+            openTelemetry: .mock(configuration: .init(domain: "")),
             callback: {
                 if let accessibility = $0?.accessibility {
                     accessibilities.append(accessibility)
@@ -737,6 +739,7 @@ class CallViewModelTests: XCTestCase {
             getCameraDeviceManager: { cameraDeviceManager },
             log: .failing,
             flipCameraButtonStyle: style,
+            openTelemetry: .mock(configuration: .init(domain: "")),
             callback: {
                 if let accessibility = $0?.accessibility {
                     accessibilities.append(accessibility)
@@ -782,6 +785,7 @@ class CallViewModelTests: XCTestCase {
             getCameraDeviceManager: { cameraDeviceManager },
             log: .failing,
             flipCameraButtonStyle: style,
+            openTelemetry: .mock(configuration: .init(domain: "")),
             callback: {
                 receivedAccessibilitiesWithCallbacks.append($0)
             }
@@ -808,6 +812,7 @@ class CallViewModelTests: XCTestCase {
             getCameraDeviceManager: { throw CoreSdkClient.CameraDevice.Error.cameraIsNotAccessibleOnStream },
             log: log,
             flipCameraButtonStyle: style,
+            openTelemetry: .mock(configuration: .init(domain: "")),
             callback: {
                 receivedAccessibilitiesWithCallbacks.append($0)
             }
