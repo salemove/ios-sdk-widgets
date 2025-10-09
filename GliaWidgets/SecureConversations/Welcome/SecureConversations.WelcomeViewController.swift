@@ -11,7 +11,7 @@ extension SecureConversations {
 
         let viewFactory: ViewFactory
         let environment: Environment
-        private let viewModel: WelcomeViewModel
+        let viewModel: WelcomeViewModel
 
         init(
             viewFactory: ViewFactory,

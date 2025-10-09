@@ -27,7 +27,7 @@ final class AlertTypeComposerTests: XCTestCase {
         let alertType = try composer.composeAlert(input: input)
 
         switch alertType {
-        case let .singleMediaUpgrade(configuration, _, _):
+        case let .singleMediaUpgrade(configuration, _, _, _):
             let expected = Theme().alertConfiguration.audioUpgrade.withOperatorName(operatorName)
             XCTAssertEqual(configuration, expected)
         default:
@@ -48,7 +48,7 @@ final class AlertTypeComposerTests: XCTestCase {
         let alertType = try composer.composeAlert(input: input)
 
         switch alertType {
-        case let .singleMediaUpgrade(configuration, _, _):
+        case let .singleMediaUpgrade(configuration, _, _, _):
             let expected = Theme().alertConfiguration.oneWayVideoUpgrade.withOperatorName(operatorName)
             XCTAssertEqual(configuration, expected)
         default:
@@ -69,7 +69,7 @@ final class AlertTypeComposerTests: XCTestCase {
         let alertType = try composer.composeAlert(input: input)
 
         switch alertType {
-        case let .singleMediaUpgrade(configuration, _, _):
+        case let .singleMediaUpgrade(configuration, _, _, _):
             let expected = Theme().alertConfiguration.twoWayVideoUpgrade.withOperatorName(operatorName)
             XCTAssertEqual(configuration, expected)
         default:
