@@ -74,9 +74,10 @@ extension OperatorTypingIndicatorView {
 
         private var shape: CAShapeLayer?
 
-        private var positions: (top: CGRect, bottom: CGRect)?
+        private var positions: (top: CGPoint, bottom: CGPoint)?
         private let beginTime: CFTimeInterval
         private let duration: CFTimeInterval
+        private var didAddObservers = false
 
         init(
             color: UIColor,
@@ -99,7 +100,6 @@ extension OperatorTypingIndicatorView {
             let size = min(rect.width, rect.height)
             let rect = CGRect(x: 0, y: 0, width: size, height: size)
             shape = CAShapeLayer()
-            // Flips shape to start animation from correct possition.
             shape?.transform = CATransform3DScale(shape?.transform ?? .init(), 1, -1, 1)
             shape?.path = UIBezierPath(
                 roundedRect: rect,
@@ -110,13 +110,36 @@ extension OperatorTypingIndicatorView {
                 layer.addSublayer(shape)
             }
             positions = (
-                CGRect(x: 0, y: size, width: size, height: size),
-                rect
+                CGPoint(x: size / 2, y: size / 2),
+                CGPoint(x: size / 2, y: size + size / 2)
             )
         }
 
         override func layoutSubviews() {
             super.layoutSubviews()
+            startAnimation()
+        }
+
+        override func didMoveToWindow() {
+            super.didMoveToWindow()
+            if window != nil {
+                shape?.removeAllAnimations()
+                startAnimation()
+                if !didAddObservers {
+                    didAddObservers = true
+                    NotificationCenter.default.addObserver(self, selector: #selector(restartAnimation), name: UIApplication.didBecomeActiveNotification, object: nil)
+                }
+            }
+        }
+
+        deinit {
+            if didAddObservers {
+                NotificationCenter.default.removeObserver(self)
+            }
+        }
+
+        @objc private func restartAnimation() {
+            shape?.removeAllAnimations()
             startAnimation()
         }
 
@@ -135,8 +158,8 @@ extension OperatorTypingIndicatorView {
                 from: color.cgColor,
                 to: color.withAlphaComponent(0.5).cgColor
             )
-            shape.add(positionAnimation, forKey: nil)
-            shape.add(colorAnimation, forKey: nil)
+            shape.add(positionAnimation, forKey: "position")
+            shape.add(colorAnimation, forKey: "fillColor")
         }
 
         private func setupAnimation(
@@ -149,7 +172,7 @@ extension OperatorTypingIndicatorView {
             animation.duration = duration
             animation.repeatCount = .infinity
             animation.autoreverses = true
-            animation.beginTime = CACurrentMediaTime() + beginTime
+            animation.beginTime = layer.convertTime(CACurrentMediaTime(), from: nil) + beginTime
         }
     }
 }
