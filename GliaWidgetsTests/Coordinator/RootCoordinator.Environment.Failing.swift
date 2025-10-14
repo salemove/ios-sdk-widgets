@@ -65,7 +65,6 @@ extension EngagementCoordinator.Environment {
             fail("\(Self.self).createFileUploadListModel")
             return .mock()
         },
-        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock,
         markUnreadMessagesDelay: {
             fail("\(Self.self).markUnreadMessagesDelay")
             return .mock

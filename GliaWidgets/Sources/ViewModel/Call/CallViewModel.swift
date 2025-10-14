@@ -144,8 +144,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
             action?(.queue)
         case .engaged:
             showConnecting()
-            let operatorName = interactor.engagedOperator?.firstName ?? Localization.Engagement.defaultOperator
-            action?(.setOperatorName(operatorName))
             Task {
                 await showSnackBarIfNeeded()
             }
