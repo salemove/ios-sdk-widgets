@@ -142,7 +142,11 @@ class EngagementViewModel: CommonEngagementModel {
 
     @MainActor
     func endSession() async {
-        try? await interactor.endSession()
+        do {
+            try await interactor.endSession()
+        } catch {
+            environment.log.prefixed(Self.self).warning("Ending session failed: \(error)")
+        }
         self.engagementDelegate?(.finished)
     }
 
@@ -169,7 +173,6 @@ private extension EngagementViewModel {
     private func handleError(_ error: CoreSdkClient.SalemoveError) {
         engagementAction?(.showAlert(.error(
             error: error.error,
-					self?.engagementDelegate?(.finished)
             dismissed: { [weak self] in
                 self?.engagementDelegate?(.finished)
             }

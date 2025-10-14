@@ -50,7 +50,6 @@ extension SecureConversations.TranscriptModel.Environment {
             fail("\(Self.self).fetchSiteConfigurations")
             throw NSError(domain: "fetchSiteConfigurations", code: -1)
         },
-        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.TestScheduler(startDate: .mock),
         interactor: .mock(),
         startSocketObservation: {
             fail("\(Self.self).startSocketObservation")

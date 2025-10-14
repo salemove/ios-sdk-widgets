@@ -899,6 +899,9 @@ class ChatViewModelTests: XCTestCase {
         await viewModel.start()
         interactor.state = .enqueueing(.audioCall)
 
+        await waitUntil {
+            alertConfig != nil
+        }
         await alertConfig?.accepted()
 
         // Will be removed when async state observing is implemented
@@ -944,6 +947,9 @@ class ChatViewModelTests: XCTestCase {
         await viewModel.start()
         interactor.state = .enqueueing(.audioCall)
 
+        await waitUntil {
+            alertConfig != nil
+        }
         await alertConfig?.declined()
 
         XCTAssertEqual(interactor.state, .ended(.byVisitor))
@@ -1088,6 +1094,44 @@ class ChatViewModelTests: XCTestCase {
             outgoingMessages.contains(where: { $0.payload.attachment != nil }),
             "file attachment should be preserved after failure"
         )
+    }
+
+    func test_messagePreviewCancelsPreviousTaskWhenTextChanges() async {
+        let startedMessages = LockIsolated<[String]>([])
+        let cancelledMessages = LockIsolated<[String]>([])
+        let completedMessages = LockIsolated<[String]>([])
+
+        var interactorEnv = Interactor.Environment.mock
+        interactorEnv.coreSdk.sendMessagePreview = { message in
+            startedMessages.withValue { $0.append(message) }
+            do {
+                try await Task.sleep(nanoseconds: 250_000_000)
+            } catch is CancellationError {
+                cancelledMessages.withValue { $0.append(message) }
+                throw CancellationError()
+            }
+            completedMessages.withValue { $0.append(message) }
+            return true
+        }
+
+        let interactor = Interactor.mock(environment: interactorEnv)
+        let viewModel = ChatViewModel.mock(interactor: interactor, environment: .mock)
+
+        viewModel.event(.messageTextChanged("first"))
+        await waitUntil {
+            startedMessages.value == ["first"]
+        }
+
+        viewModel.event(.messageTextChanged("second"))
+        await waitUntil {
+            startedMessages.value == ["first", "second"]
+        }
+        await waitUntil {
+            cancelledMessages.value == ["first"] && completedMessages.value == ["second"]
+        }
+
+        XCTAssertEqual(cancelledMessages.value, ["first"])
+        XCTAssertEqual(completedMessages.value, ["second"])
     }
 
     func test_engagementEndedByOperatorCallsEngagementAndDelegateActions() async {

@@ -20,7 +20,7 @@ final class TranscriptModelMigrateTests: XCTestCase {
             return try .mock()
         }
         modelEnv.maximumUploads = { 2 }
-
+        modelEnv.startSocketObservation = { }
         modelEnv.createEntryWidget = { _ in .mock() }
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
 
@@ -47,6 +47,6 @@ final class TranscriptModelMigrateTests: XCTestCase {
         )
 
         await viewModel.migrate(from: .mock())
-        XCTAssertEqual(calls, [.startSocketObservation, .fetchSiteConfigurations])
+        XCTAssertEqual(calls, [.fetchSiteConfigurations])
     }
 }
