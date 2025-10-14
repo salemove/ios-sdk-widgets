@@ -265,7 +265,6 @@ extension CoreSdkClient {
     typealias AuthenticationBehavior = GliaCoreSDK.GliaCore.Authentication.Behavior
     typealias EngagementEndingReason = GliaCoreSDK.EngagementEndingReason
     typealias Cancellable = GliaCore.Cancellable
-    typealias ReactiveSwift = GliaCoreDependency.ReactiveSwift
     typealias SendMessagePayload = GliaCoreSDK.SendMessagePayload
     typealias ConfigureCompletion = GliaCoreSDK.GliaCore.ConfigureCompletion
     typealias Logging = GliaCoreSDK.Logging
