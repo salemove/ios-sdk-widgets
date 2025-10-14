@@ -515,7 +515,6 @@ final class GliaTests: XCTestCase {
         environment.coreSDKConfigurator.configureWithConfiguration = { _, callback in
             callback(.success(()))
         }
-        environment.snackBar.present = { _, _, _, _, _, _, _ in }
         environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
@@ -736,7 +735,6 @@ final class GliaTests: XCTestCase {
         logger.infoClosure = { _, _, _, _ in }
         logger.prefixedClosure = { _ in logger }
         gliaEnv.coreSdk.createLogger = { _ in logger }
-        gliaEnv.snackBar.present = { _, _, _, _, _, _, _ in }
         gliaEnv.conditionalCompilation.isDebug = { true }
         gliaEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in uuidGen().uuidString }
