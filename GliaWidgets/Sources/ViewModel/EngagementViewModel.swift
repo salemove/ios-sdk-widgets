@@ -136,8 +136,16 @@ class EngagementViewModel: CommonEngagementModel {
     }
 
     func endSession() {
-        interactor.endSession { [weak self] _ in
-            self?.engagementDelegate?(.finished)
+        interactor.endSession { [weak self] result in
+            switch result {
+            case .success:
+                self?.engagementDelegate?(.finished)
+            case .failure:
+                // If ending session fails, we should call finished delegate
+                // event as it will imediately close the screen without showing handled error alert.
+                // So errors are being handled in `handleError(_:)` method.
+                break
+            }
         }
     }
 
@@ -166,7 +174,9 @@ private extension EngagementViewModel {
     private func handleError(_ error: CoreSdkClient.SalemoveError) {
         engagementAction?(.showAlert(.error(
             error: error.error,
-            dismissed: endSession
+            dismissed: { [weak self] in
+                self?.engagementDelegate?(.finished)
+            }
         )))
     }
 }
