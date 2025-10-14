@@ -21,7 +21,6 @@ extension SecureConversations.TranscriptModel {
         var uuid: () -> UUID
         var fileUploadListStyle: FileUploadListStyle
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
-        var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
         var interactor: Interactor
         var startSocketObservation: CoreSdkClient.StartSocketObservation
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
@@ -68,7 +67,6 @@ extension SecureConversations.TranscriptModel.Environment {
             // TODO: MOB-3763
             fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.enabled.uploadList,
             fetchSiteConfigurations: environment.fetchSiteConfigurations,
-            messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
             interactor: environment.interactor,
             startSocketObservation: environment.startSocketObservation,
             stopSocketObservation: environment.stopSocketObservation,
@@ -108,7 +106,6 @@ extension SecureConversations.TranscriptModel.Environment {
         uuid: @escaping () -> UUID = { .mock },
         fileUploadListStyle: FileUploadListStyle = .mock,
         fetchSiteConfigurations: @escaping CoreSdkClient.FetchSiteConfigurations = { try .mock() },
-        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler = CoreSdkClient.ReactiveSwift.TestScheduler(),
         interactor: Interactor = .mock(),
         startSocketObservation: @escaping CoreSdkClient.StartSocketObservation = {},
         stopSocketObservation: @escaping CoreSdkClient.StopSocketObservation = {},
@@ -144,7 +141,6 @@ extension SecureConversations.TranscriptModel.Environment {
             uuid: uuid,
             fileUploadListStyle: fileUploadListStyle,
             fetchSiteConfigurations: fetchSiteConfigurations,
-            messagesWithUnreadCountLoaderScheduler: messagesWithUnreadCountLoaderScheduler,
             interactor: interactor,
             startSocketObservation: startSocketObservation,
             stopSocketObservation: stopSocketObservation,

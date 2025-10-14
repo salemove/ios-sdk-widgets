@@ -406,12 +406,6 @@ extension CoreSdkClient.Cancellable {
     static let mock = CoreSdkClient.Cancellable()
 }
 
-extension CoreSdkClient {
-    static var reactiveSwiftDateSchedulerMock: CoreSdkClient.ReactiveSwift.DateScheduler {
-        CoreSdkClient.ReactiveSwift.TestScheduler()
-    }
-}
-
 extension CoreSdkClient.Site.AllowedFileSenders {
     struct Mock: Codable {
         let `operator`: Bool

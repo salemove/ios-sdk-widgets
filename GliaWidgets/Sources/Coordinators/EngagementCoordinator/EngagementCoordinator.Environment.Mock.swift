@@ -27,7 +27,6 @@ extension EngagementCoordinator.Environment {
         listQueues: { [.mock()] },
         createFileUploader: FileUploader.mock,
         createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:),
-        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock,
         markUnreadMessagesDelay: { .mock },
         isAuthenticated: { false },
         startSocketObservation: {},

@@ -454,8 +454,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, _ in }
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.createEntryWidget = { _ in .mock() }
-        let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
-        modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
         modelEnv.uiApplication.applicationState = { .inactive }
         modelEnv.markUnreadMessagesDelay = { .zero }
         modelEnv.notificationCenter.publisherForNotification = { _ in
@@ -484,7 +482,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         )
 
         await viewModel.start(isTranscriptFetchNeeded: true)
-        scheduler.run()
 
         XCTAssertTrue(viewModel.historySection.items.contains(where: { item in
             switch item.kind {
@@ -512,8 +509,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, _ in }
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.createEntryWidget = { _ in .mock() }
-        let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
-        modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             getQueues: modelEnv.getQueues,
@@ -563,7 +558,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         }
 
         await viewModel.start(isTranscriptFetchNeeded: true)
-        scheduler.run()
     }
 
     func testWelcomeMessagesFromWebSocket() async {
@@ -582,8 +576,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, _ in }
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.createEntryWidget = { _ in .mock() }
-        let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
-        modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             getQueues: modelEnv.getQueues,
@@ -632,7 +624,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         }
 
         await viewModel.start(isTranscriptFetchNeeded: true)
-        scheduler.run()
     }
 
     func testIsSecureConversationsAvailableIsFalseIsDueToEmptyQueue() async {
@@ -823,8 +814,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
-        let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
-        modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
         modelEnv.uiApplication.applicationState = { .active }
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
@@ -860,7 +849,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         viewModel.isViewActive.value = true
 
         await viewModel.start(isTranscriptFetchNeeded: true)
-        scheduler.run()
         // Will be removed when combine and async bridge is implemented
         await waitUntil {
             calls == [.secureMarkMessagesAsRead]
@@ -884,8 +872,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
-        let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
-        modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
         modelEnv.secureConversations.markMessagesAsRead = {
@@ -915,7 +901,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         )
 
         await viewModel.start(isTranscriptFetchNeeded: true)
-        scheduler.run()
 
         XCTAssertTrue(calls.isEmpty)
     }
@@ -936,8 +921,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
         modelEnv.uiApplication.applicationState = { .active }
-        let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
-        modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
         modelEnv.secureConversations.markMessagesAsRead = {
@@ -979,7 +962,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         }
 
         await viewModel.start(isTranscriptFetchNeeded: true)
-        scheduler.run()
 
         // Will be removed when fetchChatHistory is converted to async
         await waitUntil {

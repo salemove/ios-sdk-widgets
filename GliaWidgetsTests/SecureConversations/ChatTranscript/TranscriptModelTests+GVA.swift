@@ -148,8 +148,6 @@ extension SecureConversationsTranscriptModelTests {
         modelEnv.secureConversations.getUnreadMessageCount = { 0 }
         modelEnv.startSocketObservation = {}
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
-        let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
-        modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             getQueues: modelEnv.getQueues,
@@ -173,7 +171,6 @@ extension SecureConversationsTranscriptModelTests {
             calls.append(.quickReply)
         }
         await viewModel.start(isTranscriptFetchNeeded: true)
-        scheduler.run()
 
         XCTAssertEqual(calls, [.quickReply])
     }

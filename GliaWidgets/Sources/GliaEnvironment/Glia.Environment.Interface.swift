@@ -42,7 +42,6 @@ extension Glia {
         var bundleManaging: BundleManaging
         var createFileUploader: FileUploader.Create
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
-        var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
         var orientationManager: OrientationManager
         var coreSDKConfigurator: CoreSDKConfigurator
         var proximityManager: ProximityManager
