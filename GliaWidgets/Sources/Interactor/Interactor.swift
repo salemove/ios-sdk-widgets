@@ -117,7 +117,13 @@ class Interactor {
             .compactMap { $0 }
             .sink { [weak self] queueIds in
                 Task { [weak self] in
-                    try? await self?.environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds)
+                    do {
+                        _ = try await self?.environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds)
+                    } catch {
+                        self?.environment.log.prefixed(Self.self).warning(
+                            "Failed to fetch and monitor queues: \(error)"
+                        )
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -144,6 +150,13 @@ class Interactor {
                 }
             }
     }
+
+    private func performOnMain(_ work: @escaping (Interactor) -> Void) {
+        environment.gcd.mainQueue.async { [weak self] in
+            guard let self else { return }
+            work(self)
+        }
+    }
 }
 
 extension Interactor {
@@ -151,6 +164,7 @@ extension Interactor {
         self.queueIds = queueIds
     }
 
+    @MainActor
     func enqueueForEngagement(
         engagementKind: EngagementKind,
         replaceExisting: Bool
@@ -238,6 +252,7 @@ extension Interactor {
         }
     }
 
+    @MainActor
     func endEngagement() async throws {
         let requestID = UUID()
         surveyEligibility = .pendingVisitorEnd(
@@ -306,23 +321,23 @@ extension Interactor {
 extension Interactor: CoreSdkClient.Interactable {
     var onEngagementChanged: CoreSdkClient.EngagementChangedBlock {
         return { [weak self] engagement in
-            guard let self else { return }
+            self?.performOnMain { interactor in
+                interactor.currentEngagement = engagement
 
-            currentEngagement = engagement
-
-            if let engagement {
-                endedEngagement = engagement
-                if case let .pendingVisitorEnd(_, pendingEngagement?) = surveyEligibility,
-                   pendingEngagement.id == engagement.id {
+                if let engagement {
+                    interactor.endedEngagement = engagement
+                    if case let .pendingVisitorEnd(_, pendingEngagement?) = interactor.surveyEligibility,
+                       pendingEngagement.id == engagement.id {
+                        return
+                    }
+                    interactor.invalidateSurveyEligibility()
                     return
                 }
-                invalidateSurveyEligibility()
-                return
-            }
 
-            // Engagement became nil. Keep the last engagement for post-engagement UI
-            // decisions when one was observed; otherwise clear all lifecycle state.
-            cleanup(endedEngagement != nil ? .keepEndedEngagement : .clearEndedEngagement)
+                // Engagement became nil. Keep the last engagement for post-engagement UI
+                // decisions when one was observed; otherwise clear all lifecycle state.
+                interactor.cleanup(interactor.endedEngagement != nil ? .keepEndedEngagement : .clearEndedEngagement)
+            }
         }
     }
 
@@ -358,10 +373,12 @@ extension Interactor: CoreSdkClient.Interactable {
 
     var onEngagementTransfer: CoreSdkClient.EngagementTransferBlock {
         return { [weak self] operators in
-            let engagedOperator = operators?.first
+            self?.performOnMain { interactor in
+                let engagedOperator = operators?.first
 
-            self?.state = .engaged(engagedOperator)
-            self?.notify(.engagementTransferred(engagedOperator))
+                interactor.state = .engaged(engagedOperator)
+                interactor.notify(.engagementTransferred(engagedOperator))
+            }
         }
     }
 
@@ -399,24 +416,26 @@ extension Interactor: CoreSdkClient.Interactable {
 
     var onAudioStreamAdded: CoreSdkClient.AudioStreamAddedBlock {
         return { [weak self] stream, error in
-            guard let self else { return }
-            if let stream = stream {
-                notify(.audioStreamAdded(stream))
-                currentEngagement = environment.coreSdk.getCurrentEngagement()
-            } else if let error = error {
-                notify(.audioStreamError(error))
+            self?.performOnMain { interactor in
+                if let stream {
+                    interactor.notify(.audioStreamAdded(stream))
+                    interactor.currentEngagement = interactor.environment.coreSdk.getCurrentEngagement()
+                } else if let error {
+                    interactor.notify(.audioStreamError(error))
+                }
             }
         }
     }
 
     var onVideoStreamAdded: CoreSdkClient.VideoStreamAddedBlock {
         return { [weak self] stream, error in
-            guard let self else { return }
-            if let stream = stream {
-                notify(.videoStreamAdded(stream))
-                currentEngagement = environment.coreSdk.getCurrentEngagement()
-            } else if let error = error {
-                notify(.videoStreamError(error))
+            self?.performOnMain { interactor in
+                if let stream {
+                    interactor.notify(.videoStreamAdded(stream))
+                    interactor.currentEngagement = interactor.environment.coreSdk.getCurrentEngagement()
+                } else if let error {
+                    interactor.notify(.videoStreamError(error))
+                }
             }
         }
     }
@@ -425,8 +444,17 @@ extension Interactor: CoreSdkClient.Interactable {
         notify(.receivedMessage(message))
     }
 
+    @MainActor
     func start() async {
-        let operators = try? await environment.coreSdk.requestEngagedOperator()
+        let operators: [CoreSdkClient.Operator]?
+        do {
+            operators = try await environment.coreSdk.requestEngagedOperator()
+        } catch {
+            environment.log.prefixed(Self.self).warning(
+                "Failed to request engaged operator: \(error)"
+            )
+            operators = nil
+        }
         let engagedOperator = operators?.first
         state = .engaged(engagedOperator)
         currentEngagement = environment.coreSdk.getCurrentEngagement()
@@ -435,11 +463,11 @@ extension Interactor: CoreSdkClient.Interactable {
     func start(engagement: CoreSdkClient.Engagement) {
         switch engagement.source {
         case .coreEngagement:
-            Task {
+            Task { @MainActor in
                await start()
             }
         case .callVisualizer:
-            Task {
+            Task { @MainActor in
                 await start()
             }
         case .unknown(let type):
@@ -450,27 +478,29 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     func end(with reason: CoreSdkClient.EngagementEndingReason) {
-        let endReason: EndEngagementReason
-        // Core invokes this callback before clearing its current engagement.
-        endedEngagement = environment.coreSdk.getCurrentEngagement()
+        performOnMain { interactor in
+            let endReason: EndEngagementReason
+            // Core invokes this callback before clearing its current engagement.
+            interactor.endedEngagement = interactor.environment.coreSdk.getCurrentEngagement()
 
-        switch reason {
-        case .visitorHungUp:
-            endReason = .byVisitor
-        case .operatorHungUp, .followUp:
-            endReason = .byOperator
-        case .error:
-            endReason = .byError
-        @unknown default:
-            endReason = .byError
-        }
+            switch reason {
+            case .visitorHungUp:
+                endReason = .byVisitor
+            case .operatorHungUp, .followUp:
+                endReason = .byOperator
+            case .error:
+                endReason = .byError
+            @unknown default:
+                endReason = .byError
+            }
 
-        if let endedEngagement {
-            surveyEligibility = .eligible(endedEngagement)
-        } else {
-            surveyEligibility = .unavailable
+            if let endedEngagement = interactor.endedEngagement {
+                interactor.surveyEligibility = .eligible(endedEngagement)
+            } else {
+                interactor.surveyEligibility = .unavailable
+            }
+            interactor.state = .ended(endReason)
         }
-        state = .ended(endReason)
     }
 
     func fail(error: CoreSdkClient.SalemoveError) {
@@ -478,8 +508,14 @@ extension Interactor: CoreSdkClient.Interactable {
         // and it leads to fetchQueues failure that stops queues observing
         // Also when token expires CoreSDK makes force deauthentication which
         // allows to refetch the queues without errors
-        Task {
-            _ = try? await environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds ?? [])
+        Task { [environment, queueIds] in
+            do {
+                _ = try await environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds ?? [])
+            } catch {
+                environment.log.prefixed(Self.self).warning(
+                    "Failed to restart queues monitoring after interactor failure: \(error)"
+                )
+            }
         }
         notify(.error(error))
     }

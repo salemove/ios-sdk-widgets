@@ -223,8 +223,12 @@ extension CallVisualizer.Coordinator {
 extension CallVisualizer.Coordinator {
     func declineEngagement() {
         Task { @MainActor [weak self] in
-            try? await activeInteractor?.endEngagement()
-            self?.end()
+            do {
+                try await activeInteractor?.endEngagement()
+                self?.end()
+            } catch {
+                environment.log.prefixed(Self.self).warning("Ending call visualizer engagement failed: \(error)")
+            }
         }
     }
 

@@ -544,7 +544,7 @@ class CallViewModelTests: XCTestCase {
             replaceExistingEnqueueing: false
         )
 
-        await viewModel.asyncEvent(.viewDidLoad)
+        await viewModel?.asyncEvent(.viewDidLoad)
 
         XCTAssertEqual(calls, [
             .isIdleTimerDisabled(true),
@@ -554,12 +554,18 @@ class CallViewModelTests: XCTestCase {
         viewModel?.interactorEvent(.stateChanged(.ended(.byVisitor)))
         viewModel = nil
 
-        XCTAssertEqual(calls, [
+        let expectedCalls: [Call] = [
             .isIdleTimerDisabled(true),
             .isProximityMonitoringEnabled(true),
             .isIdleTimerDisabled(false),
             .isProximityMonitoringEnabled(false)
-        ])
+        ]
+
+        await waitUntil {
+            calls == expectedCalls
+        }
+
+        XCTAssertEqual(calls, expectedCalls)
     }
 
     func test_showLocalVideAssignsOnHoldCallbackThatWeaklyCapturesVideoStream() {

@@ -594,7 +594,7 @@ extension SecureConversations.TranscriptModel {
     private func loadHistory() async {
         do {
             let messagesWithUnreadCount = try await transcriptMessageLoader.loadMessagesWithUnreadCount()
-			environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
+            environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
                 $0[.messageCount] = .string("\(messagesWithUnreadCount.messages.count)")
             }
             let items: [ChatItem] = messagesWithUnreadCount.messages.compactMap {
@@ -829,7 +829,13 @@ extension SecureConversations.TranscriptModel: ApplicationVisibilityTracker {
         )
         .sink { [weak self] _ in
             Task {
-                try? await self?.performMarkMessagesAsReadRequest()
+                do {
+                    try await self?.performMarkMessagesAsReadRequest()
+                } catch {
+                    self?.environment.log.prefixed(Self.self).warning(
+                        "Marking transcript messages as read failed: \(error)"
+                    )
+                }
             }
         }
         .store(in: &markMessagesAsReadCancellables)

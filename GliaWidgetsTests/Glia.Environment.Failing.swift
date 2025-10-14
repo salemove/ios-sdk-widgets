@@ -53,7 +53,6 @@ extension Glia.Environment {
             fail("\(Self.self).createFileUploadListModel")
             return .mock()
         },
-        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock,
         orientationManager: .mock(),
         coreSDKConfigurator: .failing,
         proximityManager: .failing,

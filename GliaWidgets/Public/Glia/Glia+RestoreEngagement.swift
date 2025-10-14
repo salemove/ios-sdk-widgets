@@ -5,6 +5,7 @@ extension Glia {
     /// - started by accepting engagement request;
     /// - started by Outbound message;
     /// - restored from Follow Up.
+    @MainActor
     func restoreOngoingEngagementIfPresent() async {
         guard let interactor, let configuration else { return }
 
@@ -35,6 +36,9 @@ extension Glia {
         maximize: Bool
     ) async {
         engagementRestorationState = .restoring
+        defer {
+            engagementRestorationState = .restored
+        }
         // In this case, where engagement is restored, LO acknowledgement dialog
         // should not appear again, however snack bar message has to be shown via
         // `showSnackBarIfNeeded` function.
@@ -87,8 +91,6 @@ extension Glia {
         } catch {
             loggerPhase.logger.prefixed(Self.self).warning("Fetching site configuration failed")
         }
-
-        engagementRestorationState = .restored
     }
 
     @MainActor

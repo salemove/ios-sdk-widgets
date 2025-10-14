@@ -214,11 +214,10 @@ extension CallVisualizer {
             case let .upgradeOffer(offer, answer):
                 Task { @MainActor [weak self] in
                     guard let self else { return }
-                    let operators = try? await self.environment.coreSdk.requestEngagedOperator()
                     self.environment.alertManager.present(
                         in: .global,
                         as: .mediaUpgrade(
-                            operators: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
+                            operators: await self.engagedOperatorNamesForUpgradeOffer(),
                             offer: offer,
                             accepted: { [weak self] in
                                 self?.handleAcceptedUpgrade()
@@ -238,6 +237,20 @@ extension CallVisualizer {
             default:
                 break
             }
+        }
+    }
+
+    @MainActor
+    private func engagedOperatorNamesForUpgradeOffer() async -> String {
+        do {
+            return try await environment.coreSdk.requestEngagedOperator()?
+                .compactMap { $0.name }
+                .joined(separator: ", ") ?? ""
+        } catch {
+            environment.log.prefixed(Self.self).warning(
+                "Failed to request engaged operator for upgrade offer: \(error)"
+            )
+            return ""
         }
     }
 }

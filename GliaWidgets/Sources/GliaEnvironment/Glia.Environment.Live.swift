@@ -27,7 +27,6 @@ extension Glia.Environment {
         bundleManaging: .live,
         createFileUploader: FileUploader.init(maximumUploads:environment:),
         createFileUploadListModel: SecureConversations.FileUploadListViewModel.init,
-        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.QueueScheduler.main,
         orientationManager: .init(environment: .init(
             uiApplication: .live,
             uiDevice: .live,

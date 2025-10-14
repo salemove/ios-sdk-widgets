@@ -163,12 +163,8 @@ extension CallViewController {
             environment: viewFactEnv
         )
         let viewController = await CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
-        let operatorImageURL = URL.mock
-            .appendingPathComponent("operator")
-            .appendingPathComponent("123")
-            .appendingPathComponent("avatar")
-            .appendingPathExtension("png")
-        viewModel.action?(.connecting(name: "Blobby Blob", imageUrl: operatorImageURL.absoluteString))
+
+        viewModel.action?(.connecting(name: "Blobby Blob", imageUrl: nil))
         return viewController
     }
 

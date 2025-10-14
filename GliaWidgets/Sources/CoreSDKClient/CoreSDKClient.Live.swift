@@ -1,6 +1,80 @@
 @_spi(GliaWidgets) import GliaCoreSDK
 
 extension CoreSdkClient {
+    enum AsyncBridge {
+        static func result<Value, Failure: Error>(
+            _ operation: (@escaping (Result<Value, Failure>) -> Void) -> Void
+        ) async throws -> Value {
+            try await withCheckedThrowingContinuation { continuation in
+                operation { result in
+                    switch result {
+                    case let .success(value):
+                        continuation.resume(returning: value)
+                    case let .failure(error):
+                        continuation.resume(throwing: error)
+                    }
+                }
+            }
+        }
+
+        static func pair<Value>(
+            _ operation: (@escaping (Value, Error?) -> Void) -> Void
+        ) async throws -> Value {
+            try await withCheckedThrowingContinuation { continuation in
+                operation { value, error in
+                    if let error {
+                        continuation.resume(throwing: error)
+                    } else {
+                        continuation.resume(returning: value)
+                    }
+                }
+            }
+        }
+
+        static func optionalPair<Value>(
+            nilError: Error,
+            _ operation: (@escaping (Value?, Error?) -> Void) -> Void
+        ) async throws -> Value {
+            try await withCheckedThrowingContinuation { continuation in
+                operation { value, error in
+                    if let error {
+                        continuation.resume(throwing: error)
+                    } else if let value {
+                        continuation.resume(returning: value)
+                    } else {
+                        continuation.resume(throwing: nilError)
+                    }
+                }
+            }
+        }
+
+        static func cancellableResult<Value, Failure: Error>(
+            _ operation: (@escaping (Result<Value, Failure>) -> Void) -> Cancellable
+        ) async throws -> Value {
+            let cancellableBox = CancellableBox()
+
+            return try await withCheckedThrowingContinuation { continuation in
+                cancellableBox.cancellable = operation { result in
+                    withExtendedLifetime(cancellableBox.cancellable) {
+                        switch result {
+                        case let .success(value):
+                            continuation.resume(returning: value)
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
+                    }
+                    cancellableBox.cancellable = nil
+                }
+            }
+        }
+    }
+}
+
+private final class CancellableBox {
+    var cancellable: CoreSdkClient.Cancellable?
+}
+
+extension CoreSdkClient {
     static let live: Self = {
         .init(
             pushNotifications: .live,
@@ -10,182 +84,98 @@ extension CoreSdkClient {
             clearSession: GliaCore.sharedInstance.clearSession,
             localeProvider: .init(getRemoteString: GliaCore.sharedInstance.localeProvider.getRemoteString(_:)),
             configureWithConfiguration: GliaCore.sharedInstance.configure(with:completion:), getVisitorInfo: {
-                try await withCheckedThrowingContinuation { continuation in
-                    GliaCore.sharedInstance.fetchVisitorInfo { result in
-                        switch result {
-                        case let .success(coreVisitorInfo):
-                            let visitorInfo = coreVisitorInfo.asWidgetSdkVisitorInfo()
-                            continuation.resume(returning: visitorInfo)
-                        case let .failure(error):
-                            continuation.resume(throwing: error)
-                        }
-                    }
-                }
+                let coreVisitorInfo = try await AsyncBridge.result(GliaCore.sharedInstance.fetchVisitorInfo)
+                return coreVisitorInfo.asWidgetSdkVisitorInfo()
             },
             updateVisitorInfo: { visitorInfoUpdate in
-                try await withCheckedThrowingContinuation { continuation in
-                    GliaCore.sharedInstance.updateVisitorInfo(visitorInfoUpdate.asCoreSdkVisitorInfoUpdate()) { result in
-                        switch result {
-                        case let .success(success):
-                            continuation.resume(returning: success)
-                        case let .failure(error):
-                            continuation.resume(throwing: error)
-                        }
-                    }
+                try await AsyncBridge.result { completion in
+                    GliaCore.sharedInstance.updateVisitorInfo(
+                        visitorInfoUpdate.asCoreSdkVisitorInfoUpdate(),
+                        completion: completion
+                    )
                 }
             },
             configureWithInteractor: GliaCore.sharedInstance.configure(interactor:),
             getQueues: {
-                try await withCheckedThrowingContinuation { continuation in
+                try await AsyncBridge.optionalPair(
+                    nilError: GliaError.internalError
+                ) { completion in
                     GliaCore.sharedInstance.listQueues { coreQueues, error in
-                        if let error {
-                            continuation.resume(throwing: error)
-                        } else if let coreQueues {
-                            let queues = coreQueues.map { $0.asWidgetSDKQueue() }
-                            continuation.resume(returning: queues)
-                            return
-                        } else {
-                            continuation.resume(throwing: GliaError.internalError)
-                        }
+                        completion(coreQueues?.map { $0.asWidgetSDKQueue() }, error)
                     }
                 }
             },
             queueForEngagement: { options, replaceExisting in
-                try await withCheckedThrowingContinuation { continuation in
+                try await AsyncBridge.result { completion in
                     GliaCore.sharedInstance.queueForEngagement(
                         using: options,
                         replaceExisting: replaceExisting
-                    ) { result in
-                        switch result {
-                        case let .success(queueTicket):
-                            continuation.resume(returning: queueTicket)
-                        case let .failure(error):
-                            continuation.resume(throwing: error)
-                        }
-                    }
+                    ) { completion($0) }
                 }
             },
             sendMessagePreview: { message in
-                try await withCheckedThrowingContinuation { continuation in
+                try await AsyncBridge.pair { completion in
                     GliaCore.sharedInstance.sendMessagePreview(message: message) { success, error in
-                        if let error = error {
-                            continuation.resume(throwing: error)
-                        } else {
-                            continuation.resume(returning: success)
-                        }
+                        completion(success, error)
                     }
                 }
             },
             sendMessageWithMessagePayload: { payload in
-                try await withCheckedThrowingContinuation { continuation in
-                    GliaCore.sharedInstance.send(messagePayload: payload) { result in
-                        switch result {
-                        case let .success(message):
-                            continuation.resume(returning: message)
-                        case let .failure(error):
-                            continuation.resume(throwing: error)
-                        }
-                    }
+                try await AsyncBridge.result { completion in
+                    GliaCore.sharedInstance.send(messagePayload: payload) { completion($0) }
                 }
             },
             cancelQueueTicket: { queueTicket in
-                try await withCheckedThrowingContinuation { continuation in
+                try await AsyncBridge.pair { completion in
                     GliaCore.sharedInstance.cancel(queueTicket: queueTicket) { result, error in
-                        if let error {
-                            continuation.resume(throwing: error)
-                            return
-                        } else {
-                            continuation.resume(returning: result)
-                        }
+                        completion(result, error)
                     }
                 }
             },
             endEngagement: {
-                try await withCheckedThrowingContinuation { continuation in
+                try await AsyncBridge.pair { completion in
                     GliaCore.sharedInstance.endEngagement { success, error in
-                        if let error = error {
-                            continuation.resume(throwing: error)
-                        } else {
-                            continuation.resume(returning: success)
-                        }
+                        completion(success, error)
                     }
                 }
             },
             requestEngagedOperator: {
-                try await withCheckedThrowingContinuation { continuation in
+                try await AsyncBridge.pair { completion in
                     GliaCore.sharedInstance.requestEngagedOperator { success, error in
-                        if let error = error {
-                            continuation.resume(throwing: error)
-                        } else {
-                            continuation.resume(returning: success)
-                        }
+                        completion(success, error)
                     }
                 }
             },
             uploadFileToEngagement: GliaCore.sharedInstance.uploadFileToEngagement(_:progress:completion:),
             fetchFile: { file, progress in
-                try await withCheckedThrowingContinuation { continuation in
+                try await AsyncBridge.optionalPair(
+                    nilError: FileError.fileUnavailable
+                ) { completion in
                     GliaCore.sharedInstance.fetchFile(engagementFile: file, progress: progress) { fileInformation, error in
-                        if let error = error {
-                            continuation.resume(throwing: error)
-                        } else if let fileInformation = fileInformation {
-                            continuation.resume(returning: fileInformation)
-                        } else {
-                            continuation.resume(throwing: FileError.fileUnavailable)
-                        }
+                        completion(fileInformation, error)
                     }
                 }
             },
             getCurrentEngagement: GliaCore.sharedInstance.getCurrentEngagement,
             fetchSiteConfigurations: {
-                try await withCheckedThrowingContinuation { continuation in
-                    GliaCore.sharedInstance.fetchSiteConfiguration { result in
-                        switch result {
-                        case let .success(site):
-                            continuation.resume(returning: site)
-                        case let .failure(error):
-                            continuation.resume(throwing: error)
-                        }
-                    }
-                }
+                try await AsyncBridge.result(GliaCore.sharedInstance.fetchSiteConfiguration)
             },
             submitSurveyAnswer: { answers, surveyId, engagementId in
-                try await withCheckedThrowingContinuation { continuation in
+                try await AsyncBridge.result { completion in
                     GliaCore.sharedInstance.submitSurveyAnswer(answers, surveyId: surveyId, engagementId: engagementId) { result in
-                        switch result {
-                        case .success:
-                            continuation.resume()
-                        case let .failure(error):
-                            continuation.resume(throwing: error)
-                        }
+                        completion(result)
                     }
                 }
             },
             authentication: GliaCore.sharedInstance.authentication,
             fetchChatHistory: {
-                try await withCheckedThrowingContinuation { continuation in
-                    GliaCore.sharedInstance.fetchChatTranscript { result in
-                        switch result {
-                        case let .success(messages):
-                            let chatMessages = messages.map { ChatMessage(with: $0) }
-                            continuation.resume(returning: chatMessages)
-                        case let .failure(error):
-                            continuation.resume(throwing: error)
-                        }
-                    }
-                }
+                let messages = try await AsyncBridge.result(GliaCore.sharedInstance.fetchChatTranscript)
+                return messages.map { ChatMessage(with: $0) }
             },
             requestVisitorCode: {
-                try await withCheckedThrowingContinuation { continuation in
-                    GliaCore.sharedInstance.callVisualizer.requestVisitorCode { result in
-                        switch result {
-                        case let .success(visitorCode):
-                            continuation.resume(returning: visitorCode)
-                        case let .failure(error):
-                            continuation.resume(throwing: error)
-                        }
-                    }
-                }
+                try await AsyncBridge.cancellableResult(
+                    GliaCore.sharedInstance.callVisualizer.requestVisitorCode
+                )
             },
             startSocketObservation: GliaCore.sharedInstance.startSocketObservation,
             stopSocketObservation: GliaCore.sharedInstance.stopSocketObservation,
@@ -216,55 +206,27 @@ extension CoreSdkClient {
 extension CoreSdkClient.SecureConversations {
     static let live = Self(
         sendMessagePayload: { secureMessagePayload, queueIds in
-            try await withCheckedThrowingContinuation { continuation in
-                _ = GliaCore.sharedInstance.secureConversations.send(
+            try await CoreSdkClient.AsyncBridge.cancellableResult { completion in
+                GliaCore.sharedInstance.secureConversations.send(
                     secureMessagePayload: secureMessagePayload,
                     queueIds: queueIds
-                ) { result in
-                    switch result {
-                    case let .success(count):
-                        continuation.resume(returning: count)
-                    case let .failure(error):
-                        continuation.resume(throwing: error)
-                    }
-                }
+                ) { completion($0) }
             }
         },
         uploadFile: GliaCore.sharedInstance.secureConversations.uploadFile(_:progress:completion:),
         getUnreadMessageCount: {
-            try await withCheckedThrowingContinuation { continuation in
-                GliaCore.sharedInstance.secureConversations.getUnreadMessageCount { result in
-                    switch result {
-                    case let .success(count):
-                        continuation.resume(returning: count)
-                    case let .failure(error):
-                        continuation.resume(throwing: error)
-                    }
-                }
-            }
+            try await CoreSdkClient.AsyncBridge.result(
+                GliaCore.sharedInstance.secureConversations.getUnreadMessageCount
+            )
         },
         markMessagesAsRead: {
-            try await withCheckedThrowingContinuation { continuation in
-                GliaCore.sharedInstance.secureConversations.markMessagesAsRead { result in
-                    switch result {
-                    case .success:
-                        continuation.resume()
-                    case let .failure(error):
-                        continuation.resume(throwing: error)
-                    }
-                }
-            }
+            try await CoreSdkClient.AsyncBridge.cancellableResult(
+                GliaCore.sharedInstance.secureConversations.markMessagesAsRead
+            )
         },
         downloadFile: { file, progress in
-            try await withCheckedThrowingContinuation { continuation in
-                _ = GliaCore.sharedInstance.secureConversations.downloadFile(file, progress: progress) { result in
-                    switch result {
-                    case let .success(fileInformation):
-                        continuation.resume(returning: fileInformation)
-                    case let .failure(error):
-                        continuation.resume(throwing: error)
-                    }
-                }
+            try await CoreSdkClient.AsyncBridge.cancellableResult { completion in
+                GliaCore.sharedInstance.secureConversations.downloadFile(file, progress: progress) { completion($0) }
             }
         },
         subscribeForUnreadMessageCount: GliaCore.sharedInstance.secureConversations.subscribeToUnreadMessageCount(completion:),
