@@ -57,7 +57,6 @@ extension SecureConversations {
                     self?.reportChange()
                 }
             }
-            environment.startSocketObservation()
             isViewActive.addObserver(self) { [weak self] isViewActive, _ in
                 if isViewActive {
                     self?.environment.openTelemetry.logger.i(.scWelcomeScreenShown)
@@ -150,7 +149,7 @@ private extension SecureConversations.WelcomeViewModel {
         do {
             let site = try await environment.fetchSiteConfigurations()
             isAttachmentsAvailable = site.allowedFileSenders.visitor
-                self?.allowedFileContentTypes = site.allowedFileContentTypes
+            allowedFileContentTypes = site.allowedFileContentTypes
         } catch {
             delegate?(.showAlert(.error(error: error)))
         }

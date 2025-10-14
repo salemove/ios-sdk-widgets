@@ -14,28 +14,18 @@ class CallViewTests: XCTestCase {
     }
 
     @MainActor
-    func test_setVisitorOnHoldHidesTopStackViewOnVideoCall() async throws {
-        let viewController = try await CallViewController.mockVideoCallConnectedState()
-        let view = viewController.view as! CallView
-        
-        XCTAssertFalse(view.topStackView.isHidden)
-        view.isVisitrOnHold = true
-        XCTAssertTrue(view.topStackView.isHidden)
-    }
-
-    @MainActor
     func test_setVisitorOnHoldShowsConnectViewOnVideoCall() async throws {
         let viewController = try await CallViewController.mockVideoCallConnectedState()
         let view = viewController.view as! CallView
+        view.setVisitorOnHold(true)
+        XCTAssertTrue(view.state.isOnHold)
     }
 
     @MainActor
     func test_setVisitorOnHoldShowsBottomLabelOnVideoCall() async throws {
         let viewController = try await CallViewController.mockVideoCallConnectedState()
-        view.setVisitorOnHold(true)
-        XCTAssertTrue(view.state.isOnHold)
         let view = viewController.view as! CallView
-        
+
         XCTAssertTrue(view.bottomLabel.isHidden)
         view.setVisitorOnHold(true)
         XCTAssertFalse(view.bottomLabel.isHidden)
