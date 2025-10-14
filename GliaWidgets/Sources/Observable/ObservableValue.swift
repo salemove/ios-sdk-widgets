@@ -60,7 +60,7 @@ class ObservableValue<T: Any> {
                 // was that `update` closure
                 // must always run on main queue, I added
                 // this check. But we must use some
-                // battle-tested solution like ReactiveSwift or Combine.
+                // battle-tested solution like Combine.
                 // That will allow us to use proper schedulers for UI, unit tests etc.
                 if Thread.isMainThread {
                     update(new, old)

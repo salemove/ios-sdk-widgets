@@ -132,7 +132,7 @@ private extension AlertManager.AlertTypeComposer {
             accessibilityIdentifier: "alert_queue_closed",
             dismissed: {
                 logButtonClicked(button: .close, dialog: .queueIsClosed)
-                dismissed?()
+                await dismissed?()
             }, onClose: {
                 logDialogClosed(dialog: .queueIsClosed)
             }
@@ -147,7 +147,7 @@ private extension AlertManager.AlertTypeComposer {
             accessibilityIdentifier: "alert_queue_full",
             dismissed: {
                 logButtonClicked(button: .close, dialog: .queueIsClosed)
-                dismissed?()
+                await dismissed?()
             }, onClose: {
                 logDialogClosed(dialog: .queueIsClosed)
             }
@@ -162,7 +162,7 @@ private extension AlertManager.AlertTypeComposer {
             accessibilityIdentifier: nil,
             dismissed: {
                 logButtonClicked(button: .close, dialog: .unexpectedError)
-                dismissed?()
+                await dismissed?()
             }, onClose: {
                 logDialogClosed(dialog: .unexpectedError)
             }
@@ -177,7 +177,7 @@ private extension AlertManager.AlertTypeComposer {
             accessibilityIdentifier: "alert_expired_access_token",
             dismissed: {
                 logButtonClicked(button: .close, dialog: .unauthenticatedError)
-                dismissed?()
+                await dismissed?()
             }, onClose: {
                 logDialogClosed(dialog: .unauthenticatedError)
             }
@@ -287,11 +287,11 @@ private extension AlertManager.AlertTypeComposer {
             },
             accepted: {
                 logButtonClicked(button: .positive, dialog: .liveObservationConfirmation)
-                accepted()
+                await accepted()
             },
             declined: {
                 logButtonClicked(button: .negative, dialog: .liveObservationConfirmation)
-                declined()
+                await declined()
             }, onClose: {
                 logDialogClosed(dialog: .liveObservationConfirmation)
             }
@@ -306,7 +306,7 @@ private extension AlertManager.AlertTypeComposer {
             accessibilityIdentifier: "alert_close_engagementEnded",
             actionTapped: {
                 logButtonClicked(button: .ok, dialog: .engagementEnded)
-                action()
+                await action()
             }, onClose: {
                 logDialogClosed(dialog: .engagementEnded)
             }
@@ -321,12 +321,12 @@ private extension AlertManager.AlertTypeComposer {
             accessibilityIdentifier: "alert_confirmation_leaveQueue",
             confirmed: {
                 logButtonClicked(button: .positive, dialog: .leaveQueueConfirmation)
-                confirmed()
+                await confirmed()
             },
-            dismissed: {
-                logButtonClicked(button: .negative, dialog: .leaveQueueConfirmation)
-            }, onClose: {
+            onClose: {
                 logDialogClosed(dialog: .leaveQueueConfirmation)
+            }, dismissed: {
+                logButtonClicked(button: .negative, dialog: .leaveQueueConfirmation)
             }
         )
     }
@@ -339,12 +339,12 @@ private extension AlertManager.AlertTypeComposer {
             accessibilityIdentifier: "alert_confirmation_endEngagement",
             confirmed: {
                 logButtonClicked(button: .positive, dialog: .leaveEngagementConfirmation)
-                confirmed()
+                await confirmed()
             },
-            dismissed: {
-                logButtonClicked(button: .negative, dialog: .leaveEngagementConfirmation)
-            }, onClose: {
+            onClose: {
                 logDialogClosed(dialog: .leaveEngagementConfirmation)
+            }, dismissed: {
+                logButtonClicked(button: .negative, dialog: .leaveEngagementConfirmation)
             }
         )
     }

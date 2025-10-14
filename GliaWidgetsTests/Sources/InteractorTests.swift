@@ -79,6 +79,56 @@ class InteractorTests: XCTestCase {
         ])
     }
 
+    func test_onEngagementTransferPerformsStateAndObserverCallbacksOnMainQueue() throws {
+        enum Call: Equatable {
+            case stateChanged(InteractorState)
+            case engagementTransferred(CoreSdkClient.Operator?)
+        }
+
+        var calls = [Call]()
+        var scheduledMainQueueBlocks = [() -> Void]()
+        let mockOperator: CoreSdkClient.Operator = .mock()
+        var gcd = GCD.mock
+        gcd.mainQueue.async = { block in
+            scheduledMainQueueBlocks.append(block)
+        }
+
+        interactor = .init(
+            visitorContext: nil,
+            environment: .init(coreSdk: .failing, queuesMonitor: .mock(), gcd: gcd, log: .failing)
+        )
+
+        interactor.addObserver(self, handler: { event in
+            switch event {
+            case .stateChanged(let state):
+                calls.append(.stateChanged(state))
+            case .engagementTransferred(let engagedOperator):
+                calls.append(.engagementTransferred(engagedOperator))
+            default:
+                break
+            }
+        })
+
+        interactor.onEngagementTransfer([mockOperator])
+
+        XCTAssertTrue(interactor.state == .none)
+        XCTAssertEqual(calls, [])
+        XCTAssertEqual(scheduledMainQueueBlocks.count, 1)
+
+        scheduledMainQueueBlocks.removeFirst()()
+
+        XCTAssertEqual(interactor.state, .engaged(mockOperator))
+        XCTAssertEqual(scheduledMainQueueBlocks.count, 2)
+
+        scheduledMainQueueBlocks.removeFirst()()
+        scheduledMainQueueBlocks.removeFirst()()
+
+        XCTAssertEqual(calls, [
+            .stateChanged(.engaged(mockOperator)),
+            .engagementTransferred(mockOperator)
+        ])
+    }
+
     func test_sendMessagePreview() async throws {
         enum Callback: Equatable {
             case sendMessagePreview(String)
@@ -497,6 +547,7 @@ class InteractorTests: XCTestCase {
 
     func test_endWithReasonSetsProperState() {
         let interactor = Interactor.failing
+        interactor.environment.gcd = .mock
         interactor.state = .engaged(.mock())
         typealias Item = (reason: CoreSdkClient.EngagementEndingReason, state: InteractorState)
 
@@ -646,7 +697,7 @@ extension InteractorTests {
             engagement
         }
 
-        var interactorEnv = Interactor.Environment(coreSdk: coreSdk, queuesMonitor: .mock(), gcd: .failing, log: .failing)
+        var interactorEnv = Interactor.Environment(coreSdk: coreSdk, queuesMonitor: .mock(), gcd: .mock, log: .failing)
         interactorEnv.log.infoClosure = { _, _, _, _ in }
         interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }
 

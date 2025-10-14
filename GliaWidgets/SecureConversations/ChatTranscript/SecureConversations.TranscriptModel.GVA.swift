@@ -41,8 +41,8 @@ private extension SecureConversations.TranscriptModel {
     func postbackButtonAction(for option: GvaOption) -> AsyncCmd {
         .init { [weak self] in
             self?.environment.openTelemetry.logger.i(.chatScreenGvaMessageAction) {
-            }
                 $0[.actionType] = .string(OtelGvaActionTypes.postBack.rawValue)
+            }
             await self?.sendGvaOption(option)
         }
     }

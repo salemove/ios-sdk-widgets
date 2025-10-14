@@ -33,7 +33,6 @@ extension SecureConversations.Coordinator.Environment {
         getNonTransferredSecureConversationEngagement: { .mock() },
         submitSurveyAnswer: { answers, surveyId, engagementId in },
         interactor: .mock(),
-        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock,
         isAuthenticated: { true },
         startSocketObservation: { },
         stopSocketObservation: { },
