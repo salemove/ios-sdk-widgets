@@ -40,13 +40,16 @@ class ChatViewModel: EngagementViewModel {
     private(set) var messageText = "" {
         didSet {
             validateMessage()
-            Task {
-                await sendMessagePreview(messageText)
+            messagePreviewTask?.cancel()
+            let message = messageText
+            messagePreviewTask = Task { [weak self] in
+                await self?.sendMessagePreview(message)
             }
             action?(.setMessageText(messageText))
         }
     }
 
+    private var messagePreviewTask: Task<Void, Never>?
     private var pendingMessages: [OutgoingMessage] = []
     var isViewLoaded: Bool = false
     var isChoiceCardInputModeEnabled: Bool = false
@@ -160,6 +163,8 @@ class ChatViewModel: EngagementViewModel {
         }
     }
     // swiftlint:enable function_body_length
+
+    deinit { messagePreviewTask?.cancel() }
 
     override func viewDidAppear() {
         super.viewDidAppear()
@@ -450,7 +455,13 @@ extension ChatViewModel {
 extension ChatViewModel {
     @MainActor
     private func loadHistory() async -> [ChatMessage] {
-        let messages = (try? await environment.fetchChatHistory()) ?? []
+        let messages: [ChatMessage]
+        do {
+            messages = try await environment.fetchChatHistory()
+        } catch {
+            environment.log.prefixed(Self.self).warning("Fetching chat history failed: \(error)")
+            messages = []
+        }
 
         // Store message ids from history,
         // to be able to discard duplicates
@@ -538,7 +549,15 @@ extension ChatViewModel {
     }
 
     private func sendMessagePreview(_ message: String) async {
-        _ = try? await interactor.sendMessagePreview(message)
+        guard !Task.isCancelled else { return }
+
+        do {
+            _ = try await interactor.sendMessagePreview(message)
+        } catch is CancellationError {
+            return
+        } catch {
+            environment.log.prefixed(Self.self).debug("Sending message preview failed: \(error)")
+        }
     }
 
     @MainActor
@@ -1189,7 +1208,13 @@ extension ChatViewModel: ApplicationVisibilityTracker {
         )
         .sink { [weak self] _ in
             Task {
-                try? await self?.environment.secureConversations.markMessagesAsRead()
+                do {
+                    try await self?.environment.secureConversations.markMessagesAsRead()
+                } catch {
+                    self?.environment.log.prefixed(Self.self).warning(
+                        "Marking messages as read failed: \(error)"
+                    )
+                }
             }
         }
         .store(in: &markMessagesAsReadCancellables)

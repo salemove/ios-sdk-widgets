@@ -52,7 +52,7 @@ extension AlertViewController {
     func makeConfirmationAlertView(
         with conf: ConfirmationAlertConfiguration,
         accessibilityIdentifier: String,
-        confirmed: @escaping () async -> Void
+        confirmed: @escaping () async -> Void,
         dismissed: (() -> Void)?
     ) -> AlertView {
         let alertView = makeAsyncAlertView(

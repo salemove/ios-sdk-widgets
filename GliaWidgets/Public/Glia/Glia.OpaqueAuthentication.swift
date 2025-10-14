@@ -163,7 +163,7 @@ extension Glia {
                    let configuration = self?.configuration, prevEngagementIsNotPresent,
                    let interactor {
                     self?.closeRootCoordinator()
-                    Task {
+                    Task { @MainActor in
                         await self?.restoreOngoingEngagement(
                             configuration: configuration,
                             currentEngagement: ongoingEngagement,

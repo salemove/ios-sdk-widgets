@@ -91,6 +91,7 @@ private extension Glia {
 
 // swiftlint:disable type_body_length
 /// Glia's engagement interface.
+// swiftlint:disable type_body_length
 public class Glia {
     /// A singleton to access the Glia's interface.
     public static let sharedInstance = Glia(environment: .live)
@@ -251,6 +252,7 @@ public class Glia {
     ///   - `GliaError.configuringDuringEngagementIsNotAllowed`
     ///   - `ConfigurationError`
     ///
+    // swiftlint:disable function_body_length
     public func configure(
         with configuration: Configuration,
         theme: Theme = Theme(),
@@ -354,11 +356,11 @@ public class Glia {
                 guard let currentEngagement = self.environment.coreSdk.getNonTransferredSecureConversationEngagement() else { return }
 
                 if currentEngagement.source == .callVisualizer {
-                    Task {
+                    Task { @MainActor in
                         await self.callVisualizer.handleRestoredEngagement()
                     }
                 } else {
-                    Task {
+                    Task { @MainActor in
                         await self.restoreOngoingEngagement(
                             configuration: configuration,
                             currentEngagement: currentEngagement,
@@ -575,7 +577,7 @@ public class Glia {
             return
         }
 
-        Task { [weak self] in
+        Task { @MainActor [weak self] in
             do {
                 try await interactor.endSession()
                 guard let self else { return }
@@ -682,7 +684,7 @@ extension Glia {
                 case .engaged = interactorState
             else { return }
 
-            Task {
+            Task { @MainActor in
                 await self?.restoreOngoingEngagementIfPresent()
             }
         }

@@ -70,13 +70,19 @@ final class QueuesMonitor {
     func stopMonitoring() {
         if let subscriptionId {
             environment.unsubscribeFromUpdates(subscriptionId) { [weak self] error in
-                self?.state = .failed(error)
+                self?.setState(.failed(error))
             }
         }
     }
 }
 
 private extension QueuesMonitor {
+    func setState(_ state: State) {
+        Task { @MainActor [weak self] in
+            self?.state = state
+        }
+    }
+
     func evaluateQueues(queuesIds: [String], fetchedQueues: [Queue]?) -> [Queue] {
         guard let queues = fetchedQueues, !queues.isEmpty else {
             environment.logger.warning("Setting up queues. Site has no queues.")
@@ -123,10 +129,10 @@ private extension QueuesMonitor {
             switch result {
             case .success(let queue):
                 self.updateQueue(queue)
-                self.state = .updated(self.observedQueues)
+                self.setState(.updated(self.observedQueues))
                 return
             case .failure(let error):
-                self.state = .failed(error)
+                self.setState(.failed(error))
                 return
             }
         }
