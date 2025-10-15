@@ -90,6 +90,7 @@ private extension Glia {
 }
 
 /// Glia's engagement interface.
+// swiftlint:disable type_body_length
 public class Glia {
     /// A singleton to access the Glia's interface.
     public static let sharedInstance = Glia(environment: .live)
@@ -249,6 +250,7 @@ public class Glia {
     ///   - `GliaError.configuringDuringEngagementIsNotAllowed`
     ///   - `ConfigurationError`
     ///
+    // swiftlint:disable function_body_length
     public func configure(
         with configuration: Configuration,
         theme: Theme = Theme(),
@@ -390,6 +392,7 @@ public class Glia {
             }
         }
     }
+    // swiftlint:enable function_body_length
 
     /// Minimizes engagement view if ongoing engagement exists.
     /// Use this function to minimize the engagement view programmatically
@@ -629,6 +632,7 @@ public class Glia {
         environment.coreSdk.configureLogLevel(level)
     }
 }
+// swiftlint:enable type_body_length
 
 // MARK: - Internal
 extension Glia {

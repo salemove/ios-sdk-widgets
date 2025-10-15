@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 
+// swiftlint:disable file_length
 class ChatViewModel: EngagementViewModel {
     typealias ActionCallback = (Action) -> Void
     typealias DelegateCallback = (DelegateEvent) -> Void
@@ -1199,3 +1200,4 @@ extension ChatViewModel {
     }
 }
 #endif
+// swiftlint:enable file_length
