@@ -245,7 +245,6 @@ extension SecureConversations {
         /// Starts socket observation, fetches site configuration and loads chat history if needed.
         /// - Parameter isTranscriptFetchNeeded: A flag indicating whether chat history will be loaded.
         func start(isTranscriptFetchNeeded: Bool) {
-            environment.startSocketObservation()
             fetchSiteConfigurations()
 
             guard isTranscriptFetchNeeded else {

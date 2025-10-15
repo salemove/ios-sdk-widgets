@@ -35,8 +35,6 @@ extension SecureConversations.WelcomeViewModel.Environment {
             uiApplication: uiApplication,
             createFileUploadListModel: createFileUploadListModel,
             fetchSiteConfigurations: fetchSiteConfigurations,
-            startSocketObservation: startSocketObservation,
-            stopSocketObservation: stopSocketObservation,
             getCurrentEngagement: getCurrentEngagement,
             uploadFileToEngagement: uploadFileToEngagement,
             createSendMessagePayload: createSendMessagePayload,
