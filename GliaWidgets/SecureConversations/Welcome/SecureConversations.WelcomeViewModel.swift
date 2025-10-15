@@ -59,7 +59,6 @@ extension SecureConversations {
 
             checkSecureConversationsAvailability()
             loadAttachmentAvailability()
-            environment.startSocketObservation()
             isViewActive.addObserver(self) { [weak self] isViewActive, _ in
                 if isViewActive {
                     self?.environment.openTelemetry.logger.i(.scWelcomeScreenShown)
@@ -104,10 +103,6 @@ extension SecureConversations {
 
         func reportChange() {
             delegate?(.renderProps(props()))
-        }
-
-        deinit {
-            environment.stopSocketObservation()
         }
     }
 }

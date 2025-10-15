@@ -10,6 +10,10 @@ extension SecureConversations {
         private(set) var selectedPickerController: SelectedPickerController?
         private var messagingInitialScreen: SecureConversations.InitialScreen
 
+        deinit {
+            environment.stopSocketObservation()
+        }
+
         init(
             messagingInitialScreen: SecureConversations.InitialScreen,
             viewFactory: ViewFactory,
@@ -32,6 +36,7 @@ extension SecureConversations {
                 viewController = makeSecureConversationsWelcomeViewController()
             }
 
+            environment.startSocketObservation()
             return viewController
         }
 

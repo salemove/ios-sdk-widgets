@@ -7,7 +7,6 @@ final class TranscriptModelMigrateTests: XCTestCase {
         typealias FileUploadListViewModel = SecureConversations.FileUploadListViewModel
         enum Call {
             case fetchSiteConfigurations
-            case startSocketObservation
         }
         var calls: [Call] = []
         var modelEnv = TranscriptModel.Environment.failing
@@ -20,7 +19,6 @@ final class TranscriptModelMigrateTests: XCTestCase {
             calls.append(.fetchSiteConfigurations)
         }
         modelEnv.maximumUploads = { 2 }
-        modelEnv.startSocketObservation = { calls.append(.startSocketObservation) }
 
         modelEnv.createEntryWidget = { _ in .mock() }
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
@@ -48,6 +46,6 @@ final class TranscriptModelMigrateTests: XCTestCase {
         )
 
         viewModel.migrate(from: .mock())
-        XCTAssertEqual(calls, [.startSocketObservation, .fetchSiteConfigurations])
+        XCTAssertEqual(calls, [.fetchSiteConfigurations])
     }
 }
