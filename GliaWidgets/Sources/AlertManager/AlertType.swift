@@ -18,7 +18,7 @@ enum AlertType {
         accessibilityIdentifier: String,
         confirmed: () async -> Void,
         onClose: () -> Void,
-        dismissed: (() -> Void)?,
+        dismissed: (() -> Void)?
     )
     case leaveConversation(
         conf: ConfirmationAlertConfiguration,
