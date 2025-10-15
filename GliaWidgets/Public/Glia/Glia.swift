@@ -19,7 +19,7 @@ public enum EngagementKind: Equatable {
 extension EngagementKind {
     /// This initializer makes instance of `EngagementKind`
     /// to reflect `MediaState` from Core SDK.
-    init(media: Engagement.Media) {
+    init(media: CoreSdkClient.Engagement.Media) {
         switch (media.audio, media.video) {
         case (_, .some):
             self = .videoCall
@@ -90,6 +90,7 @@ private extension Glia {
 }
 
 /// Glia's engagement interface.
+// swiftlint:disable type_body_length
 public class Glia {
     /// A singleton to access the Glia's interface.
     public static let sharedInstance = Glia(environment: .live)
@@ -249,6 +250,7 @@ public class Glia {
     ///   - `GliaError.configuringDuringEngagementIsNotAllowed`
     ///   - `ConfigurationError`
     ///
+    // swiftlint:disable function_body_length
     public func configure(
         with configuration: Configuration,
         theme: Theme = Theme(),
@@ -356,15 +358,19 @@ public class Glia {
                 guard let currentEngagement = self.environment.coreSdk.getNonTransferredSecureConversationEngagement() else { return }
 
                 if currentEngagement.source == .callVisualizer {
-                    self.callVisualizer.handleRestoredEngagement()
+                    Task {
+                        await self.callVisualizer.handleRestoredEngagement()
+                    }
                 } else {
-                    self.restoreOngoingEngagement(
-                        configuration: configuration,
-                        currentEngagement: currentEngagement,
-                        interactor: interactor,
-                        features: features,
-                        maximize: false
-                    )
+                    Task {
+                        await self.restoreOngoingEngagement(
+                            configuration: configuration,
+                            currentEngagement: currentEngagement,
+                            interactor: interactor,
+                            features: features,
+                            maximize: false
+                        )
+                    }
                 }
             case .failure(let error):
                 typealias ProcessError = CoreSdkClient.ConfigurationProcessError
@@ -386,6 +392,7 @@ public class Glia {
             }
         }
     }
+    // swiftlint:enable function_body_length
 
     /// Minimizes engagement view if ongoing engagement exists.
     /// Use this function to minimize the engagement view programmatically
@@ -489,7 +496,14 @@ public class Glia {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
         }
-        environment.coreSdk.getVisitorInfo(completion)
+        Task {
+            do {
+                let visitorInfo = try await environment.coreSdk.getVisitorInfo()
+                completion(.success(visitorInfo))
+            } catch {
+                completion(.failure(error))
+            }
+        }
     }
 
     /// Update current Visitor's information.
@@ -534,7 +548,14 @@ public class Glia {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
         }
-        environment.coreSdk.updateVisitorInfo(info, completion)
+        Task {
+            do {
+                let result = try await environment.coreSdk.updateVisitorInfo(info)
+                completion(.success(result))
+            } catch {
+                completion(.failure(error))
+            }
+        }
     }
 
     /// Ends active engagement if existing and closes Widgets SDK UI (includes bubble).
@@ -556,8 +577,14 @@ public class Glia {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
         }
-
-        interactor?.endSession(completion: completion)
+        Task {
+            do {
+                try await interactor?.endSession()
+                completion(.success(()))
+            } catch {
+                completion(.failure(error))
+            }
+        }
     }
 
     /// List all queues of the configured site. It is also possible to monitor queues changes with
@@ -579,11 +606,11 @@ public class Glia {
             return
         }
 
-        environment.coreSdk.getQueues { result in
-            switch result {
-            case let .success(queues):
+        Task {
+            do {
+                let queues = try await environment.coreSdk.getQueues()
                 completion(.success(queues))
-            case let .failure(error):
+            } catch {
                 completion(.failure(error))
             }
         }
@@ -605,6 +632,7 @@ public class Glia {
         environment.coreSdk.configureLogLevel(level)
     }
 }
+// swiftlint:enable type_body_length
 
 // MARK: - Internal
 extension Glia {
@@ -643,7 +671,9 @@ extension Glia {
                 case .engaged = interactorState
             else { return }
 
-            self?.restoreOngoingEngagementIfPresent()
+            Task {
+                await self?.restoreOngoingEngagementIfPresent()
+            }
         }
     }
 

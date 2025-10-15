@@ -2,7 +2,7 @@
 import XCTest
 
 final class TranscriptModelMigrateTests: XCTestCase {
-    func test_migrateCallsStartsSocketObservationAndFetchesSiteConfiguration() {
+    func test_migrateCallsStartsSocketObservationAndFetchesSiteConfiguration() async {
         typealias TranscriptModel = SecureConversations.TranscriptModel
         typealias FileUploadListViewModel = SecureConversations.FileUploadListViewModel
         enum Call {
@@ -15,9 +15,10 @@ final class TranscriptModelMigrateTests: XCTestCase {
         fileUploadListModel.environment.uploader.limitReached.value = false
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
-        modelEnv.getQueues = { _ in }
-        modelEnv.fetchSiteConfigurations = { _ in
+        modelEnv.getQueues = { [] }
+        modelEnv.fetchSiteConfigurations = {
             calls.append(.fetchSiteConfigurations)
+            return try .mock()
         }
         modelEnv.maximumUploads = { 2 }
         modelEnv.startSocketObservation = { calls.append(.startSocketObservation) }
@@ -28,7 +29,7 @@ final class TranscriptModelMigrateTests: XCTestCase {
         let availabilityEnv = SecureConversations.Availability.Environment(
             getQueues: modelEnv.getQueues,
             isAuthenticated: { true },
-            log: .failing,
+            log: .mock,
             queuesMonitor: .mock(getQueues: modelEnv.getQueues),
             getCurrentEngagement: { .mock() }
         )
@@ -47,7 +48,7 @@ final class TranscriptModelMigrateTests: XCTestCase {
             interactor: interactor
         )
 
-        viewModel.migrate(from: .mock())
+        await viewModel.migrate(from: .mock())
         XCTAssertEqual(calls, [.startSocketObservation, .fetchSiteConfigurations])
     }
 }

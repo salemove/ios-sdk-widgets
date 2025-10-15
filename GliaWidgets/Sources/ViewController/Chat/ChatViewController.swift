@@ -37,7 +37,9 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.event(.viewDidLoad)
+        Task { [weak self] in
+            await self?.viewModel.asyncEvent(.viewDidLoad)
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -82,7 +84,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
                 $0[.buttonName] = .string(OtelButtonNames.send.rawValue)
             }
-            viewModel.event(.sendTapped)
+            await viewModel.asyncEvent(.sendTapped)
         }
         view.messageEntryView.pickMediaTapped = { [weak self] in
             self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
@@ -95,6 +97,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         }
         view.downloadTapped = { [weak self] download in
             guard let self else { return }
+
             environment.openTelemetry.logger.i(.chatScreenFileDownloading) {
                 $0[.fileId] = .string(download.file.id ?? "null")
             }
@@ -105,7 +108,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                     }
                 }
             }
-            viewModel.event(.downloadTapped(download))
+            await viewModel.asyncEvent(.downloadTapped(download))
         }
         view.callBubbleTapped = {
             viewModel.event(.callBubbleTapped)
@@ -114,7 +117,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             self?.environment.openTelemetry.logger.i(.chatScreenSingleChoiceAnswered) {
                 $0[.messageId] = .string(messageId)
             }
-            viewModel.event(.choiceOptionSelected(option, messageId))
+            await viewModel.asyncEvent(.choiceOptionSelected(option, messageId))
         }
         view.chatScrolledToBottom = { bottomReached in
             viewModel.event(.chatScrolled(bottomReached: bottomReached))
@@ -126,21 +129,21 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             self?.environment.openTelemetry.logger.i(.chatScreenCustomCardAction) {
                 $0[.messageId] = .string(messageId.rawValue)
             }
-            viewModel.event(.customCardOptionSelected(option: option, messageId: messageId))
+            await viewModel.asyncEvent(.customCardOptionSelected(option: option, messageId: messageId))
         }
 
         view.gvaButtonTapped = { [weak self] option in
             self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
                 $0[.buttonName] = .string(OtelButtonNames.gva.rawValue)
             }
-            viewModel.event(.gvaButtonTapped(option))
+            await viewModel.asyncEvent(.gvaButtonTapped(option))
         }
 
         view.retryMessageTapped = { [weak self] message in
             self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
                 $0[.buttonName] = .string(OtelButtonNames.retry.rawValue)
             }
-            viewModel.event(.retryMessageTapped(message))
+            await viewModel.asyncEvent(.retryMessageTapped(message))
         }
 
         var viewModel = viewModel
@@ -285,7 +288,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         let chatHeader = Header.Props(
             title: chatTheme.title,
             effect: .none,
-            endButton: .init(style: chatTheme.header.endButton, tap: endEvent, accessibilityIdentifier: "header_end_button"),
+            endButton: .init(style: chatTheme.header.endButton, tap: .sync(endEvent), accessibilityIdentifier: "header_end_button"),
             backButton: chatHeaderBackButton,
             closeButton: .init(tap: closeEvent, style: chatTheme.header.closeButton),
             style: chatTheme.header
@@ -294,7 +297,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         let secureTranscriptHeader = Header.Props(
             title: chatTheme.secureTranscriptTitle,
             effect: .none,
-            endButton: .init(style: chatTheme.secureTranscriptHeader.endButton, tap: endEvent, accessibilityIdentifier: "header_end_button"),
+            endButton: .init(style: chatTheme.secureTranscriptHeader.endButton, tap: .sync(endEvent), accessibilityIdentifier: "header_end_button"),
             backButton: nil,
             closeButton: .init(tap: closeEvent, style: chatTheme.secureTranscriptHeader.closeButton),
             style: chatTheme.secureTranscriptHeader
