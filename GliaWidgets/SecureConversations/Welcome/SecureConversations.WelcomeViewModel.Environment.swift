@@ -11,8 +11,6 @@ extension SecureConversations.WelcomeViewModel {
         var uiApplication: UIKitBased.UIApplication
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
-        var startSocketObservation: CoreSdkClient.StartSocketObservation
-        var stopSocketObservation: CoreSdkClient.StopSocketObservation
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
@@ -38,8 +36,6 @@ extension SecureConversations.WelcomeViewModel.Environment {
             uiApplication: environment.uiApplication,
             createFileUploadListModel: environment.createFileUploadListModel,
             fetchSiteConfigurations: environment.fetchSiteConfigurations,
-            startSocketObservation: environment.startSocketObservation,
-            stopSocketObservation: environment.stopSocketObservation,
             getCurrentEngagement: environment.getCurrentEngagement,
             uploadFileToEngagement: environment.uploadFileToEngagement,
             createSendMessagePayload: environment.createSendMessagePayload,
@@ -59,8 +55,6 @@ extension SecureConversations.WelcomeViewModel.Environment {
         uiApplication: .mock,
         createFileUploadListModel: { _ in  .mock() },
         fetchSiteConfigurations: { _ in },
-        startSocketObservation: { },
-        stopSocketObservation: { },
         getCurrentEngagement: { .mock() },
         uploadFileToEngagement: { _, _, _ in },
         createSendMessagePayload: { _, _ in .mock() },

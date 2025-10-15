@@ -11,21 +11,45 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
     }
 
     func createCoordinator(
-        initialScreen: SecureConversations.InitialScreen = .welcome
+        initialScreen: SecureConversations.InitialScreen = .welcome,
+        environment: SecureConversations.Coordinator.Environment = .mock
     ) -> SecureConversations.Coordinator {
         return SecureConversations.Coordinator(
             messagingInitialScreen: initialScreen,
             viewFactory: .mock(),
             navigationPresenter: navigationPresenter,
-            environment: .mock
+            environment: environment
         )
     }
 
     // Start
     func test_startGeneratesWelcomeViewController() {
         let viewController = coordinator.start() as? SecureConversations.WelcomeViewController
-
+        
         XCTAssertNotNil(viewController)
+    }
+
+    func test_socketObservation() {
+        // Given
+        enum Call {
+            case startSocketObservation
+            case stopSocketObservation
+        }
+        var calls: [Call] = []
+        var environment = SecureConversations.Coordinator.Environment.mock
+        environment.startSocketObservation = { calls.append(.stopSocketObservation) }
+        environment.stopSocketObservation = { calls.append(.stopSocketObservation) }
+        var coordinator: SecureConversations.Coordinator? = createCoordinator(
+            initialScreen: .chatTranscript,
+                environment: environment)
+
+        // When
+        _ = coordinator?.start()
+        coordinator = nil
+
+        // Then
+        XCTAssertEqual(calls.count, 2)
+        XCTAssertEqual(calls, [.stopSocketObservation, .stopSocketObservation])
     }
 
     func test_startGeneratesChatViewController() {
