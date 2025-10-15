@@ -91,6 +91,7 @@ private extension Glia {
 
 // swiftlint:disable type_body_length
 /// Glia's engagement interface.
+// swiftlint:disable type_body_length
 public class Glia {
     /// A singleton to access the Glia's interface.
     public static let sharedInstance = Glia(environment: .live)
@@ -251,6 +252,7 @@ public class Glia {
     ///   - `GliaError.configuringDuringEngagementIsNotAllowed`
     ///   - `ConfigurationError`
     ///
+    // swiftlint:disable function_body_length
     public func configure(
         with configuration: Configuration,
         theme: Theme = Theme(),
