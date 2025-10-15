@@ -82,7 +82,7 @@ enum AlertType {
         switch self {
         case .message(_, _, _, let onClose),
                 .criticalError(_, _, _, let onClose),
-                .confirmation(_, _, _, _, let onClose),
+                .confirmation(_, _, _, let onClose, _),
                 .leaveConversation(_, _, _, _, let onClose),
                 .singleAction(_, _, _, let onClose),
                 .singleMediaUpgrade(_, _, _, let onClose),
