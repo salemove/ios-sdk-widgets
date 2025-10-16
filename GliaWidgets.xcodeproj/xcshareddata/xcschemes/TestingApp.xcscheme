@@ -71,6 +71,18 @@
             ReferencedContainer = "container:GliaWidgets.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <EnvironmentVariables>
+         <EnvironmentVariable
+            key = "MTC_SUPPRESSION_FILE"
+            value = "$(SRCROOT)/.suppressions.txt"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "ENABLE_STDOUT_LOG_EXPORTER"
+            value = "false"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

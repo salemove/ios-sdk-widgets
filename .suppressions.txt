@@ -1,0 +1,2 @@
+method:-[UIView bounds]
+method:-[UIView drawViewHierarchyInRect:afterScreenUpdates:]
