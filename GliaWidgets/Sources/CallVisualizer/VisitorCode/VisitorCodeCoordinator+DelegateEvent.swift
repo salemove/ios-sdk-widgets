@@ -2,7 +2,8 @@ import Foundation
 
 extension CallVisualizer.VisitorCodeCoordinator {
     enum DelegateEvent {
-        case closeTap
+        case closeRequested
+        case closeTapped
         case engagementAccepted
     }
 }

@@ -66,6 +66,17 @@ public final class CallVisualizer {
         coordinator.showVisitorCodeViewController(by: .alert(source))
     }
 
+    /// Closes the VisitorCode popup alert if it is currently visible.
+    public func hideVisitorCodeViewController() {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "hideVisitorCodeViewController"
+        )
+        environment.log.prefixed(Self.self).info("Hide Visitor Code Dialog")
+        coordinator.closeVisitorCode(event: .closeRequested)
+    }
+
     /// Show VisitorCode embedded view for current Visitor.
     ///
     /// Call Visualizer Operators use the Visitor's code to start a Call Visualizer Engagement with the Visitor.
