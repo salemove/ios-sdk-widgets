@@ -125,25 +125,12 @@ extension SecureConversations {
             }
         }
 
-        private func previewImage(for file: Kind.LocalFile, completion: @escaping (UIImage?) -> Void) {
-            if #available(iOS 13.0, *) {
-                let request = QLThumbnailGenerator.Request(
-                    fileAt: file.url,
-                    size: kSize,
-                    scale: environment.uiScreen.scale(),
-                    representationTypes: .lowQualityThumbnail
-                )
-                QLThumbnailGenerator.shared.generateRepresentations(for: request) { representation, _, _ in
-                    let image = representation?.uiImage
-                        ?? UIImage(contentsOfFile: file.url.path)?.resized(to: self.kSize)
-                    DispatchQueue.main.async {
-                        completion(image)
-                    }
-                }
-            } else {
-                let image = UIImage(contentsOfFile: file.url.path)?.resized(to: kSize)
-                completion(image)
+        private func previewImage(for file: Kind.LocalFile, size: CGSize) -> UIImage? {
+            guard let data = try? Data(contentsOf: file.url) else {
+                return nil
             }
+            let image = UIImage(data: data)
+            return image?.preparingThumbnail(of: CGSize(width: size.width, height: size.height))
         }
 
         enum ThumbnailState: Equatable {
@@ -159,13 +146,10 @@ extension SecureConversations {
                 case .notGenerated:
                     break
                 case let .inProgress(file):
-                    previewImage(for: file) { [weak self] image in
-                        switch image {
-                        case let .some(img):
-                            self?.imageState = .generated(image: img, file: file)
-                        case .none:
-                            self?.imageState = .failed(file)
-                        }
+                    if let image = previewImage(for: file, size: CGSize(width: 53, height: 53)) {
+                        imageState = .generated(image: image, file: file)
+                    } else {
+                        imageState = .failed(file)
                     }
                 case let .failed(file):
                     self.setPreviewImage(nil, for: file)
