@@ -37,7 +37,7 @@ extension CallVisualizer {
                         self?.codeViewController?.props = props
                     case .closeButtonTap:
                         self?.codeViewController?.presentingViewController?.dismiss(animated: true)
-                        self?.delegate?(.closeTap)
+                        self?.delegate?(.closeTapped)
                     }
                 }
             )
