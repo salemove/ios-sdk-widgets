@@ -72,8 +72,8 @@ class FileUpload {
         }
         let file = CoreSdkClient.EngagementFile(url: localFile.url)
         let progress = ObservableValue<Double>(with: 0)
-        let onProgress: CoreSdkClient.EngagementFileProgressBlock = {
-            if case .uploading(progress: let progress) = self.state.value {
+        let onProgress: CoreSdkClient.EngagementFileProgressBlock = { [weak self] in
+            if case .uploading(progress: let progress) = self?.state.value {
                 progress.value = $0.fractionCompleted
             }
         }
