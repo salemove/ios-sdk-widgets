@@ -111,6 +111,6 @@ final class VisitorCodeCoordinatorTests: XCTestCase {
         _ = coordinator.start()
         coordinator.viewModel?.delegate(.closeButtonTap)
 
-        XCTAssertTrue(calledEvents.contains(.closeTap))
+        XCTAssertTrue(calledEvents.contains(.closeTapped))
     }
 }

@@ -54,7 +54,7 @@ extension CallVisualizer.Coordinator {
 
         coordinator.delegate = { [weak self] event in
             switch event {
-            case .closeTap:
+            case .closeTapped:
                 self?.visitorCodeCoordinator = nil
                 self?.environment.log.prefixed(Self.self).info("Dismiss Visitor Code Dialog")
                 self?.environment.openTelemetry.logger.i(.visitorCodeClosed)
@@ -65,6 +65,8 @@ extension CallVisualizer.Coordinator {
                 case .alert:
                     break
                 }
+            case .closeRequested:
+                break
             }
         }
 
@@ -220,9 +222,29 @@ extension CallVisualizer.Coordinator {
         }
     }
 
-    func closeVisitorCode(_ completion: (() -> Void)? = nil) {
-        visitorCodeCoordinator?.delegate?(.engagementAccepted)
+    /// Closes the visitor code view controller with specified event and completion handling.
+    ///
+    /// This method handles the dismissal of visitor code presentations (both alert and embedded types)
+    /// and manages the cleanup of the visitor code coordinator.
+    ///
+    /// - Parameters:
+    ///   - event: The delegate event to trigger. Defaults to `.engagementAccepted`.
+    ///            Different events may result in different behaviors:
+    ///            - `.engagementAccepted`: Normal acceptance flow
+    ///            - `.closeTapped`: User manually closed the alert
+    ///            - `.closeRequested`: Programmatic close request (only for alert type)
+    ///   - completion: Optional closure called after the visitor code is dismissed.
+    ///                 For embedded views with `.closeRequested` event, completion is not called.
+    func closeVisitorCode(
+        event: CallVisualizer.VisitorCodeCoordinator.DelegateEvent = .engagementAccepted,
+        _ completion: (() -> Void)? = nil
+    ) {
+        visitorCodeCoordinator?.delegate?(event)
         if let visitorCode = visitorCodeCoordinator?.codeViewController {
+            // Don't dismiss embedded views when close is requested programmatically
+            if event == .closeRequested && visitorCode.props.visitorCodeViewProps.viewType == .embedded {
+                return
+            }
             visitorCode.dismiss(animated: true, completion: completion)
             visitorCodeCoordinator = nil
             environment.openTelemetry.logger.i(.visitorCodeClosed)
