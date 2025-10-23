@@ -59,11 +59,15 @@ class AlertViewController: UIViewController, Replaceable {
 
         view.addSubview(alertView)
         alertView.translatesAutoresizingMaskIntoConstraints = false
-        alertView.layoutIn(
-            view.safeAreaLayoutGuide,
-            edges: [.horizontal, .bottom],
-            insets: alertInsets
-         ).activate()
+
+        let constraints = [
+            alertView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: alertInsets.left),
+            alertView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -alertInsets.right),
+            alertView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
+            alertView.topAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            alertView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -alertInsets.bottom)
+        ]
+        NSLayoutConstraint.activate(constraints)
 
         alertView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
         UIView.animate(
