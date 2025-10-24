@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import GliaCoreSDK
 
 public typealias PushNotificationsType = GliaCoreSDK.PushNotificationsType
