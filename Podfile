@@ -18,7 +18,7 @@ target 'TestingApp' do
 end
 
 target 'GliaWidgets' do
-  pod 'GliaCoreSDK'
+  pod 'GliaCoreSDK', '2.2.4'
   swiftlint
 end
 
@@ -27,7 +27,7 @@ end
 
 target 'SnapshotTests' do
   pod 'AccessibilitySnapshot', '0.5.0'
-  pod 'GliaCoreSDK'
+  pod 'GliaCoreSDK', '2.2.4'
 end
 
 post_install do |installer|

@@ -21,9 +21,7 @@ public enum Environment {
         case .europe:
             return .eu
         case .beta:
-            // swiftlint:disable force_unwrapping
-            return .custom(URL(string: "https://beta.salemove.com/")!)
-            // swiftlint:enable force_unwrapping
+            return .beta
         case .custom(let url):
             return .custom(url)
         }
