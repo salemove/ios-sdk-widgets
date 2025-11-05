@@ -11,6 +11,11 @@ on:
         description: 'Xcode workspace scheme. It will be used for archieving project.'
         required: true
         default: 'GliaWidgets'
+      pr_base_branch:
+        description: 'Target branch for the Pull Request (Base)'
+        required: true
+        default: 'master' # Set to 'master' to match your original configuration
+        type: string
 
 jobs:
   build:
@@ -101,7 +106,7 @@ jobs:
           title: 'GliaWidgets SDK XCFramework Release ${{ steps.fetch_semver.outputs.semver}}'
           commit-message: |
             GliaWidgets SDK XCFramework Release ${{ steps.fetch_semver.outputs.semver}}
-          base: 'master'
+          base: ${{ github.event.inputs.pr_base_branch }}
 
       - uses: actions/create-release@v1
         id: create_release
