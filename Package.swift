@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.5
 import PackageDescription
 
 let package = Package(
@@ -40,8 +40,8 @@ let package = Package(
         ),
         .binaryTarget(
             name: "GliaWidgetsSDKXcf",
-            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/3.3.0/GliaWidgetsXcf.xcframework.zip",
-            checksum: "b9b2b72b78348a450a5f6ade881ccc850d87ece68ef78a1e6de667c373067b2a"
+            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/3.3.1/GliaWidgetsXcf.xcframework.zip",
+            checksum: "8b323b66b00a0125de6b1303745f457441a60ea7b324ec8d739d5030649347f5"
         ),
         .binaryTarget(
             name: "GliaOpenTelemetry",
@@ -60,7 +60,7 @@ let package = Package(
                 .target(name: "TwilioVoice"),
                 .target(name: "WebRTC"),
                 .target(name: "GliaOpenTelemetry"),
-                .target(name: "PhoenixChannelsClient")
+                .target(name: "PhoenixChannelsClient"),
                 .target(name: "GliaCoreSDK")
             ],
             path: "GliaWidgets",
@@ -80,9 +80,9 @@ let package = Package(
                 "GliaCoreDependency",
                 "TwilioVoice",
                 "WebRTC",
-                "GliaOpenTelemetry",
+                "GliaWidgetsSDKXcf",
                 "PhoenixChannelsClient",
-                "GliaWidgetsSDKXcf"
+                "GliaOpenTelemetry"
             ],
             path: "Sources/GliaWidgetsSDK-xcframework"
         )
