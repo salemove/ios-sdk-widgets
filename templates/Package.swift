@@ -1,11 +1,11 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.5
 import PackageDescription
 
 let package = Package(
     name: "GliaWidgets",
     defaultLocalization: .init(stringLiteral: "en"),
     platforms: [
-        .iOS(.v14)
+        .iOS("15.5")
     ],
     products: [
         .library(
@@ -43,13 +43,25 @@ let package = Package(
             url: "https://github.com/salemove/ios-sdk-widgets/releases/download/${WIDGETS_SDK_SEMVER}/GliaWidgetsXcf.xcframework.zip",
             checksum: "${WIDGETS_SDK_CHECKSUM}"
         ),
+        .binaryTarget(
+            name: "GliaOpenTelemetry",
+            url: "https://github.com/salemove/ios-telemetry-bundle/releases/download/1.0.6/GliaOpenTelemetry.xcframework.zip",
+            checksum: "11caf962f4518c0ce0d4b6c282c246eddfb7070a34ac2273207042c680f16c0f"
+        ),
+        .binaryTarget(
+            name: "PhoenixChannelsClient",
+            url: "https://github.com/salemove/ios-bundle/releases/download/2.1.5/PhoenixChannelsClient.xcframework.zip",
+            checksum: "5c6bff89a535d4ecf58ac26f221953b80772f2ae1680e01aa1fa1802743233e8"
+        ),
         .target(
             name: "GliaWidgets",
             dependencies: [
                 .target(name: "GliaCoreDependency"),
                 .target(name: "TwilioVoice"),
                 .target(name: "WebRTC"),
-                .target(name: "GliaCoreSDK")
+                .target(name: "GliaOpenTelemetry"),
+                .target(name: "PhoenixChannelsClient"),
+                .target(name: "GliaCoreSDK"),
             ],
             path: "GliaWidgets",
             exclude: [
@@ -68,7 +80,9 @@ let package = Package(
                 "GliaCoreDependency",
                 "TwilioVoice",
                 "WebRTC",
-                "GliaWidgetsSDKXcf"
+                "GliaWidgetsSDKXcf",
+                "PhoenixChannelsClient",
+                "GliaOpenTelemetry"
             ],
             path: "Sources/GliaWidgetsSDK-xcframework"
         )
