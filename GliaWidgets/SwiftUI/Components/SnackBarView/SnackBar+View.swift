@@ -31,7 +31,7 @@ extension SnackBar {
         var body: some View {
             Text(text)
                 .padding()
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .background(SwiftUI.Color(style.background))
                 .cornerRadius(4)
                 .foregroundColor(SwiftUI.Color(style.textColor))
