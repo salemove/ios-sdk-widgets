@@ -111,7 +111,7 @@ class ChatViewControllerTests: XCTestCase {
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         var snackBar = SnackBar.failing
-        snackBar.present = { _, _, _, _, _, _, _ in
+        snackBar.present = { _, _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
         let env = ChatViewController.Environment(
@@ -167,7 +167,7 @@ class ChatViewControllerTests: XCTestCase {
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         var snackBar = SnackBar.failing
-        snackBar.present = { _, _, _, _, _, _, _ in
+        snackBar.present = { _, _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
         let env = ChatViewController.Environment(
@@ -217,7 +217,7 @@ class ChatViewControllerTests: XCTestCase {
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         var snackBar = SnackBar.failing
-        snackBar.present = { _, _, _, _, _, _, _ in
+        snackBar.present = { _, _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
         let env = ChatViewController.Environment(
