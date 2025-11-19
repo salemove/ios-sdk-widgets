@@ -489,6 +489,7 @@
 		84C24CFC2B8354A80089A388 /* ProcessInfoHandling.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C24CFB2B8354A80089A388 /* ProcessInfoHandling.Live.swift */; };
 		84C24CFF2B8357BB0089A388 /* ProcessInfoHandling.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C24CFE2B8357BB0089A388 /* ProcessInfoHandling.Failing.swift */; };
 		84CD035F2B56DEE300E7A1DC /* SensitiveDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD035E2B56DEE300E7A1DC /* SensitiveDataViewController.swift */; };
+		84CDA2562ECDF009000D0AE3 /* SnackBar.DismissTiming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CDA2552ECDF009000D0AE3 /* SnackBar.DismissTiming.swift */; };
 		84CFB7732822700000167258 /* Theme.Button.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */; };
 		84D2292B28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2292A28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift */; };
 		84D2292E28C61DFA00F64FE7 /* WKNavigationPolicyProvider.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2292D28C61DFA00F64FE7 /* WKNavigationPolicyProvider.Interface.swift */; };
@@ -1572,6 +1573,7 @@
 		84C24CFB2B8354A80089A388 /* ProcessInfoHandling.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoHandling.Live.swift; sourceTree = "<group>"; };
 		84C24CFE2B8357BB0089A388 /* ProcessInfoHandling.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoHandling.Failing.swift; sourceTree = "<group>"; };
 		84CD035E2B56DEE300E7A1DC /* SensitiveDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensitiveDataViewController.swift; sourceTree = "<group>"; };
+		84CDA2552ECDF009000D0AE3 /* SnackBar.DismissTiming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBar.DismissTiming.swift; sourceTree = "<group>"; };
 		84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Button.Accessibility.swift; sourceTree = "<group>"; };
 		84D2292A28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKNavigationPolicyProvider.CustomResponseCard.swift; sourceTree = "<group>"; };
 		84D2292D28C61DFA00F64FE7 /* WKNavigationPolicyProvider.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKNavigationPolicyProvider.Interface.swift; sourceTree = "<group>"; };
@@ -4032,6 +4034,7 @@
 				C0EC58CD2B02775100E78C70 /* SnackBar+View+Mock.swift */,
 				752A833B2AF59EDB005E468D /* SnackBar+View.swift */,
 				752A83392AF59EAE005E468D /* SnackBar+Presenter.swift */,
+				84CDA2552ECDF009000D0AE3 /* SnackBar.DismissTiming.swift */,
 				752A83372AF5977B005E468D /* SerialQueue.swift */,
 			);
 			path = SnackBarView;
@@ -5629,9 +5632,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5750,9 +5757,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5767,9 +5778,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TestingApp/Pods-TestingApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TestingApp/Pods-TestingApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -6352,6 +6367,7 @@
 				2188DEE52CEE2C6000FA3BEF /* SendingMessageUnavailableBannerViewStyle.swift in Sources */,
 				C090478C2B7E5C8F003C437C /* FilePreviewStyle.Equatable.swift in Sources */,
 				C09047522B7E21A2003C437C /* MessageCenterFileUploadListStyle.swift in Sources */,
+				84CDA2562ECDF009000D0AE3 /* SnackBar.DismissTiming.swift in Sources */,
 				C090472C2B7E1C6F003C437C /* GvaPersistentButtonStyle.ButtonStyle.swift in Sources */,
 				1A4674B225E907120078FA1C /* AttachmentSourceItemStyle.swift in Sources */,
 				C09046CE2B7E06A3003C437C /* UnreadMessageIndicatorStyle.RemoteConfig.swift in Sources */,
