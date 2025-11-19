@@ -145,7 +145,7 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
         }
 
         var presentCallCounter = 0
-        coordinator.environment.snackBar.present = { _, _, _, _, _, _, _ in
+        coordinator.environment.snackBar.present = { _, _, _, _, _, _, _, _ in
             presentCallCounter += 1
         }
 
