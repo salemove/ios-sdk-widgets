@@ -58,7 +58,8 @@ extension SnackBar {
 
         func show(
             text: String,
-            with offset: CGFloat
+            with offset: CGFloat,
+            dismissTiming: DismissTiming
         ) {
             serialQueue.addOperation(
                 .init { [weak self] done in
@@ -71,13 +72,28 @@ extension SnackBar {
 
                     self.timer?.invalidate()
 
-                    self.timer = self.environment.timerProviding.scheduledTimer(
-                        withTimeInterval: 3,
-                        repeats: false
-                    ) { _ in
-                        self.updatePublisher.send(.disappear)
-                        self.environment.gcd.mainQueue.asyncAfterDeadline(.now() + 0.5, self.remove)
-                        done()
+                    switch dismissTiming {
+                    case let .auto(timeInterval):
+                        self.timer = self.environment.timerProviding.scheduledTimer(
+                            withTimeInterval: timeInterval,
+                            repeats: false
+                        ) { _ in
+                            self.updatePublisher.send(.disappear)
+                            self.environment.gcd.mainQueue.asyncAfterDeadline(.now() + 0.5) {
+                                self.remove()
+                                done()
+                            }
+                        }
+
+                    case let .manual(dismiss):
+                        let dismissAction = {
+                            self.updatePublisher.send(.disappear)
+                            self.environment.gcd.mainQueue.asyncAfterDeadline(.now() + 0.5) {
+                                self.remove()
+                                done()
+                            }
+                        }
+                        dismiss(dismissAction)
                     }
                 }
             )

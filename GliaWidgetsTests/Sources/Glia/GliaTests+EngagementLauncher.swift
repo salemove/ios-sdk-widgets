@@ -127,7 +127,7 @@ extension GliaTests {
 
         let sdk = try makeConfigurableSDK(ongoingEngagement: .mock(source: .callVisualizer, media: .init(audio: nil, video: .oneWay)), enqueueingEngagement: .videoCall) { sdk in
             sdk.rootCoordinator?.gliaViewController = .mock()
-            sdk.environment.snackBar.present = { _, _, _, _, _, _, _ in
+            sdk.environment.snackBar.present = { _, _, _, _, _, _, _, _ in
             }
             var callVisualizerEnv = CallVisualizer.Environment.mock
             callVisualizerEnv.getCurrentEngagement = {
@@ -141,7 +141,7 @@ extension GliaTests {
 }
 
 // MARK: - Enqueuing engagement with ongoing engagement
-private extension GliaTests {
+extension GliaTests {
     func test_testEnqueuingChatWhenOngoingVideoEngagementExistsShouldShowSnackBar() throws {
         try testSnackBarPresentation(ongoingEngagement: .mock(source: .coreEngagement, media: .init(audio: nil, video: .oneWay)), enqueueingEngagement: .chat)
     }
@@ -174,7 +174,7 @@ private extension GliaTests {
         var snackBarMessage: String?
 
         let sdk = try makeConfigurableSDK(ongoingEngagement: ongoingEngagement, enqueueingEngagement: enqueueingEngagement) { sdk in
-            sdk.environment.snackBar.present = { message, _, _, _, _, _, _ in
+            sdk.environment.snackBar.present = { message, _, _, _, _, _, _, _ in
                 snackBarMessage = message
                 calls.append(.presentSnackBar)
             }
@@ -323,7 +323,7 @@ extension GliaTests {
             enqueueingEngagementKind: enqueueingEngagementKind,
             engagementToEnqueue: engagementToEnqueue
         ) { sdk in
-            sdk.environment.snackBar.present = { message, _, _, _, _, _, _ in
+            sdk.environment.snackBar.present = { message, _, _, _, _, _, _, _ in
                 snackBarMessage = message
                 calls.append(.presentSnackBar)
             }

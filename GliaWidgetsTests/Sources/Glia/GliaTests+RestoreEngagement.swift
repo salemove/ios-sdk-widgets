@@ -39,7 +39,7 @@ extension GliaTests {
         }
 
         var calls: [Call] = []
-        sdkEnv.snackBar.present = { _, _, _, _, _, _, _ in
+        sdkEnv.snackBar.present = { _, _, _, _, _, _, _, _ in
             calls.append(.snackBarPresent)
         }
 
@@ -236,7 +236,7 @@ extension GliaTests {
         }
 
         var calls: [Call] = []
-        sdkEnv.snackBar.present = { _, _, _, _, _, _, _ in
+        sdkEnv.snackBar.present = { _, _, _, _, _, _, _, _ in
             calls.append(.snackBarPresent)
         }
 
@@ -296,7 +296,7 @@ extension GliaTests {
         window.makeKeyAndVisible()
         sdkEnv.uiApplication.windows = { [window] }
 
-        sdkEnv.snackBar.present = { _, _, _, _, _, _, _ in
+        sdkEnv.snackBar.present = { _, _, _, _, _, _, _, _ in
             XCTFail("SDK should not present snackBar")
         }
 
@@ -352,7 +352,7 @@ extension GliaTests {
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
-        sdkEnv.snackBar.present = { _, _, _, _, _, _, _ in
+        sdkEnv.snackBar.present = { _, _, _, _, _, _, _, _ in
             calls.append(.snackBarPresent)
         }
         let uuidGen = UUID.incrementing
