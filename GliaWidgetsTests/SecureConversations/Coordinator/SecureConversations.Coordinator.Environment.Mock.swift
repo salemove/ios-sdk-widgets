@@ -42,10 +42,7 @@ extension SecureConversations.Coordinator.Environment {
         proximityManager: .mock,
         log: .mock,
         timerProviding: .mock,
-        snackBar: SnackBar(
-            present: { text, style, viewController, bottomOffset, timerProviding, gcd, notificationCenter in
-            }
-        ),
+        snackBar: SnackBar(present: { _, _, _, _, _, _, _, _ in }),
         maximumUploads: { 2 },
         cameraDeviceManager: { .mock }, 
         flipCameraButtonStyle: .nop,

@@ -214,9 +214,9 @@
 		3100EEFD293F757E00D57F71 /* SecureConversations.WelcomeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100EEFC293F757E00D57F71 /* SecureConversations.WelcomeStyle.swift */; };
 		3100EEFF293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100EEFE293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift */; };
 		3115D45C29A4FD3F00D99561 /* SecureConversations.Availability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3115D45B29A4FD3F00D99561 /* SecureConversations.Availability.swift */; };
-		3115EFBA2BC960B500B24D5A /* BuildFile in Sources */ = {isa = PBXBuildFile; };
-		3117EBA22B9B041100F520D8 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
-		3117EBA42B9B426200F520D8 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		3115EFBA2BC960B500B24D5A /* (null) in Sources */ = {isa = PBXBuildFile; };
+		3117EBA22B9B041100F520D8 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		3117EBA42B9B426200F520D8 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		311C03352B5588C0002E4FF8 /* SecureConversations.CoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311C03342B5588C0002E4FF8 /* SecureConversations.CoordinatorTests.swift */; };
 		311CAFCD29F8FAE20067B59F /* SecureConversations.TranscriptModel.CustomCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311CAFCC29F8FAE20067B59F /* SecureConversations.TranscriptModel.CustomCard.swift */; };
 		313EBD552943116E008E9597 /* SecureConversations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313EBD542943116E008E9597 /* SecureConversations.swift */; };
@@ -489,6 +489,7 @@
 		84C24CFC2B8354A80089A388 /* ProcessInfoHandling.Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C24CFB2B8354A80089A388 /* ProcessInfoHandling.Live.swift */; };
 		84C24CFF2B8357BB0089A388 /* ProcessInfoHandling.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C24CFE2B8357BB0089A388 /* ProcessInfoHandling.Failing.swift */; };
 		84CD035F2B56DEE300E7A1DC /* SensitiveDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CD035E2B56DEE300E7A1DC /* SensitiveDataViewController.swift */; };
+		84CDA2562ECDF009000D0AE3 /* SnackBar.DismissTiming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CDA2552ECDF009000D0AE3 /* SnackBar.DismissTiming.swift */; };
 		84CFB7732822700000167258 /* Theme.Button.Accessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */; };
 		84D2292B28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2292A28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift */; };
 		84D2292E28C61DFA00F64FE7 /* WKNavigationPolicyProvider.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D2292D28C61DFA00F64FE7 /* WKNavigationPolicyProvider.Interface.swift */; };
@@ -1572,6 +1573,7 @@
 		84C24CFB2B8354A80089A388 /* ProcessInfoHandling.Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoHandling.Live.swift; sourceTree = "<group>"; };
 		84C24CFE2B8357BB0089A388 /* ProcessInfoHandling.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessInfoHandling.Failing.swift; sourceTree = "<group>"; };
 		84CD035E2B56DEE300E7A1DC /* SensitiveDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensitiveDataViewController.swift; sourceTree = "<group>"; };
+		84CDA2552ECDF009000D0AE3 /* SnackBar.DismissTiming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBar.DismissTiming.swift; sourceTree = "<group>"; };
 		84CFB7722822700000167258 /* Theme.Button.Accessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Button.Accessibility.swift; sourceTree = "<group>"; };
 		84D2292A28C61C8D00F64FE7 /* WKNavigationPolicyProvider.CustomResponseCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKNavigationPolicyProvider.CustomResponseCard.swift; sourceTree = "<group>"; };
 		84D2292D28C61DFA00F64FE7 /* WKNavigationPolicyProvider.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKNavigationPolicyProvider.Interface.swift; sourceTree = "<group>"; };
@@ -4032,6 +4034,7 @@
 				C0EC58CD2B02775100E78C70 /* SnackBar+View+Mock.swift */,
 				752A833B2AF59EDB005E468D /* SnackBar+View.swift */,
 				752A83392AF59EAE005E468D /* SnackBar+Presenter.swift */,
+				84CDA2552ECDF009000D0AE3 /* SnackBar.DismissTiming.swift */,
 				752A83372AF5977B005E468D /* SerialQueue.swift */,
 			);
 			path = SnackBarView;
@@ -5629,9 +5632,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5750,9 +5757,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5767,9 +5778,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TestingApp/Pods-TestingApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TestingApp/Pods-TestingApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5833,23 +5848,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FD48EDBB30AE8FC3EB0EBE87 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -6369,6 +6367,7 @@
 				2188DEE52CEE2C6000FA3BEF /* SendingMessageUnavailableBannerViewStyle.swift in Sources */,
 				C090478C2B7E5C8F003C437C /* FilePreviewStyle.Equatable.swift in Sources */,
 				C09047522B7E21A2003C437C /* MessageCenterFileUploadListStyle.swift in Sources */,
+				84CDA2562ECDF009000D0AE3 /* SnackBar.DismissTiming.swift in Sources */,
 				C090472C2B7E1C6F003C437C /* GvaPersistentButtonStyle.ButtonStyle.swift in Sources */,
 				1A4674B225E907120078FA1C /* AttachmentSourceItemStyle.swift in Sources */,
 				C09046CE2B7E06A3003C437C /* UnreadMessageIndicatorStyle.RemoteConfig.swift in Sources */,
@@ -6714,7 +6713,7 @@
 				8492F9192CAD329800242691 /* TranscriptModelTests+MessageRetry.swift in Sources */,
 				8491AF602AA1EBB600CC3E72 /* TranscriptModelTests+URLs.swift in Sources */,
 				9A8130C427D9099F00220BBD /* FileDownload.Environment.Failing.swift in Sources */,
-				3117EBA22B9B041100F520D8 /* BuildFile in Sources */,
+				3117EBA22B9B041100F520D8 /* (null) in Sources */,
 				31CCE3E52BCE8F3A00F92535 /* CallVisualizer.Coordinator.Environment.Mock.swift in Sources */,
 				31CCE3E72BCE8F3A00F92535 /* VisitorCodeCoordinatorTests.swift in Sources */,
 				AF29811029E06E830005BD55 /* Availability.Environment.Failing.swift in Sources */,
@@ -6740,7 +6739,7 @@
 				EB9ADB552828E66B00FAE8A4 /* CallTests.swift in Sources */,
 				AF9DB22E2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift in Sources */,
 				AF9DB23128905A1D00A0C442 /* ViewFactory.Environment.Failing.swift in Sources */,
-				3117EBA42B9B426200F520D8 /* BuildFile in Sources */,
+				3117EBA42B9B426200F520D8 /* (null) in Sources */,
 				848570512BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift in Sources */,
 				9A3E1DA027BA7B9F005634EB /* FileSystemStorageTests.swift in Sources */,
 				EB9ADB5A2829089F00FAE8A4 /* ChatItem+Equatable.swift in Sources */,
@@ -6771,7 +6770,7 @@
 				2BC656672E8FDC1F007AECA6 /* Boxed.swift in Sources */,
 				3146C9432AB1851C0047D8CC /* LocalizationTests.swift in Sources */,
 				8492F9172CAD2F2000242691 /* TranscriptModelTests+ResponseCard.swift in Sources */,
-				3115EFBA2BC960B500B24D5A /* BuildFile in Sources */,
+				3115EFBA2BC960B500B24D5A /* (null) in Sources */,
 				216D310B2CF790980019CA9E /* EntryWidget.Mock.swift in Sources */,
 				9AE05CB62805D2CB00871321 /* Interactor.Environment.Failing.swift in Sources */,
 				846429862A45DB4100943BD6 /* AlertViewController.Kind+Mock.swift in Sources */,

@@ -70,7 +70,7 @@ extension GliaTests {
         window.rootViewController = UIViewController()
         window.makeKeyAndVisible()
         sdk.environment.uiApplication.windows = { [window] }
-        sdk.environment.snackBar.present = { message, _, _, _, _, _, _ in
+        sdk.environment.snackBar.present = { message, _, _, _, _, _, _, _ in
             snackBarMessage = message
             calls.append(.presentSnackBar)
         }
@@ -624,7 +624,7 @@ extension GliaTests {
         window.rootViewController = UIViewController()
         window.makeKeyAndVisible()
         sdk.environment.uiApplication.windows = { [window] }
-        sdk.environment.snackBar.present = { _, _, _, _, _, _, _ in }
+        sdk.environment.snackBar.present = { _, _, _, _, _, _, _, _ in }
         try sdk.configure(
             with: .mock(),
             theme: .mock()
