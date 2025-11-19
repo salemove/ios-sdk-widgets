@@ -4,7 +4,7 @@ import UIKit
 
 extension SnackBar {
     static let live: Self = {
-        .init { text, style, viewController, bottomOffset, timerProviding, gcd, notificationCenter in
+        .init { text, style, dismissTiming, viewController, bottomOffset, timerProviding, gcd, notificationCenter in
             let existedPresenter = Self.presenters.first(where: { $0.parentViewController === viewController })
             let presenter = existedPresenter ?? Presenter(
                 parentViewController: viewController,
@@ -19,7 +19,7 @@ extension SnackBar {
                 Self.presenters.append(presenter)
             }
             presenter.add()
-            presenter.show(text: text, with: bottomOffset)
+            presenter.show(text: text, with: bottomOffset, dismissTiming: dismissTiming)
         }
     }()
     static private(set) var presenters = [Presenter]()
