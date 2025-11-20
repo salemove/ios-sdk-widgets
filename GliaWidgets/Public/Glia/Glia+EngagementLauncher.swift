@@ -45,6 +45,7 @@ extension Glia {
 
         return EngagementLauncher { [weak self] engagementKind, sceneProvider in
             guard let self else { return }
+            Glia.sharedInstance.stopScrappingContextWithOCR()
             let parameters = try getEngagementParameters(
                 configuration: getConfiguration(),
                 interactor: getInteractor()

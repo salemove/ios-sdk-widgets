@@ -165,6 +165,9 @@ class AlertViewController: UIViewController, Replaceable {
                 accepted: accepted,
                 declined: declined
             )
+        case .determinedVisitorContext(let context, _):
+            let message = "Loans: \(context.loans)%\nAccounts: \(context.accounts)%\nInsurance: \(context.insurance)%\nTransactions: \(context.transactions)%\nSummary: \(context.overview)\n"
+            return makeMessageAlertView(with: .init(title: "Session Context", message: message), accessibilityIdentifier: nil, dismissed: nil)
         }
     }
 

@@ -121,6 +121,7 @@ public extension EntryWidget {
             methodName: "show",
             methodParams: ["viewController"]
         )
+        Glia.sharedInstance.stopScrappingContextWithOCR()
         if hasPendingInteraction {
             do {
                 try environment.engagementLauncher.startSecureMessaging()
@@ -155,6 +156,7 @@ public extension EntryWidget {
         environment.openTelemetry.logger.i(.entryWidgetDismissed)
         hostedViewController?.dismiss(animated: true, completion: nil)
         hostedViewController = nil
+        Glia.sharedInstance.startScrappingContextWithOCR()
     }
 }
 
@@ -343,9 +345,11 @@ private extension EntryWidget {
             sheet.preferredCornerRadius = environment.theme.entryWidget.cornerRadius
             sheet.prefersEdgeAttachedInCompactHeight = true
             sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
+            sheet.delegate = self
         } else {
             hostingController.modalPresentationStyle = .custom
             hostingController.transitioningDelegate = self
+            hostingController.presentationController?.delegate = self
         }
 
         parentViewController.present(hostingController, animated: true, completion: nil)
@@ -407,6 +411,11 @@ private extension EntryWidget {
 
     func makeView(model: EntryWidgetView.Model) -> EntryWidgetView {
         .init(model: model)
+    }
+}
+extension EntryWidget: UISheetPresentationControllerDelegate {
+    public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        Glia.sharedInstance.startScrappingContextWithOCR()
     }
 }
 

@@ -182,6 +182,16 @@ extension Interactor {
                 if case .enqueueing = self?.state {
                     self?.state = .enqueued(ticket, engagementKind)
                 }
+                EngagementContextingManager.shared.getEngagementContext { result in
+                    switch result {
+                    case .success(let res):
+                        DispatchQueue.main.async {
+                            self?.environment.alertManager.present(in: .global, as: .determinedVisitorContext(res))
+                        }
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
                 success()
             }
         }

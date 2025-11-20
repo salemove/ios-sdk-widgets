@@ -18,7 +18,8 @@ target 'TestingApp' do
 end
 
 target 'GliaWidgets' do
-  pod 'GliaCoreSDK'
+  pod 'GliaCoreSDK', :path => '../ios-sdk/GliaCoreSDK.sources.podspec'
+  pod 'GliaOpenTelemetry', :path => '../ios-telemetry/GliaOpenTelemetry.sources.podspec'
   swiftlint
 end
 
@@ -27,7 +28,8 @@ end
 
 target 'SnapshotTests' do
   pod 'AccessibilitySnapshot', '0.5.0'
-  pod 'GliaCoreSDK'
+  pod 'GliaCoreSDK', :path => '../ios-sdk/GliaCoreSDK.sources.podspec'
+  pod 'GliaOpenTelemetry', :path => '../ios-telemetry/GliaOpenTelemetry.sources.podspec'
 end
 
 post_install do |installer|

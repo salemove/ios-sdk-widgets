@@ -130,7 +130,11 @@ extension SecureConversations {
                 return nil
             }
             let image = UIImage(data: data)
-            return image?.preparingThumbnail(of: CGSize(width: size.width, height: size.height))
+            if #available(iOS 15.0, *) {
+                return image?.preparingThumbnail(of: CGSize(width: size.width, height: size.height))
+            } else {
+                return nil
+            }
         }
 
         enum ThumbnailState: Equatable {

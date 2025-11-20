@@ -28,6 +28,7 @@ enum AlertInputType: Equatable {
     )
     case leaveCurrentConversation(confirmed: () -> Void, declined: (() -> Void)? = nil)
     case requestPushNotificationsPermissions(confirmed: () -> Void, declined: () -> Void)
+    case determinedVisitorContext(EngagementContext)
 
     static func == (lhs: AlertInputType, rhs: AlertInputType) -> Bool {
         switch (lhs, rhs) {
@@ -60,6 +61,8 @@ enum AlertInputType: Equatable {
             return true
         case (.requestPushNotificationsPermissions, .requestPushNotificationsPermissions):
             return true
+        case (.determinedVisitorContext(let lhs), .determinedVisitorContext(let rhs)):
+            return lhs == rhs
         default:
             return false
         }

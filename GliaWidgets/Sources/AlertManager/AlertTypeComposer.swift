@@ -79,6 +79,8 @@ extension AlertManager.AlertTypeComposer {
             return leaveCurrentConversationAlertType(confirmed: confirmed, declined: declined)
         case let .requestPushNotificationsPermissions(confirmed, declined):
             return requestPNPermissionsAlertType(accepted: confirmed, declined: declined)
+        case let .determinedVisitorContext(context):
+            return .determinedVisitorContext(context: context, onClose: { })
         }
     }
 

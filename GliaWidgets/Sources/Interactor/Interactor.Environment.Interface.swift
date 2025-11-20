@@ -4,6 +4,7 @@ extension Interactor {
         var queuesMonitor: QueuesMonitor
         var gcd: GCD
         var log: CoreSdkClient.Logger
+        var alertManager: AlertManager
     }
 }
 
@@ -11,13 +12,15 @@ extension Interactor.Environment {
     static func create(
         with environment: Glia.Environment,
         log: CoreSdkClient.Logger,
-        queuesMonitor: QueuesMonitor
+        queuesMonitor: QueuesMonitor,
+        alertManager: AlertManager
     ) -> Self {
         .init(
             coreSdk: environment.coreSdk,
             queuesMonitor: queuesMonitor,
             gcd: environment.gcd,
-            log: log
+            log: log,
+            alertManager: alertManager
         )
     }
 }

@@ -65,11 +65,16 @@ enum AlertType {
         onClose: () -> Void
     )
 
+    case determinedVisitorContext(
+        context: EngagementContext,
+        onClose: () -> Void
+    )
+
     /// Indicating presentation priority of an alert.
     /// Based on comparing values we can decide whether an alert can be replaced with another alert.
     var presentationPriority: PresentationPriority {
         switch self {
-        case .singleAction, .singleMediaUpgrade, .criticalError:
+        case .singleAction, .singleMediaUpgrade, .criticalError, .determinedVisitorContext:
             return .highest
         case .confirmation, .liveObservationConfirmation, .requestPushNotificationsPermissions:
             return .high
@@ -89,7 +94,8 @@ enum AlertType {
                 .liveObservationConfirmation(_, _, _, _, _, let onClose),
                 .systemAlert(_, _, let onClose),
                 .view(_, _, _, let onClose),
-                .requestPushNotificationsPermissions(_, _, _, let onClose):
+                .requestPushNotificationsPermissions(_, _, _, let onClose),
+                .determinedVisitorContext(_, let onClose):
             return onClose
         }
     }

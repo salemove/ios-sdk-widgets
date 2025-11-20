@@ -233,6 +233,7 @@ public class Glia {
                 }
                 .store(in: &cancelBag)
         }
+        startScrappingContextWithOCR()
     }
 
     /// Setup SDK using specific engagement configuration without starting the engagement.
@@ -617,7 +618,8 @@ extension Glia {
             environment: .create(
                 with: environment,
                 log: loggerPhase.logger,
-                queuesMonitor: queuesMonitor
+                queuesMonitor: queuesMonitor,
+                alertManager: alertManager
             )
         )
 

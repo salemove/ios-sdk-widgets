@@ -222,6 +222,7 @@ extension EngagementCoordinator {
                 // Otherwise, pass `closed` meaning that Glia screen was closed
                 // without having an engagement. This does not send `ended` event to integrators.
                 if engagementEnded {
+                    Glia.sharedInstance.startScrappingContextWithOCR()
                     self?.delegate?(.ended)
                 } else {
                     self?.delegate?(.closed)
