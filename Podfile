@@ -3,7 +3,7 @@ plugin 'cocoapods-no-autoimports'
 # cocoapods-no-autoimports__pods = ['Pods-GliaWidgets.debug']
 project 'GliaWidgets.xcodeproj'
 
-DEPLOYMENT_TARGET = '15.5'
+DEPLOYMENT_TARGET = '15.1'
 
 platform :ios, DEPLOYMENT_TARGET
 
