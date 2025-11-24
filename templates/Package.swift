@@ -45,8 +45,8 @@ let package = Package(
         ),
         .binaryTarget(
             name: "GliaOpenTelemetry",
-            url: "https://github.com/salemove/ios-telemetry-bundle/releases/download/1.0.6/GliaOpenTelemetry.xcframework.zip",
-            checksum: "11caf962f4518c0ce0d4b6c282c246eddfb7070a34ac2273207042c680f16c0f"
+            url: "https://github.com/salemove/ios-telemetry-bundle/releases/download/1.0.7/GliaOpenTelemetry.xcframework.zip",
+            checksum: "3fd7e77fdd49448c13c57752a7fab0d7ee9ae1d9f4d972bfed815f0ffc963278"
         ),
         .binaryTarget(
             name: "PhoenixChannelsClient",
@@ -61,7 +61,7 @@ let package = Package(
                 .target(name: "WebRTC"),
                 .target(name: "GliaOpenTelemetry"),
                 .target(name: "PhoenixChannelsClient"),
-                .target(name: "GliaCoreSDK"),
+                .target(name: "GliaCoreSDK")
             ],
             path: "GliaWidgets",
             exclude: [
