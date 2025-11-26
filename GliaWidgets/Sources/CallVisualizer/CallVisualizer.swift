@@ -15,7 +15,14 @@ public final class CallVisualizer {
     private var environment: Environment
     var delegate: ((Action) -> Void)?
     private var interactorSubscription: AnyCancellable?
-    private(set) var activeInteractor: Interactor?
+    private(set) var activeInteractor: Interactor? {
+        willSet {
+            // try restoring video if initial interactor has state 'engaged'
+            if activeInteractor == nil, case .engaged = newValue?.state {
+                restoreVideoIfPossible()
+            }
+        }
+    }
     lazy var coordinator: Coordinator = {
         let viewFactory = ViewFactory(
             with: environment.theme,
