@@ -132,8 +132,8 @@ private extension CallViewController {
                 view.isVisitrOnHold = isOnHold
             case .transferring:
                 view.setConnectState(.transferring, animated: true)
-            case .showSnackBarView:
-                self.showSnackBarView()
+            case let .showSnackBarView(dismissTiming, style):
+                self.showSnackBarView(dismissTiming: dismissTiming, style: style)
             case let .setCameraFlip(flipCameraAccessibilityLabelWithTap):
                 view.flipCameraAccessibilityLabelWithTap = flipCameraAccessibilityLabelWithTap
             }
@@ -151,11 +151,14 @@ private extension CallViewController {
         )
     }
 
-    func showSnackBarView() {
-        let style = viewFactory.theme.call.snackBar
+    func showSnackBarView(
+        dismissTiming: SnackBar.DismissTiming,
+        style: Theme.SnackBarStyle
+    ) {
         environment.snackBar.present(
             text: style.text,
             style: style,
+            dismissTiming: dismissTiming,
             for: self,
             bottomOffset: -100,
             timerProviding: environment.timerProviding,

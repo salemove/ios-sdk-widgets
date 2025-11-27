@@ -7,47 +7,82 @@ PODS:
     - AccessibilitySnapshot/Core
     - SnapshotTesting (~> 1.0)
   - GliaCoreDependency (2.4.0)
-  - GliaCoreSDK (2.3.1):
+  - GliaCoreSDK (2.3.0-sources):
     - GliaCoreDependency (= 2.4.0)
-    - GliaOpenTelemetry (= 1.0.6)
+    - GliaOpenTelemetry
     - PhoenixChannelsClient (= 1.0.1)
     - TwilioVoice (= 6.8.0)
     - WebRTC-lib (= 119.0.0)
-  - GliaOpenTelemetry (1.0.6)
+  - GliaOpenTelemetry (1.0.0-sources):
+    - OpenTelemetry-Swift-Protocol-Exporter-Http-Glia (>= 2.1.0-glia)
+    - OpenTelemetry-Swift-SdkResourceExtension-Glia (>= 2.1.0-glia)
+  - OpenTelemetry-Swift-Api (2.1.1)
+  - OpenTelemetry-Swift-Protocol-Exporter-Common-Glia (2.1.0-glia):
+    - OpenTelemetry-Swift-Api (~> 2.1.1)
+    - OpenTelemetry-Swift-Sdk (~> 2.1.1)
+    - SwiftProtobuf (~> 1.28)
+  - OpenTelemetry-Swift-Protocol-Exporter-Http-Glia (2.1.0-glia):
+    - OpenTelemetry-Swift-Api (~> 2.1.1)
+    - OpenTelemetry-Swift-Protocol-Exporter-Common-Glia (= 2.1.0-glia)
+    - OpenTelemetry-Swift-Sdk (~> 2.1.1)
+    - SwiftProtobuf (~> 1.28)
+  - OpenTelemetry-Swift-Sdk (2.1.1):
+    - OpenTelemetry-Swift-Api (= 2.1.1)
+  - OpenTelemetry-Swift-SdkResourceExtension-Glia (2.1.0-glia):
+    - OpenTelemetry-Swift-Api (~> 2.1.1)
+    - OpenTelemetry-Swift-Sdk (~> 2.1.1)
   - PhoenixChannelsClient (1.0.1)
   - SnapshotTesting (1.9.0)
   - SwiftLint (0.62.2)
+  - SwiftProtobuf (1.33.3)
   - TwilioVoice (6.8.0)
   - WebRTC-lib (119.0.0)
 
 DEPENDENCIES:
   - AccessibilitySnapshot (= 0.5.0)
-  - GliaCoreSDK
+  - GliaCoreSDK (from `../ios-sdk/GliaCoreSDK.sources.podspec`)
+  - GliaOpenTelemetry (from `../ios_telemetry/GliaOpenTelemetry.sources.podspec`)
   - SwiftLint
 
 SPEC REPOS:
   trunk:
     - AccessibilitySnapshot
     - GliaCoreDependency
-    - GliaCoreSDK
-    - GliaOpenTelemetry
+    - OpenTelemetry-Swift-Api
+    - OpenTelemetry-Swift-Protocol-Exporter-Common-Glia
+    - OpenTelemetry-Swift-Protocol-Exporter-Http-Glia
+    - OpenTelemetry-Swift-Sdk
+    - OpenTelemetry-Swift-SdkResourceExtension-Glia
     - PhoenixChannelsClient
     - SnapshotTesting
     - SwiftLint
+    - SwiftProtobuf
     - TwilioVoice
     - WebRTC-lib
+
+EXTERNAL SOURCES:
+  GliaCoreSDK:
+    :path: "../ios-sdk/GliaCoreSDK.sources.podspec"
+  GliaOpenTelemetry:
+    :path: "../ios_telemetry/GliaOpenTelemetry.sources.podspec"
 
 SPEC CHECKSUMS:
   AccessibilitySnapshot: a91e4a69f870188b51f43863d9fc7269d07cdd93
   GliaCoreDependency: bf99fc5a6fe66348b58123caded985506a8cf762
-  GliaCoreSDK: f6fea910e6869c8ce01077014b87afa942af1d90
-  GliaOpenTelemetry: e33ab345b5928eddee5b8f6fa6252ba885db959c
+  GliaCoreSDK: 486aadd3ce79e8e07221fce950c0893870d6d155
+  GliaOpenTelemetry: 1c8b34c8c98067f553e4976c6f1b38dac477d441
+  OpenTelemetry-Swift-Api: 2805fb676a622961994eaad5fd07ed0c5efa6999
+  OpenTelemetry-Swift-Protocol-Exporter-Common-Glia: 4262834a88412d514b4187335c3f095bff798209
+  OpenTelemetry-Swift-Protocol-Exporter-Http-Glia: 42d2f24b5239c40a8560451b0810b126f0637c1a
+  OpenTelemetry-Swift-Sdk: 853c923fcf6e8d79035f645b6fc52dc63f853c96
+  OpenTelemetry-Swift-SdkResourceExtension-Glia: 419a76a99fc3da95f055a1962897776c4e0232aa
   PhoenixChannelsClient: 74cf91ecd76471e5fb262745256733dce7ee3cb6
   SnapshotTesting: 6141c48b6aa76ead61431ca665c14ab9a066c53b
   SwiftLint: f84fc7d844e9cde0dc4f5013af608a269e317aba
+  SwiftProtobuf: e1b437c8e31a4c5577b643249a0bb62ed4f02153
   TwilioVoice: 9563c9ad71b9ab7bbad0b59b67cfe4be96c75d23
   WebRTC-lib: 4e9a17058f880cd658e88383c1ac8f1119af3700
 
-PODFILE CHECKSUM: 2d3d812e53469ad4daa7177f30ff942083c1853e
+PODFILE CHECKSUM: 341e24f3e96bf9636809e36a07fe837ea3dd0084
 
 COCOAPODS: 1.16.2

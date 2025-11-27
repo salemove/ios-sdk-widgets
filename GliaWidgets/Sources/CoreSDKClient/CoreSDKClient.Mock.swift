@@ -11,7 +11,7 @@ extension CoreSdkClient {
         clearSession: {},
         localeProvider: .mock,
         getVisitorInfo: { _ in },
-        getVisitorInfoDeprecated: { _ in},
+        getVisitorInfoDeprecated: { _ in },
         updateVisitorInfo: { _, _ in },
         updateVisitorInfoDeprecated: { _, _ in },
         configureWithConfiguration: { _, _ in },

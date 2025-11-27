@@ -17,6 +17,9 @@ class EngagementViewModel: CommonEngagementModel {
     /// Used when 'Leave Current Conversation?' dialog is closed with 'Leave' button.
     let replaceExistingEnqueueing: Bool
 
+    @MainActor var hideNoConnectionSnackBar: (() -> Void)?
+    let disposeBag = CoreSdkClient.DisposableBag()
+
     init(
         interactor: Interactor,
         replaceExistingEnqueueing: Bool,
@@ -101,6 +104,7 @@ class EngagementViewModel: CommonEngagementModel {
             activeEngagement = environment.getCurrentEngagement()
 
         case .ended:
+            disposeBag.disposeAll()
             // We no longer perform any checks in `EngagementViewModel`, regarding
             // survey, because these checks were performed several times at once
             // (because of inheritance from `EngagementViewModel`):

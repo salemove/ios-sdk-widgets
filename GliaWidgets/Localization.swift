@@ -740,6 +740,12 @@ internal enum Localization {
       }
     }
   }
+  internal enum Snackbar {
+    internal enum NoConnection {
+      /// No connection. Trying to reconnect.
+      internal static var message: String { Localization.tr("Localizable", "snackbar.no_connection.message", fallback: "No connection. Trying to reconnect.") }
+    }
+  }
   internal enum Survey {
     internal enum Action {
       /// Please provide an answer.

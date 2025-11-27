@@ -60,4 +60,24 @@ extension Theme {
             accessibility: .init(isFontScalingEnabled: true)
         )
     }
+
+    var noConnectionSnackBarStyle: SnackBarStyle {
+        .init(
+            text: Localization.Snackbar.NoConnection.message,
+            background: color.baseDark,
+            textColor: color.baseLight,
+            textFont: .font(weight: .regular, size: 17),
+            accessibility: .init(isFontScalingEnabled: true)
+        )
+    }
+
+    var invertedNoConnectionSnackBarStyle: SnackBarStyle {
+        .init(
+            text: Localization.Snackbar.NoConnection.message,
+            background: color.baseLight,
+            textColor: color.baseDark,
+            textFont: .font(weight: .regular, size: 17),
+            accessibility: .init(isFontScalingEnabled: true)
+        )
+    }
 }

@@ -72,7 +72,9 @@ final class VideoCallTests: XCTestCase {
             .isProximityMonitoringEnabled(true)
         ])
 
+        viewModel?.close()
         viewModel = nil
+
         XCTAssertEqual(calls, [
             .isIdleTimerDisabled(true),
             .isProximityMonitoringEnabled(true),
@@ -84,7 +86,7 @@ final class VideoCallTests: XCTestCase {
 
 private extension VideoCallTests {
     func mockViewModel() -> CallVisualizer.VideoCallViewModel {
-        var environment = CallVisualizer.VideoCallViewModel.Environment.mock
+        let environment = CallVisualizer.VideoCallViewModel.Environment.mock
         return .mock(environment: environment)
     }
 }

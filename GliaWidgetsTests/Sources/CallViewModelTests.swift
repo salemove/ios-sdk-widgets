@@ -521,7 +521,7 @@ class CallViewModelTests: XCTestCase {
             calls.append(.isProximityMonitoringEnabled(value))
         }
         env.proximityManager = .init(environment: proximityManagerEnv)
-        viewModel = .init(
+        var viewModel: CallViewModel? = .init(
             interactor: .mock(),
             environment: env,
             call: .mock(),
@@ -530,7 +530,7 @@ class CallViewModelTests: XCTestCase {
             replaceExistingEnqueueing: false
         )
 
-        viewModel.event(.viewDidLoad)
+        viewModel?.event(.viewDidLoad)
 
         XCTAssertEqual(calls, [
             .isIdleTimerDisabled(true),

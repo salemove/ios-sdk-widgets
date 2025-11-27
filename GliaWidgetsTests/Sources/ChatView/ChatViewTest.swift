@@ -101,6 +101,7 @@ final class ChatViewTest: XCTestCase {
 
         weak var controller = try XCTUnwrap(coordinator.navigationPresenter.viewControllers.last as? ChatViewController)
         weak var viewModel = try XCTUnwrap(controller?.viewModel.engagementModel as? ChatViewModel)
+        viewModel?.interactorEvent(.stateChanged(.ended(.byVisitor)))
         viewModel?.event(.closeTapped)
         
         XCTAssertNil(controller)

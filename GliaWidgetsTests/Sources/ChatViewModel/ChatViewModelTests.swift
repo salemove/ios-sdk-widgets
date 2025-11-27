@@ -76,7 +76,8 @@ class ChatViewModelTests: XCTestCase {
                 createEntryWidget: { _ in .mock() },
                 topBannerItemsStyle: .mock(),
                 switchToEngagement: .nop,
-                shouldShowLeaveSecureConversationDialog: { _ in false }
+                shouldShowLeaveSecureConversationDialog: { _ in false },
+                viewFactory: .mock()
             ),
             maximumUploads: { 2 }
         )
