@@ -57,7 +57,6 @@ extension SecureConversations {
                     self?.reportChange()
                 }
             }
-            environment.startSocketObservation()
             isViewActive.addObserver(self) { [weak self] isViewActive, _ in
                 if isViewActive {
                     self?.environment.openTelemetry.logger.i(.scWelcomeScreenShown)
