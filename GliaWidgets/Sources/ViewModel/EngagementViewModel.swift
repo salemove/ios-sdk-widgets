@@ -165,7 +165,6 @@ private extension EngagementViewModel {
     private func handleError(_ error: CoreSdkClient.SalemoveError) {
         engagementAction?(.showAlert(.error(
             error: error.error,
-					self?.engagementDelegate?(.finished)
             dismissed: { [weak self] in
                 self?.engagementDelegate?(.finished)
             }
