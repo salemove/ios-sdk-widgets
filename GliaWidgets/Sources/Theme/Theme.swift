@@ -65,6 +65,12 @@ public class Theme {
     /// Inverted snack bar View style.
     public lazy var invertedSnackBar: SnackBarStyle = { invertedSnackBarStyle }()
 
+    /// No connection snack bar View style.
+    public lazy var noConnectionSnackBar: SnackBarStyle = { noConnectionSnackBarStyle }()
+
+    /// No connection inverted snack bar View style.
+    public lazy var invertedNoConnectionSnackBar: SnackBarStyle = { invertedNoConnectionSnackBarStyle }()
+
     /// Chat view style.
     public lazy var webView: WebViewStyle = { webViewStyle }()
 
