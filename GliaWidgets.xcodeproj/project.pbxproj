@@ -436,6 +436,7 @@
 		846E822828996A5C008EFBF0 /* AlertViewControllerVoiceOverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846E822728996A5C008EFBF0 /* AlertViewControllerVoiceOverTests.swift */; };
 		847956362AD96AD7004EF60C /* CoreSDKConfigurator.Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847956352AD96AD7004EF60C /* CoreSDKConfigurator.Interface.swift */; };
 		847956402ADED7A2004EF60C /* CallVisualizer.Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8479563F2ADED7A2004EF60C /* CallVisualizer.Action.swift */; };
+		8479DF892EDF0CA200200D61 /* ChatViewModel+NetworkMonitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8479DF882EDF0CA200200D61 /* ChatViewModel+NetworkMonitoring.swift */; };
 		847A7643285A1914004044D1 /* FileUploadListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */; };
 		847D7FAE2CDE0F3A00EA5C2D /* AlertTypeComposerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7FAD2CDE0F3A00EA5C2D /* AlertTypeComposerTests.swift */; };
 		847D7FB42CE648AE00EA5C2D /* SecureConversations.TranscriptModel.LeaveConversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 847D7FB32CE648AE00EA5C2D /* SecureConversations.TranscriptModel.LeaveConversation.swift */; };
@@ -1519,6 +1520,7 @@
 		846E822728996A5C008EFBF0 /* AlertViewControllerVoiceOverTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertViewControllerVoiceOverTests.swift; sourceTree = "<group>"; };
 		847956352AD96AD7004EF60C /* CoreSDKConfigurator.Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSDKConfigurator.Interface.swift; sourceTree = "<group>"; };
 		8479563F2ADED7A2004EF60C /* CallVisualizer.Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallVisualizer.Action.swift; sourceTree = "<group>"; };
+		8479DF882EDF0CA200200D61 /* ChatViewModel+NetworkMonitoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModel+NetworkMonitoring.swift"; sourceTree = "<group>"; };
 		847A7642285A1914004044D1 /* FileUploadListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUploadListViewModelTests.swift; sourceTree = "<group>"; };
 		847D7FAD2CDE0F3A00EA5C2D /* AlertTypeComposerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTypeComposerTests.swift; sourceTree = "<group>"; };
 		847D7FB32CE648AE00EA5C2D /* SecureConversations.TranscriptModel.LeaveConversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.TranscriptModel.LeaveConversation.swift; sourceTree = "<group>"; };
@@ -2977,6 +2979,7 @@
 				84681A8D2A5ED76300DD7406 /* ChatViewModel+GVA.swift */,
 				AFA1A9942AA9248400095BE8 /* ChatViewModel+ViewModel.swift */,
 				84520BE82B176C6500F97617 /* ChatViewModel+LiveObservation.swift */,
+				8479DF882EDF0CA200200D61 /* ChatViewModel+NetworkMonitoring.swift */,
 				AF84ADC32D411E8A007086C8 /* ChatViewModel.InteractorChangedState.swift */,
 			);
 			path = Chat;
@@ -6576,6 +6579,7 @@
 				C0D2F07929A4E3DF00803B47 /* UserImageView.Mock.swift in Sources */,
 				C0D6CA3B2C19A61900D4709B /* ChatMessageView.Environment.swift in Sources */,
 				AFA7A8A72CD9483C00861322 /* MediaTypeItemStyle.Accessibility.swift in Sources */,
+				8479DF892EDF0CA200200D61 /* ChatViewModel+NetworkMonitoring.swift in Sources */,
 				84265E6B29912E2100D65842 /* RemoteConfiguration+CallVisualizer.swift in Sources */,
 				1A1E30C725F9FDAB00850E68 /* ChatImageFileContentView.swift in Sources */,
 				AFA2FDEE28907DDB00428E6D /* EngagementCoordinator.Environment.Mock.swift in Sources */,

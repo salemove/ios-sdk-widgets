@@ -37,7 +37,9 @@ extension EngagementViewModel {
         var topBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle
         var switchToEngagement: Command<EngagementKind>
         var shouldShowLeaveSecureConversationDialog: (SecureConversations.ShouldShowLeaveCurrentConversationSource) -> Bool
+        var viewFactory: ViewFactory
         @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
+        @Dependency(\.widgets.networkMonitor) var networkConnectionMonitor: CoreSdkClient.NetworkConnectionMonitor
     }
 }
 
@@ -80,7 +82,8 @@ extension EngagementViewModel.Environment {
             createEntryWidget: environment.createEntryWidget,
             topBannerItemsStyle: viewFactory.theme.chat.secureMessagingExpandedTopBannerItemsStyle,
             switchToEngagement: environment.switchToEngagement,
-            shouldShowLeaveSecureConversationDialog: environment.shouldShowLeaveSecureConversationDialog
+            shouldShowLeaveSecureConversationDialog: environment.shouldShowLeaveSecureConversationDialog,
+            viewFactory: viewFactory
         )
     }
 
@@ -122,7 +125,8 @@ extension EngagementViewModel.Environment {
             createEntryWidget: environment.createEntryWidget,
             topBannerItemsStyle: viewFactory.theme.chat.secureMessagingExpandedTopBannerItemsStyle,
             switchToEngagement: .nop,
-            shouldShowLeaveSecureConversationDialog: { _ in false }
+            shouldShowLeaveSecureConversationDialog: { _ in false },
+            viewFactory: viewFactory
         )
     }
 }
