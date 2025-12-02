@@ -220,11 +220,11 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                 view?.renderQuickReply(props: props)
             case .transcript(.messageCenterAvailabilityUpdated):
                 break
-            case .showSnackBarView:
-                let style = self.environment.viewFactory.theme.snackBar
+            case let .showSnackBarView(dismissTiming, style):
                 self.environment.snackBar.present(
                     text: style.text,
                     style: style,
+                    dismissTiming: dismissTiming,
                     for: self,
                     bottomOffset: -128,
                     timerProviding: self.environment.timerProviding,

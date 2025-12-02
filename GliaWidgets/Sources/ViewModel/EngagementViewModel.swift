@@ -17,6 +17,9 @@ class EngagementViewModel: CommonEngagementModel {
     /// Used when 'Leave Current Conversation?' dialog is closed with 'Leave' button.
     let replaceExistingEnqueueing: Bool
 
+    @MainActor var hideNoConnectionSnackBar: (() -> Void)?
+    let disposeBag = CoreSdkClient.DisposableBag()
+
     init(
         interactor: Interactor,
         replaceExistingEnqueueing: Bool,
@@ -108,7 +111,8 @@ class EngagementViewModel: CommonEngagementModel {
             // That resulted in conflicting view presentation attempts.
             // So this logic was moved to `ChatViewModel`, since it is always a part
             // of any engagement, where it will be performed only once.
-            break
+
+            disposeBag.disposeAll()
 
         case let .enqueueing(engagementKind):
             environment.fetchSiteConfigurations { [weak self] result in
