@@ -8,6 +8,7 @@ extension ChatViewModel {
         // it for restarting/restoring engagement.
         guard interactor.skipLiveObservationConfirmations == false else { return }
 
-        action?(.showSnackBarView)
+        let style = environment.viewFactory.theme.snackBar
+        action?(.showSnackBarView(dismissTiming: .default, style: style))
     }
 }

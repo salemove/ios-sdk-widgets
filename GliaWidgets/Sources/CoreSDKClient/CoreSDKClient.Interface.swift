@@ -9,6 +9,7 @@ struct CoreSdkClient {
     var createAppDelegate: () -> AppDelegate
     var clearSession: () -> Void
     var localeProvider: LocaleProvider
+    @Dependency(\.widgets.networkMonitor) var networkConnectionMonitor: NetworkConnectionMonitor
 
     typealias GetVisitorInfo = (_ completion: @escaping (Result<VisitorInfo, Error>) -> Void) -> Void
 
@@ -374,6 +375,9 @@ extension CoreSdkClient {
     typealias EngagementChangedBlock = GliaCoreSDK.EngagementChangedBlock
     typealias AnyCombineScheduler = GliaCoreSDK.AnyCombineScheduler
     typealias AnyScheduler = GliaCoreSDK.AnyScheduler
+    typealias NetworkStatus = GliaCoreSDK.NetworkConnectionMonitor.NetworkStatus
+    typealias DisposableBag = GliaCoreSDK.DisposableBag
+    typealias TaskDisposable = GliaCoreSDK.TaskDisposable
 }
 
 extension CoreSdkClient.AnyCombineScheduler {
@@ -421,5 +425,39 @@ extension CoreSdkClient {
 extension CoreSdkClient.Engagement {
     var isTransferredSecureConversation: Bool {
         Self.isTransferredSecureConversation(self)
+    }
+}
+
+extension CoreSdkClient {
+    struct NetworkConnectionMonitor {
+        var networkStream: (Bool) -> AsyncStream<NetworkStatus>
+    }
+}
+
+typealias NetworkConnectionMonitor = CoreSdkClient.NetworkConnectionMonitor
+
+extension CoreSdkClient.NetworkConnectionMonitor {
+    static let live: Self = .init(
+        networkStream: { replay in
+            GliaCore.sharedInstance.networkConnectionMonitor.networkStream(replay: replay)
+        }
+    )
+
+    struct Key: DependencyKey {
+        static var live: NetworkConnectionMonitor = .live
+
+        #if DEBUG
+        static var test: NetworkConnectionMonitor = .init(networkStream: { _ in
+            AsyncStream { continuation in
+                continuation.finish()
+            }
+        })
+        #endif
+    }
+}
+extension DependencyContainer.Widgets {
+    var networkMonitor: NetworkConnectionMonitor {
+        get { self[NetworkConnectionMonitor.Key.self] }
+        set { self[NetworkConnectionMonitor.Key.self] = newValue }
     }
 }
