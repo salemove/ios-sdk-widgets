@@ -164,6 +164,8 @@ class ChatViewModel: EngagementViewModel {
     override func start() {
         super.start()
 
+        subscribeOnNetworkReachabilityChanges()
+
         loadHistory { [weak self] history in
             guard let self = self else { return }
             // We only proceed to considering enqueue flow if `startAction` is about starting of engagement.
