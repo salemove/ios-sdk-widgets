@@ -280,3 +280,4 @@
 "push_notifications_alert.button.positive" = "Allow";
 "push_notifications_alert.button.negative" = "Not right now";
 
+"snackbar.no_connection.message" = "No connection. Trying to reconnect.";
