@@ -86,6 +86,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
     override func start() {
         super.start()
 
+        subscribeOnNetworkReachabilityChanges()
+
         environment.proximityManager.start()
         update(for: call.kind.value)
 
@@ -230,11 +232,13 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
     func showSnackBarIfNeeded() {
         environment.fetchSiteConfigurations { [weak self] result in
+            guard let self else { return }
             switch result {
             case let .success(site):
                 guard site.mobileObservationEnabled == true else { return }
                 guard site.mobileObservationIndicationEnabled == true else { return }
-                self?.action?(.showSnackBarView)
+                let style = self.environment.viewFactory.theme.call.snackBar
+                self.engagementAction?(.showSnackBarView(dismissTiming: .default, style: style))
             default: return
             }
         }
@@ -553,7 +557,6 @@ extension CallViewModel {
         case setRemoteVideo(CoreSdkClient.StreamView?)
         case setLocalVideo(CoreSdkClient.StreamView?)
         case setVisitorOnHold(isOnHold: Bool)
-        case showSnackBarView
         case setCameraFlip(VideoStreamView.FlipCameraAccLabelWithTap?)
     }
 
