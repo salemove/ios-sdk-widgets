@@ -65,6 +65,22 @@ final class CallViewController: EngagementViewController {
         guard let view = view as? CallView else { return }
         view.checkBarsOrientation()
     }
+
+    override func showSnackBarView(
+        dismissTiming: SnackBar.DismissTiming,
+        style: Theme.SnackBarStyle
+    ) {
+        environment.snackBar.present(
+            text: style.text,
+            style: style,
+            dismissTiming: dismissTiming,
+            for: self,
+            bottomOffset: -100,
+            timerProviding: environment.timerProviding,
+            gcd: environment.gcd,
+            notificationCenter: environment.notificationCenter
+        )
+    }
 }
 
 // MARK: - Private
@@ -132,8 +148,6 @@ private extension CallViewController {
                 view.isVisitrOnHold = isOnHold
             case .transferring:
                 view.setConnectState(.transferring, animated: true)
-            case .showSnackBarView:
-                self.showSnackBarView()
             case let .setCameraFlip(flipCameraAccessibilityLabelWithTap):
                 view.flipCameraAccessibilityLabelWithTap = flipCameraAccessibilityLabelWithTap
             }
@@ -148,19 +162,6 @@ private extension CallViewController {
             backButton: props.backButton,
             closeButton: props.closeButton,
             style: props.style
-        )
-    }
-
-    func showSnackBarView() {
-        let style = viewFactory.theme.call.snackBar
-        environment.snackBar.present(
-            text: style.text,
-            style: style,
-            for: self,
-            bottomOffset: -100,
-            timerProviding: environment.timerProviding,
-            gcd: environment.gcd,
-            notificationCenter: environment.notificationCenter
         )
     }
 }
