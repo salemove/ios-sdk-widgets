@@ -2,10 +2,10 @@
 import XCTest
 
 extension SecureConversationsTranscriptModelTests {
-    func testSendMessageRetrySuccess() {
+    func testSendMessageRetrySuccess() async {
         let outgoingMessage = OutgoingMessage.mock()
         var calls: [Call] = []
-        let viewModel = createViewModel()
+        let viewModel = await createViewModel()
 
         viewModel.action = { action in
             switch action {
@@ -38,7 +38,7 @@ extension SecureConversationsTranscriptModelTests {
         viewModel.pendingSection.append(.init(kind: .outgoingMessage(outgoingMessage, error: "Failed")))
         viewModel.pendingSection.append(.init(kind: .visitorMessage(ChatMessage.mock(), status: nil)))
 
-        viewModel.event(.retryMessageTapped(outgoingMessage))
+        await viewModel.asyncEvent(.retryMessageTapped(outgoingMessage))
 
         XCTAssertEqual(calls, expectedCalls)
         XCTAssertEqual(viewModel.pendingSection.itemCount, 3)
@@ -53,10 +53,10 @@ extension SecureConversationsTranscriptModelTests {
         }
     }
 
-    func testSendMessageRetryFailure() {
+    func testSendMessageRetryFailure() async {
         let outgoingMessage = OutgoingMessage.mock()
         var calls: [Call] = []
-        let viewModel = createViewModel()
+        let viewModel = await createViewModel()
 
         viewModel.action = { action in
             switch action {
@@ -77,9 +77,8 @@ extension SecureConversationsTranscriptModelTests {
             }
         }
 
-        viewModel.environment.secureConversations.sendMessagePayload = { _, _, completion in
-            completion(.failure(GliaError.internalError))
-            return .mock
+        viewModel.environment.secureConversations.sendMessagePayload = { _, _ in
+            throw GliaError.internalError
         }
 
         let expectedCalls: [Call] = [
@@ -98,7 +97,7 @@ extension SecureConversationsTranscriptModelTests {
         viewModel.pendingSection.append(.init(kind: .outgoingMessage(outgoingMessage, error: "Failed")))
         viewModel.pendingSection.append(.init(kind: .visitorMessage(ChatMessage.mock(), status: nil)))
 
-        viewModel.event(.retryMessageTapped(outgoingMessage))
+        await viewModel.asyncEvent(.retryMessageTapped(outgoingMessage))
 
         XCTAssertEqual(calls, expectedCalls)
         XCTAssertEqual(viewModel.pendingSection.itemCount, 3)
@@ -122,19 +121,19 @@ private extension SecureConversationsTranscriptModelTests {
         case scrollToBottom(Bool)
     }
 
-    func createViewModel() -> TranscriptModel {
+    func createViewModel() async -> TranscriptModel {
         var modelEnv = TranscriptModel.Environment.failing
-        var logger = CoreSdkClient.Logger.failing
+        var logger = CoreSdkClient.Logger.mock
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
         logger.warningClosure = { _, _, _, _ in }
         modelEnv.log = logger
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
-        modelEnv.getQueues = { callback in callback(.success([])) }
+        modelEnv.getQueues = { [] }
         modelEnv.uiApplication.canOpenURL = { _ in true }
         modelEnv.maximumUploads = { 2 }
-        modelEnv.secureConversations.sendMessagePayload = { _, _, _ in .mock }
+        modelEnv.secureConversations.sendMessagePayload = { _, _ in .mock() }
         modelEnv.createEntryWidget = { _ in .mock() }
         let availabilityEnv = SecureConversations.Availability.Environment(
             getQueues: modelEnv.getQueues,
@@ -144,7 +143,7 @@ private extension SecureConversationsTranscriptModelTests {
             getCurrentEngagement: { .mock() }
         )
 
-        return TranscriptModel(
+        let model = TranscriptModel(
             isCustomCardSupported: false,
             environment: modelEnv,
             availability: .init(environment: availabilityEnv),
@@ -153,5 +152,7 @@ private extension SecureConversationsTranscriptModelTests {
             unreadMessages: ObservableValue<Int>.init(with: .zero),
             interactor: .failing
         )
+        await model.checkSecureConversationsAvailability()
+        return model
     }
 }

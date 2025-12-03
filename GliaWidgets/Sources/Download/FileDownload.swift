@@ -66,7 +66,8 @@ class FileDownload {
         }
     }
 
-    func startDownload() {
+    @MainActor
+    func startDownload() async {
         guard let fileUrl = file.url else {
             state.value = .error(.missingFileURL)
             return
@@ -92,34 +93,23 @@ class FileDownload {
                 progress.value = $0.fractionCompleted
             }
         }
-        let onCompletion: (CoreSdkClient.EngagementFileData?, Swift.Error?) -> Void = { data, error in
-            if let data = data, let storageID = self.storageID {
-                let url = self.storage.url(for: storageID)
-                let file = LocalFile(
-                    with: url,
-                    environment: .create(with: self.environment)
-                )
-                self.storage.store(data.data, for: storageID)
-                self.state.value = .downloaded(file)
-            } else if let error = error as? CoreSdkClient.GliaCoreError {
-                self.state.value = .error(Error(with: error))
-            } else if error != nil {
-                self.state.value = .error(.generic)
-            }
-        }
 
         state.value = .downloading(progress: progress)
 
-        fetchFile.startWithFile(
-            engagementFile,
-            progress: onProgress
-        ) { result in
-            switch result {
-            case let .success(fileData):
-                onCompletion(fileData, nil)
-            case let .failure(error):
-                onCompletion(nil, error)
-            }
+        do {
+            let fileData = try await fetchFile.startWithFile(engagementFile, progress: onProgress)
+            guard let storageID else { return }
+            let url = storage.url(for: storageID)
+            let file = LocalFile(
+                with: url,
+                environment: .create(with: environment)
+            )
+            storage.store(fileData.data, for: storageID)
+            state.value = .downloaded(file)
+        } catch let error as CoreSdkClient.GliaCoreError {
+            state.value = .error(Error(with: error))
+        } catch {
+            state.value = .error(.generic)
         }
     }
 }

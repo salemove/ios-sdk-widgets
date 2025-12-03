@@ -1,5 +1,4 @@
 import Foundation
-import GliaCoreSDK
 import Combine
 
 final class QueuesMonitor {
@@ -34,21 +33,18 @@ final class QueuesMonitor {
     ///   - fetchedQueuesCompletion: Returns fetched queues result for given `queuesIds`
     ///   if no queues were found among site's queues returns default queues.
     ///
-    func fetchQueues(queuesIds: [String], completion: @escaping (Result<[Queue], Error>) -> Void) {
-        environment.getQueues { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case let .success(queues):
-                let observedQueues = evaluateQueues(queuesIds: queuesIds, fetchedQueues: queues)
-                state = .updated(observedQueues)
-                self._observedQueues.setValue(observedQueues)
-                completion(.success(observedQueues))
-            case let .failure(error):
-                environment.logger.error("Setting up queues. Failed to get site queues: \(error)")
-                self.state = .failed(error)
-                completion(.failure(error))
-                return
-            }
+    @MainActor
+    func fetchQueues(queuesIds: [String]) async throws -> [Queue] {
+        do {
+            let queues = try await environment.getQueues()
+            let observedQueues = evaluateQueues(queuesIds: queuesIds, fetchedQueues: queues)
+            state = .updated(observedQueues)
+            self._observedQueues.setValue(observedQueues)
+            return observedQueues
+        } catch {
+            environment.logger.error("Setting up queues. Failed to get site queues: \(error)")
+            self.state = .failed(error)
+            throw error
         }
     }
 
@@ -59,17 +55,14 @@ final class QueuesMonitor {
     ///   - fetchedQueuesCompletion: Returns fetched queues result for given `queuesIds`
     ///   if no queues were found among site's queues returns default queues.
     ///
-    func fetchAndMonitorQueues(
-        queuesIds: [String] = [],
-        fetchedQueuesCompletion: ((Result<[Queue], Error>) -> Void)? = nil
-    ) {
+    func fetchAndMonitorQueues(queuesIds: [String] = []) async throws -> [Queue] {
         stopMonitoring()
-
-        fetchQueues(queuesIds: queuesIds) { [weak self] result in
-            if case let .success(queues) = result {
-                self?.observeQueuesUpdates(queues)
-            }
-            fetchedQueuesCompletion?(result)
+        do {
+            let queues = try await fetchQueues(queuesIds: queuesIds)
+            observeQueuesUpdates(queues)
+            return queues
+        } catch {
+            throw error
         }
     }
 
