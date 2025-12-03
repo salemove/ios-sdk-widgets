@@ -49,9 +49,6 @@ final class ChatViewTest: XCTestCase {
     }
 
     func test_viewIsReleasedOnceModuleIsClosedWithResponseCardsInTranscript() throws {
-        throw XCTSkip("""
-                Temporarily skip the test: will be fixed in MOB-4941.
-            """)
         guard #available(iOS 17, *) else {
             throw XCTSkip("""
                 This test does not pass on OS lower than iOS 17, but actual fix work well.

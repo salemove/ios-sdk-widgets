@@ -56,7 +56,6 @@ extension ChatViewModel: ViewModel {
         case fileUploadListPropsUpdated(SecureConversations.FileUploadListView.Props)
         case quickReplyPropsUpdated(QuickReplyView.Props)
         case transcript(TranscriptAction)
-        case showSnackBarView(dismissTiming: SnackBar.DismissTiming, style: Theme.SnackBarStyle)
         case switchToEngagement
         case setMessageEntryConnected(Bool)
     }
