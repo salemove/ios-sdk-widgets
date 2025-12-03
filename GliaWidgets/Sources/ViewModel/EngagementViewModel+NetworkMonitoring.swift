@@ -1,7 +1,7 @@
 import Foundation
 @_spi(GliaWidgets) import GliaCoreSDK
 
-extension ChatViewModel {
+extension EngagementViewModel {
     func subscribeOnNetworkReachabilityChanges() {
         let task = Task { [weak self] in
             guard let strongRef = self else { return }
@@ -18,14 +18,14 @@ extension ChatViewModel {
     }
 
     @MainActor
-    private func handleNetworkStatus(_ status: CoreSdkClient.NetworkStatus) {
+    private func handleNetworkStatus(_ status: CoreSdkClient.NetworkStatus) async {
         switch status {
         case .connected:
             hideNoConnectionSnackBar?()
             hideNoConnectionSnackBar = nil
         case .disconnected:
-            let style = environment.viewFactory.theme.noConnectionSnackBarStyle
-            action?(.showSnackBarView(
+            let style = environment.viewFactory.theme.invertedNoConnectionSnackBarStyle
+            engagementAction?(.showSnackBarView(
                 dismissTiming: .manual(dismiss: { [weak self] callBack in
                     self?.hideNoConnectionSnackBar = callBack
                 }),

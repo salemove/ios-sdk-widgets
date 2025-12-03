@@ -1726,6 +1726,13 @@ class ChatViewModelTests: XCTestCase {
             case refreshAll, appendRows, connected, showSnackBarView
         }
         var calls: [Call] = []
+        viewModel.engagementAction = { action in
+            switch action {
+            case .showSnackBarView:
+                calls.append(.showSnackBarView)
+            default: return
+            }
+        }
         viewModel.action = { action in
             switch action {
             case .appendRows:
@@ -1734,8 +1741,6 @@ class ChatViewModelTests: XCTestCase {
                 calls.append(.connected)
             case .refreshAll:
                 calls.append(.refreshAll)
-            case .showSnackBarView:
-                calls.append(.showSnackBarView)
             default:
                 break
             }

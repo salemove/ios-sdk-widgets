@@ -52,6 +52,22 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         return viewFactory.theme.chat.preferredStatusBarStyle
     }
 
+    override func showSnackBarView(
+        dismissTiming: SnackBar.DismissTiming,
+        style: Theme.SnackBarStyle
+    ) {
+        environment.snackBar.present(
+            text: style.text,
+            style: style,
+            dismissTiming: dismissTiming,
+            for: self,
+            bottomOffset: -128,
+            timerProviding: environment.timerProviding,
+            gcd: environment.gcd,
+            notificationCenter: environment.notificationCenter
+        )
+    }
+
     // swiftlint:disable function_body_length
     private func bind(viewModel: SecureConversations.ChatWithTranscriptModel, to view: ChatView) {
         view.entryWidget = viewModel.entryWidget
@@ -220,17 +236,6 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                 view?.renderQuickReply(props: props)
             case .transcript(.messageCenterAvailabilityUpdated):
                 break
-            case let .showSnackBarView(dismissTiming, style):
-                self.environment.snackBar.present(
-                    text: style.text,
-                    style: style,
-                    dismissTiming: dismissTiming,
-                    for: self,
-                    bottomOffset: -128,
-                    timerProviding: self.environment.timerProviding,
-                    gcd: self.environment.gcd,
-                    notificationCenter: self.environment.notificationCenter
-                )
             case .switchToEngagement:
                 view?.hideEntryWidget()
             case let .setMessageEntryConnected(isConnected):
