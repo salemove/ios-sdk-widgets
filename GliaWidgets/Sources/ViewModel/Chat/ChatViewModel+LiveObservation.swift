@@ -9,6 +9,6 @@ extension ChatViewModel {
         guard interactor.skipLiveObservationConfirmations == false else { return }
 
         let style = environment.viewFactory.theme.snackBar
-        action?(.showSnackBarView(dismissTiming: .default, style: style))
+        engagementAction?(.showSnackBarView(dismissTiming: .default, style: style))
     }
 }

@@ -1,5 +1,4 @@
 import XCTest
-
 @testable import GliaWidgets
 
 // swiftlint:disable type_body_length
@@ -513,6 +512,10 @@ class CallViewModelTests: XCTestCase {
         enum Call: Equatable { case isIdleTimerDisabled(Bool), isProximityMonitoringEnabled(Bool) }
         var calls: [Call] = []
         var env = CallViewModel.Environment.failing()
+
+        var cameraDeviceManager = CoreSdkClient.CameraDeviceManageableClient.failing
+        cameraDeviceManager.cameraDevices = { [] }
+        env.cameraDeviceManager = { cameraDeviceManager }
         var proximityManagerEnv = ProximityManager.Environment.failing
         proximityManagerEnv.uiApplication.isIdleTimerDisabled = { value in
             calls.append(.isIdleTimerDisabled(value))
@@ -521,7 +524,7 @@ class CallViewModelTests: XCTestCase {
             calls.append(.isProximityMonitoringEnabled(value))
         }
         env.proximityManager = .init(environment: proximityManagerEnv)
-        viewModel = .init(
+        var viewModel: CallViewModel? = .init(
             interactor: .mock(),
             environment: env,
             call: .mock(),
@@ -530,14 +533,16 @@ class CallViewModelTests: XCTestCase {
             replaceExistingEnqueueing: false
         )
 
-        viewModel.event(.viewDidLoad)
+        viewModel?.event(.viewDidLoad)
 
         XCTAssertEqual(calls, [
             .isIdleTimerDisabled(true),
             .isProximityMonitoringEnabled(true)
         ])
 
+        viewModel?.interactorEvent(.stateChanged(.ended(.byVisitor)))
         viewModel = nil
+
         XCTAssertEqual(calls, [
             .isIdleTimerDisabled(true),
             .isProximityMonitoringEnabled(true),
