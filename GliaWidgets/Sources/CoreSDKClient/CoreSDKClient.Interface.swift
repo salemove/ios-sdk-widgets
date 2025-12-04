@@ -446,13 +446,11 @@ extension CoreSdkClient.NetworkConnectionMonitor {
     struct Key: DependencyKey {
         static var live: NetworkConnectionMonitor = .live
 
-        #if DEBUG
         static var test: NetworkConnectionMonitor = .init(networkStream: { _ in
             AsyncStream { continuation in
                 continuation.finish()
             }
         })
-        #endif
     }
 }
 extension DependencyContainer.Widgets {
