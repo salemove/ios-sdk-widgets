@@ -15,8 +15,9 @@ extension CallVisualizer.VideoCallViewModel {
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
-        var flipCameraButtonStyle: FlipCameraButtonStyle
+        var theme: Theme
         @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
+        @Dependency(\.widgets.networkMonitor) var networkConnectionMonitor: CoreSdkClient.NetworkConnectionMonitor
     }
 }
 
@@ -35,7 +36,7 @@ extension CallVisualizer.VideoCallViewModel.Environment {
             proximityManager: environment.proximityManager,
             log: environment.log,
             cameraDeviceManager: environment.cameraDeviceManager,
-            flipCameraButtonStyle: environment.flipCameraButtonStyle
+            theme: environment.theme
         )
     }
 }
