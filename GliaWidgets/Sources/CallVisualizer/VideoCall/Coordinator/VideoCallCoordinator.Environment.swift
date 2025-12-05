@@ -16,7 +16,8 @@ extension CallVisualizer.VideoCallCoordinator {
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
-        var flipCameraButtonStyle: FlipCameraButtonStyle
+        var theme: Theme
+        var snackBar: SnackBar
     }
 }
 
@@ -37,7 +38,8 @@ extension CallVisualizer.VideoCallCoordinator.Environment {
             proximityManager: environment.proximityManager,
             log: environment.log,
             cameraDeviceManager: environment.cameraDeviceManager,
-            flipCameraButtonStyle: environment.viewFactory.theme.call.flipCameraButtonStyle
+            theme: environment.viewFactory.theme,
+            snackBar: environment.snackBar
         )
     }
 }
