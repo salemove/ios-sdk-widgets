@@ -482,6 +482,7 @@
 		8492F9172CAD2F2000242691 /* TranscriptModelTests+ResponseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492F9162CAD2F2000242691 /* TranscriptModelTests+ResponseCard.swift */; };
 		8492F9192CAD329800242691 /* TranscriptModelTests+MessageRetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492F9182CAD329800242691 /* TranscriptModelTests+MessageRetry.swift */; };
 		8492F91B2CAD6ADE00242691 /* ChatViewModelTests+MessageRetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492F91A2CAD6ADE00242691 /* ChatViewModelTests+MessageRetry.swift */; };
+		849648912EC723B500AD0C17 /* VideoCallViewModel+NetworkMonitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849648902EC723B500AD0C17 /* VideoCallViewModel+NetworkMonitoring.swift */; };
 		8497C1E82E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8497C1E72E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift */; };
 		84A318A12869ECFC00CA1DE5 /* Unavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A318A02869ECFC00CA1DE5 /* Unavailable.swift */; };
 		84B21DF32E604E220048AB64 /* PlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B21DF22E604E220048AB64 /* PlaceholderTextView.swift */; };
@@ -1567,6 +1568,7 @@
 		8492F9162CAD2F2000242691 /* TranscriptModelTests+ResponseCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TranscriptModelTests+ResponseCard.swift"; sourceTree = "<group>"; };
 		8492F9182CAD329800242691 /* TranscriptModelTests+MessageRetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TranscriptModelTests+MessageRetry.swift"; sourceTree = "<group>"; };
 		8492F91A2CAD6ADE00242691 /* ChatViewModelTests+MessageRetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModelTests+MessageRetry.swift"; sourceTree = "<group>"; };
+		849648902EC723B500AD0C17 /* VideoCallViewModel+NetworkMonitoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VideoCallViewModel+NetworkMonitoring.swift"; sourceTree = "<group>"; };
 		8497C1E72E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleChoiceQuestionViewTests.swift; sourceTree = "<group>"; };
 		84A318A02869ECFC00CA1DE5 /* Unavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unavailable.swift; sourceTree = "<group>"; };
 		84B21DF22E604E220048AB64 /* PlaceholderTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTextView.swift; sourceTree = "<group>"; };
@@ -5133,6 +5135,7 @@
 			isa = PBXGroup;
 			children = (
 				C0D2F03A299149D600803B47 /* VideoCallViewModel.swift */,
+				849648902EC723B500AD0C17 /* VideoCallViewModel+NetworkMonitoring.swift */,
 				C0D2F03C29914BB300803B47 /* VideoCallViewModel.DelegateEvent.swift */,
 				C0D2F03E29914E8E00803B47 /* VideoCallViewModel.Environment.swift */,
 			);
@@ -6163,6 +6166,7 @@
 				AFB6A0792CCBF3B700A1ED9A /* MediaTypeItemStyle.Loading.swift in Sources */,
 				845E2F72283D068000C04D56 /* HeaderStyle.Accessibility.swift in Sources */,
 				AFA1A9952AA9248400095BE8 /* ChatViewModel+ViewModel.swift in Sources */,
+				849648912EC723B500AD0C17 /* VideoCallViewModel+NetworkMonitoring.swift in Sources */,
 				1A1E30CB25F9FDC400850E68 /* ChatImageFileContentStyle.swift in Sources */,
 				C09046732B7CFE73003C437C /* ConfirmationStyle.SubtitleStyle.Accessibility.swift in Sources */,
 				75C48498299AC71F003EC223 /* Header.Playbook.swift in Sources */,
