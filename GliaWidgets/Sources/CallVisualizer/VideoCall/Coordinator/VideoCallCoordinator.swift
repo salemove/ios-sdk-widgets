@@ -29,6 +29,11 @@ extension CallVisualizer {
             return resumeVideoCallViewController()
         }
 
+        func close() {
+            viewModel?.close()
+            viewController?.presentingViewController?.dismiss(animated: true)
+        }
+
         private func showVideoCallViewController() -> ViewController {
             typealias Props = VideoCallViewController.Props
 
@@ -47,11 +52,18 @@ extension CallVisualizer {
             self.viewController = viewController
 
             viewModel.delegate = { [weak self, weak viewController] event in
+                guard let viewController else { return }
                 switch event {
                 case let .propsUpdated(props):
-                    viewController?.props = props
+                    viewController.props = props
                 case .minimized:
                     self?.delegate?(.close)
+                case let .showSnackBarView(dismissTiming, style):
+                    self?.presentNoConnectionSnackBar(
+                        from: viewController,
+                        dismissTiming: dismissTiming,
+                        style: style
+                    )
                 }
             }
             return viewController
@@ -62,14 +74,38 @@ extension CallVisualizer {
 
             viewController.modalPresentationStyle = .overFullScreen
             viewModel.delegate = { [weak self, weak viewController] event in
+                guard let viewController else { return }
                 switch event {
                 case let .propsUpdated(props):
-                    viewController?.props = props
+                    viewController.props = props
                 case .minimized:
                     self?.delegate?(.close)
+                case let .showSnackBarView(dismissTiming, style):
+                    self?.presentNoConnectionSnackBar(
+                        from: viewController,
+                        dismissTiming: dismissTiming,
+                        style: style
+                    )
                 }
             }
             return viewController
+        }
+
+        private func presentNoConnectionSnackBar(
+            from viewController: UIViewController,
+            dismissTiming: SnackBar.DismissTiming,
+            style: Theme.SnackBarStyle
+        ) {
+            environment.snackBar.present(
+                text: Localization.Snackbar.NoConnection.message,
+                style: style,
+                dismissTiming: dismissTiming,
+                for: viewController,
+                bottomOffset: -100,
+                timerProviding: environment.timerProviding,
+                gcd: environment.gcd,
+                notificationCenter: environment.notificationCenter
+            )
         }
     }
 }

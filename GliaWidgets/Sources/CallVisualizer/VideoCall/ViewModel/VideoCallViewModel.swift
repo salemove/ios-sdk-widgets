@@ -13,6 +13,9 @@ extension CallVisualizer {
         let call: Call
         private var connectTimer: FoundationBased.Timer?
         private var connectCounter: Int = 0
+        let disposeBag = CoreSdkClient.DisposableBag()
+
+        @MainActor var hideNoConnectionSnackBar: (() -> Void)?
 
         // MARK: - Operator properties
 
@@ -120,6 +123,10 @@ extension CallVisualizer {
         deinit {
             environment.proximityManager.stop()
         }
+
+        func close() {
+            disposeBag.disposeAll()
+        }
     }
 }
 
@@ -167,6 +174,7 @@ extension CallVisualizer.VideoCallViewModel {
                 flipCameraPropsAccessibility: flipCameraAccLabelWithTap?.accessibility ?? .nop
             ),
             viewDidLoad: .init { [weak self] in
+                self?.subscribeOnNetworkReachabilityChanges()
                 self?.environment.proximityManager.start()
             }
         )
@@ -424,7 +432,7 @@ private extension CallVisualizer.VideoCallViewModel {
                 true,
                 getCameraDeviceManager: environment.cameraDeviceManager,
                 log: environment.log,
-                flipCameraButtonStyle: environment.flipCameraButtonStyle,
+                flipCameraButtonStyle: environment.theme.call.flipCameraButtonStyle,
                 openTelemetry: environment.openTelemetry
             ) { [weak self] in
                 self?.flipCameraAccLabelWithTap = $0
@@ -435,7 +443,7 @@ private extension CallVisualizer.VideoCallViewModel {
                 false,
                 getCameraDeviceManager: environment.cameraDeviceManager,
                 log: environment.log,
-                flipCameraButtonStyle: environment.flipCameraButtonStyle,
+                flipCameraButtonStyle: environment.theme.call.flipCameraButtonStyle,
                 openTelemetry: environment.openTelemetry
             ) { [weak self] in
                 self?.flipCameraAccLabelWithTap = $0

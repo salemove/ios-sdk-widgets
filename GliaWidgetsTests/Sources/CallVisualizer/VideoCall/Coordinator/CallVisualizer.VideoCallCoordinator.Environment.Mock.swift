@@ -17,6 +17,7 @@ extension CallVisualizer.VideoCallCoordinator.Environment {
         proximityManager: .mock,
         log: .mock,
         cameraDeviceManager: { .mock },
-        flipCameraButtonStyle: .nop
+        theme: .mock(),
+        snackBar: .mock
     )
 }
