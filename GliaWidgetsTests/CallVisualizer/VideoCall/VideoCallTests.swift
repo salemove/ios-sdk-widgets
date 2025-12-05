@@ -1,5 +1,6 @@
 import XCTest
 @testable import GliaWidgets
+@_spi(GliaWidgets) import GliaCoreSDK
 
 final class VideoCallTests: XCTestCase {
     func test_vc_deinit() {
@@ -53,6 +54,16 @@ final class VideoCallTests: XCTestCase {
     func test_proximityManagerStartsAndStops() {
         enum Call: Equatable { case isIdleTimerDisabled(Bool), isProximityMonitoringEnabled(Bool) }
         var calls: [Call] = []
+
+        let expectation = expectation(description: "AsyncStream finishes immediately")
+
+        DependencyContainer.current.widgets.networkMonitor = .init(networkStream: { replay in
+            AsyncStream { continuation in
+                continuation.finish()
+                expectation.fulfill()
+            }
+        })
+
         var env = CallVisualizer.VideoCallViewModel.Environment.mock
         var proximityManagerEnv = ProximityManager.Environment.failing
         proximityManagerEnv.uiApplication.isIdleTimerDisabled = { value in
@@ -72,7 +83,11 @@ final class VideoCallTests: XCTestCase {
             .isProximityMonitoringEnabled(true)
         ])
 
+        wait(for: [expectation], timeout: 0.1)
+
+        viewModel?.close()
         viewModel = nil
+
         XCTAssertEqual(calls, [
             .isIdleTimerDisabled(true),
             .isProximityMonitoringEnabled(true),
@@ -84,7 +99,7 @@ final class VideoCallTests: XCTestCase {
 
 private extension VideoCallTests {
     func mockViewModel() -> CallVisualizer.VideoCallViewModel {
-        var environment = CallVisualizer.VideoCallViewModel.Environment.mock
+        let environment = CallVisualizer.VideoCallViewModel.Environment.mock
         return .mock(environment: environment)
     }
 }

@@ -1,7 +1,7 @@
 import Foundation
 @_spi(GliaWidgets) import GliaCoreSDK
 
-extension EngagementViewModel {
+extension CallVisualizer.VideoCallViewModel {
     func subscribeOnNetworkReachabilityChanges() {
         let task = Task { [weak self] in
             guard let self else { return }
@@ -24,8 +24,8 @@ extension EngagementViewModel {
             hideNoConnectionSnackBar?()
             hideNoConnectionSnackBar = nil
         case .disconnected:
-            let style = environment.viewFactory.theme.invertedNoConnectionSnackBarStyle
-            engagementAction?(.showSnackBarView(
+            let style = environment.theme.invertedNoConnectionSnackBarStyle
+            delegate?(.showSnackBarView(
                 dismissTiming: .manual(dismiss: { [weak self] callBack in
                     self?.hideNoConnectionSnackBar = callBack
                 }),

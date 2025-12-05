@@ -217,7 +217,7 @@ extension CallVisualizer.Coordinator {
 
     func closeFlow() {
         if let videoCallCoordinator {
-            videoCallCoordinator.viewController?.presentingViewController?.dismiss(animated: true)
+            videoCallCoordinator.close()
             environment.eventHandler(.minimized)
         }
     }
