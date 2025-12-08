@@ -14,3 +14,4 @@ typealias OtelBubbleStates = GliaCoreSDK.OtelBubbleStates
 typealias OtelViewTypes = GliaCoreSDK.OtelViewTypes
 typealias OtelEntryWidgetStates = GliaCoreSDK.OtelEntryWidgetStates
 typealias OtelVisitorCodeStates = GliaCoreSDK.OtelVisitorCodeStates
+typealias OtelSnackBarTypes = GliaCoreSDK.OtelSnackBarTypes

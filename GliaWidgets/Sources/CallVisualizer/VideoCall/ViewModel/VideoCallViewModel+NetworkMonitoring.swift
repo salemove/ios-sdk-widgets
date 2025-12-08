@@ -23,6 +23,7 @@ extension CallVisualizer.VideoCallViewModel {
         case .connected:
             hideNoConnectionSnackBar?()
             hideNoConnectionSnackBar = nil
+            logSnackBarEvent(.snackBarHidden)
         case .disconnected:
             let style = environment.theme.invertedNoConnectionSnackBarStyle
             delegate?(.showSnackBarView(
@@ -31,8 +32,20 @@ extension CallVisualizer.VideoCallViewModel {
                 }),
                 style: style
             ))
+            logSnackBarEvent(.snackBarShown)
         @unknown default:
             return
         }
+    }
+
+    private func logSnackBarEvent(_ event: OtelLogEvents) {
+        let attributesBuilder: OtelAttributesBuilder = {
+            $0[.isAutoClosable] = .bool(false)
+            $0[.snackBarType] = .string(OtelSnackBarTypes.connection.rawValue)
+        }
+        environment.openTelemetry.logger.i(
+            event,
+            attributesBuilder: attributesBuilder
+        )
     }
 }
