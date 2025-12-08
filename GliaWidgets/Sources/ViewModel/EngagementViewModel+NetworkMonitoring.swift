@@ -23,6 +23,7 @@ extension EngagementViewModel {
         case .connected:
             hideNoConnectionSnackBar?()
             hideNoConnectionSnackBar = nil
+            logSnackBarEvent(.snackBarHidden)
         case .disconnected:
             let style = environment.viewFactory.theme.invertedNoConnectionSnackBarStyle
             engagementAction?(.showSnackBarView(
@@ -31,8 +32,20 @@ extension EngagementViewModel {
                 }),
                 style: style
             ))
+            logSnackBarEvent(.snackBarShown)
         @unknown default:
             return
         }
+    }
+
+    private func logSnackBarEvent(_ event: OtelLogEvents) {
+        let attributesBuilder: OtelAttributesBuilder = {
+            $0[.isAutoClosable] = .bool(false)
+            $0[.snackBarType] = .string(OtelSnackBarTypes.connection.rawValue)
+        }
+        environment.openTelemetry.logger.i(
+            event,
+            attributesBuilder: attributesBuilder
+        )
     }
 }
