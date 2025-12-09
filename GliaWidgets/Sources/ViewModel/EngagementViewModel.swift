@@ -235,7 +235,11 @@ extension EngagementViewModel {
             declined: () -> Void
         )
         case showAlert(AlertInputType)
-        case showSnackBarView(dismissTiming: SnackBar.DismissTiming, style: Theme.SnackBarStyle)
+        case showSnackBarView(
+            dismissTiming: SnackBar.DismissTiming,
+            style: Theme.SnackBarStyle
+        )
+        case showNoConnectionSnackBarView(dismissTiming: SnackBar.DismissTiming)
     }
 
     enum DelegateEvent {

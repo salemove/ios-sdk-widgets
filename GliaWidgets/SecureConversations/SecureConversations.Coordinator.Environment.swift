@@ -40,7 +40,6 @@ extension SecureConversations.Coordinator {
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
         var timerProviding: FoundationBased.Timer.Providing
-        var snackBar: SnackBar
         var maximumUploads: () -> Int
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var flipCameraButtonStyle: FlipCameraButtonStyle
@@ -112,7 +111,6 @@ extension SecureConversations.Coordinator.Environment {
             proximityManager: environment.proximityManager,
             log: environment.log,
             timerProviding: environment.timerProviding,
-            snackBar: environment.snackBar,
             maximumUploads: environment.maximumUploads,
             cameraDeviceManager: environment.cameraDeviceManager,
             flipCameraButtonStyle: environment.flipCameraButtonStyle,

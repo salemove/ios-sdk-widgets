@@ -8,7 +8,6 @@ extension CallViewController {
         notificationCenter: FoundationBased.NotificationCenter = .mock,
         timerProviding: FoundationBased.Timer.Providing = .mock,
         gcd: GCD = .mock,
-        snackBar: SnackBar = .mock,
         alertManager: AlertManager = .mock()
     ) -> CallViewController {
         .init(
@@ -19,7 +18,6 @@ extension CallViewController {
                 log: .mock,
                 timerProviding: .mock,
                 gcd: .mock,
-                snackBar: snackBar,
                 alertManager: alertManager
             )
         )

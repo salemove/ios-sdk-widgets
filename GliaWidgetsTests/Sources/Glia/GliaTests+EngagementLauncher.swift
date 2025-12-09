@@ -125,10 +125,8 @@ extension GliaTests {
     func test_testEnqueuingVideoWhenVideoCallVisualizerIsActiveShouldRestoreVideo() throws {
         var calledCVEvents: [CallVisualizer.Coordinator.DelegateEvent] = []
 
-        let sdk = try makeConfigurableSDK(ongoingEngagement: .mock(source: .callVisualizer, media: .init(audio: nil, video: .oneWay)), enqueueingEngagement: .videoCall) { sdk in
+        _ = try makeConfigurableSDK(ongoingEngagement: .mock(source: .callVisualizer, media: .init(audio: nil, video: .oneWay)), enqueueingEngagement: .videoCall) { sdk in
             sdk.rootCoordinator?.gliaViewController = .mock()
-            sdk.environment.snackBar.present = { _, _, _, _, _, _, _, _ in
-            }
             var callVisualizerEnv = CallVisualizer.Environment.mock
             callVisualizerEnv.getCurrentEngagement = {
                 .mock(source: .callVisualizer, media: .init(audio: nil, video: .oneWay))
@@ -173,12 +171,13 @@ extension GliaTests {
         var calls: [Call] = []
         var snackBarMessage: String?
 
-        let sdk = try makeConfigurableSDK(ongoingEngagement: ongoingEngagement, enqueueingEngagement: enqueueingEngagement) { sdk in
-            sdk.environment.snackBar.present = { message, _, _, _, _, _, _, _ in
-                snackBarMessage = message
-                calls.append(.presentSnackBar)
-            }
+        var snackBar: SnackBar = .mock
+        snackBar.present = { message, _, _, _, _, _, _ in
+            snackBarMessage = message
+            calls.append(.presentSnackBar)
         }
+        DependencyContainer.current.widgets.snackBar = snackBar
+        _ = try makeConfigurableSDK(ongoingEngagement: ongoingEngagement, enqueueingEngagement: enqueueingEngagement) { _ in }
 
         XCTAssertEqual(calls, [.presentSnackBar])
         XCTAssertEqual(snackBarMessage, Localization.EntryWidget.CallVisualizer.description)
@@ -318,17 +317,17 @@ extension GliaTests {
         }
         var calls: [Call] = []
         var snackBarMessage: String?
-        
-        let sdk = try makeConfigurableSDK(
+        var snackBar: SnackBar = .mock
+        snackBar.present = { message, _, _, _, _, _, _ in
+            snackBarMessage = message
+            calls.append(.presentSnackBar)
+        }
+        DependencyContainer.current.widgets.snackBar = snackBar
+        _ = try makeConfigurableSDK(
             enqueueingEngagementKind: enqueueingEngagementKind,
             engagementToEnqueue: engagementToEnqueue
-        ) { sdk in
-            sdk.environment.snackBar.present = { message, _, _, _, _, _, _, _ in
-                snackBarMessage = message
-                calls.append(.presentSnackBar)
-            }
-        }
-        
+        ) { _ in }
+
         XCTAssertEqual(calls, [.presentSnackBar])
         XCTAssertEqual(snackBarMessage, Localization.EntryWidget.CallVisualizer.description)
     }

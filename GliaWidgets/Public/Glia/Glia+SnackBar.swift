@@ -8,19 +8,19 @@ extension Glia {
     ///   - style: A style which will be applied for snackbar.
     ///
     func showSnackBar(with message: String, style: Theme.SnackBarStyle) {
-        environment.snackBar.showSnackBarMessage(
+        environment.snackBar.present(
             text: message,
             style: style,
-            topMostViewController: GliaPresenter(
+            for: GliaPresenter(
                 environment: .create(
                     with: self.environment,
                     log: self.loggerPhase.logger,
                     sceneProvider: nil
                 )
             ).topMostViewController,
+            configuration: .default,
             timerProviding: environment.timerProviding,
-            gcd: environment.gcd,
-            notificationCenter: environment.notificationCenter
+            gcd: environment.gcd
         )
     }
 }

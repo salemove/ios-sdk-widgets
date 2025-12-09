@@ -28,7 +28,6 @@ extension CallCoordinator.Environment {
         createSendMessagePayload: { content, attachment in .mock() },
         proximityManager: .mock,
         log: .mock,
-        snackBar: .mock,
         cameraDeviceManager: { .mock },
         flipCameraButtonStyle: .nop,
         alertManager: .mock(),

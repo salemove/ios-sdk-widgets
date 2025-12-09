@@ -63,7 +63,7 @@ final class VideoCallCoordinatorTests: XCTestCase {
         coordinator.viewModel?.delegate?(.minimized)
 
         XCTAssertEqual(calledEvents.count, 1)
-        XCTAssertEqual(try XCTUnwrap(calledEvents.first), .close)
+        XCTAssertEqual(try XCTUnwrap(calledEvents.first), .minimize)
     }
 
     // Resume delegate
@@ -97,6 +97,6 @@ final class VideoCallCoordinatorTests: XCTestCase {
         coordinator.viewModel?.delegate?(.minimized)
 
         XCTAssertEqual(calledEvents.count, 1)
-        XCTAssertEqual(try XCTUnwrap(calledEvents.first), .close)
+        XCTAssertEqual(try XCTUnwrap(calledEvents.first), .minimize)
     }
 }

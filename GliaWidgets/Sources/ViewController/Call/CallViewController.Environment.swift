@@ -8,7 +8,7 @@ extension CallViewController {
         var log: CoreSdkClient.Logger
         var timerProviding: FoundationBased.Timer.Providing
         var gcd: GCD
-        var snackBar: SnackBar
+        @Dependency(\.widgets.snackBar) var snackBar: SnackBar
         var alertManager: AlertManager
         @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
@@ -25,7 +25,6 @@ extension CallViewController.Environment {
             log: environment.log,
             timerProviding: environment.timerProviding,
             gcd: environment.gcd,
-            snackBar: environment.snackBar,
             alertManager: environment.alertManager
         )
     }
@@ -39,7 +38,6 @@ extension CallViewController.Environment {
         log: CoreSdkClient.Logger = .mock,
         timerProviding: FoundationBased.Timer.Providing = .mock,
         gcd: GCD = .mock,
-        snackBar: SnackBar = .mock,
         alertManager: AlertManager = .mock()
     ) -> Self {
         .init(
@@ -48,7 +46,6 @@ extension CallViewController.Environment {
             log: log,
             timerProviding: timerProviding,
             gcd: gcd,
-            snackBar: snackBar,
             alertManager: alertManager
         )
     }
