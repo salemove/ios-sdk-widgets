@@ -134,7 +134,7 @@ extension CallVisualizer.Coordinator {
 
     func end() {
         removeBubbleView()
-        closeFlow()
+        videoCallCoordinator?.finish()
         videoCallCoordinator = nil
     }
 
@@ -189,8 +189,8 @@ extension CallVisualizer.Coordinator {
 
         coordinator.delegate = { [weak self] event in
             switch event {
-            case .close:
-                self?.closeFlow()
+            case .minimize:
+                self?.minimize()
             }
         }
 
@@ -215,9 +215,9 @@ extension CallVisualizer.Coordinator {
         end()
     }
 
-    func closeFlow() {
+    func minimize() {
         if let videoCallCoordinator {
-            videoCallCoordinator.close()
+            videoCallCoordinator.minimize()
             environment.eventHandler(.minimized)
         }
     }
@@ -393,13 +393,13 @@ private extension CallVisualizer.Coordinator {
 
 private extension CallVisualizer.Coordinator {
     func showSnackBarMessage(text: String) {
-        environment.snackBar.showSnackBarMessage(
+        environment.snackBar.present(
             text: text,
             style: environment.viewFactory.theme.snackBar,
-            topMostViewController: topMostViewController,
+            for: topMostViewController,
+            configuration: .callVisualizer,
             timerProviding: environment.timerProviding,
-            gcd: environment.gcd,
-            notificationCenter: environment.notificationCenter
+            gcd: environment.gcd
         )
     }
 

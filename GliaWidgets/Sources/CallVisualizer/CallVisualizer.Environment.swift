@@ -28,7 +28,6 @@ extension CallVisualizer {
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
-        var snackBar: SnackBar
         var coreSdk: CoreSdkClient
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var alertManager: AlertManager
@@ -73,7 +72,6 @@ extension CallVisualizer.Environment {
             proximityManager: environment.proximityManager,
             log: loggerPhase.logger,
             fetchSiteConfigurations: environment.coreSdk.fetchSiteConfigurations,
-            snackBar: environment.snackBar,
             coreSdk: environment.coreSdk,
             cameraDeviceManager: environment.cameraDeviceManager,
             alertManager: alertManager,

@@ -52,19 +52,74 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         return viewFactory.theme.chat.preferredStatusBarStyle
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        guard let chatView = view as? ChatView else { return }
+
+        chatView.layoutIfNeeded()
+
+        guard let pending = chatView.pendingSnackBar else { return }
+
+        chatView.pendingSnackBar = nil
+
+        environment.snackBar.present(
+            text: pending.text,
+            style: pending.style,
+            dismissTiming: pending.dismissTiming,
+            for: self,
+            configuration: .anchor(
+                anchorViewProvider: { [weak chatView] in
+                    chatView?.messageEntryView
+                },
+                gap: 16
+            ),
+            timerProviding: environment.timerProviding,
+            gcd: environment.gcd
+        )
+    }
+
     override func showSnackBarView(
         dismissTiming: SnackBar.DismissTiming,
         style: Theme.SnackBarStyle
     ) {
-        environment.snackBar.present(
+        guard let chatView = view as? ChatView else {
+            return
+        }
+
+        let pending = ChatView.PendingSnackBar(
             text: style.text,
             style: style,
-            dismissTiming: dismissTiming,
+            dismissTiming: dismissTiming
+        )
+
+        // If ChatView is not yet in the window hierarchy, just remember the request.
+        guard chatView.window != nil else {
+            chatView.pendingSnackBar = pending
+            return
+        }
+
+        environment.snackBar.present(
+            text: pending.text,
+            style: pending.style,
+            dismissTiming: pending.dismissTiming,
             for: self,
-            bottomOffset: -128,
+            configuration: .anchor(
+                anchorViewProvider: { [weak chatView] in
+                    chatView?.messageEntryView
+                },
+                gap: 16
+            ),
             timerProviding: environment.timerProviding,
-            gcd: environment.gcd,
-            notificationCenter: environment.notificationCenter
+            gcd: environment.gcd
+        )
+    }
+
+    override func showNoConnectionSnackBarView(dismissTiming: SnackBar.DismissTiming) {
+        let style = environment.viewFactory.theme.noConnectionSnackBar
+        showSnackBarView(
+            dismissTiming: dismissTiming,
+            style: style
         )
     }
 

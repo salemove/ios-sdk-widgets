@@ -111,14 +111,15 @@ class ChatViewControllerTests: XCTestCase {
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         var snackBar = SnackBar.failing
-        snackBar.present = { _, _, _, _, _, _, _, _ in
+        snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
+        DependencyContainer.current.widgets.snackBar = snackBar
+
         let env = ChatViewController.Environment(
             timerProviding: .failing,
             viewFactory: .mock(),
             gcd: .failing,
-            snackBar: snackBar,
             notificationCenter: .failing,
             alertManager: .mock()
         )
@@ -126,6 +127,10 @@ class ChatViewControllerTests: XCTestCase {
             viewModel: .chat(viewModel),
             environment: env
         )
+        let window = UIWindow()
+        window.rootViewController = viewController
+        window.makeKeyAndVisible()
+
         viewController.loadView()
         interactor.state = .engaged(nil)
         XCTAssertEqual(
@@ -167,14 +172,13 @@ class ChatViewControllerTests: XCTestCase {
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         var snackBar = SnackBar.failing
-        snackBar.present = { _, _, _, _, _, _, _, _ in
+        snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
         let env = ChatViewController.Environment(
             timerProviding: .failing,
             viewFactory: .mock(),
             gcd: .failing,
-            snackBar: snackBar,
             notificationCenter: .failing,
             alertManager: .mock()
         )
@@ -217,14 +221,13 @@ class ChatViewControllerTests: XCTestCase {
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         var snackBar = SnackBar.failing
-        snackBar.present = { _, _, _, _, _, _, _, _ in
+        snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
         let env = ChatViewController.Environment(
             timerProviding: .failing,
             viewFactory: .mock(),
             gcd: .failing,
-            snackBar: snackBar,
             notificationCenter: .failing,
             alertManager: .mock()
         )

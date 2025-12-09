@@ -32,7 +32,6 @@ extension ChatCoordinator {
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
         var timerProviding: FoundationBased.Timer.Providing
-        var snackBar: SnackBar
         var notificationCenter: FoundationBased.NotificationCenter
         var maximumUploads: () -> Int
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
@@ -91,7 +90,6 @@ extension ChatCoordinator.Environment {
             proximityManager: environment.proximityManager,
             log: environment.log,
             timerProviding: environment.timerProviding,
-            snackBar: environment.snackBar,
             notificationCenter: environment.notificationCenter,
             maximumUploads: environment.maximumUploads,
             cameraDeviceManager: environment.cameraDeviceManager,
@@ -139,7 +137,6 @@ extension ChatCoordinator.Environment {
             proximityManager: environment.proximityManager,
             log: environment.log,
             timerProviding: environment.timerProviding,
-            snackBar: environment.snackBar,
             notificationCenter: environment.notificationCenter,
             maximumUploads: environment.maximumUploads,
             cameraDeviceManager: environment.cameraDeviceManager,

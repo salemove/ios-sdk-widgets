@@ -10,7 +10,6 @@ extension ChatViewController {
         timerProviding: FoundationBased.Timer.Providing = .mock,
         viewFactory: ViewFactory = .mock(),
         gcd: GCD = .mock,
-        snackBar: SnackBar = .mock,
         notificationCenter: FoundationBased.NotificationCenter = .mock,
         alertManager: AlertManager = .mock()
     ) -> ChatViewController {
@@ -20,7 +19,6 @@ extension ChatViewController {
                 timerProviding: timerProviding,
                 viewFactory: viewFactory,
                 gcd: gcd,
-                snackBar: snackBar,
                 notificationCenter: notificationCenter,
                 alertManager: alertManager
             )

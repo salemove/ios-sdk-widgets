@@ -459,3 +459,5 @@ extension DependencyContainer.Widgets {
         set { self[NetworkConnectionMonitor.Key.self] = newValue }
     }
 }
+
+typealias DependencyContainer = GliaCoreSDK.DependencyContainer

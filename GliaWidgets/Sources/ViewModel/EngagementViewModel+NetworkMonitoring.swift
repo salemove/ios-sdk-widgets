@@ -25,12 +25,10 @@ extension EngagementViewModel {
             hideNoConnectionSnackBar = nil
             logSnackBarEvent(.snackBarHidden)
         case .disconnected:
-            let style = environment.viewFactory.theme.invertedNoConnectionSnackBarStyle
-            engagementAction?(.showSnackBarView(
+            engagementAction?(.showNoConnectionSnackBarView(
                 dismissTiming: .manual(dismiss: { [weak self] callBack in
                     self?.hideNoConnectionSnackBar = callBack
-                }),
-                style: style
+                })
             ))
             logSnackBarEvent(.snackBarShown)
         @unknown default:
