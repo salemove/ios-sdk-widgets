@@ -6,7 +6,7 @@ extension CallVisualizerTests {
     func testLiveObservationIndicatorIsPresentedOnEngagementRequest() throws {
         enum Call { case presentSnackBar }
         var calls: [Call] = []
-
+        
         var gliaEnv = Glia.Environment.failing
         gliaEnv.conditionalCompilation.isDebug = { true }
         gliaEnv.coreSdk.createLogger = { _ in .mock }
@@ -27,9 +27,11 @@ extension CallVisualizerTests {
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
-        gliaEnv.snackBar.present = { _, _, _, _, _, _, _, _ in
+        var snackBar: SnackBar = .mock
+        snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
+        DependencyContainer.current.widgets.snackBar = snackBar
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         let sdk = Glia(environment: gliaEnv)
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
@@ -64,9 +66,11 @@ extension CallVisualizerTests {
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
-        gliaEnv.snackBar.present = { _, _, _, _, _, _, _, _ in
+        var snackBar: SnackBar = .mock
+        snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
+        DependencyContainer.current.widgets.snackBar = snackBar
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         let sdk = Glia(environment: gliaEnv)
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
@@ -101,9 +105,11 @@ extension CallVisualizerTests {
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
-        gliaEnv.snackBar.present = { _, _, _, _, _, _, _, _ in
+        var snackBar: SnackBar = .mock
+        snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
+        DependencyContainer.current.widgets.snackBar = snackBar
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         let sdk = Glia(environment: gliaEnv)
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
@@ -120,9 +126,11 @@ extension CallVisualizerTests {
 
         var gliaEnv = Glia.Environment.failing
         gliaEnv.conditionalCompilation.isDebug = { true }
-        gliaEnv.snackBar.present = { _, _, _, _, _, _, _, _ in
+        var snackBar: SnackBar = .mock
+        snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
+        DependencyContainer.current.widgets.snackBar = snackBar
         gliaEnv.coreSdk.createLogger = { _ in .mock }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
@@ -154,9 +162,11 @@ extension CallVisualizerTests {
 
         var gliaEnv = Glia.Environment.failing
         gliaEnv.conditionalCompilation.isDebug = { true }
-        gliaEnv.snackBar.present = { _, _, _, _, _, _, _, _ in
+        var snackBar: SnackBar = .mock
+        snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
+        DependencyContainer.current.widgets.snackBar = snackBar
         gliaEnv.coreSdk.createLogger = { _ in .mock }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
@@ -188,9 +198,11 @@ extension CallVisualizerTests {
 
         var gliaEnv = Glia.Environment.failing
         gliaEnv.conditionalCompilation.isDebug = { true }
-        gliaEnv.snackBar.present = { _, _, _, _, _, _, _, _ in
+        var snackBar: SnackBar = .mock
+        snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
+        DependencyContainer.current.widgets.snackBar = snackBar
         gliaEnv.coreSdk.createLogger = { _ in .mock }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: false,

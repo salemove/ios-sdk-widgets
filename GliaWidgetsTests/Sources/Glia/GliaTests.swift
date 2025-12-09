@@ -233,7 +233,7 @@ final class GliaTests: XCTestCase {
         sdk.interactor?.setEndedEngagement(.mock(source: .callVisualizer))
         sdk.interactor?.state = .ended(.byOperator)
 
-        XCTAssertEqual(calls, [.onEvent(.maximized), .onEvent(.minimized), .onEvent(.ended)])
+        XCTAssertEqual(calls, [.onEvent(.maximized), .onEvent(.ended)])
     }
 
     func testConfigureThrowsErrorDuringActiveEngagement() throws {

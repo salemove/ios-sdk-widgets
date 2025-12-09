@@ -10,25 +10,29 @@ extension SnackBar {
         let updatePublisher: CurrentValueSubject<ContentView.ViewState, Never>
 
         private let environment: Environment
+        private let configuration: Configuration
         private var serialQueue = SerialQueue()
         private var timer: FoundationBased.Timer?
 
         init(
             parentViewController: UIViewController,
+            configuration: Configuration,
             style: Theme.SnackBarStyle,
             environment: Environment
         ) {
             self.parentViewController = parentViewController
+            self.configuration = configuration
+            self.environment = environment
+
             let publisher = CurrentValueSubject<ContentView.ViewState, Never>(.disappear)
             self.updatePublisher = publisher
+
             self.hostingController = .init(
                 rootView: .init(
                     style: style,
                     publisher: publisher.eraseToAnyPublisher()
                 )
             )
-            self.environment = environment
-            self.monitorKeyboard()
         }
 
         func add() {
@@ -42,12 +46,35 @@ extension SnackBar {
             hostingController.view.backgroundColor = .clear
 
             hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                hostingController.view.topAnchor.constraint(greaterThanOrEqualTo: parent.view.topAnchor),
-                hostingController.view.bottomAnchor.constraint(equalTo: parent.view.safeAreaLayoutGuide.bottomAnchor, constant: 64),
-                hostingController.view.leadingAnchor.constraint(equalTo: parent.view.leadingAnchor),
-                hostingController.view.trailingAnchor.constraint(equalTo: parent.view.trailingAnchor)
-            ])
+
+            guard let parentView = parent.view else { return }
+
+            if let anchorView = configuration.anchorViewProvider?(),
+                anchorView.isDescendant(of: parentView) {
+                NSLayoutConstraint.activate([
+                    hostingController.view.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
+                    hostingController.view.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
+                    hostingController.view.bottomAnchor.constraint(
+                        equalTo: anchorView.topAnchor,
+                        constant: -configuration.anchorGap
+                    ),
+                    hostingController.view.topAnchor.constraint(
+                        greaterThanOrEqualTo: parentView.topAnchor
+                    )
+                ])
+            } else {
+                NSLayoutConstraint.activate([
+                    hostingController.view.leadingAnchor.constraint(equalTo: parentView.leadingAnchor),
+                    hostingController.view.trailingAnchor.constraint(equalTo: parentView.trailingAnchor),
+                    hostingController.view.bottomAnchor.constraint(
+                        equalTo: parentView.safeAreaLayoutGuide.bottomAnchor,
+                        constant: configuration.baseOffset
+                    ),
+                    hostingController.view.topAnchor.constraint(
+                        greaterThanOrEqualTo: parentView.topAnchor
+                    )
+                ])
+            }
         }
 
         func remove() {
@@ -58,7 +85,7 @@ extension SnackBar {
 
         func show(
             text: String,
-            with offset: CGFloat,
+            style: Theme.SnackBarStyle,
             dismissTiming: DismissTiming
         ) {
             serialQueue.addOperation(
@@ -67,7 +94,7 @@ extension SnackBar {
                         done()
                         return
                     }
-                    self.hostingController.rootView.offset = offset
+                    self.updateStyle(style)
                     self.updatePublisher.send(.appear(text))
 
                     self.timer?.invalidate()
@@ -98,36 +125,19 @@ extension SnackBar {
                 }
             )
         }
-    }
-}
 
-private extension SnackBar.Presenter {
-    func monitorKeyboard() {
-        subscribeToNotification(UIResponder.keyboardWillShowNotification, selector: #selector(keyboardWillShow))
-    }
-
-    func subscribeToNotification(
-        _ notification: NSNotification.Name,
-        selector: Selector
-    ) {
-        environment.notificationCenter.addObserver(
-            self,
-            selector: selector,
-            name: notification,
-            object: nil
-        )
-    }
-
-    @objc
-    func keyboardWillShow(notification: NSNotification) {
-        self.updatePublisher.send(.keyboardWillShow)
+        func updateStyle(_ style: Theme.SnackBarStyle) {
+            hostingController.rootView = .init(
+                style: style,
+                publisher: updatePublisher.eraseToAnyPublisher()
+            )
+        }
     }
 }
 
 extension SnackBar.Presenter {
     struct Environment {
         let timerProviding: FoundationBased.Timer.Providing
-        let notificationCenter: FoundationBased.NotificationCenter
         let gcd: GCD
     }
 }
