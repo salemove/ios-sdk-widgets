@@ -39,9 +39,11 @@ extension GliaTests {
         }
 
         var calls: [Call] = []
-        sdkEnv.snackBar.present = { _, _, _, _, _, _, _, _ in
+        var snackBar: SnackBar = .mock
+        snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.snackBarPresent)
         }
+        DependencyContainer.current.widgets.snackBar = snackBar
 
         sdkEnv.coreSdk.getQueues = { callback in callback(.success([])) }
         sdkEnv.coreSdk.subscribeForQueuesUpdates = { _, _ in
@@ -236,9 +238,11 @@ extension GliaTests {
         }
 
         var calls: [Call] = []
-        sdkEnv.snackBar.present = { _, _, _, _, _, _, _, _ in
+        var snackBar: SnackBar = .mock
+        snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.snackBarPresent)
         }
+        DependencyContainer.current.widgets.snackBar = snackBar
 
         let sdk = Glia(environment: sdkEnv)
         try sdk.configure(with: .mock(), features: .all) { _ in }
@@ -296,9 +300,11 @@ extension GliaTests {
         window.makeKeyAndVisible()
         sdkEnv.uiApplication.windows = { [window] }
 
-        sdkEnv.snackBar.present = { _, _, _, _, _, _, _, _ in
+        var snackBar: SnackBar = .mock
+        snackBar.present = { _, _, _, _, _, _, _ in
             XCTFail("SDK should not present snackBar")
         }
+        DependencyContainer.current.widgets.snackBar = snackBar
 
         let sdk = Glia(environment: sdkEnv)
         try sdk.configure(with: .mock(), features: .all) { _ in }
@@ -352,9 +358,13 @@ extension GliaTests {
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
-        sdkEnv.snackBar.present = { _, _, _, _, _, _, _, _ in
+
+        var snackBar: SnackBar = .mock
+        snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.snackBarPresent)
         }
+        DependencyContainer.current.widgets.snackBar = snackBar
+
         let uuidGen = UUID.incrementing
         sdkEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
         sdkEnv.coreSdk.secureConversations.observePendingStatus = { callback in

@@ -1,4 +1,5 @@
 import Foundation
+import GliaCoreSDK
 
 extension CallVisualizer.VideoCallCoordinator {
     struct Environment {
@@ -17,7 +18,7 @@ extension CallVisualizer.VideoCallCoordinator {
         var log: CoreSdkClient.Logger
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var theme: Theme
-        var snackBar: SnackBar
+        @Dependency(\.widgets.snackBar) var snackBar: SnackBar
     }
 }
 
@@ -38,8 +39,7 @@ extension CallVisualizer.VideoCallCoordinator.Environment {
             proximityManager: environment.proximityManager,
             log: environment.log,
             cameraDeviceManager: environment.cameraDeviceManager,
-            theme: environment.viewFactory.theme,
-            snackBar: environment.snackBar
+            theme: environment.viewFactory.theme
         )
     }
 }

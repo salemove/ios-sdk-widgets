@@ -7,7 +7,6 @@ extension SnackBar {
         enum ViewState {
             case appear(String)
             case disappear
-            case keyboardWillShow
         }
 
         let publisher: AnyPublisher<ViewState, Never>
@@ -15,7 +14,6 @@ extension SnackBar {
         @State private var text = ""
         @State private var currentOffset: CGFloat = 300
         let style: Theme.SnackBarStyle
-        var offset: CGFloat = 0
         let isAnimated: Bool
 
         init(
@@ -44,23 +42,20 @@ extension SnackBar {
                         self.text = text
                         if isAnimated {
                             withAnimation {
-                                self.currentOffset = offset
+                                self.currentOffset = 0
                             }
                         } else {
-                            self.currentOffset = offset
+                            self.currentOffset = 0
                         }
 
                     case .disappear:
+                        let hiddenOffset: CGFloat = 300
                         if isAnimated {
                             withAnimation {
-                                self.currentOffset = 300
+                                self.currentOffset = hiddenOffset
                             }
                         } else {
-                            self.currentOffset = 300
-                        }
-                    case .keyboardWillShow:
-                        withAnimation(.linear(duration: 0.015)) {
-                            self.currentOffset = -60
+                            self.currentOffset = hiddenOffset
                         }
                     }
                 }

@@ -3,7 +3,6 @@ import Foundation
 extension EngagementViewController {
     struct Environment {
         var viewFactory: ViewFactory
-        var snackBar: SnackBar
         var timerProviding: FoundationBased.Timer.Providing
         var gcd: GCD
         var notificationCenter: FoundationBased.NotificationCenter
@@ -15,7 +14,6 @@ extension EngagementViewController.Environment {
     static func create(with environment: ChatViewController.Environment) -> Self {
         .init(
             viewFactory: environment.viewFactory,
-            snackBar: environment.snackBar,
             timerProviding: environment.timerProviding,
             gcd: environment.gcd,
             notificationCenter: environment.notificationCenter,
@@ -26,7 +24,6 @@ extension EngagementViewController.Environment {
     static func create(with environment: CallViewController.Environment) -> Self {
         .init(
             viewFactory: environment.viewFactory,
-            snackBar: environment.snackBar,
             timerProviding: environment.timerProviding,
             gcd: environment.gcd,
             notificationCenter: environment.notificationCenter,

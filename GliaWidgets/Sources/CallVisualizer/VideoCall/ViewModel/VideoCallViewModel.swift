@@ -118,6 +118,8 @@ extension CallVisualizer {
                 name: UIDevice.orientationDidChangeNotification,
                 object: nil
             )
+
+            subscribeOnNetworkReachabilityChanges()
         }
 
         deinit {
@@ -174,7 +176,6 @@ extension CallVisualizer.VideoCallViewModel {
                 flipCameraPropsAccessibility: flipCameraAccLabelWithTap?.accessibility ?? .nop
             ),
             viewDidLoad: .init { [weak self] in
-                self?.subscribeOnNetworkReachabilityChanges()
                 self?.environment.proximityManager.start()
             }
         )

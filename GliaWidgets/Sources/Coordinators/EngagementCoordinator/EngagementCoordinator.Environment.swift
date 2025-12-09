@@ -36,7 +36,6 @@ extension EngagementCoordinator {
         var orientationManager: OrientationManager
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
-        var snackBar: SnackBar
         var maximumUploads: () -> Int
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var flipCameraButtonStyle: FlipCameraButtonStyle
@@ -96,7 +95,6 @@ extension EngagementCoordinator.Environment {
             orientationManager: environment.orientationManager,
             proximityManager: environment.proximityManager,
             log: loggerPhase.logger,
-            snackBar: environment.snackBar,
             maximumUploads: maximumUploads,
             cameraDeviceManager: environment.cameraDeviceManager,
             flipCameraButtonStyle: viewFactory.theme.call.flipCameraButtonStyle,

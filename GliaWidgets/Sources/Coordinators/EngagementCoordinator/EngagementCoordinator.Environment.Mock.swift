@@ -38,7 +38,6 @@ extension EngagementCoordinator.Environment {
         orientationManager: OrientationManager = .mock(),
         proximityManager: ProximityManager = .mock,
         log: CoreSdkClient.Logger = .mock,
-        snackBar: SnackBar = .mock,
         maximumUploads: @escaping () -> Int = { 2 },
         cameraDeviceManager: @escaping CoreSdkClient.GetCameraDeviceManageable = {
             .mock
@@ -86,7 +85,6 @@ extension EngagementCoordinator.Environment {
             orientationManager: orientationManager,
             proximityManager: proximityManager,
             log: log,
-            snackBar: snackBar,
             maximumUploads: maximumUploads,
             cameraDeviceManager: cameraDeviceManager,
             flipCameraButtonStyle: flipCameraButtonStyle,

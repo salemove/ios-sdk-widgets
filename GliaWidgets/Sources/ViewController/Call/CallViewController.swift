@@ -70,15 +70,34 @@ final class CallViewController: EngagementViewController {
         dismissTiming: SnackBar.DismissTiming,
         style: Theme.SnackBarStyle
     ) {
+        let configuration: SnackBar.Configuration
+
+        if let callView = view as? CallView {
+            configuration = .anchor(
+                anchorViewProvider: { [weak callView] in
+                    return callView?.buttonBar
+                }
+            )
+        } else {
+            configuration = .default
+        }
+
         environment.snackBar.present(
             text: style.text,
             style: style,
             dismissTiming: dismissTiming,
             for: self,
-            bottomOffset: -100,
+            configuration: configuration,
             timerProviding: environment.timerProviding,
-            gcd: environment.gcd,
-            notificationCenter: environment.notificationCenter
+            gcd: environment.gcd
+        )
+    }
+
+    override func showNoConnectionSnackBarView(dismissTiming: SnackBar.DismissTiming) {
+        let style = environment.viewFactory.theme.invertedNoConnectionSnackBarStyle
+        showSnackBarView(
+            dismissTiming: dismissTiming,
+            style: style
         )
     }
 }

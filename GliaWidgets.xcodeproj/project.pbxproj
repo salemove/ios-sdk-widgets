@@ -710,6 +710,7 @@
 		AFF9542A2ADD8DB600C277E0 /* CoreSDKConfigurator.Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF954292ADD8DB600C277E0 /* CoreSDKConfigurator.Mock.swift */; };
 		AFF9542C2ADDA10600C277E0 /* CoreSDKConfigurator.Failing.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF9542B2ADDA10600C277E0 /* CoreSDKConfigurator.Failing.swift */; };
 		AFFA99822C57D658004A2825 /* GliaTests+RestoreEngagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFFA99812C57D658004A2825 /* GliaTests+RestoreEngagement.swift */; };
+		C000681B2EE864220078132E /* SnackBar.Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C000681A2EE864160078132E /* SnackBar.Configuration.swift */; };
 		C0029A592DC8DD7300603586 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0029A582DC8DD6D00603586 /* Queue.swift */; };
 		C0029A5D2DC8E2F500603586 /* QueueStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0029A5C2DC8E2F000603586 /* QueueStatus.swift */; };
 		C0029A5F2DC8E31E00603586 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0029A5E2DC8E31700603586 /* MediaType.swift */; };
@@ -1801,6 +1802,7 @@
 		AFF9542B2ADDA10600C277E0 /* CoreSDKConfigurator.Failing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreSDKConfigurator.Failing.swift; sourceTree = "<group>"; };
 		AFFA99812C57D658004A2825 /* GliaTests+RestoreEngagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GliaTests+RestoreEngagement.swift"; sourceTree = "<group>"; };
 		B5B3589310D3400224093CFE /* Pods-GliaWidgets.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaWidgets.release.xcconfig"; path = "Target Support Files/Pods-GliaWidgets/Pods-GliaWidgets.release.xcconfig"; sourceTree = "<group>"; };
+		C000681A2EE864160078132E /* SnackBar.Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackBar.Configuration.swift; sourceTree = "<group>"; };
 		C0029A582DC8DD6D00603586 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		C0029A5C2DC8E2F000603586 /* QueueStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueStatus.swift; sourceTree = "<group>"; };
 		C0029A5E2DC8E31700603586 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
@@ -4033,6 +4035,7 @@
 		75D987F22AF29EF50016A702 /* SnackBarView */ = {
 			isa = PBXGroup;
 			children = (
+				C000681A2EE864160078132E /* SnackBar.Configuration.swift */,
 				84520BF22B208DE200F97617 /* SnackBar.Interface.swift */,
 				75D987FB2AF2D9F90016A702 /* SnackBar.Live.swift */,
 				84520BF02B208D7800F97617 /* SnackBar.Mock.swift */,
@@ -5935,6 +5938,7 @@
 				7594098D298D38C2008B173A /* CallVisualizer.swift in Sources */,
 				1A0C9A7925C16F9700815406 /* Theme+AlertConfiguration.swift in Sources */,
 				AF10ED8F29BF849A00E85309 /* UnreadMessageDividerView.swift in Sources */,
+				C000681B2EE864220078132E /* SnackBar.Configuration.swift in Sources */,
 				1AC8AADD25D419CE00DAFE50 /* VideoStreamView.swift in Sources */,
 				8491AF152A7ACDB000CC3E72 /* Theme.SystemMessageStyle.swift in Sources */,
 				C090472E2B7E1CB2003C437C /* GvaPersistentButtonStyle.ButtonStyle.RemoteConfig.swift in Sources */,

@@ -6,7 +6,7 @@ extension ChatViewController {
         var timerProviding: FoundationBased.Timer.Providing
         var viewFactory: ViewFactory
         var gcd: GCD
-        var snackBar: SnackBar
+        @Dependency(\.widgets.snackBar) var snackBar: SnackBar
         var notificationCenter: FoundationBased.NotificationCenter
         var alertManager: AlertManager
         @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
@@ -22,7 +22,6 @@ extension ChatViewController.Environment {
             timerProviding: environment.timerProviding,
             viewFactory: viewFactory,
             gcd: environment.gcd,
-            snackBar: environment.snackBar,
             notificationCenter: environment.notificationCenter,
             alertManager: environment.alertManager
         )
@@ -35,7 +34,6 @@ extension ChatViewController.Environment {
         timerProviding: FoundationBased.Timer.Providing = .mock,
         viewFactory: ViewFactory = .mock(),
         gcd: GCD = .mock,
-        snackBar: SnackBar = .mock,
         notificationCenter: FoundationBased.NotificationCenter = .mock,
         alertManager: AlertManager = .mock()
     ) -> Self {
@@ -43,7 +41,6 @@ extension ChatViewController.Environment {
             timerProviding: timerProviding,
             viewFactory: viewFactory,
             gcd: gcd,
-            snackBar: snackBar,
             notificationCenter: notificationCenter,
             alertManager: alertManager
         )
