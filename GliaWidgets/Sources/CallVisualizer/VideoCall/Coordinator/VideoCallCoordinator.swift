@@ -29,7 +29,11 @@ extension CallVisualizer {
             return resumeVideoCallViewController()
         }
 
-        func close() {
+        func minimize() {
+            viewController?.presentingViewController?.dismiss(animated: true)
+        }
+
+        func finish() {
             viewModel?.close()
             viewController?.presentingViewController?.dismiss(animated: true)
         }
@@ -57,7 +61,7 @@ extension CallVisualizer {
                 case let .propsUpdated(props):
                     viewController.props = props
                 case .minimized:
-                    self?.delegate?(.close)
+                    self?.delegate?(.minimize)
                 case let .showSnackBarView(dismissTiming, style):
                     self?.presentNoConnectionSnackBar(
                         from: viewController,
@@ -79,7 +83,7 @@ extension CallVisualizer {
                 case let .propsUpdated(props):
                     viewController.props = props
                 case .minimized:
-                    self?.delegate?(.close)
+                    self?.delegate?(.minimize)
                 case let .showSnackBarView(dismissTiming, style):
                     self?.presentNoConnectionSnackBar(
                         from: viewController,
@@ -101,10 +105,17 @@ extension CallVisualizer {
                 style: style,
                 dismissTiming: dismissTiming,
                 for: viewController,
-                bottomOffset: -100,
+                configuration: .anchor(
+                    anchorViewProvider: { [weak viewController] in
+                        guard let videoCallView = viewController?.view as? CallVisualizer.VideoCallView else {
+                            return nil
+                        }
+                        return videoCallView.buttonBar
+                    },
+                    gap: 16
+                ),
                 timerProviding: environment.timerProviding,
-                gcd: environment.gcd,
-                notificationCenter: environment.notificationCenter
+                gcd: environment.gcd
             )
         }
     }

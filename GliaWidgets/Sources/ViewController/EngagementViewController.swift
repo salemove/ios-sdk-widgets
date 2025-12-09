@@ -74,6 +74,8 @@ class EngagementViewController: UIViewController {
                 )
             case let .showSnackBarView(dismissTiming, style):
                 showSnackBarView(dismissTiming: dismissTiming, style: style)
+            case let .showNoConnectionSnackBarView(dismissTiming):
+                showNoConnectionSnackBarView(dismissTiming: dismissTiming)
             }
         }
     }
@@ -82,6 +84,8 @@ class EngagementViewController: UIViewController {
         dismissTiming: SnackBar.DismissTiming,
         style: Theme.SnackBarStyle
     ) {}
+
+    func showNoConnectionSnackBarView(dismissTiming: SnackBar.DismissTiming) {}
 
     func swapAndBindEngagementViewModel(_ engagementModel: CommonEngagementModel) {
         self.viewModel = engagementModel

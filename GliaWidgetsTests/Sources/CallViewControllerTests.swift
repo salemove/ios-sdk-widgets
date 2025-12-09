@@ -40,9 +40,10 @@ class CallViewControllerTests: XCTestCase {
         let viewModel = CallViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         var snackBar = SnackBar.failing
-        snackBar.present = { _, _, _, _, _, _, _, _ in
+        snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
+        DependencyContainer.current.widgets.snackBar = snackBar
 
         var notificationCenter = FoundationBased.NotificationCenter.failing
         notificationCenter.removeObserverClosure = { _ in }
@@ -55,7 +56,6 @@ class CallViewControllerTests: XCTestCase {
             log: .mock,
             timerProviding: .failing,
             gcd: .failing,
-            snackBar: snackBar,
             alertManager: .mock()
         )
         let viewController = CallViewController(
@@ -95,7 +95,7 @@ class CallViewControllerTests: XCTestCase {
         let viewModel = CallViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         var snackBar = SnackBar.failing
-        snackBar.present = { _, _, _, _, _, _, _, _ in
+        snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
 
@@ -110,7 +110,6 @@ class CallViewControllerTests: XCTestCase {
             log: .mock,
             timerProviding: .failing,
             gcd: .failing,
-            snackBar: snackBar,
             alertManager: .mock()
         )
         let viewController = CallViewController(
@@ -150,7 +149,7 @@ class CallViewControllerTests: XCTestCase {
         let viewModel = CallViewModel.mock(interactor: interactor, environment: viewModelEnv)
 
         var snackBar = SnackBar.failing
-        snackBar.present = { _, _, _, _, _, _, _, _ in
+        snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
         }
 
@@ -165,7 +164,6 @@ class CallViewControllerTests: XCTestCase {
             log: .mock,
             timerProviding: .failing,
             gcd: .failing,
-            snackBar: snackBar,
             alertManager: .mock()
         )
         let viewController = CallViewController(
