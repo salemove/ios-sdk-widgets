@@ -34,7 +34,6 @@ extension ChatCoordinator.Environment {
         proximityManager: .mock,
         log: .mock,
         timerProviding: .mock,
-        snackBar: .mock,
         notificationCenter: .mock,
         maximumUploads: { 2 },
         cameraDeviceManager: { .mock }, 

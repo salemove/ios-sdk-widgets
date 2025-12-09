@@ -84,6 +84,11 @@ class ChatView: EngagementView {
 
     private var cancelBag = CancelBag()
 
+    /// If not nil, represents a snackbar that should be shown
+    /// once ChatView is actually in the view hierarchy.
+    var pendingSnackBar: PendingSnackBar?
+
+
     init(
         with style: ChatStyle,
         messageRenderer: MessageRenderer?,
@@ -1042,6 +1047,14 @@ extension ChatView {
         view.showsOperatorImage = showImage
         view.setOperatorImage(fromUrl: imageUrl, animated: false)
         return .gvaPersistentButton(view)
+    }
+}
+
+extension ChatView {
+    struct PendingSnackBar {
+        let text: String
+        let style: Theme.SnackBarStyle
+        let dismissTiming: SnackBar.DismissTiming
     }
 }
 // swiftlint:enable file_length

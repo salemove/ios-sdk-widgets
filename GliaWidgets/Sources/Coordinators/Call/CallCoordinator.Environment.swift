@@ -26,7 +26,6 @@ extension CallCoordinator {
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var proximityManager: ProximityManager
         var log: CoreSdkClient.Logger
-        var snackBar: SnackBar
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var flipCameraButtonStyle: FlipCameraButtonStyle
         var alertManager: AlertManager
@@ -64,7 +63,6 @@ extension CallCoordinator.Environment {
             createSendMessagePayload: environment.createSendMessagePayload,
             proximityManager: environment.proximityManager,
             log: environment.log,
-            snackBar: environment.snackBar,
             cameraDeviceManager: environment.cameraDeviceManager,
             flipCameraButtonStyle: environment.flipCameraButtonStyle,
             alertManager: environment.alertManager,

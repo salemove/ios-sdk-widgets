@@ -78,7 +78,6 @@ extension EngagementCoordinator.Environment {
         orientationManager: .mock(),
         proximityManager: .failing,
         log: .failing,
-        snackBar: .failing,
         maximumUploads: {
             fail("\(Self.self).maximumUploads")
             return 2

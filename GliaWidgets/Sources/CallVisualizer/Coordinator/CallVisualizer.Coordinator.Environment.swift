@@ -26,7 +26,7 @@ extension CallVisualizer.Coordinator {
         var log: CoreSdkClient.Logger
         var interactorPublisher: AnyPublisher<Interactor?, Never>
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
-        var snackBar: SnackBar
+        @Dependency(\.widgets.snackBar) var snackBar: SnackBar
         var cameraDeviceManager: CoreSdkClient.GetCameraDeviceManageable
         var alertManager: AlertManager
         @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
@@ -62,7 +62,6 @@ extension CallVisualizer.Coordinator.Environment {
             log: environment.log,
             interactorPublisher: environment.interactorPublisher,
             fetchSiteConfigurations: environment.fetchSiteConfigurations,
-            snackBar: environment.snackBar,
             cameraDeviceManager: environment.cameraDeviceManager,
             alertManager: environment.alertManager
         )

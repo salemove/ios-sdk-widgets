@@ -145,9 +145,11 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
         }
 
         var presentCallCounter = 0
-        coordinator.environment.snackBar.present = { _, _, _, _, _, _, _, _ in
+        var snackBar: SnackBar = .mock
+        snackBar.present = { _, _, _, _, _, _, _ in
             presentCallCounter += 1
         }
+        DependencyContainer.current.widgets.snackBar = snackBar
 
         coordinator.showSnackBarIfNeeded()
 
