@@ -1,6 +1,7 @@
 import Foundation
 
 extension ChatViewModel {
+    // POC
     func sendChoiceCardResponse(_ option: ChatChoiceCardOption, to messageId: String) {
         guard let text = option.text else { return }
         let attachment = CoreSdkClient.Attachment(
@@ -11,7 +12,7 @@ extension ChatViewModel {
             imageUrl: nil
         )
 
-        let payload = environment.createSendMessagePayload(text, attachment)
+        let payload = environment.createSendMessagePayload(option.mesage ?? text, attachment)
         registerReceivedMessage(messageId: payload.messageId.rawValue)
 
         let outgoingMessage = OutgoingMessage(
@@ -20,6 +21,11 @@ extension ChatViewModel {
         )
 
         let item = ChatItem(with: outgoingMessage)
+        if option.value == nil {
+            respond(to: messageId, with: nil)
+            return
+        }
+
         appendItem(item, to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
 

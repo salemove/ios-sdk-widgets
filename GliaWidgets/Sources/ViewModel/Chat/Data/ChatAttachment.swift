@@ -46,7 +46,7 @@ class ChatAttachment: Codable {
         selectedOption = attachment.selectedOption
     }
 
-    #if DEBUG
+//    #if DEBUG
     init(
         type: ChatAttachmentType?,
         files: [ChatEngagementFile]?,
@@ -60,5 +60,5 @@ class ChatAttachment: Codable {
         self.options = options
         self.selectedOption = selectedOption
     }
-    #endif
+//    #endif
 }

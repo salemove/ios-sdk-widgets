@@ -98,3 +98,13 @@ public struct EngagementContext: Codable, Equatable {
     public let transactions: Int
     public let overview: String
 }
+
+public struct QuickReplyContext: Codable, Equatable {
+    public let quickReplies: [QuickReplyOption]
+}
+
+public struct QuickReplyOption: Codable, Equatable {
+    public let text: String
+    public let value: String
+    public let message: String
+}

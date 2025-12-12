@@ -240,6 +240,88 @@ class ChatViewModel: EngagementViewModel {
                     }
                 }
             }
+
+            // Fetch contextual quick replies based on user's screen activity
+            EngagementContextingManager.shared.getQuickReplyContext { [weak self] result in
+                guard let self else { return }
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let quickReplyContext):
+                        // Transform QuickReplyContext into GvaOption objects
+                        let gvaOptions = quickReplyContext.quickReplies.map { quickReply in
+                            GvaOption(
+                                text: quickReply.text,
+                                value: quickReply.value,
+                                url: nil,
+                                urlTarget: nil,
+                                destinationPdBroadcastEvent: nil
+                            )
+                        }
+
+                        var choiceOptions = quickReplyContext.quickReplies.map { quickReply in
+                            ChatChoiceCardOption(text: quickReply.text, value: quickReply.value, message: quickReply.message)
+                        }
+
+                        choiceOptions.append(.init(text: "Something else", value: nil))
+
+                        let choiceItem = ChatItem(
+                            kind: .choiceCard(
+                                .init(
+                                    id: UUID().uuidString,
+                                    operator: nil,
+                                    sender: .operator,
+                                    content: "",
+                                    attachment: ChatAttachment(
+                                        type: .singleChoice,
+                                        files: nil,
+                                        imageUrl: "https://s3.amazonaws.com/hosting-elements.glia.com/Glia-OG.png",
+                                        options: choiceOptions,
+                                        selectedOption: nil
+                                    ),
+                                    downloads: []
+                                ),
+                                showsImage: false,
+                                imageUrl: nil,
+                                isActive: true
+                            )
+                        )
+
+                        // Create ChatItem with quick replies
+                        let item = ChatItem(
+                            kind: .gvaQuickReply(
+                                .init(
+                                    id: UUID().uuidString,
+                                    operator: nil,
+                                    sender: .operator,
+                                    content: "",
+                                    attachment: nil,
+                                    downloads: []
+                                ),
+                                quickReply: .init(
+                                    type: .quickReplies,
+                                    content: NSMutableAttributedString(string: ""),
+                                    options: gvaOptions
+                                ),
+                                showImage: false,
+                                imageUrl: nil
+                            )
+                        )
+
+                        self.appendItem(choiceItem, to: self.messagesSection, animated: true)
+                        self.action?(.scrollToBottom(animated: true))
+
+                        if case .gvaQuickReply(_, let button, _, _) = item.kind {
+//                            let props = button.options.map { self.quickReplyOption($0) }
+//                            self.action?(.setChoiceCardInputModeEnabled(true))
+//                            self.action?(.quickReplyPropsUpdated(.shown(props)))
+                        }
+
+                    case .failure(let error):
+                        // Log error but don't show quick replies
+                        self.environment.log.prefixed(Self.self).error("Failed to fetch quick reply context: \(error.localizedDescription)")
+                    }
+                }
+            }
         default:
             break
         }

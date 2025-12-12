@@ -71,6 +71,62 @@ public class EngagementContextingManager {
         }
     }
 
+    public func getQuickReplyContext(
+        completion: @escaping (Result<QuickReplyContext, ContextingAPIError>) -> Void
+    ) {
+        let payloads = screenStorage.getAllPayloads()
+
+        guard !payloads.isEmpty else {
+            completion(.failure(.invalidConfiguration))
+            return
+        }
+
+        let contextJSON = payloads.compactMap { String(data: $0, encoding: .utf8) }.joined(separator: ",\n")
+
+        let enrichedPrompt = quickReplyPrompt(data: contextJSON)
+
+        print("📤 Sending quick reply contexting request:")
+        print("Context: \(payloads.count) screen(s)")
+        print("\n--- Full Payload ---")
+        print(enrichedPrompt)
+        print("--- End Payload ---\n")
+
+        apiClient.sendContextingRequest(prompt: enrichedPrompt) { result in
+            switch result {
+            case .success(let rawResponse):
+                print("✅ Received quick reply response from API")
+                print("Response: \(rawResponse)")
+
+                let cleanedJSON = self.extractJSON(from: rawResponse)
+                print("Cleaned JSON: \(cleanedJSON)")
+
+                guard let jsonData = cleanedJSON.data(using: .utf8) else {
+                    print("❌ Failed to convert response to Data")
+                    completion(.failure(.serverError))
+                    return
+                }
+
+                let decoder = JSONDecoder()
+                do {
+                    let context = try decoder.decode(QuickReplyContext.self, from: jsonData)
+                    print("✅ Successfully parsed QuickReplyContext:")
+                    print("  - Quick Replies Count: \(context.quickReplies.count)")
+                    context.quickReplies.forEach { reply in
+                        print("    • \(reply.text) (value: \(reply.value))")
+                    }
+                    completion(.success(context))
+                } catch {
+                    print("❌ Failed to decode QuickReplyContext: \(error)")
+                    completion(.failure(.serverError))
+                }
+
+            case .failure(let error):
+                print("❌ API request failed: \(error.localizedDescription)")
+                completion(.failure(error))
+            }
+        }
+    }
+
     public func getCollectedScreensCount() -> Int {
         return screenStorage.getAllPayloads().count
     }
@@ -176,6 +232,66 @@ private extension EngagementContextingManager {
 
         SCREEN DATA:
         \(data)
+        """
+    }
+
+    func quickReplyPrompt(data: String) -> String {
+        """
+        You are a customer support assistant AI. Analyze the provided screen context data from a user's mobile app session to generate a conversational opening message and relevant quick reply options.
+
+                INPUT DATA FORMAT:
+                You will receive a list of ScreenTextData objects containing:
+                - screenName: The screen identifier
+                - timestamp: Unix timestamp in milliseconds
+                - texts: Array of all text content from that screen (UI labels, buttons, fields, user content)
+                - screenType: Type of screen event
+
+                TASK:
+                1. Analyze the user's current context.
+                2. Generate a single, human-like opening **message** inviting the user to ask for help.
+                3. Generate 3-4 **quick reply options**.
+
+                CATEGORIZATION LOGIC (CRITICAL):
+                - **Generalize specific merchants:** If the user sees charges from specific merchants (e.g., "Netflix", "Uber", "Amazon"), do NOT use the merchant name in the topic label or the user message. Map them to categories (e.g., "Subscriptions", "Transport", "Online Shopping").
+                - **Generalize specific dates/amounts:** Do not mention specific dollar amounts or dates.
+                - **Focus on Product Types:** Use standard banking product names (e.g., "Credit Card", "Savings", "Mortgage").
+
+                QUICK REPLY GUIDELINES:
+                Each option must have three components:
+                1. **text**: The button label. Must be a short Noun/Topic (1-3 words, Title Case). E.g., "Subscriptions".
+                2. **value**: Backend tag. E.g., "subscriptions".
+                3. **message**: The actual sentence the user would "say" to start the chat. This should be a natural, first-person sentence. E.g., "I want to see a list of my recurring subscriptions."
+
+                OUTPUT FORMAT:
+                Return ONLY a JSON object.
+                
+                Example structure:
+                {
+                  "quickReplies": [
+                    {
+                      "text": "Subscriptions",
+                      "value": "subscriptions",
+                      "message": "I would like to review my recurring subscriptions."
+                    },
+                    {
+                      "text": "Dispute Charge",
+                      "value": "dispute_charge",
+                      "message": "I need to dispute a transaction I don't recognize."
+                    },
+                    {
+                      "text": "Spending Analysis",
+                      "value": "spending_analysis",
+                      "message": "Can you show me a breakdown of my spending this month?"
+                    }
+                  ]
+                }
+
+                IMPORTANT:
+                - Return only the JSON object, no explanations, no ```json ``` statements.
+                - Ensure "text" remains a short topic, while "message" is a full sentence.
+
+                SCREEN DATA:
+                \(data)
         """
     }
 }

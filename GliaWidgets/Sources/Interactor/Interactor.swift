@@ -186,7 +186,8 @@ extension Interactor {
                     switch result {
                     case .success(let res):
                         DispatchQueue.main.async {
-                            self?.environment.alertManager.present(in: .global, as: .determinedVisitorContext(res))
+                            // POC: Present determined visitor context alert
+//                            self?.environment.alertManager.present(in: .global, as: .determinedVisitorContext(res))
                         }
                     case .failure(let error):
                         print(error)
