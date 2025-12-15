@@ -152,6 +152,18 @@ extension Theme {
             localVideoStreamLabelColor: color.baseLight
         )
 
+        let mediaQualityIndicator = MediaQualityIndicatorStyle(
+            text: Localization.Call.PoorConnection.banner,
+            textFont: font.caption,
+            background: .fill(color: color.baseLight),
+            foreground: color.baseDark,
+            alignment: .center,
+            accessibility: .init(
+                isFontScalingEnabled: false,
+                label: Localization.Call.PoorConnection.banner
+            )
+        )
+
         return CallStyle(
             header: header,
             connect: connect,
@@ -183,6 +195,7 @@ extension Theme {
                 )
             ),
             snackBar: invertedSnackBar,
+            mediaQualityIndicator: mediaQualityIndicator,
             accessibility: .init(
                 operatorNameHint: Localization.Call.Connect.FirstText.Accessibility.hint,
                 durationHint: Localization.Call.Connect.SecondText.Accessibility.hint,
