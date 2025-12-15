@@ -41,6 +41,7 @@ extension RemoteConfiguration {
         let connect: EngagementStates?
         let visitorVideo: VisitorVideo?
         let snackBar: SnackBar?
+        let mediaQualityIndicator: Text?
 
         enum CodingKeys: String, CodingKey {
             case background, bottomText, buttonBar, duration, header, connect
@@ -48,6 +49,7 @@ extension RemoteConfiguration {
             case topText
             case visitorVideo
             case snackBar
+            case mediaQualityIndicator
         }
     }
 
