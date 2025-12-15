@@ -44,6 +44,11 @@ extension CallStyle {
         )
 
         flipCameraButtonStyle.apply(configuration?.visitorVideo?.flipCameraButton)
+
+        mediaQualityIndicator.apply(
+            configuration: configuration?.mediaQualityIndicator,
+            assetsBuilder: assetsBuilder
+        )
     }
 
     /// Applies `bottomText` from remote configuration.

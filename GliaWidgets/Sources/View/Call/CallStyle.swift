@@ -65,6 +65,9 @@ public class CallStyle: EngagementStyle {
     /// Style for camera switching button.
     public var flipCameraButtonStyle: FlipCameraButtonStyle
 
+    /// Media Quality indicator.
+    public var mediaQualityIndicator: MediaQualityIndicatorStyle
+
     /// Accessibility properties for CallStyle.
     public var accessibility: Accessibility
 
@@ -93,6 +96,8 @@ public class CallStyle: EngagementStyle {
     ///   - buttonBar: Style of the button bar.
     ///   - onHoldStyle: Style of the call view when the visitor is put on hold.
     ///   - snackBar: Style of the call view snack bar.
+    ///   - flipCameraButtonStyle: Style for camera switching button.
+    ///   - mediaQualityIndicator: Style of media quality indicator.
     ///   - accessibility: Accessiblity properties for CallStyle.
     ///
     public init(
@@ -121,6 +126,7 @@ public class CallStyle: EngagementStyle {
         onHoldStyle: OnHoldStyle,
         flipCameraButtonStyle: FlipCameraButtonStyle,
         snackBar: Theme.SnackBarStyle,
+        mediaQualityIndicator: MediaQualityIndicatorStyle,
         accessibility: Accessibility = .unsupported
     ) {
         self.audioTitle = audioTitle
@@ -145,6 +151,7 @@ public class CallStyle: EngagementStyle {
         self.accessibility = accessibility
         self.flipCameraButtonStyle = flipCameraButtonStyle
         self.snackBar = snackBar
+        self.mediaQualityIndicator = mediaQualityIndicator
         super.init(
             header: header,
             connect: connect,

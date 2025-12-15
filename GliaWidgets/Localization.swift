@@ -115,6 +115,10 @@ internal enum Localization {
         internal static var label: String { Localization.tr("Localizable", "call.operator_video.accessibility.label", fallback: "Operator's Video") }
       }
     }
+    internal enum PoorConnection {
+      /// Poor internet connection
+      internal static var banner: String { Localization.tr("Localizable", "call.poor_connection.banner", fallback: "Poor internet connection") }
+    }
     internal enum Speaker {
       /// Speaker
       internal static var button: String { Localization.tr("Localizable", "call.speaker.button", fallback: "Speaker") }
