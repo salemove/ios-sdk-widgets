@@ -102,6 +102,7 @@
 "call_visualizer.visitor_code.title" = "Your Visitor Code";
 "call_visualizer.visitor_code.title.accessibility.hint" = "Shows the five-digit visitor code.";
 "call.duration.accessibility.label" = "Call duration.";
+"call.poor_connection.banner" = "Poor internet connection";
 "chat.attach_files" = "Pick attachment";
 "chat.attachment.photo_library" = "Photo Library";
 "chat.attachment.take_photo" = "Take Photo or Video";
