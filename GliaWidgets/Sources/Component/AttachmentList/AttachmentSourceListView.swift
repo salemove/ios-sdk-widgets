@@ -25,8 +25,6 @@ class AttachmentSourceListView: UIView {
         backgroundColor = style.backgroundColor
 
         stackView.axis = .vertical
-
-        items = style.items
     }
 
     private func layout() {

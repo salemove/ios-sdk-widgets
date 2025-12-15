@@ -27,6 +27,20 @@ internal enum Localization {
       /// Unable to access microphone
       internal static var error: String { Localization.tr("Localizable", "alert.microphone_access.error", fallback: "Unable to access microphone") }
     }
+    internal enum ScreenSharing {
+      internal enum Start {
+        /// Start Screen Sharing
+        internal static var header: String { Localization.tr("Localizable", "alert.screen_sharing.start.header", fallback: "Start Screen Sharing") }
+        /// {operatorName} has asked you to share your screen.
+        internal static var message: String { Localization.tr("Localizable", "alert.screen_sharing.start.message", fallback: "{operatorName} has asked you to share your screen.") }
+      }
+      internal enum Stop {
+        /// Stop Screen Sharing?
+        internal static var header: String { Localization.tr("Localizable", "alert.screen_sharing.stop.header", fallback: "Stop Screen Sharing?") }
+        /// Are you sure you want to stop sharing your screen?
+        internal static var message: String { Localization.tr("Localizable", "alert.screen_sharing.stop.message", fallback: "Are you sure you want to stop sharing your screen?") }
+      }
+    }
   }
   internal enum Call {
     internal enum Bubble {
@@ -155,6 +169,14 @@ internal enum Localization {
     }
   }
   internal enum CallVisualizer {
+    internal enum ScreenSharing {
+      /// Your Screen is Being Shared
+      internal static var message: String { Localization.tr("Localizable", "call_visualizer.screen_sharing.message", fallback: "Your Screen is Being Shared") }
+      internal enum Header {
+        /// Screen Sharing
+        internal static var title: String { Localization.tr("Localizable", "call_visualizer.screen_sharing.header.title", fallback: "Screen Sharing") }
+      }
+    }
     internal enum VisitorCode {
       /// Your Visitor Code
       internal static var title: String { Localization.tr("Localizable", "call_visualizer.visitor_code.title", fallback: "Your Visitor Code") }
@@ -190,6 +212,10 @@ internal enum Localization {
       internal static var photoLibrary: String { Localization.tr("Localizable", "chat.attachment.photo_library", fallback: "Photo Library") }
       /// Take Photo or Video
       internal static var takePhoto: String { Localization.tr("Localizable", "chat.attachment.take_photo", fallback: "Take Photo or Video") }
+      /// Take Photo
+      internal static var takePhotoOnly: String { Localization.tr("Localizable", "chat.attachment.take_photo_only", fallback: "Take Photo") }
+      /// Take Video
+      internal static var takeVideoOnly: String { Localization.tr("Localizable", "chat.attachment.take_video_only", fallback: "Take Video") }
       /// This file type is not supported.
       internal static var unsupportedFile: String { Localization.tr("Localizable", "chat.attachment.unsupported_file", fallback: "This file type is not supported.") }
       internal enum Message {
@@ -716,6 +742,24 @@ internal enum Localization {
       internal static var negative: String { Localization.tr("Localizable", "push_notifications_alert.button.negative", fallback: "Not right now") }
       /// Allow
       internal static var positive: String { Localization.tr("Localizable", "push_notifications_alert.button.positive", fallback: "Allow") }
+    }
+  }
+  internal enum ScreenSharing {
+    internal enum VisitorScreen {
+      internal enum Disclaimer {
+        /// Depending on your selection, your entire screen might be shared with the operator, not just the application window.
+        internal static var info: String { Localization.tr("Localizable", "screen_sharing.visitor_screen.disclaimer.info", fallback: "Depending on your selection, your entire screen might be shared with the operator, not just the application window.") }
+        /// You are about to share your screen
+        internal static var title: String { Localization.tr("Localizable", "screen_sharing.visitor_screen.disclaimer.title", fallback: "You are about to share your screen") }
+      }
+      internal enum End {
+        /// End Screen Sharing
+        internal static var title: String { Localization.tr("Localizable", "screen_sharing.visitor_screen.end.title", fallback: "End Screen Sharing") }
+        internal enum Accessibility {
+          /// Ends screen sharing
+          internal static var hint: String { Localization.tr("Localizable", "screen_sharing.visitor_screen.end.accessibility.hint", fallback: "Ends screen sharing") }
+        }
+      }
     }
   }
   internal enum SecureMessaging {

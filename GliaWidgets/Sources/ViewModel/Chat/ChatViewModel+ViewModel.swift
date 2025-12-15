@@ -46,7 +46,7 @@ extension ChatViewModel: ViewModel {
         case addUpload(FileUpload)
         case removeUpload(FileUpload)
         case removeAllUploads
-        case presentMediaPicker(itemSelected: (AttachmentSourceItemKind) -> Void)
+        case presentMediaPicker(_ options: [AttachmentSourceItemKind], itemSelected: (AttachmentSourceItemKind) -> Void)
         case showCallBubble(imageUrl: String?)
         case setCallBubbleImage(imageUrl: String?)
         case updateUnreadMessageIndicator(itemCount: Int)
@@ -61,9 +61,9 @@ extension ChatViewModel: ViewModel {
     }
 
     enum DelegateEvent {
-        case pickMedia(ObservableValue<MediaPickerEvent>)
-        case takeMedia(ObservableValue<MediaPickerEvent>)
-        case pickFile(ObservableValue<FilePickerEvent>)
+        case pickMedia(ObservableValue<MediaPickerEvent>, [MediaPickerViewModel.MediaType])
+        case takeMedia(ObservableValue<MediaPickerEvent>, [MediaPickerViewModel.MediaType])
+        case pickFile(ObservableValue<FilePickerEvent>, FilePickerViewModel.FileTypes)
         case mediaUpgradeAccepted(
             offer: CoreSdkClient.MediaUpgradeOffer,
             answer: CoreSdkClient.AnswerWithSuccessBlock

@@ -85,7 +85,10 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.startSocketObservation = {}
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
-        let site = try CoreSdkClient.Site.mock(allowedFileSenders: .mock(visitor: true))
+        let site = try CoreSdkClient.Site.mock(
+            allowedFileContentTypes: ["image/jpeg"],
+            allowedFileSenders: .mock(visitor: true)
+        )
         modelEnv.fetchSiteConfigurations = { callback in
             callback(.success(site))
         }

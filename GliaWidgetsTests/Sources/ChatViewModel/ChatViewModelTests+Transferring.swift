@@ -33,6 +33,7 @@ extension ChatViewModelTests {
         env.createFileUploadListModel = { _ in .mock() }
         env.createSendMessagePayload = { _, _ in .mock() }
         let site: CoreSdkClient.Site = try .mock(
+            allowedFileContentTypes: ["image/jpeg"],
             allowedFileSenders: .init(operator: true, visitor: true)
         )
         env.fetchSiteConfigurations = { completion in

@@ -69,6 +69,7 @@ extension SecureConversationsWelcomeViewModelTests {
     func testIsAttachmentAvailable() throws {
         var environment: WelcomeViewModel.Environment = .mock()
         let site: CoreSdkClient.Site = try .mock(
+            allowedFileContentTypes: ["image/jpeg"],
             allowedFileSenders: .init(operator: true, visitor: true)
         )
 
@@ -257,6 +258,7 @@ extension SecureConversationsWelcomeViewModelTests {
     func testFilePickerButtonIsAvailable() throws {
         var environment: WelcomeViewModel.Environment = .mock()
         let site: CoreSdkClient.Site = try .mock(
+            allowedFileContentTypes: ["image/jpeg"],
             allowedFileSenders: .init(operator: true, visitor: true)
         )
 
@@ -438,7 +440,7 @@ extension SecureConversationsWelcomeViewModelTests {
 
         viewModel.delegate = { event in
             switch event {
-            case let .mediaPickerRequested(_, callback):
+            case let .mediaPickerRequested(_, _, callback):
                 callback(.browse)
             case .pickFile:
                 isCalled = true
@@ -456,7 +458,7 @@ extension SecureConversationsWelcomeViewModelTests {
 
         viewModel.delegate = { event in
             switch event {
-            case let .mediaPickerRequested(_, callback):
+            case let .mediaPickerRequested(_, _, callback):
                 callback(.takePhoto)
             case .takeMedia:
                 isCalled = true
@@ -474,7 +476,7 @@ extension SecureConversationsWelcomeViewModelTests {
 
         viewModel.delegate = { event in
             switch event {
-            case let .mediaPickerRequested(_, callback):
+            case let .mediaPickerRequested(_, _, callback):
                 callback(.photoLibrary)
             case .pickMedia:
                 isCalled = true
@@ -493,9 +495,9 @@ extension SecureConversationsWelcomeViewModelTests {
 
         viewModel.delegate = { event in
             switch event {
-            case let .mediaPickerRequested(_, callback):
+            case let .mediaPickerRequested(_, _, callback):
                 callback(.photoLibrary)
-            case .pickMedia(let callback):
+            case .pickMedia(let callback, _):
                 callback(.cancelled)
                 isCalled = true
             case .showAlert:
@@ -513,9 +515,9 @@ extension SecureConversationsWelcomeViewModelTests {
 
         viewModel.delegate = { event in
             switch event {
-            case let .mediaPickerRequested(_, callback):
+            case let .mediaPickerRequested(_, _, callback):
                 callback(.takePhoto)
-            case .takeMedia(let callback):
+            case .takeMedia(let callback, _):
                 callback(.pickedMedia(PickedMedia.image(URL.mock)))
             default: break
             }
@@ -532,9 +534,9 @@ extension SecureConversationsWelcomeViewModelTests {
 
         viewModel.delegate = { event in
             switch event {
-            case let .mediaPickerRequested(_, callback):
+            case let .mediaPickerRequested(_, _, callback):
                 callback(.photoLibrary)
-            case .pickMedia(let callback):
+            case .pickMedia(let callback, _):
                 callback(.sourceNotAvailable)
             case .showAlert:
                 isCalled = true
@@ -553,9 +555,9 @@ extension SecureConversationsWelcomeViewModelTests {
 
         viewModel.delegate = { event in
             switch event {
-            case let .mediaPickerRequested(_, callback):
+            case let .mediaPickerRequested(_, _, callback):
                 callback(.photoLibrary)
-            case .pickMedia(let callback):
+            case .pickMedia(let callback, _):
                 callback(.noCameraPermission)
             case .showAlert:
                 isCalled = true
@@ -572,9 +574,9 @@ extension SecureConversationsWelcomeViewModelTests {
 
         viewModel.delegate = { event in
             switch event {
-            case let .mediaPickerRequested(_, callback):
+            case let .mediaPickerRequested(_, _, callback):
                 callback(.browse)
-            case .pickFile(let callback):
+            case .pickFile(let callback, _):
                 callback(.pickedFile(URL.mock))
             default: break
             }
@@ -590,9 +592,9 @@ extension SecureConversationsWelcomeViewModelTests {
 
         viewModel.delegate = { event in
             switch event {
-            case let .mediaPickerRequested(_, callback):
+            case let .mediaPickerRequested(_, _, callback):
                 callback(.browse)
-            case .pickFile(let callback):
+            case .pickFile(let callback, _):
                 callback(.cancelled)
             default: break
             }
@@ -721,9 +723,9 @@ extension SecureConversationsWelcomeViewModelTests {
         viewModel.fileUploadListModel.environment.uploader = FileUploader(maximumUploads: 100, environment: .mock)
         viewModel.delegate = { event in
             switch event {
-            case let .mediaPickerRequested(_, callback):
+            case let .mediaPickerRequested(_, _, callback):
                 callback(.photoLibrary)
-            case .pickMedia(let callback):
+            case .pickMedia(let callback, _):
                 callback(.pickedMedia(PickedMedia.image(URL.mock)))
             default: break
             }
@@ -743,9 +745,9 @@ extension SecureConversationsWelcomeViewModelTests {
         viewModel.fileUploadListModel.environment.uploader = FileUploader(maximumUploads: 100, environment: .mock)
         viewModel.delegate = { event in
             switch event {
-            case let .mediaPickerRequested(_, callback):
+            case let .mediaPickerRequested(_, _, callback):
                 callback(.photoLibrary)
-            case .pickMedia(let callback):
+            case .pickMedia(let callback, _):
                 callback(.pickedMedia(PickedMedia.image(URL.mock)))
             default: break
             }

@@ -14,8 +14,14 @@ extension AttachmentSourceItemStyle {
         case .photoLibrary:
             title = "Photo Library"
             icon = Asset.photoLibraryIcon.image
+        case .takePhotoOrVideo:
+            title = "Take Photo or Video"
+            icon = Asset.cameraIcon.image
         case .takePhoto:
-            title = "Take phone"
+            title = "Take Photo"
+            icon = Asset.cameraIcon.image
+        case .takeVideo:
+            title = "Take Video"
             icon = Asset.cameraIcon.image
         case .browse:
             title = "Browse"

@@ -307,9 +307,27 @@ extension Theme {
                iconColor: itemIconColor,
                accessibility: .init(isFontScalingEnabled: true)
            )
+           let takePhotoOrVideo = AttachmentSourceItemStyle(
+               kind: .takePhotoOrVideo,
+               title: Localization.Chat.Attachment.takePhoto,
+               titleFont: itemFont,
+               titleColor: itemFontColor,
+               icon: Asset.cameraIcon.image,
+               iconColor: itemIconColor,
+               accessibility: .init(isFontScalingEnabled: true)
+           )
            let takePhoto = AttachmentSourceItemStyle(
                kind: .takePhoto,
-               title: Localization.Chat.Attachment.takePhoto,
+               title: Localization.Chat.Attachment.takePhotoOnly,
+               titleFont: itemFont,
+               titleColor: itemFontColor,
+               icon: Asset.cameraIcon.image,
+               iconColor: itemIconColor,
+               accessibility: .init(isFontScalingEnabled: true)
+           )
+           let takeVideo = AttachmentSourceItemStyle(
+               kind: .takeVideo,
+               title: Localization.Chat.Attachment.takeVideoOnly,
                titleFont: itemFont,
                titleColor: itemFontColor,
                icon: Asset.cameraIcon.image,
@@ -327,7 +345,7 @@ extension Theme {
            )
 
            return AttachmentSourceListStyle(
-               items: [pickPhoto, takePhoto, browse],
+               items: [pickPhoto, takePhotoOrVideo, takePhoto, takeVideo, browse],
                separatorColor: color.baseShade,
                backgroundColor: color.baseNeutral
            )
