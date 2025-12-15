@@ -8,9 +8,9 @@ extension SecureConversations {
 
         enum DelegateEvent {
             case showFile(LocalFile)
-            case pickMedia(ObservableValue<MediaPickerEvent>)
-            case takeMedia(ObservableValue<MediaPickerEvent>)
-            case pickFile(ObservableValue<FilePickerEvent>)
+            case pickMedia(ObservableValue<MediaPickerEvent>, [MediaPickerViewModel.MediaType])
+            case takeMedia(ObservableValue<MediaPickerEvent>, [MediaPickerViewModel.MediaType])
+            case pickFile(ObservableValue<FilePickerEvent>, FilePickerViewModel.FileTypes)
             case upgradeToChatEngagement(TranscriptModel)
             case minimize
         }
@@ -62,6 +62,7 @@ extension SecureConversations {
         var mediaPickerButtonEnabling: MediaPickerButtonEnabling {
             guard let site = siteConfiguration else { return .disabled }
             guard site.allowedFileSenders.visitor else { return .disabled }
+            guard !site.allowedFileContentTypes.isEmpty else { return .disabled }
             return .enabled(.secureMessaging)
         }
 
@@ -470,8 +471,12 @@ extension SecureConversations.TranscriptModel {
                 switch kind {
                 case .photoLibrary:
                     $0[.buttonName] = .string(OtelButtonNames.selectFromLibrary.rawValue)
+                case .takePhotoOrVideo:
+                    $0[.buttonName] = .string(OtelButtonNames.takePhotoVideo.rawValue)
                 case .takePhoto:
                     $0[.buttonName] = .string(OtelButtonNames.takePhoto.rawValue)
+                case .takeVideo:
+                    $0[.buttonName] = .string(OtelButtonNames.takeVideo.rawValue)
                 case .browse:
                     $0[.buttonName] = .string(OtelButtonNames.browseFiles.rawValue)
                 }
@@ -505,14 +510,18 @@ extension SecureConversations.TranscriptModel {
             }
             switch kind {
             case .photoLibrary:
-                self.delegate?(.pickMedia(media))
+                self.delegate?(.pickMedia(media, self.allowedMediaTypes))
+            case .takePhotoOrVideo:
+                self.delegate?(.takeMedia(media, [.image, .movie]))
             case .takePhoto:
-                self.delegate?(.takeMedia(media))
+                self.delegate?(.takeMedia(media, [.image]))
+            case .takeVideo:
+                self.delegate?(.takeMedia(media, [.movie]))
             case .browse:
-                self.delegate?(.pickFile(file))
+                self.delegate?(.pickFile(file, .custom(self.allowedFileContentTypes.mimeTypesToUTIs())))
             }
         }
-        action?(.presentMediaPicker(itemSelected: { itemSelected($0) }))
+        action?(.presentMediaPicker(allowedAttachmentOptions, itemSelected: { itemSelected($0) }))
     }
 
     private func mediaPicked(_ media: PickedMedia) {
@@ -846,6 +855,13 @@ extension SecureConversations.TranscriptModel: ApplicationVisibilityTracker {
                 break
             }
         }
+    }
+}
+
+extension SecureConversations.TranscriptModel: AttachmentOptions {
+    var allowedFileContentTypes: [String] {
+        guard let site = siteConfiguration else { return [] }
+        return site.allowedFileContentTypes
     }
 }
 

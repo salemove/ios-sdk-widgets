@@ -461,6 +461,7 @@ extension CoreSdkClient.Site.AllowedFileSenders {
 extension CoreSdkClient.Site {
     static func mock(
         id: UUID = .mock,
+        allowedFileContentTypes: [String] = [],
         allowedFileSenders: AllowedFileSenders.Mock = .mock,
         maskingRegularExpressions: [String] = [],
         visitorAppDefaultLocale: String = "en-US",
@@ -471,6 +472,7 @@ extension CoreSdkClient.Site {
     ) throws -> Self {
         struct Mock: Codable {
             let id: UUID
+            let allowedFileContentTypes: [String]
             let allowedFileSenders: CoreSdkClient.Site.AllowedFileSenders.Mock
             let maskingRegularExpressions: [String]
             let visitorAppDefaultLocale: String
@@ -486,6 +488,7 @@ extension CoreSdkClient.Site {
                     .encode(
                         Mock(
                             id: id,
+                            allowedFileContentTypes: allowedFileContentTypes,
                             allowedFileSenders: allowedFileSenders,
                             maskingRegularExpressions: maskingRegularExpressions,
                             visitorAppDefaultLocale: visitorAppDefaultLocale,

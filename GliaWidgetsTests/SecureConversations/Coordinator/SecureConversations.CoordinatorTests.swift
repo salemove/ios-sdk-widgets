@@ -113,6 +113,7 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
         welcomeViewController.viewModel.delegate?(
             .mediaPickerRequested(
                 from: welcomeViewController.view,
+                options: [.photoLibrary],
                 callback: { _ in }
             )
         )
@@ -129,7 +130,7 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
 
         XCTAssertNil(coordinator.selectedPickerController)
 
-        viewController?.viewModel.delegate?(.pickMedia(.nop))
+        viewController?.viewModel.delegate?(.pickMedia(.nop, [.image]))
         XCTAssertNotNil(coordinator.selectedPickerController)
         
         switch coordinator.selectedPickerController {
@@ -144,7 +145,7 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
 
         XCTAssertNil(coordinator.selectedPickerController)
 
-        viewController?.viewModel.delegate?(.pickFile(.nop))
+        viewController?.viewModel.delegate?(.pickFile(.nop, .default))
         XCTAssertNotNil(coordinator.selectedPickerController)
 
         switch coordinator.selectedPickerController {
