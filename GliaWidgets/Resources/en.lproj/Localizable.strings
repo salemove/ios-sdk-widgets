@@ -105,6 +105,8 @@
 "chat.attach_files" = "Pick attachment";
 "chat.attachment.photo_library" = "Photo Library";
 "chat.attachment.take_photo" = "Take Photo or Video";
+"chat.attachment.take_photo_only" = "Take Photo";
+"chat.attachment.take_video_only" = "Take Video";
 "chat.attachment.unsupported_file" = "This file type is not supported.";
 "chat.attachment.message.accessibility.label" = "Attachment from {fileSender}";
 "chat.download.downloading" = "Downloading file…";

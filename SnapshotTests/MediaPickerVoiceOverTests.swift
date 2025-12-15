@@ -5,10 +5,12 @@ import XCTest
 final class MediaPickerVoiceOverTests: SnapshotTestCase {
     func test_mediaPicker() {
         let containerView = UIView()
-        let size: CGSize = .init(width: 300, height: 140)
+        let size: CGSize = .init(width: 300, height: 230)
         containerView.frame = .init(origin: .zero, size: size)
 
-        let listView = AttachmentSourceListView(with: .mock())
+        let style: AttachmentSourceListStyle = .mock()
+        let listView = AttachmentSourceListView(with: style)
+        listView.items = style.items
         let edgeInsets: UIEdgeInsets = .init(
             top: 0,
             left: 0,

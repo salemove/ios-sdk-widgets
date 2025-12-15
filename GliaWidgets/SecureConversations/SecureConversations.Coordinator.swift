@@ -83,29 +83,30 @@ extension SecureConversations {
                 controller?.props = props
             case .confirmationScreenRequested:
                 presentSecureConversationsConfirmationViewController()
-            case let .mediaPickerRequested(originView, callback):
+            case let .mediaPickerRequested(originView, options, callback):
                 controller?.presentPopover(
                     with: style.pickMediaStyle,
                     from: originView,
+                    options: options,
                     itemSelected: { [weak controller] kind in
                         controller?.dismiss(animated: true)
                         callback(kind)
                     }
                 )
-            case let .pickMedia(callback):
+            case let .pickMedia(callback, mediaTypes):
                 presentMediaPickerController(
                     with: callback,
                     mediaSource: .library,
-                    mediaTypes: [.image, .movie]
+                    mediaTypes: mediaTypes
                 )
-            case let .takeMedia(callback):
+            case let .takeMedia(callback, mediaTypes):
                 presentMediaPickerController(
                     with: callback,
                     mediaSource: .camera,
-                    mediaTypes: [.image, .movie]
+                    mediaTypes: mediaTypes
                 )
-            case let .pickFile(callback):
-                presentFilePickerController(with: callback)
+            case let .pickFile(callback, fileTypes):
+                presentFilePickerController(with: callback, fileTypes: fileTypes)
             case .transcriptRequested:
                 navigateToTranscript()
             case let .showAlert(type):
@@ -171,10 +172,10 @@ extension SecureConversations {
             self.selectedPickerController = .mediaPickerController(controller)
         }
 
-        private func presentFilePickerController(with pickerEvent: Command<FilePickerEvent>) {
+        private func presentFilePickerController(with pickerEvent: Command<FilePickerEvent>, fileTypes: FilePickerViewModel.FileTypes) {
             let observable = ObservableValue<FilePickerEvent>(with: .none)
             observable.addObserver(self, update: { event, _ in pickerEvent(event) })
-            let viewModel = FilePickerViewModel(pickerEvent: observable)
+            let viewModel = FilePickerViewModel(pickerEvent: observable, allowedFiles: fileTypes)
             viewModel.delegate = { [weak self] event in
                 switch event {
                 case .finished:

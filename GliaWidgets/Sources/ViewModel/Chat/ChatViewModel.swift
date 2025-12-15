@@ -55,6 +55,7 @@ class ChatViewModel: EngagementViewModel {
     var mediaPickerButtonEnabling: MediaPickerButtonEnabling {
         guard let site = siteConfiguration else { return .disabled }
         guard site.allowedFileSenders.visitor else { return .disabled }
+        guard !site.allowedFileContentTypes.isEmpty else { return .disabled }
         guard environment.getCurrentEngagement() != nil else {
             return .enabled(.engagementConnection(isConnected: false))
         }
@@ -847,8 +848,12 @@ extension ChatViewModel {
                 switch kind {
                 case .photoLibrary:
                     $0[.buttonName] = .string(OtelButtonNames.selectFromLibrary.rawValue)
+                case .takePhotoOrVideo:
+                    $0[.buttonName] = .string(OtelButtonNames.takePhotoVideo.rawValue)
                 case .takePhoto:
                     $0[.buttonName] = .string(OtelButtonNames.takePhoto.rawValue)
+                case .takeVideo:
+                    $0[.buttonName] = .string(OtelButtonNames.takeVideo.rawValue)
                 case .browse:
                     $0[.buttonName] = .string(OtelButtonNames.browseFiles.rawValue)
                 }
@@ -881,14 +886,18 @@ extension ChatViewModel {
             }
             switch kind {
             case .photoLibrary:
-                self.delegate?(.pickMedia(media))
+                self.delegate?(.pickMedia(media, self.allowedMediaTypes))
+            case .takePhotoOrVideo:
+                self.delegate?(.takeMedia(media, [.image, .movie]))
             case .takePhoto:
-                self.delegate?(.takeMedia(media))
+                self.delegate?(.takeMedia(media, [.image]))
+            case .takeVideo:
+                self.delegate?(.takeMedia(media, [.movie]))
             case .browse:
-                self.delegate?(.pickFile(file))
+                self.delegate?(.pickFile(file, .custom(self.allowedFileContentTypes.mimeTypesToUTIs())))
             }
         }
-        action?(.presentMediaPicker(itemSelected: { itemSelected($0) }))
+        action?(.presentMediaPicker(allowedAttachmentOptions, itemSelected: { itemSelected($0) }))
     }
 
     private func mediaPicked(_ media: PickedMedia) {
@@ -1131,6 +1140,13 @@ extension ChatViewModel: ApplicationVisibilityTracker {
             _ = self?.environment.secureConversations.markMessagesAsRead { _ in }
         }
         .store(in: &markMessagesAsReadCancellables)
+    }
+}
+
+extension ChatViewModel: AttachmentOptions {
+    var allowedFileContentTypes: [String] {
+        guard let site = siteConfiguration else { return [] }
+        return site.allowedFileContentTypes
     }
 }
 

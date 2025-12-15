@@ -8,7 +8,9 @@ extension AttachmentSourceListStyle {
             items: [
                 .mock(with: .browse),
                 .mock(with: .photoLibrary),
-                .mock(with: .takePhoto)
+                .mock(with: .takePhoto),
+                .mock(with: .takeVideo),
+                .mock(with: .takePhotoOrVideo)
             ],
             separatorColor: theme.color.baseShade,
             backgroundColor: theme.color.baseNeutral

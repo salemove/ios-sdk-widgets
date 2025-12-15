@@ -140,8 +140,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         }
     }
 
-    private func presentFilePickerController(with pickerEvent: ObservableValue<FilePickerEvent>) {
-        let viewModel = FilePickerViewModel(pickerEvent: pickerEvent)
+    private func presentFilePickerController(with pickerEvent: ObservableValue<FilePickerEvent>, fileTypes: FilePickerViewModel.FileTypes) {
+        let viewModel = FilePickerViewModel(pickerEvent: pickerEvent, allowedFiles: fileTypes)
         viewModel.delegate = { [weak self] event in
             switch event {
             case .finished:
@@ -214,20 +214,20 @@ extension ChatCoordinator {
 
     private func handleDelegateEvent(event: ChatViewModel.DelegateEvent) {
         switch event {
-        case .pickMedia(let pickerEvent):
+        case .pickMedia(let pickerEvent, let mediaTypes):
             presentMediaPickerController(
                 with: pickerEvent,
                 mediaSource: .library,
-                mediaTypes: [.image, .movie]
+                mediaTypes: mediaTypes
             )
-        case .takeMedia(let pickerEvent):
+        case .takeMedia(let pickerEvent, let mediaTypes):
             presentMediaPickerController(
                 with: pickerEvent,
                 mediaSource: .camera,
-                mediaTypes: [.image, .movie]
+                mediaTypes: mediaTypes
             )
-        case .pickFile(let pickerEvent):
-            presentFilePickerController(with: pickerEvent)
+        case .pickFile(let pickerEvent, let fileTypes):
+            presentFilePickerController(with: pickerEvent, fileTypes: fileTypes)
         case .mediaUpgradeAccepted(let offer, let answer):
             delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
         case .secureTranscriptUpgradedToLiveChat(let chatViewController):
@@ -298,20 +298,20 @@ extension ChatCoordinator {
             switch event {
             case .showFile(let file):
                 self?.presentQuickLookController(with: file)
-            case .pickMedia(let pickerEvent):
+            case .pickMedia(let pickerEvent, let mediaTypes):
                 self?.presentMediaPickerController(
                     with: pickerEvent,
                     mediaSource: .library,
-                    mediaTypes: [.image, .movie]
+                    mediaTypes: mediaTypes
                 )
-            case .takeMedia(let pickerEvent):
+            case .takeMedia(let pickerEvent, let mediaTypes):
                 self?.presentMediaPickerController(
                     with: pickerEvent,
                     mediaSource: .camera,
-                    mediaTypes: [.image, .movie]
+                    mediaTypes: mediaTypes
                 )
-            case .pickFile(let pickerEvent):
-                self?.presentFilePickerController(with: pickerEvent)
+            case .pickFile(let pickerEvent, let fileTypes):
+                self?.presentFilePickerController(with: pickerEvent, fileTypes: fileTypes)
             case let .upgradeToChatEngagement(transcriptModel):
                 guard let self, let controller = controller() else {
                     return

@@ -34,6 +34,7 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
         let site = CoreSdkClient.Site(
             id: .mock, defaultOperatorPicture: nil,
             alwaysUseDefaultOperatorPicture: false,
+            allowedFileContentTypes: [],
             allowedFileSenders: try .mock(),
             maskingRegularExpressions: [],
             visitorAppDefaultLocale: "",
@@ -71,6 +72,7 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
         let site = CoreSdkClient.Site(
             id: .mock, defaultOperatorPicture: nil,
             alwaysUseDefaultOperatorPicture: false,
+            allowedFileContentTypes: [],
             allowedFileSenders: try .mock(),
             maskingRegularExpressions: [],
             visitorAppDefaultLocale: "",
@@ -105,6 +107,7 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
         let site = CoreSdkClient.Site(
             id: .mock, defaultOperatorPicture: nil,
             alwaysUseDefaultOperatorPicture: false,
+            allowedFileContentTypes: [],
             allowedFileSenders: try .mock(),
             maskingRegularExpressions: [],
             visitorAppDefaultLocale: "",
@@ -130,6 +133,7 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
         let site = CoreSdkClient.Site(
             id: .mock, defaultOperatorPicture: nil,
             alwaysUseDefaultOperatorPicture: false,
+            allowedFileContentTypes: [],
             allowedFileSenders: try .mock(),
             maskingRegularExpressions: [],
             visitorAppDefaultLocale: "",

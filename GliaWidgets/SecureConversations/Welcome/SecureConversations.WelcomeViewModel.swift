@@ -22,6 +22,7 @@ extension SecureConversations {
         /// Flag indicating attachment(s) availability.
         /// By default attachments are not available, until site configurations are fetched.
         private(set) var isAttachmentsAvailable: Bool = false { didSet { reportChange() } }
+        private(set) var allowedFileContentTypes: [String] = []
         private var isViewActive = ObservableValue<Bool>(with: false)
         var availabilityStatus: Availability.Status = .available(.queues(queueIds: [])) { didSet { reportChange() } }
         var messageInputState: MessageInputState = .normal { didSet { reportChange() } }
@@ -137,7 +138,8 @@ private extension SecureConversations.WelcomeViewModel {
         environment.fetchSiteConfigurations { [weak self] result in
             switch result {
             case let .success(site):
-                self?.isAttachmentsAvailable = site.allowedFileSenders.visitor
+                self?.isAttachmentsAvailable = site.allowedFileSenders.visitor && !site.allowedFileContentTypes.isEmpty
+                self?.allowedFileContentTypes = site.allowedFileContentTypes
             case let .failure(error):
                 self?.delegate?(.showAlert(.error(error: error)))
             }
@@ -367,11 +369,12 @@ extension SecureConversations.WelcomeViewModel {
         case confirmationScreenRequested
         case mediaPickerRequested(
             from: UIView,
+            options: [AttachmentSourceItemKind],
             callback: (AttachmentSourceItemKind) -> Void
         )
-        case pickMedia(Command<MediaPickerEvent>)
-        case takeMedia(Command<MediaPickerEvent>)
-        case pickFile(Command<FilePickerEvent>)
+        case pickMedia(Command<MediaPickerEvent>, [MediaPickerViewModel.MediaType])
+        case takeMedia(Command<MediaPickerEvent>, [MediaPickerViewModel.MediaType])
+        case pickFile(Command<FilePickerEvent>, FilePickerViewModel.FileTypes)
         case showAlert(AlertInputType)
         case transcriptRequested
     }
@@ -388,8 +391,12 @@ extension SecureConversations.WelcomeViewModel {
             switch kind {
             case .photoLibrary:
                 self?.logButtonClicked(.selectFromLibrary)
+            case .takePhotoOrVideo:
+                self?.logButtonClicked(.takePhotoVideo)
             case .takePhoto:
                 self?.logButtonClicked(.takePhoto)
+            case .takeVideo:
+                self?.logButtonClicked(.takeVideo)
             case .browse:
                 self?.logButtonClicked(.browseFiles)
             }
@@ -420,17 +427,22 @@ extension SecureConversations.WelcomeViewModel {
 
             switch kind {
             case .photoLibrary:
-                self.delegate?(.pickMedia(media))
+                self.delegate?(.pickMedia(media, self.allowedMediaTypes))
+            case .takePhotoOrVideo:
+                self.delegate?(.takeMedia(media, [.image, .movie]))
             case .takePhoto:
-                self.delegate?(.takeMedia(media))
+                self.delegate?(.takeMedia(media, [.image]))
+            case .takeVideo:
+                self.delegate?(.takeMedia(media, [.movie]))
             case .browse:
-                self.delegate?(.pickFile(file))
+                self.delegate?(.pickFile(file, .custom(self.allowedFileContentTypes.mimeTypesToUTIs())))
             }
         }
 
         delegate?(
             .mediaPickerRequested(
                 from: originView,
+                options: allowedAttachmentOptions,
                 callback: itemSelected
             )
         )
@@ -503,3 +515,5 @@ extension SecureConversations.WelcomeViewModel: Hashable {
         hasher.combine(ObjectIdentifier(self))
     }
 }
+
+extension SecureConversations.WelcomeViewModel: AttachmentOptions {}

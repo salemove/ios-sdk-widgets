@@ -191,10 +191,11 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
                 break
             case .removeAllUploads:
                 view?.messageEntryView.uploadListView.removeAllUploadViews()
-            case .presentMediaPicker(let itemSelected):
+            case .presentMediaPicker(let options, let itemSelected):
                 guard let view = view else { return }
                 self.presentMediaPicker(
                     from: view.messageEntryView.pickMediaButton,
+                    options: options,
                     itemSelected: itemSelected
                 )
             case .showCallBubble(let imageUrl):
@@ -243,11 +244,13 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
 
     private func presentMediaPicker(
         from sourceView: UIView,
+        options: [AttachmentSourceItemKind],
         itemSelected: @escaping (AttachmentSourceItemKind) -> Void
     ) {
         presentPopover(
             with: viewFactory.theme.chat.pickMedia,
             from: sourceView,
+            options: options,
             itemSelected: { [weak self] in
                 self?.dismiss(animated: true, completion: nil)
                 itemSelected($0)

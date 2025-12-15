@@ -77,7 +77,7 @@ final class ChatCoordinatorTests: XCTestCase {
 
         switch viewController.viewModel {
         case .chat(let viewModel):
-            viewModel.delegate?(.pickMedia(.init(with: .cancelled)))
+            viewModel.delegate?(.pickMedia(.init(with: .cancelled), [.image]))
             coordinator.mediaPickerController?.viewController{ shownViewController in
                 XCTAssertNotNil(shownViewController as? UIImagePickerController)
             }
@@ -96,7 +96,7 @@ final class ChatCoordinatorTests: XCTestCase {
 
         switch viewController.viewModel {
         case .chat(let viewModel):
-            viewModel.delegate?(.pickFile(.init(with: .cancelled)))
+            viewModel.delegate?(.pickFile(.init(with: .cancelled), .default))
             let filePickerController = coordinator.filePickerController?.viewController as? UIDocumentPickerViewController
 
             XCTAssertNotNil(filePickerController)
@@ -333,7 +333,7 @@ final class ChatCoordinatorTests: XCTestCase {
 
         switch viewController.viewModel {
         case .transcript(let viewModel):
-            viewModel.delegate?(.pickMedia(.init(with: .cancelled)))
+            viewModel.delegate?(.pickMedia(.init(with: .cancelled), [.image]))
             coordinator.mediaPickerController?.viewController{ shownViewController in
                 XCTAssertNotNil(shownViewController as? UIImagePickerController)
             }
@@ -353,7 +353,7 @@ final class ChatCoordinatorTests: XCTestCase {
 
         switch viewController.viewModel {
         case .transcript(let viewModel):
-            viewModel.delegate?(.pickFile(.init(with: .cancelled)))
+            viewModel.delegate?(.pickFile(.init(with: .cancelled), .default))
             let filePickerController = coordinator.filePickerController?.viewController as? UIDocumentPickerViewController
 
             XCTAssertNotNil(filePickerController)
