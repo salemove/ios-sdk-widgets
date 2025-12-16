@@ -3,6 +3,7 @@ import UIKit
 final class CallViewController: EngagementViewController {
     let viewModel: CallViewModel
     private let environment: Environment
+    private var mediaQualityPresenter: MediaQualityIndicatorPresenter?
 
     init(
         viewModel: CallViewModel,
@@ -50,6 +51,14 @@ final class CallViewController: EngagementViewController {
             selector: #selector(CallViewController.deviceDidRotate),
             name: UIDevice.orientationDidChangeNotification,
             object: nil
+        )
+
+        guard let host = view as? MediaQualityIndicatorHost else { return }
+
+        mediaQualityPresenter = MediaQualityIndicatorPresenter(
+            style: environment.viewFactory.theme.call.mediaQualityIndicator,
+            parentViewController: self,
+            host: host
         )
     }
 
@@ -182,6 +191,17 @@ private extension CallViewController {
             closeButton: props.closeButton,
             style: props.style
         )
+    }
+}
+
+// MARK: - Network Quality
+extension CallViewController {
+    func showMediaQualityIndicator() {
+        mediaQualityPresenter?.show()
+    }
+
+    func hideMediaQualityIndicator() {
+        mediaQualityPresenter?.hide()
     }
 }
 
