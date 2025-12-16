@@ -514,3 +514,8 @@ extension CallView {
         )
     }
 }
+
+extension CallView: MediaQualityIndicatorHost {
+    var mediaQualityIndicatorContainerView: UIView { self }
+    var mediaQualityIndicatorTopAnchor: NSLayoutYAxisAnchor { header.bottomAnchor }
+}

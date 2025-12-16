@@ -70,7 +70,7 @@ extension CallVisualizer {
             label.textAlignment = .center
         }
 
-        private lazy var header = Header(props: props.headerProps).make { header in
+        lazy var header = Header(props: props.headerProps).make { header in
             header.hideCloseAndEndButtons()
 
             if let backButton = props.style.header.backButton {
