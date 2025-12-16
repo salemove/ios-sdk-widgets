@@ -4,6 +4,7 @@ extension CallVisualizer {
     final class VideoCallViewController: UIViewController {
         private let videoCallView: VideoCallView
         private let environment: Environment
+        private var mediaQualityPresenter: MediaQualityIndicatorPresenter?
 
         var props: Props {
             didSet {
@@ -38,6 +39,11 @@ extension CallVisualizer {
         override func viewDidLoad() {
             super.viewDidLoad()
             props.viewDidLoad()
+            mediaQualityPresenter = MediaQualityIndicatorPresenter(
+                style: props.videoCallViewProps.style.mediaQualityIndicator,
+                parentViewController: self,
+                host: videoCallView
+            )
         }
 
         override func viewDidAppear(_ animated: Bool) {
@@ -67,4 +73,9 @@ private extension CallVisualizer.VideoCallViewController {
     func renderProps() {
         videoCallView.props = props.videoCallViewProps
     }
+}
+
+extension CallVisualizer.VideoCallView: MediaQualityIndicatorHost {
+    var mediaQualityIndicatorContainerView: UIView { self }
+    var mediaQualityIndicatorTopAnchor: NSLayoutYAxisAnchor { header.bottomAnchor }
 }
