@@ -11,7 +11,7 @@ extension Survey {
         let title = UILabel().make {
             $0.numberOfLines = 0
         }
-        let optionsStack = UIStackView.make(.horizontal, spacing: 24)()
+        let optionsStack = UIStackView.make(.horizontal, spacing: 16)()
         lazy var validationError = ValidationErrorView(style: style.error)
         lazy var contentStack = UIStackView.make(.vertical, spacing: 16)(
             title,
@@ -55,8 +55,8 @@ extension Survey {
                 var constraints = [NSLayoutConstraint](); defer { NSLayoutConstraint.activate(constraints) }
                 (0..<abs(delta)).forEach { _ in
                     let buttonView = ButtonView(style: style.option)
-                    constraints.append(buttonView.widthAnchor.constraint(greaterThanOrEqualToConstant: 52))
-                    constraints.append(buttonView.heightAnchor.constraint(greaterThanOrEqualToConstant: 52))
+                    constraints.append(buttonView.widthAnchor.constraint(greaterThanOrEqualToConstant: 65))
+                    constraints.append(buttonView.heightAnchor.constraint(greaterThanOrEqualToConstant: 48))
                     optionsStack.addArrangedSubview(buttonView)
                 }
             case ..<0:

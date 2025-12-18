@@ -20,7 +20,7 @@ extension Survey {
             $0.textAlignment = .center
         }
         let scrollView = UIScrollView().makeView()
-        lazy var surveyItemsStack = UIStackView.make(.vertical, spacing: 24)()
+        lazy var surveyItemsStack = UIStackView.make(.vertical, spacing: 40)()
         lazy var contentContainerView = UIView().makeView {
             $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         }
