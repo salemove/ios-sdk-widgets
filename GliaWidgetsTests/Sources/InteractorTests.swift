@@ -708,4 +708,63 @@ extension InteractorTests {
 
         return interactor
     }
+
+    func test_onEngagementChangedCallsCleanupWhenEngagementIsNil() {
+        let mockEngagement = CoreSdkClient.Engagement.mock(id: UUID.mock.uuidString)
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.gcd = .mock
+
+        let interactor = Interactor.mock(environment: interactorEnv)
+
+        interactor.state = .engaged(.mock())
+        interactor.setCurrentEngagement(mockEngagement)
+        interactor.setEndedEngagement(mockEngagement)
+
+        XCTAssertNotNil(interactor.currentEngagement)
+        XCTAssertNotNil(interactor.endedEngagement)
+        XCTAssertEqual(interactor.state, .engaged(.mock()))
+
+        interactor.onEngagementChanged(nil)
+
+        XCTAssertNil(interactor.currentEngagement)
+        XCTAssertNil(interactor.endedEngagement)
+        XCTAssertEqual(interactor.state, .none)
+    }
+
+    func test_onEngagementChangedTransitionFromEngagementToNil() {
+        let mockEngagement = CoreSdkClient.Engagement.mock(id: UUID.mock.uuidString)
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.gcd = .mock
+
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.state = .enqueueing(.chat)
+
+        interactor.onEngagementChanged(mockEngagement)
+
+        XCTAssertNotNil(interactor.currentEngagement)
+        XCTAssertNotNil(interactor.endedEngagement)
+
+        interactor.onEngagementChanged(nil)
+
+        XCTAssertNil(interactor.currentEngagement)
+        XCTAssertNil(interactor.endedEngagement)
+        XCTAssertEqual(interactor.state, .none)
+    }
+
+    func test_onEngagementChangedSetsEngagementWhenNonNil() {
+        let mockEngagement = CoreSdkClient.Engagement.mock(id: UUID.mock.uuidString)
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.gcd = .mock
+
+        let interactor = Interactor.mock(environment: interactorEnv)
+
+        XCTAssertNil(interactor.currentEngagement)
+        XCTAssertNil(interactor.endedEngagement)
+
+        interactor.onEngagementChanged(mockEngagement)
+
+        // Both current and ended engagement should be set
+        XCTAssertEqual(interactor.currentEngagement?.id, mockEngagement.id)
+        XCTAssertEqual(interactor.endedEngagement?.id, mockEngagement.id)
+    }
 }
