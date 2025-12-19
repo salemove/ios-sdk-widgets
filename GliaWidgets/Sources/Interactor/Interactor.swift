@@ -272,6 +272,8 @@ extension Interactor: CoreSdkClient.Interactable {
             if let engagement {
                 // Save non-nil engagement ended to fetch a survey
                 self?.endedEngagement = engagement
+            } else {
+                self?.cleanup()
             }
         }
     }
