@@ -50,8 +50,8 @@ let package = Package(
         ),
         .binaryTarget(
             name: "PhoenixChannelsClient",
-            url: "https://github.com/salemove/ios-bundle/releases/download/2.1.5/PhoenixChannelsClient.xcframework.zip",
-            checksum: "5c6bff89a535d4ecf58ac26f221953b80772f2ae1680e01aa1fa1802743233e8"
+            url: "https://github.com/salemove/phoenix-channels-kmm-bundle/releases/download/1.1.2/PhoenixChannelsClient.xcframework.zip",
+            checksum: "5d8bb53fa9413e84869016e49faecb4da05a7694d5d0c981a5bc76c35982f749"
         ),
         .target(
             name: "GliaWidgets",
