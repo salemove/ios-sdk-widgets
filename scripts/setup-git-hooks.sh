@@ -35,6 +35,12 @@ cd "$PROJECT_ROOT"
 # Get current git hooks configuration
 CURRENT_HOOKS_PATH=$(git config --get core.hooksPath 2>/dev/null || echo "")
 
+# Skip if it runs in a Bitrise CI environment
+if [ "$BITRISE_IO" = "true" ]; then
+  log "⚠️  Detected Bitrise CI environment, skipping git hooks setup"
+  exit 0
+fi
+
 # Check if git hooks setup should be skipped
 if [ "$IOS_WIDGETS_SDK_SKIP_GIT_HOOKS" = "true" ]; then
   # Check if core.hooksPath is currently configured to .git-hooks
