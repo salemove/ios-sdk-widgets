@@ -1,4 +1,5 @@
 #!/bin/bash
 set -e
 
+./scripts/secret-scan.sh
 ./scripts/swiftlint.sh commit
