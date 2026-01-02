@@ -31,6 +31,9 @@ target 'SnapshotTests' do
 end
 
 post_install do |installer|
+  # Set up git hooks
+  system("bash #{Dir.pwd}/scripts/setup-git-hooks.sh") || true
+
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = DEPLOYMENT_TARGET
