@@ -27,12 +27,12 @@ extension SnapshotTestCase {
     }
 
     private static let testedDevices = [
-        // iPhone 13, iOS 15.5
+        // iPhone 16, iOS 18.2
         TestDeviceConfig(
-            systemVersion: "15.5",
+            systemVersion: "18.2",
             screenSize: CGSize(
-                width: 390,
-                height: 844
+                width: 393,
+                height: 852
             ),
             screenScale: 3
         )

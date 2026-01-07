@@ -76,7 +76,7 @@ workflows:
     - xcode-test@6:
         inputs:
         - scheme: $TEST_SCHEME
-        - destination: platform=iOS Simulator,name=iPhone 13,OS=15.5
+        - destination: platform=iOS Simulator,name=iPhone 16,OS=18.2
     - git-tag@1:
         inputs:
         - tag: $NEW_VERSION
@@ -198,16 +198,16 @@ workflows:
     - xcode-test@6:
         inputs:
         - scheme: $TEST_SCHEME
-        - destination: platform=iOS Simulator,name=iPhone 13,OS=15.5
-    - xcode-test@6:
+        - destination: platform=iOS Simulator,name=iPhone 16,OS=18.2
+    - xcode-test:
         inputs:
         - scheme: $SNAPSHOTS_SCHEME
-        - destination: platform=iOS Simulator,name=iPhone 13,OS=15.5
-    - xcode-test@6:
+        - destination: platform=iOS Simulator,name=iPhone 16,OS=18.2
+    - xcode-test:
         inputs:
         - scheme: $TESTING_APP_TESTS_SCHEME
-        - destination: platform=iOS Simulator,name=iPhone 13,OS=15.5
-    - xcode-archive@5:
+        - destination: platform=iOS Simulator,name=iPhone 16,OS=18.2
+    - xcode-archive@4:
         inputs:
         - scheme: $APP_SCHEME
         - team_id: $TEAM_ID
