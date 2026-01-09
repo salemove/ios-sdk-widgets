@@ -41,7 +41,7 @@ extension CallVisualizer.VideoCallViewModel {
     private func logSnackBarEvent(_ event: OtelLogEvents) {
         let attributesBuilder: OtelAttributesBuilder = {
             $0[.isAutoClosable] = .bool(false)
-            $0[.snackBarType] = .string(OtelSnackBarTypes.connection.rawValue)
+            $0[.type] = .string(OtelSnackBarTypes.connection.rawValue)
         }
         environment.openTelemetry.logger.i(
             event,

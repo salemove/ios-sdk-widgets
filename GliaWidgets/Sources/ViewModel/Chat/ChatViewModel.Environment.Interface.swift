@@ -40,6 +40,7 @@ extension EngagementViewModel {
         var viewFactory: ViewFactory
         @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
         @Dependency(\.widgets.networkMonitor) var networkConnectionMonitor: CoreSdkClient.NetworkConnectionMonitor
+        @Dependency(\.widgets.callQualityMonitor) var callQualityMonitor: CoreSdkClient.CallQualityMonitor
     }
 }
 

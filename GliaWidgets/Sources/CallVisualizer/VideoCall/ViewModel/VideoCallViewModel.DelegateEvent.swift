@@ -5,5 +5,6 @@ extension CallVisualizer.VideoCallViewModel {
         case propsUpdated(Props)
         case minimized
         case showSnackBarView(dismissTiming: SnackBar.DismissTiming, style: Theme.SnackBarStyle)
+        case setPoorCallQualityIndicatorHidden(Bool)
     }
 }
