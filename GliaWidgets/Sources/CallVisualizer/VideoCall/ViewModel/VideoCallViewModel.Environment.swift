@@ -18,6 +18,7 @@ extension CallVisualizer.VideoCallViewModel {
         var theme: Theme
         @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
         @Dependency(\.widgets.networkMonitor) var networkConnectionMonitor: CoreSdkClient.NetworkConnectionMonitor
+        @Dependency(\.widgets.callQualityMonitor) var callQualityMonitor: CoreSdkClient.CallQualityMonitor
     }
 }
 
