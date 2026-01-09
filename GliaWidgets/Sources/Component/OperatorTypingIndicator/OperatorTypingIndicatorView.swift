@@ -127,7 +127,12 @@ extension OperatorTypingIndicatorView {
                 startAnimation()
                 if !didAddObservers {
                     didAddObservers = true
-                    NotificationCenter.default.addObserver(self, selector: #selector(restartAnimation), name: UIApplication.didBecomeActiveNotification, object: nil)
+                    NotificationCenter.default.addObserver(
+                        self,
+                        selector: #selector(restartAnimation),
+                        name: UIApplication.didBecomeActiveNotification,
+                        object: nil
+                    )
                 }
             }
         }

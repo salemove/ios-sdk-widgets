@@ -68,6 +68,8 @@ extension CallVisualizer {
                         dismissTiming: dismissTiming,
                         style: style
                     )
+                case let .setPoorCallQualityIndicatorHidden(isHidden):
+                    viewController.setPoorCallQualityIndicatorHidden(isHidden)
                 }
             }
             return viewController
@@ -90,6 +92,8 @@ extension CallVisualizer {
                         dismissTiming: dismissTiming,
                         style: style
                     )
+                case let .setPoorCallQualityIndicatorHidden(isHidden):
+                    viewController.setPoorCallQualityIndicatorHidden(isHidden)
                 }
             }
             return viewController

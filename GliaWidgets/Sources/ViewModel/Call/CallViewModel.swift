@@ -87,6 +87,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
         super.start()
 
         subscribeOnNetworkReachabilityChanges()
+        subscribeOnCallQualityChanges()
 
         environment.proximityManager.start()
         update(for: call.kind.value)
@@ -558,6 +559,7 @@ extension CallViewModel {
         case setLocalVideo(CoreSdkClient.StreamView?)
         case setVisitorOnHold(isOnHold: Bool)
         case setCameraFlip(VideoStreamView.FlipCameraAccLabelWithTap?)
+        case setPoorCallQualityIndicatorHidden(Bool)
     }
 
     enum DelegateEvent {

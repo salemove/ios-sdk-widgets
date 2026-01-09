@@ -178,6 +178,8 @@ private extension CallViewController {
                 view.setConnectState(.transferring, animated: true)
             case let .setCameraFlip(flipCameraAccessibilityLabelWithTap):
                 view.flipCameraAccessibilityLabelWithTap = flipCameraAccessibilityLabelWithTap
+            case let .setPoorCallQualityIndicatorHidden(isHidden):
+                setPoorCallQualityIndicatorHidden(isHidden)
             }
         }
     }
@@ -196,6 +198,14 @@ private extension CallViewController {
 
 // MARK: - Network Quality
 extension CallViewController {
+    func setPoorCallQualityIndicatorHidden(_ isHidden: Bool) {
+        if isHidden {
+            hideMediaQualityIndicator()
+        } else {
+            showMediaQualityIndicator()
+        }
+    }
+
     func showMediaQualityIndicator() {
         mediaQualityPresenter?.show()
     }
