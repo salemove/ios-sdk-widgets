@@ -120,6 +120,7 @@ extension CallVisualizer {
             )
 
             subscribeOnNetworkReachabilityChanges()
+            subscribeOnCallQualityChanges()
         }
 
         deinit {

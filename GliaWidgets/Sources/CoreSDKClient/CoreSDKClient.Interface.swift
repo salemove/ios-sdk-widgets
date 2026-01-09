@@ -10,6 +10,7 @@ struct CoreSdkClient {
     var clearSession: () -> Void
     var localeProvider: LocaleProvider
     @Dependency(\.widgets.networkMonitor) var networkConnectionMonitor: NetworkConnectionMonitor
+    @Dependency(\.widgets.callQualityMonitor) var callQualityMonitor: CallQualityMonitor
 
     typealias GetVisitorInfo = (_ completion: @escaping (Result<VisitorInfo, Error>) -> Void) -> Void
 
@@ -378,6 +379,7 @@ extension CoreSdkClient {
     typealias NetworkStatus = GliaCoreSDK.NetworkConnectionMonitor.NetworkStatus
     typealias DisposableBag = GliaCoreSDK.DisposableBag
     typealias TaskDisposable = GliaCoreSDK.TaskDisposable
+    typealias MediaQuality = GliaCoreSDK.MediaQuality
 }
 
 extension CoreSdkClient.AnyCombineScheduler {
@@ -457,6 +459,38 @@ extension DependencyContainer.Widgets {
     var networkMonitor: NetworkConnectionMonitor {
         get { self[NetworkConnectionMonitor.Key.self] }
         set { self[NetworkConnectionMonitor.Key.self] = newValue }
+    }
+}
+
+extension CoreSdkClient {
+    struct CallQualityMonitor {
+        var mediaQualityStream: () -> AsyncStream<MediaQuality>
+    }
+}
+
+typealias CallQualityMonitor = CoreSdkClient.CallQualityMonitor
+
+extension CoreSdkClient.CallQualityMonitor {
+    static let live: Self = .init(
+        mediaQualityStream: {
+            GliaCore.sharedInstance.callQualityMonitor.mediaQualityStream()
+        }
+    )
+
+    struct Key: DependencyKey {
+        static var live: CallQualityMonitor = .live
+
+        static var test: CallQualityMonitor = .init(mediaQualityStream: {
+            AsyncStream { continuation in
+                continuation.finish()
+            }
+        })
+    }
+}
+extension DependencyContainer.Widgets {
+    var callQualityMonitor: CallQualityMonitor {
+        get { self[CallQualityMonitor.Key.self] }
+        set { self[CallQualityMonitor.Key.self] = newValue }
     }
 }
 

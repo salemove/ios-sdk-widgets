@@ -79,3 +79,22 @@ extension CallVisualizer.VideoCallView: MediaQualityIndicatorHost {
     var mediaQualityIndicatorContainerView: UIView { self }
     var mediaQualityIndicatorTopAnchor: NSLayoutYAxisAnchor { header.bottomAnchor }
 }
+
+// MARK: - Network Quality
+extension CallVisualizer.VideoCallViewController {
+    func setPoorCallQualityIndicatorHidden(_ isHidden: Bool) {
+        if isHidden {
+            hideMediaQualityIndicator()
+        } else {
+            showMediaQualityIndicator()
+        }
+    }
+
+    func showMediaQualityIndicator() {
+        mediaQualityPresenter?.show()
+    }
+
+    func hideMediaQualityIndicator() {
+        mediaQualityPresenter?.hide()
+    }
+}
