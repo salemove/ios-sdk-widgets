@@ -10,14 +10,15 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
         coordinator = .init(environment: .mock)
     }
 
-    func test_showVisitorCodeViewController() throws {
+    @MainActor
+    func test_showVisitorCodeViewController() async throws {
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.first as? UIWindowScene)
         let window = scene.windows.first
         let oldRootViewController = window?.rootViewController
         window?.rootViewController = viewController
         defer { window?.rootViewController = oldRootViewController }
 
-        coordinator.showVisitorCodeViewController(by: .alert(viewController))
+        await coordinator.showVisitorCodeViewController(by: .alert(viewController))
 
         XCTAssertTrue(viewController.presentedViewController is CallVisualizer.VisitorCodeViewController)
     }
@@ -30,7 +31,7 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
         XCTAssertTrue(calledEvents.contains(.maximized))
     }
 
-    func test_handleEngagementRequestAccepted() throws {
+    func test_handleEngagementRequestAccepted() async throws {
         let site = CoreSdkClient.Site(
             id: .mock, defaultOperatorPicture: nil,
             alwaysUseDefaultOperatorPicture: false,
@@ -44,9 +45,7 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
             readOnlySettings: nil
         )
 
-        coordinator.environment.fetchSiteConfigurations = { callback in
-            callback(.success(site))
-        }
+        coordinator.environment.fetchSiteConfigurations = { site }
 
         var answers: [Bool] = []
         let answer = Command<Bool> { boolean in
@@ -54,11 +53,12 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
         }
 
         let request = CoreSdkClient.Request(id: "123", outcome: .accepted, platform: nil)
-        coordinator.handleEngagementRequest(request: request, answer: answer)
+        await coordinator.handleEngagementRequest(request: request, answer: answer)
         XCTAssertEqual(answers, [true])
     }
 
-    func test_handleEngagementRequestAcceptedMobileConfirmDialogEnabled() throws {
+    @MainActor
+    func test_handleEngagementRequestAcceptedMobileConfirmDialogEnabled() async throws {
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.first as? UIWindowScene)
         let window = scene.windows.first
         let oldRootViewController = window?.rootViewController
@@ -81,18 +81,17 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
             readOnlySettings: nil
         )
 
-        coordinator.environment.fetchSiteConfigurations = { callback in
-            callback(.success(site))
-        }
+        coordinator.environment.fetchSiteConfigurations = { site }
 
         let answer = Command<Bool> { _ in }
         let request = CoreSdkClient.Request(id: "123", outcome: .accepted, platform: nil)
-        coordinator.handleEngagementRequest(request: request, answer: answer)
+        await coordinator.handleEngagementRequest(request: request, answer: answer)
 
         XCTAssertTrue(coordinator.environment.presenter.getInstance()?.presentedViewController is AlertViewController)
     }
 
-    func test_handleEngagementRequestTimeOutDismissedConfirmationDialog() throws {
+    @MainActor
+    func test_handleEngagementRequestTimeOutDismissedConfirmationDialog() async throws {
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.first as? UIWindowScene)
         let window = scene.windows.first
         let oldRootViewController = window?.rootViewController
@@ -115,18 +114,16 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
             readOnlySettings: nil
         )
 
-        coordinator.environment.fetchSiteConfigurations = { callback in
-            callback(.success(site))
-        }
+        coordinator.environment.fetchSiteConfigurations = { site }
 
         let answer = Command<Bool> { _ in }
         let request = CoreSdkClient.Request(id: "123", outcome: .timedOut, platform: nil)
-        coordinator.handleEngagementRequest(request: request, answer: answer)
+        await coordinator.handleEngagementRequest(request: request, answer: answer)
 
         XCTAssertFalse(coordinator.environment.presenter.getInstance()?.presentedViewController is AlertViewController)
     }
 
-    func test_showSnackBarIfNeeded() throws {
+    func test_showSnackBarIfNeeded() async throws {
         let site = CoreSdkClient.Site(
             id: .mock, defaultOperatorPicture: nil,
             alwaysUseDefaultOperatorPicture: false,
@@ -140,16 +137,14 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
             readOnlySettings: nil
         )
 
-        coordinator.environment.fetchSiteConfigurations = { callback in
-            callback(.success(site))
-        }
+        coordinator.environment.fetchSiteConfigurations = { site }
 
         var presentCallCounter = 0
         coordinator.environment.snackBar.present = { _, _, _, _, _, _, _ in
             presentCallCounter += 1
         }
 
-        coordinator.showSnackBarIfNeeded()
+        await coordinator.showSnackBarIfNeeded()
 
         XCTAssertEqual(presentCallCounter, 1)
     }

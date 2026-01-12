@@ -1,6 +1,5 @@
 import Foundation
 import Combine
-@_spi(GliaWidgets) import GliaCoreSDK
 
 extension SecureConversations {
     final class PendingInteraction: ObservableObject {

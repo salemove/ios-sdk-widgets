@@ -43,7 +43,9 @@ final class CallViewController: EngagementViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.event(.viewDidLoad)
+        Task { [weak self] in
+            await self?.viewModel.asyncEvent(.viewDidLoad)
+        }
 
         environment.notificationCenter.addObserver(
             self,

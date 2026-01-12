@@ -3,27 +3,31 @@ import SnapshotTesting
 import XCTest
 
 final class ChatViewControllerDynamicTypeFontTests: SnapshotTestCase {
-    func test_messagesFromHistory_extra3Large() {
-        let viewController = ChatViewController.mockHistoryMessagesScreen()
+    @MainActor
+    func test_messagesFromHistory_extra3Large() async {
+        let viewController = await ChatViewController.mockHistoryMessagesScreen()
         viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
-    func test_visitorUploadedFileStates_extra3Large() throws {
-        let viewController = try ChatViewController.mockVisitorFileUploadStates()
+    @MainActor
+    func test_visitorUploadedFileStates_extra3Large() async throws {
+        let viewController = try await ChatViewController.mockVisitorFileUploadStates()
         viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
-    func test_choiceCard_extra3Large() throws {
-        let viewController = try ChatViewController.mockChoiceCard()
+    @MainActor
+    func test_choiceCard_extra3Large() async throws {
+        let viewController = try await ChatViewController.mockChoiceCard()
         viewController.assertSnapshot(as: .extra3LargeFont, in: .portrait)
         viewController.assertSnapshot(as: .extra3LargeFont, in: .landscape)
     }
 
-    func test_visitorFileDownloadStates_extra3Large() throws {
+    @MainActor
+    func test_visitorFileDownloadStates_extra3Large() async throws {
         var chatMessages: [ChatMessage] = []
-        let viewController = try ChatViewController.mockVisitorFileDownloadStates { messages in
+        let viewController = try await ChatViewController.mockVisitorFileDownloadStates { messages in
             chatMessages = messages
         }
         viewController.view.frame = UIScreen.main.bounds
