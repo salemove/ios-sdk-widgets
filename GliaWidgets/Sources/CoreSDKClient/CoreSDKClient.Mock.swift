@@ -467,8 +467,7 @@ extension CoreSdkClient.Site {
         visitorAppDefaultLocale: String = "en-US",
         mobileObservationEnabled: Bool = true,
         mobileConfirmDialogEnabled: Bool = true,
-        mobileObservationIndicationEnabled: Bool = true,
-        allowedFileContentTypes: [String] = []
+        mobileObservationIndicationEnabled: Bool = true
     ) throws -> Self {
         struct Mock: Codable {
             let id: UUID
@@ -479,7 +478,6 @@ extension CoreSdkClient.Site {
             let mobileObservationEnabled: Bool
             let mobileConfirmDialogEnabled: Bool
             let mobileObservationIndicationEnabled: Bool
-            let allowedFileContentTypes: [String]
         }
         return try JSONDecoder()
             .decode(
@@ -494,8 +492,7 @@ extension CoreSdkClient.Site {
                             visitorAppDefaultLocale: visitorAppDefaultLocale,
                             mobileObservationEnabled: mobileObservationEnabled,
                             mobileConfirmDialogEnabled: mobileConfirmDialogEnabled,
-                            mobileObservationIndicationEnabled: mobileObservationIndicationEnabled,
-                            allowedFileContentTypes: allowedFileContentTypes
+                            mobileObservationIndicationEnabled: mobileObservationIndicationEnabled
                         )
                     )
             )
