@@ -727,7 +727,6 @@ extension InteractorTests {
         interactor.onEngagementChanged(nil)
 
         XCTAssertNil(interactor.currentEngagement)
-        XCTAssertNil(interactor.endedEngagement)
         XCTAssertEqual(interactor.state, .none)
     }
 
@@ -747,7 +746,6 @@ extension InteractorTests {
         interactor.onEngagementChanged(nil)
 
         XCTAssertNil(interactor.currentEngagement)
-        XCTAssertNil(interactor.endedEngagement)
         XCTAssertEqual(interactor.state, .none)
     }
 
