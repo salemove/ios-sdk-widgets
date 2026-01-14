@@ -257,9 +257,15 @@ extension Interactor {
         * Cached `endedEngagement` that is used for presenting survey.
         * Interactor `state`.
     */
-    func cleanup() {
+    func cleanup(_ policy: CleanupPolicy = .clearEndedEngagement) {
         state = .none
-        endedEngagement = nil
+
+        switch policy {
+        case .keepEndedEngagement:
+            break
+        case .clearEndedEngagement:
+            endedEngagement = nil
+        }
     }
 }
 
@@ -268,13 +274,19 @@ extension Interactor {
 extension Interactor: CoreSdkClient.Interactable {
     var onEngagementChanged: CoreSdkClient.EngagementChangedBlock {
         return { [weak self] engagement in
-            self?.currentEngagement = engagement
+            guard let self else { return }
+
+            currentEngagement = engagement
+
             if let engagement {
-                // Save non-nil engagement ended to fetch a survey
-                self?.endedEngagement = engagement
-            } else {
-                self?.cleanup()
+                // Save the last non-nil engagement for survey
+                endedEngagement = engagement
+                return
             }
+
+            // engagement became nil:
+            // if we have an ended engagement, keep it for survey; otherwise clear it
+            cleanup(endedEngagement != nil ? .keepEndedEngagement : .clearEndedEngagement)
         }
     }
 
@@ -457,3 +469,13 @@ extension Interactor {
     }
 }
 #endif
+
+
+extension Interactor {
+    enum CleanupPolicy {
+        /// Reset state but keep `endedEngagement` (for survey flow)
+        case keepEndedEngagement
+        /// Reset state and clear `endedEngagement`
+        case clearEndedEngagement
+    }
+}
