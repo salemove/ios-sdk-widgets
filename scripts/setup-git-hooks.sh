@@ -35,9 +35,14 @@ cd "$PROJECT_ROOT"
 # Get current git hooks configuration
 CURRENT_HOOKS_PATH=$(git config --get core.hooksPath 2>/dev/null || echo "")
 
-# Skip if it runs in a Bitrise CI environment
+# Skip if it runs in a CI environment
 if [ "$BITRISE_IO" = "true" ]; then
   log "⚠️  Detected Bitrise CI environment, skipping git hooks setup"
+  exit 0
+fi
+
+if [ "$GITHUB_ACTIONS" = "true" ]; then
+  log "⚠️  Detected GitHub Actions environment, skipping git hooks setup"
   exit 0
 fi
 
