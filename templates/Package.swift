@@ -45,13 +45,13 @@ let package = Package(
         ),
         .binaryTarget(
             name: "GliaOpenTelemetry",
-            url: "https://github.com/salemove/ios-telemetry-bundle/releases/download/1.0.7/GliaOpenTelemetry.xcframework.zip",
-            checksum: "3fd7e77fdd49448c13c57752a7fab0d7ee9ae1d9f4d972bfed815f0ffc963278"
+            url: "https://github.com/salemove/ios-telemetry-bundle/releases/download/1.0.8/GliaOpenTelemetry.xcframework.zip",
+            checksum: "9dd9e68d8312c601a69e73f46adf0132226168baa0e3f21415af47835c4d139d"
         ),
         .binaryTarget(
             name: "PhoenixChannelsClient",
-            url: "https://github.com/salemove/phoenix-channels-kmm-bundle/releases/download/1.1.2/PhoenixChannelsClient.xcframework.zip",
-            checksum: "5d8bb53fa9413e84869016e49faecb4da05a7694d5d0c981a5bc76c35982f749"
+            url: "https://github.com/salemove/phoenix-channels-kmm-bundle/releases/download/1.1.3/PhoenixChannelsClient.xcframework.zip",
+            checksum: "ed1396ab1c96d6371b95f45b9c39e33fdcc44dae7180cc58e8cbadcaafac5c03"
         ),
         .target(
             name: "GliaWidgets",
