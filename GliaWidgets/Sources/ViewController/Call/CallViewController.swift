@@ -135,10 +135,8 @@ private extension CallViewController {
                 view.setConnectState(.queue, animated: false)
             case .connecting(name: let name, imageUrl: let imageUrl):
                 view.setConnectState(.connecting(name: name, imageUrl: imageUrl), animated: true)
-                view.connectView.operatorView.setSize(.normal, animated: true)
             case .connected(name: let name, imageUrl: let imageUrl):
                 view.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
-                view.connectView.operatorView.setSize(.large, animated: true)
                 view.header.showEndButton()
             case .setTopTextHidden(let hidden):
                 view.topLabel.isHidden = hidden
@@ -150,9 +148,6 @@ private extension CallViewController {
                 view.switchTo(.upgrading)
             case .setTitle(let title):
                 view.header.props = Self.buildNewHeaderProps(newTitle: title, props: view.header.props)
-            case .setOperatorName(let name):
-                view.operatorNameLabel.text = name
-                view.operatorNameLabel.accessibilityLabel = name
             case .setCallDurationText(let text):
                 view.callDuration = text
             case .showButtons(let buttons):
@@ -173,7 +168,7 @@ private extension CallViewController {
             case .setLocalVideo(let streamView):
                 view.localVideoView.streamView = streamView
             case .setVisitorOnHold(let isOnHold):
-                view.isVisitrOnHold = isOnHold
+                view.setVisitorOnHold(isOnHold)
             case .transferring:
                 view.setConnectState(.transferring, animated: true)
             case let .setCameraFlip(flipCameraAccessibilityLabelWithTap):
