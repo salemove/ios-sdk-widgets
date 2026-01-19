@@ -1,63 +1,39 @@
-import UIKit
+import SwiftUI
 
-final class OnHoldOverlayView: UIView {
-    private let style: OnHoldOverlayStyle
-    private let blurEffectView: OnHoldOverlayVisualEffectView
-    private let imageView = UIImageView()
+struct OnHoldOverlay: View {
+    let style: OnHoldOverlayStyle
+    private let blurOpacity: CGFloat = 0.5
+    private let extraBlurRadius: CGFloat = 0.5
 
-    private var gradientLayer: CAGradientLayer?
-
-    init(
-        environment: Environment,
-        style: OnHoldOverlayStyle
-    ) {
-        self.style = style
-        self.blurEffectView = .init(environment: .create(with: environment))
-
-        super.init(frame: .zero)
-
-        layout()
-        setup()
-    }
-
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        gradientLayer?.frame = bounds
-    }
-
-    private func setup() {
-        imageView.image = style.image.withRenderingMode(.alwaysTemplate)
-        switch style.imageColor {
-        case .fill(let color):
-            imageView.tintColor = color
-        case .gradient(let colors):
-            imageView.makeGradientBackground(colors: colors)
+    var body: some View {
+        ZStack {
+            Background(style.backgroundColor)
+            blurView()
+            tintedIcon()
         }
-
-        switch style.backgroundColor {
-        case .fill(let color):
-            backgroundColor = color
-        case .gradient(let colors):
-            gradientLayer = makeGradientBackground(colors: colors)
-        }
+        .maxSize()
+        .clipShape(.circle)
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
     }
 
-    private func layout() {
-        var constraints = [NSLayoutConstraint](); defer { constraints.activate() }
-        addSubview(blurEffectView)
-        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
-        constraints += blurEffectView.layoutInSuperview()
+    @ViewBuilder
+    func blurView() -> some View {
+        Rectangle()
+            .fill(.regularMaterial)
+            .opacity(blurOpacity)
+            .blur(radius: extraBlurRadius)
+            .allowsHitTesting(false)
+    }
 
-        addSubview(imageView)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        constraints += imageView.layoutInSuperviewCenter()
-        constraints += imageView.match(.width, value: style.imageSize.width)
-        constraints += imageView.match(.height, value: style.imageSize.height)
+    @ViewBuilder
+    func tintedIcon() -> some View {
+        SwiftUI.Image(uiImage: style.image)
+            .renderingMode(.template)
+            .resizable()
+            .fit()
+            .applyColorTypeForeground(style.imageColor)
+            .width(style.imageSize.width)
+            .height(style.imageSize.height)
     }
 }

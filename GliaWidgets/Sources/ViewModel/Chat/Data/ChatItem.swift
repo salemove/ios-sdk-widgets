@@ -86,7 +86,7 @@ extension ChatItem {
         // in case when metadata can't be handled
         case customCard(ChatMessage, showsImage: Bool, imageUrl: String?, isActive: Bool)
         case callUpgrade(ObservableValue<CallKind>, duration: ObservableValue<Int>)
-        case operatorConnected(name: String?, imageUrl: String?)
+        case operatorConnected
         case transferring
         case unreadMessageDivider
         case systemMessage(ChatMessage)

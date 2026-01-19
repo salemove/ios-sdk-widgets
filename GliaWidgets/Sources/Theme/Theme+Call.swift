@@ -61,9 +61,9 @@ extension Theme {
         )
         let queue = ConnectStatusStyle(
             firstText: "",
-            firstTextFont: font.header1,
+            firstTextFont: font.header2,
             firstTextFontColor: color.baseLight,
-            firstTextStyle: .title1,
+            firstTextStyle: .title2,
             secondText: Localization.Engagement.ConnectionScreen.message,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
@@ -80,9 +80,9 @@ extension Theme {
             firstTextFontColor: color.baseLight,
             firstTextStyle: .title2,
             secondText: "",
-            secondTextFont: font.header2,
+            secondTextFont: font.bodyText,
             secondTextFontColor: color.baseLight,
-            secondTextStyle: .title2,
+            secondTextStyle: .body,
             accessibility: .init(
                 firstTextHint: Localization.Call.Connect.FirstText.Accessibility.hint,
                 secondTextHint: nil,
@@ -91,9 +91,9 @@ extension Theme {
         )
         let connected = ConnectStatusStyle(
             firstText: Localization.Templates.operatorName,
-            firstTextFont: font.header1,
+            firstTextFont: font.header2,
             firstTextFontColor: color.baseLight,
-            firstTextStyle: .title1,
+            firstTextStyle: .title2,
             secondText: Localization.Templates.callDuration,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
@@ -106,9 +106,9 @@ extension Theme {
         )
         let onHold = ConnectStatusStyle(
             firstText: Localization.Templates.operatorName,
-            firstTextFont: font.header1,
+            firstTextFont: font.header2,
             firstTextFontColor: color.baseLight,
-            firstTextStyle: .title1,
+            firstTextStyle: .title2,
             secondText: Localization.Templates.callDuration,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
@@ -121,9 +121,9 @@ extension Theme {
         )
         let transferring = ConnectStatusStyle(
             firstText: Localization.Engagement.Queue.transferring,
-            firstTextFont: font.header1,
+            firstTextFont: font.header2,
             firstTextFontColor: color.baseLight,
-            firstTextStyle: .title1,
+            firstTextStyle: .title2,
             secondText: nil,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,

@@ -7,43 +7,18 @@ extension CallVisualizer {
         var delegate: ((DelegateEvent) -> Void)?
         let environment: Environment
         private let style: CallStyle
-        private var state: State = .initial
-        private let durationCounter: CallDurationCounter
         private var imageDownloadID: String = ""
         let call: Call
-        private var connectTimer: FoundationBased.Timer?
-        private var connectCounter: Int = 0
         let disposeBag = CoreSdkClient.DisposableBag()
 
         @MainActor var hideNoConnectionSnackBar: (() -> Void)?
 
         // MARK: - Operator properties
+        private var state: EngagementState { didSet { reportChange() } }
 
         private var interfaceOrientation: UIInterfaceOrientation { didSet { reportChange() } }
 
-        private var connectOperatorSize: SizeObject { didSet { reportChange() } }
-
         private var operatorImageVisible: Bool { didSet { reportChange() } }
-
-        private var operatorName: String? { didSet { reportChange() } }
-
-        private var operatorImagePlaceholder: UIImage? { didSet { reportChange() } }
-
-        private var animateOperator: Bool { didSet { reportChange() } }
-
-        private var operatorImage: AnimatedImage? { didSet { reportChange() } }
-
-        private var connectViewHidden: Bool { didSet { reportChange() } }
-
-        private var connectVisibility: Transaition { didSet { reportChange() } }
-
-        // MARK: - Status Properties
-
-        private var statusStyle: ConnectStatusStyle { didSet { reportChange() } }
-
-        private var statusFirstText: AnimatedText { didSet { reportChange() } }
-
-        private var statusSecondText: AnimatedText { didSet { reportChange() } }
 
         // MARK: - ButtonBar Properties
 
@@ -77,27 +52,19 @@ extension CallVisualizer {
             self.style = style
             self.environment = environment
             self.call = call
-            self.durationCounter = CallDurationCounter(environment: .create(with: environment))
 
             let windows = environment.uiApplication.windows()
             interfaceOrientation = windows.first(where: {
                 $0.isKeyWindow
             })?.windowScene?.interfaceOrientation ?? .portrait
-
-            connectOperatorSize = .init(size: .normal, animated: true)
+            state = .initial
             operatorImageVisible = false
-            animateOperator = false
-            connectViewHidden = true
-            connectVisibility = .show(animation: true)
-            statusFirstText = ""
-            statusSecondText = ""
             videoButtonState = .active
             videoButtonEnabled = true
             minimizeButtonEnabled = true
             title = Localization.Engagement.Video.title
             callDuration = ""
             topLabelHidden = false
-            statusStyle = style.connect.connecting
 
             self.call.kind.addObserver(self) { [weak self] kind, _ in
                 self?.onKindChanged(for: kind)
@@ -138,10 +105,8 @@ extension CallVisualizer {
 extension CallVisualizer.VideoCallViewModel {
     typealias VideoCall = CallVisualizer.VideoCallView
     typealias Props = CallVisualizer.VideoCallViewController.Props
-    typealias SizeObject = CallVisualizer.VideoCallView.ConnectOperatorView.Props.SizeObject
 
     func makeProps() -> Props {
-        let connectViewProps = makeConnectViewProps()
         let buttonBarProps = makeButtonBarProps()
         let backButton = style.header.backButton.map {
             HeaderButton.Props(
@@ -156,15 +121,11 @@ extension CallVisualizer.VideoCallViewModel {
             videoCallViewProps: .init(
                 style: style,
                 callDuration: callDuration,
-                connectViewProps: connectViewProps,
+                connectState: state,
                 buttonBarProps: buttonBarProps,
-                headerTitle: title,
-                operatorName: operatorName,
                 remoteVideoStream: remoteVideoStream,
                 localVideoStream: localVideoStream,
                 topLabelHidden: topLabelHidden,
-                connectViewHidden: connectViewHidden,
-                topStackAlpha: interfaceOrientation.isLandscape ? 0.0 : 1.0,
                 headerProps: .init(
                     title: title,
                     effect: interfaceOrientation.isLandscape ? .blur : .none,
@@ -180,63 +141,6 @@ extension CallVisualizer.VideoCallViewModel {
                 self?.environment.proximityManager.start()
             }
         )
-    }
-
-    private func makeOperatorImageViewProps() -> VideoCall.OperatorImageView.Props {
-        return .init(
-            image: operatorImage?.image,
-            animated: operatorImage?.animated ?? false
-        )
-    }
-
-    private func makeUserImageProps() -> VideoCall.UserImageView.Props {
-        let operatorImageProps = makeOperatorImageViewProps()
-        return .init(
-            style: style.connect.connectOperator.operatorImage,
-            operatorImageVisible: operatorImageVisible,
-            placeHolderImage: operatorImagePlaceholder,
-            operatorImageViewProps: operatorImageProps
-        )
-    }
-
-    private func makeConnetOperatorViewProps() -> VideoCall.ConnectOperatorView.Props {
-        let userImageProps = makeUserImageProps()
-        return .init(
-            style: style.connect.connectOperator,
-            size: .init(
-                size: connectOperatorSize.size,
-                animated: connectOperatorSize.animated
-            ),
-            operatorAnimate: animateOperator,
-            userImageViewProps: userImageProps
-        )
-    }
-
-    private func makeConnectStatusViewProps() -> VideoCall.ConnectStatusView.Props {
-        return .init(
-            style: statusStyle,
-            firstLabelText: .init(
-                text: statusFirstText.text,
-                animated: statusFirstText.animated
-            ),
-            secondLabelText: .init(
-                text: statusSecondText.text,
-                animated: statusSecondText.animated
-            )
-        )
-    }
-
-    private func makeConnectViewProps() -> VideoCall.ConnectView.Props {
-        let connectOperatorViewProps = makeConnetOperatorViewProps()
-        let connectStatusViewProps = makeConnectStatusViewProps()
-        let connectViewProps: VideoCall.ConnectView.Props = .init(
-            operatorViewProps: connectOperatorViewProps,
-            statusViewProps: connectStatusViewProps,
-            state: state,
-            transition: connectVisibility
-        )
-
-        return connectViewProps
     }
 
     private func makeButtonBarProps() -> VideoCall.CallButtonBar.Props {
@@ -259,46 +163,8 @@ extension CallVisualizer.VideoCallViewModel {
 // MARK: - ConnectView Handler
 
 extension CallVisualizer.VideoCallViewModel {
-    private func setConnectViewState(_ state: State, animated: Bool) {
+    private func setState(_ state: EngagementState, animated: Bool) {
         self.state = state
-        switch state {
-        case .initial:
-            break
-        case .queue:
-            break
-        case .connecting(let name, let imageUrl):
-            animateOperator = animated
-            operatorImagePlaceholder = style.connect.connectOperator.operatorImage.placeholderImage
-            setOperatorImage(from: imageUrl, animated: animated)
-            operatorImageVisible = true
-            let firstText = style.connect.connecting.firstText?.withOperatorName(name)
-            statusFirstText = .init(text: firstText, animated: animated)
-            statusSecondText = .init(text: nil, animated: animated)
-            statusStyle = style.connect.connecting
-            startConnectTimer()
-            connectVisibility = .show(animation: animated)
-        case .connected(let name, let imageUrl):
-            stopConnectTimer()
-            animateOperator = animated
-            operatorImagePlaceholder = style.connect.connectOperator.operatorImage.placeholderImage
-            setOperatorImage(from: imageUrl, animated: animated)
-            operatorImageVisible = false
-            if let name = name {
-                let firstText = style.connect.connected.firstText?.withOperatorName(name)
-                let secondText = style.connect.connected.secondText?
-                    .withOperatorName(name)
-                    .withCallDuration("00:00")
-                statusFirstText = .init(text: firstText, animated: animated)
-                statusSecondText = .init(text: secondText, animated: animated)
-            } else {
-                statusFirstText = .init(text: nil, animated: animated)
-                statusSecondText = .init(text: nil, animated: animated)
-            }
-            statusStyle = style.connect.connected
-            connectVisibility = .show(animation: animated)
-        case .transferring:
-            break
-        }
     }
 }
 
@@ -351,73 +217,8 @@ private extension CallVisualizer.VideoCallViewModel {
         }
     }
 
-    func setOperatorImage(
-        from url: String?,
-        animated: Bool,
-        imageReceived: ((UIImage?) -> Void)? = nil
-    ) {
-        guard
-            let urlString = url,
-            let url = URL(string: urlString)
-        else {
-            imageReceived?(nil)
-            operatorImage = .init(image: nil, animated: animated)
-            return
-        }
-
-        if let image = environment.imageViewCache.getImageForKey(urlString) {
-            imageReceived?(image)
-            operatorImage = .init(image: image, animated: animated)
-            return
-        }
-
-        let downloadID = environment.uuid().uuidString
-        self.imageDownloadID = downloadID
-        environment.gcd.globalQueue.async { [weak self] in
-            guard
-                let data = try? self?.environment.data.dataWithContentsOfFileUrl(url),
-                let image = UIImage(data: data)
-            else {
-                self?.environment.gcd.mainQueue.async {
-                    imageReceived?(nil)
-                    self?.operatorImage = .init(image: nil, animated: animated)
-                }
-                return
-            }
-
-            self?.environment.gcd.mainQueue.async {
-                self?.environment.imageViewCache.setImageForKey(image, urlString)
-
-                guard self?.imageDownloadID == downloadID else { return }
-                imageReceived?(image)
-                self?.operatorImage = .init(image: image, animated: animated)
-            }
-        }
-    }
-
-    func startConnectTimer() {
-        stopConnectTimer()
-        connectCounter = 0
-        connectTimer = environment.timerProviding.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            switch self.state {
-            case .connecting:
-                self.connectCounter += 1
-                self.statusSecondText = .init(text: "\(self.connectCounter)", animated: true)
-            default:
-                self.connectTimer?.invalidate()
-                self.connectTimer = nil
-            }
-        }
-    }
-
-    func stopConnectTimer() {
-        connectTimer?.invalidate()
-        connectTimer = nil
-    }
-
     func updateRemoteVideoVisible() {
         if let remoteStream = call.video.stream.value.remoteStream {
-            connectViewHidden = true
             remoteVideoStream = remoteStream.getStreamView()
             remoteStream.playVideo()
         } else {
@@ -427,7 +228,6 @@ private extension CallVisualizer.VideoCallViewModel {
 
     func updateLocalVideoVisible() {
         if let localStream = call.video.stream.value.localStream, !localStream.isPaused {
-            connectViewHidden = true
             localVideoStream = localStream.getStreamView()
             localStream.playVideo()
             CallViewModel.setFlipCameraButtonVisible(
@@ -474,16 +274,13 @@ private extension CallVisualizer.VideoCallViewModel {
 
     func showConnected() {
         let engagedOperator = environment.engagedOperator()
-        setConnectViewState(.connected(name: engagedOperator?.firstName, imageUrl: engagedOperator?.picture?.url), animated: true)
-        connectOperatorSize = .init(size: .large, animated: true)
+        setState(.connected(name: engagedOperator?.firstName, imageUrl: engagedOperator?.picture?.url), animated: true)
         topLabelHidden = true
-        operatorName = engagedOperator?.firstName
     }
 
     func showConnecting() {
         let engagedOperator = environment.engagedOperator()
-        setConnectViewState(.connecting(name: engagedOperator?.firstName, imageUrl: engagedOperator?.picture?.url), animated: true)
-        connectOperatorSize = .init(size: .normal, animated: true)
+        setState(.connecting(name: engagedOperator?.firstName, imageUrl: engagedOperator?.picture?.url), animated: true)
         topLabelHidden = true
         switch call.kind.value {
         case .audio:
@@ -532,17 +329,11 @@ private extension CallVisualizer.VideoCallViewModel {
         case .started:
             environment.log.prefixed(Self.self).info("Engagement started")
             showConnected()
-            durationCounter.start { [weak self] duration in
-                guard self?.call.state.value == .started else { return }
-                self?.call.duration.value = duration
-            }
         case .connecting:
             let engagedOperator = environment.engagedOperator()
-            setConnectViewState(.connecting(name: engagedOperator?.firstName, imageUrl: engagedOperator?.picture?.url), animated: true)
-            connectOperatorSize = .init(size: .normal, animated: true)
+            setState(.connecting(name: engagedOperator?.firstName, imageUrl: engagedOperator?.picture?.url), animated: true)
         case .ended:
             environment.log.prefixed(Self.self).info("Engagement ended")
-            durationCounter.stop()
         }
         updateButtons()
     }
@@ -555,14 +346,6 @@ private extension CallVisualizer.VideoCallViewModel {
 }
 
 extension CallVisualizer.VideoCallViewModel {
-    enum State: Equatable {
-        case initial
-        case queue
-        case connecting(name: String?, imageUrl: String?)
-        case connected(name: String?, imageUrl: String?)
-        case transferring
-    }
-
     struct AnimatedText: Equatable {
         let text: String?
         let animated: Bool

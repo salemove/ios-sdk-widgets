@@ -205,7 +205,7 @@ class ChatViewModel: EngagementViewModel {
             environment.log.prefixed(Self.self).info("Operator connected")
             let name = engagedOperator?.firstName
             let pictureUrl = engagedOperator?.picture?.url
-            let chatItem = ChatItem(kind: .operatorConnected(name: name, imageUrl: pictureUrl))
+            let chatItem = ChatItem(kind: .operatorConnected)
 
             setItems([], to: queueOperatorSection)
             appendItem(
