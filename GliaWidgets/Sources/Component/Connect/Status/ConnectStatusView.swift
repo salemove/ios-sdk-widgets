@@ -1,77 +1,57 @@
-import UIKit
+import SwiftUI
 
-final class ConnectStatusView: BaseView {
-    private lazy var stackView = UIStackView.make(.vertical)(
-        firstLabel,
-        secondLabel
-    )
-    private let firstLabel = UILabel()
-    private let secondLabel = UILabel()
+struct ConnectStatusView: View {
+    let firstText: String?
+    let secondText: String?
+    let connectStyle: ConnectStatusStyle
+    let secondLineStyle: SecondLineStyle
+    private let durationIdentifier: String = "call_duration_label"
 
-    override func setup() {
-        super.setup()
-        stackView.axis = .vertical
-        stackView.spacing = 8
-
-        firstLabel.textAlignment = .center
-        secondLabel.textAlignment = .center
-    }
-
-    override func defineLayout() {
-        super.defineLayout()
-        addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.layoutInSuperview().activate()
-    }
-
-    func setStyle(_ style: ConnectStatusStyle) {
-        firstLabel.font = style.firstTextFont
-        firstLabel.textColor = style.firstTextFontColor
-        firstLabel.numberOfLines = 0
-        firstLabel.lineBreakMode = .byWordWrapping
-
-        secondLabel.font = style.secondTextFont
-        secondLabel.textColor = style.secondTextFontColor
-        secondLabel.numberOfLines = 0
-        secondLabel.lineBreakMode = .byWordWrapping
-
-        firstLabel.accessibilityHint = style.accessibility.firstTextHint
-        secondLabel.accessibilityHint = style.accessibility.secondTextHint
-        secondLabel.accessibilityIdentifier = "call_duration_label"
-        setFontScalingEnabled(
-            style.accessibility.isFontScalingEnabled,
-            for: firstLabel
-        )
-        setFontScalingEnabled(
-            style.accessibility.isFontScalingEnabled,
-            for: secondLabel
-        )
-    }
-
-    func setFirstText(_ text: String?, animated: Bool) {
-        setText(text, to: firstLabel, animated: animated)
-    }
-
-    func setSecondText(_ text: String?, animated: Bool) {
-        setText(text, to: secondLabel, animated: animated)
-    }
-
-    private func setText(_ text: String?, to label: UILabel, animated: Bool) {
-        label.text = text
-
-        if animated {
-            label.transform = CGAffineTransform(scaleX: 0, y: 0)
-            UIView.animate(
-                withDuration: 0.5,
-                delay: 0.0,
-                usingSpringWithDamping: 0.8,
-                initialSpringVelocity: 0.7,
-                options: .curveEaseInOut,
-                animations: {
-                    label.transform = .identity
-                },
-                completion: nil
-            )
+    var body: some View {
+        VStack(spacing: 8) {
+            firstTextView()
+            secondLineView()
         }
+        .maxWidth()
+    }
+
+    @ViewBuilder
+    func firstTextView() -> some View {
+        if let firstText, !firstText.isEmpty {
+            Text(firstText)
+                .setFont(connectStyle.firstTextFont, textStyle: connectStyle.firstTextStyle)
+                .setColor(connectStyle.firstTextFontColor)
+                .multilineTextAlignment(.center)
+                .accessibilityHint(connectStyle.accessibility.firstTextHint)
+        }
+    }
+
+    @ViewBuilder
+    private func secondLineView() -> some View {
+        if let secondText, !secondText.isEmpty {
+            switch secondLineStyle {
+            case let .connect(style):
+                Text(secondText)
+                    .setFont(style.secondTextFont, textStyle: connectStyle.secondTextStyle)
+                    .setColor(style.secondTextFontColor)
+                    .multilineTextAlignment(.center)
+                    .accessibilityIdentifier(durationIdentifier)
+                    .accessibilityHint(style.accessibility.secondTextHint ?? "")
+            case let .duration(callStyle, hint):
+                Text(secondText)
+                    .setFont(callStyle.durationFont, textStyle: callStyle.durationTextStyle)
+                    .setColor(callStyle.durationColor)
+                    .multilineTextAlignment(.center)
+                    .accessibilityIdentifier(durationIdentifier)
+                    .accessibilityHint(hint ?? "")
+            }
+        }
+    }
+}
+
+extension ConnectStatusView {
+    enum SecondLineStyle: Equatable {
+        case connect(ConnectStatusStyle)
+        case duration(callStyle: CallStyle, hint: String? = nil)
     }
 }

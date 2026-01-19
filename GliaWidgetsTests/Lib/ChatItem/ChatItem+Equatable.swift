@@ -22,9 +22,8 @@ extension ChatItem.Kind: Equatable {
             return lhsKind.value == rhsKind.value
                 && lhsDuration.value == rhsDuration.value
 
-        case (.operatorConnected(let lhsName, let lhsImageUrl), .operatorConnected(let rhsName, let rhsImageUrl)):
-            return lhsName == rhsName
-                && lhsImageUrl == rhsImageUrl
+        case (.operatorConnected, .operatorConnected):
+            return true
 
         case (.transferring, .transferring):
             return true

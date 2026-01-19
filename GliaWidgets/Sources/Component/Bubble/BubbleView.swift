@@ -32,7 +32,8 @@ class BubbleView: BaseView {
     private let style: BubbleStyle
     private var userImageView: UserImageView?
     private var badgeView: BadgeView?
-    private let onHoldView: OnHoldOverlayView
+    private let onHoldView: OnHoldOverlayHost
+    private var onHoldConstraints: [NSLayoutConstraint] = []
     private let environment: Environment
 
     init(
@@ -41,10 +42,7 @@ class BubbleView: BaseView {
     ) {
         self.style = style
         self.environment = environment
-        self.onHoldView = OnHoldOverlayView(
-            environment: .create(with: environment),
-            style: style.onHoldOverlay
-        )
+        self.onHoldView = OnHoldOverlayHost(style: style.onHoldOverlay)
         self.onHoldView.clipsToBounds = true
 
         super.init()
@@ -65,12 +63,16 @@ class BubbleView: BaseView {
             cornerRadii: CGSize(width: cornerRadius, height: cornerRadius)
         ).cgPath
 
-        onHoldView.frame = userImageView?.bounds ?? .zero
-        onHoldView.layer.cornerRadius = cornerRadius
+        if onHoldView.superview != nil {
+            onHoldView.layer.cornerRadius = cornerRadius
+        }
     }
 
     func showOnHoldView() {
         onHoldView.removeFromSuperview()
+        NSLayoutConstraint.deactivate(onHoldConstraints)
+        onHoldConstraints.removeAll()
+
         environment.openTelemetry.logger.i(.bubbleStateChanged) {
             $0[.bubbleState] = .string(OtelBubbleStates.onHold.rawValue)
         }
@@ -81,12 +83,26 @@ class BubbleView: BaseView {
         } else {
             addSubview(onHoldView)
         }
+
+        onHoldView.translatesAutoresizingMaskIntoConstraints = false
+        onHoldConstraints = [
+            onHoldView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            onHoldView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            onHoldView.topAnchor.constraint(equalTo: topAnchor),
+            onHoldView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ]
+        NSLayoutConstraint.activate(onHoldConstraints)
+        onHoldView.layer.cornerRadius = bounds.height / 2
+        onHoldView.layer.masksToBounds = true
     }
 
     func hideOnHoldView() {
         environment.openTelemetry.logger.i(.bubbleStateChanged) {
             $0[.bubbleState] = .string(OtelBubbleStates.operatorConnected.rawValue)
         }
+
+        NSLayoutConstraint.deactivate(onHoldConstraints)
+        onHoldConstraints.removeAll()
         onHoldView.removeFromSuperview()
     }
 

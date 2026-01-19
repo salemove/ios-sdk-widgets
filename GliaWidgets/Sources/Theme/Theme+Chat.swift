@@ -63,9 +63,9 @@ extension Theme {
         )
         let queue = ConnectStatusStyle(
             firstText: "",
-            firstTextFont: font.header1,
+            firstTextFont: font.header2,
             firstTextFontColor: color.baseDark,
-            firstTextStyle: .title1,
+            firstTextStyle: .title2,
             secondText: Localization.Engagement.ConnectionScreen.message,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseNormal,
@@ -93,9 +93,9 @@ extension Theme {
         )
         let connected = ConnectStatusStyle(
             firstText: Localization.Templates.operatorName,
-            firstTextFont: font.header1,
+            firstTextFont: font.header2,
             firstTextFontColor: color.baseDark,
-            firstTextStyle: .title1,
+            firstTextStyle: .title2,
             secondText: Localization.Chat.OperatorJoined.systemMessage,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.primary,
@@ -108,9 +108,9 @@ extension Theme {
         )
         let onHold = ConnectStatusStyle(
             firstText: Localization.Templates.operatorName,
-            firstTextFont: font.header1,
+            firstTextFont: font.header2,
             firstTextFontColor: color.baseLight,
-            firstTextStyle: .title1,
+            firstTextStyle: .title2,
             secondText: Localization.Chat.OperatorJoined.systemMessage,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.baseLight,
@@ -123,9 +123,9 @@ extension Theme {
         )
         let transferring = ConnectStatusStyle(
             firstText: Localization.Engagement.Queue.transferring,
-            firstTextFont: font.header1,
+            firstTextFont: font.header2,
             firstTextFontColor: color.baseDark,
-            firstTextStyle: .title1,
+            firstTextStyle: .title2,
             secondText: nil,
             secondTextFont: font.subtitle,
             secondTextFontColor: color.primary,

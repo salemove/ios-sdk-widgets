@@ -124,8 +124,6 @@ class CallViewModel: EngagementViewModel, ViewModel {
             action?(.queue)
         case .engaged:
             showConnecting()
-            let operatorName = interactor.engagedOperator?.firstName ?? Localization.Engagement.defaultOperator
-            action?(.setOperatorName(operatorName))
             showSnackBarIfNeeded()
         case .ended:
             call.end()
@@ -544,7 +542,6 @@ extension CallViewModel {
         case connecting(name: String?, imageUrl: String?)
         case connected(name: String?, imageUrl: String?)
         case transferring
-        case setOperatorName(String?)
         case setTopTextHidden(Bool)
         case setBottomTextHidden(Bool)
         case switchToVideoMode
