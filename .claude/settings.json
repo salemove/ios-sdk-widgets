@@ -1,0 +1,37 @@
+{
+  "enabledPlugins": {
+    "integrations@glia-plugins": true,
+    "commit-messages@glia-plugins": true
+  },
+  "enabledMcpjsonServers": [
+    "ios-simulator",
+    "mobile-mcp",
+    "atlassian",
+    "github"
+  ],
+  "permissions": {
+    "allow": [
+      "Bash(acli jira workitem view:*)",
+      "Bash(acli jira workitem:*)",
+      "Bash(gh repo view:*)",
+      "Bash(gh api:*)",
+      "Bash(gh pr:*)",
+      "Bash(gh issue:*)",
+      "Bash(gh release:*)",
+      "mcp__atlassian__search",
+      "mcp__atlassian__getConfluencePage",
+      "mcp__atlassian__getPagesInConfluenceSpace",
+      "mcp__atlassian__getConfluenceSpaces",
+      "mcp__atlassian__searchConfluenceUsingCql",
+      "mcp__github__search_code",
+      "mcp__github__search_repositories",
+      "mcp__github__search_issues",
+      "mcp__github__search_pull_requests",
+      "mcp__github__list_pull_requests",
+      "mcp__github__list_issues",
+      "mcp__github__pull_request_read",
+      "mcp__github__issue_read",
+      "mcp__github__get_file_contents"
+    ]
+  }
+}
