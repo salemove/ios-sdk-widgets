@@ -56,9 +56,9 @@ extension SwiftUI.View {
             .foregroundColor(color.swiftUIColor())
     }
 
-    func setFont(_ font: UIFont) -> some View {
+    func setFont(_ font: UIFont, textStyle: UIFont.TextStyle = .body) -> some View {
         return self
-            .font(.convert(font))
+            .font(.convert(font, textStyle: textStyle))
     }
 
     @ViewBuilder

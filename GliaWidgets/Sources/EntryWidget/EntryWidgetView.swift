@@ -31,11 +31,11 @@ private extension EntryWidgetView {
             }
             VStack(spacing: 16) {
                 Text(model.style.errorTitle)
-                    .setFont(model.style.errorTitleFont)
+                    .setFont(model.style.errorTitleFont, textStyle: model.style.errorTitleStyle)
                     .setColor(model.style.errorTitleColor)
                     .accessibilityIdentifier("entryWidget_error_title")
                 Text(model.style.errorMessage)
-                    .setFont(model.style.errorMessageFont)
+                    .setFont(model.style.errorMessageFont, textStyle: model.style.errorMessageStyle)
                     .setColor(model.style.errorMessageColor)
                 errorButton()
             }
@@ -102,11 +102,11 @@ private extension EntryWidgetView {
             }
             VStack(spacing: 16) {
                 Text(model.style.offlineTitle)
-                    .setFont(model.style.errorTitleFont)
+                    .setFont(model.style.errorTitleFont, textStyle: model.style.errorTitleStyle)
                     .setColor(model.style.errorTitleColor)
                     .accessibilityIdentifier("entryWidget_offline_title")
                 Text(model.style.offlineMessage)
-                    .setFont(model.style.errorMessageFont)
+                    .setFont(model.style.errorMessageFont, textStyle: model.style.errorMessageStyle)
                     .setColor(model.style.errorMessageColor)
             }
             .maxHeight()
@@ -200,13 +200,13 @@ private extension EntryWidgetView {
                 .height(model.configuration.sizeConstraints.singleCellIconSize)
             VStack(alignment: .leading, spacing: 2) {
                 Text(model.style.mediaTypeItem.title(for: mediaType))
-                    .setFont(model.style.mediaTypeItem.titleFont)
+                    .setFont(model.style.mediaTypeItem.titleFont, textStyle: model.style.mediaTypeItem.titleTextStyle)
                     .redactedPlaceholder(
                         model.style.mediaTypeItem.loading.loadingTintColor,
                         font: model.style.mediaTypeItem.titleFont
                     )
                 Text(model.style.mediaTypeItem.message(for: mediaType))
-                    .setFont(model.style.mediaTypeItem.messageFont)
+                    .setFont(model.style.mediaTypeItem.messageFont, textStyle: model.style.mediaTypeItem.titleTextStyle)
                     .redactedPlaceholder(
                         model.style.mediaTypeItem.loading.loadingTintColor,
                         font: model.style.mediaTypeItem.messageFont
@@ -235,21 +235,21 @@ private extension EntryWidgetView {
     @ViewBuilder
     func headlineText(_ label: String) -> some View {
         Text(label)
-            .setFont(model.style.mediaTypeItem.titleFont)
+            .setFont(model.style.mediaTypeItem.titleFont, textStyle: model.style.mediaTypeItem.titleTextStyle)
             .setColor(model.style.mediaTypeItem.titleColor)
     }
 
     @ViewBuilder
     func subheadlineText(_ label: String) -> some View {
         Text(label)
-            .setFont(model.style.mediaTypeItem.messageFont)
+            .setFont(model.style.mediaTypeItem.messageFont, textStyle: model.style.mediaTypeItem.messageTextStyle)
             .setColor(model.style.mediaTypeItem.messageColor)
     }
 
     @ViewBuilder
     func errorButton() -> some View {
         Text(model.style.errorButton.title)
-            .setFont(model.style.errorButton.titleFont)
+            .setFont(model.style.errorButton.titleFont, textStyle: model.style.mediaTypeItem.titleTextStyle)
             .setColor(model.style.errorButton.titleColor)
             .padding(.vertical, 4)
             .padding(.horizontal, 8)

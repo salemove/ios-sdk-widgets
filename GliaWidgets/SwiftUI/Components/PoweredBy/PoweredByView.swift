@@ -19,7 +19,7 @@ struct PoweredByView: View {
             Text(Localization.General.powered)
                 .setColor(color.swiftUIColor())
                 .opacity(0.5)
-                .font(.convert(style.font))
+                .setFont(style.font)
                 .accessibilityLabel("Powered By Glia")
             Asset.gliaLogo.image.asSwiftUIImage()
                 .resizable()
