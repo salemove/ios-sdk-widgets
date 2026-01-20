@@ -38,7 +38,7 @@ private extension SecureConversations.ConfirmationViewSwiftUI {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: model.orientation.isPortrait ? 100.0 : 70.0)
-            .foregroundColor(SwiftUI.Color(model.style.confirmationImageTint))
+            .setColor(model.style.confirmationImageTint)
             .padding(.bottom, model.orientation.isPortrait ? 32 : 8)
             .migrationAccessibilityHidden(true)
     }
@@ -46,19 +46,19 @@ private extension SecureConversations.ConfirmationViewSwiftUI {
     @ViewBuilder
     func titleView() -> some View {
         Text(model.style.titleStyle.text)
-            .font(.convert(model.style.titleStyle.font))
+            .setFont(model.style.titleStyle.font)
             .multilineTextAlignment(.center)
-            .foregroundColor(SwiftUI.Color(model.style.titleStyle.color))
+            .setColor(model.style.titleStyle.color)
             .padding(.bottom, model.orientation.isPortrait ? 16 : 8)
     }
 
     @ViewBuilder
     func subtitleView() -> some View {
         Text(model.style.subtitleStyle.text)
-            .font(.convert(model.style.subtitleStyle.font))
+            .setFont(model.style.subtitleStyle.font)
             .multilineTextAlignment(.center)
             .lineLimit(nil)
-            .foregroundColor(SwiftUI.Color(model.style.subtitleStyle.color))
+            .setColor(model.style.subtitleStyle.color)
     }
 
     @ViewBuilder
@@ -67,9 +67,9 @@ private extension SecureConversations.ConfirmationViewSwiftUI {
             model.event(.chatTranscriptScreenRequested)
         } label: {
             Text(model.style.checkMessagesButtonStyle.title)
-                .font(.convert(model.style.checkMessagesButtonStyle.font))
+                .setFont(model.style.checkMessagesButtonStyle.font)
                 .multilineTextAlignment(.center)
-                .foregroundColor(SwiftUI.Color(model.style.checkMessagesButtonStyle.textColor))
+                .setColor(model.style.checkMessagesButtonStyle.textColor)
                 .padding(.vertical, 4)
                 .padding(.horizontal, 16)
                 .frame(

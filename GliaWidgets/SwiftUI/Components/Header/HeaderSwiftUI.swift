@@ -20,8 +20,8 @@ struct HeaderSwiftUI: View {
                 }
             }
             Text(model.title)
-                .font(.convert(model.style.titleFont))
-                .foregroundColor(SwiftUI.Color(model.style.titleColor))
+                .setFont(model.style.titleFont, textStyle: model.style.textStyle)
+                .setColor(model.style.titleColor)
                 .migrationAccessibilityIdentifier("header_view_title_label")
                 .migrationAccessibilityLabel(model.title)
                 .migrationAccessibilityAddTrait(.isHeader)
