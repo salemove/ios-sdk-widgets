@@ -171,7 +171,7 @@ class CallView: EngagementView {
         topLabel.font = style.topTextFont
         topLabel.textColor = style.topTextColor
         topLabel.numberOfLines = 0
-        topLabel.textAlignment = .center
+        topLabel.textAlignment = style.topTextAlignment
         setFontScalingEnabled(
             style.accessibility.isFontScalingEnabled,
             for: topLabel
@@ -181,7 +181,7 @@ class CallView: EngagementView {
         bottomLabel.font = style.bottomTextFont
         bottomLabel.textColor = style.bottomTextColor
         bottomLabel.numberOfLines = 0
-        bottomLabel.textAlignment = .center
+        bottomLabel.textAlignment = style.bottomTextAlignment
         setFontScalingEnabled(
             style.accessibility.isFontScalingEnabled,
             for: bottomLabel
