@@ -2,13 +2,11 @@
 extension Theme {
     static func mock(
         colorStyle: ThemeColorStyle = .default,
-        fontStyle: ThemeFontStyle = .default,
-        showsPoweredBy: Bool = true
+        fontStyle: ThemeFontStyle = .default
     ) -> Theme {
         .init(
             colorStyle: colorStyle,
-            fontStyle: fontStyle,
-            showsPoweredBy: showsPoweredBy
+            fontStyle: fontStyle
         )
     }
 }

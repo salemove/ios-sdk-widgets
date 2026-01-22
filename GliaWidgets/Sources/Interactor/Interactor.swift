@@ -470,7 +470,6 @@ extension Interactor {
 }
 #endif
 
-
 extension Interactor {
     enum CleanupPolicy {
         /// Reset state but keep `endedEngagement` (for survey flow)

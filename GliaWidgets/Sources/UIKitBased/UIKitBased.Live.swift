@@ -10,7 +10,12 @@ extension UIKitBased.UIApplication {
         canOpenURL: UIApplication.shared.canOpenURL,
         preferredContentSizeCategory: { UIApplication.shared.preferredContentSizeCategory },
         isIdleTimerDisabled: { UIApplication.shared.isIdleTimerDisabled = $0 },
-        windows: { UIApplication.shared.windows },
+        windows: {
+            UIApplication.shared.connectedScenes
+                .compactMap { $0 as? UIWindowScene }
+                .first(where: { $0.activationState == .foregroundActive })?
+                .windows ?? []
+        },
         connectionScenes: { UIApplication.shared.connectedScenes },
         applicationState: { UIApplication.shared.applicationState }
     )

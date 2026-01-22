@@ -1,7 +1,6 @@
 #if DEBUG
 @_spi(GliaWidgets) import GliaCoreSDK
 
-// swiftlint:disable line_length
 extension EngagementCoordinator.Environment {
     static func mock(
         secureConversations: CoreSdkClient.SecureConversations = .mock,
@@ -97,5 +96,4 @@ extension EngagementCoordinator.Environment {
         )
     }
 }
-// swiftlint:enable line_length
 #endif

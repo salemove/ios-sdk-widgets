@@ -131,17 +131,10 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
                 animated: animated
             )
         case .audioCall, .videoCall:
-            let kind: CallKind = engagementKind == .audioCall
-                ? .audio
-                : .video(direction: .twoWay)
+            let kind: CallKind = engagementKind == .audioCall ? .audio : .video(direction: .twoWay)
 
-            let mediaType: CoreSdkClient.MediaType = engagementKind == .audioCall
-                ? .audio
-                : .video
-            let call = Call(
-                kind,
-                environment: .create(with: environment)
-            )
+            let mediaType: CoreSdkClient.MediaType = engagementKind == .audioCall ? .audio : .video
+            let call = Call(kind, environment: .create(with: environment))
             call.kind.addObserver(self) { [weak self] _, _ in
                 self?.engagementLaunching = .direct(kind: EngagementKind(with: call.kind.value))
             }
@@ -502,7 +495,7 @@ extension EngagementCoordinator {
             )
         }
 
-        if let sceneProvider = sceneProvider {
+        if sceneProvider != nil {
             return GliaViewController(
                 bubbleView: bubbleView,
                 delegate: { [weak self] event in

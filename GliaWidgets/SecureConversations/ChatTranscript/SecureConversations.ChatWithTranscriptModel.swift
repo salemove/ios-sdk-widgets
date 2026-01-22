@@ -32,7 +32,8 @@ extension SecureConversations.ChatWithTranscriptModel {
         get {
             switch self {
             case let .chat(model):
-                return model.delegate.map { callback in { action in
+                return model.delegate.map { callback in
+                    { action in
                         switch action {
                         case let .chat(chatAction):
                             callback(chatAction)
@@ -42,7 +43,8 @@ extension SecureConversations.ChatWithTranscriptModel {
                     }
                 }
             case let .transcript(model):
-                return model.delegate.map { callback in { delegateEvent in
+                return model.delegate.map { callback in
+                    { delegateEvent in
                         switch delegateEvent {
                         case .chat:
                             break
@@ -57,12 +59,14 @@ extension SecureConversations.ChatWithTranscriptModel {
         set {
             switch self {
             case let .chat(model):
-                model.delegate = newValue.map { callback in { delegateEvent in
+                model.delegate = newValue.map { callback in
+                    { delegateEvent in
                         callback(.chat(delegateEvent))
                     }
                 }
             case let .transcript(model):
-                model.delegate = newValue.map { callback in { delegateEvent in
+                model.delegate = newValue.map { callback in
+                    { delegateEvent in
                         callback(.transcript(delegateEvent))
                     }
                 }
@@ -125,117 +129,117 @@ extension SecureConversations.ChatWithTranscriptModel {
     }
 
     static func replace(
-            _ outgoingMessage: OutgoingMessage,
-            uploads: [FileUpload],
-            with message: CoreSdkClient.Message,
-            in section: Section<ChatItem>,
-            deliveredStatusText: String,
-            downloader: FileDownloader,
-            action: ActionCallback?
-        ) {
-            guard let index = section.items
-                .enumerated()
-                .first(where: {
-                    guard case .outgoingMessage(let message, _) = $0.element.kind else { return false }
-                    return message.payload.messageId == outgoingMessage.payload.messageId
-                })?.offset
-            else { return }
+        _ outgoingMessage: OutgoingMessage,
+        uploads: [FileUpload],
+        with message: CoreSdkClient.Message,
+        in section: Section<ChatItem>,
+        deliveredStatusText: String,
+        downloader: FileDownloader,
+        action: ActionCallback?
+    ) {
+        guard let index = section.items
+            .enumerated()
+            .first(where: {
+                guard case .outgoingMessage(let message, _) = $0.element.kind else { return false }
+                return message.payload.messageId == outgoingMessage.payload.messageId
+            })?.offset
+        else { return }
 
-            var affectedRows = [Int]()
+        var affectedRows = [Int]()
 
-            // Remove previous "Delivered" statuses
-            section.items
-                .enumerated()
-                .forEach { index, element in
-                    if case .visitorMessage(let message, let status) = element.kind,
-                       status == deliveredStatusText {
-                        let chatItem = ChatItem(kind: .visitorMessage(message, status: nil))
-                        section.replaceItem(at: index, with: chatItem)
-                        affectedRows.append(index)
-                    }
+        // Remove previous "Delivered" statuses
+        section.items
+            .enumerated()
+            .forEach { index, element in
+                if case .visitorMessage(let message, let status) = element.kind,
+                   status == deliveredStatusText {
+                    let chatItem = ChatItem(kind: .visitorMessage(message, status: nil))
+                    section.replaceItem(at: index, with: chatItem)
+                    affectedRows.append(index)
                 }
+            }
 
-            let deliveredMessage = ChatMessage(with: message)
-            let kind = ChatItem.Kind.visitorMessage(
-                deliveredMessage,
-                status: deliveredStatusText
-            )
-            let item = ChatItem(kind: kind)
-            downloader.addDownloads(for: deliveredMessage.attachment?.files)
-            section.replaceItem(at: index, with: item)
-            affectedRows.append(index)
-            action?(.refreshRows(affectedRows, in: section.index, animated: false))
-        }
+        let deliveredMessage = ChatMessage(with: message)
+        let kind = ChatItem.Kind.visitorMessage(
+            deliveredMessage,
+            status: deliveredStatusText
+        )
+        let item = ChatItem(kind: kind)
+        downloader.addDownloads(for: deliveredMessage.attachment?.files)
+        section.replaceItem(at: index, with: item)
+        affectedRows.append(index)
+        action?(.refreshRows(affectedRows, in: section.index, animated: false))
+    }
 
     static func replace(
-            _ messageId: ChatMessage.MessageId,
-            with message: CoreSdkClient.Message,
-            in section: Section<ChatItem>,
-            deliveredStatusText: String,
-            downloader: FileDownloader,
-            action: ActionCallback?
-        ) {
-            guard let index = section.items
-                .enumerated()
-                .first(where: { _, element in
-                    Self.chatItemMatchesMessageId(
-                        chatItem: element,
-                        messageId: messageId
-                    )
-                })?.offset
-            else { return }
+        _ messageId: ChatMessage.MessageId,
+        with message: CoreSdkClient.Message,
+        in section: Section<ChatItem>,
+        deliveredStatusText: String,
+        downloader: FileDownloader,
+        action: ActionCallback?
+    ) {
+        guard let index = section.items
+            .enumerated()
+            .first(where: { _, element in
+                Self.chatItemMatchesMessageId(
+                    chatItem: element,
+                    messageId: messageId
+                )
+            })?.offset
+        else { return }
 
-            var affectedRows = [Int]()
+        var affectedRows = [Int]()
 
-            // Remove previous "Delivered" statuses
-            section.items
-                .enumerated()
-                .forEach { index, element in
-                    if case .visitorMessage(let message, let status) = element.kind,
-                       status == deliveredStatusText {
-                        let chatItem = ChatItem(kind: .visitorMessage(message, status: nil))
-                        section.replaceItem(at: index, with: chatItem)
-                        affectedRows.append(index)
-                    }
+        // Remove previous "Delivered" statuses
+        section.items
+            .enumerated()
+            .forEach { index, element in
+                if case .visitorMessage(let message, let status) = element.kind,
+                   status == deliveredStatusText {
+                    let chatItem = ChatItem(kind: .visitorMessage(message, status: nil))
+                    section.replaceItem(at: index, with: chatItem)
+                    affectedRows.append(index)
                 }
-
-            let deliveredMessage = ChatMessage(with: message)
-            let kind = ChatItem.Kind.visitorMessage(
-                deliveredMessage,
-                status: deliveredStatusText
-            )
-            let item = ChatItem(kind: kind)
-            downloader.addDownloads(for: deliveredMessage.attachment?.files)
-            section.replaceItem(at: index, with: item)
-            affectedRows.append(index)
-            action?(.refreshRows(affectedRows, in: section.index, animated: false))
-        }
-
-        static func chatItemMatchesMessageId(
-            chatItem: ChatItem,
-            messageId: ChatMessage.MessageId
-        ) -> Bool {
-            switch chatItem.kind {
-            case let .outgoingMessage(outgoingMessage, _):
-                return outgoingMessage.payload.messageId.rawValue.uppercased() == messageId.uppercased()
-            case let .visitorMessage(message, _):
-                return message.id.uppercased() == messageId.uppercased()
-            case .queueOperator,
-                    .operatorMessage,
-                    .choiceCard,
-                    .customCard,
-                    .callUpgrade,
-                    .operatorConnected,
-                    .transferring,
-                    .unreadMessageDivider,
-                    .systemMessage,
-                    .gvaPersistentButton,
-                    .gvaResponseText,
-                    .gvaQuickReply,
-                    .gvaGallery:
-                return false
             }
+
+        let deliveredMessage = ChatMessage(with: message)
+        let kind = ChatItem.Kind.visitorMessage(
+            deliveredMessage,
+            status: deliveredStatusText
+        )
+        let item = ChatItem(kind: kind)
+        downloader.addDownloads(for: deliveredMessage.attachment?.files)
+        section.replaceItem(at: index, with: item)
+        affectedRows.append(index)
+        action?(.refreshRows(affectedRows, in: section.index, animated: false))
+    }
+
+    static func chatItemMatchesMessageId(
+        chatItem: ChatItem,
+        messageId: ChatMessage.MessageId
+    ) -> Bool {
+        switch chatItem.kind {
+        case let .outgoingMessage(outgoingMessage, _):
+            return outgoingMessage.payload.messageId.rawValue.uppercased() == messageId.uppercased()
+        case let .visitorMessage(message, _):
+            return message.id.uppercased() == messageId.uppercased()
+        case .queueOperator,
+                .operatorMessage,
+                .choiceCard,
+                .customCard,
+                .callUpgrade,
+                .operatorConnected,
+                .transferring,
+                .unreadMessageDivider,
+                .systemMessage,
+                .gvaPersistentButton,
+                .gvaResponseText,
+                .gvaQuickReply,
+                .gvaGallery:
+            return false
         }
+    }
 
     // swiftlint:disable function_body_length
     static func item(

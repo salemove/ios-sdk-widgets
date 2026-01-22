@@ -715,7 +715,6 @@ class EntryWidgetTests: XCTestCase {
     func test_entryWidgetShowsMediaIfAnyQueueIsOpen() {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, status: .open, media: [.audio, .video])
-        let openMockQueue = Queue.mock(id: mockQueueId, status: .full, media: [.audio, .video])
 
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { completion in
