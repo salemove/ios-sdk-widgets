@@ -718,7 +718,7 @@ final class GliaTests: XCTestCase {
     }
 
     func test_deauthenticateErasesInteractorState() throws {
-        var uuidGen = UUID.incrementing
+        let uuidGen = UUID.incrementing
         var gliaEnv = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }

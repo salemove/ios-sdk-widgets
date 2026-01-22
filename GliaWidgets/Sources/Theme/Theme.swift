@@ -56,8 +56,7 @@ public class Theme {
     public lazy var secureConversationsConfirmation: SecureConversations.ConfirmationStyle = defaultSecureConversationsConfirmationStyle
 
     /// Controls the visibility of the "Powered by" text and image.
-    @available(*, deprecated, message: "Replaced by RemoteConfiguration.isWhiteLabelApp")
-    public var showsPoweredBy: Bool
+    var showsPoweredBy: Bool = true
 
     /// Snack bar View style.
     public lazy var snackBar: SnackBarStyle = { snackBarStyle }()
@@ -85,15 +84,12 @@ public class Theme {
     ///
     public init(
         colorStyle: ThemeColorStyle = .default,
-        fontStyle: ThemeFontStyle = .default,
-        showsPoweredBy: Bool = true
+        fontStyle: ThemeFontStyle = .default
     ) {
         self.color = colorStyle.color
         self.font = fontStyle.font
-        self.showsPoweredBy = showsPoweredBy
     }
 
-    // swiftlint:disable function_body_length
     convenience init(
         uiConfig config: RemoteConfiguration,
         assetsBuilder: RemoteConfiguration.AssetsBuilder
@@ -158,5 +154,4 @@ public class Theme {
             assetsBuilder: assetsBuilder
         )
     }
-    // swiftlint:enable function_body_length
 }

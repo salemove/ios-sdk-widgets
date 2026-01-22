@@ -109,9 +109,6 @@ final class ChatViewTest: XCTestCase {
     }
 
     func test_isTopBannerHiddenWhenIsTopBannerAllowedIsFalse() throws {
-        throw XCTSkip("""
-                This test should be un-skipped when injected combine scheduler will be added in EntryWidget in MOB-4077.
-            """)
         let env = EngagementView.Environment(
             data: .failing,
             uuid: { .mock },

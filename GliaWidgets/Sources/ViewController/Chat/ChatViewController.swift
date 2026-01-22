@@ -218,86 +218,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
 
         viewModel.action = { [weak self, weak view] action in
             guard let self else { return }
-            switch action {
-            case .enqueueing:
-                view?.setConnectState(.queue, animated: false)
-            case .enqueued:
-                view?.header.showCloseButton()
-            case .connected(let name, let imageUrl):
-                view?.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
-                view?.unreadMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)
-                view?.header.showEndButton()
-                self.viewModel.action?(.setMessageEntryConnected(true))
-            case .setMessageEntryEnabled(let enabled):
-                view?.messageEntryView.isEnabled = enabled
-            case .setChoiceCardInputModeEnabled(let enabled):
-                view?.messageEntryView.isChoiceCardModeEnabled = enabled
-            case .setMessageText(let text):
-                view?.messageEntryView.messageText = text
-            case .sendButtonDisabled(let isDisabled):
-                view?.messageEntryView.isSendButtonEnabled = !isDisabled
-            case .pickMediaButtonEnabled(let enabled):
-                view?.messageEntryView.pickMediaButton.isEnabled = enabled
-            case .appendRows(let count, let section, let animated):
-                view?.appendRows(count, to: section, animated: animated)
-            case .refreshRow(let row, let section, let animated):
-                view?.refreshRow(row, in: section, animated: animated)
-            case .refreshRows(let rows, let section, let animated):
-                view?.refreshRows(rows, in: section, animated: animated)
-            case let .refreshSection(section, animated):
-                view?.refreshSection(section, animated: animated)
-            case let .deleteRows(rows, in: section, animated: animated):
-                view?.deleteRows(rows, in: section, animated: animated)
-            case .refreshAll:
-                view?.refreshAll()
-            case .scrollToBottom(let animated):
-                view?.scrollToBottom(animated: animated)
-            case .updateItemsUserImage(let animated):
-                view?.updateItemsUserImage(animated: animated)
-            case .addUpload:
-                // Handled by data-driven SecureConversations.FileUploadListView.
-                break
-            case .removeUpload:
-                // Handled by data-driven SecureConversations.FileUploadListView.
-                break
-            case .removeAllUploads:
-                view?.messageEntryView.uploadListView.removeAllUploadViews()
-            case .presentMediaPicker(let options, let itemSelected):
-                guard let view = view else { return }
-                self.presentMediaPicker(
-                    from: view.messageEntryView.pickMediaButton,
-                    options: options,
-                    itemSelected: itemSelected
-                )
-            case .showCallBubble(let imageUrl):
-                view?.showCallBubble(with: imageUrl, animated: true)
-            case .updateUnreadMessageIndicator(let count):
-                view?.unreadMessageIndicatorView.newItemCount = count
-            case .setOperatorTypingIndicatorIsHiddenTo(let isHidden, let isChatScrolledToBottom):
-                if isChatScrolledToBottom {
-                    view?.scrollToBottom(animated: true)
-                }
-                view?.setOperatorTypingIndicatorIsHidden(to: isHidden)
-            case let .setAttachmentButtonEnabling(visibility):
-                view?.messageEntryView.setPickMediaButtonVisibility(visibility)
-            case .transferring:
-                view?.setConnectState(.transferring, animated: true)
-            case .setCallBubbleImage(let imageUrl):
-                view?.setCallBubbleImage(with: imageUrl)
-            case .setUnreadMessageIndicatorImage(let imageUrl):
-                view?.unreadMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)
-            case let .fileUploadListPropsUpdated(fileUploadListProps):
-                view?.messageEntryView.uploadListView.props = fileUploadListProps
-            case let .quickReplyPropsUpdated(props):
-                view?.renderQuickReply(props: props)
-            case .transcript(.messageCenterAvailabilityUpdated):
-                break
-            case .switchToEngagement:
-                view?.hideEntryWidget()
-            case let .setMessageEntryConnected(isConnected):
-                view?.messageEntryView.isConnected = isConnected
-            }
-            self.renderProps()
+            handle(action, view: view)
         }
     }
     // swiftlint:enable function_body_length
@@ -366,36 +287,6 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         return .init(chat: chatHeader, secureTranscript: secureTranscriptHeader)
     }
 
-    private func renderProps() {
-        guard let chatView: ChatView = view as? ChatView else { return }
-
-        let type = Self.currentChatModelType(viewModel)
-        let props = props(using: viewModel)
-
-        switch type {
-        case .chat:
-            chatView.setIsTopBannerAllowed(false)
-            chatView.props = .init(header: props.chat)
-            // For regular chat engagement bottom banner is hidden.
-            chatView.setSecureMessagingBottomBannerHidden(true)
-            chatView.setSendingMessageUnavailabilityBannerHidden(viewModel.isSendMessageAvailable)
-        case let .secureTranscript(needsTextInputEnabled):
-            chatView.setIsTopBannerAllowed(true)
-            chatView.props = .init(header: props.secureTranscript)
-            // Instead of hiding text input, we need to disable it and corresponding buttons.
-            chatView.messageEntryView.isEnabled = needsTextInputEnabled
-            chatView.setSendingMessageUnavailabilityBannerHidden(viewModel.isSendMessageAvailable)
-            // For secure messaging bottom banner is visible.
-            chatView.setSecureMessagingBottomBannerHidden(false)
-        case .chatToSecureTranscript:
-            chatView.setIsTopBannerAllowed(true)
-            chatView.props = .init(header: props.secureTranscript)
-            chatView.messageEntryView.isEnabled = true
-            chatView.setSendingMessageUnavailabilityBannerHidden(true)
-            chatView.setSecureMessagingBottomBannerHidden(false)
-        }
-    }
-
     deinit {
         viewModel.environment.log.prefixed(Self.self).info("Destroy Chat screen")
     }
@@ -450,6 +341,124 @@ extension ChatViewController {
         let secureTranscript: Header.Props
     }
 }
+
+extension ChatViewController {
+    private func renderProps() {
+        guard let chatView: ChatView = view as? ChatView else { return }
+
+        let type = Self.currentChatModelType(viewModel)
+        let props = props(using: viewModel)
+
+        switch type {
+        case .chat:
+            chatView.setIsTopBannerAllowed(false)
+            chatView.props = .init(header: props.chat)
+            // For regular chat engagement bottom banner is hidden.
+            chatView.setSecureMessagingBottomBannerHidden(true)
+            chatView.setSendingMessageUnavailabilityBannerHidden(viewModel.isSendMessageAvailable)
+        case let .secureTranscript(needsTextInputEnabled):
+            chatView.setIsTopBannerAllowed(true)
+            chatView.props = .init(header: props.secureTranscript)
+            // Instead of hiding text input, we need to disable it and corresponding buttons.
+            chatView.messageEntryView.isEnabled = needsTextInputEnabled
+            chatView.setSendingMessageUnavailabilityBannerHidden(viewModel.isSendMessageAvailable)
+            // For secure messaging bottom banner is visible.
+            chatView.setSecureMessagingBottomBannerHidden(false)
+        case .chatToSecureTranscript:
+            chatView.setIsTopBannerAllowed(true)
+            chatView.props = .init(header: props.secureTranscript)
+            chatView.messageEntryView.isEnabled = true
+            chatView.setSendingMessageUnavailabilityBannerHidden(true)
+            chatView.setSecureMessagingBottomBannerHidden(false)
+        }
+    }
+
+    // swiftlint:disable function_body_length
+    private func handle(_ action: SecureConversations.ChatWithTranscriptModel.Action, view: ChatView?) {
+        switch action {
+        case .enqueueing:
+            view?.setConnectState(.queue, animated: false)
+        case .enqueued:
+            view?.header.showCloseButton()
+        case .connected(let name, let imageUrl):
+            view?.setConnectState(.connected(name: name, imageUrl: imageUrl), animated: true)
+            view?.unreadMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)
+            view?.header.showEndButton()
+            self.viewModel.action?(.setMessageEntryConnected(true))
+        case .setMessageEntryEnabled(let enabled):
+            view?.messageEntryView.isEnabled = enabled
+        case .setChoiceCardInputModeEnabled(let enabled):
+            view?.messageEntryView.isChoiceCardModeEnabled = enabled
+        case .setMessageText(let text):
+            view?.messageEntryView.messageText = text
+        case .sendButtonDisabled(let isDisabled):
+            view?.messageEntryView.isSendButtonEnabled = !isDisabled
+        case .pickMediaButtonEnabled(let enabled):
+            view?.messageEntryView.pickMediaButton.isEnabled = enabled
+        case .appendRows(let count, let section, let animated):
+            view?.appendRows(count, to: section, animated: animated)
+        case .refreshRow(let row, let section, let animated):
+            view?.refreshRow(row, in: section, animated: animated)
+        case .refreshRows(let rows, let section, let animated):
+            view?.refreshRows(rows, in: section, animated: animated)
+        case let .refreshSection(section, animated):
+            view?.refreshSection(section, animated: animated)
+        case let .deleteRows(rows, in: section, animated: animated):
+            view?.deleteRows(rows, in: section, animated: animated)
+        case .refreshAll:
+            view?.refreshAll()
+        case .scrollToBottom(let animated):
+            view?.scrollToBottom(animated: animated)
+        case .updateItemsUserImage(let animated):
+            view?.updateItemsUserImage(animated: animated)
+        case .addUpload:
+            // Handled by data-driven SecureConversations.FileUploadListView.
+            break
+        case .removeUpload:
+            // Handled by data-driven SecureConversations.FileUploadListView.
+            break
+        case .removeAllUploads:
+            view?.messageEntryView.uploadListView.removeAllUploadViews()
+        case .presentMediaPicker(let options, let itemSelected):
+            guard let view = view else { return }
+            self.presentMediaPicker(
+                from: view.messageEntryView.pickMediaButton,
+                options: options,
+                itemSelected: itemSelected
+            )
+        case .showCallBubble(let imageUrl):
+            view?.showCallBubble(with: imageUrl, animated: true)
+        case .updateUnreadMessageIndicator(let count):
+            view?.unreadMessageIndicatorView.newItemCount = count
+        case .setOperatorTypingIndicatorIsHiddenTo(let isHidden, let isChatScrolledToBottom):
+            if isChatScrolledToBottom {
+                view?.scrollToBottom(animated: true)
+            }
+            view?.setOperatorTypingIndicatorIsHidden(to: isHidden)
+        case let .setAttachmentButtonEnabling(visibility):
+            view?.messageEntryView.setPickMediaButtonVisibility(visibility)
+        case .transferring:
+            view?.setConnectState(.transferring, animated: true)
+        case .setCallBubbleImage(let imageUrl):
+            view?.setCallBubbleImage(with: imageUrl)
+        case .setUnreadMessageIndicatorImage(let imageUrl):
+            view?.unreadMessageIndicatorView.setImage(fromUrl: imageUrl, animated: true)
+        case let .fileUploadListPropsUpdated(fileUploadListProps):
+            view?.messageEntryView.uploadListView.props = fileUploadListProps
+        case let .quickReplyPropsUpdated(props):
+            view?.renderQuickReply(props: props)
+        case .transcript(.messageCenterAvailabilityUpdated):
+            break
+        case .switchToEngagement:
+            view?.hideEntryWidget()
+        case let .setMessageEntryConnected(isConnected):
+            view?.messageEntryView.isConnected = isConnected
+        }
+        renderProps()
+    }
+    // swiftlint:enable function_body_length
+}
+
 private enum CurrentChatModelType {
     case chat
     case secureTranscript(needsTextInputEnabled: Bool)
