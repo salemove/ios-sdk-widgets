@@ -88,7 +88,6 @@ class ChatView: EngagementView {
     /// once ChatView is actually in the view hierarchy.
     var pendingSnackBar: PendingSnackBar?
 
-
     init(
         with style: ChatStyle,
         messageRenderer: MessageRenderer?,
@@ -1057,7 +1056,6 @@ extension ChatView {
         let dismissTiming: SnackBar.DismissTiming
     }
 }
-// swiftlint:enable file_length
 
 #if DEBUG
 extension ChatView {
@@ -1066,3 +1064,4 @@ extension ChatView {
     }
 }
 #endif
+// swiftlint:enable file_length

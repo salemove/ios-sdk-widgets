@@ -292,7 +292,7 @@ extension GliaTests {
     ) throws {
         let delegate = GliaViewControllerDelegateMock()
         
-        let sdk = try makeConfigurableSDK(
+        let _ = try makeConfigurableSDK(
             enqueueingEngagementKind: enqueueingEngagementKind,
             engagementToEnqueue: engagementToEnqueue
         ) { sdk in

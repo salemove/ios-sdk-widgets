@@ -404,13 +404,16 @@ private extension CallVisualizer.Coordinator {
     }
 
     var topMostViewController: UIViewController {
-        let window = UIApplication.shared.windows.first { $0.isKeyWindow }
-        guard var presenter = window?.rootViewController else {
+        guard let windowScene = UIApplication.shared.connectedScenes
+            .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
+            let window = windowScene.windows.first(where: { $0.isKeyWindow }),
+            var presenter = window.rootViewController
+        else {
             fatalError("Could not find UIViewController to present on")
         }
 
-        while let presentedViewController = presenter.presentedViewController {
-            presenter = presentedViewController
+        while let presented = presenter.presentedViewController {
+            presenter = presented
         }
 
         return presenter

@@ -120,7 +120,6 @@ extension SecureConversations.TranscriptModel.Environment {
         leaveCurrentSecureConversation: Command<Bool> = .nop,
         createEntryWidget: @escaping EntryWidgetBuilder = { _ in .mock() },
         switchToEngagement: Command<EngagementKind> = .nop,
-        // swiftlint:disable:next line_length
         secureMessagingExpandedTopBannerItemsStyle: EntryWidgetStyle.MediaTypeItemsStyle = Theme().chatStyle.secureMessagingExpandedTopBannerItemsStyle,
         notificationCenter: FoundationBased.NotificationCenter = .mock,
         markUnreadMessagesDelay: @escaping () -> DispatchQueue.SchedulerTimeType.Stride = { .mock },

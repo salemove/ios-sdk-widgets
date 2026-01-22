@@ -1,11 +1,19 @@
 import UIKit
+import UniformTypeIdentifiers
 
 final class FilePickerController: NSObject {
     var viewController: UIDocumentPickerViewController {
-        let documentPicker = UIDocumentPickerViewController(documentTypes: viewModel.allowedFiles.types, in: .import)
+        let contentTypes = viewModel.allowedFiles.types.compactMap { UTType($0) }
+        let safeTypes = contentTypes.isEmpty ? [.data] : contentTypes
+        let documentPicker = UIDocumentPickerViewController(
+            forOpeningContentTypes: safeTypes,
+            asCopy: true
+        )
+
         documentPicker.delegate = self
         documentPicker.allowsMultipleSelection = false
         documentPicker.modalPresentationStyle = .fullScreen
+
         let urls = environment.fileManager.urlsForDirectoryInDomainMask(.documentDirectory, .userDomainMask)
         documentPicker.directoryURL = urls.first
 

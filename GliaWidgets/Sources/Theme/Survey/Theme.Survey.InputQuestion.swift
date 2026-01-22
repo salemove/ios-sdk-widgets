@@ -21,6 +21,7 @@ public extension Theme.SurveyStyle {
         /// Accessibility related properties.
         public var accessibility: Accessibility
 
+        // swiftlint:disable function_body_length
         static func `default`(
             color: ThemeColor,
             font: ThemeFont
@@ -94,6 +95,7 @@ public extension Theme.SurveyStyle {
                 accessibility: .init(isFontScalingEnabled: true)
             )
         }
+        // swiftlint:enable function_body_length
 
         /// Apply input question from remote configuration
         mutating func apply(
