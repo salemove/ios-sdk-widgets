@@ -214,9 +214,9 @@
 		3100EEFD293F757E00D57F71 /* SecureConversations.WelcomeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100EEFC293F757E00D57F71 /* SecureConversations.WelcomeStyle.swift */; };
 		3100EEFF293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3100EEFE293F7E0900D57F71 /* Theme+SecureConversationsWelcome.swift */; };
 		3115D45C29A4FD3F00D99561 /* SecureConversations.Availability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3115D45B29A4FD3F00D99561 /* SecureConversations.Availability.swift */; };
-		3115EFBA2BC960B500B24D5A /* (null) in Sources */ = {isa = PBXBuildFile; };
-		3117EBA22B9B041100F520D8 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		3117EBA42B9B426200F520D8 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		3115EFBA2BC960B500B24D5A /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		3117EBA22B9B041100F520D8 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
+		3117EBA42B9B426200F520D8 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		311C03352B5588C0002E4FF8 /* SecureConversations.CoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311C03342B5588C0002E4FF8 /* SecureConversations.CoordinatorTests.swift */; };
 		311CAFCD29F8FAE20067B59F /* SecureConversations.TranscriptModel.CustomCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311CAFCC29F8FAE20067B59F /* SecureConversations.TranscriptModel.CustomCard.swift */; };
 		313EBD552943116E008E9597 /* SecureConversations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313EBD542943116E008E9597 /* SecureConversations.swift */; };
@@ -1019,6 +1019,7 @@
 		C0F7EA382CA1D6D40038019C /* CustomPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F7EA372CA1D6D40038019C /* CustomPresentationController.swift */; };
 		C0F7EA3A2CA1D7050038019C /* EntryWidget.Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F7EA392CA1D7050038019C /* EntryWidget.Configuration.swift */; };
 		C0F7EA3C2CA581E70038019C /* Glia+EntryWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F7EA3B2CA581E70038019C /* Glia+EntryWidget.swift */; };
+		C1C8E9C32F28F53E0069975B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C8E9C22F28F53E0069975B /* SceneDelegate.swift */; };
 		C4119E06268F41D1004DFEFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4119E05268F41D1004DFEFB /* Main.storyboard */; };
 		C43C12F92694B14900C37E1B /* GliaPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43C12F82694B14900C37E1B /* GliaPresenter.swift */; };
 		C43D7A0D25FF92530064B1DA /* ChoiceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43D7A0C25FF92530064B1DA /* ChoiceCardView.swift */; };
@@ -2117,6 +2118,7 @@
 		C0F7EA372CA1D6D40038019C /* CustomPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPresentationController.swift; sourceTree = "<group>"; };
 		C0F7EA392CA1D7050038019C /* EntryWidget.Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidget.Configuration.swift; sourceTree = "<group>"; };
 		C0F7EA3B2CA581E70038019C /* Glia+EntryWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Glia+EntryWidget.swift"; sourceTree = "<group>"; };
+		C1C8E9C22F28F53E0069975B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C4119E05268F41D1004DFEFB /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C43C12F82694B14900C37E1B /* GliaPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaPresenter.swift; sourceTree = "<group>"; };
 		C43D7A0C25FF92530064B1DA /* ChoiceCardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChoiceCardView.swift; sourceTree = "<group>"; };
@@ -2483,6 +2485,7 @@
 				756979C42A1E5E3C002ED254 /* Assets.xcassets */,
 				1A205D8825655CEE003AA3CD /* Info.plist */,
 				C4119E05268F41D1004DFEFB /* Main.storyboard */,
+				C1C8E9C22F28F53E0069975B /* SceneDelegate.swift */,
 			);
 			path = TestingApp;
 			sourceTree = "<group>";
@@ -5672,13 +5675,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5797,13 +5796,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GliaWidgetsTests/Pods-GliaWidgetsTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -5818,13 +5813,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TestingApp/Pods-TestingApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TestingApp/Pods-TestingApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -6756,7 +6747,7 @@
 				8492F9192CAD329800242691 /* TranscriptModelTests+MessageRetry.swift in Sources */,
 				8491AF602AA1EBB600CC3E72 /* TranscriptModelTests+URLs.swift in Sources */,
 				9A8130C427D9099F00220BBD /* FileDownload.Environment.Failing.swift in Sources */,
-				3117EBA22B9B041100F520D8 /* (null) in Sources */,
+				3117EBA22B9B041100F520D8 /* BuildFile in Sources */,
 				31CCE3E52BCE8F3A00F92535 /* CallVisualizer.Coordinator.Environment.Mock.swift in Sources */,
 				31CCE3E72BCE8F3A00F92535 /* VisitorCodeCoordinatorTests.swift in Sources */,
 				AF29811029E06E830005BD55 /* Availability.Environment.Failing.swift in Sources */,
@@ -6782,7 +6773,7 @@
 				EB9ADB552828E66B00FAE8A4 /* CallTests.swift in Sources */,
 				AF9DB22E2890571A00A0C442 /* RootCoordinator.Environment.Failing.swift in Sources */,
 				AF9DB23128905A1D00A0C442 /* ViewFactory.Environment.Failing.swift in Sources */,
-				3117EBA42B9B426200F520D8 /* (null) in Sources */,
+				3117EBA42B9B426200F520D8 /* BuildFile in Sources */,
 				848570512BEE3CCC00CEBCC5 /* ChatStyle.Mock.swift in Sources */,
 				9A3E1DA027BA7B9F005634EB /* FileSystemStorageTests.swift in Sources */,
 				EB9ADB5A2829089F00FAE8A4 /* ChatItem+Equatable.swift in Sources */,
@@ -6814,7 +6805,7 @@
 				2BC656672E8FDC1F007AECA6 /* Boxed.swift in Sources */,
 				3146C9432AB1851C0047D8CC /* LocalizationTests.swift in Sources */,
 				8492F9172CAD2F2000242691 /* TranscriptModelTests+ResponseCard.swift in Sources */,
-				3115EFBA2BC960B500B24D5A /* (null) in Sources */,
+				3115EFBA2BC960B500B24D5A /* BuildFile in Sources */,
 				216D310B2CF790980019CA9E /* EntryWidget.Mock.swift in Sources */,
 				9AE05CB62805D2CB00871321 /* Interactor.Environment.Failing.swift in Sources */,
 				846429862A45DB4100943BD6 /* AlertViewController.Kind+Mock.swift in Sources */,
@@ -6884,6 +6875,7 @@
 				847D7FB62CEE00A400EA5C2D /* ViewController+Configure.swift in Sources */,
 				1A4AD3CE256E8F5500468BFB /* SettingsCell.swift in Sources */,
 				7552DFA72A683A2C0093519B /* NSLayoutConstraint+Extensions.swift in Sources */,
+				C1C8E9C32F28F53E0069975B /* SceneDelegate.swift in Sources */,
 				6B2BFCE2274297F100B68506 /* SettingsSwitchCell.swift in Sources */,
 				1A60AFF52567CE1300E53F53 /* SettingsViewController.swift in Sources */,
 			);
