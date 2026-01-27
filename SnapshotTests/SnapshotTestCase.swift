@@ -149,10 +149,33 @@ extension Snapshotting where Value == UIView, Format == UIImage {
                     activationPointDisplayMode: activationPointDisplayMode
                 )
 
-                let window = UIWindow(frame: UIScreen.main.bounds)
+                let window: UIWindow = {
+                    if let windowScene = UIApplication.shared.connectedScenes
+                        .compactMap({ $0 as? UIWindowScene })
+                        .first(where: { $0.activationState == .foregroundActive || $0.activationState == .foregroundInactive }) {
+                        return UIWindow(windowScene: windowScene)
+                    } else {
+                        // fallback (rare in tests, but safe)
+                        return UIWindow(frame: UIScreen.main.bounds)
+                    }
+                }()
+
+                window.frame = UIScreen.main.bounds
+
+                let hostVC = UIViewController()
+                hostVC.view.backgroundColor = .systemBackground
+                window.rootViewController = hostVC
+
                 window.makeKeyAndVisible()
-                containerView.center = window.center
-                window.addSubview(containerView)
+
+                containerView.center = hostVC.view.center
+                hostVC.view.addSubview(containerView)
+
+                // Make sure layout has happened
+                hostVC.view.setNeedsLayout()
+                hostVC.view.layoutIfNeeded()
+                containerView.setNeedsLayout()
+                containerView.layoutIfNeeded()
 
                 do {
                     try containerView.parseAccessibility(useMonochromeSnapshot: useMonochromeSnapshot)
@@ -268,7 +291,7 @@ extension Snapshotting where Value == UIViewController, Format == UIImage {
             .init(preferredContentSizeCategory: .accessibilityExtraExtraExtraLarge)
         ] + commonTraitCollection)
         let safeArea: UIEdgeInsets = .init(top: 0, left: 47, bottom: 21, right: 47)
-        let size: CGSize = .init(width: 844, height: 390)
+        let size: CGSize = .init(width: 852, height: 393)
         let viewImageConfig: ViewImageConfig = .init(safeArea: safeArea, size: size, traits: traits)
 
         return Self.image(on: viewImageConfig)
@@ -279,7 +302,7 @@ extension Snapshotting where Value == UIViewController, Format == UIImage {
             .init(preferredContentSizeCategory: .medium),
         ] + commonTraitCollection)
         let safeArea: UIEdgeInsets = .init(top: 0, left: 47, bottom: 21, right: 47)
-        let size: CGSize = .init(width: 844, height: 390)
+        let size: CGSize = .init(width: 852, height: 393)
         let viewImageConfig: ViewImageConfig = .init(safeArea: safeArea, size: size, traits: traits)
 
         return Self.image(on: viewImageConfig)

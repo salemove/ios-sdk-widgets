@@ -13,14 +13,23 @@ final class DeeplinksService {
         case configure, widgets
     }
 
-    private let window: UIWindow?
+    private let windowProvider: () -> UIWindow?
     private let handlers: [Host: DeeplinkHandler.Type]
 
+    init(
+        windowProvider: @escaping () -> UIWindow?,
+        handlers: [Host: DeeplinkHandler.Type]
+    ) {
+        self.windowProvider = windowProvider
+        self.handlers = handlers
+    }
+
+    // Backward compatibility initializer
     init(
         window: UIWindow?,
         handlers: [Host: DeeplinkHandler.Type]
     ) {
-        self.window = window
+        self.windowProvider = { window }
         self.handlers = handlers
     }
 }
@@ -48,7 +57,7 @@ private extension DeeplinksService {
             return false
         }
 
-        let handler = deeplinkHandler.init(window: window)
+        let handler = deeplinkHandler.init(window: windowProvider())
 
         return handler.handleDeeplink(
             with: link.lastPathComponent,
