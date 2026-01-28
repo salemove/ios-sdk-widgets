@@ -77,23 +77,32 @@ public extension Configuration {
         /// Site API key authorization.
         case siteApiKey(id: String, secret: String)
 
+        /// User API key authorization.
+        case userApiKey(id: String, secret: String)
+
         var coreAuthorizationMethod: CoreSdkClient.Salemove.AuthorizationMethod {
             switch self {
             case .siteApiKey(let id, let secret):
                 return .siteApiKey(id: id, secret: secret)
+            case let .userApiKey(id, secret):
+                return .userApiKey(id: id, secret: secret)
             }
         }
 
         var id: String {
             switch self {
-            case .siteApiKey(let id, _):
+            case let .siteApiKey(id, _):
+                return id
+            case let .userApiKey(id, _):
                 return id
             }
         }
 
         var secret: String {
             switch self {
-            case .siteApiKey(_, let secret):
+            case let .siteApiKey(_, secret):
+                return secret
+            case let .userApiKey(_, secret):
                 return secret
             }
         }
