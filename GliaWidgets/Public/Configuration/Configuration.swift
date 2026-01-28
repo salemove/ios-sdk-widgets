@@ -75,6 +75,7 @@ public extension Configuration {
     /// Site authorization method.
     enum AuthorizationMethod {
         /// Site API key authorization.
+        @available(*, deprecated, message: "Use .userApiKey(id:secret:) instead.")
         case siteApiKey(id: String, secret: String)
 
         /// User API key authorization.
