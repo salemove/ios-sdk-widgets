@@ -13,7 +13,13 @@ class AlertView: BaseView {
 
             if newValue == nil {
                 titleImageView.removeFromSuperview()
+                topContentStackView.removeArrangedSubview(titleImageViewContainer)
+                titleImageViewContainer.isHidden = true
             } else {
+                if titleImageViewContainer.superview == nil {
+                    topContentStackView.insertArrangedSubview(titleImageViewContainer, at: 0)
+                }
+                titleImageViewContainer.isHidden = false
                 guard titleImageView.superview == nil else { return }
                 titleImageViewContainer.addSubview(titleImageView)
                 titleImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -138,7 +144,6 @@ class AlertView: BaseView {
         topContentStackView.axis = .vertical
         topContentStackView.spacing = 16
         topContentStackView.addArrangedSubviews([
-            titleImageViewContainer,
             titleLabel,
             messageLabel
         ])
