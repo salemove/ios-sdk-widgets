@@ -4,117 +4,20 @@ This repository contains the **GliaWidgets SDK** - a UI/UX framework for iOS tha
 
 ---
 
-## Agentic Development Tools
+## Getting Started
 
-This repository is configured with **Claude Code custom commands** to streamline development workflows. See [.claude/commands/README.md](.claude/commands/README.md) for full documentation.
+**First time working with this project?** Run `/setup` to configure Claude Code integrations (GitHub, Jira, Confluence, iOS Simulator).
 
-### Atlassian Integration (Jira & Confluence)
+### Quick Integration Reference
 
-Claude has access to Atlassian services with **tool selection by service type**:
+Claude has access to the following integrations for this project:
 
-**🔴 IMPORTANT: Tool Selection Rules**
-- **Jira:** ALWAYS use Atlassian CLI (`acli`) - NO EXCEPTIONS
-- **Confluence:** ALWAYS use Atlassian MCP Server
-- **Reason:** CLI is more token-efficient for Jira, MCP provides better Confluence content access
+- **GitHub:** Use `gh` CLI for repository operations (e.g., `gh pr list`, `gh issue view`). Run `/setup` for configuration.
+- **Jira:** Use `acli` CLI for ticket operations (e.g., `acli jira workitem view MOB-1234`). **ALWAYS use `acli` for Jira, never MCP.** Run `/setup` for configuration.
+- **Confluence:** Use Atlassian MCP for documentation searches and page reads. Run `/setup` for configuration.
+- **iOS Simulator:** Use mobile-mcp for UI testing, screenshots, and device interactions. Run `/setup` for configuration.
 
-**Atlassian CLI (`acli`) - For Jira ONLY:**
-- **Use for:** All Jira operations (viewing tickets, searching issues, etc.)
-- **View tickets:** `acli jira workitem view MOB-XXXX`
-- **Search issues:** `acli jira workitem list --jql "project = MOB AND status = Open"`
-- **Authentication:** Run `acli auth login --web` in terminal for browser-based OAuth
-- **Pre-approved commands:** Configured in [.claude/settings.json](.claude/settings.json)
-
-**Atlassian MCP Server - For Confluence ONLY:**
-- **Use for:** All Confluence operations (searching pages, reading docs, listing spaces)
-- **Pre-configured:** Set up in [.mcp.json](.mcp.json)
-- **Pre-approved tools:** Configured in [.claude/settings.json](.claude/settings.json)
-- **Capabilities:** Search pages, read full content, list spaces, CQL queries
-- **No additional auth needed:** Uses same credentials as CLI
-
-**Usage Examples:**
-- "Search Confluence for UI design guidelines" → Use MCP
-- "Get details on Jira ticket MOB-1234" → Use CLI (`acli`)
-- "Find all open issues assigned to me" → Use CLI (`acli`)
-- "Search Confluence pages in the ENG space" → Use MCP
-- "What's the status of sprint issues?" → Use CLI (`acli`)
-
-### GitHub Integration
-
-Claude has direct access to GitHub repositories via GitHub CLI (`gh`) MCP integration:
-
-**Setup:**
-- **Pre-configured:** GitHub MCP server is already set up in [.mcp.json](.mcp.json)
-- **Auto-enabled:** Automatically enabled for all team members via [.claude/settings.json](.claude/settings.json)
-- **Uses GitHub CLI:** Leverages `gh` authentication (browser-based OAuth)
-
-**Authentication (One-time per machine):**
-
-1. **Install GitHub CLI** (if not already installed):
-   ```bash
-   brew install gh  # macOS
-   # Or download from: https://cli.github.com/
-   ```
-
-2. **Authenticate with GitHub** (browser-based OAuth):
-   ```bash
-   gh auth login
-   ```
-   - Select: **GitHub.com**
-   - Select: **HTTPS**
-   - Authenticate Git: **Yes**
-   - How to authenticate: **Login with a web browser**
-   - Copy the one-time code → press Enter → browser opens → paste code → authorize
-
-3. **Install gh-mcp extension:**
-   ```bash
-   gh extension install shuymn/gh-mcp
-   ```
-
-4. **Verify it works:**
-   - Run `claude mcp list` to see GitHub server status
-   - Or run `/mcp` in Claude Code
-
-**Usage Examples:**
-- "Review PR #456 and provide feedback"
-- "Create an issue for the bug we just found"
-- "Show me all open PRs assigned to me"
-- "List recent commits on the master branch"
-- "What's the status of issue MOB-1234?"
-- "Search for code using 'Theme.Button' in the repository"
-
-**Benefits:**
-- ✅ Browser-based OAuth (no manual token creation)
-- ✅ No tokens stored in files (uses `gh` credentials)
-- ✅ Automatic token refresh handled by `gh`
-- ✅ Same authentication used for git operations
-- ✅ Easy team onboarding
-
-### iOS Simulator Integration
-
-Claude has direct access to iOS Simulators via two MCP servers for UI testing and debugging:
-
-**iOS Simulator MCP (`ios-simulator`):**
-- **Pre-configured:** Set up in [.mcp.json](.mcp.json)
-- **Capabilities:** Screenshots, UI element inspection, tap/swipe gestures, text input
-- **Use for:** Quick simulator interactions and UI debugging
-
-**Mobile MCP (`mobile-mcp`):**
-- **Pre-configured:** Set up in [.mcp.json](.mcp.json)
-- **Capabilities:** Advanced device control, app management, orientation changes
-- **Use for:** Comprehensive mobile testing automation
-
-**Usage Examples:**
-- "Take a screenshot of the current simulator screen"
-- "List all UI elements visible on the screen"
-- "Tap the button at coordinates (200, 400)"
-- "Install the test app on the simulator"
-- "Change simulator orientation to landscape"
-
-**Benefits:**
-- ✅ No manual simulator navigation needed
-- ✅ Automated UI testing workflows
-- ✅ Quick visual debugging
-- ✅ Integration with snapshot testing
+**Detailed setup guides:** See [.claude/skills/setup/SKILL.md](.claude/skills/setup/SKILL.md)
 
 ---
 
@@ -528,48 +431,6 @@ struct SomeView {
 3. **NEVER tightly couple to Core SDK implementation** - Use protocol abstractions
 4. **NEVER use `DispatchQueue.main.sync`** - Causes deadlocks
 5. **NEVER leak view controllers** - Always use weak references in closures
-
----
-
-## Snapshot Testing Workflow
-
-### Initial Setup
-```bash
-# Clone snapshots repository (one-time setup)
-make clone-snapshots
-
-# Configure git hooks
-make integrate-githooks
-```
-
-### Daily Workflow
-```bash
-# Pull latest snapshots before starting work
-make pull-snapshots
-
-# Make UI changes in Xcode
-# Run snapshot tests (⌘U or specific test scheme)
-
-# Review snapshot diffs in SnapshotTests/__Snapshots__/
-# Verify changes are intentional
-
-# Commit snapshots if changes are correct
-make commit-snapshots
-
-# Push updated snapshots
-make push-snapshots
-
-# Commit code changes to main repo
-git add GliaWidgets/
-git commit -m "Update button styling"
-git push
-```
-
-### Troubleshooting
-- **Snapshots out of sync:** Run `make pull-snapshots` to get latest
-- **Test failures:** Check Xcode test results for image diffs
-- **Missing snapshots:** Run tests to generate initial snapshots
-- **Git LFS issues:** Ensure Git LFS is installed: `git lfs install`
 
 ---
 

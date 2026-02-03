@@ -207,7 +207,7 @@ workflows:
         inputs:
         - scheme: $TESTING_APP_TESTS_SCHEME
         - destination: platform=iOS Simulator,name=iPhone 16,OS=18.2
-    - xcode-archive@4:
+    - xcode-archive@5:
         inputs:
         - scheme: $APP_SCHEME
         - team_id: $TEAM_ID
