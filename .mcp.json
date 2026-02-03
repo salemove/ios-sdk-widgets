@@ -1,5 +1,15 @@
 {
   "mcpServers": {
+    "atlassian": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.atlassian.com/v1/sse"
+      ],
+      "description": "Atlassian integration for Confluence and Jira"
+    },
     "mobile-mcp": {
       "type": "stdio",
       "command": "npx",
@@ -9,172 +19,8 @@
         "@mobilenext/mobile-mcp@latest"
       ],
       "env": {}
-    },
-    "atlassian": {
-      "type": "stdio",
-      "command": "npx",
-      "description": "Access Jira issues and Confluence pages via Atlassian Cloud API",
-      "args": ["-y", "mcp-remote", "https://mcp.atlassian.com/v1/sse"]
-    },
-    "github": {
-      "type": "stdio",
-      "command": "gh",
-      "description": "Interact with GitHub repositories, issues, and pull requests",
-      "args": ["mcp"]
     }
   },
   "toolApprovalRules": [
-    {
-      "tool": "mcp__ios-simulator__screenshot",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__ios-simulator__ui_describe_all",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__ios-simulator__ui_view",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__ios-simulator__ui_describe_point",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_list_available_devices",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_list_apps",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_launch_app",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_terminate_app",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_take_screenshot",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_list_elements_on_screen",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_click_on_screen_at_coordinates",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_double_tap_on_screen",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_long_press_on_screen_at_coordinates",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_swipe_on_screen",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_type_keys",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_press_button",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_get_screen_size",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_get_orientation",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_set_orientation",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_open_url",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_save_screenshot",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_install_app",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__mobile-mcp__mobile_uninstall_app",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__atlassian__search",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__atlassian__getConfluencePage",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__atlassian__getPagesInConfluenceSpace",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__atlassian__getConfluenceSpaces",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__atlassian__searchConfluenceUsingCql",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__github__search_code",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__github__search_repositories",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__github__search_issues",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__github__search_pull_requests",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__github__list_pull_requests",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__github__list_issues",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__github__pull_request_read",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__github__issue_read",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__github__get_file_contents",
-      "approvalPolicy": "always-allow"
-    },
-    {
-      "tool": "mcp__ios-simulator__open_simulator",
-      "approvalPolicy": "always-allow"
-    }
   ]
 }
