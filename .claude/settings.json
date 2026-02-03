@@ -1,13 +1,14 @@
 {
   "enabledPlugins": {
     "integrations@glia-plugins": true,
-    "commit-messages@glia-plugins": true
+    "commit-messages@glia-plugins": true,
+    "glia-commands@glia-plugins": true,
+    "quick-agents@glia-plugins": true,
+    "glia-docs@glia-plugins": true,
+    "glia-media-infra@glia-plugins": true
   },
   "enabledMcpjsonServers": [
-    "ios-simulator",
-    "mobile-mcp",
-    "atlassian",
-    "github"
+    "mobile-mcp"
   ],
   "permissions": {
     "allow": [
@@ -31,7 +32,13 @@
       "mcp__github__list_issues",
       "mcp__github__pull_request_read",
       "mcp__github__issue_read",
-      "mcp__github__get_file_contents"
+      "mcp__github__get_file_contents",
+      "mcp__mobile-mcp__mobile_list_available_devices",
+      "mcp__mobile-mcp__mobile_list_apps",
+      "mcp__mobile-mcp__mobile_launch_app",
+      "mcp__mobile-mcp__mobile_take_screenshot",
+      "mcp__mobile-mcp__mobile_list_elements_on_screen",
+      "mcp__mobile-mcp__mobile_click_on_screen_at_coordinates"
     ]
   }
 }
