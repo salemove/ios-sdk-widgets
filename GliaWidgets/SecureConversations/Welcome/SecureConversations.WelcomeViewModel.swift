@@ -149,7 +149,7 @@ private extension SecureConversations.WelcomeViewModel {
         do {
             let site = try await environment.fetchSiteConfigurations()
             isAttachmentsAvailable = site.allowedFileSenders.visitor
-                self?.allowedFileContentTypes = site.allowedFileContentTypes
+            allowedFileContentTypes = site.allowedFileContentTypes
         } catch {
             delegate?(.showAlert(.error(error: error)))
         }

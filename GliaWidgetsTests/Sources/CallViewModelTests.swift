@@ -543,7 +543,7 @@ class CallViewModelTests: XCTestCase {
             replaceExistingEnqueueing: false
         )
 
-        await viewModel.asyncEvent(.viewDidLoad)
+        await viewModel?.asyncEvent(.viewDidLoad)
 
         XCTAssertEqual(calls, [
             .isIdleTimerDisabled(true),

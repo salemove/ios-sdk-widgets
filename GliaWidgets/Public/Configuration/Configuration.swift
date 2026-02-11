@@ -81,7 +81,7 @@ public extension Configuration {
         /// User API key authorization.
         case userApiKey(id: String, secret: String)
 
-        var coreAuthorizationMethod: CoreSdkClient.Salemove.AuthorizationMethod {
+        var coreAuthorizationMethod: CoreSdkClient.AuthorizationMethod {
             switch self {
             case .siteApiKey(let id, let secret):
                 return .siteApiKey(id: id, secret: secret)
