@@ -87,7 +87,10 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
-        let site = try CoreSdkClient.Site.mock(allowedFileSenders: .mock(visitor: true))
+        let site = try CoreSdkClient.Site.mock(
+            allowedFileContentTypes: ["image/jpeg"],
+            allowedFileSenders: .mock(visitor: true)
+        )
         modelEnv.fetchSiteConfigurations = { site }
 
         let availabilityEnv = SecureConversations.Availability.Environment(
