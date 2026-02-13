@@ -21,8 +21,7 @@ extension GliaTests {
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
         sdkEnv.coreSdk.createLogger = { _ in logger }
-        sdkEnv.coreSdk.secureConversations.pendingStatus = { _ in }
-        sdkEnv.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        sdkEnv.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
         sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
@@ -108,7 +107,7 @@ extension GliaTests {
         }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -154,7 +153,7 @@ extension GliaTests {
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let sdk = Glia(environment: environment)
@@ -202,9 +201,8 @@ extension GliaTests {
             completion(.success(()))
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        environment.coreSdk.secureConversations.pendingStatus = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         var logger = CoreSdkClient.Logger.failing
@@ -268,7 +266,7 @@ extension GliaTests {
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let sdk = Glia(environment: environment)
@@ -320,7 +318,7 @@ extension GliaTests {
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let sdk = Glia(environment: environment)
@@ -374,7 +372,7 @@ extension GliaTests {
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let sdk = Glia(environment: environment)
@@ -432,7 +430,7 @@ extension GliaTests {
             completion(.success(()))
         }
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let sdk = Glia(environment: environment)
@@ -470,7 +468,6 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.secureConversations.pendingStatus = { $0(.success(true)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
@@ -519,13 +516,12 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.secureConversations.pendingStatus = { $0(.success(false)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let sdk = Glia(environment: environment)
@@ -561,7 +557,6 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.secureConversations.pendingStatus = { $0(.success(true)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
@@ -610,15 +605,14 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.secureConversations.pendingStatus = { $0(.success(false)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
         environment.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in nil }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
-        environment.coreSdk.fetchSiteConfigurations = { _ in }
+        environment.coreSdk.fetchSiteConfigurations = { try .mock() }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -651,7 +645,10 @@ extension GliaTests {
 extension EngagementCoordinator.Environment: Transformable {
     static var engagementCoordEnvironmentWithKeyWindow: Self {
         EngagementCoordinator.Environment.mock().transform {
-            $0.uiApplication = .failing.transform { $0.windows = { [ .mock() ] } }
+            $0.uiApplication = .failing.transform {
+                $0.windows = { [ .mock() ] }
+                $0.preferredContentSizeCategory = { .unspecified }
+            }
         }
     }
 }

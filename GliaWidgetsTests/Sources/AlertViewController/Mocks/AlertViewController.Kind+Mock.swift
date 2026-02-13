@@ -15,7 +15,7 @@ extension AlertKind {
         case .singleMediaUpgrade:
             return .singleMediaUpgrade(.mock(), accepted: {}, declined: {}, onClose: {})
         case .confirmation:
-            return .confirmation(conf: .mock(), accessibilityIdentifier: "", confirmed: {}, dismissed: nil, onClose: {})
+            return .confirmation(conf: .mock(), accessibilityIdentifier: "", confirmed: {}, onClose: {}, dismissed: nil)
         }
     }
 }

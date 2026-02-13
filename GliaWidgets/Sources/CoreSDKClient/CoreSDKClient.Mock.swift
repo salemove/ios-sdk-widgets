@@ -10,28 +10,25 @@ extension CoreSdkClient {
         createAppDelegate: { .mock },
         clearSession: {},
         localeProvider: .mock,
-        getVisitorInfo: { _ in },
-        getVisitorInfoDeprecated: { _ in },
-        updateVisitorInfo: { _, _ in },
-        updateVisitorInfoDeprecated: { _, _ in },
         configureWithConfiguration: { _, _ in },
+        getVisitorInfo: { .mock },
+        updateVisitorInfo: { _ in true },
         configureWithInteractor: { _ in },
-        getQueues: { _ in },
-        queueForEngagement: { _, _, _ in },
-        requestMediaUpgradeWithOffer: { _, _ in },
-        sendMessagePreview: { _, _ in },
-        sendMessageWithMessagePayload: { _, _ in },
-        cancelQueueTicket: { _, _ in },
-        endEngagement: { _ in },
-        requestEngagedOperator: { _ in },
+        getQueues: { [.mock()] },
+        queueForEngagement: { _, _ in .mock },
+        sendMessagePreview: { _ in true },
+        sendMessageWithMessagePayload: { _ in .mock() },
+        cancelQueueTicket: { _ in true },
+        endEngagement: { true },
+        requestEngagedOperator: { [] },
         uploadFileToEngagement: { _, _, _ in },
-        fetchFile: { _, _, _ in },
+        fetchFile: { _, _ in .mock() },
         getCurrentEngagement: { return nil },
-        fetchSiteConfigurations: { _ in },
-        submitSurveyAnswer: { _, _, _, _ in },
+        fetchSiteConfigurations: { try .mock() },
+        submitSurveyAnswer: { _, _, _ in },
         authentication: { _ in .mock },
-        fetchChatHistory: { _ in },
-        requestVisitorCode: { _ in .mock },
+        fetchChatHistory: { [] },
+        requestVisitorCode: { try .mock() },
         startSocketObservation: {},
         stopSocketObservation: {},
         createSendMessagePayload: { _, _ in .mock() },
@@ -45,14 +42,13 @@ extension CoreSdkClient {
 
 extension CoreSdkClient.SecureConversations {
     static let mock = Self(
-        sendMessagePayload: { _, _, _ in .mock },
+        sendMessagePayload: { _, _ in .mock() },
         uploadFile: { _, _, _ in .mock },
-        getUnreadMessageCount: { _ in },
-        markMessagesAsRead: { _ in .mock },
-        downloadFile: { _, _, _ in .mock },
+        getUnreadMessageCount: { 0 },
+        markMessagesAsRead: {},
+        downloadFile: { _, _ in .mock() },
         subscribeForUnreadMessageCount: { _ in UUID.mock.uuidString },
         unsubscribeFromUnreadMessageCount: { _ in },
-        pendingStatus: { $0(.success(false)) },
         observePendingStatus: { _ in nil },
         unsubscribeFromPendingStatus: { _ in }
     )
@@ -116,14 +112,14 @@ extension CoreSdkClient.EngagementFile {
     }
 }
 
-extension CoreSdkClient.Salemove.Configuration {
+extension CoreSdkClient.Configuration {
     static func mock(
         siteId: String = "mocked-id",
-        region: CoreSdkClient.Salemove.Region = .us,
-        authMethod: CoreSdkClient.Salemove.AuthorizationMethod = .mock,
+        region: CoreSdkClient.Region = .us,
+        authMethod: CoreSdkClient.AuthorizationMethod = .mock,
         suppressPushNotificationsPermissionRequestDuringAuthentication: Bool = false
     ) throws -> Self {
-        try CoreSdkClient.Salemove.Configuration(
+        try CoreSdkClient.Configuration(
             siteId: siteId,
             region: region,
             authorizingMethod: authMethod,
@@ -132,7 +128,7 @@ extension CoreSdkClient.Salemove.Configuration {
     }
 }
 
-extension CoreSdkClient.Salemove.AuthorizationMethod {
+extension CoreSdkClient.AuthorizationMethod {
     static let mock = Self.siteApiKey(id: "mockSiteApiKeyId", secret: "mockSiteApiKeySecret")
 }
 
@@ -410,12 +406,6 @@ extension CoreSdkClient.Cancellable {
     static let mock = CoreSdkClient.Cancellable()
 }
 
-extension CoreSdkClient {
-    static var reactiveSwiftDateSchedulerMock: CoreSdkClient.ReactiveSwift.DateScheduler {
-        CoreSdkClient.ReactiveSwift.TestScheduler()
-    }
-}
-
 extension CoreSdkClient.Site.AllowedFileSenders {
     struct Mock: Codable {
         let `operator`: Bool
@@ -496,26 +486,6 @@ extension CoreSdkClient.Site {
                         )
                     )
             )
-    }
-}
-
-extension Queue {
-    static func mock(
-        id: String = "",
-        name: String = "",
-        status: QueueStatus = .unknown(""),
-        isDefault: Bool = false,
-        media: [MediaType] = [],
-        lastUpdated: Date = Date()
-    ) -> Queue {
-        Queue(
-            id: id,
-            name: name,
-            status: status,
-            media: media,
-            isDefault: isDefault,
-            lastUpdated: lastUpdated
-        )
     }
 }
 

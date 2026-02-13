@@ -22,14 +22,18 @@ extension AlertViewController {
         let declineButton = ActionButton(
             props: .init(
                 style: declineButtonStyle,
-                tap: .init { [weak self] in self?.dismiss(animated: true, completion: declined) }
+                tap: .sync(
+                    .init { [weak self] in self?.dismiss(animated: true, completion: declined) }
+                )
             )
         )
 
         let acceptButton = ActionButton(
             props: .init(
                 style: acceptButtonStyle,
-                tap: .init { [weak self] in self?.dismiss(animated: true, completion: accepted) }
+                tap: .sync(
+                    .init { [weak self] in self?.dismiss(animated: true, completion: accepted) }
+                )
             )
         )
         alertView.addActionView(declineButton)

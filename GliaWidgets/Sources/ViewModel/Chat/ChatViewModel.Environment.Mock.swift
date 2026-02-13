@@ -6,7 +6,7 @@ import Foundation
 extension ChatViewModel.Environment {
     static let mock = Self(
         secureConversations: .mock,
-        fetchFile: { _, _, _ in },
+        fetchFile: { _, _ in .mock() },
         uploadFileToEngagement: { _, _, _ in },
         fileManager: .mock,
         data: .mock,
@@ -22,13 +22,13 @@ extension ChatViewModel.Environment {
                 )
         },
         loadChatMessagesFromHistory: { true },
-        fetchSiteConfigurations: { _ in },
+        fetchSiteConfigurations: { try .mock() },
         getCurrentEngagement: { return nil },
         getNonTransferredSecureConversationEngagement: { return nil },
         timerProviding: .mock,
         uuid: { UUID.mock },
         uiApplication: .mock,
-        fetchChatHistory: { _ in },
+        fetchChatHistory: { [] },
         fileUploadListStyle: .initial,
         createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:),
         createSendMessagePayload: { _, _ in .mock() },
