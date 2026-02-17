@@ -33,7 +33,14 @@ extension Theme {
                 isFontScalingEnabled: true
             )
         )
-
+        let endScreenShareButton = HeaderButtonStyle(
+            image: Asset.startScreenShare.image,
+            color: color.baseLight,
+            accessibility: .init(
+                label: Localization.General.end,
+                hint: ""
+            )
+        )
         let header = HeaderStyle(
             titleFont: font.header2,
             titleColor: color.baseLight,
@@ -289,6 +296,7 @@ extension Theme {
                 isFontScalingEnabled: true
             )
         )
+#warning("check Localization.Call.Unmute.button")
         let muteButton = CallButtonStyle(
             active: CallButtonStyle.StateStyle(
                 backgroundColor: activeBackgroundColor,

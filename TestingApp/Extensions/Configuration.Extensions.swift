@@ -79,6 +79,7 @@ extension Configuration: Codable {
             site: container.decode(String.self, forKey: .site),
             visitorContext: container.decodeIfPresent(VisitorContext.self, forKey: .visitorContext),
             pushNotifications: container.decodeIfPresent(PushNotifications.self, forKey: .pushNotifications) ?? .disabled,
+            isWhiteLabelApp: container.decodeIfPresent(Bool.self, forKey: .isWhiteLabelApp) ?? false,
             manualLocaleOverride: container.decodeIfPresent(String.self, forKey: .manualLocaleOverride) ?? nil,
             suppressPushNotificationsPermissionRequestDuringAuthentication: container
                 .decodeIfPresent(
@@ -95,6 +96,7 @@ extension Configuration: Codable {
         try container.encode(site, forKey: .site)
         try container.encode(visitorContext, forKey: .visitorContext)
         try container.encode(pushNotifications, forKey: .pushNotifications)
+        try container.encode(isWhiteLabelApp, forKey: .isWhiteLabelApp)
         try container.encode(manualLocaleOverride, forKey: .manualLocaleOverride)
         try container.encode(
             suppressPushNotificationsPermissionRequestDuringAuthentication,
@@ -216,8 +218,6 @@ extension ConfigurationError: CustomStringConvertible {
             return "invalidSiteApiKey"
         case .invalidRegionEndpoint:
             return "invalidRegionEndpoint"
-        case .invalidConfiguration:
-            return "invalidConfiguration"
         @unknown default:
             return "unknown default: '\(self.rawValue)'"
         }

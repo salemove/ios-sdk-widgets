@@ -15,6 +15,7 @@ final class SettingsViewController: UIViewController {
     private var queueIDCell: SettingsTextCell!
     private var environmentCell: EnvironmentSettingsTextCell!
     private var visitorContextAssedIdCell: SettingsTextCell!
+    private var isWhiteLabelAppCell: SettingsSwitchCell!
     private var manualLocaleOverrideCell: SettingsTextCell!
     private var suppressPushPermissionCell: SettingsSwitchCell!
     private var bubbleFeatureCell: SettingsSwitchCell!
@@ -160,6 +161,11 @@ private extension SettingsViewController {
         )
         manualLocaleOverrideCell.textField.accessibilityIdentifier = "settings_manual_locale_override_textfield"
 
+        isWhiteLabelAppCell = SettingsSwitchCell(
+            title: "Is white label App",
+            isOn: props.config.isWhiteLabelApp
+        )
+
         suppressPushPermissionCell = SettingsSwitchCell(
             title: "Suppress push permission during auth",
             isOn: props.config.suppressPushNotificationsPermissionRequestDuringAuthentication
@@ -289,6 +295,7 @@ private extension SettingsViewController {
             queueIDCell,
             visitorContextAssedIdCell,
             manualLocaleOverrideCell,
+            isWhiteLabelAppCell,
             suppressPushPermissionCell
         ]
         configurationSection = Section(
@@ -303,6 +310,8 @@ private extension SettingsViewController {
 
         let manualLocaleOverrideText = manualLocaleOverrideCell.textField.text ?? ""
         let manualLocaleOverride = manualLocaleOverrideText.isEmpty ? nil : manualLocaleOverrideText
+        
+        let isWhiteLabelApp = isWhiteLabelAppCell.switcher.isOn
         let suppressPushPermission = suppressPushPermissionCell.switcher.isOn
 
         props.changeConfig(
@@ -311,6 +320,7 @@ private extension SettingsViewController {
                 environment: environmentCell.environment,
                 site: siteCell.textField.text ?? "",
                 visitorContext: uuid.map { Configuration.VisitorContext(assetId: $0) },
+                isWhiteLabelApp: isWhiteLabelApp,
                 manualLocaleOverride: manualLocaleOverride,
                 suppressPushNotificationsPermissionRequestDuringAuthentication: suppressPushPermission
             )

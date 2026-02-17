@@ -18,6 +18,10 @@ public struct Configuration {
     /// development/debug time, and `production` for release.
     public var pushNotifications: PushNotifications
 
+    /// Controls the visibility of the "Powered by" text and image.
+    @available(*, deprecated, message: "Replaced by RemoteConfiguration.isWhiteLabelApp")
+    public let isWhiteLabelApp: Bool
+
     /// Company name. Appears during connection with operator.
     public let companyName: String
 
@@ -42,6 +46,7 @@ public struct Configuration {
     ///   - site: The site to use.
     ///   - visitorContext: Additional context about the visitor that operator may need.
     ///   - pushNotifications: Push notifications to use.
+    ///   - isWhiteLabelApp: Boolean for whether the app is white label or not.
     ///   - companyName: Name of the company.
     ///   - manualLocaleOverride: The name of the manual locale override. If not set, 
     ///   or if set as `nil`, then the default locale from site settings will be used.
@@ -54,6 +59,7 @@ public struct Configuration {
         site: String,
         visitorContext: VisitorContext? = nil,
         pushNotifications: PushNotifications = .disabled,
+        isWhiteLabelApp: Bool = false,
         companyName: String = "",
         manualLocaleOverride: String? = nil,
         suppressPushNotificationsPermissionRequestDuringAuthentication: Bool = false,
@@ -64,6 +70,7 @@ public struct Configuration {
         self.site = site
         self.visitorContext = visitorContext
         self.pushNotifications = pushNotifications
+        self.isWhiteLabelApp = isWhiteLabelApp
         self.companyName = companyName
         self.manualLocaleOverride = manualLocaleOverride
         self.suppressPushNotificationsPermissionRequestDuringAuthentication = suppressPushNotificationsPermissionRequestDuringAuthentication

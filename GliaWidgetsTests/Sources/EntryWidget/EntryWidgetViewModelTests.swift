@@ -8,7 +8,7 @@ class EntryWidgetViewModelTests: XCTestCase {
         let entryWidget = EntryWidget.mock()
         
         let viewModel = EntryWidgetView.Model(
-            theme: .mock(),
+            theme: .mock(showsPoweredBy: true),
             showHeader: true,
             configuration: .mock(showPoweredBy: true),
             viewStatePublisher: entryWidget.$viewState,
@@ -18,11 +18,25 @@ class EntryWidgetViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.showPoweredBy)
     }
     
+    func test_doesNotShowPoweredByUsingThemeProperty() {
+        let entryWidget = EntryWidget.mock()
+        
+        let viewModel = EntryWidgetView.Model(
+            theme: .mock(showsPoweredBy: false),
+            showHeader: true,
+            configuration: .mock(showPoweredBy: true),
+            viewStatePublisher: entryWidget.$viewState,
+            mediaTypeSelected: { _ in }
+        )
+        
+        XCTAssertFalse(viewModel.showPoweredBy)
+    }
+    
     func test_doesNotShowPoweredByUsingConfigurationProperty() {
         let entryWidget = EntryWidget.mock()
         
         let viewModel = EntryWidgetView.Model(
-            theme: .mock(),
+            theme: .mock(showsPoweredBy: true),
             showHeader: true,
             configuration: .mock(showPoweredBy: false),
             viewStatePublisher: entryWidget.$viewState,

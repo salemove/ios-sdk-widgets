@@ -250,7 +250,6 @@ extension CoreSdkClient {
                 self.secureMessageAction = secureMessageAction
             }
         }
-
         var applicationDidRegisterForRemoteNotificationsWithDeviceToken: (
             _ application: UIApplication,
             _ deviceToken: Data

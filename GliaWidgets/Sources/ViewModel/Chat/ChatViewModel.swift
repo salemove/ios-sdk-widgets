@@ -1,7 +1,6 @@
 import Foundation
 import Combine
 
-// swiftlint:disable file_length
 class ChatViewModel: EngagementViewModel {
     typealias ActionCallback = (Action) -> Void
     typealias DelegateCallback = (DelegateEvent) -> Void
@@ -69,7 +68,6 @@ class ChatViewModel: EngagementViewModel {
 
     private(set) var entryWidget: EntryWidget?
 
-    // swiftlint:disable function_body_length
     init(
         interactor: Interactor,
         call: ObservableValue<Call?>,
@@ -155,7 +153,6 @@ class ChatViewModel: EngagementViewModel {
             }
         }
     }
-    // swiftlint:enable function_body_length
 
     override func viewDidAppear() {
         super.viewDidAppear()
@@ -1174,4 +1171,3 @@ extension ChatViewModel {
     }
 }
 #endif
-// swiftlint:enable file_length

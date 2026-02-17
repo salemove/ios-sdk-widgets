@@ -62,8 +62,7 @@ extension Survey.ViewController.Props {
                     setQuestion: { questions[$0] = $1; props.endEditing() },
                     updateProps: updateProps
                 )
-            case .unknown:
-                break
+
             @unknown default:
                 break
             }

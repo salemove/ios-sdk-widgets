@@ -27,7 +27,7 @@ final class CallVisualizerTests: XCTestCase {
 
     func testHandlingInteractorEventWhenEngagementIsLive() {
         enum Call { case updateState }
-        let calls: [Call] = []
+        var calls: [Call] = []
         var environmentMock = CallVisualizer.Environment.mock
         environmentMock.getCurrentEngagement = { .mock() }
 

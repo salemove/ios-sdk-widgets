@@ -18,8 +18,6 @@ enum ChatMessageSender: Int, Codable {
             self = .omniguide
         case .system:
             self = .system
-        case .unknown:
-            self = .unknown
         @unknown default:
             self = .unknown
         }

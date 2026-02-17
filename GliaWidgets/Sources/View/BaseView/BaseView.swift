@@ -2,11 +2,11 @@ import UIKit
 
 class BaseView: UIView {
     var currentOrientation: UIInterfaceOrientation {
-        let windowScene = UIApplication.shared.connectedScenes
-                .compactMap { $0 as? UIWindowScene }
-                .first { $0.activationState == .foregroundActive }
+        guard let windowScene = UIApplication.shared.windows.first?.windowScene else {
+            return .portrait
+        }
 
-        return windowScene?.interfaceOrientation ?? .portrait
+        return windowScene.interfaceOrientation
     }
 
     required init() {

@@ -89,7 +89,6 @@ private extension Glia {
     static let markUnreadMessagesDelaySeconds = 6
 }
 
-// swiftlint:disable type_body_length
 /// Glia's engagement interface.
 public class Glia {
     /// A singleton to access the Glia's interface.
@@ -236,7 +235,6 @@ public class Glia {
         }
     }
 
-    // swiftlint:disable cyclomatic_complexity function_body_length
     /// Setup SDK using specific engagement configuration without starting the engagement.
     /// - Parameters:
     ///   - configuration: Engagement configuration.
@@ -276,6 +274,10 @@ public class Glia {
             $0[.apiKeyId] = .string(configuration.authorizationMethod.id)
             $0[.environment] = .string(configuration.environment.rawValue)
             $0[.localeCode] = .string(configuration.manualLocaleOverride ?? "N/A")
+        }
+
+        if configuration.isWhiteLabelApp {
+            theme.showsPoweredBy = false
         }
 
         if let uiConfig {
@@ -384,7 +386,6 @@ public class Glia {
             }
         }
     }
-    // swiftlint:enable cyclomatic_complexity function_body_length
 
     /// Minimizes engagement view if ongoing engagement exists.
     /// Use this function to minimize the engagement view programmatically
@@ -604,7 +605,6 @@ public class Glia {
         environment.coreSdk.configureLogLevel(level)
     }
 }
-// swiftlint:enable type_body_length
 
 // MARK: - Internal
 extension Glia {

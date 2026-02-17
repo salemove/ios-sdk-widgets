@@ -126,7 +126,6 @@ extension SecureConversations {
         }
 
         private func previewImage(for file: Kind.LocalFile, size: CGSize) -> UIImage? {
-            if isRunningTests { return nil } // or return a fixed placeholder UIImage
             guard let data = try? Data(contentsOf: file.url) else {
                 return nil
             }
@@ -216,10 +215,4 @@ extension SecureConversations.FilePreviewView.Kind {
 
 private extension FilePreviewStyle {
     static let initial = FileUploadStyle.initial.enabled.filePreview
-}
-
-extension SecureConversations.FilePreviewView {
-    private var isRunningTests: Bool {
-        ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
-    }
 }

@@ -100,7 +100,7 @@ final class Header: BaseView {
         self.endButton?.isHidden = false
         self.closeButton?.isHidden = true
     }
-
+    
     func hideCloseAndEndButtons() {
         self.endButton?.isHidden = true
         self.closeButton?.isHidden = true
