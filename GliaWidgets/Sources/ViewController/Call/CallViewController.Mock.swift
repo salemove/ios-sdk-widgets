@@ -101,19 +101,11 @@ extension CallViewController {
         )
         let unreadMessages = ObservableValue<Int>.init(with: .zero)
         let startAction = CallViewModel.StartAction.engagement(mediaType: .audio)
-
-        var callViewModelEnv = CallViewModel.Environment.mock
-            callViewModelEnv.timerProviding.scheduledTimerWithTimeIntervalAndTarget = { _, target, _, _, _ in
-                (target as? GliaWidgets.CallDurationCounter)?.update()
-                return .mock
-            }
-
         let viewModel = CallViewModel.mock(
             interactor: interactor,
             call: call,
             unreadMessages: unreadMessages,
-            startWith: startAction,
-            environment: callViewModelEnv
+            startWith: startAction
         )
         interactor.state = .engaged(nil)
 
@@ -126,7 +118,6 @@ extension CallViewController {
         let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
         call.updateAudioStream(with: remoteAudioStream)
         call.updateAudioStream(with: localAudioStream)
-        call.state.value = .started
         viewModel.action?(.connected(name: "Blob The Operator", imageUrl: nil))
         return viewController
     }
@@ -161,8 +152,12 @@ extension CallViewController {
             environment: viewFactEnv
         )
         let viewController = CallViewController.mock(viewModel: viewModel, viewFactory: viewFactory)
-
-        viewModel.action?(.connecting(name: "Blobby Blob", imageUrl: nil))
+        let operatorImageURL = URL.mock
+            .appendingPathComponent("operator")
+            .appendingPathComponent("123")
+            .appendingPathComponent("avatar")
+            .appendingPathExtension("png")
+        viewModel.action?(.connecting(name: "Blobby Blob", imageUrl: operatorImageURL.absoluteString))
         return viewController
     }
 

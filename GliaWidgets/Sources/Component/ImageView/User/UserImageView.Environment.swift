@@ -28,6 +28,15 @@ extension UserImageView.Environment {
         )
     }
 
+    static func create(with environment: ConnectOperatorView.Environment) -> Self {
+        .init(
+            data: environment.data,
+            uuid: environment.uuid,
+            gcd: environment.gcd,
+            imageViewCache: environment.imageViewCache
+        )
+    }
+
     static func create(with environment: GvaGalleryListView.Environment) -> Self {
         .init(
             data: environment.data,

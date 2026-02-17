@@ -1,5 +1,4 @@
 import UIKit
-import SwiftUI
 
 extension CallView {
     struct Props {
@@ -17,12 +16,54 @@ class CallView: EngagementView {
 
     var callDuration: String? {
         didSet {
-            guard !state.isOnHold else { return }
-            updateConnectViewState()
+            guard !isVisitrOnHold else { return }
+
+            secondLabel.text = callDuration
+            secondLabel.accessibilityLabel = callDuration
+
+            connectView.statusView.setSecondText(callDuration, animated: false)
         }
     }
 
-    var operatorName: String?
+    var isVisitrOnHold: Bool = false {
+        didSet {
+            connectView.operatorView.isVisitorOnHold = isVisitrOnHold
+
+            if isVisitrOnHold {
+                secondLabel.text = style.onHoldStyle.onHoldText
+                secondLabel.accessibilityLabel = style.onHoldStyle.onHoldText
+                connectView.statusView.setSecondText(style.onHoldStyle.onHoldText, animated: false)
+                connectView.statusView.setStyle(style.connect.onHold)
+            } else {
+                secondLabel.text = callDuration
+                secondLabel.accessibilityLabel = callDuration
+                connectView.statusView.setSecondText(callDuration, animated: false)
+                connectView.statusView.setStyle(style.connect.connected)
+            }
+
+            if case .video = mode {
+                connectView.isHidden = !isVisitrOnHold
+                topStackView.isHidden = isVisitrOnHold
+                remoteVideoView.isHidden = isVisitrOnHold
+            }
+
+            bottomLabel.text = isVisitrOnHold
+                ? style.onHoldStyle.descriptionText
+                : nil
+
+            bottomLabel.isHidden = !isVisitrOnHold
+            localVideoView.label.isHidden = !isVisitrOnHold
+        }
+    }
+
+    lazy var operatorNameLabel: UILabel = {
+        let label = UILabel()
+        label.accessibilityHint = style.accessibility.operatorNameHint
+        return label
+    }()
+
+    lazy var secondLabel = UILabel()
+
     let topLabel = UILabel()
     let bottomLabel = UILabel()
     let buttonBar: CallButtonBar
@@ -41,6 +82,7 @@ class CallView: EngagementView {
             .remote,
             flipCameraButtonStyle: style.flipCameraButtonStyle
         )
+        // Consider to provide Operator name instead of generic 'Operator's'
         streamView.accessibilityLabel = style.accessibility.remoteVideoLabel
         return streamView
     }()
@@ -51,8 +93,11 @@ class CallView: EngagementView {
             localVideoView.flipCameraAccessibilityLabelWithTap = flipCameraAccessibilityLabelWithTap
         }
     }
+    let topStackView = UIStackView()
+
     private let style: CallStyle
     private var mode: Mode = .audio
+    private var hideBarsWorkItem: DispatchWorkItem?
     private var headerTopConstraint: NSLayoutConstraint!
     private var buttonBarBottomConstraint: NSLayoutConstraint!
     private var remoteVideoViewHeightConstraint: NSLayoutConstraint!
@@ -68,15 +113,6 @@ class CallView: EngagementView {
     }
     private let environment: Environment
 
-    private(set) var state: EngagementState
-    private lazy var connectView: CallConnectViewHost = {
-        CallConnectViewHost(
-            connectStyle: style.connect,
-            callStyle: style,
-            durationHint: style.connect.connected.accessibility.secondTextHint,
-            imageCache: environment.imageViewCache
-        )
-    }()
     var props: Props
 
     init(
@@ -88,9 +124,9 @@ class CallView: EngagementView {
         self.environment = environment
         self.buttonBar = CallButtonBar(with: style.buttonBar)
         self.props = props
-        self.state = .initial
         super.init(
             with: style,
+            layout: .call,
             environment: .create(with: environment),
             headerProps: props.header
         )
@@ -110,6 +146,26 @@ class CallView: EngagementView {
 
     override func setup() {
         accessibilityIdentifier = "call_root_view"
+
+        topStackView.axis = .vertical
+        topStackView.spacing = 8
+        topStackView.addArrangedSubviews([operatorNameLabel, secondLabel])
+
+        operatorNameLabel.font = style.operatorNameFont
+        operatorNameLabel.textColor = style.operatorNameColor
+        operatorNameLabel.textAlignment = .center
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: operatorNameLabel
+        )
+
+        secondLabel.font = style.durationFont
+        secondLabel.textColor = style.durationColor
+        secondLabel.textAlignment = .center
+        setFontScalingEnabled(
+            style.accessibility.isFontScalingEnabled,
+            for: secondLabel
+        )
 
         topLabel.text = style.topText
         topLabel.font = style.topTextFont
@@ -145,6 +201,7 @@ class CallView: EngagementView {
         localVideoView.show = { [weak self] in
             self?.setLocalVideoFrame(isVisible: $0)
         }
+
         localVideoView.pan = { [weak self] in
             self?.adjustLocalVideoFrameAfterPanGesture(translation: $0)
         }
@@ -157,20 +214,37 @@ class CallView: EngagementView {
 
     func switchTo(_ mode: Mode) {
         self.mode = mode
-        connectView.setMode(mode)
-        updateVisibilityForCurrentState()
 
-        if mode == .video, currentOrientation.isLandscape {
-            hideLandscapeBarsAfterDelay()
+        switch mode {
+        case .audio:
+            connectView.isHidden = false
+            topStackView.isHidden = true
+            remoteVideoView.isHidden = true
+            localVideoView.isHidden = true
+        case .video:
+            connectView.isHidden = !isVisitrOnHold
+            topStackView.isHidden = isVisitrOnHold
+            remoteVideoView.isHidden = isVisitrOnHold
+            localVideoView.isHidden = false
+            if currentOrientation.isLandscape {
+                hideLandscapeBarsAfterDelay()
+            }
+        case .upgrading:
+            connectView.isHidden = false
+            topStackView.isHidden = true
+            remoteVideoView.isHidden = true
+            localVideoView.isHidden = true
         }
 
         adjustForCurrentOrientation()
     }
 
-    func setConnectState(_ state: EngagementState, animated: Bool) {
-        self.state = state
-        updateConnectViewState()
-        updateVisibilityForCurrentState()
+    func setConnectState(_ state: ConnectView.State, animated: Bool) {
+        connectView.setState(state, animated: animated)
+
+        if isVisitrOnHold {
+            connectView.statusView.setSecondText(style.onHoldStyle.onHoldText, animated: false)
+        }
     }
 
     func willRotate(to orientation: UIInterfaceOrientation, duration: TimeInterval) {
@@ -197,36 +271,6 @@ class CallView: EngagementView {
         } else {
             headerTopConstraint.constant = 0
             buttonBarBottomConstraint.constant = 0
-        }
-    }
-
-    private func updateConnectViewState() {
-        let duration = state.isOnHold ? nil : callDuration
-        connectView.setState(state, durationText: duration)
-    }
-
-    func setVisitorOnHold(_ isOnHold: Bool) {
-        state = state.applyingOnHold(
-            isOnHold,
-            onHoldText: style.onHoldStyle.onHoldText,
-            descriptionText: style.onHoldStyle.descriptionText,
-            operatorNameOverride: operatorName
-        )
-        bottomLabel.text = isOnHold ? style.onHoldStyle.descriptionText : nil
-        bottomLabel.isHidden = !isOnHold
-        localVideoView.label.isHidden = !isOnHold
-        updateConnectViewState()
-        updateVisibilityForCurrentState()
-    }
-
-    private func updateVisibilityForCurrentState() {
-        switch mode {
-        case .audio, .upgrading:
-            remoteVideoView.isHidden = true
-            localVideoView.isHidden = true
-        case .video:
-            remoteVideoView.isHidden = state.isOnHold
-            localVideoView.isHidden = false
         }
     }
 
@@ -259,10 +303,15 @@ class CallView: EngagementView {
 
         addSubview(connectView)
         connectView.translatesAutoresizingMaskIntoConstraints = false
-        constraints += connectView.topAnchor.constraint(equalTo: header.bottomAnchor)
-        constraints += connectView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor)
-        constraints += connectView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
-        constraints += connectView.heightAnchor.constraint(greaterThanOrEqualToConstant: 265)
+        constraints += connectView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 10)
+        constraints += connectView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor)
+        constraints += connectView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
+        constraints += connectView.centerXAnchor.constraint(equalTo: centerXAnchor)
+
+        addSubview(topStackView)
+        topStackView.translatesAutoresizingMaskIntoConstraints = false
+        constraints += topStackView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 50)
+        constraints += topStackView.centerXAnchor.constraint(equalTo: centerXAnchor)
 
         addSubview(buttonBar)
         buttonBar.translatesAutoresizingMaskIntoConstraints = false
@@ -307,10 +356,12 @@ class CallView: EngagementView {
                 header.props = createNewProps(with: header.props, newEffect: .blur)
                 buttonBar.effect = .blur
             }
+            topStackView.alpha = 0.0
             bottomLabel.alpha = 0.0
         } else {
             header.props = createNewProps(with: header.props, newEffect: .none)
             buttonBar.effect = .none
+            topStackView.alpha = 1.0
             bottomLabel.alpha = 1.0
         }
 

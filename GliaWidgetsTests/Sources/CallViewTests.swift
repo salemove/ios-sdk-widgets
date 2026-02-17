@@ -8,15 +8,26 @@ class CallViewTests: XCTestCase {
         let view = viewController.view as! CallView
         
         XCTAssertFalse(view.remoteVideoView.isHidden)
-        view.setVisitorOnHold(true)
+        view.isVisitrOnHold = true
         XCTAssertTrue(view.remoteVideoView.isHidden)
+    }
+    
+    func test_setVisitorOnHoldHidesTopStackViewOnVideoCall() throws {
+        let viewController = try CallViewController.mockVideoCallConnectedState()
+        let view = viewController.view as! CallView
+        
+        XCTAssertFalse(view.topStackView.isHidden)
+        view.isVisitrOnHold = true
+        XCTAssertTrue(view.topStackView.isHidden)
     }
     
     func test_setVisitorOnHoldShowsConnectViewOnVideoCall() throws {
         let viewController = try CallViewController.mockVideoCallConnectedState()
         let view = viewController.view as! CallView
-        view.setVisitorOnHold(true)
-        XCTAssertTrue(view.state.isOnHold)
+        
+        XCTAssertTrue(view.connectView.isHidden)
+        view.isVisitrOnHold = true
+        XCTAssertFalse(view.connectView.isHidden)
     }
     
     func test_setVisitorOnHoldShowsBottomLabelOnVideoCall() throws {
@@ -24,7 +35,7 @@ class CallViewTests: XCTestCase {
         let view = viewController.view as! CallView
         
         XCTAssertTrue(view.bottomLabel.isHidden)
-        view.setVisitorOnHold(true)
+        view.isVisitrOnHold = true
         XCTAssertFalse(view.bottomLabel.isHidden)
     }
     
@@ -33,7 +44,7 @@ class CallViewTests: XCTestCase {
         let view = viewController.view as! CallView
         
         XCTAssertTrue(view.bottomLabel.isHidden)
-        view.setVisitorOnHold(true)
+        view.isVisitrOnHold = true
         XCTAssertFalse(view.bottomLabel.isHidden)
     }
     
@@ -42,9 +53,9 @@ class CallViewTests: XCTestCase {
         let view = viewController.view as! CallView
         
         XCTAssertTrue(view.bottomLabel.isHidden)
-        view.setVisitorOnHold(true)
+        view.isVisitrOnHold = true
         XCTAssertFalse(view.bottomLabel.isHidden)
-        view.setVisitorOnHold(false)
+        view.isVisitrOnHold = false
         XCTAssertTrue(view.bottomLabel.isHidden)
     }
     
@@ -53,9 +64,9 @@ class CallViewTests: XCTestCase {
         let view = viewController.view as! CallView
         
         XCTAssertTrue(view.bottomLabel.isHidden)
-        view.setVisitorOnHold(true)
+        view.isVisitrOnHold = true
         XCTAssertFalse(view.bottomLabel.isHidden)
-        view.setVisitorOnHold(false)
+        view.isVisitrOnHold = false
         XCTAssertTrue(view.bottomLabel.isHidden)
     }
 

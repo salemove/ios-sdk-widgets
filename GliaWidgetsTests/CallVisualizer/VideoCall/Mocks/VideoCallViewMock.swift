@@ -6,11 +6,15 @@ extension CallVisualizer.VideoCallView.Props {
     static func mock(
         style: CallStyle = .mock(),
         callDuration: String? = "",
-        connectState: EngagementState = .initial,
+        connectViewProps: CallVisualizer.VideoCallView.ConnectView.Props = .mock,
         buttonBarProps: CallVisualizer.VideoCallView.CallButtonBar.Props = .mock(),
+        headerTitle: String = "",
+        operatorName: String? = "",
         remoteVideoStream: CoreSdkClient.StreamView? = .none,
         localVideoStream: CoreSdkClient.StreamView? = .none,
         topLabelHidden: Bool = false,
+        connectViewHidden: Bool = false,
+        topStackAlpha: CGFloat = 1.0,
         headerProps: Header.Props = .mock(),
         flipCameraTap: Cmd? = nil,
         flipCameraPropsAccessibility: FlipCameraButton.Props.Accessibility = .nop
@@ -18,11 +22,15 @@ extension CallVisualizer.VideoCallView.Props {
         return .init(
             style: style,
             callDuration: callDuration,
-            connectState: connectState,
+            connectViewProps: connectViewProps,
             buttonBarProps: buttonBarProps,
+            headerTitle: headerTitle,
+            operatorName: operatorName,
             remoteVideoStream: remoteVideoStream,
             localVideoStream: localVideoStream,
             topLabelHidden: topLabelHidden,
+            connectViewHidden: connectViewHidden,
+            topStackAlpha: topStackAlpha,
             headerProps: headerProps,
             flipCameraTap: flipCameraTap,
             flipCameraPropsAccessibility: flipCameraPropsAccessibility

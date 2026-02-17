@@ -10,6 +10,22 @@ extension CallVisualizer {
             }
         }
 
+        var renderCallDuration: String? {
+            didSet {
+                guard renderCallDuration != oldValue else { return }
+                secondLabel.text = renderCallDuration
+                secondLabel.accessibilityLabel = renderCallDuration
+            }
+        }
+
+        var renderOperatorName: String? = "" {
+            didSet {
+                guard renderOperatorName != oldValue else { return }
+                operatorNameLabel.text = renderOperatorName
+                operatorNameLabel.accessibilityLabel = renderOperatorName
+            }
+        }
+
         var renderLocalVideoStream: CoreSdkClient.StreamView? {
             didSet {
                 guard renderLocalVideoStream != oldValue else { return }
@@ -37,7 +53,7 @@ extension CallVisualizer {
             return effectView
         }()
         let buttonBar: CallButtonBar
-        let connectView: CallConnectViewHost
+        let connectView: ConnectView
 
         private lazy var topLabel = UILabel().make { label in
             label.text = props.style.topText
@@ -48,6 +64,12 @@ extension CallVisualizer {
             label.font = props.style.topTextFont
         }
 
+        private lazy var secondLabel = UILabel().make { label in
+            label.font = props.style.durationFont
+            label.textColor = props.style.durationColor
+            label.textAlignment = .center
+        }
+
         lazy var header = Header(props: props.headerProps).make { header in
             header.hideCloseAndEndButtons()
 
@@ -55,6 +77,11 @@ extension CallVisualizer {
                 header.backButton?.accessibilityLabel = backButton.accessibility.label
                 header.backButton?.accessibilityHint = backButton.accessibility.hint
             }
+        }
+
+        private lazy var topStackView = UIStackView().make {
+            $0.axis = .vertical
+            $0.spacing = 8
         }
 
         private var localVideoBounds: CGRect {
@@ -86,17 +113,19 @@ extension CallVisualizer {
             return streamView
         }()
 
+        lazy var operatorNameLabel = UILabel().make {
+            $0.accessibilityHint = props.style.accessibility.operatorNameHint
+            $0.font = props.style.operatorNameFont
+            $0.textColor = props.style.operatorNameColor
+            $0.textAlignment = .center
+        }
+
         // MARK: - Initializer
 
         init(props: Props, environment: Environment) {
             self.props = props
             self.buttonBar = .init(props: props.buttonBarProps)
-            self.connectView = CallConnectViewHost(
-                connectStyle: props.style.connect,
-                callStyle: props.style,
-                durationHint: props.style.connect.connected.accessibility.secondTextHint,
-                imageCache: environment.imageViewCache
-            )
+            self.connectView = .init(props: props.connectViewProps)
             self.environment = environment
             super.init()
             layout()
@@ -111,7 +140,15 @@ extension CallVisualizer {
 
         override func setup() {
             accessibilityIdentifier = "Call_Visualizer_Video_View"
-            connectView.setMode(.video)
+            topStackView.addArrangedSubviews([operatorNameLabel, secondLabel])
+            setFontScalingEnabled(
+                props.style.accessibility.isFontScalingEnabled,
+                for: operatorNameLabel
+            )
+            setFontScalingEnabled(
+                props.style.accessibility.isFontScalingEnabled,
+                for: secondLabel
+            )
             setFontScalingEnabled(
                 props.style.accessibility.isFontScalingEnabled,
                 for: topLabel
@@ -163,10 +200,15 @@ extension CallVisualizer {
 
             addSubview(connectView)
             connectView.translatesAutoresizingMaskIntoConstraints = false
-            constraints += connectView.topAnchor.constraint(equalTo: header.bottomAnchor)
-            constraints += connectView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor)
-            constraints += connectView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
-            constraints += connectView.heightAnchor.constraint(greaterThanOrEqualToConstant: 265)
+            constraints += connectView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 10)
+            constraints += connectView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor)
+            constraints += connectView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
+            constraints += connectView.centerXAnchor.constraint(equalTo: centerXAnchor)
+
+            addSubview(topStackView)
+            topStackView.translatesAutoresizingMaskIntoConstraints = false
+            constraints += topStackView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 50)
+            constraints += topStackView.centerXAnchor.constraint(equalTo: centerXAnchor)
 
             addSubview(buttonBar)
             buttonBar.translatesAutoresizingMaskIntoConstraints = false
@@ -224,11 +266,15 @@ extension CallVisualizer.VideoCallView {
     struct Props: Equatable {
         let style: CallStyle
         let callDuration: String?
-        let connectState: EngagementState
+        let connectViewProps: CallVisualizer.VideoCallView.ConnectView.Props
         let buttonBarProps: CallVisualizer.VideoCallView.CallButtonBar.Props
+        let headerTitle: String
+        let operatorName: String?
         let remoteVideoStream: CoreSdkClient.StreamView?
         let localVideoStream: CoreSdkClient.StreamView?
         let topLabelHidden: Bool
+        let connectViewHidden: Bool
+        let topStackAlpha: CGFloat
         let headerProps: Header.Props
         let flipCameraTap: Cmd?
         let flipCameraPropsAccessibility: FlipCameraButton.Props.Accessibility
@@ -239,11 +285,15 @@ extension CallVisualizer.VideoCallView {
 
 private extension CallVisualizer.VideoCallView {
     func renderProps() {
-        connectView.setState(props.connectState, durationText: props.callDuration)
+        renderCallDuration = props.callDuration
+        connectView.props = props.connectViewProps
         buttonBar.props = props.buttonBarProps
+        renderOperatorName = props.operatorName
         renderRemoteVideoStream = props.remoteVideoStream
         renderLocalVideoStream = props.localVideoStream
         topLabel.isHidden = props.topLabelHidden
+        connectView.isHidden = props.connectViewHidden
+        topStackView.alpha = props.topStackAlpha
         header.props = props.headerProps
         localVideoView.flipCameraAccessibilityLabelWithTap = props.flipCameraTap
             .map { tap in (props.flipCameraPropsAccessibility, tap) }

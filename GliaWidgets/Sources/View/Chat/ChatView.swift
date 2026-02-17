@@ -35,7 +35,7 @@ class ChatView: EngagementView {
     let entryWidgetOverlayView = OverlayView().makeView()
     let secureMessagingBottomBannerView = SecureMessagingBottomBannerView().makeView()
     let sendingMessageUnavailabilityBannerView = SendingMessageUnavailableBannerView().makeView()
-    private var didForceInitialTableLayout = false
+
     // Instead of modifying message entry view's layout to resize, covering bottom safe area,
     // thus affecting existing layout calculations, we add additional view just for that,
     // keeping background color for it reactively in sync with message entry view's one.
@@ -56,12 +56,6 @@ class ChatView: EngagementView {
     lazy var quickReplyView = QuickReplyView(
         style: style.gliaVirtualAssistant.quickReplyButton
     )
-    private lazy var connectView: ChatConnectViewHost = {
-        ChatConnectViewHost(
-            connectStyle: style.connect,
-            imageCache: environment.imageViewCache
-        )
-    }()
     var messageEntryViewBottomConstraint: NSLayoutConstraint?
     var entryWidgetContainerViewHeightConstraint: NSLayoutConstraint?
     private var callBubble: BubbleView?
@@ -124,6 +118,7 @@ class ChatView: EngagementView {
         self.props = props
         super.init(
             with: style,
+            layout: .chat,
             environment: .create(with: environment),
             headerProps: props.header
         )
@@ -143,11 +138,6 @@ class ChatView: EngagementView {
             UIColor.clear.cgColor
         ]
         topContentShadowGradient.locations = [0, 1]
-
-        // UIHostingController-backed content does not resolve its intrinsic
-        // content size on the first layout pass, which can cause the initial table row
-        // height to be incorrect. Trigger a one-time reload once the view has a real size.
-        forceInitialTableLayoutIfNeeded()
     }
 
     override func setup() {
@@ -180,16 +170,6 @@ class ChatView: EngagementView {
         super.defineLayout()
         setupConstraints()
     }
-
-    private func forceInitialTableLayoutIfNeeded() {
-        guard !didForceInitialTableLayout else { return }
-        guard window != nil else { return }
-        guard tableView.bounds.width > 0, tableView.bounds.height > 0 else { return }
-        didForceInitialTableLayout = true
-        environment.gcd.mainQueue.asyncAfterDeadline(.now() + 0.1) {
-            self.tableView.reloadData()
-        }
-    }
 }
 
 extension ChatView {
@@ -219,8 +199,8 @@ extension ChatView {
         typingIndicatorContainer.isHidden = isHidden
     }
 
-    func setConnectState(_ state: EngagementState, animated: Bool) {
-        connectView.setState(state)
+    func setConnectState(_ state: ConnectView.State, animated: Bool) {
+        connectView.setState(state, animated: animated)
         updateTableView(animated: animated)
     }
 
@@ -417,8 +397,8 @@ extension ChatView {
             )
         case let .callUpgrade(kind, duration):
             return callUpgradeContent(kind: kind, duration: duration)
-        case .operatorConnected:
-            return operatorConnectedContent()
+        case let .operatorConnected(name, imageUrl):
+            return operatorConnectedContent(name: name, imageUrl: imageUrl)
         case .transferring:
             return transferringContent()
         case .unreadMessageDivider:
@@ -967,11 +947,33 @@ extension ChatView {
         return .callUpgrade(view)
     }
 
-    private func operatorConnectedContent() -> ChatItemCell.Content {
+    private func operatorConnectedContent(
+        name: String?,
+        imageUrl: String?
+    ) -> ChatItemCell.Content {
+        let connectView = ConnectView(
+            with: style.connect,
+            layout: .chat,
+            environment: .create(with: environment)
+        )
+        connectView.setState(
+            .connected(name: name, imageUrl: imageUrl),
+            animated: false
+        )
         return .queueOperator(connectView)
     }
 
     private func transferringContent() -> ChatItemCell.Content {
+        let connectView = ConnectView(
+            with: style.connect,
+            layout: .chat,
+            environment: .create(with: environment)
+        )
+        connectView.setState(
+            .transferring,
+            animated: false
+        )
+
         return .queueOperator(connectView)
     }
 

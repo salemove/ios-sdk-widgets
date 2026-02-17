@@ -3,7 +3,7 @@ import UIKit
 class ChatItemCell: UITableViewCell {
     enum Content {
         case none
-        case queueOperator(ChatConnectViewHost)
+        case queueOperator(ConnectView)
         case outgoingMessage(VisitorChatMessageView)
         case visitorMessage(VisitorChatMessageView)
         case operatorMessage(OperatorChatMessageView)
