@@ -13,7 +13,8 @@ extension UIKitBased.UIApplication {
         windows: {
             UIApplication.shared.connectedScenes
                 .compactMap { $0 as? UIWindowScene }
-                .flatMap { $0.windows }
+                .first(where: { $0.activationState == .foregroundActive })?
+                .windows ?? []
         },
         connectionScenes: { UIApplication.shared.connectedScenes },
         applicationState: { UIApplication.shared.applicationState }
