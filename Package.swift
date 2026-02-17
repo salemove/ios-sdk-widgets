@@ -35,13 +35,13 @@ let package = Package(
         ),
         .binaryTarget(
             name: "GliaCoreSDK",
-            url: "https://github.com/salemove/ios-bundle/releases/download/2.6.2/GliaCoreSDK.xcframework.zip",
+            url: "https://github.com/salemove/ios-bundle/releases/download/2.6.3/GliaCoreSDK.xcframework.zip",
             checksum: "54d77e2c7a5f9790433138c30a67fa5540f24a42e0ed9aaf21ea6303106346b3"
         ),
         .binaryTarget(
             name: "GliaWidgetsSDKXcf",
-            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/3.4.0/GliaWidgetsXcf.xcframework.zip",
-            checksum: "9741bc7cc3f196d55eaa132371591e4b641db1629e772a3d72398eb7dc31345b"
+            url: "https://github.com/salemove/ios-sdk-widgets/releases/download/3.5.0/GliaWidgetsXcf.xcframework.zip",
+            checksum: "cbf083c228feef633062de88cc712bdf6e1267c23d1c9731a5975af69798a498"
         ),
         .binaryTarget(
             name: "GliaOpenTelemetry",
