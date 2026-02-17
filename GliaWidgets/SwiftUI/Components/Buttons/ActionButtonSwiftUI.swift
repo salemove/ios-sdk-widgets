@@ -6,10 +6,10 @@ struct ActionButtonSwiftUI: View {
 
     var body: some View {
         Text(model.style.title)
-            .setFont(model.style.titleFont, textStyle: model.style.textStyle)
-            .setColor(model.style.titleColor)
+            .font(.convert(model.style.titleFont))
+            .foregroundColor(SwiftUI.Color(model.style.titleColor))
             .padding(Self.edgeInsets)
-            .applyColorTypeBackground(model.style.backgroundColor)
+            .background(SwiftUI.Color(model.style.backgroundColor.color))
             .cornerRadius(model.style.cornerRaidus ?? 0)
             .overlay(
                 RoundedRectangle(cornerRadius: model.style.cornerRaidus ?? 0)

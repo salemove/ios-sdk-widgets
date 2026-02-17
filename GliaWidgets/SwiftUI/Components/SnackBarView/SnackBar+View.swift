@@ -32,8 +32,8 @@ extension SnackBar {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(SwiftUI.Color(style.background))
                 .cornerRadius(4)
-                .setColor(style.textColor)
-                .setFont(style.textFont)
+                .foregroundColor(SwiftUI.Color(style.textColor))
+                .font(.convert(style.textFont))
                 .padding(.horizontal)
                 .offset(y: currentOffset)
                 .onReceive(publisher) { newState in
