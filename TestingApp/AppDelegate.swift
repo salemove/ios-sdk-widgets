@@ -3,20 +3,26 @@ import GliaWidgets
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    func application(
-        _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-    ) -> Bool {
+    var window: UIWindow?
+    lazy var deeplinkService: DeeplinksService = {
+        let deepLinksHandlers: [DeeplinksService.Host: DeeplinkHandler.Type] = [
+            .configure: ConfigurationDeeplinkHandler.self,
+            .widgets: SettingsDeeplinkHandler.self
+        ]
+        return .init(window: window, handlers: deepLinksHandlers)
+    }()
+
+    func applicationDidFinishLaunching(_ application: UIApplication) {
+        handleProcessInfo()
         handleSetAnimationsEnabled()
-        return true
     }
 
     func application(
-        _ application: UIApplication,
-        configurationForConnecting connectingSceneSession: UISceneSession,
-        options: UIScene.ConnectionOptions
-    ) -> UISceneConfiguration {
-        UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+        _ app: UIApplication,
+        open url: URL,
+        options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+    ) -> Bool {
+        deeplinkService.openUrl(url, withOptions: options)
     }
 
     func application(
@@ -35,6 +41,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFailToRegisterForRemoteNotificationsWithError error: Error
     ) {
         debugPrint("💥 Failed to register for remote notifications. Error: \(error.localizedDescription)")
+    }
+
+    private  func handleProcessInfo() {
+        guard let configurationUrl = ProcessInfo.processInfo.environment["CONFIGURATION_URL"] else {
+            return
+        }
+
+        debugPrint(configurationUrl)
+
+        guard let url = URL(string: configurationUrl) else { return }
+        deeplinkService.openUrl(url, withOptions: [:])
     }
 
     private func handleSetAnimationsEnabled() {
