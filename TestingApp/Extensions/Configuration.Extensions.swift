@@ -105,37 +105,22 @@ extension Configuration: Codable {
 
 extension Configuration.AuthorizationMethod: Codable {
     enum CodingKeys: String, CodingKey {
-        case type, id, secret
-    }
-
-    private enum AuthorizationType: String, Codable {
-        case siteApiKey
-        case userApiKey
+        case id, secret
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let type = try container.decodeIfPresent(AuthorizationType.self, forKey: .type) ?? .siteApiKey
-        let id = try container.decode(String.self, forKey: .id)
-        let secret = try container.decode(String.self, forKey: .secret)
 
-        switch type {
-        case .userApiKey:
-            self = .userApiKey(id: id, secret: secret)
-        case .siteApiKey:
-            self = .siteApiKey(id: id, secret: secret)
-        }
+        self = try .siteApiKey(
+            id: container.decode(String.self, forKey: .id),
+            secret: container.decode(String.self, forKey: .secret)
+        )
     }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
         case let .siteApiKey(id, secret):
-            try container.encode(AuthorizationType.siteApiKey, forKey: .type)
-            try container.encode(id, forKey: .id)
-            try container.encode(secret, forKey: .secret)
-        case let .userApiKey(id, secret):
-            try container.encode(AuthorizationType.userApiKey, forKey: .type)
             try container.encode(id, forKey: .id)
             try container.encode(secret, forKey: .secret)
         @unknown default:
