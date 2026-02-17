@@ -1,9 +1,0 @@
-{
-  "enableAllProjectMcpServers": true,
-  "enabledMcpjsonServers": [
-    "ios-simulator",
-    "mobile-mcp",
-    "atlassian",
-    "github"
-  ]
-}
