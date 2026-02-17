@@ -56,8 +56,8 @@ extension CallStyle {
         _ bottomText: RemoteConfiguration.Text?,
         assetsBuilder: RemoteConfiguration.AssetsBuilder
     ) {
-        bottomText?.alignment.unwrap {
-            bottomTextAlignment = $0.asNsTextAlignment
+        bottomText?.alignment.unwrap { _ in
+            // The logic for bottomText alignment has not been implemented
         }
 
         UIFont.convertToFont(
@@ -76,8 +76,8 @@ extension CallStyle {
         _ topText: RemoteConfiguration.Text?,
         assetsBuilder: RemoteConfiguration.AssetsBuilder
     ) {
-        topText?.alignment.unwrap {
-            topTextAlignment = $0.asNsTextAlignment
+        topText?.alignment.unwrap { _ in
+            // The logic for topText alignment has not been implemented
         }
 
         topText?.background.unwrap { _ in

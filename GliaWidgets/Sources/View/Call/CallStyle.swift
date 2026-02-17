@@ -41,9 +41,6 @@ public class CallStyle: EngagementStyle {
     /// Text style of the top text.
     public var topTextStyle: UIFont.TextStyle
 
-    /// Alignment of the top text.
-    public var topTextAlignment: NSTextAlignment
-
     /// The text shown in the bottom section of the view.
     public var bottomText: String
 
@@ -55,9 +52,6 @@ public class CallStyle: EngagementStyle {
 
     /// Text style of the bottom text.
     public var bottomTextStyle: UIFont.TextStyle
-
-    /// Alignment of the bottom text.
-    public var bottomTextAlignment: NSTextAlignment
 
     /// Style of the call view bottom button bar (with buttons like "Chat", "Video", "Mute", "Speaker" and "Minimize").
     public var buttonBar: CallButtonBarStyle
@@ -95,12 +89,10 @@ public class CallStyle: EngagementStyle {
     ///   - topTextFont: Font of the top text.
     ///   - topTextColor: Color of the top text.
     ///   - topTextStyle: Text style of the top text.
-    ///   - topTextAlignment: Alignment of the top text.
     ///   - bottomText: The text shown in the bottom section of the view.
     ///   - bottomTextFont: Font of the bottom text.
     ///   - bottomTextColor: Color of the bottom text.
     ///   - bottomTextStyle: Text style of the bottom text.
-    ///   - bottomTextAlignment: Alignment of the bottom text.
     ///   - buttonBar: Style of the button bar.
     ///   - onHoldStyle: Style of the call view when the visitor is put on hold.
     ///   - snackBar: Style of the call view snack bar.
@@ -126,12 +118,10 @@ public class CallStyle: EngagementStyle {
         topTextFont: UIFont,
         topTextColor: UIColor,
         topTextStyle: UIFont.TextStyle = .footnote,
-        topTextAlignment: NSTextAlignment = .center,
         bottomText: String,
         bottomTextFont: UIFont,
         bottomTextColor: UIColor,
         bottomTextStyle: UIFont.TextStyle = .body,
-        bottomTextAlignment: NSTextAlignment = .center,
         buttonBar: CallButtonBarStyle,
         onHoldStyle: OnHoldStyle,
         flipCameraButtonStyle: FlipCameraButtonStyle,
@@ -152,12 +142,10 @@ public class CallStyle: EngagementStyle {
         self.topTextFont = topTextFont
         self.topTextColor = topTextColor
         self.topTextStyle = topTextStyle
-        self.topTextAlignment = topTextAlignment
         self.bottomText = bottomText
         self.bottomTextFont = bottomTextFont
         self.bottomTextColor = bottomTextColor
         self.bottomTextStyle = bottomTextStyle
-        self.bottomTextAlignment = bottomTextAlignment
         self.buttonBar = buttonBar
         self.onHoldStyle = onHoldStyle
         self.accessibility = accessibility
