@@ -3,12 +3,27 @@ import GliaWidgets
 import GliaCoreSDK
 
 extension SettingsView {
+    enum AuthorizationMethodSelection: String, CaseIterable {
+        case siteApiKey
+        case userApiKey
+    }
+
+    private enum AuthorizationCredentialsDefaultsKey {
+        static let siteApiKeyId = "siteApiKeyId"
+        static let siteApiKeySecret = "siteApiKeySecret"
+        static let userApiKeyId = "userApiKeyId"
+        static let userApiKeySecret = "userApiKeySecret"
+    }
+
     @MainActor
     final class ViewModel: ObservableObject {
         var appState: AppState
 
+        @Published var authorizationMethodSelection: AuthorizationMethodSelection = .siteApiKey
         @Published var siteApiKeyId: String = ""
         @Published var siteApiKeySecret: String = ""
+        @Published var userApiKeyId: String = ""
+        @Published var userApiKeySecret: String = ""
         @Published var site: String = ""
         @Published var companyName: String = ""
         @Published var queueId: String = ""
@@ -67,15 +82,111 @@ extension SettingsView {
             bundle.infoDictionary?["CFBundleShortVersionString"] as? String
         }
 
+        var selectedApiKeyId: String {
+            get {
+                switch authorizationMethodSelection {
+                case .siteApiKey:
+                    return siteApiKeyId
+                case .userApiKey:
+                    return userApiKeyId
+                }
+            }
+            set {
+                switch authorizationMethodSelection {
+                case .siteApiKey:
+                    siteApiKeyId = newValue
+                case .userApiKey:
+                    userApiKeyId = newValue
+                }
+            }
+        }
+
+        var selectedApiKeySecret: String {
+            get {
+                switch authorizationMethodSelection {
+                case .siteApiKey:
+                    return siteApiKeySecret
+                case .userApiKey:
+                    return userApiKeySecret
+                }
+            }
+            set {
+                switch authorizationMethodSelection {
+                case .siteApiKey:
+                    siteApiKeySecret = newValue
+                case .userApiKey:
+                    userApiKeySecret = newValue
+                }
+            }
+        }
+
+        var selectedApiKeyIdentifierTitle: String {
+            switch authorizationMethodSelection {
+            case .siteApiKey:
+                return "Site API Key Identifier"
+            case .userApiKey:
+                return "User API Key Identifier"
+            }
+        }
+
+        var selectedApiKeySecretTitle: String {
+            switch authorizationMethodSelection {
+            case .siteApiKey:
+                return "Site API Key Secret"
+            case .userApiKey:
+                return "User API Key Secret"
+            }
+        }
+
+        private func loadStoredAuthorizationCredentials() {
+            siteApiKeyId = UserDefaults.standard.string(
+                forKey: AuthorizationCredentialsDefaultsKey.siteApiKeyId
+            ) ?? ""
+            siteApiKeySecret = UserDefaults.standard.string(
+                forKey: AuthorizationCredentialsDefaultsKey.siteApiKeySecret
+            ) ?? ""
+            userApiKeyId = UserDefaults.standard.string(
+                forKey: AuthorizationCredentialsDefaultsKey.userApiKeyId
+            ) ?? ""
+            userApiKeySecret = UserDefaults.standard.string(
+                forKey: AuthorizationCredentialsDefaultsKey.userApiKeySecret
+            ) ?? ""
+        }
+
+        private func saveStoredAuthorizationCredentials() {
+            UserDefaults.standard.set(
+                siteApiKeyId,
+                forKey: AuthorizationCredentialsDefaultsKey.siteApiKeyId
+            )
+            UserDefaults.standard.set(
+                siteApiKeySecret,
+                forKey: AuthorizationCredentialsDefaultsKey.siteApiKeySecret
+            )
+            UserDefaults.standard.set(
+                userApiKeyId,
+                forKey: AuthorizationCredentialsDefaultsKey.userApiKeyId
+            )
+            UserDefaults.standard.set(
+                userApiKeySecret,
+                forKey: AuthorizationCredentialsDefaultsKey.userApiKeySecret
+            )
+        }
+
         func loadCurrentSettings() {
             let config = appState.configuration
+            loadStoredAuthorizationCredentials()
 
             switch config.authorizationMethod {
             case .siteApiKey(let id, let secret):
+                authorizationMethodSelection = .siteApiKey
                 siteApiKeyId = id
                 siteApiKeySecret = secret
-            default:
-                break
+            case .userApiKey(let id, let secret):
+                authorizationMethodSelection = .userApiKey
+                userApiKeyId = id
+                userApiKeySecret = secret
+            @unknown default:
+                authorizationMethodSelection = .siteApiKey
             }
 
             site = config.site
@@ -134,6 +245,21 @@ extension SettingsView {
 }
 
 extension SettingsView.ViewModel {
+    private var selectedAuthorizationMethod: Configuration.AuthorizationMethod {
+        switch authorizationMethodSelection {
+        case .siteApiKey:
+            return .siteApiKey(
+                id: siteApiKeyId,
+                secret: siteApiKeySecret
+            )
+        case .userApiKey:
+            return .userApiKey(
+                id: userApiKeyId,
+                secret: userApiKeySecret
+            )
+        }
+    }
+
     func saveSettings() {
         let env: GliaEnvironment
         if environmentSelection == .custom, let url = URL(string: customEnvironmentUrl) {
@@ -145,11 +271,10 @@ extension SettingsView.ViewModel {
         let uuid = UUID(uuidString: visitorContextAssetId)
         let locale = manualLocaleOverride.isEmpty ? nil : manualLocaleOverride
 
+        saveStoredAuthorizationCredentials()
+
         appState.configuration = Configuration(
-            authorizationMethod: .siteApiKey(
-                id: siteApiKeyId,
-                secret: siteApiKeySecret
-            ),
+            authorizationMethod: selectedAuthorizationMethod,
             environment: env,
             site: site,
             visitorContext: uuid.map { Configuration.VisitorContext(assetId: $0) },

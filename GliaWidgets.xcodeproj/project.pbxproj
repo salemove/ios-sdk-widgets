@@ -1048,8 +1048,8 @@
 		C0F70CB02F294ED6001E4C58 /* ThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F70CAF2F294ED2001E4C58 /* ThemeColors.swift */; };
 		C0F70CB22F294EFA001E4C58 /* ThemeFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F70CB12F294EF6001E4C58 /* ThemeFonts.swift */; };
 		C0F70CB42F295069001E4C58 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F70CB32F295069001E4C58 /* SettingsViewModel.swift */; };
-		C0F70D1C2F30CCC7001E4C58 /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F70D1B2F30CCC4001E4C58 /* TitleView.swift */; };
 		C0F70CEE2F2A396B001E4C58 /* SettingsSegmentedControlCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F70CED2F2A396B001E4C58 /* SettingsSegmentedControlCell.swift */; };
+		C0F70D1C2F30CCC7001E4C58 /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F70D1B2F30CCC4001E4C58 /* TitleView.swift */; };
 		C0F7EA382CA1D6D40038019C /* CustomPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F7EA372CA1D6D40038019C /* CustomPresentationController.swift */; };
 		C0F7EA3A2CA1D7050038019C /* EntryWidget.Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F7EA392CA1D7050038019C /* EntryWidget.Configuration.swift */; };
 		C0F7EA3C2CA581E70038019C /* Glia+EntryWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F7EA3B2CA581E70038019C /* Glia+EntryWidget.swift */; };
@@ -2213,8 +2213,8 @@
 		C0F70CAF2F294ED2001E4C58 /* ThemeColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColors.swift; sourceTree = "<group>"; };
 		C0F70CB12F294EF6001E4C58 /* ThemeFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeFonts.swift; sourceTree = "<group>"; };
 		C0F70CB32F295069001E4C58 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
-		C0F70D1B2F30CCC4001E4C58 /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
 		C0F70CED2F2A396B001E4C58 /* SettingsSegmentedControlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSegmentedControlCell.swift; sourceTree = "<group>"; };
+		C0F70D1B2F30CCC4001E4C58 /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
 		C0F7EA372CA1D6D40038019C /* CustomPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPresentationController.swift; sourceTree = "<group>"; };
 		C0F7EA392CA1D7050038019C /* EntryWidget.Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryWidget.Configuration.swift; sourceTree = "<group>"; };
 		C0F7EA3B2CA581E70038019C /* Glia+EntryWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Glia+EntryWidget.swift"; sourceTree = "<group>"; };
@@ -6077,13 +6077,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GliaTestApp/Pods-GliaTestApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-GliaTestApp/Pods-GliaTestApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

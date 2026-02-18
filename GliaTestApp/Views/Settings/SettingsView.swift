@@ -143,11 +143,30 @@ private extension SettingsView {
             TextField("Company Name", text: $viewModel.companyName)
                 .accessibilityIdentifier("settings_companyName_textfield")
 
-            TextField("API Key Identifier", text: $viewModel.siteApiKeyId)
+            Picker("Auth Method", selection: $viewModel.authorizationMethodSelection) {
+                Text("Site API Key").tag(SettingsView.AuthorizationMethodSelection.siteApiKey)
+                Text("User API Key").tag(SettingsView.AuthorizationMethodSelection.userApiKey)
+            }
+            .pickerStyle(.segmented)
+            .accessibilityIdentifier("settings_authMethod_segmentedControl")
+
+            TextField(
+                viewModel.selectedApiKeyIdentifierTitle,
+                text: Binding(
+                    get: { viewModel.selectedApiKeyId },
+                    set: { viewModel.selectedApiKeyId = $0 }
+                )
+            )
                 .autocapitalization(.none)
                 .accessibilityIdentifier("settings_apiKeyId_textfield")
 
-            SecureField("API Key Secret", text: $viewModel.siteApiKeySecret)
+            SecureField(
+                viewModel.selectedApiKeySecretTitle,
+                text: Binding(
+                    get: { viewModel.selectedApiKeySecret },
+                    set: { viewModel.selectedApiKeySecret = $0 }
+                )
+            )
                 .accessibilityIdentifier("settings_apiKeySecret_textfield")
 
             Toggle(
@@ -178,6 +197,7 @@ private extension SettingsView {
             TextField("Manual Locale Override", text: $viewModel.manualLocaleOverride)
                 .autocapitalization(.none)
                 .accessibilityIdentifier("settings_manual_locale_override_textfield")
+
             Toggle(
                 "Auto-configure Before Engagement",
                 isOn: $viewModel.autoConfigureEnabled
