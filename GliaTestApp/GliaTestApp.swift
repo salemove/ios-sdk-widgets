@@ -40,6 +40,9 @@ struct GliaTestApp: App {
                     guard let url = note.object as? URL else { return }
                     _ = deeplinkService.openUrl(url)
                 }
+                .onReceive(NotificationCenter.default.publisher(for: .handlePushNotification)) { _ in
+                    handleSecureMessagePush()
+                }
                 .onChange(of: scenePhase) { newPhase in
                     if newPhase == .active {
                         handleProcessEnvironment()
@@ -74,6 +77,41 @@ private extension GliaTestApp {
         if env["SET_ANIMATION_ENABLED"] == "false" {
             UIView.setAnimationsEnabled(false)
         }
+    }
+
+    func handleSecureMessagePush() {
+        guard !hasPresentedViewController() else { return }
+
+        let startSecureMessaging = {
+            do {
+                try appState.startSecureMessaging()
+            } catch GliaError.engagementExists {
+                try? Glia.sharedInstance.resume()
+            } catch {
+                debugPrint("💥 Failed to open secure messaging from push. Error: \(error.localizedDescription)")
+            }
+        }
+
+        if appState.autoConfigureEnabled {
+            appState.configure { result in
+                switch result {
+                case .success:
+                    startSecureMessaging()
+                case .failure(let error):
+                    debugPrint("💥 Failed to configure SDK for push action. Error: \(error.localizedDescription)")
+                }
+            }
+        } else {
+            appState.applyPushNotificationConfig()
+            startSecureMessaging()
+        }
+    }
+
+    func hasPresentedViewController() -> Bool {
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows)
+            .contains { $0.rootViewController?.presentedViewController != nil }
     }
 }
 

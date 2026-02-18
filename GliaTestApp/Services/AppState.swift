@@ -1,6 +1,7 @@
 import SwiftUI
 import GliaWidgets
 import Combine
+import UIKit
 
 @MainActor
 final class AppState: ObservableObject {
@@ -34,6 +35,7 @@ final class AppState: ObservableObject {
 
     func configure(completion: @escaping (Result<Void, Error>) -> Void) {
         do {
+            applyPushNotificationConfig()
             let remoteConfig = getRemoteConfiguration()
             try Glia.sharedInstance.configure(
                 with: configuration,
@@ -46,16 +48,38 @@ final class AppState: ObservableObject {
                         case .success:
                             self?.isConfigured = true
                             self?.setupEngagementLauncher()
+                            debugPrint("SDK has been configured")
                             completion(.success(()))
                         case .failure(let error):
+                            debugPrint("Error configuring the SDK")
+                            debugPrint(error)
                             completion(.failure(error))
                         }
                     }
                 }
             )
+            // Trigger APNs registration within the same configure flow so token callback reaches SDK in time.
+            UIApplication.shared.registerForRemoteNotifications()
         } catch {
             completion(.failure(error))
         }
+    }
+
+    func applyPushNotificationConfig() {
+        let pushNotifications: Configuration.PushNotifications
+
+        #if DEBUG
+        pushNotifications = .sandbox
+        #else
+        // Mirrors TestingApp behavior for release/testing toggles.
+        let enablePushes = ProcessInfo.processInfo.environment["ENABLE_PUSH_NOTIFICATIONS"] == "true"
+        pushNotifications = enablePushes ? .production : .disabled
+        #endif
+
+        configuration.pushNotifications = pushNotifications
+
+        let pushNotificationsTypes: [PushNotificationsType] = [.start, .message, .end]
+        Glia.sharedInstance.pushNotifications.subscribeTo(pushNotificationsTypes)
     }
 
     private func getRemoteConfiguration() -> RemoteConfiguration? {

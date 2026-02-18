@@ -1036,6 +1036,7 @@
 		C0F70C6B2F29038C001E4C58 /* SettingsDeeplinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F70C6A2F29038C001E4C58 /* SettingsDeeplinkHandler.swift */; };
 		C0F70C6C2F29038C001E4C58 /* ConfigurationDeeplinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F70C672F29038C001E4C58 /* ConfigurationDeeplinkHandler.swift */; };
 		C0F70C6D2F29038C001E4C58 /* DeeplinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F70C682F29038C001E4C58 /* DeeplinkHandler.swift */; };
+		F0A1B2C3D4E5F60718293A41 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A1B2C3D4E5F60718293A40 /* AppDelegate.swift */; };
 		C0F70C6E2F29038C001E4C58 /* DeeplinksService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F70C692F29038C001E4C58 /* DeeplinksService.swift */; };
 		C0F70CA02F294782001E4C58 /* EmbbededWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F70C9F2F29477C001E4C58 /* EmbbededWidgetView.swift */; };
 		C0F70CA22F2947AD001E4C58 /* EmbeddableWidgetContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F70CA12F2947A4001E4C58 /* EmbeddableWidgetContainer.swift */; };
@@ -2202,6 +2203,7 @@
 		C0F70C682F29038C001E4C58 /* DeeplinkHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkHandler.swift; sourceTree = "<group>"; };
 		C0F70C692F29038C001E4C58 /* DeeplinksService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinksService.swift; sourceTree = "<group>"; };
 		C0F70C6A2F29038C001E4C58 /* SettingsDeeplinkHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDeeplinkHandler.swift; sourceTree = "<group>"; };
+		F0A1B2C3D4E5F60718293A40 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0F70C9F2F29477C001E4C58 /* EmbbededWidgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbbededWidgetView.swift; sourceTree = "<group>"; };
 		C0F70CA12F2947A4001E4C58 /* EmbeddableWidgetContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbeddableWidgetContainer.swift; sourceTree = "<group>"; };
 		C0F70CA32F2947F8001E4C58 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
@@ -5475,14 +5477,15 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		C0F70C472F27B7E1001E4C58 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				C0F70C672F29038C001E4C58 /* ConfigurationDeeplinkHandler.swift */,
-				C0F70C682F29038C001E4C58 /* DeeplinkHandler.swift */,
-				C0F70C692F29038C001E4C58 /* DeeplinksService.swift */,
-				C0F70C6A2F29038C001E4C58 /* SettingsDeeplinkHandler.swift */,
-				C0F70C452F27B7E1001E4C58 /* AppState.swift */,
+			C0F70C472F27B7E1001E4C58 /* Services */ = {
+				isa = PBXGroup;
+				children = (
+					F0A1B2C3D4E5F60718293A40 /* AppDelegate.swift */,
+					C0F70C672F29038C001E4C58 /* ConfigurationDeeplinkHandler.swift */,
+					C0F70C682F29038C001E4C58 /* DeeplinkHandler.swift */,
+					C0F70C692F29038C001E4C58 /* DeeplinksService.swift */,
+					C0F70C6A2F29038C001E4C58 /* SettingsDeeplinkHandler.swift */,
+					C0F70C452F27B7E1001E4C58 /* AppState.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -6221,11 +6224,12 @@
 				C0F70CAA2F29494D001E4C58 /* CustomAttribute.swift in Sources */,
 				9A16318D85AA5FA691FC022E /* EngagementButton.swift in Sources */,
 				25636B8E81D5FEBF05C13D22 /* SectionHeader.swift in Sources */,
-				EAF3DCFDCBD7FAD3782995A4 /* FontPickerView.swift in Sources */,
-				8C2F40060ED89814201E9FF9 /* QueuePickerView.swift in Sources */,
-				C0F70C6B2F29038C001E4C58 /* SettingsDeeplinkHandler.swift in Sources */,
-				C0F70C6C2F29038C001E4C58 /* ConfigurationDeeplinkHandler.swift in Sources */,
-				C0F70CB42F295069001E4C58 /* SettingsViewModel.swift in Sources */,
+					EAF3DCFDCBD7FAD3782995A4 /* FontPickerView.swift in Sources */,
+					8C2F40060ED89814201E9FF9 /* QueuePickerView.swift in Sources */,
+					F0A1B2C3D4E5F60718293A41 /* AppDelegate.swift in Sources */,
+					C0F70C6B2F29038C001E4C58 /* SettingsDeeplinkHandler.swift in Sources */,
+					C0F70C6C2F29038C001E4C58 /* ConfigurationDeeplinkHandler.swift in Sources */,
+					C0F70CB42F295069001E4C58 /* SettingsViewModel.swift in Sources */,
 				C0F70CA42F294803001E4C58 /* Color+Extensions.swift in Sources */,
 				C0F70C6D2F29038C001E4C58 /* DeeplinkHandler.swift in Sources */,
 				C0F70CB02F294ED6001E4C58 /* ThemeColors.swift in Sources */,

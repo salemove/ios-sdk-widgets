@@ -104,6 +104,7 @@ extension ContentView.ViewModel {
                 }
             }
         } else {
+            appState.applyPushNotificationConfig()
             execute()
         }
     }
@@ -175,6 +176,7 @@ extension ContentView.ViewModel {
                     }
                 }
             } else {
+                appState.applyPushNotificationConfig()
                 authenticateAction()
             }
         }
