@@ -4,7 +4,7 @@ import GliaWidgets
 extension Configuration {
     static func empty(with env: Environment = .beta) -> Self {
         .init(
-            authorizationMethod: .siteApiKey(id: "", secret: ""),
+            authorizationMethod: .userApiKey(id: "", secret: ""),
             environment: env,
             site: "",
             pushNotifications: .disabled,
@@ -15,14 +15,32 @@ extension Configuration {
 
     init?(queryItems: [URLQueryItem]) {
         guard
-            let siteId = queryItems.first(where: { $0.name == "site_id" })?.value,
-            let siteApiKeyId = queryItems.first(where: { $0.name == "api_key_id" })?.value,
-            let siteApiKeySecret = queryItems.first(where: { $0.name == "api_key_secret" })?.value,
-            let envName = queryItems.first(where: { $0.name == "env" })?.value,
+            let siteId = Self.queryValue(
+                in: queryItems,
+                namedAnyOf: ["site_id"]
+            ),
+            let apiKeyId = Self.queryValue(
+                in: queryItems,
+                namedAnyOf: ["api_key_id", "site_api_key_id", "user_api_key_id"]
+            ),
+            let apiKeySecret = Self.queryValue(
+                in: queryItems,
+                namedAnyOf: ["api_key_secret", "site_api_key_secret", "user_api_key_secret"]
+            ),
+            let envName = Self.queryValue(
+                in: queryItems,
+                namedAnyOf: ["env"]
+            ),
             let environment = Environment(rawValue: envName)
         else {
             return nil
         }
+
+        let authorizationMethod = Self.queryAuthorizationMethod(
+            in: queryItems,
+            id: apiKeyId,
+            secret: apiKeySecret
+        )
 
         let visitorAssetId = queryItems.first { $0.name == "visitor_context_asset_id" }?.value ?? ""
         let visitorContext = UUID(uuidString: visitorAssetId)
@@ -30,7 +48,7 @@ extension Configuration {
         let manualLocaleOverride = queryItems.first { $0.name == "manual_locale_override" }?.value ?? nil
 
         self = .init(
-            authorizationMethod: .siteApiKey(id: siteApiKeyId, secret: siteApiKeySecret),
+            authorizationMethod: authorizationMethod,
             environment: environment,
             site: siteId,
             visitorContext: visitorContext,
@@ -38,6 +56,63 @@ extension Configuration {
             manualLocaleOverride: manualLocaleOverride,
             suppressPushNotificationsPermissionRequestDuringAuthentication: false
         )
+    }
+}
+
+private extension Configuration {
+    enum DeepLinkAuthorizationType: String {
+        case siteApiKey
+        case userApiKey
+
+        init?(value: String) {
+            let normalized = value
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .lowercased()
+                .replacingOccurrences(of: "_", with: "")
+                .replacingOccurrences(of: "-", with: "")
+
+            switch normalized {
+            case "siteapikey", "site":
+                self = .siteApiKey
+            case "userapikey", "user":
+                self = .userApiKey
+            default:
+                return nil
+            }
+        }
+    }
+
+    static func queryValue(
+        in queryItems: [URLQueryItem],
+        namedAnyOf keys: [String]
+    ) -> String? {
+        for key in keys {
+            if let value = queryItems.first(
+                where: { $0.name.caseInsensitiveCompare(key) == .orderedSame }
+            )?.value {
+                return value
+            }
+        }
+        return nil
+    }
+
+    static func queryAuthorizationMethod(
+        in queryItems: [URLQueryItem],
+        id: String,
+        secret: String
+    ) -> AuthorizationMethod {
+        let keys = ["authorizationType", "authorization_type", "authType", "auth_type"]
+        let type = keys
+            .compactMap { queryValue(in: queryItems, namedAnyOf: [$0]) }
+            .compactMap(DeepLinkAuthorizationType.init(value:))
+            .first ?? .siteApiKey
+
+        switch type {
+        case .siteApiKey:
+            return .siteApiKey(id: id, secret: secret)
+        case .userApiKey:
+            return .userApiKey(id: id, secret: secret)
+        }
     }
 }
 

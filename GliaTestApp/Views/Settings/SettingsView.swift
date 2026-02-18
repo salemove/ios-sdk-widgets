@@ -40,6 +40,12 @@ struct SettingsView: View {
                 viewModel.appState = appState
                 viewModel.loadCurrentSettings()
             }
+            .onReceive(appState.$configuration) { _ in
+                viewModel.loadCurrentSettings()
+            }
+            .onReceive(appState.$queueId) { _ in
+                viewModel.loadCurrentSettings()
+            }
             .sheet(isPresented: $viewModel.showQueuePicker) {
                 QueuePickerView(
                     queues: viewModel.availableQueues,
@@ -160,7 +166,7 @@ private extension SettingsView {
                 .autocapitalization(.none)
                 .accessibilityIdentifier("settings_apiKeyId_textfield")
 
-            SecureField(
+            TextField(
                 viewModel.selectedApiKeySecretTitle,
                 text: Binding(
                     get: { viewModel.selectedApiKeySecret },
