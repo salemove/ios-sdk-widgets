@@ -15,9 +15,29 @@ extension SettingsView {
         static let userApiKeySecret = "userApiKeySecret"
     }
 
+    private enum AuthorizationConfigurationDefaultsKey {
+        static let siteApiKeySite = "siteApiKeySite"
+        static let siteApiKeyCompanyName = "siteApiKeyCompanyName"
+        static let siteApiKeyQueueId = "siteApiKeyQueueId"
+        static let siteApiKeyUseDefaultQueue = "siteApiKeyUseDefaultQueue"
+        static let userApiKeySite = "userApiKeySite"
+        static let userApiKeyCompanyName = "userApiKeyCompanyName"
+        static let userApiKeyQueueId = "userApiKeyQueueId"
+        static let userApiKeyUseDefaultQueue = "userApiKeyUseDefaultQueue"
+    }
+
     @MainActor
     final class ViewModel: ObservableObject {
+        private struct AuthorizationConfigurationProfile {
+            let site: String
+            let companyName: String
+            let queueId: String
+            let useDefaultQueue: Bool
+        }
+
         var appState: AppState
+        private var lastAuthorizationMethodSelection: AuthorizationMethodSelection = .siteApiKey
+        private var isLoadingSettings = false
 
         @Published var authorizationMethodSelection: AuthorizationMethodSelection = .siteApiKey
         @Published var siteApiKeyId: String = ""
@@ -172,31 +192,120 @@ extension SettingsView {
             )
         }
 
+        private func configurationProfileStorageKeys(
+            for selection: AuthorizationMethodSelection
+        ) -> (site: String, companyName: String, queueId: String, useDefaultQueue: String) {
+            switch selection {
+            case .siteApiKey:
+                return (
+                    AuthorizationConfigurationDefaultsKey.siteApiKeySite,
+                    AuthorizationConfigurationDefaultsKey.siteApiKeyCompanyName,
+                    AuthorizationConfigurationDefaultsKey.siteApiKeyQueueId,
+                    AuthorizationConfigurationDefaultsKey.siteApiKeyUseDefaultQueue
+                )
+            case .userApiKey:
+                return (
+                    AuthorizationConfigurationDefaultsKey.userApiKeySite,
+                    AuthorizationConfigurationDefaultsKey.userApiKeyCompanyName,
+                    AuthorizationConfigurationDefaultsKey.userApiKeyQueueId,
+                    AuthorizationConfigurationDefaultsKey.userApiKeyUseDefaultQueue
+                )
+            }
+        }
+
+        private func saveConfigurationProfile(
+            _ profile: AuthorizationConfigurationProfile,
+            for selection: AuthorizationMethodSelection
+        ) {
+            let keys = configurationProfileStorageKeys(for: selection)
+            UserDefaults.standard.set(profile.site, forKey: keys.site)
+            UserDefaults.standard.set(profile.companyName, forKey: keys.companyName)
+            UserDefaults.standard.set(profile.queueId, forKey: keys.queueId)
+            UserDefaults.standard.set(profile.useDefaultQueue, forKey: keys.useDefaultQueue)
+        }
+
+        private func loadConfigurationProfile(
+            for selection: AuthorizationMethodSelection
+        ) -> AuthorizationConfigurationProfile {
+            let keys = configurationProfileStorageKeys(for: selection)
+            let storedUseDefaultQueue: Bool
+            if UserDefaults.standard.object(forKey: keys.useDefaultQueue) != nil {
+                storedUseDefaultQueue = UserDefaults.standard.bool(forKey: keys.useDefaultQueue)
+            } else {
+                storedUseDefaultQueue = true
+            }
+            return AuthorizationConfigurationProfile(
+                site: UserDefaults.standard.string(forKey: keys.site) ?? "",
+                companyName: UserDefaults.standard.string(forKey: keys.companyName) ?? "",
+                queueId: UserDefaults.standard.string(forKey: keys.queueId) ?? "",
+                useDefaultQueue: storedUseDefaultQueue
+            )
+        }
+
+        private func saveCurrentConfigurationProfile(
+            for selection: AuthorizationMethodSelection
+        ) {
+            saveConfigurationProfile(
+                AuthorizationConfigurationProfile(
+                    site: site,
+                    companyName: companyName,
+                    queueId: queueId,
+                    useDefaultQueue: useDefaultQueue
+                ),
+                for: selection
+            )
+        }
+
+        private func applyConfigurationProfile(
+            _ profile: AuthorizationConfigurationProfile
+        ) {
+            site = profile.site
+            companyName = profile.companyName
+            queueId = profile.queueId
+            useDefaultQueue = profile.useDefaultQueue
+        }
+
         func loadCurrentSettings() {
+            isLoadingSettings = true
+            defer {
+                lastAuthorizationMethodSelection = authorizationMethodSelection
+                isLoadingSettings = false
+            }
+
             let config = appState.configuration
             loadStoredAuthorizationCredentials()
 
-            switch config.authorizationMethod {
-            case .siteApiKey(let id, let secret):
-                authorizationMethodSelection = .siteApiKey
-                siteApiKeyId = id
-                siteApiKeySecret = secret
-            case .userApiKey(let id, let secret):
-                authorizationMethodSelection = .userApiKey
-                userApiKeyId = id
-                userApiKeySecret = secret
-            @unknown default:
-                authorizationMethodSelection = .siteApiKey
-            }
+            let credentials = authorizationCredentials(from: config.authorizationMethod)
+            let selection = authorizationSelection(for: credentials.secret)
+            authorizationMethodSelection = selection
 
-            site = config.site
-            companyName = config.companyName
+            switch selection {
+            case .siteApiKey:
+                siteApiKeyId = credentials.id
+                siteApiKeySecret = credentials.secret
+            case .userApiKey:
+                userApiKeyId = credentials.id
+                userApiKeySecret = credentials.secret
+            }
+            saveStoredAuthorizationCredentials()
+
+            saveConfigurationProfile(
+                AuthorizationConfigurationProfile(
+                    site: config.site,
+                    companyName: config.companyName,
+                    queueId: appState.queueId,
+                    useDefaultQueue: appState.useDefaultQueue
+                ),
+                for: selection
+            )
+            applyConfigurationProfile(
+                loadConfigurationProfile(for: selection)
+            )
+
             environmentSelection = EnvironmentSelection(from: config.environment)
             if case .custom(let url) = config.environment {
                 customEnvironmentUrl = url.absoluteString
             }
-            queueId = appState.queueId
-            useDefaultQueue = appState.useDefaultQueue
 
             if let assetId = config.visitorContext?.assetId {
                 visitorContextAssetId = assetId.uuidString
@@ -215,6 +324,35 @@ extension SettingsView {
 
             themeColors = ThemeColors(from: appState.theme)
             themeFonts = ThemeFonts(from: appState.theme)
+        }
+
+        private func authorizationCredentials(
+            from method: Configuration.AuthorizationMethod
+        ) -> (id: String, secret: String) {
+            switch method {
+            case let .siteApiKey(id, secret), let .userApiKey(id, secret):
+                return (id, secret)
+            @unknown default:
+                return ("", "")
+            }
+        }
+
+        private func authorizationSelection(for secret: String) -> AuthorizationMethodSelection {
+            secret.lowercased().hasPrefix("gls_") ? .siteApiKey : .userApiKey
+        }
+
+        func didChangeAuthorizationMethodSelection(
+            to selection: AuthorizationMethodSelection
+        ) {
+            guard !isLoadingSettings else { return }
+            guard selection != lastAuthorizationMethodSelection else { return }
+
+            saveStoredAuthorizationCredentials()
+            saveCurrentConfigurationProfile(for: lastAuthorizationMethodSelection)
+            applyConfigurationProfile(
+                loadConfigurationProfile(for: selection)
+            )
+            lastAuthorizationMethodSelection = selection
         }
 
         var availableRemoteConfigs: [String] {
@@ -272,6 +410,7 @@ extension SettingsView.ViewModel {
         let locale = manualLocaleOverride.isEmpty ? nil : manualLocaleOverride
 
         saveStoredAuthorizationCredentials()
+        saveCurrentConfigurationProfile(for: authorizationMethodSelection)
 
         appState.configuration = Configuration(
             authorizationMethod: selectedAuthorizationMethod,

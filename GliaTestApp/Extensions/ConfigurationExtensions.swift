@@ -21,11 +21,11 @@ extension Configuration {
             ),
             let apiKeyId = Self.queryValue(
                 in: queryItems,
-                namedAnyOf: ["api_key_id", "site_api_key_id", "user_api_key_id"]
+                namedAnyOf: ["api_key_id"]
             ),
             let apiKeySecret = Self.queryValue(
                 in: queryItems,
-                namedAnyOf: ["api_key_secret", "site_api_key_secret", "user_api_key_secret"]
+                namedAnyOf: ["api_key_secret"]
             ),
             let envName = Self.queryValue(
                 in: queryItems,
@@ -37,7 +37,6 @@ extension Configuration {
         }
 
         let authorizationMethod = Self.queryAuthorizationMethod(
-            in: queryItems,
             id: apiKeyId,
             secret: apiKeySecret
         )
@@ -60,28 +59,6 @@ extension Configuration {
 }
 
 private extension Configuration {
-    enum DeepLinkAuthorizationType: String {
-        case siteApiKey
-        case userApiKey
-
-        init?(value: String) {
-            let normalized = value
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-                .lowercased()
-                .replacingOccurrences(of: "_", with: "")
-                .replacingOccurrences(of: "-", with: "")
-
-            switch normalized {
-            case "siteapikey", "site":
-                self = .siteApiKey
-            case "userapikey", "user":
-                self = .userApiKey
-            default:
-                return nil
-            }
-        }
-    }
-
     static func queryValue(
         in queryItems: [URLQueryItem],
         namedAnyOf keys: [String]
@@ -97,20 +74,15 @@ private extension Configuration {
     }
 
     static func queryAuthorizationMethod(
-        in queryItems: [URLQueryItem],
         id: String,
         secret: String
     ) -> AuthorizationMethod {
-        let keys = ["authorizationType", "authorization_type", "authType", "auth_type"]
-        let type = keys
-            .compactMap { queryValue(in: queryItems, namedAnyOf: [$0]) }
-            .compactMap(DeepLinkAuthorizationType.init(value:))
-            .first ?? .siteApiKey
-
-        switch type {
-        case .siteApiKey:
+        // API key secret prefixes:
+        // - gls_ => site API key
+        // - everything else => user API key
+        if secret.lowercased().hasPrefix("gls_") {
             return .siteApiKey(id: id, secret: secret)
-        case .userApiKey:
+        } else {
             return .userApiKey(id: id, secret: secret)
         }
     }

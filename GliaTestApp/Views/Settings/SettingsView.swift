@@ -46,6 +46,9 @@ struct SettingsView: View {
             .onReceive(appState.$queueId) { _ in
                 viewModel.loadCurrentSettings()
             }
+            .onChange(of: viewModel.authorizationMethodSelection) { selection in
+                viewModel.didChangeAuthorizationMethodSelection(to: selection)
+            }
             .sheet(isPresented: $viewModel.showQueuePicker) {
                 QueuePickerView(
                     queues: viewModel.availableQueues,
