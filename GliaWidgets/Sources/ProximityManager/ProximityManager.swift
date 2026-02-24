@@ -8,13 +8,21 @@ final class ProximityManager {
     }
 
     func start() {
-        environment.uiApplication.isIdleTimerDisabled(true)
-        environment.uiDevice.isProximityMonitoringEnabled(true)
+        let enableIdleTimerDisabled = environment.uiApplication.isIdleTimerDisabled
+        let enableProximityMonitoring = environment.uiDevice.isProximityMonitoringEnabled
+        environment.gcd.mainQueue.asyncIfNeeded {
+            enableIdleTimerDisabled(true)
+            enableProximityMonitoring(true)
+        }
     }
 
     func stop() {
-        environment.uiApplication.isIdleTimerDisabled(false)
-        environment.uiDevice.isProximityMonitoringEnabled(false)
+        let disableIdleTimer = environment.uiApplication.isIdleTimerDisabled
+        let disableProximityMonitoring = environment.uiDevice.isProximityMonitoringEnabled
+        environment.gcd.mainQueue.asyncIfNeeded {
+            disableIdleTimer(false)
+            disableProximityMonitoring(false)
+        }
     }
 }
 
@@ -22,5 +30,6 @@ extension ProximityManager {
     struct Environment {
         var uiApplication: UIKitBased.UIApplication
         var uiDevice: UIKitBased.UIDevice
+        var gcd: GCD
     }
 }
