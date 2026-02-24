@@ -517,6 +517,7 @@ class CallViewModelTests: XCTestCase {
         cameraDeviceManager.cameraDevices = { [] }
         env.cameraDeviceManager = { cameraDeviceManager }
         var proximityManagerEnv = ProximityManager.Environment.failing
+        proximityManagerEnv.gcd = .mock
         proximityManagerEnv.uiApplication.isIdleTimerDisabled = { value in
             calls.append(.isIdleTimerDisabled(value))
         }

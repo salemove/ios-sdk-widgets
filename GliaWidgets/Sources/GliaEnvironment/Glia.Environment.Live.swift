@@ -36,7 +36,8 @@ extension Glia.Environment {
         coreSDKConfigurator: .create(coreSdk: .live),
         proximityManager: .init(environment: .init(
             uiApplication: .live,
-            uiDevice: .live
+            uiDevice: .live,
+            gcd: .live
         )),
         print: .live,
         conditionalCompilation: .live,

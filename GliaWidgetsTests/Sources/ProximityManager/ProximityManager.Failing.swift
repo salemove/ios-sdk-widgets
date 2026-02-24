@@ -8,6 +8,7 @@ extension ProximityManager {
 extension ProximityManager.Environment {
     static let failing = Self(
         uiApplication: .failing,
-        uiDevice: .failing
+        uiDevice: .failing,
+        gcd: .mock
     )
 }
