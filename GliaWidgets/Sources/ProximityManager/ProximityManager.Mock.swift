@@ -5,7 +5,8 @@ extension ProximityManager {
     static let mock: ProximityManager = .init(
         environment: .init(
             uiApplication: .mock,
-            uiDevice: .mock
+            uiDevice: .mock,
+            gcd: .mock
         )
     )
 }
