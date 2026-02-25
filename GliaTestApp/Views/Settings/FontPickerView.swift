@@ -38,7 +38,7 @@ struct FontPickerView: View {
                 content: doneButton
             )
             ToolbarItem(
-                placement: .title,
+                placement: .principal,
                 content: titleView
             )
         }
