@@ -71,7 +71,7 @@ final class AppState: ObservableObject {
         #if DEBUG
         pushNotifications = .sandbox
         #else
-        // Mirrors TestingApp behavior for release/testing toggles.
+        // Keeps release/testing push toggle behavior used by the test app.
         let enablePushes = ProcessInfo.processInfo.environment["ENABLE_PUSH_NOTIFICATIONS"] == "true"
         pushNotifications = enablePushes ? .production : .disabled
         #endif
