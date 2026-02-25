@@ -60,7 +60,12 @@ extension Glia {
             return
         }
 
-        guard let currentEngagement = environment.coreSdk.getNonTransferredSecureConversationEngagement() else {
+        // When deauthentication tears down an engagement that was upgraded (e.g. chat → video → audio),
+        // Core SDK may not immediately clear the engagement reference. The .closing state signals
+        // that deauthentication is in progress, so the stale engagement should be treated as absent
+        // and a fresh engagement flow should be started instead.
+        guard let currentEngagement = environment.coreSdk.getNonTransferredSecureConversationEngagement(),
+                engagementRestorationState != .closing else {
             if case .messaging = engagementKind, !environment.isAuthenticated() {
                 throw GliaError.messagingIsNotSupportedForUnauthenticatedVisitor
             }
@@ -166,6 +171,12 @@ extension Glia {
         features: Features,
         maximize: Bool = true
     ) {
+        // Clear the .closing state now that a legitimate new coordinator is being created.
+        // This ensures subsequent engagement lifecycle events are handled normally.
+        if engagementRestorationState == .closing {
+            engagementRestorationState = .none
+        }
+
         let engagementLaunching: EngagementCoordinator.EngagementLaunching
 
         switch (pendingInteraction?.hasPendingInteraction ?? false, engagementKind) {

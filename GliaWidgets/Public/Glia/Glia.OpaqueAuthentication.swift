@@ -118,12 +118,18 @@ extension Glia {
                     case .success:
                         // Erase interactor state.
                         self?.interactor?.cleanup()
+                        // Mark as closing before tearing down the coordinator to block
+                        // engagement restoration triggered by the .closed delegate event.
+                        // The state is intentionally left as .closing (not reset to .none)
+                        // so that resolveEngagementState() ignores the stale Core SDK engagement
+                        // reference until a fresh engagement is started. Cleared in startRootCoordinator().
+                        self?.engagementRestorationState = .closing
                         // Cleanup navigation and views.
                         self?.closeRootCoordinator()
                     case .failure:
-                        break
+                        self?.engagementRestorationState = .none
                     }
-                    self?.engagementRestorationState = .none
+
                     callback(result.mapError(Glia.Authentication.Error.init))
                 }
             },
