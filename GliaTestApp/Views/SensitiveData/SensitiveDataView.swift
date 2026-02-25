@@ -28,7 +28,7 @@ struct SensitiveDataView: View {
                     content: dismissButton
                 )
                 ToolbarItem(
-                    placement: .title,
+                    placement: .principal,
                     content: titleView
                 )
             }
