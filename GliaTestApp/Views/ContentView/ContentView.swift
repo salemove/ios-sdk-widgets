@@ -31,7 +31,7 @@ struct ContentView: View {
                     content: configurationButton
                 )
                 ToolbarItem(
-                    placement: .title,
+                    placement: .principal,
                     content: logoView
                 )
                 ToolbarItem(
