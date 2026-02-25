@@ -14,9 +14,6 @@ def swiftlint
    pod 'SwiftLint'
 end
 
-target 'TestingApp' do
-end
-
 target 'GliaTestApp' do
 end
 
