@@ -203,10 +203,6 @@ workflows:
         inputs:
         - scheme: $SNAPSHOTS_SCHEME
         - destination: platform=iOS Simulator,name=iPhone 16,OS=18.2
-    - xcode-test:
-        inputs:
-        - scheme: $TESTING_APP_TESTS_SCHEME
-        - destination: platform=iOS Simulator,name=iPhone 16,OS=18.2
     - xcode-archive@4:
         inputs:
         - scheme: $APP_SCHEME
@@ -239,7 +235,7 @@ workflows:
     - bitrise-step-stamp-appicon-with-version-number@1:
         inputs:
         - stamp_version: TestFlight
-        - stamp_path_to_icons: TestingApp/Assets.xcassets/AppIcon.appiconset
+        - stamp_path_to_icons: GliaTestApp/Assets.xcassets/AppIcon.appiconset
     - set-xcode-build-number@2: {}
     - xcode-archive@5:
         inputs:
@@ -290,7 +286,7 @@ app:
     SDK_SCHEME: GliaWidgets
   - opts:
       is_expand: false
-    APP_SCHEME: TestingApp
+    APP_SCHEME: GliaTestApp
   - opts:
       is_expand: false
     BITRISE_EXPORT_METHOD: development
@@ -308,9 +304,6 @@ app:
     SNAPSHOTS_SCHEME: SnapshotTests
   - opts:
       is_expand: false
-    TESTING_APP_TESTS_SCHEME: TestingAppTests
-  - opts:
-      is_expand: false
     GIT_AUTHOR_NAME: BitriseBot
   - opts:
       is_expand: false
@@ -322,5 +315,5 @@ trigger_map:
   workflow: pull-request
 meta:
   bitrise.io:
-    stack: osx-xcode-16.1.x
-    machine_type_id: g2-m1.4core
+    stack: osx-xcode-16.2.x
+    machine_type_id: g2.mac.medium
