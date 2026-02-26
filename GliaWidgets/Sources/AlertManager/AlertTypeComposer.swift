@@ -101,7 +101,7 @@ private extension AlertManager.AlertTypeComposer {
     ///
     func composeErrorAlert(
         error: (any Error)?,
-        dismissed: (() -> Void)? = nil
+        dismissed: (() async -> Void)? = nil
     ) -> AlertType {
         switch error {
         case let queueError as CoreSdkClient.QueueError:
@@ -125,21 +125,21 @@ private extension AlertManager.AlertTypeComposer {
         }
     }
 
-    func queueClosedAlertType(dismissed: (() -> Void)? = nil) -> AlertType {
+    func queueClosedAlertType(dismissed: (() async -> Void)? = nil) -> AlertType {
         logDialogShown(dialog: .queueIsClosed)
         return .message(
             conf: theme.alertConfiguration.operatorsUnavailable,
             accessibilityIdentifier: "alert_queue_closed",
             dismissed: {
                 logButtonClicked(button: .close, dialog: .queueIsClosed)
-                dismissed?()
+                await dismissed?()
             }, onClose: {
                 logDialogClosed(dialog: .queueIsClosed)
             }
         )
     }
 
-    func queueFullAlertType(dismissed: (() -> Void)? = nil) -> AlertType {
+    func queueFullAlertType(dismissed: (() async -> Void)? = nil) -> AlertType {
         logDialogShown(dialog: .queueIsClosed)
         environment.log.prefixed(Self.self).info("Show No More Operators Dialog")
         return .message(
@@ -147,14 +147,14 @@ private extension AlertManager.AlertTypeComposer {
             accessibilityIdentifier: "alert_queue_full",
             dismissed: {
                 logButtonClicked(button: .close, dialog: .queueIsClosed)
-                dismissed?()
+                await dismissed?()
             }, onClose: {
                 logDialogClosed(dialog: .queueIsClosed)
             }
         )
     }
 
-    func unexpectedErrorAlertType(dismissed: (() -> Void)? = nil) -> AlertType {
+    func unexpectedErrorAlertType(dismissed: (() async -> Void)? = nil) -> AlertType {
         environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
         logDialogShown(dialog: .unexpectedError)
         return .message(
@@ -162,14 +162,14 @@ private extension AlertManager.AlertTypeComposer {
             accessibilityIdentifier: nil,
             dismissed: {
                 logButtonClicked(button: .close, dialog: .unexpectedError)
-                dismissed?()
+                await dismissed?()
             }, onClose: {
                 logDialogClosed(dialog: .unexpectedError)
             }
         )
     }
 
-    func expiredAccessTokenAlertType(dismissed: (() -> Void)? = nil) -> AlertType {
+    func expiredAccessTokenAlertType(dismissed: (() async -> Void)? = nil) -> AlertType {
         environment.log.prefixed(Self.self).info("Show authentication error Dialog")
         logDialogShown(dialog: .unauthenticatedError)
         return .criticalError(
@@ -177,7 +177,7 @@ private extension AlertManager.AlertTypeComposer {
             accessibilityIdentifier: "alert_expired_access_token",
             dismissed: {
                 logButtonClicked(button: .close, dialog: .unauthenticatedError)
-                dismissed?()
+                await dismissed?()
             }, onClose: {
                 logDialogClosed(dialog: .unauthenticatedError)
             }
@@ -271,8 +271,8 @@ private extension AlertManager.AlertTypeComposer {
 
     func liveObservationConfirmationAlertType(
         link: @escaping (WebViewController.Link) -> Void,
-        accepted: @escaping () -> Void,
-        declined: @escaping () -> Void
+        accepted: @escaping () async -> Void,
+        declined: @escaping () async -> Void
     ) -> AlertType {
         logDialogShown(dialog: .liveObservationConfirmation)
         return .liveObservationConfirmation(
@@ -287,18 +287,18 @@ private extension AlertManager.AlertTypeComposer {
             },
             accepted: {
                 logButtonClicked(button: .positive, dialog: .liveObservationConfirmation)
-                accepted()
+                await accepted()
             },
             declined: {
                 logButtonClicked(button: .negative, dialog: .liveObservationConfirmation)
-                declined()
+                await declined()
             }, onClose: {
                 logDialogClosed(dialog: .liveObservationConfirmation)
             }
         )
     }
 
-    func operatorEndedEngagementAlertType(action: @escaping () -> Void) -> AlertType {
+    func operatorEndedEngagementAlertType(action: @escaping () async -> Void) -> AlertType {
         environment.log.prefixed(Self.self).info("Show Engagement Ended Dialog")
         logDialogShown(dialog: .engagementEnded)
         return .singleAction(
@@ -306,14 +306,14 @@ private extension AlertManager.AlertTypeComposer {
             accessibilityIdentifier: "alert_close_engagementEnded",
             actionTapped: {
                 logButtonClicked(button: .ok, dialog: .engagementEnded)
-                action()
+                await action()
             }, onClose: {
                 logDialogClosed(dialog: .engagementEnded)
             }
         )
     }
 
-    func leaveQueueAlertType(confirmed: @escaping () -> Void) -> AlertType {
+    func leaveQueueAlertType(confirmed: @escaping () async -> Void) -> AlertType {
         environment.log.prefixed(Self.self).info("Show Exit Queue Dialog")
         logDialogShown(dialog: .leaveQueueConfirmation)
         return .confirmation(
@@ -321,17 +321,17 @@ private extension AlertManager.AlertTypeComposer {
             accessibilityIdentifier: "alert_confirmation_leaveQueue",
             confirmed: {
                 logButtonClicked(button: .positive, dialog: .leaveQueueConfirmation)
-                confirmed()
+                await confirmed()
             },
-            dismissed: {
-                logButtonClicked(button: .negative, dialog: .leaveQueueConfirmation)
-            }, onClose: {
+            onClose: {
                 logDialogClosed(dialog: .leaveQueueConfirmation)
+            }, dismissed: {
+                logButtonClicked(button: .negative, dialog: .leaveQueueConfirmation)
             }
         )
     }
 
-    func endEngagementAlertType(confirmed: @escaping () -> Void) -> AlertType {
+    func endEngagementAlertType(confirmed: @escaping () async -> Void) -> AlertType {
         environment.log.prefixed(Self.self).info("Show End Engagement Dialog")
         logDialogShown(dialog: .leaveEngagementConfirmation)
         return .confirmation(
@@ -339,12 +339,12 @@ private extension AlertManager.AlertTypeComposer {
             accessibilityIdentifier: "alert_confirmation_endEngagement",
             confirmed: {
                 logButtonClicked(button: .positive, dialog: .leaveEngagementConfirmation)
-                confirmed()
+                await confirmed()
             },
-            dismissed: {
-                logButtonClicked(button: .negative, dialog: .leaveEngagementConfirmation)
-            }, onClose: {
+            onClose: {
                 logDialogClosed(dialog: .leaveEngagementConfirmation)
+            }, dismissed: {
+                logButtonClicked(button: .negative, dialog: .leaveEngagementConfirmation)
             }
         )
     }

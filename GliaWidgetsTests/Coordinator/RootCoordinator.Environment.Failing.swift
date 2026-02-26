@@ -4,8 +4,9 @@
 extension EngagementCoordinator.Environment {
     static let failing = Self(
         secureConversations: .failing,
-        fetchFile: { _, _, _ in
+        fetchFile: { _, _ in
             fail("\(Self.self).fetchFile")
+            throw NSError(domain: "fetchFile", code: -1)
         },
         uploadFileToEngagement: { _, _, _ in
             fail("\(Self.self).uploadFileToEngagement")
@@ -29,8 +30,9 @@ extension EngagementCoordinator.Environment {
             return true
         },
         timerProviding: .failing,
-        fetchSiteConfigurations: { _ in
+        fetchSiteConfigurations: {
             fail("\(Self.self).fetchSiteConfigurations")
+            throw NSError(domain: "fetchSiteConfigurations", code: -1)
         },
         getCurrentEngagement: {
             fail("\(Self.self).getCurrentEngagement")
@@ -40,14 +42,21 @@ extension EngagementCoordinator.Environment {
             fail("\(Self.self).getNonTransferredSecureConversationEngagement")
             return nil
         },
-        submitSurveyAnswer: { _, _, _, _ in
+        submitSurveyAnswer: { _, _, _ in
             fail("\(Self.self).submitSurveyAnswer")
+            throw NSError(domain: "submitSurveyAnswer", code: -1)
         },
         uiApplication: .failing,
         uiScreen: .failing,
         notificationCenter: .failing,
-        fetchChatHistory: { _ in fail("\(Self.self).fetchChatHistory") },
-        listQueues: { _ in fail("\(Self.self).listQueues") },
+        fetchChatHistory: {
+            fail("\(Self.self).fetchChatHistory")
+            throw NSError(domain: "fetchChatHistory", code: -1)
+        },
+        listQueues: {
+            fail("\(Self.self).getQueues")
+            throw NSError(domain: "getQueues", code: -1)
+        },
         createFileUploader: { _, _ in
             .failing
         },
@@ -55,7 +64,6 @@ extension EngagementCoordinator.Environment {
             fail("\(Self.self).createFileUploadListModel")
             return .mock()
         },
-        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock,
         markUnreadMessagesDelay: {
             fail("\(Self.self).markUnreadMessagesDelay")
             return .mock

@@ -87,7 +87,14 @@ class ActionButton: UIButton {
     }
 
     @objc private func tapped() {
-        props.tap()
+        switch props.tap {
+        case let .sync(cmd):
+            cmd()
+        case let .async(asyncCmd):
+            Task {
+                await asyncCmd()
+            }
+        }
     }
 }
 
@@ -95,13 +102,13 @@ extension ActionButton {
     struct Props: Equatable {
         var style: ActionButtonStyle
         var height: CGFloat
-        var tap: Cmd
+        var tap: Tap
         var accessibilityIdentifier: String
 
         init(
             style: ActionButtonStyle = .init(title: "", titleFont: .systemFont(ofSize: 16), titleColor: .white, backgroundColor: .fill(color: .blue)),
             height: CGFloat = 40,
-            tap: Cmd = .nop,
+            tap: Tap = .nop,
             accessibilityIdentifier: String = ""
         ) {
             self.style = style
@@ -109,5 +116,12 @@ extension ActionButton {
             self.tap = tap
             self.accessibilityIdentifier = accessibilityIdentifier.isEmpty ? style.title : accessibilityIdentifier
         }
+    }
+
+    enum Tap: Equatable {
+        case sync(Cmd)
+        case async(AsyncCmd)
+
+        static var nop: Tap { .sync(.nop) }
     }
 }

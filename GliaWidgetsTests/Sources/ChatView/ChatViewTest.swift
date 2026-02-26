@@ -48,7 +48,8 @@ final class ChatViewTest: XCTestCase {
         }
     }
 
-    func test_viewIsReleasedOnceModuleIsClosedWithResponseCardsInTranscript() throws {
+    @MainActor
+    func test_viewIsReleasedOnceModuleIsClosedWithResponseCardsInTranscript() async throws {
         guard #available(iOS 17, *) else {
             throw XCTSkip("""
                 This test does not pass on OS lower than iOS 17, but actual fix work well.
@@ -72,6 +73,7 @@ final class ChatViewTest: XCTestCase {
         coordinatorEnv.isAuthenticated = { true }
         coordinatorEnv.maximumUploads = { 1 }
         coordinatorEnv.getNonTransferredSecureConversationEngagement = { nil }
+        coordinatorEnv.gcd = .live
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
@@ -80,18 +82,14 @@ final class ChatViewTest: XCTestCase {
         coordinatorEnv.createEntryWidget = { _ in .mock() }
         let options: [ChatChoiceCardOption] = [try .mock()]
         coordinatorEnv.fetchChatHistory = {
-            $0(
-                .success(
-                    [
-                        .mock(attachment: .mock(
-                            type: .singleChoice,
-                            files: [],
-                            imageUrl: nil,
-                            options: options
-                        ))
-                    ]
-                )
-            )
+            [
+                .mock(attachment: .mock(
+                    type: .singleChoice,
+                    files: [],
+                    imageUrl: nil,
+                    options: options
+                ))
+            ]
         }
         let coordinator = EngagementCoordinator.mock(
             engagementLaunching: .direct(kind: .chat),
@@ -103,12 +101,16 @@ final class ChatViewTest: XCTestCase {
         weak var viewModel = try XCTUnwrap(controller?.viewModel.engagementModel as? ChatViewModel)
         viewModel?.interactorEvent(.stateChanged(.ended(.byVisitor)))
         viewModel?.event(.closeTapped)
-        
+
+        await waitUntil {
+            controller == nil
+        }
         XCTAssertNil(controller)
         XCTAssertNil(viewModel)
     }
 
-    func test_isTopBannerHiddenWhenIsTopBannerAllowedIsFalse() throws {
+    @MainActor
+    func test_isTopBannerHiddenWhenIsTopBannerAllowedIsFalse() async throws {
         let env = EngagementView.Environment(
             data: .failing,
             uuid: { .mock },
@@ -130,16 +132,14 @@ final class ChatViewTest: XCTestCase {
         let queueId = "queueId"
         let mockQueue = Queue.mock(id: queueId, media: [.text, .audio, .messaging])
         let queuesMonitor = QueuesMonitor.mock(
-            getQueues: {
-                $0(.success([mockQueue]))
-            },
+            getQueues: { [mockQueue] },
             subscribeForQueuesUpdates: { _, completion in
                 completion(.success(mockQueue))
                 return UUID.mock.uuidString
             },
             unsubscribeFromUpdates: nil
         )
-        queuesMonitor.fetchAndMonitorQueues(queuesIds: [queueId])
+        _ = try await queuesMonitor.fetchAndMonitorQueues(queuesIds: [queueId])
         entryWidgetEnv.queuesMonitor = queuesMonitor
         let entryWidget = EntryWidget(
             queueIds: [queueId],

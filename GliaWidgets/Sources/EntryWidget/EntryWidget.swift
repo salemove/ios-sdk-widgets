@@ -1,6 +1,5 @@
 import Combine
 import Foundation
-import GliaCoreSDK
 import UIKit
 import SwiftUI
 
@@ -18,7 +17,7 @@ public final class EntryWidget: NSObject {
     private(set) var unreadSecureMessageSubscriptionId: String?
     @Published private var hasPendingInteraction: Bool = false
     @Published var viewState: ViewState = .loading
-    private var ongoingEngagement: Engagement?
+    private var ongoingEngagement: CoreSdkClient.Engagement?
     private var interactorState: InteractorState = .none
     private var cancellables = CancelBag()
 
@@ -50,7 +49,7 @@ public final class EntryWidget: NSObject {
             .store(in: &cancellables)
 
         environment.interactorPublisher
-            .flatMap { interactor -> AnyPublisher<Engagement?, Never> in
+            .flatMap { interactor -> AnyPublisher<CoreSdkClient.Engagement?, Never> in
                 guard let interactor else {
                     return Just(nil).eraseToAnyPublisher()
                 }
@@ -430,7 +429,7 @@ private extension EntryWidget {
         }
     }
 
-    func resolveViewState(for ongoingEngagement: Engagement?) -> EntryWidget.ViewState? {
+    func resolveViewState(for ongoingEngagement: CoreSdkClient.Engagement?) -> EntryWidget.ViewState? {
         guard let ongoingEngagement else {
             return nil
         }

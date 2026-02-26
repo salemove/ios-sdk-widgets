@@ -14,21 +14,18 @@ class CallViewControllerTests: XCTestCase {
         XCTAssertNil(weakViewController, "CallViewController not deinitilized")
     }
 
-    func testLiveObservationIndicatorIsPresented() throws {
+    @MainActor
+    func testLiveObservationIndicatorIsPresented() async throws {
         enum Call { case presentSnackBar }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
             mobileConfirmDialogEnabled: true,
             mobileObservationIndicationEnabled: true
         )
-        viewModelEnv.fetchSiteConfigurations = { completion in
-            completion(.success(site))
-        }
+        viewModelEnv.fetchSiteConfigurations = { site }
 
         var proximityManagerEnv = ProximityManager.Environment.failing
         proximityManagerEnv.uiDevice.isProximityMonitoringEnabled = { _ in }
@@ -66,24 +63,25 @@ class CallViewControllerTests: XCTestCase {
         viewController.loadView()
         interactor.state = .engaged(nil)
 
-        XCTAssertEqual(calls, [.presentSnackBar])
+        // Will be removed when async state observing is implemented
+        await waitUntil {
+            calls.contains(.presentSnackBar)
+        }
+
+        XCTAssertTrue(calls.contains(.presentSnackBar))
     }
 
     func testLiveObservationIndicationIsDisabled() throws {
         enum Call { case presentSnackBar }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
             mobileConfirmDialogEnabled: true,
             mobileObservationIndicationEnabled: false
         )
-        viewModelEnv.fetchSiteConfigurations = { completion in
-            completion(.success(site))
-        }
+        viewModelEnv.fetchSiteConfigurations = { site }
 
         var proximityManagerEnv = ProximityManager.Environment.failing
         proximityManagerEnv.uiDevice.isProximityMonitoringEnabled = { _ in }
@@ -127,17 +125,13 @@ class CallViewControllerTests: XCTestCase {
         enum Call { case presentSnackBar }
         var calls: [Call] = []
 
-        var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
-        }
+        var viewModelEnv = ChatViewModel.Environment.failing { [] }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: false,
             mobileConfirmDialogEnabled: true,
             mobileObservationIndicationEnabled: true
         )
-        viewModelEnv.fetchSiteConfigurations = { completion in
-            completion(.success(site))
-        }
+        viewModelEnv.fetchSiteConfigurations = { site }
 
         var proximityManagerEnv = ProximityManager.Environment.failing
         proximityManagerEnv.uiDevice.isProximityMonitoringEnabled = { _ in }

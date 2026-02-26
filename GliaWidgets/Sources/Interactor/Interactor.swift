@@ -103,7 +103,9 @@ class Interactor {
             .removeDuplicates()
             .compactMap { $0 }
             .sink { [weak self] queueIds in
-                self?.environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds)
+                Task { [weak self] in
+                    try? await self?.environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds)
+                }
             }
             .store(in: &cancellables)
     }
@@ -138,10 +140,8 @@ extension Interactor {
 
     func enqueueForEngagement(
         engagementKind: EngagementKind,
-        replaceExisting: Bool,
-        success: @escaping () -> Void,
-        failure: @escaping (CoreSdkClient.SalemoveError) -> Void
-    ) {
+        replaceExisting: Bool
+    ) async throws {
         switch engagementKind {
         case .chat:
              environment.log.prefixed(Self.self).info("Start queueing for chat engagement")
@@ -160,94 +160,73 @@ extension Interactor {
             .map(CoreSdkClient.VisitorContext.ContextType.assetId)
             .map(CoreSdkClient.VisitorContext.init(_:))
 
-        self.environment.coreSdk.queueForEngagement(
-            .init(
-                queueIds: queueIds ?? [],
-                visitorContext: coreSdkVisitorContext,
-                // shouldCloseAllQueues is `true` by default core sdk,
-                // here it is passed explicitly
-                shouldCloseAllQueues: true,
-                mediaType: engagementKind.mediaType,
-                engagementOptions: options
-            ),
-            replaceExisting
-        ) { [weak self] result in
-            switch result {
-            case .failure(let error):
-                self?.environment.log.prefixed(Self.self).info("Queue for engagement stopped due to error or empty queue")
-                self?.state = .ended(.byError)
-                failure(error)
-            case .success(let ticket):
-
-                if case .enqueueing = self?.state {
-                    self?.state = .enqueued(ticket, engagementKind)
-                }
-                success()
+        let engagementOptions: CoreSdkClient.QueueForEngagementOptions = .init(
+            queueIds: queueIds ?? [],
+            visitorContext: coreSdkVisitorContext,
+            // shouldCloseAllQueues is `true` by default core sdk,
+            // here it is passed explicitly
+            shouldCloseAllQueues: true,
+            mediaType: engagementKind.mediaType,
+            engagementOptions: options
+        )
+        do {
+            let ticket = try await environment.coreSdk.queueForEngagement(
+                engagementOptions,
+                replaceExisting
+            )
+            if case .enqueueing = state {
+                state = .enqueued(ticket, engagementKind)
             }
+        } catch {
+            self.environment.log.prefixed(Self.self).info("Queue for engagement stopped due to error or empty queue")
+            self.state = .ended(.byError)
+            throw error
         }
     }
 
-    func sendMessagePreview(_ message: String) {
-        environment.coreSdk.sendMessagePreview(message) { _, _ in }
+    func sendMessagePreview(_ message: String) async throws -> Bool {
+        try await environment.coreSdk.sendMessagePreview(message)
     }
 
-    func send(
-        messagePayload: CoreSdkClient.SendMessagePayload,
-        completion: @escaping (Result<CoreSdkClient.Message, CoreSdkClient.GliaCoreError>) -> Void
-    ) {
-        environment.coreSdk.sendMessageWithMessagePayload(messagePayload, completion)
+    func send(messagePayload: CoreSdkClient.SendMessagePayload) async throws -> CoreSdkClient.Message {
+        try await environment.coreSdk.sendMessageWithMessagePayload(messagePayload)
     }
 
-    func endSession(completion: @escaping (Result<Void, Error>) -> Void) {
+    @MainActor
+    func endSession() async throws {
         switch state {
         case .none:
-            completion(.success(()))
+            break
         case .enqueueing:
             state = .ended(.byVisitor)
-            completion(.success(()))
         case let .enqueued(ticket, _):
-            exitQueue(
-                ticket: ticket,
-                completion: completion
-            )
+            try await exitQueue(ticket: ticket)
         case .engaged where currentEngagement?.isTransferredSecureConversation == true:
-            completion(.success(()))
+            break
         case .engaged:
-            endEngagement(completion: completion)
+            try await endEngagement()
         case .ended:
-            completion(.success(()))
-
             // `cleanup` is called once survey fetching is already initiated,
             // so no need to store `endedEngagement` anymore.
             cleanup()
         }
     }
 
-    func exitQueue(
-        ticket: CoreSdkClient.QueueTicket,
-        completion: @escaping (Result<Void, Error>) -> Void
-) {
+    @MainActor
+    func exitQueue(ticket: CoreSdkClient.QueueTicket) async throws {
         environment.log.prefixed(Self.self).info("Cancel queue ticket")
-        environment.coreSdk.cancelQueueTicket(ticket) { [weak self] _, error in
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                self?.state = .ended(.byVisitor)
-                completion(.success(()))
-            }
+        do {
+            _ = try await environment.coreSdk.cancelQueueTicket(ticket)
+            state = .ended(.byVisitor)
+        } catch {
+            throw error
         }
     }
 
-    func endEngagement(completion: @escaping (Result<Void, Error>) -> Void) {
-        environment.coreSdk.endEngagement { [weak self] _, error in
-            guard let self else { return }
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                self.state = .ended(.byVisitor)
-                completion(.success(()))
-            }
-        }
+    func endEngagement() async throws {
+        _ = try await environment.coreSdk.endEngagement()
+        self.state = .ended(.byVisitor)
+        self.endedEngagement = environment.coreSdk.getCurrentEngagement()
     }
 
     /**
@@ -389,25 +368,25 @@ extension Interactor: CoreSdkClient.Interactable {
         notify(.receivedMessage(message))
     }
 
-    func start() {
-        environment.coreSdk.requestEngagedOperator { [weak self] operators, _ in
-            let engagedOperator = operators?.first
-            self?.state = .engaged(engagedOperator)
-        }
+    func start() async {
+        let operators = try? await environment.coreSdk.requestEngagedOperator()
+        let engagedOperator = operators?.first
+        state = .engaged(engagedOperator)
         currentEngagement = environment.coreSdk.getCurrentEngagement()
     }
 
     func start(engagement: CoreSdkClient.Engagement) {
         switch engagement.source {
         case .coreEngagement:
-            start()
-
+            Task {
+               await start()
+            }
         case .callVisualizer:
-            start()
-
+            Task {
+                await start()
+            }
         case .unknown(let type):
             debugPrint("Unknown engagement started (type='\(type)').")
-
         @unknown default:
             assertionFailure("Unexpected case in 'EngaagementSource' enum.")
         }
@@ -433,7 +412,9 @@ extension Interactor: CoreSdkClient.Interactable {
         // and it leads to fetchQueues failure that stops queues observing
         // Also when token expires CoreSDK makes force deauthentication which
         // allows to refetch the queues without errors
-        environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds ?? [])
+        Task {
+            _ = try? await environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds ?? [])
+        }
         notify(.error(error))
     }
 }

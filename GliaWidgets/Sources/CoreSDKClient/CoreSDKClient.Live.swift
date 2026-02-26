@@ -9,77 +9,184 @@ extension CoreSdkClient {
             createAppDelegate: Self.AppDelegate.live,
             clearSession: GliaCore.sharedInstance.clearSession,
             localeProvider: .init(getRemoteString: GliaCore.sharedInstance.localeProvider.getRemoteString(_:)),
-            getVisitorInfo: { completion in
-                GliaCore.sharedInstance.fetchVisitorInfo { result in
-                    switch result {
-                    case let .success(coreVisitorInfo):
-                        let visitorInfo = coreVisitorInfo.asWidgetSdkVisitorInfo()
-                        completion(.success(visitorInfo))
-                    case let .failure(error):
-                        completion(.failure(error))
+            configureWithConfiguration: GliaCore.sharedInstance.configure(with:completion:), getVisitorInfo: {
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.fetchVisitorInfo { result in
+                        switch result {
+                        case let .success(coreVisitorInfo):
+                            let visitorInfo = coreVisitorInfo.asWidgetSdkVisitorInfo()
+                            continuation.resume(returning: visitorInfo)
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
                     }
                 }
             },
-            getVisitorInfoDeprecated: GliaCore.sharedInstance.fetchVisitorInfo(_:),
-            updateVisitorInfo: { visitorInfoUpdate, completion in
-                let coreSdkVisitorInfoUpdate = visitorInfoUpdate.asCoreSdkVisitorInfoUpdate()
-                GliaCore.sharedInstance.updateVisitorInfo(coreSdkVisitorInfoUpdate, completion: completion)
+            updateVisitorInfo: { visitorInfoUpdate in
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.updateVisitorInfo(visitorInfoUpdate.asCoreSdkVisitorInfoUpdate()) { result in
+                        switch result {
+                        case let .success(success):
+                            continuation.resume(returning: success)
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
+                    }
+                }
             },
-            updateVisitorInfoDeprecated: GliaCore.sharedInstance.updateVisitorInfo(_:completion:),
-            configureWithConfiguration: GliaCore.sharedInstance.configure(with:completion:),
             configureWithInteractor: GliaCore.sharedInstance.configure(interactor:),
-            getQueues: { completion in
-                GliaCore.sharedInstance.listQueues { coreQueues, error in
-                    if let error {
-                        completion(.failure(error))
-                        return
+            getQueues: {
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.listQueues { coreQueues, error in
+                        if let error {
+                            continuation.resume(throwing: error)
+                        } else if let coreQueues {
+                            let queues = coreQueues.map { $0.asWidgetSDKQueue() }
+                            continuation.resume(returning: queues)
+                            return
+                        } else {
+                            continuation.resume(throwing: GliaError.internalError)
+                        }
                     }
-
-                    if let coreQueues {
-                        let queues = coreQueues.map { $0.asWidgetSDKQueue() }
-                        completion(.success(queues))
-                        return
-                    }
-                    completion(.failure(GliaError.internalError))
                 }
             },
-            queueForEngagement: { options, replaceExisting, completion in
-                let options = QueueForEngagementOptions(
-                    queueIds: options.queueIds,
-                    visitorContext: options.visitorContext,
-                    shouldCloseAllQueues: options.shouldCloseAllQueues,
-                    mediaType: options.mediaType,
-                    engagementOptions: options.engagementOptions
-                )
-                GliaCore.sharedInstance.queueForEngagement(
-                    using: options, replaceExisting: replaceExisting, completion: completion
-                )
+            queueForEngagement: { options, replaceExisting in
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.queueForEngagement(
+                        using: options,
+                        replaceExisting: replaceExisting
+                    ) { result in
+                        switch result {
+                        case let .success(queueTicket):
+                            continuation.resume(returning: queueTicket)
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
+                    }
+                }
             },
-            requestMediaUpgradeWithOffer: GliaCore.sharedInstance.requestMediaUpgrade(offer:completion:),
-            sendMessagePreview: GliaCore.sharedInstance.sendMessagePreview(message:completion:),
-            sendMessageWithMessagePayload: GliaCore.sharedInstance.send(messagePayload:completion:),
-            cancelQueueTicket: GliaCore.sharedInstance.cancel(queueTicket:completion:),
-            endEngagement: GliaCore.sharedInstance.endEngagement(completion:),
-            requestEngagedOperator: GliaCore.sharedInstance.requestEngagedOperator(completion:),
+            sendMessagePreview: { message in
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.sendMessagePreview(message: message) { success, error in
+                        if let error = error {
+                            continuation.resume(throwing: error)
+                        } else {
+                            continuation.resume(returning: success)
+                        }
+                    }
+                }
+            },
+            sendMessageWithMessagePayload: { payload in
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.send(messagePayload: payload) { result in
+                        switch result {
+                        case let .success(message):
+                            continuation.resume(returning: message)
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
+                    }
+                }
+            },
+            cancelQueueTicket: { queueTicket in
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.cancel(queueTicket: queueTicket) { result, error in
+                        if let error {
+                            continuation.resume(throwing: error)
+                            return
+                        } else {
+                            continuation.resume(returning: result)
+                        }
+                    }
+                }
+            },
+            endEngagement: {
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.endEngagement { success, error in
+                        if let error = error {
+                            continuation.resume(throwing: error)
+                        } else {
+                            continuation.resume(returning: success)
+                        }
+                    }
+                }
+            },
+            requestEngagedOperator: {
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.requestEngagedOperator { success, error in
+                        if let error = error {
+                            continuation.resume(throwing: error)
+                        } else {
+                            continuation.resume(returning: success)
+                        }
+                    }
+                }
+            },
             uploadFileToEngagement: GliaCore.sharedInstance.uploadFileToEngagement(_:progress:completion:),
-            fetchFile: GliaCore.sharedInstance.fetchFile(engagementFile:progress:completion:),
-            getCurrentEngagement: GliaCore.sharedInstance.getCurrentEngagement,
-            fetchSiteConfigurations: GliaCore.sharedInstance.fetchSiteConfiguration(_:),
-            submitSurveyAnswer: GliaCore.sharedInstance.submitSurveyAnswer(_:surveyId:engagementId:completion:),
-            authentication: GliaCore.sharedInstance.authentication,
-            fetchChatHistory: { completion in
-                GliaCore.sharedInstance.fetchChatTranscript { result in
-                    switch result {
-                    case let .success(messages):
-                        completion(
-                            .success(messages.map { ChatMessage(with: $0) })
-                        )
-                    case let .failure(error):
-                        completion(.failure(error))
+            fetchFile: { file, progress in
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.fetchFile(engagementFile: file, progress: progress) { fileInformation, error in
+                        if let error = error {
+                            continuation.resume(throwing: error)
+                        } else if let fileInformation = fileInformation {
+                            continuation.resume(returning: fileInformation)
+                        } else {
+                            continuation.resume(throwing: FileError.fileUnavailable)
+                        }
                     }
                 }
             },
-            requestVisitorCode: GliaCore.sharedInstance.callVisualizer.requestVisitorCode(completion:),
+            getCurrentEngagement: GliaCore.sharedInstance.getCurrentEngagement,
+            fetchSiteConfigurations: {
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.fetchSiteConfiguration { result in
+                        switch result {
+                        case let .success(site):
+                            continuation.resume(returning: site)
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
+                    }
+                }
+            },
+            submitSurveyAnswer: { answers, surveyId, engagementId in
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.submitSurveyAnswer(answers, surveyId: surveyId, engagementId: engagementId) { result in
+                        switch result {
+                        case .success:
+                            continuation.resume()
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
+                    }
+                }
+            },
+            authentication: GliaCore.sharedInstance.authentication,
+            fetchChatHistory: {
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.fetchChatTranscript { result in
+                        switch result {
+                        case let .success(messages):
+                            let chatMessages = messages.map { ChatMessage(with: $0) }
+                            continuation.resume(returning: chatMessages)
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
+                    }
+                }
+            },
+            requestVisitorCode: {
+                try await withCheckedThrowingContinuation { continuation in
+                    GliaCore.sharedInstance.callVisualizer.requestVisitorCode { result in
+                        switch result {
+                        case let .success(visitorCode):
+                            continuation.resume(returning: visitorCode)
+                        case let .failure(error):
+                            continuation.resume(throwing: error)
+                        }
+                    }
+                }
+            },
             startSocketObservation: GliaCore.sharedInstance.startSocketObservation,
             stopSocketObservation: GliaCore.sharedInstance.stopSocketObservation,
             createSendMessagePayload: CoreSdkClient.SendMessagePayload.init(content:attachment:),
@@ -108,14 +215,60 @@ extension CoreSdkClient {
 
 extension CoreSdkClient.SecureConversations {
     static let live = Self(
-        sendMessagePayload: GliaCore.sharedInstance.secureConversations.send(secureMessagePayload:queueIds:completion:),
+        sendMessagePayload: { secureMessagePayload, queueIds in
+            try await withCheckedThrowingContinuation { continuation in
+                _ = GliaCore.sharedInstance.secureConversations.send(
+                    secureMessagePayload: secureMessagePayload,
+                    queueIds: queueIds
+                ) { result in
+                    switch result {
+                    case let .success(count):
+                        continuation.resume(returning: count)
+                    case let .failure(error):
+                        continuation.resume(throwing: error)
+                    }
+                }
+            }
+        },
         uploadFile: GliaCore.sharedInstance.secureConversations.uploadFile(_:progress:completion:),
-        getUnreadMessageCount: GliaCore.sharedInstance.secureConversations.getUnreadMessageCount(completion:),
-        markMessagesAsRead: GliaCore.sharedInstance.secureConversations.markMessagesAsRead(completion:),
-        downloadFile: GliaCore.sharedInstance.secureConversations.downloadFile(_:progress:completion:),
+        getUnreadMessageCount: {
+            try await withCheckedThrowingContinuation { continuation in
+                GliaCore.sharedInstance.secureConversations.getUnreadMessageCount { result in
+                    switch result {
+                    case let .success(count):
+                        continuation.resume(returning: count)
+                    case let .failure(error):
+                        continuation.resume(throwing: error)
+                    }
+                }
+            }
+        },
+        markMessagesAsRead: {
+            try await withCheckedThrowingContinuation { continuation in
+                GliaCore.sharedInstance.secureConversations.markMessagesAsRead { result in
+                    switch result {
+                    case .success:
+                        continuation.resume()
+                    case let .failure(error):
+                        continuation.resume(throwing: error)
+                    }
+                }
+            }
+        },
+        downloadFile: { file, progress in
+            try await withCheckedThrowingContinuation { continuation in
+                _ = GliaCore.sharedInstance.secureConversations.downloadFile(file, progress: progress) { result in
+                    switch result {
+                    case let .success(fileInformation):
+                        continuation.resume(returning: fileInformation)
+                    case let .failure(error):
+                        continuation.resume(throwing: error)
+                    }
+                }
+            }
+        },
         subscribeForUnreadMessageCount: GliaCore.sharedInstance.secureConversations.subscribeToUnreadMessageCount(completion:),
         unsubscribeFromUnreadMessageCount: GliaCore.sharedInstance.secureConversations.unsubscribeFromUnreadMessageCount,
-        pendingStatus: GliaCore.sharedInstance.secureConversations.pendingSecureConversationStatus,
         observePendingStatus: GliaCore.sharedInstance.secureConversations.subscribeToPendingSecureConversationStatus,
         unsubscribeFromPendingStatus: { GliaCore.sharedInstance.secureConversations.unsubscribeFromPendingSecureConversationStatus($0) }
     )

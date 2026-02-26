@@ -65,17 +65,19 @@ class EngagementViewModel: CommonEngagementModel {
 
     func viewWillAppear() {}
 
-    func start() {}
+    func start() async {}
 
-    func enqueue(engagementKind: EngagementKind, replaceExisting: Bool) {
-        interactor.enqueueForEngagement(
-            engagementKind: engagementKind,
-            replaceExisting: replaceExisting,
-            success: {},
-            failure: { [weak self] error in
-                self?.handleError(error)
-            }
-        )
+    func enqueue(engagementKind: EngagementKind, replaceExisting: Bool) async {
+        do {
+            try await interactor.enqueueForEngagement(
+                engagementKind: engagementKind,
+                replaceExisting: replaceExisting
+            )
+        } catch let error as CoreSdkClient.GliaCoreError {
+            self.handleError(error)
+        } catch {
+            return
+        }
     }
 
     func interactorEvent(_ event: InteractorEvent) {
@@ -115,20 +117,19 @@ class EngagementViewModel: CommonEngagementModel {
             disposeBag.disposeAll()
 
         case let .enqueueing(engagementKind):
-            environment.fetchSiteConfigurations { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(site):
+            Task {
+                do {
+                    let site = try await environment.fetchSiteConfigurations()
                     if site.mobileConfirmDialogEnabled == false || self.interactor.skipLiveObservationConfirmations {
-                        self.enqueue(
+                        await enqueue(
                             engagementKind: engagementKind,
                             replaceExisting: replaceExistingEnqueueing
                         )
                     } else {
                         self.showLiveObservationConfirmation(in: engagementKind)
                     }
-                case let .failure(error):
-                    self.engagementAction?(.showAlert(.error(
+                } catch {
+                    engagementAction?(.showAlert(.error(
                         error: error,
                         dismissed: endSession
                     )))
@@ -139,18 +140,10 @@ class EngagementViewModel: CommonEngagementModel {
         }
     }
 
-    func endSession() {
-        interactor.endSession { [weak self] result in
-            switch result {
-            case .success:
-                self?.engagementDelegate?(.finished)
-            case .failure:
-                // If ending session fails, we should call finished delegate
-                // event as it will imediately close the screen without showing handled error alert.
-                // So errors are being handled in `handleError(_:)` method.
-                break
-            }
-        }
+    @MainActor
+    func endSession() async {
+        try? await interactor.endSession()
+        self.engagementDelegate?(.finished)
     }
 
     func setViewAppeared() {
@@ -163,15 +156,13 @@ private extension EngagementViewModel {
     private func closeTapped() {
         switch interactor.state {
         case .enqueueing, .enqueued:
-            engagementAction?(.showAlert(.leaveQueue(confirmed: { [weak self] in
-                self?.endSession()
-            })))
+            engagementAction?(.showAlert(.leaveQueue(confirmed: endSession)))
         case .engaged where interactor.currentEngagement?.isTransferredSecureConversation == false:
-            engagementAction?(.showAlert(.endEngagement(confirmed: { [weak self] in
-                self?.endSession()
-            })))
+            engagementAction?(.showAlert(.endEngagement(confirmed: endSession)))
         default:
-            endSession()
+            Task { [weak self] in
+                await self?.endSession()
+            }
         }
     }
 
@@ -195,13 +186,13 @@ extension EngagementViewModel {
             },
             accepted: { [weak self] in
                 guard let self else { return }
-                enqueue(
+                await self.enqueue(
                     engagementKind: engagementKind,
-                    replaceExisting: replaceExistingEnqueueing
+                    replaceExisting: self.replaceExistingEnqueueing
                 )
             },
             declined: { [weak self] in
-                self?.endSession()
+                await self?.endSession()
             }
         ))
     }
@@ -231,8 +222,8 @@ extension EngagementViewModel {
         case showCloseButton
         case showLiveObservationConfirmation(
             link: (WebViewController.Link) -> Void,
-            accepted: () -> Void,
-            declined: () -> Void
+            accepted: () async -> Void,
+            declined: () async -> Void
         )
         case showAlert(AlertInputType)
         case showSnackBarView(
