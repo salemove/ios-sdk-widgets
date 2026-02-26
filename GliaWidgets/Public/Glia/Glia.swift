@@ -50,9 +50,6 @@ enum EngagementRestorationState {
     case restoring
     /// State of SDK when engagement was restored, restarted or there was no engagement after SDK configured
     case restored
-    /// State set immediately before closing the root coordinator during deauthentication.
-    /// Cleared to `.none` when a legitimate new engagement is started via `startRootCoordinator()`.
-    case closing
 }
 
 extension SecureConversations {
