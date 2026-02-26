@@ -28,7 +28,7 @@ struct SettingsView: View {
                     content: cancelButton
                 )
                 ToolbarItem(
-                    placement: .title,
+                    placement: .principal,
                     content: titleView
                 )
                 ToolbarItem(

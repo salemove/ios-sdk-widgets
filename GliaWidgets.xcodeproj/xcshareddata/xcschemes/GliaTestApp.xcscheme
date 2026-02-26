@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1A205D7725655CEC003AA3CD"
-               BuildableName = "TestingApp.app"
-               BlueprintName = "TestingApp"
+               BlueprintIdentifier = "C4A08160CE0C6884B647E823"
+               BuildableName = "GliaTestApp.app"
+               BlueprintName = "GliaTestApp"
                ReferencedContainer = "container:GliaWidgets.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -38,17 +38,6 @@
                ReferencedContainer = "container:GliaWidgets.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8491AF392A94E4E300CC3E72"
-               BuildableName = "TestingAppTests.xctest"
-               BlueprintName = "TestingAppTests"
-               ReferencedContainer = "container:GliaWidgets.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -65,9 +54,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1A205D7725655CEC003AA3CD"
-            BuildableName = "TestingApp.app"
-            BlueprintName = "TestingApp"
+            BlueprintIdentifier = "C4A08160CE0C6884B647E823"
+            BuildableName = "GliaTestApp.app"
+            BlueprintName = "GliaTestApp"
             ReferencedContainer = "container:GliaWidgets.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -94,9 +83,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1A205D7725655CEC003AA3CD"
-            BuildableName = "TestingApp.app"
-            BlueprintName = "TestingApp"
+            BlueprintIdentifier = "C4A08160CE0C6884B647E823"
+            BuildableName = "GliaTestApp.app"
+            BlueprintName = "GliaTestApp"
             ReferencedContainer = "container:GliaWidgets.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
