@@ -7,7 +7,7 @@ PODS:
     - AccessibilitySnapshot/Core
     - SnapshotTesting (~> 1.0)
   - GliaCoreDependency (2.4.0)
-  - GliaCoreSDK (2.6.4):
+  - GliaCoreSDK (2.6.5):
     - GliaCoreDependency (= 2.4.0)
     - GliaOpenTelemetry (= 1.0.8)
     - PhoenixChannelsClient (= 1.1.3)
@@ -16,7 +16,7 @@ PODS:
   - GliaOpenTelemetry (1.0.8)
   - PhoenixChannelsClient (1.1.3)
   - SnapshotTesting (1.9.0)
-  - SwiftLint (0.63.0)
+  - SwiftLint (0.63.2)
   - TwilioVoice (6.8.0)
   - WebRTC-lib (119.0.0)
 
@@ -40,11 +40,11 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   AccessibilitySnapshot: a91e4a69f870188b51f43863d9fc7269d07cdd93
   GliaCoreDependency: bf99fc5a6fe66348b58123caded985506a8cf762
-  GliaCoreSDK: fe10d03eb1e50c860b208d78eb5f0d630f000ad4
+  GliaCoreSDK: 183a9eb3257a398489b43ab301b45f4f65e3e669
   GliaOpenTelemetry: 9c66a07da9b15a2e00a648e22728a3aa26c7d2d6
   PhoenixChannelsClient: 42c589ca5b73a5dfe08588c12f525c306619eaf5
   SnapshotTesting: 6141c48b6aa76ead61431ca665c14ab9a066c53b
-  SwiftLint: e9074baeb1a9fc1e78a4055967f73860313c6a9e
+  SwiftLint: 4fa4a9b437ccc4fc72f6c0bc98556e8e9e05bccf
   TwilioVoice: 9563c9ad71b9ab7bbad0b59b67cfe4be96c75d23
   WebRTC-lib: 4e9a17058f880cd658e88383c1ac8f1119af3700
 
