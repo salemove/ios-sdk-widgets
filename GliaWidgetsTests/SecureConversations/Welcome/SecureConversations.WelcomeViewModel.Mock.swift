@@ -14,11 +14,11 @@ extension SecureConversations.WelcomeViewModel.Environment {
         secureConversations: CoreSdkClient.SecureConversations = .mock,
         welcomeStyle: SecureConversations.WelcomeStyle = Theme().secureConversationsWelcomeStyle,
         queueIds: [String] = [],
-        listQueues: @escaping CoreSdkClient.GetQueues = { _ in },
+        listQueues: @escaping CoreSdkClient.GetQueues = { [.mock()] },
         fileUploader: FileUploader = .mock(),
         uiApplication: UIKitBased.UIApplication = .mock,
         createFileUploadListModel: @escaping SecureConversations.FileUploadListViewModel.Create = { _ in .mock() },
-        fetchSiteConfigurations: @escaping CoreSdkClient.FetchSiteConfigurations = { _ in },
+        fetchSiteConfigurations: @escaping CoreSdkClient.FetchSiteConfigurations = { try .mock() },
         startSocketObservation: @escaping CoreSdkClient.StartSocketObservation = {},
         stopSocketObservation: @escaping CoreSdkClient.StopSocketObservation = {},
         getCurrentEngagement: @escaping CoreSdkClient.GetCurrentEngagement = { .mock() },
@@ -46,7 +46,7 @@ extension SecureConversations.WelcomeViewModel.Environment {
 extension SecureConversations.Availability {
     static let mock: SecureConversations.Availability = .init(
         environment: .init(
-            getQueues: { _ in },
+            getQueues: { [.mock()] },
             isAuthenticated: { true },
             log: .mock,
             queuesMonitor: .mock(),
