@@ -209,30 +209,44 @@ extension Glia {
             return
         }
 
-        // Waits for while for establishing socket connection, connection to channels, and
-        // receive necessary information about engagement.
-        environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(2)) { [weak self] in
-            if let restartedEngagement = self?.interactor?.currentEngagement,
-               !restartedEngagement.isTransferredSecureConversation,
-                restartedEngagement.restartedFromEngagementId != nil {
-                // In case engagement should be restarted, LO ack should not
-                // be appeared again.
-                interactor.skipLiveObservationConfirmations = true
+        var handled = false
 
-                self?.startRootCoordinator(
+        interactor.$currentEngagement
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] engagement in
+                guard let self, !handled else { return }
+                guard let engagement,
+                      !engagement.isTransferredSecureConversation,
+                      engagement.restartedFromEngagementId != nil else { return }
+
+                handled = true
+
+                // Only start if restoreOngoingEngagementIfPresent hasn't already done it
+                guard rootCoordinator == nil else {
+                    engagementRestorationState = .restored
+                    return
+                }
+
+                interactor.skipLiveObservationConfirmations = true
+                startRootCoordinator(
                     with: interactor,
                     viewFactory: viewFactory,
                     sceneProvider: sceneProvider,
-                    engagementKind: .init(media: restartedEngagement.mediaStreams),
+                    engagementKind: .init(media: engagement.mediaStreams),
                     features: features,
                     maximize: false
                 )
-
-                self?.rootCoordinator?.gliaViewController?.minimize(animated: false)
-            } else {
-                self?.closeRootCoordinator()
+                rootCoordinator?.gliaViewController?.minimize(animated: false)
+                engagementRestorationState = .restored
             }
-            self?.engagementRestorationState = .restored
+            .store(in: &cancelBag)
+
+        // Fallback: if no restarted engagement arrives within 20 seconds, give up
+        environment.gcd.mainQueue.asyncAfterDeadline(.now() + .seconds(20)) { [weak self] in
+            guard let self, !handled else { return }
+            handled = true
+            closeRootCoordinator()
+            engagementRestorationState = .restored
         }
     }
 
