@@ -556,7 +556,18 @@ public class Glia {
             return
         }
 
-        interactor?.endSession(completion: completion)
+        interactor?.endSession { [weak self] result in
+            guard let self else { return }
+
+            switch result {
+            case .success:
+                self.rootCoordinator?.popCoordinator()
+                self.rootCoordinator?.end(surveyPresentation: .doNotPresentSurvey)
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 
     /// List all queues of the configured site. It is also possible to monitor queues changes with
