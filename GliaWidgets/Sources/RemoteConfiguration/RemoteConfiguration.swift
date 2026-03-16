@@ -18,7 +18,7 @@ public struct RemoteConfiguration: Codable {
 }
 
 extension RemoteConfiguration {
-    struct GlobalColors: Codable {
+    final class GlobalColors: Codable {
         let primary: String?
         let secondary: String?
         let baseNormal: String?
@@ -27,11 +27,31 @@ extension RemoteConfiguration {
         let baseShade: String?
         let systemNegative: String?
         let baseNeutral: String?
+
+        init(
+            primary: String?,
+            secondary: String?,
+            baseNormal: String?,
+            baseLight: String?,
+            baseDark: String?,
+            baseShade: String?,
+            systemNegative: String?,
+            baseNeutral: String?
+        ) {
+            self.primary = primary
+            self.secondary = secondary
+            self.baseNormal = baseNormal
+            self.baseLight = baseLight
+            self.baseDark = baseDark
+            self.baseShade = baseShade
+            self.systemNegative = systemNegative
+            self.baseNeutral = baseNeutral
+        }
     }
 }
 
 extension RemoteConfiguration {
-    struct Call: Codable {
+    final class Call: Codable {
         let background: Layer?
         let bottomText: Text?
         let buttonBar: ButtonBar?
@@ -53,11 +73,11 @@ extension RemoteConfiguration {
         }
     }
 
-    struct VisitorVideo: Codable {
+    final class VisitorVideo: Codable {
         let flipCameraButton: BarButtonStyle?
     }
 
-    struct Alert: Codable {
+    final class Alert: Codable {
         let title: Text?
         let titleImageColor: Color?
         let message: Text?
@@ -75,37 +95,37 @@ extension RemoteConfiguration {
         case vertical
     }
 
-    struct Bubble: Codable {
+    final class Bubble: Codable {
         let badge: Badge?
         let onHoldOverlay: OnHoldOverlayStyle?
         let userImage: UserImageStyle?
     }
 
-    struct Badge: Codable {
+    final class Badge: Codable {
         let background: Layer?
         let font: Font?
         let fontColor: Color?
     }
 
-    struct OnHoldOverlayStyle: Codable {
+    final class OnHoldOverlayStyle: Codable {
         let backgroundColor: Color?
         let tintColor: Color?
     }
 
-    struct UserImageStyle: Codable {
+    final class UserImageStyle: Codable {
         let imageBackgroundColor: Color?
         let placeholderBackgroundColor: Color?
         let placeholderColor: Color?
     }
 
-    struct Layer: Codable {
+    final class Layer: Codable {
         let border: Color?
         let borderWidth: Double?
         let cornerRadius: Double?
         let color: Color?
     }
 
-    struct Color: Codable {
+    final class Color: Codable {
         let type: ColorType
         let value: [String]
     }
@@ -115,20 +135,20 @@ extension RemoteConfiguration {
         case gradient
     }
 
-    struct Button: Codable {
+    final class Button: Codable {
         let background: Layer?
         let text: Text?
         let tintColor: Color?
         let shadow: Shadow?
     }
 
-    struct Shadow: Codable {
+    final class Shadow: Codable {
         let color: Color?
         let offset: Double?
         let opacity, radius: Double?
     }
 
-    struct Text: Codable {
+    final class Text: Codable {
         let alignment: Alignment?
         let background: Color?
         let font: Font?
@@ -152,33 +172,38 @@ extension RemoteConfiguration {
         }
     }
 
-    public struct Font: Codable {
+    public final class Font: Codable {
         public let size: Double?
         public let style: FontStyle?
+
+        init(size: Double?, style: FontStyle?) {
+            self.size = size
+            self.style = style
+        }
     }
 
     public enum FontStyle: String, Codable {
         case bold, italic, regular, thin
     }
 
-    struct ButtonBar: Codable {
+    final class ButtonBar: Codable {
         let chatButton, minimizeButton, muteButton, speakerButton: BarButtonStates?
         let videoButton: BarButtonStates?
         let badge: Badge?
     }
 
-    struct BarButtonStates: Codable {
+    final class BarButtonStates: Codable {
         let active: BarButtonStyle?
         let inactive: BarButtonStyle?
         let selected: BarButtonStyle?
     }
 
-    struct BarButtonStyle: Codable {
+    final class BarButtonStyle: Codable {
         let background, imageColor: Color?
         let title: Text?
     }
 
-    struct Survey: Codable {
+    final class Survey: Codable {
         let title: Text?
         let layer: Layer?
         let submitButton: Button?
@@ -189,12 +214,12 @@ extension RemoteConfiguration {
         let singleQuestion: SurveySingleQuestion?
     }
 
-    struct SurveyBooleanQuestion: Codable {
+    final class SurveyBooleanQuestion: Codable {
         let optionButton: OptionButton?
         let title: Text?
     }
 
-    struct OptionButton: Codable {
+    final class OptionButton: Codable {
         let font: Font?
         let placeholder: Text?
         let highlightedLayer: Layer?
@@ -206,24 +231,24 @@ extension RemoteConfiguration {
         let error: Text?
     }
 
-    struct SurveyInputQuestion: Codable {
+    final class SurveyInputQuestion: Codable {
         let inputField: OptionButton?
         let title: Text?
     }
 
-    struct SurveyScaleQuestion: Codable {
+    final class SurveyScaleQuestion: Codable {
         let optionButton: OptionButton?
         let title: Text?
     }
 
-    struct SurveySingleQuestion: Codable {
+    final class SurveySingleQuestion: Codable {
         let option: Text?
         let tintColor: Color?
         let title: Text?
         let error: Text?
     }
 
-    struct EntryWidget: Codable {
+    final class EntryWidget: Codable {
         let background: Layer?
         let mediaTypeItems: MediaTypeItems?
         let errorTitle: Text?
@@ -231,12 +256,12 @@ extension RemoteConfiguration {
         let errorButton: Button?
     }
 
-    struct MediaTypeItems: Codable {
+    final class MediaTypeItems: Codable {
         let mediaTypeItem: MediaTypeItem?
         let dividerColor: Color?
     }
 
-    struct MediaTypeItem: Codable {
+    final class MediaTypeItem: Codable {
         let background: Layer?
         let iconColor: Color?
         let title: Text?
@@ -244,7 +269,7 @@ extension RemoteConfiguration {
         let loadingTintColor: Color?
     }
 
-    struct SecureConversations: Codable {
+    final class SecureConversations: Codable {
         let unavailableStatusBackground: Layer?
         let unavailableStatusText: Text?
         let bottomBannerBackground: Layer?

@@ -1,7 +1,7 @@
 import Foundation
 
 extension RemoteConfiguration {
-    struct SnackBar: Codable {
+    final class SnackBar: Codable {
         let background: Color?
         let text: Color?
     }
