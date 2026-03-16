@@ -1,11 +1,11 @@
 import Foundation
 
 extension RemoteConfiguration {
-    struct CallVisualizer: Codable {
+    final class CallVisualizer: Codable {
         let visitorCode: VisitorCode?
     }
 
-    struct VisitorCode: Codable {
+    final class VisitorCode: Codable {
         let title: Text?
         let actionButton: Button?
         let numberSlotText: Text?

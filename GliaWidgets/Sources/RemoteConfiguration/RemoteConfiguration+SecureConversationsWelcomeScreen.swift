@@ -1,7 +1,7 @@
 import Foundation
 
 extension RemoteConfiguration {
-    struct SecureConversationsWelcomeScreen: Codable {
+    final class SecureConversationsWelcomeScreen: Codable {
         let header: Header?
         let welcomeTitle: Text?
         let titleImage: Color?
@@ -25,7 +25,7 @@ extension RemoteConfiguration {
         let background: Color?
     }
 
-    struct SecureConversationsConfirmationScreen: Codable {
+    final class SecureConversationsConfirmationScreen: Codable {
         let background: Color?
         let checkMessagesButton: Button?
         let header: Header?

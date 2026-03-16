@@ -1,7 +1,7 @@
 import Foundation
 
 extension RemoteConfiguration {
-    struct Chat: Codable {
+    final class Chat: Codable {
         let background: Layer?
         let header: Header?
         let connect: EngagementStates?
@@ -23,24 +23,24 @@ extension RemoteConfiguration {
         let secureMessaging: SecureConversations?
     }
 
-    struct Gva: Codable {
+    final class Gva: Codable {
         let persistentButton: GvaPersistentButton?
         let quickReplyButton: Button?
         let galleryCard: GvaGalleryCards?
     }
 
-    struct GvaPersistentButton: Codable {
+    final class GvaPersistentButton: Codable {
         let title: Text?
         let background: Layer?
         let button: Button?
     }
 
-    struct GvaGalleryCards: Codable {
+    final class GvaGalleryCards: Codable {
         let operatorImage: UserImageStyle?
         let cardStyle: GVAGalleryCardStyle?
     }
 
-    struct GVAGalleryCardStyle: Codable {
+    final class GVAGalleryCardStyle: Codable {
         let cardContainer: Layer?
         let imageView: Layer?
         let title: Text?
@@ -48,7 +48,7 @@ extension RemoteConfiguration {
         let button: Button?
     }
 
-    struct Header: Codable {
+    final class Header: Codable {
         let background: Layer?
         let text: Text?
         let backButton: Button?
@@ -56,7 +56,7 @@ extension RemoteConfiguration {
         let endButton: Button?
     }
 
-    struct MessageBalloon: Codable {
+    final class MessageBalloon: Codable {
         let background: Layer?
         let text: Text?
         let file: FileMessage?
@@ -65,7 +65,7 @@ extension RemoteConfiguration {
         let userImage: UserImageStyle?
     }
 
-    struct FileMessage: Codable {
+    final class FileMessage: Codable {
         let preview: FilePreview?
         let download: FileState?
         let downloading: FileState?
@@ -78,7 +78,7 @@ extension RemoteConfiguration {
         let border: Color?
     }
 
-    struct EngagementStates: Codable {
+    final class EngagementStates: Codable {
         let `operator`: Operator?
         let queue: EngagementState?
         let connecting: EngagementState?
@@ -87,18 +87,18 @@ extension RemoteConfiguration {
         let onHold: EngagementState?
     }
 
-    struct EngagementState: Codable {
+    final class EngagementState: Codable {
         let title: Text?
         let description: Text?
     }
 
-    struct Operator: Codable {
+    final class Operator: Codable {
         let image: UserImageStyle?
         let animationColor: Color?
         let onHoldOverlay: OnHoldOverlayStyle?
     }
 
-    struct Input: Codable {
+    final class Input: Codable {
         let text: Text?
         let placeholder: Text?
         let separator: Color?
@@ -108,33 +108,33 @@ extension RemoteConfiguration {
         let fileUploadBar: FileUploadBar?
     }
 
-    struct ResponseCard: Codable {
+    final class ResponseCard: Codable {
         let background: Layer?
         let option: ResponseCardOption?
         let text: Text?
         let userImage: UserImageStyle?
     }
 
-    struct ResponseCardOption: Codable {
+    final class ResponseCardOption: Codable {
         let normal: Button?
         let selected: Button?
         let disabled: Button?
     }
 
-    struct Upgrade: Codable {
+    final class Upgrade: Codable {
         let text: Text?
         let description: Text?
         let iconColor: Color?
         let background: Layer?
     }
 
-    struct AttachmentSourceList: Codable {
+    final class AttachmentSourceList: Codable {
         let items: [AttachmentSource]?
         let separator: Color?
         let background: Color?
     }
 
-    struct AttachmentSource: Codable {
+    final class AttachmentSource: Codable {
         let type: AttachmentSourceType
         let text: Text?
         let tintColor: Color?
@@ -144,7 +144,7 @@ extension RemoteConfiguration {
         case photoLibrary, takePhoto, browse
     }
 
-    struct FileUploadBar: Codable {
+    final class FileUploadBar: Codable {
         let filePreview: FilePreview?
         let uploading: FileState?
         let uploaded: FileState?
@@ -155,26 +155,26 @@ extension RemoteConfiguration {
         let removeButton: Color?
     }
 
-    struct FilePreview: Codable {
+    final class FilePreview: Codable {
         let text: Text?
         let errorIcon: Color?
         let background: Layer?
         let errorBackground: Layer?
     }
 
-    struct FileState: Codable {
+    final class FileState: Codable {
         let text: Text?
         let info: Text?
     }
 
-    struct FileErrorState: Codable {
+    final class FileErrorState: Codable {
         let text: Text?
         let info: Text?
         let separator: Text?
         let retry: Text?
     }
 
-    struct UnreadIndicator: Codable {
+    final class UnreadIndicator: Codable {
         let backgroundColor: Color?
         let bubble: Bubble?
     }

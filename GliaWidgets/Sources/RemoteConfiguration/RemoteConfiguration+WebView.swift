@@ -1,7 +1,7 @@
 import Foundation
 
 extension RemoteConfiguration {
-    struct WebView: Codable {
+    final class WebView: Codable {
         let header: Header?
     }
 }
