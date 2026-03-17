@@ -48,7 +48,7 @@ workflows:
         - project_path: $BITRISE_PROJECT_PATH
     - xcode-archive@5:
         inputs:
-        - scheme: $APP_SCHEME
+        - scheme: $BROWSERSTACK_APP_SCHEME
         - team_id: $TEAM_ID
         - export_method: $BITRISE_EXPORT_METHOD
     - browserstack-upload@0:
@@ -118,7 +118,7 @@ workflows:
         - project_path: $BITRISE_PROJECT_PATH
     - xcode-archive@5:
         inputs:
-        - scheme: $APP_SCHEME
+        - scheme: $BROWSERSTACK_APP_SCHEME
         - team_id: $TEAM_ID
         - export_method: $BITRISE_EXPORT_METHOD
     - browserstack-upload@0:
@@ -287,6 +287,9 @@ app:
   - opts:
       is_expand: false
     APP_SCHEME: GliaTestApp
+  - opts:
+      is_expand: false
+    BROWSERSTACK_APP_SCHEME: TestingApp
   - opts:
       is_expand: false
     BITRISE_EXPORT_METHOD: development
