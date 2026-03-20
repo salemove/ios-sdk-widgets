@@ -130,7 +130,9 @@ extension Theme {
             negativeTitle: Localization.General.cancel,
             positiveTitle: Localization.General.allow,
             switchButtonBackgroundColors: true,
-            showsPoweredBy: showsPoweredBy
+            showsPoweredBy: showsPoweredBy,
+            negativeAccessibilityHint: Localization.Engagement.Confirm.Cancel.Accessibility.hint,
+            positiveAccessibilityHint: Localization.Engagement.Confirm.Allow.Accessibility.hint
         )
 
         let leaveCurrentConversation = ConfirmationAlertConfiguration(
