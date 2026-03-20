@@ -243,6 +243,8 @@
 "engagement.confirm.link2.text" = "Privacy Policies";
 "engagement.confirm.link2.url" = "";
 "engagement.confirm.link2.accessibility.label" = "Privacy Policies";
+"engagement.confirm.cancel.accessibility.hint" = "Dismisses the dialog and returns you to the previous screen. The engagement will not start.";
+"engagement.confirm.allow.accessibility.hint" = "Allows the operator to view your screen and starts the engagement.";
 
 "live_observation.indicator.message" = "Your app screen is visible to the operator.";
 

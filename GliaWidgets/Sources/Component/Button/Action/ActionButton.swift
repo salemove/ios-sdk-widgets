@@ -50,6 +50,7 @@ class ActionButton: UIButton {
         setTitleColor(props.style.titleColor, for: .normal)
         titleLabel?.textAlignment = .center
         accessibilityLabel = props.style.title
+        accessibilityHint = props.accessibilityHint.isEmpty ? nil : props.accessibilityHint
         accessibilityIdentifier = props.accessibilityIdentifier
         titleLabel?.adjustsFontSizeToFitWidth = true
         setFontScalingEnabled(
@@ -97,17 +98,20 @@ extension ActionButton {
         var height: CGFloat
         var tap: Cmd
         var accessibilityIdentifier: String
+        var accessibilityHint: String
 
         init(
             style: ActionButtonStyle = .init(title: "", titleFont: .systemFont(ofSize: 16), titleColor: .white, backgroundColor: .fill(color: .blue)),
             height: CGFloat = 40,
             tap: Cmd = .nop,
-            accessibilityIdentifier: String = ""
+            accessibilityIdentifier: String = "",
+            accessibilityHint: String = ""
         ) {
             self.style = style
             self.height = height
             self.tap = tap
             self.accessibilityIdentifier = accessibilityIdentifier.isEmpty ? style.title : accessibilityIdentifier
+            self.accessibilityHint = accessibilityHint
         }
     }
 }
