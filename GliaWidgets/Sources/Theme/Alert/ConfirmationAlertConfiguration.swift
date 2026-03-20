@@ -25,4 +25,10 @@ public struct ConfirmationAlertConfiguration: Equatable {
 
     /// Controls the appearance of the "Powered by" text and logo in the alert.
     public var showsPoweredBy: Bool
+
+    /// Accessibility hint for the negative action button.
+    public var negativeAccessibilityHint: String = ""
+
+    /// Accessibility hint for the positive action button.
+    public var positiveAccessibilityHint: String = ""
 }

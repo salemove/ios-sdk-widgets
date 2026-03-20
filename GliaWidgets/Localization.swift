@@ -352,6 +352,18 @@ internal enum Localization {
       internal static var message: String { Localization.tr("Localizable", "engagement.confirm.message", fallback: "Please allow our representative to view this application screen for improved support.") }
       /// Before We Continue
       internal static var title: String { Localization.tr("Localizable", "engagement.confirm.title", fallback: "Before We Continue") }
+      internal enum Allow {
+        internal enum Accessibility {
+          /// Allows the operator to view your screen and starts the engagement.
+          internal static var hint: String { Localization.tr("Localizable", "engagement.confirm.allow.accessibility.hint", fallback: "Allows the operator to view your screen and starts the engagement.") }
+        }
+      }
+      internal enum Cancel {
+        internal enum Accessibility {
+          /// Dismisses the dialog and returns you to the previous screen. The engagement will not start.
+          internal static var hint: String { Localization.tr("Localizable", "engagement.confirm.cancel.accessibility.hint", fallback: "Dismisses the dialog and returns you to the previous screen. The engagement will not start.") }
+        }
+      }
       internal enum Link1 {
         /// Terms and Conditions
         internal static var text: String { Localization.tr("Localizable", "engagement.confirm.link1.text", fallback: "Terms and Conditions") }
