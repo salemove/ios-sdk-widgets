@@ -394,9 +394,21 @@ internal enum Localization {
     internal enum End {
       /// Are you sure you want to end this engagement?
       internal static var message: String { Localization.tr("Localizable", "engagement.end.message", fallback: "Are you sure you want to end this engagement?") }
+      internal enum Confirm {
+        internal enum Accessibility {
+          /// Ends the current engagement.
+          internal static var hint: String { Localization.tr("Localizable", "engagement.end.confirm.accessibility.hint", fallback: "Ends the current engagement.") }
+        }
+      }
       internal enum Confirmation {
         /// End Engagement?
         internal static var header: String { Localization.tr("Localizable", "engagement.end.confirmation.header", fallback: "End Engagement?") }
+      }
+      internal enum Deny {
+        internal enum Accessibility {
+          /// Returns to the engagement.
+          internal static var hint: String { Localization.tr("Localizable", "engagement.end.deny.accessibility.hint", fallback: "Returns to the engagement.") }
+        }
       }
     }
     internal enum Ended {
@@ -447,6 +459,18 @@ internal enum Localization {
         internal static var header: String { Localization.tr("Localizable", "engagement.queue.leave.header", fallback: "Are you sure you want to leave?") }
         /// You will lose your place in the queue.
         internal static var message: String { Localization.tr("Localizable", "engagement.queue.leave.message", fallback: "You will lose your place in the queue.") }
+        internal enum Confirm {
+          internal enum Accessibility {
+            /// Leaves the queue and cancels the engagement.
+            internal static var hint: String { Localization.tr("Localizable", "engagement.queue.leave.confirm.accessibility.hint", fallback: "Leaves the queue and cancels the engagement.") }
+          }
+        }
+        internal enum Deny {
+          internal enum Accessibility {
+            /// Keeps your place in the queue.
+            internal static var hint: String { Localization.tr("Localizable", "engagement.queue.leave.deny.accessibility.hint", fallback: "Keeps your place in the queue.") }
+          }
+        }
       }
       internal enum Reconnection {
         /// Please try again later.
@@ -754,6 +778,18 @@ internal enum Localization {
       internal static var negative: String { Localization.tr("Localizable", "push_notifications_alert.button.negative", fallback: "Not right now") }
       /// Allow
       internal static var positive: String { Localization.tr("Localizable", "push_notifications_alert.button.positive", fallback: "Allow") }
+      internal enum Negative {
+        internal enum Accessibility {
+          /// Dismisses the notification prompt.
+          internal static var hint: String { Localization.tr("Localizable", "push_notifications_alert.button.negative.accessibility.hint", fallback: "Dismisses the notification prompt.") }
+        }
+      }
+      internal enum Positive {
+        internal enum Accessibility {
+          /// Allows the app to send push notifications.
+          internal static var hint: String { Localization.tr("Localizable", "push_notifications_alert.button.positive.accessibility.hint", fallback: "Allows the app to send push notifications.") }
+        }
+      }
     }
   }
   internal enum ScreenSharing {
@@ -792,6 +828,18 @@ internal enum Localization {
           internal static var negative: String { Localization.tr("Localizable", "secure_messaging.chat.leave_current_conversation.button.negative", fallback: "Leave") }
           /// Stay
           internal static var positive: String { Localization.tr("Localizable", "secure_messaging.chat.leave_current_conversation.button.positive", fallback: "Stay") }
+        }
+        internal enum Leave {
+          internal enum Accessibility {
+            /// Leaves the current conversation and starts a new one.
+            internal static var hint: String { Localization.tr("Localizable", "secure_messaging.chat.leave_current_conversation.leave.accessibility.hint", fallback: "Leaves the current conversation and starts a new one.") }
+          }
+        }
+        internal enum Stay {
+          internal enum Accessibility {
+            /// Stays in the current conversation.
+            internal static var hint: String { Localization.tr("Localizable", "secure_messaging.chat.leave_current_conversation.stay.accessibility.hint", fallback: "Stays in the current conversation.") }
+          }
         }
       }
       internal enum Unavailable {

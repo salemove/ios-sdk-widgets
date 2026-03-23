@@ -142,6 +142,8 @@
 "engagement.default_operator" = "Operator";
 "engagement.end.confirmation.header" = "End Engagement?";
 "engagement.end.message" = "Are you sure you want to end this engagement?";
+"engagement.end.deny.accessibility.hint" = "Returns to the engagement.";
+"engagement.end.confirm.accessibility.hint" = "Ends the current engagement.";
 "engagement.ended.header" = "Engagement Ended";
 "engagement.ended.message" = "This engagement has ended.\nThank you!";
 "engagement.media_upgrade.audio.info" = "Speak through your device";
@@ -162,6 +164,8 @@
 "engagement.queue.closed.message" = "Operators are no longer available. \nPlease try again later.";
 "engagement.queue.leave.header" = "Are you sure you want to leave?";
 "engagement.queue.leave.message" = "You will lose your place in the queue.";
+"engagement.queue.leave.deny.accessibility.hint" = "Keeps your place in the queue.";
+"engagement.queue.leave.confirm.accessibility.hint" = "Leaves the queue and cancels the engagement.";
 "engagement.queue.reconnection.failed" = "Please try again later.";
 "engagement.queue.transferring" = "Transferring";
 "ios.engagement.connection_screen.video_notice" = "(By default, your video will be turned off)";
@@ -255,6 +259,8 @@
 "secure_messaging.chat.leave_current_conversation.message" = "You already have a conversation in progress. Starting a new one may lead to our agents overlooking your current conversation.";
 "secure_messaging.chat.leave_current_conversation.button.positive" = "Stay";
 "secure_messaging.chat.leave_current_conversation.button.negative" = "Leave";
+"secure_messaging.chat.leave_current_conversation.stay.accessibility.hint" = "Stays in the current conversation.";
+"secure_messaging.chat.leave_current_conversation.leave.accessibility.hint" = "Leaves the current conversation and starts a new one.";
 
 "entry_widget.live_chat.button.label" = "Chat";
 "entry_widget.live_chat.button.description" = "For the texter in all of us";
@@ -284,5 +290,7 @@
 "push_notifications_alert.message" = "Allow push notifications so we can message you (and return your messages) in the app.";
 "push_notifications_alert.button.positive" = "Allow";
 "push_notifications_alert.button.negative" = "Not right now";
+"push_notifications_alert.button.negative.accessibility.hint" = "Dismisses the notification prompt.";
+"push_notifications_alert.button.positive.accessibility.hint" = "Allows the app to send push notifications.";
 
 "snackbar.no_connection.message" = "No connection. Trying to reconnect.";
