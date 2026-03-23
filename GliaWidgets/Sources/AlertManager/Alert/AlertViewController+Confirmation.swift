@@ -22,7 +22,9 @@ extension AlertViewController {
         }
 
         negativeButtonStyle.title = conf.negativeTitle
+        negativeButtonStyle.accessibility.hint = conf.negativeAccessibilityHint
         positiveButtonStyle.title = conf.positiveTitle
+        positiveButtonStyle.accessibility.hint = conf.positiveAccessibilityHint
 
         let confirmButton: ActionButton = ActionButton(
             props: .init(
@@ -69,7 +71,9 @@ extension AlertViewController {
         }
 
         negativeButtonStyle.title = conf.negativeTitle
+        negativeButtonStyle.accessibility.hint = conf.negativeAccessibilityHint
         positiveButtonStyle.title = conf.positiveTitle
+        positiveButtonStyle.accessibility.hint = conf.positiveAccessibilityHint
 
         let declineButton: ActionButton = ActionButton(
             props: .init(

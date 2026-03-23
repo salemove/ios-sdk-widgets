@@ -50,6 +50,7 @@ class ActionButton: UIButton {
         setTitleColor(props.style.titleColor, for: .normal)
         titleLabel?.textAlignment = .center
         accessibilityLabel = props.style.title
+        accessibilityHint = props.style.accessibility.hint.isEmpty ? nil : props.style.accessibility.hint
         accessibilityIdentifier = props.accessibilityIdentifier
         titleLabel?.adjustsFontSizeToFitWidth = true
         setFontScalingEnabled(

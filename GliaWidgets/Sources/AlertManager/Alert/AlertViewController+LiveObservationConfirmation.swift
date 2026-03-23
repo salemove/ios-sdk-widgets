@@ -17,9 +17,11 @@ extension AlertViewController {
         let alertStyle = viewFactory.theme.alert
         var declineButtonStyle = alertStyle.negativeAction
         declineButtonStyle.title = conf.negativeTitle
+        declineButtonStyle.accessibility.hint = conf.negativeAccessibilityHint
 
         var acceptButtonStyle = alertStyle.positiveAction
         acceptButtonStyle.title = conf.positiveTitle
+        acceptButtonStyle.accessibility.hint = conf.positiveAccessibilityHint
 
         if let firstLinkButton = linkButton(
             for: conf.firstLinkButtonUrl,
