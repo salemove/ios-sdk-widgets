@@ -6,7 +6,9 @@ extension Theme {
             negativeTitle: Localization.General.no,
             positiveTitle: Localization.General.yes,
             switchButtonBackgroundColors: true,
-            showsPoweredBy: showsPoweredBy
+            showsPoweredBy: showsPoweredBy,
+            negativeAccessibilityHint: Localization.Engagement.Queue.Leave.Deny.Accessibility.hint,
+            positiveAccessibilityHint: Localization.Engagement.Queue.Leave.Confirm.Accessibility.hint
         )
         let endEngagement = ConfirmationAlertConfiguration(
             title: Localization.Engagement.End.Confirmation.header,
@@ -14,7 +16,9 @@ extension Theme {
             negativeTitle: Localization.General.no,
             positiveTitle: Localization.General.yes,
             switchButtonBackgroundColors: true,
-            showsPoweredBy: showsPoweredBy
+            showsPoweredBy: showsPoweredBy,
+            negativeAccessibilityHint: Localization.Engagement.End.Deny.Accessibility.hint,
+            positiveAccessibilityHint: Localization.Engagement.End.Confirm.Accessibility.hint
         )
         let operatorEndedEngagement = SingleActionAlertConfiguration(
             title: Localization.Engagement.Ended.header,
@@ -141,7 +145,9 @@ extension Theme {
             negativeTitle: Localization.SecureMessaging.Chat.LeaveCurrentConversation.Button.negative,
             positiveTitle: Localization.SecureMessaging.Chat.LeaveCurrentConversation.Button.positive,
             switchButtonBackgroundColors: false,
-            showsPoweredBy: showsPoweredBy
+            showsPoweredBy: showsPoweredBy,
+            negativeAccessibilityHint: Localization.SecureMessaging.Chat.LeaveCurrentConversation.Leave.Accessibility.hint,
+            positiveAccessibilityHint: Localization.SecureMessaging.Chat.LeaveCurrentConversation.Stay.Accessibility.hint
         )
 
         let pushNotificationsPermissions = ConfirmationAlertConfiguration(
@@ -150,7 +156,9 @@ extension Theme {
             negativeTitle: Localization.PushNotificationsAlert.Button.negative,
             positiveTitle: Localization.PushNotificationsAlert.Button.positive,
             switchButtonBackgroundColors: false,
-            showsPoweredBy: showsPoweredBy
+            showsPoweredBy: showsPoweredBy,
+            negativeAccessibilityHint: Localization.PushNotificationsAlert.Button.Negative.Accessibility.hint,
+            positiveAccessibilityHint: Localization.PushNotificationsAlert.Button.Positive.Accessibility.hint
         )
 
         return AlertConfiguration(

@@ -17,9 +17,11 @@ extension AlertViewController {
         let alertStyle = viewFactory.theme.alert
         var declineButtonStyle = alertStyle.negativeAction
         declineButtonStyle.title = conf.negativeTitle
+        declineButtonStyle.accessibility.hint = conf.negativeAccessibilityHint
 
         var acceptButtonStyle = alertStyle.positiveAction
         acceptButtonStyle.title = conf.positiveTitle
+        acceptButtonStyle.accessibility.hint = conf.positiveAccessibilityHint
 
         if let firstLinkButton = linkButton(
             for: conf.firstLinkButtonUrl,
@@ -40,16 +42,14 @@ extension AlertViewController {
         let declineButton = ActionButton(
             props: .init(
                 style: declineButtonStyle,
-                tap: .init { [weak self] in self?.dismiss(animated: true, completion: declined) },
-                accessibilityHint: conf.negativeAccessibilityHint
+                tap: .init { [weak self] in self?.dismiss(animated: true, completion: declined) }
             )
         )
 
         let acceptButton = ActionButton(
             props: .init(
                 style: acceptButtonStyle,
-                tap: .init { [weak self] in self?.dismiss(animated: true, completion: accepted) },
-                accessibilityHint: conf.positiveAccessibilityHint
+                tap: .init { [weak self] in self?.dismiss(animated: true, completion: accepted) }
             )
         )
         alertView.addActionView(declineButton)
