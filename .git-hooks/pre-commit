@@ -1,5 +1,10 @@
 #!/bin/bash
 set -e
 
-./scripts/secret-scan.sh
+# Use the global pre-commit hook if it exists, otherwise run the local secret scanner
+if [ -x "$HOME/.git-hooks/pre-commit" ]; then
+  "$HOME/.git-hooks/pre-commit"
+else
+  ./scripts/secret-scan.sh
+fi
 ./scripts/swiftlint.sh commit
