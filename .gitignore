@@ -94,3 +94,6 @@ SnapshotTests/__Snapshots__/
 .vscode
 xcf
 *.bak
+
+# Local pod overrides (developer-specific, never commit)
+LocalPods.rb
