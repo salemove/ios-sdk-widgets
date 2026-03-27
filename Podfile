@@ -1,4 +1,5 @@
 source 'https://cdn.cocoapods.org/'
+load 'LocalPods.rb' if File.exist?('LocalPods.rb')
 plugin 'cocoapods-no-autoimports'
 # cocoapods-no-autoimports__pods = ['Pods-GliaWidgets.debug']
 project 'GliaWidgets.xcodeproj'
@@ -14,6 +15,14 @@ def swiftlint
    pod 'SwiftLint'
 end
 
+def glia_core_sdk
+  defined?(local_core_sdk) ? local_core_sdk : pod('GliaCoreSDK')
+end
+
+def glia_telemetry_sdk
+  local_telemetry_sdk if defined?(local_telemetry_sdk)
+end
+
 target 'TestingApp' do
 end
 
@@ -21,7 +30,8 @@ target 'GliaTestApp' do
 end
 
 target 'GliaWidgets' do
-  pod 'GliaCoreSDK'
+  glia_core_sdk
+  glia_telemetry_sdk
   swiftlint
 end
 
@@ -30,7 +40,8 @@ end
 
 target 'SnapshotTests' do
   pod 'AccessibilitySnapshot', '0.5.0'
-  pod 'GliaCoreSDK'
+  glia_core_sdk
+  glia_telemetry_sdk
 end
 
 post_install do |installer|

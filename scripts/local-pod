@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+#
+# Toggle between local and remote pod sources for development.
+#
+# Local state:  GliaCoreSDK + GliaOpenTelemetry from local source repos
+# Remote state: GliaCoreSDK + GliaOpenTelemetry from CocoaPods (default)
+#
+# Usage:
+#   scripts/local-pod enable     # switch to local sources, run pod update
+#   scripts/local-pod disable    # switch to remote, run pod install
+#   scripts/local-pod status     # show current state
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(dirname "$SCRIPT_DIR")"
+LOCAL_PODS_FILE="$REPO_ROOT/LocalPods.rb"
+
+is_enabled() {
+  [[ -f "$LOCAL_PODS_FILE" ]] && grep -q "def local_core_sdk" "$LOCAL_PODS_FILE" 2>/dev/null
+}
+
+status() {
+  if is_enabled; then
+    echo "[on]  Using local sources:"
+    echo "        GliaCoreSDK       -> ../ios-sdk/GliaCoreSDK.sources.podspec"
+    echo "        GliaOpenTelemetry -> ../ios-telemetry/GliaOpenTelemetry.sources.podspec"
+  else
+    echo "[off] Using remote pods (CocoaPods)"
+  fi
+}
+
+align_telemetry_version() {
+  local core_podspec="$REPO_ROOT/../ios-sdk/GliaCoreSDK.sources.podspec"
+  local telemetry_podspec="$REPO_ROOT/../ios-telemetry/GliaOpenTelemetry.sources.podspec"
+
+  local required; required="$(grep "dependency 'GliaOpenTelemetry'" "$core_podspec" | grep -o "'[0-9][^']*'" | tr -d "'")"
+  if [[ -z "$required" ]]; then
+    echo "Warning: could not extract GliaOpenTelemetry version from GliaCoreSDK.sources.podspec"
+    return
+  fi
+
+  sed -i '' "s/s\.version[[:space:]]*=.*/s.version          = '$required'/" "$telemetry_podspec"
+  echo "Aligned GliaOpenTelemetry.sources.podspec version to $required"
+}
+
+enable_local() {
+  align_telemetry_version
+
+  cat > "$LOCAL_PODS_FILE" <<'RUBY'
+def local_core_sdk
+  pod 'GliaCoreSDK', path: '../ios-sdk/GliaCoreSDK.sources.podspec'
+end
+
+def local_telemetry_sdk
+  pod 'GliaOpenTelemetry', path: '../ios-telemetry/GliaOpenTelemetry.sources.podspec'
+end
+RUBY
+
+  echo "Switched to local sources"
+  echo "Running pod update..."
+  cd "$REPO_ROOT" && bundle exec pod update GliaCoreSDK GliaOpenTelemetry
+}
+
+disable_local() {
+  if ! is_enabled; then
+    echo "Already using remote pods"
+    return
+  fi
+
+  rm "$LOCAL_PODS_FILE"
+  echo "Switched to remote pods"
+  echo "Running pod install..."
+  cd "$REPO_ROOT" && bundle exec pod install
+}
+
+usage() {
+  echo "Usage: scripts/local-pod <enable|disable|status>"
+  exit 1
+}
+
+ACTION="${1:-}"
+[[ -z "$ACTION" ]] && usage
+
+case "$ACTION" in
+  enable)  enable_local ;;
+  disable) disable_local ;;
+  status)  status ;;
+  *)       usage ;;
+esac
