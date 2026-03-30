@@ -546,24 +546,35 @@ public class Glia {
         )
         loggerPhase.logger.prefixed(Self.self).info("End engagement by integrator")
 
-        defer {
-            onEvent?(.ended)
-            rootCoordinator = nil
-        }
-
         guard configuration != nil else {
             completion(.failure(GliaError.sdkIsNotConfigured))
             return
         }
 
-        interactor?.endSession { [weak self] result in
+        guard let interactor else {
+            onEvent?(.ended)
+            completion(.success(()))
+            return
+        }
+
+        interactor.endSession { [weak self] result in
             guard let self else { return }
 
             switch result {
             case .success:
-                self.rootCoordinator?.popCoordinator()
-                self.rootCoordinator?.end(surveyPresentation: .doNotPresentSurvey)
-                completion(.success(()))
+                guard let rootCoordinator = self.rootCoordinator else {
+                    self.onEvent?(.ended)
+                    completion(.success(()))
+                    return
+                }
+
+                rootCoordinator.popCoordinator()
+                rootCoordinator.end(
+                    surveyPresentation: .doNotPresentSurvey,
+                    dismissalCompletion: {
+                        completion(.success(()))
+                    }
+                )
             case .failure(let error):
                 completion(.failure(error))
             }

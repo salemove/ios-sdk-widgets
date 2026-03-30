@@ -38,14 +38,34 @@ final class GliaTests: XCTestCase {
         environment.coreSdk.createLogger = { _ in logger }
         environment.print = .mock
         environment.conditionalCompilation.isDebug = { false }
+        environment.coreSdk.configureWithInteractor = { _ in }
+        environment.coreSdk.configureWithConfiguration = { _, _ in }
+        environment.gcd.mainQueue.async = { callback in callback() }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.success(()))
+        }
+        environment.coreSDKConfigurator.configureWithInteractor = { _ in }
+        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let sdk = Glia(environment: environment)
-        sdk.interactor = .mock()
         sdk.onEvent = {
             calls.append(.onEvent($0))
         }
-        sdk.endEngagement { _ in }
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
 
+        let completionExpectation = expectation(description: "endEngagement completion")
+        var endEngagementResult: Result<Void, Error>?
+        sdk.endEngagement { result in
+            endEngagementResult = result
+            completionExpectation.fulfill()
+        }
+
+        wait(for: [completionExpectation], timeout: 1)
+
+        XCTAssertNoThrow(try XCTUnwrap(endEngagementResult).get())
         XCTAssertEqual(calls, [.onEvent(.ended)])
         XCTAssertNil(sdk.rootCoordinator)
     }
