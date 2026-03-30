@@ -190,7 +190,8 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
 
 extension EngagementCoordinator {
     func end(
-        surveyPresentation: SecureConversations.Coordinator.DelegateEvent.SurveyPresentation
+        surveyPresentation: SecureConversations.Coordinator.DelegateEvent.SurveyPresentation,
+        dismissalCompletion: (() -> Void)? = nil
     ) {
         switch engagement {
         case let .call(_, _, _, call):
@@ -219,6 +220,7 @@ extension EngagementCoordinator {
                 } else {
                     self?.delegate?(.closed)
                 }
+                dismissalCompletion?()
             }
         }
 
