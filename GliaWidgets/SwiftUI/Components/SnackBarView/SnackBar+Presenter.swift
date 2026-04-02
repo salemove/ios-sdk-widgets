@@ -86,7 +86,8 @@ extension SnackBar {
         func show(
             text: String,
             style: Theme.SnackBarStyle,
-            dismissTiming: DismissTiming
+            dismissTiming: DismissTiming,
+            onFinish: @escaping () -> Void = {}
         ) {
             serialQueue.addOperation(
                 .init { [weak self] done in
@@ -109,6 +110,7 @@ extension SnackBar {
                             self.environment.gcd.mainQueue.asyncAfterDeadline(.now() + 0.5) {
                                 self.remove()
                                 done()
+                                onFinish()
                             }
                         }
 
@@ -118,6 +120,7 @@ extension SnackBar {
                             self.environment.gcd.mainQueue.asyncAfterDeadline(.now() + 0.5) {
                                 self.remove()
                                 done()
+                                onFinish()
                             }
                         }
                         dismiss(dismissAction)

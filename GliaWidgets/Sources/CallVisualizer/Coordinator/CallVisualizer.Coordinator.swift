@@ -31,6 +31,8 @@ extension CallVisualizer {
         private var state: State
         private let bubbleSize = CGSize(width: 60, height: 60)
         private let bubbleView: BubbleView
+        private var snackBarContainerVC: UIViewController?
+        private var snackBarOverlayWindow: UIWindow?
     }
 }
 
@@ -136,6 +138,9 @@ extension CallVisualizer.Coordinator {
         removeBubbleView()
         videoCallCoordinator?.finish()
         videoCallCoordinator = nil
+        snackBarOverlayWindow?.isHidden = true
+        snackBarOverlayWindow = nil
+        snackBarContainerVC = nil
     }
 
     func addVideoStream(stream: CoreSdkClient.VideoStreamable) {
@@ -393,30 +398,35 @@ private extension CallVisualizer.Coordinator {
 
 private extension CallVisualizer.Coordinator {
     func showSnackBarMessage(text: String) {
+        guard let windowScene = UIApplication.shared.connectedScenes
+            .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene
+        else { return }
+
+        if snackBarOverlayWindow == nil {
+            let containerVC = UIViewController()
+            containerVC.view.backgroundColor = .clear
+
+            let overlayWindow = UIWindow(windowScene: windowScene)
+            overlayWindow.windowLevel = .statusBar - 1
+            overlayWindow.rootViewController = containerVC
+            overlayWindow.backgroundColor = .clear
+            overlayWindow.isUserInteractionEnabled = false
+            overlayWindow.isHidden = false
+
+            snackBarContainerVC = containerVC
+            snackBarOverlayWindow = overlayWindow
+        }
+
+        guard let containerVC = snackBarContainerVC else { return }
+
         environment.snackBar.present(
             text: text,
             style: environment.viewFactory.theme.snackBar,
-            for: topMostViewController,
+            for: containerVC,
             configuration: .callVisualizer,
             timerProviding: environment.timerProviding,
             gcd: environment.gcd
         )
-    }
-
-    var topMostViewController: UIViewController {
-        guard let windowScene = UIApplication.shared.connectedScenes
-            .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
-            let window = windowScene.windows.first(where: { $0.isKeyWindow }),
-            var presenter = window.rootViewController
-        else {
-            fatalError("Could not find UIViewController to present on")
-        }
-
-        while let presented = presenter.presentedViewController {
-            presenter = presented
-        }
-
-        return presenter
     }
 }
 
