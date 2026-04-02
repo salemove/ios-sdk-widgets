@@ -23,7 +23,9 @@ extension SnackBar {
                 text: text,
                 style: style,
                 dismissTiming: dismissTiming
-            )
+            ) { [weak presenter] in
+                Self.presenters.removeAll { $0 === presenter }
+            }
         }
     }()
 
