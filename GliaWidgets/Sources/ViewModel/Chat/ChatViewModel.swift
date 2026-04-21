@@ -947,6 +947,11 @@ extension ChatViewModel {
     }
 
     func linkTapped(_ url: URL) {
+        if url.scheme == URLScheme.http.rawValue || url.scheme == URLScheme.https.rawValue {
+            environment.uiApplication.open(url)
+            return
+        }
+
         guard environment.uiApplication.canOpenURL(url) else {
             environment.log.prefixed(Self.self).error("No dialer uri - \(url)")
             return

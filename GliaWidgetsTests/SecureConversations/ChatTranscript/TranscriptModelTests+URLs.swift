@@ -50,7 +50,7 @@ extension SecureConversationsTranscriptModelTests {
         let linkUrl = try XCTUnwrap(URL(string: "https://mock.mock"))
         viewModel.linkTapped(linkUrl)
 
-        XCTAssertEqual(calls, [.canOpen(linkUrl), .open(linkUrl)])
+        XCTAssertEqual(calls, [.open(linkUrl)])
     }
 
     func test_handleUrlWithRandomScheme() throws {
@@ -85,10 +85,10 @@ extension SecureConversationsTranscriptModelTests {
             return .mock
         }
 
-        let linkUrl = try XCTUnwrap(URL(string: "https://mock.mock"))
-        viewModel.linkTapped(linkUrl)
+        let unsupportedUrl = try XCTUnwrap(URL(string: "mock://mock"))
+        viewModel.linkTapped(unsupportedUrl)
 
-        XCTAssertEqual(calls, [.canOpen(linkUrl), .log])
+        XCTAssertEqual(calls, [.canOpen(unsupportedUrl), .log])
     }
 }
 
