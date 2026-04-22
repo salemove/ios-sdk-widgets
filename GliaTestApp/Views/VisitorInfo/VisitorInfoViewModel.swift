@@ -3,10 +3,10 @@ import GliaWidgets
 
 @MainActor
 final class VisitorInfoViewModel: ObservableObject {
-    @Published var name: String = ""
-    @Published var email: String = ""
-    @Published var phoneNumber: String = ""
-    @Published var notes: String = ""
+    @Published var name: String = "" { didSet { if oldValue != name { hasChanges = true } } }
+    @Published var email: String = "" { didSet { if oldValue != email { hasChanges = true } } }
+    @Published var phoneNumber: String = "" { didSet { if oldValue != phoneNumber { hasChanges = true } } }
+    @Published var notes: String = "" { didSet { if oldValue != notes { hasChanges = true } } }
     @Published var externalId: String = ""
     @Published var visitorId: String = ""
     @Published var customAttributes: [CustomAttribute] = []
@@ -99,7 +99,7 @@ final class VisitorInfoViewModel: ObservableObject {
         visitorId = info.id ?? ""
 
         if let attributes = info.customAttributes {
-            customAttributes = attributes.map { CustomAttribute(key: $0.key, value: $0.value) }
+            customAttributes = attributes.sorted { $0.key < $1.key }.map { CustomAttribute(key: $0.key, value: $0.value) }
         }
 
         hasChanges = false
