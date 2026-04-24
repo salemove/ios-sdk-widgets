@@ -126,8 +126,12 @@ struct VisitorInfoView: View {
                         .font(.headline)
                     Spacer()
                     Picker("", selection: $viewModel.notesUpdateMethod) {
-                        Text("Replace").tag(VisitorInfoUpdate.NoteUpdateMethod.replace)
-                        Text("Append").tag(VisitorInfoUpdate.NoteUpdateMethod.append)
+                        Text("Replace")
+                            .tag(VisitorInfoUpdate.NoteUpdateMethod.replace)
+                            .accessibilityIdentifier("visitor_info_notes_method_1")
+                        Text("Append")
+                            .tag(VisitorInfoUpdate.NoteUpdateMethod.append)
+                            .accessibilityIdentifier("visitor_info_notes_method_0")
                     }
                     .pickerStyle(.segmented)
                     .frame(width: 150)
@@ -150,8 +154,12 @@ struct VisitorInfoView: View {
                     .font(.headline)
                 Spacer()
                 Picker("", selection: $viewModel.attributesUpdateMethod) {
-                    Text("Replace").tag(VisitorInfoUpdate.CustomAttributesUpdateMethod.replace)
-                    Text("Merge").tag(VisitorInfoUpdate.CustomAttributesUpdateMethod.merge)
+                    Text("Replace")
+                        .tag(VisitorInfoUpdate.CustomAttributesUpdateMethod.replace)
+                        .accessibilityIdentifier("visitor_info_custom_attribute_method_1")
+                    Text("Merge")
+                        .tag(VisitorInfoUpdate.CustomAttributesUpdateMethod.merge)
+                        .accessibilityIdentifier("visitor_info_custom_attribute_method_0")
                 }
                 .pickerStyle(.segmented)
                 .frame(width: 150)
@@ -163,13 +171,13 @@ struct VisitorInfoView: View {
                         get: { attribute.key },
                         set: { viewModel.updateCustomAttributeKey(at: index, key: $0) }
                     ))
-                    .accessibilityIdentifier("visitor_info_custom_attribute_key_\(index)")
+                    .accessibilityIdentifier("visitor_info_custom_attribute_key_input_\(index)")
 
                     TextField("Value", text: Binding(
                         get: { attribute.value },
                         set: { viewModel.updateCustomAttributeValue(at: index, value: $0) }
                     ))
-                    .accessibilityIdentifier("visitor_info_custom_attribute_value_\(index)")
+                    .accessibilityIdentifier("visitor_info_custom_attribute_value_input_\(index)")
                 }
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                     Button(role: .destructive) {
@@ -187,6 +195,7 @@ struct VisitorInfoView: View {
                     Text("Add Custom Attribute")
                 }
             }
+            .accessibilityIdentifier("visitor_info_add_custom_attribute_button")
         }
     }
 }
