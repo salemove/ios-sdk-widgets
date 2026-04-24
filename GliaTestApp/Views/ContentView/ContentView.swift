@@ -24,6 +24,7 @@ struct ContentView: View {
                 }
                 .padding()
             }
+            .accessibilityIdentifier("screen_main")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(
@@ -155,7 +156,7 @@ private extension ContentView {
                 ) {
                     viewModel.showVisitorCodeAlert()
                 }
-                .accessibilityIdentifier("main_present_visitor_code_as_alert_button")
+                .accessibilityIdentifier("main_visitor_code_alert_button")
 
                 EmbeddableWidgetContainer(
                     isExpanded: $viewModel.isVisitorCodeEmbedded,
@@ -169,7 +170,7 @@ private extension ContentView {
                     },
                     expandedHeight: 228
                 )
-                .accessibilityIdentifier("main_embed_visitor_code_view_button")
+                .accessibilityIdentifier("main_visitor_code_embedded_view_button")
             }
         }
     }
@@ -298,12 +299,14 @@ private extension ContentView {
                 label: {
                     Label("Update Visitor Info", systemImage: "person.text.rectangle")
                 })
+            .accessibilityIdentifier("main_visitorInfo_button")
 
             Button(
                 action: viewModel.showSensitiveDataTapped,
                 label: {
                     Label("Show Sensitive Data", systemImage: "eye.trianglebadge.exclamationmark")
                 })
+            .accessibilityIdentifier("main_sensitiveData_button")
 
             Button(
                 action: viewModel.resumeEngagement,
@@ -311,6 +314,7 @@ private extension ContentView {
                     Label("Resume Engagement", systemImage: "play.circle")
                 }
             )
+            .accessibilityIdentifier("main_resume_button")
 
             Divider()
 

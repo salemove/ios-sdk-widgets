@@ -129,7 +129,9 @@ private extension SettingsView {
                 Text("Beta").tag(EnvironmentSelection.beta)
                 Text("US").tag(EnvironmentSelection.us)
                 Text("EU").tag(EnvironmentSelection.eu)
-                Text("Custom").tag(EnvironmentSelection.custom)
+                Text("Custom")
+                    .tag(EnvironmentSelection.custom)
+                    .accessibilityIdentifier("settings_environment_custom_segment")
             }
             .pickerStyle(.segmented)
             .accessibilityIdentifier("settings_environment_picker")
@@ -153,8 +155,12 @@ private extension SettingsView {
                 .accessibilityIdentifier("settings_companyName_textfield")
 
             Picker("Auth Method", selection: $viewModel.authorizationMethodSelection) {
-                Text("Site API Key").tag(SettingsView.AuthorizationMethodSelection.siteApiKey)
-                Text("User API Key").tag(SettingsView.AuthorizationMethodSelection.userApiKey)
+                Text("Site API Key")
+                    .tag(SettingsView.AuthorizationMethodSelection.siteApiKey)
+                    .accessibilityIdentifier("settings_authMethod_siteApiKey_segment")
+                Text("User API Key")
+                    .tag(SettingsView.AuthorizationMethodSelection.userApiKey)
+                    .accessibilityIdentifier("settings_authMethod_userApiKey_segment")
             }
             .pickerStyle(.segmented)
             .accessibilityIdentifier("settings_authMethod_segmentedControl")

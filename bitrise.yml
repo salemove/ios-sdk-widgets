@@ -289,7 +289,7 @@ app:
     APP_SCHEME: GliaTestApp
   - opts:
       is_expand: false
-    BROWSERSTACK_APP_SCHEME: TestingApp
+    BROWSERSTACK_APP_SCHEME: GliaTestApp
   - opts:
       is_expand: false
     BITRISE_EXPORT_METHOD: development
