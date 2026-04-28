@@ -218,6 +218,14 @@ private extension SettingsView {
                 isOn: $viewModel.autoConfigureEnabled
             )
             .accessibilityIdentifier("settings_auto_configure_switch")
+
+            Picker("SDK Flow", selection: $viewModel.sdkFlowMode) {
+                ForEach(SDKFlowMode.allCases) { mode in
+                    Text(mode.title).tag(mode)
+                }
+            }
+            .pickerStyle(.segmented)
+            .accessibilityIdentifier("settings_sdk_flow_mode_picker")
         }
     }
 
