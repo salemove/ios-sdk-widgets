@@ -14,18 +14,12 @@ public struct SecureConversations {
     public func getUnreadMessageCount(_ callback: @escaping (Result<Int, Error>) -> Void) {
         Task {
             do {
-                let unreadMessageCount = try await environment.coreSdk.secureConversations.getUnreadMessageCount()
+                let unreadMessageCount = try await getUnreadMessageCount()
                 callback(.success(unreadMessageCount))
             } catch {
                 callback(.failure(error))
             }
         }
-        environment.openTelemetry.logger.logMethodUse(
-            sdkType: .widgetsSdk,
-            className: Self.self,
-            methodName: "getUnreadMessageCount",
-            methodParams: ["callback"]
-        )
     }
 
     /// Observes the count of unread messages sent through secure conversations.
@@ -77,11 +71,13 @@ public struct SecureConversations {
 
     /// Async equivalent of `getUnreadMessageCount(_:)`.
     public func getUnreadMessageCount() async throws -> Int {
-        try await withCheckedThrowingContinuation { continuation in
-            getUnreadMessageCount { result in
-                continuation.resume(with: result)
-            }
-        }
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "getUnreadMessageCount",
+            methodParams: []
+        )
+        return try await environment.coreSdk.secureConversations.getUnreadMessageCount()
     }
 
     /// Async sequence equivalent of `subscribeSecureUnreadMessageCount(_:)`.
