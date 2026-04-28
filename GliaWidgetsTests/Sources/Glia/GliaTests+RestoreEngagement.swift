@@ -25,9 +25,7 @@ extension GliaTests {
         let siteMock = try CoreSdkClient.Site.mock()
         sdkEnv.coreSdk.fetchSiteConfigurations = { siteMock }
         sdkEnv.conditionalCompilation.isDebug = { true }
-        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let window = UIWindow(frame: .zero)
@@ -109,9 +107,7 @@ extension GliaTests {
         let siteMock = try CoreSdkClient.Site.mock()
         sdkEnv.coreSdk.fetchSiteConfigurations = { siteMock }
         sdkEnv.conditionalCompilation.isDebug = { true }
-        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let window = UIWindow(frame: .zero)
@@ -168,9 +164,7 @@ extension GliaTests {
         let siteMock = try CoreSdkClient.Site.mock()
         sdkEnv.coreSdk.fetchSiteConfigurations = { siteMock }
         sdkEnv.conditionalCompilation.isDebug = { true }
-        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let window = UIWindow(frame: .zero)
@@ -222,9 +216,7 @@ extension GliaTests {
         let siteMock = try CoreSdkClient.Site.mock()
         sdkEnv.coreSdk.fetchSiteConfigurations = { siteMock }
         sdkEnv.conditionalCompilation.isDebug = { true }
-        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         let uuidGen = UUID.incrementing
         sdkEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
         sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in uuidGen().uuidString }
@@ -294,9 +286,7 @@ extension GliaTests {
         let siteMock = try CoreSdkClient.Site.mock()
         sdkEnv.coreSdk.fetchSiteConfigurations = { siteMock }
         sdkEnv.conditionalCompilation.isDebug = { true }
-        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         let uuidGen = UUID.incrementing
         sdkEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
         sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in uuidGen().uuidString }
@@ -362,9 +352,7 @@ extension GliaTests {
         let siteMock = try CoreSdkClient.Site.mock()
         sdkEnv.coreSdk.fetchSiteConfigurations = { siteMock }
         sdkEnv.conditionalCompilation.isDebug = { true }
-        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
 
         var snackBar: SnackBar = .mock
         snackBar.present = { _, _, _, _, _, _, _ in
@@ -477,9 +465,7 @@ private extension GliaTests {
         sdkEnv.coreSdk.createLogger = { _ in logger }
         sdkEnv.coreSdk.fetchSiteConfigurations = fetchSiteConfigurations
         sdkEnv.conditionalCompilation.isDebug = { true }
-        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         sdkEnv.gcd.mainQueue.async = { $0() }
 
