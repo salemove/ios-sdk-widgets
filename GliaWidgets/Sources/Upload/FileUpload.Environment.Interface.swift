@@ -24,29 +24,16 @@ extension FileUpload.Environment {
 }
 
 extension FileUpload.Environment.UploadFile {
-    @discardableResult func uploadFile(
+    func uploadFile(
         _ file: CoreSdkClient.EngagementFile,
-        progress: CoreSdkClient.EngagementFileProgressBlock?,
-        completion: @escaping (Result<CoreSdkClient.EngagementFileInformation, Swift.Error>) -> Void
-    ) -> CoreSdkClient.Cancellable? {
+        progress: CoreSdkClient.EngagementFileProgressBlock?
+    ) async throws -> CoreSdkClient.EngagementFileInformation {
         switch self {
         case let .toEngagement(uploadFile):
-            uploadFile(file, progress) { fileInfo, error in
-                switch (fileInfo, error) {
-                case (.none, .none):
-                    break
-                case let (.none, .some(error)):
-                    completion(.failure(error))
-                case let (.some(fileInfo), .none):
-                    completion(.success(fileInfo))
-                case let (.some, .some(error)):
-                    completion(.failure(error))
-                }
-            }
-            return nil
+            return try await uploadFile(file, progress)
 
         case let .toSecureMessaging(uploadFile):
-            return uploadFile(file, progress, completion)
+            return try await uploadFile(file, progress)
         }
     }
 }
