@@ -74,6 +74,26 @@ public struct SecureConversations {
         )
         environment.subscriptionStore.cancel(subscriptionToken)
     }
+
+    /// Async equivalent of `getUnreadMessageCount(_:)`.
+    public func getUnreadMessageCount() async throws -> Int {
+        try await withCheckedThrowingContinuation { continuation in
+            getUnreadMessageCount { result in
+                continuation.resume(with: result)
+            }
+        }
+    }
+
+    /// Async sequence equivalent of `subscribeSecureUnreadMessageCount(_:)`.
+    public func subscribeSecureUnreadMessageCount() -> AsyncThrowingStream<Int?, Error> {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "subscribeSecureUnreadMessageCount",
+            methodParams: []
+        )
+        return environment.coreSdk.secureConversations.subscribeForUnreadMessageCount()
+    }
 }
 
 extension SecureConversations {
