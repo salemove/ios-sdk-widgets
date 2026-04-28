@@ -257,11 +257,47 @@ public class Glia {
         features: Features = .all,
         completion: @escaping (Result<Void, Error>) -> Void
     ) throws {
+        try prepareForConfiguration(
+            configuration: configuration,
+            theme: theme,
+            uiConfig: uiConfig,
+            assetsBuilder: assetsBuilder,
+            features: features,
+            methodParams: ["configuration", "theme", "uiConfig", "assetsBuilder", "features", "completion"]
+        )
+
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await self.completeConfiguration(
+                    configuration: configuration,
+                    uiConfig: uiConfig,
+                    features: features
+                )
+                await MainActor.run {
+                    completion(.success(()))
+                }
+            } catch {
+                await MainActor.run {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+
+    private func prepareForConfiguration(
+        configuration: Configuration,
+        theme: Theme,
+        uiConfig: RemoteConfiguration?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder,
+        features: Features,
+        methodParams: [String]
+    ) throws {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "configure",
-            methodParams: ["configuration", "theme", "uiConfig", "assetsBuilder", "features", "completion"]
+            methodParams: methodParams
         )
 
         guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
@@ -300,25 +336,6 @@ public class Glia {
                 self.onEvent?(.started)
             case .engagementEnded:
                 self.onEvent?(.ended)
-            }
-        }
-
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                try await self.environment.coreSDKConfigurator.configureWithConfiguration(configuration)
-                await MainActor.run {
-                    self.handleCoreSDKConfigured(
-                        configuration: configuration,
-                        uiConfig: uiConfig,
-                        features: features,
-                        completion: completion
-                    )
-                }
-            } catch {
-                await MainActor.run {
-                    self.handleCoreSDKConfigurationFailure(error, completion: completion)
-                }
             }
         }
     }
@@ -376,19 +393,14 @@ public class Glia {
     ///   will occur otherwise.
     ///
     public func clearVisitorSession(_ completion: @escaping (Result<Void, Error>) -> Void) {
-        environment.openTelemetry.logger.logMethodUse(
-            sdkType: .widgetsSdk,
-            className: Self.self,
-            methodName: "clearVisitorSession",
-            methodParams: ["completion"]
-        )
-        loggerPhase.logger.prefixed(Self.self).info("Clear visitor session")
-        guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
-            completion(.failure(GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed))
-            return
+        Task {
+            do {
+                try await clearVisitorSession()
+                completion(.success(()))
+            } catch {
+                completion(.failure(error))
+            }
         }
-        environment.coreSdk.clearSession()
-        completion(.success(()))
     }
 
     /// Fetch current Visitor's information.
@@ -414,19 +426,9 @@ public class Glia {
     ///   this method, because `GliaError.sdkIsNotConfigured` will occur otherwise.
     ///
     public func getVisitorInfo(completion: @escaping (Result<VisitorInfo, Error>) -> Void) {
-        environment.openTelemetry.logger.logMethodUse(
-            sdkType: .widgetsSdk,
-            className: Self.self,
-            methodName: "getVisitorInfo",
-            methodParams: ["completion"]
-        )
-        guard configuration != nil else {
-            completion(.failure(GliaError.sdkIsNotConfigured))
-            return
-        }
         Task {
             do {
-                let visitorInfo = try await environment.coreSdk.getVisitorInfo()
+                let visitorInfo = try await getVisitorInfo()
                 completion(.success(visitorInfo))
             } catch {
                 completion(.failure(error))
@@ -466,19 +468,9 @@ public class Glia {
         _ info: VisitorInfoUpdate,
         completion: @escaping (Result<Bool, Error>) -> Void
     ) {
-        environment.openTelemetry.logger.logMethodUse(
-            sdkType: .widgetsSdk,
-            className: Self.self,
-            methodName: "updateVisitorInfo",
-            methodParams: ["info", "completion"]
-        )
-        guard configuration != nil else {
-            completion(.failure(GliaError.sdkIsNotConfigured))
-            return
-        }
         Task {
             do {
-                let result = try await environment.coreSdk.updateVisitorInfo(info)
+                let result = try await updateVisitorInfo(info)
                 completion(.success(result))
             } catch {
                 completion(.failure(error))
@@ -488,42 +480,10 @@ public class Glia {
 
     /// Ends active engagement if existing and closes Widgets SDK UI (includes bubble).
     public func endEngagement(_ completion: @escaping (Result<Void, Error>) -> Void) {
-        environment.openTelemetry.logger.logMethodUse(
-            sdkType: .widgetsSdk,
-            className: Self.self,
-            methodName: "endEngagement",
-            methodParams: ["completion"]
-        )
-        loggerPhase.logger.prefixed(Self.self).info("End engagement by integrator")
-
-        guard configuration != nil else {
-            completion(.failure(GliaError.sdkIsNotConfigured))
-            return
-        }
-
-        guard let interactor else {
-            onEvent?(.ended)
-            completion(.success(()))
-            return
-        }
-
-        Task { @MainActor [weak self] in
+        Task {
             do {
-                try await interactor.endSession()
-                guard let self else { return }
-                guard let rootCoordinator = self.rootCoordinator else {
-                    self.onEvent?(.ended)
-                    completion(.success(()))
-                    return
-                }
-
-                rootCoordinator.popCoordinator()
-                rootCoordinator.end(
-                    surveyPresentation: .doNotPresentSurvey,
-                    dismissalCompletion: {
-                        completion(.success(()))
-                    }
-                )
+                try await endEngagement()
+                completion(.success(()))
             } catch {
                 completion(.failure(error))
             }
@@ -538,20 +498,9 @@ public class Glia {
     ///   - completion: A callback that will return the Result struct with `Queue` list or `GliaCoreError`.
     ///
     public func getQueues(_ completion: @escaping (Result<[Queue], Error>) -> Void) {
-        environment.openTelemetry.logger.logMethodUse(
-            sdkType: .widgetsSdk,
-            className: Self.self,
-            methodName: "getQueues",
-            methodParams: ["completion"]
-        )
-        guard configuration != nil else {
-            completion(.failure(GliaError.sdkIsNotConfigured))
-            return
-        }
-
         Task {
             do {
-                let queues = try await environment.coreSdk.getQueues()
+                let queues = try await getQueues()
                 completion(.success(queues))
             } catch {
                 completion(.failure(error))
@@ -579,13 +528,31 @@ public class Glia {
 
 // MARK: - Internal
 extension Glia {
+    func completeConfiguration(
+        configuration: Configuration,
+        uiConfig: RemoteConfiguration?,
+        features: Features
+    ) async throws {
+        do {
+            try await environment.coreSDKConfigurator.configureWithConfiguration(configuration)
+            try await MainActor.run {
+                try handleCoreSDKConfigured(
+                    configuration: configuration,
+                    uiConfig: uiConfig,
+                    features: features
+                )
+            }
+        } catch {
+            throw mapCoreSDKConfigurationFailure(error)
+        }
+    }
+
     @MainActor
     func handleCoreSDKConfigured(
         configuration: Configuration,
         uiConfig: RemoteConfiguration?,
-        features: Features,
-        completion: @escaping (Result<Void, Error>) -> Void
-    ) {
+        features: Features
+    ) throws {
         defer {
             loggerPhase.logger.prefixed(Self.self).info("Initialize Glia Widgets SDK")
             if uiConfig != nil {
@@ -605,28 +572,23 @@ extension Glia {
         let getRemoteString = environment.coreSdk.localeProvider.getRemoteString
         stringProvidingPhase = .configured(getRemoteString)
 
-        // Configuration completion handler has to be called in any case,
-        // at the end of the scope, whether there's ongoing engagement or not.
-        defer {
-            // PendingInteraction is essential part of SC flow, so it's not
-            // valid to consider SDK configured if PI is not created.
-            do {
-                pendingInteraction = try .init(environment: .init(
-                    client: environment.coreSdk,
-                    interactorPublisher: Just(interactor).eraseToAnyPublisher()
-                ))
-                startObservingInteractorEvents()
-                environment.openTelemetry.logger.i(.widgetsSdkConfigured)
-                completion(.success(()))
-            } catch let error as SecureConversations.PendingInteraction.Error {
-                switch error {
-                case .subscriptionFailure:
-                    completion(.failure(GliaError.internalEventSubscriptionFailure))
-                }
-            } catch {
-                completion(.failure(GliaError.internalError))
+        // PendingInteraction is essential part of SC flow, so it's not
+        // valid to consider SDK configured if PI is not created.
+        do {
+            pendingInteraction = try .init(environment: .init(
+                client: environment.coreSdk,
+                interactorPublisher: Just(interactor).eraseToAnyPublisher()
+            ))
+        } catch let error as SecureConversations.PendingInteraction.Error {
+            switch error {
+            case .subscriptionFailure:
+                throw GliaError.internalEventSubscriptionFailure
             }
+        } catch {
+            throw GliaError.internalError
         }
+        startObservingInteractorEvents()
+        environment.openTelemetry.logger.i(.widgetsSdkConfigured)
 
         guard let currentEngagement = environment.coreSdk.getNonTransferredSecureConversationEngagement() else { return }
 
@@ -647,11 +609,7 @@ extension Glia {
         }
     }
 
-    @MainActor
-    func handleCoreSDKConfigurationFailure(
-        _ error: Error,
-        completion: @escaping (Result<Void, Error>) -> Void
-    ) {
+    func mapCoreSDKConfigurationFailure(_ error: Error) -> Error {
         typealias ProcessError = CoreSdkClient.ConfigurationProcessError
         var errorForCompletion: GliaError = .internalError
 
@@ -667,7 +625,7 @@ extension Glia {
         }
         loggerPhase.logger.error("Glia Widgets SDK initialization failed")
         debugPrint("💥 Core SDK configuration is not valid. Unexpected error='\(error)'.")
-        completion(.failure(errorForCompletion))
+        return errorForCompletion
     }
 
     @discardableResult
@@ -725,67 +683,114 @@ public extension Glia {
         assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
         features: Features = .all
     ) async throws {
-        try await withCheckedThrowingContinuation { continuation in
-            do {
-                try configure(
-                    with: configuration,
-                    theme: theme,
-                    uiConfig: uiConfig,
-                    assetsBuilder: assetsBuilder,
-                    features: features,
-                    completion: { result in
-                        continuation.resume(with: result)
-                    }
-                )
-            } catch {
-                continuation.resume(throwing: error)
-            }
-        }
+        try prepareForConfiguration(
+            configuration: configuration,
+            theme: theme,
+            uiConfig: uiConfig,
+            assetsBuilder: assetsBuilder,
+            features: features,
+            methodParams: ["configuration", "theme", "uiConfig", "assetsBuilder", "features"]
+        )
+        try await completeConfiguration(
+            configuration: configuration,
+            uiConfig: uiConfig,
+            features: features
+        )
     }
 
     /// Async equivalent of `clearVisitorSession(_:)`.
     func clearVisitorSession() async throws {
-        try await withCheckedThrowingContinuation { continuation in
-            clearVisitorSession { result in
-                continuation.resume(with: result)
-            }
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "clearVisitorSession",
+            methodParams: []
+        )
+        loggerPhase.logger.prefixed(Self.self).info("Clear visitor session")
+        guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
+            throw GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed
         }
+        environment.coreSdk.clearSession()
     }
 
     /// Async equivalent of `getVisitorInfo(completion:)`.
     func getVisitorInfo() async throws -> VisitorInfo {
-        try await withCheckedThrowingContinuation { continuation in
-            getVisitorInfo { result in
-                continuation.resume(with: result)
-            }
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "getVisitorInfo",
+            methodParams: []
+        )
+        guard configuration != nil else {
+            throw GliaError.sdkIsNotConfigured
         }
+        return try await environment.coreSdk.getVisitorInfo()
     }
 
     /// Async equivalent of `updateVisitorInfo(_:completion:)`.
     func updateVisitorInfo(_ info: VisitorInfoUpdate) async throws -> Bool {
-        try await withCheckedThrowingContinuation { continuation in
-            updateVisitorInfo(info) { result in
-                continuation.resume(with: result)
-            }
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "updateVisitorInfo",
+            methodParams: ["info"]
+        )
+        guard configuration != nil else {
+            throw GliaError.sdkIsNotConfigured
         }
+        return try await environment.coreSdk.updateVisitorInfo(info)
     }
 
     /// Async equivalent of `endEngagement(_:)`.
+    @MainActor
     func endEngagement() async throws {
-        try await withCheckedThrowingContinuation { continuation in
-            endEngagement { result in
-                continuation.resume(with: result)
-            }
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "endEngagement",
+            methodParams: []
+        )
+        loggerPhase.logger.prefixed(Self.self).info("End engagement by integrator")
+
+        guard configuration != nil else {
+            throw GliaError.sdkIsNotConfigured
+        }
+
+        guard let interactor else {
+            onEvent?(.ended)
+            return
+        }
+
+        try await interactor.endSession()
+
+        guard let rootCoordinator else {
+            onEvent?(.ended)
+            return
+        }
+
+        rootCoordinator.popCoordinator()
+        await withCheckedContinuation { continuation in
+            rootCoordinator.end(
+                surveyPresentation: .doNotPresentSurvey,
+                dismissalCompletion: {
+                    continuation.resume()
+                }
+            )
         }
     }
 
     /// Async equivalent of `getQueues(_:)`.
     func getQueues() async throws -> [Queue] {
-        try await withCheckedThrowingContinuation { continuation in
-            getQueues { result in
-                continuation.resume(with: result)
-            }
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "getQueues",
+            methodParams: []
+        )
+        guard configuration != nil else {
+            throw GliaError.sdkIsNotConfigured
         }
+        return try await environment.coreSdk.getQueues()
     }
 }
 
