@@ -27,6 +27,14 @@ extension ContentView {
             set { appState.autoConfigureEnabled = newValue }
         }
 
+        var sdkFlowMode: SDKFlowMode {
+            get { appState.sdkFlowMode }
+            set {
+                appState.sdkFlowMode = newValue
+                appState.saveConfiguration()
+            }
+        }
+
         var authenticationBehavior: Glia.Authentication.Behavior {
             get { appState.authenticationBehavior }
             set { appState.authenticationBehavior = newValue }
@@ -41,6 +49,19 @@ extension ContentView {
 extension ContentView.ViewModel {
     func configureSDK() {
         configurationState = .loading
+
+        guard appState.sdkFlowMode == .completionHandlers else {
+            Task { [weak self] in
+                guard let self else { return }
+                do {
+                    try await appState.configure()
+                    configurationState = .configured
+                } catch {
+                    handleConfigurationFailure(error)
+                }
+            }
+            return
+        }
 
         appState.configure { [weak self] result in
             guard let self = self else { return }
@@ -59,6 +80,17 @@ extension ContentView.ViewModel {
                     }
                 }
             }
+        }
+    }
+
+    private func handleConfigurationFailure(_ error: Error) {
+        configurationState = .error(error.localizedDescription)
+        showError = AlertData(
+            title: "Configuration Failed",
+            message: error.localizedDescription
+        )
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+            self?.configurationState = .idle
         }
     }
 
@@ -85,6 +117,20 @@ extension ContentView.ViewModel {
 
         if autoConfigureEnabled && !appState.isConfigured {
             configurationState = .loading
+            guard appState.sdkFlowMode == .completionHandlers else {
+                Task { [weak self] in
+                    guard let self else { return }
+                    do {
+                        try await appState.configure()
+                        configurationState = .configured
+                        execute()
+                    } catch {
+                        handleConfigurationFailure(error)
+                    }
+                }
+                return
+            }
+
             appState.configure { [weak self] result in
                 guard let self = self else { return }
                 switch result {
@@ -122,6 +168,25 @@ extension ContentView.ViewModel {
 
     func handleAuthentication() {
         if isAuthenticated {
+            guard appState.sdkFlowMode == .completionHandlers else {
+                Task { [weak self] in
+                    guard let self, let authentication else { return }
+                    do {
+                        try await authentication.deauthenticate(
+                            shouldStopPushNotifications: appState.stopPushOnDeauthenticate
+                        )
+                        self.authentication = nil
+                        isAuthenticated = false
+                    } catch {
+                        showError = AlertData(
+                            title: "Deauthentication Failed",
+                            message: error.localizedDescription
+                        )
+                    }
+                }
+                return
+            }
+
             authentication?.deauthenticate(
                 shouldStopPushNotifications: appState.stopPushOnDeauthenticate
             ) { [weak self] result in
@@ -158,6 +223,20 @@ extension ContentView.ViewModel {
 
             if autoConfigureEnabled && !appState.isConfigured {
                 configurationState = .loading
+                guard appState.sdkFlowMode == .completionHandlers else {
+                    Task { [weak self] in
+                        guard let self else { return }
+                        do {
+                            try await appState.configure()
+                            configurationState = .configured
+                            authenticateAction()
+                        } catch {
+                            handleConfigurationFailure(error)
+                        }
+                    }
+                    return
+                }
+
                 appState.configure { [weak self] result in
                     guard let self = self else { return }
                     switch result {
@@ -185,6 +264,30 @@ extension ContentView.ViewModel {
     func authenticateWithJWT() {
         guard let authentication = authentication else { return }
 
+        guard appState.sdkFlowMode == .completionHandlers else {
+            Task { [weak self] in
+                guard let self else { return }
+                do {
+                    try await authentication.authenticate(
+                        with: jwtToken,
+                        accessToken: accessToken.isEmpty ? nil : accessToken
+                    )
+                    jwtToken = ""
+                    accessToken = ""
+                    isAuthenticated = true
+                } catch {
+                    jwtToken = ""
+                    accessToken = ""
+                    isAuthenticated = false
+                    showError = AlertData(
+                        title: "Authentication Failed",
+                        message: error.localizedDescription
+                    )
+                }
+            }
+            return
+        }
+
         authentication.authenticate(
             with: jwtToken,
             accessToken: accessToken.isEmpty ? nil : accessToken
@@ -210,6 +313,33 @@ extension ContentView.ViewModel {
 
     func refreshAccessToken() {
         guard let authentication = authentication else { return }
+
+        guard appState.sdkFlowMode == .completionHandlers else {
+            Task { [weak self] in
+                guard let self else { return }
+                do {
+                    try await authentication.refresh(
+                        with: jwtToken,
+                        accessToken: accessToken.isEmpty ? nil : accessToken
+                    )
+                    jwtToken = ""
+                    accessToken = ""
+                    showError = AlertData(
+                        title: "Success",
+                        message: "Access token successfully refreshed"
+                    )
+                } catch {
+                    jwtToken = ""
+                    accessToken = ""
+                    showError = AlertData(
+                        title: "Refresh Failed",
+                        message: error.localizedDescription
+                    )
+                }
+                isAuthenticated = authentication.isAuthenticated
+            }
+            return
+        }
 
         authentication.refresh(
             with: jwtToken,
@@ -321,6 +451,21 @@ extension ContentView.ViewModel {
     }
 
     func clearSession() {
+        guard appState.sdkFlowMode == .completionHandlers else {
+            Task { [weak self] in
+                guard let self else { return }
+                do {
+                    try await appState.clearSession()
+                } catch {
+                    showError = AlertData(
+                        title: "Clear Session Failed",
+                        message: error.localizedDescription
+                    )
+                }
+            }
+            return
+        }
+
         appState.clearSession { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -335,6 +480,21 @@ extension ContentView.ViewModel {
     }
 
     func endEngagement() {
+        guard appState.sdkFlowMode == .completionHandlers else {
+            Task { [weak self] in
+                guard let self else { return }
+                do {
+                    try await appState.endEngagement()
+                } catch {
+                    showError = AlertData(
+                        title: "End Engagement Failed",
+                        message: error.localizedDescription
+                    )
+                }
+            }
+            return
+        }
+
         appState.endEngagement { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
