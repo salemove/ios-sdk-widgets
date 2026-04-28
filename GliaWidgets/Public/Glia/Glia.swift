@@ -89,8 +89,8 @@ private extension Glia {
     static let markUnreadMessagesDelaySeconds = 6
 }
 
-/// Glia's engagement interface.
 // swiftlint:disable type_body_length
+/// Glia's engagement interface.
 public class Glia {
     /// A singleton to access the Glia's interface.
     public static let sharedInstance = Glia(environment: .live)
@@ -202,7 +202,6 @@ public class Glia {
         queuesMonitor = .init(environment: .init(
             getQueues: environment.coreSdk.getQueues,
             subscribeForQueuesUpdates: environment.coreSdk.subscribeForQueuesUpdates,
-            unsubscribeFromUpdates: environment.coreSdk.unsubscribeFromUpdates,
             logger: loggerPhase.logger
         ))
         alertManager = .init(
