@@ -389,7 +389,7 @@ private extension GliaTests {
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         sdkEnv.isAuthenticated = { false }
         sdkEnv.coreSdk.getCurrentEngagement = { nil }
-        sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        sdkEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         let window = UIWindow(frame: .zero)
         window.rootViewController = UIViewController()
         window.makeKeyAndVisible()

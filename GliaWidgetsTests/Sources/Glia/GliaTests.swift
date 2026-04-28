@@ -43,7 +43,7 @@ final class GliaTests: XCTestCase {
         environment.gcd.mainQueue.async = { callback in callback() }
         environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        environment.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: environment)
         sdk.onEvent = {
@@ -105,7 +105,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         gliaEnv.coreSdk.fetchSiteConfigurations = { try .mock() }
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        gliaEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: gliaEnv)
         sdk.onEvent = {
             calls.append(.onEvent($0))
@@ -141,7 +141,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.gcd.mainQueue.async = { callback in callback() }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        gliaEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: gliaEnv)
         let ended = expectation(description: "Ended event")
@@ -182,7 +182,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.gcd.mainQueue.async = { callback in callback() }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        gliaEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: gliaEnv)
         let ended = expectation(description: "Ended event")
@@ -239,7 +239,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         gliaEnv.notificationCenter.removeObserverClosure = { _ in }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        gliaEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: gliaEnv)
         let ended = expectation(description: "Ended event")
@@ -293,7 +293,7 @@ final class GliaTests: XCTestCase {
         environment.conditionalCompilation.isDebug = { false }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
-        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        environment.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: environment)
         try sdk.configure(
             with: .mock(),
@@ -323,7 +323,7 @@ final class GliaTests: XCTestCase {
         environment.coreSdk.getCurrentEngagement = { .mock() }
         environment.print = .mock
         environment.conditionalCompilation.isDebug = { false }
-        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        environment.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: environment)
 
         var resultingError: Error?
@@ -414,7 +414,7 @@ final class GliaTests: XCTestCase {
         environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        environment.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: environment)
         try sdk.configure(
             with: .mock(),
@@ -435,7 +435,7 @@ final class GliaTests: XCTestCase {
         environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        environment.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         environment.coreSdk.getCurrentEngagement = { .mock(status: .transferring, capabilities: .init(text: true)) }
         let sdk = Glia(environment: environment)
         try sdk.configure(
@@ -457,7 +457,7 @@ final class GliaTests: XCTestCase {
         environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        environment.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: environment)
         try sdk.configure(
             with: .mock(),
@@ -484,7 +484,7 @@ final class GliaTests: XCTestCase {
                 throw CoreSdkClient.GliaCoreError.mock()
             }
         }
-        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        environment.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: environment)
 
         try sdk.configure(
@@ -537,7 +537,7 @@ final class GliaTests: XCTestCase {
         var engCoordEnvironment = EngagementCoordinator.Environment.engagementCoordEnvironmentWithKeyWindow
         engCoordEnvironment.fileManager = .mock
         environment.createRootCoordinator = { _, _, _, _, _, _, _ in EngagementCoordinator.mock(environment: engCoordEnvironment) }
-        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        environment.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
         enum Call {
@@ -626,7 +626,7 @@ final class GliaTests: XCTestCase {
         environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        environment.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: environment)
         let configuration = Configuration.mock()
 
@@ -654,13 +654,17 @@ final class GliaTests: XCTestCase {
         logger.configureRemoteLogLevelClosure = { _ in }
         gliaEnv.coreSdk.createLogger = { _ in logger }
         gliaEnv.conditionalCompilation.isDebug = { true }
-        gliaEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { callback in
-            callback(.success(0))
-            return uuidGen().uuidString
+        gliaEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = {
+            AsyncThrowingStream { continuation in
+                continuation.yield(0)
+                continuation.finish()
+            }
         }
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { callback in
-            callback(.success(true))
-            return uuidGen().uuidString
+        gliaEnv.coreSdk.secureConversations.observePendingStatus = {
+            AsyncThrowingStream { continuation in
+                continuation.yield(true)
+                continuation.finish()
+            }
         }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
@@ -684,13 +688,17 @@ final class GliaTests: XCTestCase {
         logger.prefixedClosure = { _ in logger }
         gliaEnv.coreSdk.createLogger = { _ in logger }
         gliaEnv.conditionalCompilation.isDebug = { true }
-        gliaEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { callback in
-            callback(.success(3))
-            return uuidGen().uuidString
+        gliaEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = {
+            AsyncThrowingStream { continuation in
+                continuation.yield(3)
+                continuation.finish()
+            }
         }
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { callback in
-            callback(.success(false))
-            return uuidGen().uuidString
+        gliaEnv.coreSdk.secureConversations.observePendingStatus = {
+            AsyncThrowingStream { continuation in
+                continuation.yield(false)
+                continuation.finish()
+            }
         }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
@@ -716,8 +724,8 @@ final class GliaTests: XCTestCase {
         logger.prefixedClosure = { _ in logger }
         gliaEnv.coreSdk.createLogger = { _ in logger }
         gliaEnv.conditionalCompilation.isDebug = { true }
-        gliaEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in uuidGen().uuidString }
+        gliaEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { AsyncThrowingStream { $0.finish() } }
+        gliaEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
 
@@ -743,8 +751,8 @@ final class GliaTests: XCTestCase {
         logger.prefixedClosure = { _ in logger }
         gliaEnv.coreSdk.createLogger = { _ in logger }
         gliaEnv.conditionalCompilation.isDebug = { true }
-        gliaEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in uuidGen().uuidString }
+        gliaEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { AsyncThrowingStream { $0.finish() } }
+        gliaEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         let authentication = CoreSdkClient.Authentication(deauthenticateWithCallback: { _, callback in
             callback(.success(()))
@@ -796,8 +804,8 @@ final class GliaTests: XCTestCase {
         logger.prefixedClosure = { _ in logger }
         gliaEnv.coreSdk.createLogger = { _ in logger }
         gliaEnv.conditionalCompilation.isDebug = { true }
-        gliaEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in uuidGen().uuidString }
+        gliaEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { AsyncThrowingStream { $0.finish() } }
+        gliaEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         let authentication = CoreSdkClient.Authentication(authenticateWithIdToken: { _, _, intermediateDialogCallback, completion in
             intermediateDialogCallback({ _ in })
