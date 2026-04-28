@@ -20,7 +20,16 @@ extension Glia {
 }
 
 public extension Glia.Authentication {
-    /// Async equivalent of `authenticate(with:accessToken:completion:)`.
+    /// Authenticates the visitor with an ID token.
+    ///
+    /// Use this method when your app receives visitor authentication tokens from
+    /// an external identity provider and wants to authenticate with Swift
+    /// concurrency.
+    ///
+    /// - Parameters:
+    ///   - idToken: JWT token for visitor authentication.
+    ///   - accessToken: Access token for visitor authentication.
+    /// - Throws: `Glia.Authentication.Error` when authentication fails.
     func authenticate(
         with idToken: IdToken,
         accessToken: AccessToken?
@@ -38,7 +47,11 @@ public extension Glia.Authentication {
         }
     }
 
-    /// Async equivalent of `deauthenticate(shouldStopPushNotifications:completion:)`.
+    /// Deauthenticates the current visitor.
+    ///
+    /// - Parameter shouldStopPushNotifications: Indicates whether Push
+    ///   Notifications should be stopped after deauthentication.
+    /// - Throws: `Glia.Authentication.Error` when deauthentication fails.
     func deauthenticate(
         shouldStopPushNotifications: Bool = false
     ) async throws {
@@ -55,7 +68,15 @@ public extension Glia.Authentication {
         }
     }
 
-    /// Async equivalent of `refresh(with:accessToken:completion:)`.
+    /// Refreshes the current visitor authentication tokens.
+    ///
+    /// Call this method after obtaining refreshed tokens from your identity
+    /// provider.
+    ///
+    /// - Parameters:
+    ///   - idToken: Refreshed JWT token for visitor authentication.
+    ///   - accessToken: Refreshed access token for visitor authentication.
+    /// - Throws: `Glia.Authentication.Error` when token refresh fails.
     func refresh(
         with idToken: IdToken,
         accessToken: AccessToken?
