@@ -675,7 +675,23 @@ extension Glia {
 }
 
 public extension Glia {
-    /// Async equivalent of `configure(with:theme:uiConfig:assetsBuilder:features:completion:)`.
+    /// Sets up the SDK with a specific engagement configuration without
+    /// starting an engagement.
+    ///
+    /// This method completes after the Core SDK is configured, the Widgets SDK
+    /// state is prepared, and engagement restoration has been scheduled when an
+    /// existing engagement is available.
+    ///
+    /// - Parameters:
+    ///   - configuration: Engagement configuration.
+    ///   - theme: A custom theme to use with engagements.
+    ///   - uiConfig: Remote UI configuration.
+    ///   - assetsBuilder: Provides assets for remote configuration.
+    ///   - features: Set of features to enable in the SDK.
+    /// - Throws:
+    ///   - `GliaError.configuringDuringEngagementIsNotAllowed` if a
+    ///     non-transferred secure conversation is active.
+    ///   - `ConfigurationError` if Core SDK configuration fails.
     func configure(
         with configuration: Configuration,
         theme: Theme = Theme(),
@@ -698,7 +714,14 @@ public extension Glia {
         )
     }
 
-    /// Async equivalent of `clearVisitorSession(_:)`.
+    /// Clears the current visitor session.
+    ///
+    /// - Important: If an engagement is ongoing, end the engagement before
+    ///   calling this method. Otherwise
+    ///   `GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed` is
+    ///   thrown.
+    /// - Throws: `GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed`
+    ///   when a non-transferred secure conversation is active.
     func clearVisitorSession() async throws {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
@@ -713,7 +736,18 @@ public extension Glia {
         environment.coreSdk.clearSession()
     }
 
-    /// Async equivalent of `getVisitorInfo(completion:)`.
+    /// Fetches the current visitor's information.
+    ///
+    /// The returned information is available to operators observing or
+    /// interacting with the visitor and can provide additional visitor context.
+    ///
+    /// - Returns: Current visitor information.
+    /// - Throws:
+    ///   - `GliaError.sdkIsNotConfigured` if the SDK has not been configured.
+    ///   - `GliaCoreSDK.GeneralError.internalError`
+    ///   - `GliaCoreSDK.GeneralError.networkError`
+    ///   - `GliaCoreSDK.ConfigurationError.invalidSite`
+    ///   - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
     func getVisitorInfo() async throws -> VisitorInfo {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
@@ -727,7 +761,20 @@ public extension Glia {
         return try await environment.coreSdk.getVisitorInfo()
     }
 
-    /// Async equivalent of `updateVisitorInfo(_:completion:)`.
+    /// Updates the current visitor's information.
+    ///
+    /// The provided information is available to operators observing or
+    /// interacting with the visitor. Custom attributes can also provide
+    /// additional context, such as account type or visitor priority.
+    ///
+    /// - Parameter info: Visitor information to update.
+    /// - Returns: `true` when the visitor information was updated.
+    /// - Throws:
+    ///   - `GliaError.sdkIsNotConfigured` if the SDK has not been configured.
+    ///   - `GliaCoreSDK.GeneralError.internalError`
+    ///   - `GliaCoreSDK.GeneralError.networkError`
+    ///   - `GliaCoreSDK.ConfigurationError.invalidSite`
+    ///   - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
     func updateVisitorInfo(_ info: VisitorInfoUpdate) async throws -> Bool {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
@@ -741,7 +788,14 @@ public extension Glia {
         return try await environment.coreSdk.updateVisitorInfo(info)
     }
 
-    /// Async equivalent of `endEngagement(_:)`.
+    /// Ends the active engagement and closes the Widgets SDK UI, including the
+    /// bubble.
+    ///
+    /// This method performs UI teardown on the main actor.
+    ///
+    /// - Throws:
+    ///   - `GliaError.sdkIsNotConfigured` if the SDK has not been configured.
+    ///   - Any error produced while ending the active interactor session.
     @MainActor
     func endEngagement() async throws {
         environment.openTelemetry.logger.logMethodUse(
@@ -779,7 +833,12 @@ public extension Glia {
         }
     }
 
-    /// Async equivalent of `getQueues(_:)`.
+    /// Fetches all queues for the configured site.
+    ///
+    /// - Returns: Queue list for the configured site.
+    /// - Throws:
+    ///   - `GliaError.sdkIsNotConfigured` if the SDK has not been configured.
+    ///   - Any Core SDK error produced while fetching queues.
     func getQueues() async throws -> [Queue] {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
