@@ -3,6 +3,22 @@ import GliaWidgets
 import Combine
 import UIKit
 
+enum SDKFlowMode: String, CaseIterable, Identifiable {
+    case completionHandlers
+    case asyncAwait
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .completionHandlers:
+            return "Callbacks"
+        case .asyncAwait:
+            return "Async/Await"
+        }
+    }
+}
+
 @MainActor
 final class AppState: ObservableObject {
     @Published var configuration: Configuration
@@ -11,6 +27,7 @@ final class AppState: ObservableObject {
     @Published var theme: Theme
     @Published var features: Features
     @Published var autoConfigureEnabled: Bool
+    @Published var sdkFlowMode: SDKFlowMode
     @Published var authenticationBehavior: Glia.Authentication.Behavior
     @Published var stopPushOnDeauthenticate: Bool
     @Published var isConfigured: Bool = false
@@ -29,6 +46,7 @@ final class AppState: ObservableObject {
         self.theme = Theme()
         self.features = UserDefaults.standard.features
         self.autoConfigureEnabled = UserDefaults.standard.autoConfigureEnabled
+        self.sdkFlowMode = UserDefaults.standard.sdkFlowMode
         self.authenticationBehavior = UserDefaults.standard.authenticationBehavior
         self.stopPushOnDeauthenticate = UserDefaults.standard.stopPushOnDeauthenticate
     }
@@ -63,6 +81,23 @@ final class AppState: ObservableObject {
         } catch {
             completion(.failure(error))
         }
+    }
+
+    func configure() async throws {
+        applyPushNotificationConfig()
+        let remoteConfig = getRemoteConfiguration()
+
+        try await Glia.sharedInstance.configure(
+            with: configuration,
+            theme: theme,
+            uiConfig: remoteConfig,
+            features: features
+        )
+
+        isConfigured = true
+        setupEngagementLauncher()
+        debugPrint("SDK has been configured")
+        UIApplication.shared.registerForRemoteNotifications()
     }
 
     func applyPushNotificationConfig() {
@@ -124,6 +159,10 @@ final class AppState: ObservableObject {
         }
     }
 
+    func endEngagement() async throws {
+        try await Glia.sharedInstance.endEngagement()
+    }
+
     func clearSession(completion: @escaping (Result<Void, Error>) -> Void) {
         Glia.sharedInstance.clearVisitorSession { result in
             DispatchQueue.main.async {
@@ -132,12 +171,17 @@ final class AppState: ObservableObject {
         }
     }
 
+    func clearSession() async throws {
+        try await Glia.sharedInstance.clearVisitorSession()
+    }
+
     func saveConfiguration() {
         UserDefaults.standard.configuration = configuration
         UserDefaults.standard.queueId = queueId
         UserDefaults.standard.useDefaultQueue = useDefaultQueue
         UserDefaults.standard.features = features
         UserDefaults.standard.autoConfigureEnabled = autoConfigureEnabled
+        UserDefaults.standard.sdkFlowMode = sdkFlowMode
         UserDefaults.standard.authenticationBehavior = authenticationBehavior
         UserDefaults.standard.stopPushOnDeauthenticate = stopPushOnDeauthenticate
     }
@@ -160,6 +204,7 @@ extension UserDefaults {
         static let useDefaultQueue = "useDefaultQueue"
         static let features = "features"
         static let autoConfigureEnabled = "autoConfigureEnabled"
+        static let sdkFlowMode = "sdkFlowMode"
         static let authenticationBehavior = "authenticationBehavior"
         static let stopPushOnDeauthenticate = "stopPushOnDeauthenticate"
     }
@@ -216,6 +261,19 @@ extension UserDefaults {
         }
         set {
             set(newValue, forKey: Keys.autoConfigureEnabled)
+        }
+    }
+
+    var sdkFlowMode: SDKFlowMode {
+        get {
+            guard let rawValue = string(forKey: Keys.sdkFlowMode),
+                  let mode = SDKFlowMode(rawValue: rawValue) else {
+                return .completionHandlers
+            }
+            return mode
+        }
+        set {
+            set(newValue.rawValue, forKey: Keys.sdkFlowMode)
         }
     }
 
