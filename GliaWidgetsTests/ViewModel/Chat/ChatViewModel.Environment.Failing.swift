@@ -1,3 +1,5 @@
+// swiftlint:disable:next blanket_disable_command
+// swiftlint:disable function_body_length
 @testable import GliaWidgets
 @_spi(GliaWidgets) import GliaCoreSDK
 
@@ -11,8 +13,9 @@ extension ChatViewModel.Environment {
                 fail("\(Self.self).fetchFile")
                 throw NSError(domain: "fetchFile", code: -1)
             },
-            uploadFileToEngagement: { _, _, _ in
+            uploadFileToEngagement: { _, _ in
                 fail("\(Self.self).uploadFileToEngagement")
+                throw NSError(domain: "uploadFileToEngagement", code: -1)
             },
             fileManager: .failing,
             data: .failing,

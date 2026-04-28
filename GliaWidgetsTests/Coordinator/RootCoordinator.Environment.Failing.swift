@@ -8,8 +8,9 @@ extension EngagementCoordinator.Environment {
             fail("\(Self.self).fetchFile")
             throw NSError(domain: "fetchFile", code: -1)
         },
-        uploadFileToEngagement: { _, _, _ in
+        uploadFileToEngagement: { _, _ in
             fail("\(Self.self).uploadFileToEngagement")
+            throw NSError(domain: "uploadFileToEngagement", code: -1)
         },
         audioSession: .failing,
         uuid: {

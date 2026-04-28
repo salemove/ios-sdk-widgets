@@ -22,7 +22,10 @@ extension SecureConversations.WelcomeViewModel.Environment {
         startSocketObservation: @escaping CoreSdkClient.StartSocketObservation = {},
         stopSocketObservation: @escaping CoreSdkClient.StopSocketObservation = {},
         getCurrentEngagement: @escaping CoreSdkClient.GetCurrentEngagement = { .mock() },
-        uploadFileToEngagement: @escaping CoreSdkClient.UploadFileToEngagement = { _, _, _ in },
+        uploadFileToEngagement: @escaping CoreSdkClient.UploadFileToEngagement = { _, _ in
+            try await Task.sleep(nanoseconds: UInt64.max)
+            throw CancellationError()
+        },
         createSendMessagePayload: @escaping CoreSdkClient.CreateSendMessagePayload = { _, _ in .mock() },
         log: CoreSdkClient.Logger = .mock
     ) -> SecureConversations.WelcomeViewModel.Environment {

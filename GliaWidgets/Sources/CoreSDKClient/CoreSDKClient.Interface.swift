@@ -55,9 +55,8 @@ extension CoreSdkClient {
     typealias CancelQueueTicket = (_ queueTicket: QueueTicket) async throws -> Bool
     typealias UploadFileToEngagement = (
         _ file: EngagementFile,
-        _ progress: EngagementFileProgressBlock?,
-        _ completion: @escaping EngagementFileCompletionBlock
-    ) -> Void
+        _ progress: EngagementFileProgressBlock?
+    ) async throws -> EngagementFileInformation
     typealias FetchFile = (
         _ engagementFile: EngagementFile,
         _ progress: EngagementFileProgressBlock?
@@ -116,9 +115,8 @@ extension CoreSdkClient.SecureConversations {
 
     typealias UploadFile = (
         _ file: EngagementFile,
-        _ progress: EngagementFileProgressBlock?,
-        _ completion: @escaping (Result<EngagementFileInformation, Swift.Error>) -> Void
-    ) -> Cancellable
+        _ progress: EngagementFileProgressBlock?
+    ) async throws -> EngagementFileInformation
 
     typealias GetUnreadMessageCount = () async throws -> Int
 
