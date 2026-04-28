@@ -69,7 +69,13 @@ public struct SecureConversations {
         environment.subscriptionStore.cancel(subscriptionToken)
     }
 
-    /// Async equivalent of `getUnreadMessageCount(_:)`.
+    /// Gets the count of unread messages sent through secure conversations.
+    ///
+    /// This count increases when an operator sends a message and the visitor has
+    /// not marked the message as read.
+    ///
+    /// - Returns: Number of unread secure conversation messages.
+    /// - Throws: `Swift.Error` when the unread count cannot be fetched.
     public func getUnreadMessageCount() async throws -> Int {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
@@ -80,7 +86,12 @@ public struct SecureConversations {
         return try await environment.coreSdk.secureConversations.getUnreadMessageCount()
     }
 
-    /// Async sequence equivalent of `subscribeSecureUnreadMessageCount(_:)`.
+    /// Observes unread secure conversation message count changes.
+    ///
+    /// The stream yields a value every time the unread message count changes.
+    /// Cancelling iteration stops the subscription.
+    ///
+    /// - Returns: An async stream of unread secure conversation message counts.
     public func subscribeSecureUnreadMessageCount() -> AsyncThrowingStream<Int?, Error> {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
