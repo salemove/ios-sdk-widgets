@@ -154,7 +154,7 @@ class InteractorTests: XCTestCase {
         var callbacks: [Callback] = []
         var interactorEnv = Interactor.Environment.failing
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
-        interactorEnv.coreSdk.configureWithConfiguration = { $1(.success(())) }
+        interactorEnv.coreSdk.configureWithConfiguration = { _ in }
         interactorEnv.coreSdk.queueForEngagement = { _, _ in .mock }
         interactorEnv.log.infoClosure = { _, _, _, _ in }
         interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }
@@ -191,7 +191,7 @@ class InteractorTests: XCTestCase {
         log.prefixedClosure = { _ in log }
         interactorEnv.log = log
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
-        interactorEnv.coreSdk.configureWithConfiguration = { $1(.success(())) }
+        interactorEnv.coreSdk.configureWithConfiguration = { _ in }
         interactorEnv.coreSdk.queueForEngagement = { _, _ in .mock }
         interactorEnv.gcd = .mock
         let interactor = Interactor.mock(environment: interactorEnv)
@@ -228,7 +228,7 @@ class InteractorTests: XCTestCase {
         log.infoClosure = { _, _, _, _ in }
         interactorEnv.log = log
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
-        interactorEnv.coreSdk.configureWithConfiguration = { $1(.success(())) }
+        interactorEnv.coreSdk.configureWithConfiguration = { _ in }
         interactorEnv.coreSdk.queueForEngagement = { _, _ in
             throw CoreSdkClient.GliaCoreError.mock()
         }
@@ -461,7 +461,7 @@ class InteractorTests: XCTestCase {
             return .mock()
         }
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
-        interactorEnv.coreSdk.configureWithConfiguration = { $1(.success(())) }
+        interactorEnv.coreSdk.configureWithConfiguration = { _ in }
         let interactor = Interactor.mock(environment: interactorEnv)
 
         _ = try await interactor.send(messagePayload: .mock(content: "mock-message"))

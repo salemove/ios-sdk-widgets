@@ -42,9 +42,8 @@ struct CoreSdkClient {
 
 extension CoreSdkClient {
     typealias ConfigureWithConfiguration = (
-        _ sdkConfiguration: GliaCore.Configuration,
-        _ completion: @escaping ConfigureCompletion
-    ) -> Void
+        _ sdkConfiguration: GliaCore.Configuration
+    ) async throws -> Void
 
     typealias ConfigureWithInteractor = (_ interactor: Interactable) -> Void
     typealias GetQueues = () async throws -> [Queue]
