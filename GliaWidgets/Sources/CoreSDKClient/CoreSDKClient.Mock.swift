@@ -10,7 +10,7 @@ extension CoreSdkClient {
         createAppDelegate: { .mock },
         clearSession: {},
         localeProvider: .mock,
-        configureWithConfiguration: { _, _ in },
+        configureWithConfiguration: { _ in },
         getVisitorInfo: { .mock },
         updateVisitorInfo: { _ in true },
         configureWithInteractor: { _ in },

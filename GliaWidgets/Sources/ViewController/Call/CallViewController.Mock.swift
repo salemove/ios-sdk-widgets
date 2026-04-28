@@ -78,9 +78,7 @@ extension CallViewController {
 
     static func mockAudioCallConnectedState() async throws -> CallViewController {
         var interactorEnv = Interactor.Environment.mock
-        interactorEnv.coreSdk.configureWithConfiguration = { _, callback in
-            callback(.success(()))
-        }
+        interactorEnv.coreSdk.configureWithConfiguration = { _ in }
         let interactor = Interactor.mock(environment: interactorEnv)
         let callKind = CallKind.audio
         let callEnv = Call.Environment.mock

@@ -83,7 +83,12 @@ extension CoreSdkClient {
             createAppDelegate: Self.AppDelegate.live,
             clearSession: GliaCore.sharedInstance.clearSession,
             localeProvider: .init(getRemoteString: GliaCore.sharedInstance.localeProvider.getRemoteString(_:)),
-            configureWithConfiguration: GliaCore.sharedInstance.configure(with:completion:), getVisitorInfo: {
+            configureWithConfiguration: { configuration in
+                try await AsyncBridge.result { completion in
+                    GliaCore.sharedInstance.configure(with: configuration, completion: completion)
+                }
+            },
+            getVisitorInfo: {
                 let coreVisitorInfo = try await AsyncBridge.result(GliaCore.sharedInstance.fetchVisitorInfo)
                 return coreVisitorInfo.asWidgetSdkVisitorInfo()
             },

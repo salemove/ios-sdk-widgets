@@ -89,7 +89,6 @@ private extension Glia {
     static let markUnreadMessagesDelaySeconds = 6
 }
 
-// swiftlint:disable type_body_length
 /// Glia's engagement interface.
 // swiftlint:disable type_body_length
 public class Glia {
@@ -237,7 +236,6 @@ public class Glia {
         }
     }
 
-    // swiftlint:disable cyclomatic_complexity function_body_length
     /// Setup SDK using specific engagement configuration without starting the engagement.
     /// - Parameters:
     ///   - configuration: Engagement configuration.
@@ -252,7 +250,6 @@ public class Glia {
     ///   - `GliaError.configuringDuringEngagementIsNotAllowed`
     ///   - `ConfigurationError`
     ///
-    // swiftlint:disable function_body_length
     public func configure(
         with configuration: Configuration,
         theme: Theme = Theme(),
@@ -307,91 +304,25 @@ public class Glia {
             }
         }
 
-        try environment.coreSDKConfigurator.configureWithConfiguration(configuration) { [weak self] result in
+        Task { [weak self] in
             guard let self else { return }
-            switch result {
-            case .success:
-                defer {
-                    self.loggerPhase.logger.prefixed(Self.self).info("Initialize Glia Widgets SDK")
-                    if uiConfig != nil {
-                        self.loggerPhase.logger.remoteLogger?.prefixed(Self.self)
-                            .info("Setting Unified UI Config")
-                    }
+            do {
+                try await self.environment.coreSDKConfigurator.configureWithConfiguration(configuration)
+                await MainActor.run {
+                    self.handleCoreSDKConfigured(
+                        configuration: configuration,
+                        uiConfig: uiConfig,
+                        features: features,
+                        completion: completion
+                    )
                 }
-                // Storing `configuration` needs to be done once configuring SDK is complete
-                // Otherwise integrator can call `configure` and `startEngagement`
-                // asynchronously, without waiting configuration completion.
-                self.configuration = configuration
-
-                let interactor = self.setupInteractor(configuration: configuration)
-                self.interactor = interactor
-                self.callVisualizer.startObservingInteractorEvents()
-
-                let getRemoteString = self.environment.coreSdk.localeProvider.getRemoteString
-                self.stringProvidingPhase = .configured(getRemoteString)
-
-                // Configuration completion handler has to be called in any case,
-                // at the end of the scope, whether there's ongoing engagement or not.
-                defer {
-                    // PendingInteraction is essential part of SC flow, so it's not
-                    // valid to consider SDK configured if PI is not created.
-                    do {
-                        pendingInteraction = try .init(environment: .init(
-                            client: environment.coreSdk,
-                            interactorPublisher: Just(interactor).eraseToAnyPublisher()
-                        ))
-                        startObservingInteractorEvents()
-                        environment.openTelemetry.logger.i(.widgetsSdkConfigured)
-                        completion(.success(()))
-                    } catch let error as SecureConversations.PendingInteraction.Error {
-                        switch error {
-                        case .subscriptionFailure:
-                            completion(.failure(GliaError.internalEventSubscriptionFailure))
-                        }
-                    } catch {
-                        completion(.failure(GliaError.internalError))
-                    }
+            } catch {
+                await MainActor.run {
+                    self.handleCoreSDKConfigurationFailure(error, completion: completion)
                 }
-
-                guard let currentEngagement = self.environment.coreSdk.getNonTransferredSecureConversationEngagement() else { return }
-
-                if currentEngagement.source == .callVisualizer {
-                    Task { @MainActor in
-                        await self.callVisualizer.handleRestoredEngagement()
-                    }
-                } else {
-                    Task { @MainActor in
-                        await self.restoreOngoingEngagement(
-                            configuration: configuration,
-                            currentEngagement: currentEngagement,
-                            interactor: interactor,
-                            features: features,
-                            maximize: false
-                        )
-                    }
-                }
-            case .failure(let error):
-                typealias ProcessError = CoreSdkClient.ConfigurationProcessError
-                var errorForCompletion: GliaError = .internalError
-
-                // To avoid the integrator having to figure out if an error is a `GliaError`
-                // or a `ConfigurationProcessError`, the `ConfigurationProcessError` is translated
-                // into a `GliaError`.
-                if let processError = error as? ProcessError {
-                    if processError == .invalidSiteApiKeyCredentials {
-                        errorForCompletion = GliaError.invalidSiteApiKeyCredentials
-                    } else if processError == .localeRetrieval {
-                        errorForCompletion = GliaError.invalidLocale
-                    }
-                }
-                loggerPhase.logger.error("Glia Widgets SDK initialization failed")
-                debugPrint("💥 Core SDK configuration is not valid. Unexpected error='\(error)'.")
-                completion(.failure(errorForCompletion))
             }
         }
     }
-    // swiftlint:enable cyclomatic_complexity function_body_length
-
     /// Minimizes engagement view if ongoing engagement exists.
     /// Use this function to minimize the engagement view programmatically
     /// during ongoing engagement. If you do so, the chat bubble appears.
@@ -649,6 +580,97 @@ public class Glia {
 
 // MARK: - Internal
 extension Glia {
+    @MainActor
+    func handleCoreSDKConfigured(
+        configuration: Configuration,
+        uiConfig: RemoteConfiguration?,
+        features: Features,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        defer {
+            loggerPhase.logger.prefixed(Self.self).info("Initialize Glia Widgets SDK")
+            if uiConfig != nil {
+                loggerPhase.logger.remoteLogger?.prefixed(Self.self)
+                    .info("Setting Unified UI Config")
+            }
+        }
+        // Storing `configuration` needs to be done once configuring SDK is complete
+        // Otherwise integrator can call `configure` and `startEngagement`
+        // asynchronously, without waiting configuration completion.
+        self.configuration = configuration
+
+        let interactor = setupInteractor(configuration: configuration)
+        self.interactor = interactor
+        callVisualizer.startObservingInteractorEvents()
+
+        let getRemoteString = environment.coreSdk.localeProvider.getRemoteString
+        stringProvidingPhase = .configured(getRemoteString)
+
+        // Configuration completion handler has to be called in any case,
+        // at the end of the scope, whether there's ongoing engagement or not.
+        defer {
+            // PendingInteraction is essential part of SC flow, so it's not
+            // valid to consider SDK configured if PI is not created.
+            do {
+                pendingInteraction = try .init(environment: .init(
+                    client: environment.coreSdk,
+                    interactorPublisher: Just(interactor).eraseToAnyPublisher()
+                ))
+                startObservingInteractorEvents()
+                environment.openTelemetry.logger.i(.widgetsSdkConfigured)
+                completion(.success(()))
+            } catch let error as SecureConversations.PendingInteraction.Error {
+                switch error {
+                case .subscriptionFailure:
+                    completion(.failure(GliaError.internalEventSubscriptionFailure))
+                }
+            } catch {
+                completion(.failure(GliaError.internalError))
+            }
+        }
+
+        guard let currentEngagement = environment.coreSdk.getNonTransferredSecureConversationEngagement() else { return }
+
+        if currentEngagement.source == .callVisualizer {
+            Task { @MainActor in
+                await callVisualizer.handleRestoredEngagement()
+            }
+        } else {
+            Task { @MainActor in
+                await restoreOngoingEngagement(
+                    configuration: configuration,
+                    currentEngagement: currentEngagement,
+                    interactor: interactor,
+                    features: features,
+                    maximize: false
+                )
+            }
+        }
+    }
+
+    @MainActor
+    func handleCoreSDKConfigurationFailure(
+        _ error: Error,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        typealias ProcessError = CoreSdkClient.ConfigurationProcessError
+        var errorForCompletion: GliaError = .internalError
+
+        // To avoid the integrator having to figure out if an error is a `GliaError`
+        // or a `ConfigurationProcessError`, the `ConfigurationProcessError` is translated
+        // into a `GliaError`.
+        if let processError = error as? ProcessError {
+            if processError == .invalidSiteApiKeyCredentials {
+                errorForCompletion = GliaError.invalidSiteApiKeyCredentials
+            } else if processError == .localeRetrieval {
+                errorForCompletion = GliaError.invalidLocale
+            }
+        }
+        loggerPhase.logger.error("Glia Widgets SDK initialization failed")
+        debugPrint("💥 Core SDK configuration is not valid. Unexpected error='\(error)'.")
+        completion(.failure(errorForCompletion))
+    }
+
     @discardableResult
     func setupInteractor(
         configuration: Configuration
