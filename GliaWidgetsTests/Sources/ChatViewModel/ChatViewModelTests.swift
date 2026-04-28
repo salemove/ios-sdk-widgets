@@ -1,3 +1,7 @@
+// swiftlint:disable:next blanket_disable_command
+// swiftlint:disable file_length type_body_length function_body_length force_unwrapping trailing_whitespace unused_closure_parameter
+// swiftlint:disable:next blanket_disable_command
+// swiftlint:disable vertical_whitespace_opening_braces xctfail_message empty_enum_arguments
 @testable import GliaWidgets
 @_spi(GliaWidgets) import GliaCoreSDK
 import Combine
@@ -36,7 +40,10 @@ class ChatViewModelTests: XCTestCase {
             environment: .init(
                 secureConversations: .failing,
                 fetchFile: { _, _ in .mock() },
-                uploadFileToEngagement: { _, _, _ in },
+                uploadFileToEngagement: { _, _ in
+                    try await Task.sleep(nanoseconds: UInt64.max)
+                    throw CancellationError()
+                },
                 fileManager: fileManager,
                 data: .failing,
                 date: { Date.mock },
@@ -505,7 +512,7 @@ class ChatViewModelTests: XCTestCase {
             scrollingBehaviour: .scrolling(.live)
         )
         let fileUpload = FileUpload.mock()
-        fileUpload.environment.uploadFile = .toSecureMessaging({ _, _, _ in .mock })
+        fileUpload.environment.uploadFile = .toSecureMessaging { _, _ in try .mock() }
         transcriptFileUploadListModelEnv.uploader.uploads = [fileUpload]
 
         let transcriptFileUploadListModel = FileUploadListViewModel(environment: transcriptFileUploadListModelEnv)
