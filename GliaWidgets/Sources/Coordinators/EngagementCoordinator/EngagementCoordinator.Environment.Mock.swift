@@ -5,7 +5,10 @@ extension EngagementCoordinator.Environment {
     static func mock(
         secureConversations: CoreSdkClient.SecureConversations = .mock,
         fetchFile: @escaping CoreSdkClient.FetchFile = { _, _ in .mock() },
-        uploadFileToEngagement: @escaping CoreSdkClient.UploadFileToEngagement = { _, _, _ in },
+        uploadFileToEngagement: @escaping CoreSdkClient.UploadFileToEngagement = { _, _ in
+            try await Task.sleep(nanoseconds: UInt64.max)
+            throw CancellationError()
+        },
         audioSession: Glia.Environment.AudioSession = .mock,
         uuid: @escaping () -> UUID = { .mock },
         fileManager: FoundationBased.FileManager = .mock,
@@ -27,7 +30,8 @@ extension EngagementCoordinator.Environment {
         fetchOlderChatHistory: @escaping CoreSdkClient.FetchOlderChatHistory = { _, _ in },
         listQueues: @escaping CoreSdkClient.GetQueues = { [.mock()] },
         createFileUploader: @escaping FileUploader.Create = FileUploader.mock,
-        createFileUploadListModel: @escaping SecureConversations.FileUploadListViewModel.Create = SecureConversations.FileUploadListViewModel.mock(environment:),
+        createFileUploadListModel: @escaping SecureConversations.FileUploadListViewModel.Create =
+            SecureConversations.FileUploadListViewModel.mock(environment:),
         markUnreadMessagesDelay: @escaping () -> DispatchQueue.SchedulerTimeType.Stride = { .mock },
         isAuthenticated: @escaping () -> Bool = { false },
         startSocketObservation: @escaping CoreSdkClient.StartSocketObservation = {},
