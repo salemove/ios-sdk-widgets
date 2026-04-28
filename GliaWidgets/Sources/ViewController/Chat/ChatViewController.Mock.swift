@@ -209,9 +209,7 @@ extension ChatViewController {
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         chatViewModelEnv.fetchChatHistory = { [] }
         var interEnv = Interactor.Environment.mock
-        interEnv.coreSdk.configureWithConfiguration = { _, callback in
-            callback(.success(()))
-        }
+        interEnv.coreSdk.configureWithConfiguration = { _ in }
         let interactor = Interactor.mock(environment: interEnv)
         let generateUUID = UUID.incrementing
 
@@ -505,9 +503,7 @@ extension ChatViewController {
         }
         chatViewModelEnv.fetchChatHistory = { messages }
         var interEnv = Interactor.Environment.mock
-        interEnv.coreSdk.configureWithConfiguration = { _, callback in
-            callback(.success(()))
-        }
+        interEnv.coreSdk.configureWithConfiguration = { _ in }
         let interactor = Interactor.mock(environment: interEnv)
         let chatViewModel = ChatViewModel.mock(interactor: interactor, environment: chatViewModelEnv)
         let controller = await ChatViewController.mock(chatViewModel: chatViewModel)

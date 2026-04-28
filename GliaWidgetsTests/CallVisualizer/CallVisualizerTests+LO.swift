@@ -22,9 +22,7 @@ extension CallVisualizerTests {
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { interactor in
             interactable = interactor
         }
-        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         var snackBar: SnackBar = .mock
         snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
@@ -64,9 +62,7 @@ extension CallVisualizerTests {
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { interactor in
             interactable = interactor
         }
-        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         var snackBar: SnackBar = .mock
         snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
@@ -101,9 +97,7 @@ extension CallVisualizerTests {
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { interactor in
             interactable = interactor
         }
-        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         var snackBar: SnackBar = .mock
         snackBar.present = { _, _, _, _, _, _, _ in
             calls.append(.presentSnackBar)
@@ -142,11 +136,10 @@ extension CallVisualizerTests {
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         let sdk = Glia(environment: gliaEnv)
-        sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+        sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _ in
             sdk.environment.coreSdk.getCurrentEngagement = {
                 .mock(source: .callVisualizer)
             }
-            completion(.success(()))
         }
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
 
@@ -181,11 +174,10 @@ extension CallVisualizerTests {
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         let sdk = Glia(environment: gliaEnv)
-        sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+        sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _ in
             sdk.environment.coreSdk.getCurrentEngagement = {
                 .mock(source: .callVisualizer)
             }
-            completion(.success(()))
         }
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
 
@@ -215,11 +207,10 @@ extension CallVisualizerTests {
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         let sdk = Glia(environment: gliaEnv)
-        sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+        sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _ in
             sdk.environment.coreSdk.getCurrentEngagement = {
                 .mock(source: .callVisualizer)
             }
-            completion(.success(()))
         }
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
 

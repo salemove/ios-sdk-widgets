@@ -39,11 +39,9 @@ final class GliaTests: XCTestCase {
         environment.print = .mock
         environment.conditionalCompilation.isDebug = { false }
         environment.coreSdk.configureWithInteractor = { _ in }
-        environment.coreSdk.configureWithConfiguration = { _, _ in }
+        environment.coreSdk.configureWithConfiguration = { _ in }
         environment.gcd.mainQueue.async = { callback in callback() }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
@@ -103,9 +101,7 @@ final class GliaTests: XCTestCase {
         logger.prefixedClosure = { _ in logger }
         gliaEnv.coreSdk.createLogger = { _ in logger }
         gliaEnv.gcd.mainQueue.async = { callback in callback() }
-        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         gliaEnv.coreSdk.fetchSiteConfigurations = { try .mock() }
@@ -141,11 +137,9 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSdk.createLogger = { _ in logger }
         gliaEnv.conditionalCompilation.isDebug = { true }
         gliaEnv.coreSdk.configureWithInteractor = { _ in }
-        gliaEnv.coreSdk.configureWithConfiguration = { _, _ in }
+        gliaEnv.coreSdk.configureWithConfiguration = { _ in }
         gliaEnv.gcd.mainQueue.async = { callback in callback() }
-        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
@@ -184,11 +178,9 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSdk.createLogger = { _ in logger }
         gliaEnv.conditionalCompilation.isDebug = { true }
         gliaEnv.coreSdk.configureWithInteractor = { _ in }
-        gliaEnv.coreSdk.configureWithConfiguration = { _, _ in }
+        gliaEnv.coreSdk.configureWithConfiguration = { _ in }
         gliaEnv.gcd.mainQueue.async = { callback in callback() }
-        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
@@ -244,10 +236,8 @@ final class GliaTests: XCTestCase {
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.gcd.mainQueue.async = { callback in callback() }
         gliaEnv.notificationCenter.addObserverClosure = { _, _, _, _ in }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         gliaEnv.notificationCenter.removeObserverClosure = { _ in }
-        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
@@ -302,9 +292,7 @@ final class GliaTests: XCTestCase {
         environment.coreSdk.createLogger = { _ in logger }
         environment.conditionalCompilation.isDebug = { false }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         let sdk = Glia(environment: environment)
         try sdk.configure(
@@ -423,9 +411,7 @@ final class GliaTests: XCTestCase {
         logger.configureLocalLogLevelClosure = { _ in }
         logger.configureRemoteLogLevelClosure = { _ in }
         environment.coreSdk.createLogger = { _ in logger }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
@@ -446,9 +432,7 @@ final class GliaTests: XCTestCase {
         logger.configureLocalLogLevelClosure = { _ in }
         logger.configureRemoteLogLevelClosure = { _ in }
         environment.coreSdk.createLogger = { _ in logger }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
@@ -470,9 +454,7 @@ final class GliaTests: XCTestCase {
         logger.configureLocalLogLevelClosure = { _ in }
         logger.configureRemoteLogLevelClosure = { _ in }
         environment.coreSdk.createLogger = { _ in logger }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
@@ -495,10 +477,9 @@ final class GliaTests: XCTestCase {
         environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         var isFirstConfigure = true
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in
             if isFirstConfigure {
                 isFirstConfigure = false
-                completion(.success(()))
             } else {
                 throw CoreSdkClient.GliaCoreError.mock()
             }
@@ -528,7 +509,7 @@ final class GliaTests: XCTestCase {
         logger.configureRemoteLogLevelClosure = { _ in }
         environment.coreSdk.createLogger = { _ in logger }
         environment.conditionalCompilation.isDebug = { false }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, _ in
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in
             throw CoreSdkClient.GliaCoreError.mock()
         }
         let sdk = Glia(environment: environment)
@@ -548,9 +529,7 @@ final class GliaTests: XCTestCase {
         logger.configureLocalLogLevelClosure = { _ in }
         logger.configureRemoteLogLevelClosure = { _ in }
         environment.coreSdk.createLogger = { _ in logger }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, callback in
-            callback(.success(()))
-        }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.conditionalCompilation.isDebug = { true }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
@@ -645,9 +624,7 @@ final class GliaTests: XCTestCase {
 
         environment.coreSdk.createLogger = { _ in logger }
         environment.conditionalCompilation.isDebug = { true }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
         let sdk = Glia(environment: environment)
@@ -685,9 +662,7 @@ final class GliaTests: XCTestCase {
             callback(.success(true))
             return uuidGen().uuidString
         }
-        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
 
         let sdk = Glia(environment: gliaEnv)
@@ -717,9 +692,7 @@ final class GliaTests: XCTestCase {
             callback(.success(false))
             return uuidGen().uuidString
         }
-        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
 
         let sdk = Glia(environment: gliaEnv)
@@ -745,9 +718,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.conditionalCompilation.isDebug = { true }
         gliaEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in uuidGen().uuidString }
-        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
 
         let sdk = Glia(environment: gliaEnv)
@@ -795,9 +766,8 @@ final class GliaTests: XCTestCase {
         gliaEnv.uiApplication.windows = { [window] }
         let sdk = Glia(environment: gliaEnv)
 
-        sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+        sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _ in
             sdk.environment.coreSdk.getCurrentEngagement = { .mock() }
-            completion(.success(()))
         }
 
         try sdk.configure(
@@ -861,9 +831,8 @@ final class GliaTests: XCTestCase {
         sdk.alertManager = .failing(environment: alertManagerEnv, viewFactory: .mock())
         sdk.alertManager.setViewControllerPresentationAnimated(false)
 
-        sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+        sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _ in
             sdk.environment.coreSdk.getCurrentEngagement = { nil }
-            completion(.success(()))
         }
 
         try sdk.configure(
