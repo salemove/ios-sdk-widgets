@@ -8,7 +8,7 @@ extension CoreSdkClient {
         createAppDelegate: { .failing },
         clearSession: { fail("\(Self.self).clearSession") },
         localeProvider: .failing,
-        configureWithConfiguration: { _, _ in fail("\(Self.self).configureWithConfiguration") },
+        configureWithConfiguration: { _ in fail("\(Self.self).configureWithConfiguration") },
         getVisitorInfo: {
             fail("\(Self.self).getVisitorInfo")
             throw NSError(domain: "getVisitorInfo", code: -1, userInfo: nil)

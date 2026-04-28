@@ -5,7 +5,7 @@ extension CoreSDKConfigurator {
         configureWithInteractor: { _ in
             fail("\(Self.self).configureWithInteractor")
         },
-        configureWithConfiguration: { _, _ in
+        configureWithConfiguration: { _ in
             fail("\(Self.self).configureWithConfiguration")
         }
     )
