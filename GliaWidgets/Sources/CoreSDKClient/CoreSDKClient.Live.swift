@@ -199,18 +199,23 @@ extension CoreSdkClient {
                     GliaCore.sharedInstance.cameraDeviceManageable()
                 )
             },
-            subscribeForQueuesUpdates: { queues, completion in
-                GliaCore.sharedInstance.subscribeForQueuesUpdates(forQueues: queues) { result in
-                    switch result {
-                    case let .success(coreQueue):
-                        let queue = coreQueue.asWidgetSDKQueue()
-                        completion(.success(queue))
-                    case let .failure(error):
-                        completion(.failure(error))
+            subscribeForQueuesUpdates: { queues in
+                AsyncThrowingStream { continuation in
+                    let task = Task {
+                        do {
+                            for try await coreQueue in GliaCore.sharedInstance.queueUpdatesStream(forQueues: queues) {
+                                continuation.yield(coreQueue.asWidgetSDKQueue())
+                            }
+                            continuation.finish()
+                        } catch {
+                            continuation.finish(throwing: error)
+                        }
+                    }
+                    continuation.onTermination = { _ in
+                        task.cancel()
                     }
                 }
             },
-            unsubscribeFromUpdates: GliaCore.sharedInstance.unsubscribeFromUpdates(queueCallbackId:onError:),
             configureLogLevel: GliaCore.sharedInstance.configureLogLevel(level:)
         )
     }()
@@ -246,10 +251,8 @@ extension CoreSdkClient.SecureConversations {
                 GliaCore.sharedInstance.secureConversations.downloadFile(file, progress: progress) { completion($0) }
             }
         },
-        subscribeForUnreadMessageCount: GliaCore.sharedInstance.secureConversations.subscribeToUnreadMessageCount(completion:),
-        unsubscribeFromUnreadMessageCount: GliaCore.sharedInstance.secureConversations.unsubscribeFromUnreadMessageCount,
-        observePendingStatus: GliaCore.sharedInstance.secureConversations.subscribeToPendingSecureConversationStatus,
-        unsubscribeFromPendingStatus: { GliaCore.sharedInstance.secureConversations.unsubscribeFromPendingSecureConversationStatus($0) }
+        subscribeForUnreadMessageCount: GliaCore.sharedInstance.secureConversations.unreadMessageCountStream,
+        observePendingStatus: GliaCore.sharedInstance.secureConversations.pendingSecureConversationStatusStream
     )
 }
 

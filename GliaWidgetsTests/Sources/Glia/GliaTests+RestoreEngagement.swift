@@ -26,7 +26,7 @@ extension GliaTests {
         sdkEnv.coreSdk.fetchSiteConfigurations = { siteMock }
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
-        sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        sdkEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
 
         let window = UIWindow(frame: .zero)
         window.rootViewController = .init()
@@ -44,9 +44,7 @@ extension GliaTests {
         DependencyContainer.current.widgets.snackBar = snackBar
 
         sdkEnv.coreSdk.getQueues = { [] }
-        sdkEnv.coreSdk.subscribeForQueuesUpdates = { _, _ in
-            return UUID.mock.uuidString
-        }
+        sdkEnv.coreSdk.subscribeForQueuesUpdates = { _ in AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: sdkEnv)
         sdk.rootCoordinator = rootCoordinator
@@ -108,16 +106,14 @@ extension GliaTests {
         sdkEnv.coreSdk.fetchSiteConfigurations = { siteMock }
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
-        sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        sdkEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
 
         let window = UIWindow(frame: .zero)
         window.rootViewController = .init()
         window.makeKeyAndVisible()
         sdkEnv.uiApplication.windows = { [window] }
         sdkEnv.coreSdk.getQueues = { [] }
-        sdkEnv.coreSdk.subscribeForQueuesUpdates = { _, _ in
-            return UUID.mock.uuidString
-        }
+        sdkEnv.coreSdk.subscribeForQueuesUpdates = { _ in AsyncThrowingStream { $0.finish() } }
         let engagement = CoreSdkClient.Engagement.mock()
         let engagmentStarted = Boxed<Bool>(value: false)
         sdkEnv.coreSdk.getCurrentEngagement = { [engagmentStarted] in
@@ -165,16 +161,14 @@ extension GliaTests {
         sdkEnv.coreSdk.fetchSiteConfigurations = { siteMock }
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
-        sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        sdkEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
 
         let window = UIWindow(frame: .zero)
         window.rootViewController = .init()
         window.makeKeyAndVisible()
         sdkEnv.uiApplication.windows = { [window] }
         sdkEnv.coreSdk.getQueues = { [] }
-        sdkEnv.coreSdk.subscribeForQueuesUpdates = { _, _ in
-            return UUID.mock.uuidString
-        }
+        sdkEnv.coreSdk.subscribeForQueuesUpdates = { _ in AsyncThrowingStream { $0.finish() } }
         let engagement = CoreSdkClient.Engagement.mock()
         let configured = Boxed<Bool>(value: false)
         sdkEnv.coreSdk.getCurrentEngagement = { [configured] in
@@ -218,8 +212,8 @@ extension GliaTests {
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         let uuidGen = UUID.incrementing
-        sdkEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
-        sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in uuidGen().uuidString }
+        sdkEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { AsyncThrowingStream { $0.finish() } }
+        sdkEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         sdkEnv.gcd.mainQueue.async = { $0() }
 
         let window = UIWindow(frame: .zero)
@@ -288,8 +282,8 @@ extension GliaTests {
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         let uuidGen = UUID.incrementing
-        sdkEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
-        sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in uuidGen().uuidString }
+        sdkEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { AsyncThrowingStream { $0.finish() } }
+        sdkEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         sdkEnv.gcd.mainQueue.async = { $0() }
 
         let window = UIWindow(frame: .zero)
@@ -361,10 +355,12 @@ extension GliaTests {
         DependencyContainer.current.widgets.snackBar = snackBar
 
         let uuidGen = UUID.incrementing
-        sdkEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in uuidGen().uuidString }
-        sdkEnv.coreSdk.secureConversations.observePendingStatus = { callback in
-            callback(.success(true))
-            return uuidGen().uuidString
+        sdkEnv.coreSdk.secureConversations.subscribeForUnreadMessageCount = { AsyncThrowingStream { $0.finish() } }
+        sdkEnv.coreSdk.secureConversations.observePendingStatus = {
+            AsyncThrowingStream { continuation in
+                continuation.yield(true)
+                continuation.finish()
+            }
         }
         sdkEnv.gcd.mainQueue.async = { $0() }
 
@@ -466,7 +462,7 @@ private extension GliaTests {
         sdkEnv.coreSdk.fetchSiteConfigurations = fetchSiteConfigurations
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
-        sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        sdkEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         sdkEnv.gcd.mainQueue.async = { $0() }
 
         let window = UIWindow(frame: .zero)
@@ -474,9 +470,7 @@ private extension GliaTests {
         window.makeKeyAndVisible()
         sdkEnv.uiApplication.windows = { [window] }
         sdkEnv.coreSdk.getQueues = { [] }
-        sdkEnv.coreSdk.subscribeForQueuesUpdates = { _, _ in
-            UUID.mock.uuidString
-        }
+        sdkEnv.coreSdk.subscribeForQueuesUpdates = { _ in AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: sdkEnv)
         try sdk.configure(with: .mock(), features: .all) { _ in }
