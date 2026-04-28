@@ -12,14 +12,11 @@ final class QueuesMonitor {
 
     // Declared as internal var for unit tests purposes
     var environment: Environment
-    private var subscriptionId: String? {
-        _subscriptionId.value
-    }
     private var observedQueues: [Queue] {
         _observedQueues.value
     }
 
-    private var _subscriptionId: LockIsolated<String?> = .init(nil)
+    private var queueUpdatesTask: Task<Void, Never>?
     private var _observedQueues: LockIsolated<[Queue]> = .init([])
 
     init(environment: Environment) {
@@ -68,11 +65,8 @@ final class QueuesMonitor {
 
     /// Stops monitoring queues.
     func stopMonitoring() {
-        if let subscriptionId {
-            environment.unsubscribeFromUpdates(subscriptionId) { [weak self] error in
-                self?.setState(.failed(error))
-            }
-        }
+        queueUpdatesTask?.cancel()
+        queueUpdatesTask = nil
     }
 }
 
@@ -122,20 +116,19 @@ private extension QueuesMonitor {
 
     func observeQueuesUpdates(_ queues: [Queue]) {
         let queuesIds = queues.map { $0.id }
-        let subscriptionId = environment.subscribeForQueuesUpdates(queuesIds) { [weak self] result in
-            guard let self else {
+        queueUpdatesTask = Task { [weak self] in
+            guard let self else { return }
+            do {
+                for try await queue in environment.subscribeForQueuesUpdates(queuesIds) {
+                    guard !Task.isCancelled else { break }
+                    self.updateQueue(queue)
+                    self.setState(.updated(self.observedQueues))
+                }
+            } catch is CancellationError {
                 return
-            }
-            switch result {
-            case .success(let queue):
-                self.updateQueue(queue)
-                self.setState(.updated(self.observedQueues))
-                return
-            case .failure(let error):
+            } catch {
                 self.setState(.failed(error))
-                return
             }
         }
-        _subscriptionId.setValue(subscriptionId)
     }
 }

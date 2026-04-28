@@ -37,8 +37,7 @@ extension CoreSdkClient {
         createSendMessagePayload: { _, _ in .mock() },
         createLogger: { _ in Logger.mock },
         getCameraDeviceManageable: { .mock },
-        subscribeForQueuesUpdates: { _, _ in UUID.mock.uuidString },
-        unsubscribeFromUpdates: { _, _ in },
+        subscribeForQueuesUpdates: { _ in AsyncThrowingStream { $0.finish() } },
         configureLogLevel: { _ in }
     )
 }
@@ -53,10 +52,8 @@ extension CoreSdkClient.SecureConversations {
         getUnreadMessageCount: { 0 },
         markMessagesAsRead: {},
         downloadFile: { _, _ in .mock() },
-        subscribeForUnreadMessageCount: { _ in UUID.mock.uuidString },
-        unsubscribeFromUnreadMessageCount: { _ in },
-        observePendingStatus: { _ in nil },
-        unsubscribeFromPendingStatus: { _ in }
+        subscribeForUnreadMessageCount: { AsyncThrowingStream { $0.finish() } },
+        observePendingStatus: { AsyncThrowingStream { $0.finish() } }
     )
 }
 

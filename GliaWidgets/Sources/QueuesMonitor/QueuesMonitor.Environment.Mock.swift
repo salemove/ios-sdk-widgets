@@ -3,8 +3,7 @@ import Foundation
 extension QueuesMonitor.Environment {
     static let mock: Self = .init(
         getQueues: { [.mock()] },
-        subscribeForQueuesUpdates: { _, _ in UUID().uuidString },
-        unsubscribeFromUpdates: { _, _ in },
+        subscribeForQueuesUpdates: { _ in AsyncThrowingStream { $0.finish() } },
         logger: .mock
     )
 }

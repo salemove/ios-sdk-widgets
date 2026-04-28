@@ -28,7 +28,7 @@ extension CallVisualizerTests {
             calls.append(.presentSnackBar)
         }
         DependencyContainer.current.widgets.snackBar = snackBar
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        gliaEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: gliaEnv)
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
 
@@ -68,7 +68,7 @@ extension CallVisualizerTests {
             calls.append(.presentSnackBar)
         }
         DependencyContainer.current.widgets.snackBar = snackBar
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        gliaEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: gliaEnv)
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
 
@@ -103,7 +103,7 @@ extension CallVisualizerTests {
             calls.append(.presentSnackBar)
         }
         DependencyContainer.current.widgets.snackBar = snackBar
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        gliaEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: gliaEnv)
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
 
@@ -134,7 +134,7 @@ extension CallVisualizerTests {
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        gliaEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: gliaEnv)
         sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _ in
             sdk.environment.coreSdk.getCurrentEngagement = {
@@ -172,7 +172,7 @@ extension CallVisualizerTests {
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        gliaEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: gliaEnv)
         sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _ in
             sdk.environment.coreSdk.getCurrentEngagement = {
@@ -205,7 +205,7 @@ extension CallVisualizerTests {
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.gcd.mainQueue.asyncIfNeeded = { $0() }
         gliaEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        gliaEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: gliaEnv)
         sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _ in
             sdk.environment.coreSdk.getCurrentEngagement = {

@@ -14,7 +14,7 @@ public final class EntryWidget: NSObject {
     private let configuration: Configuration
     private let environment: Environment
     @Published private var unreadSecureMessageCount: Int?
-    private(set) var unreadSecureMessageSubscriptionId: String?
+    private var unreadSecureMessageTask: Task<Void, Never>?
     @Published private var hasPendingInteraction: Bool = false
     @Published var viewState: ViewState = .loading
     private var ongoingEngagement: CoreSdkClient.Engagement?
@@ -98,13 +98,7 @@ public final class EntryWidget: NSObject {
     }
 
     deinit {
-        if let unreadSecureMessageSubscriptionId {
-            environment.unsubscribeFromUpdates(unreadSecureMessageSubscriptionId) { [environment] error in
-                environment.log.prefixed(Self.self).warning(
-                    "Unsubscribing from unread secure messages count without configured SDK: \(error.localizedDescription)"
-                )
-            }
-        }
+        unreadSecureMessageTask?.cancel()
     }
 }
 
@@ -207,12 +201,24 @@ extension EntryWidget {
 // MARK: - Private methods
 private extension EntryWidget {
     func observeSecureUnreadMessageCount() {
-        self.unreadSecureMessageSubscriptionId = environment.observeSecureUnreadMessageCount { [weak self] result in
-            guard let self else {
+        unreadSecureMessageTask = Task { [weak self] in
+            guard let self else { return }
+            do {
+                for try await messagesCount in environment.observeSecureUnreadMessageCount() {
+                    await MainActor.run { [weak self] in
+                        self?.unreadSecureMessageCount = messagesCount ?? 0
+                    }
+                }
+            } catch is CancellationError {
                 return
+            } catch {
+                await MainActor.run { [weak self] in
+                    self?.environment.log.prefixed(Self.self).warning(
+                        "Observing unread secure messages count failed: \(error.localizedDescription)"
+                    )
+                    self?.unreadSecureMessageCount = 0
+                }
             }
-            let messagesCount = try? result.get()
-            self.unreadSecureMessageCount = messagesCount ?? 0
         }
     }
 

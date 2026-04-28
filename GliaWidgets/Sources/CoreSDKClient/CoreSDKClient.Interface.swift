@@ -36,7 +36,6 @@ struct CoreSdkClient {
     var createLogger: CreateLogger
     var getCameraDeviceManageable: GetCameraDeviceManageable
     var subscribeForQueuesUpdates: SubscribeForQueuesUpdates
-    var unsubscribeFromUpdates: UnsubscribeFromUpdates
     var configureLogLevel: (LogLevel) -> Void
 }
 
@@ -78,14 +77,7 @@ extension CoreSdkClient {
     typealias CreateSendMessagePayload = (_ content: String, _ attachment: Attachment?) -> SendMessagePayload
     typealias CreateLogger = ([String: String]) throws -> Logger
     typealias GetCameraDeviceManageable = () throws -> CameraDeviceManageableClient
-    typealias SubscribeForQueuesUpdates = (
-        _ queueIds: [String],
-        _ completion: @escaping (Result<Queue, Error>) -> Void
-    ) -> String?
-    typealias UnsubscribeFromUpdates = (
-        _ queueCallbackId: String,
-        _ onError: @escaping (GliaCoreSDK.GliaCoreError) -> Void
-    ) -> Void
+    typealias SubscribeForQueuesUpdates = (_ queueIds: [String]) -> AsyncThrowingStream<Queue, Error>
 }
 
 extension CoreSdkClient {
@@ -96,9 +88,7 @@ extension CoreSdkClient {
         var markMessagesAsRead: MarkMessagesAsRead
         var downloadFile: DownloadFile
         var subscribeForUnreadMessageCount: SubscribeForUnreadMessageCount
-        var unsubscribeFromUnreadMessageCount: UnsubscribeFromUnreadCount
         var observePendingStatus: ObservePendingStatus
-        var unsubscribeFromPendingStatus: UnsubscribeFromPendingStatus
     }
 }
 
@@ -126,15 +116,9 @@ extension CoreSdkClient.SecureConversations {
         _ progress: @escaping EngagementFileProgressBlock
     ) async throws -> EngagementFileData
 
-    typealias SubscribeForUnreadMessageCount = (
-        _ completion: @escaping (Result<Int?, Error>) -> Void
-    ) -> String?
+    typealias SubscribeForUnreadMessageCount = () -> AsyncThrowingStream<Int?, Error>
 
-    typealias UnsubscribeFromUnreadCount = (String) -> Void
-
-    typealias ObservePendingStatus = (_ callback: @escaping (Result<Bool, Error>) -> Void) -> String?
-
-    typealias UnsubscribeFromPendingStatus = (String) -> Void
+    typealias ObservePendingStatus = () -> AsyncThrowingStream<Bool, Error>
 }
 
 extension CoreSdkClient {
