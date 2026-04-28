@@ -50,13 +50,16 @@ extension SecureConversations.WelcomeViewModel.Environment {
         secureConversations: .mock,
         welcomeStyle: Theme.mock().secureConversationsWelcomeStyle,
         queueIds: [],
-        listQueues: { _ in },
+        listQueues: { [.mock()] },
         fileUploader: .mock(),
         uiApplication: .mock,
         createFileUploadListModel: { _ in  .mock() },
-        fetchSiteConfigurations: { _ in },
+        fetchSiteConfigurations: { try .mock() },
         getCurrentEngagement: { .mock() },
-        uploadFileToEngagement: { _, _, _ in },
+        uploadFileToEngagement: { _, _ in
+            try await Task.sleep(nanoseconds: UInt64.max)
+            throw CancellationError()
+        },
         createSendMessagePayload: { _, _ in .mock() },
         log: .mock
     )

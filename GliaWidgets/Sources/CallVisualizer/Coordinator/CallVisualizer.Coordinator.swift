@@ -47,7 +47,7 @@ extension CallVisualizer.Coordinator {
         environment.eventHandler(.maximized)
     }
 
-    func showVisitorCodeViewController(by presentation: CallVisualizer.Presentation) {
+    func showVisitorCodeViewController(by presentation: CallVisualizer.Presentation) async {
         let coordinator = CallVisualizer.VisitorCodeCoordinator(
             theme: environment.viewFactory.theme,
             environment: .create(with: environment),
@@ -72,7 +72,7 @@ extension CallVisualizer.Coordinator {
             }
         }
 
-        coordinator.start()
+        await coordinator.start()
         self.environment.openTelemetry.logger.i(.visitorCodeShown) {
             switch presentation {
             case .embedded:
@@ -89,12 +89,13 @@ extension CallVisualizer.Coordinator {
         showVideoCallViewController()
     }
 
+    @MainActor
     func handleEngagementRequest(
         request: CoreSdkClient.Request,
         answer: Command<Bool>
-    ) {
+    ) async {
         guard request.outcome == .timedOut else {
-            handleEngagementRequestOutcomeNil(answer: answer)
+            await handleEngagementRequestOutcomeNil(answer: answer)
             return
         }
         handleEngagementRequestOutcomeTimeout(answer: answer)
@@ -109,12 +110,13 @@ extension CallVisualizer.Coordinator {
         answer(false)
     }
 
-    func handleEngagementRequestOutcomeNil(answer: Command<Bool>) {
-        fetchSiteConfigurations { [weak self] site in
+    @MainActor
+    func handleEngagementRequestOutcomeNil(answer: Command<Bool>) async {
+        do {
+            let site = try await fetchSiteConfigurations()
             let showSnackBarIfNeeded: () -> Void = {
                 guard site.mobileObservationEnabled == true else { return }
                 guard site.mobileObservationIndicationEnabled == true else { return }
-                guard let self else { return }
                 self.showSnackBarMessage(text: self.environment.viewFactory.theme.snackBar.text)
             }
             let completion: Command<Bool> = .init { isAccepted in
@@ -123,14 +125,16 @@ extension CallVisualizer.Coordinator {
                 }
                 answer(isAccepted)
             }
-            self?.closeVisitorCode {
+            self.closeVisitorCode {
                 if site.mobileConfirmDialogEnabled == true {
-                    self?.showConfirmationAlert(completion)
+                    self.showConfirmationAlert(completion)
                 } else {
                     showSnackBarIfNeeded()
                     answer(true)
                 }
             }
+        } catch {
+            showErrorAlert(error)
         }
     }
 
@@ -147,13 +151,14 @@ extension CallVisualizer.Coordinator {
         videoCallCoordinator?.call.updateVideoStream(with: stream)
     }
 
-    func showSnackBarIfNeeded() {
-        fetchSiteConfigurations { [weak self] site in
+    @MainActor
+    func showSnackBarIfNeeded() async {
+        do {
+            let site = try await fetchSiteConfigurations()
             guard site.mobileObservationEnabled == true else { return }
             guard site.mobileObservationIndicationEnabled == true else { return }
-            guard let self else { return }
-            self.showSnackBarMessage(text: self.environment.viewFactory.theme.snackBar.text)
-        }
+            showSnackBarMessage(text: environment.viewFactory.theme.snackBar.text)
+        } catch {}
     }
 
     func restoreVideoCall() {
@@ -216,7 +221,14 @@ extension CallVisualizer.Coordinator {
 
 extension CallVisualizer.Coordinator {
     func declineEngagement() {
-        activeInteractor?.endEngagement { _ in }
+        Task { [environment, activeInteractor] in
+            do {
+                try await activeInteractor?.endEngagement()
+            } catch {
+                environment.log.prefixed(Self.self).warning("Ending call visualizer engagement failed: \(error)")
+            }
+        }
+
         end()
     }
 
@@ -262,25 +274,8 @@ extension CallVisualizer.Coordinator {
 // MARK: - Site configurations
 
 private extension CallVisualizer.Coordinator {
-    func fetchSiteConfigurations(_ completion: @escaping (CoreSdkClient.Site) -> Void) {
-        environment.fetchSiteConfigurations { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case let .success(site):
-                completion(site)
-            case let .failure(error):
-                guard let viewController = environment.presenter.getInstance() else { return }
-                self.environment.alertManager.present(
-                    in: .root(viewController),
-                    as: .error(
-                        error: error,
-                        dismissed: { [weak self] in
-                            self?.declineEngagement()
-                        }
-                    )
-                )
-            }
-        }
+    func fetchSiteConfigurations() async throws -> CoreSdkClient.Site {
+        return try await environment.fetchSiteConfigurations()
     }
 }
 
@@ -299,6 +294,20 @@ private extension CallVisualizer.Coordinator {
                 },
                 declined: { [weak self] in
                     answer(false)
+                    self?.declineEngagement()
+                }
+            )
+        )
+    }
+
+    @MainActor
+    func showErrorAlert(_ error: Error) {
+        guard let viewController = environment.presenter.getInstance() else { return }
+        self.environment.alertManager.present(
+            in: .root(viewController),
+            as: .error(
+                error: error,
+                dismissed: { [weak self] in
                     self?.declineEngagement()
                 }
             )

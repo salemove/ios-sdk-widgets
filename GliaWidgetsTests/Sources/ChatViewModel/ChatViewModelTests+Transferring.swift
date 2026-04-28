@@ -1,9 +1,8 @@
 @testable import GliaWidgets
-import GliaCoreSDK
 import XCTest
 
 extension ChatViewModelTests {
-    func test_mediaButtonVisibilityDuringTransferring() throws {
+    func test_mediaButtonVisibilityDuringTransferring() async throws {
         enum Call: Equatable {
             enum Visibility { case enabled, disabled }
             case updateVisibility(Visibility)
@@ -13,11 +12,11 @@ extension ChatViewModelTests {
 
         var interactorEnv = Interactor.Environment.failing
         // To ensure `sendMessageWithMessagePayload` is not called in case of Postback Button
-        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, _ in
-            XCTFail("createSendMessagePayload should not be called")
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _ in
+            throw CoreSdkClient.GliaCoreError.mock()
         }
         interactorEnv.gcd.mainQueue.async = { $0() }
-        interactorEnv.coreSdk.queueForEngagement = { _, _, _ in }
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in .mock }
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
         var log = interactorEnv.log
         log.prefixedClosure = { _ in log }
@@ -36,13 +35,12 @@ extension ChatViewModelTests {
             allowedFileContentTypes: ["image/jpeg"],
             allowedFileSenders: .init(operator: true, visitor: true)
         )
-        env.fetchSiteConfigurations = { completion in
-            completion(.success(site))
-        }
+        env.fetchChatHistory = { [.mock()] }
+        env.loadChatMessagesFromHistory = { false }
+        env.fetchSiteConfigurations = { site }
         env.createEntryWidget = { _ in .mock() }
         interactorMock.setCurrentEngagement(.mock())
         viewModel = .mock(interactor: interactorMock, environment: env)
-
         viewModel.action = { action in
             switch action {
             case let .setAttachmentButtonEnabling(enabling):
@@ -56,7 +54,13 @@ extension ChatViewModelTests {
                 break
             }
         }
+        await viewModel.start()
         interactorMock.state = .engaged(nil)
+
+        // Will be removed when async state observing is implemented
+        await waitUntil {
+            calls == [.updateVisibility(.enabled)]
+        }
         XCTAssertEqual(
             calls,
             [.updateVisibility(.enabled)]
@@ -71,7 +75,7 @@ extension ChatViewModelTests {
             ]
         )
 
-        interactorMock.notify(.engagementTransferred(GliaCoreSDK.Operator.mock()))
+        interactorMock.notify(.engagementTransferred(CoreSdkClient.Operator.mock()))
 
         XCTAssertEqual(
             calls,

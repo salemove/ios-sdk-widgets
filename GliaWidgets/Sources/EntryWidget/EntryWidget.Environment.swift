@@ -5,7 +5,6 @@ import Combine
 extension EntryWidget {
     struct Environment {
         var observeSecureUnreadMessageCount: CoreSdkClient.SecureConversations.SubscribeForUnreadMessageCount
-        var unsubscribeFromUpdates: CoreSdkClient.UnsubscribeFromUpdates
         var queuesMonitor: QueuesMonitor
         var engagementLauncher: EngagementLauncher
         var theme: Theme
@@ -24,8 +23,7 @@ extension EntryWidget.Environment {
     static func mock() -> Self {
         let engagementLauncher = EngagementLauncher { _, _ in }
         return .init(
-            observeSecureUnreadMessageCount: { _ in UUID.mock.uuidString },
-            unsubscribeFromUpdates: { _, _ in },
+            observeSecureUnreadMessageCount: { AsyncThrowingStream { $0.finish() } },
             queuesMonitor: .mock(),
             engagementLauncher: engagementLauncher,
             theme: .mock(),

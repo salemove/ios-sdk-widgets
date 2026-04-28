@@ -19,7 +19,7 @@ public enum EngagementKind: Equatable {
 extension EngagementKind {
     /// This initializer makes instance of `EngagementKind`
     /// to reflect `MediaState` from Core SDK.
-    init(media: Engagement.Media) {
+    init(media: CoreSdkClient.Engagement.Media) {
         switch (media.audio, media.video) {
         case (_, .some):
             self = .videoCall
@@ -202,7 +202,6 @@ public class Glia {
         queuesMonitor = .init(environment: .init(
             getQueues: environment.coreSdk.getQueues,
             subscribeForQueuesUpdates: environment.coreSdk.subscribeForQueuesUpdates,
-            unsubscribeFromUpdates: environment.coreSdk.unsubscribeFromUpdates,
             logger: loggerPhase.logger
         ))
         alertManager = .init(
@@ -236,7 +235,6 @@ public class Glia {
         }
     }
 
-    // swiftlint:disable cyclomatic_complexity function_body_length
     /// Setup SDK using specific engagement configuration without starting the engagement.
     /// - Parameters:
     ///   - configuration: Engagement configuration.
@@ -259,11 +257,47 @@ public class Glia {
         features: Features = .all,
         completion: @escaping (Result<Void, Error>) -> Void
     ) throws {
+        try prepareForConfiguration(
+            configuration: configuration,
+            theme: theme,
+            uiConfig: uiConfig,
+            assetsBuilder: assetsBuilder,
+            features: features,
+            methodParams: ["configuration", "theme", "uiConfig", "assetsBuilder", "features", "completion"]
+        )
+
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await self.completeConfiguration(
+                    configuration: configuration,
+                    uiConfig: uiConfig,
+                    features: features
+                )
+                await MainActor.run {
+                    completion(.success(()))
+                }
+            } catch {
+                await MainActor.run {
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+
+    private func prepareForConfiguration(
+        configuration: Configuration,
+        theme: Theme,
+        uiConfig: RemoteConfiguration?,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder,
+        features: Features,
+        methodParams: [String]
+    ) throws {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "configure",
-            methodParams: ["configuration", "theme", "uiConfig", "assetsBuilder", "features", "completion"]
+            methodParams: methodParams
         )
 
         guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
@@ -304,88 +338,7 @@ public class Glia {
                 self.onEvent?(.ended)
             }
         }
-
-        try environment.coreSDKConfigurator.configureWithConfiguration(configuration) { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case .success:
-                defer {
-                    self.loggerPhase.logger.prefixed(Self.self).info("Initialize Glia Widgets SDK")
-                    if uiConfig != nil {
-                        self.loggerPhase.logger.remoteLogger?.prefixed(Self.self)
-                            .info("Setting Unified UI Config")
-                    }
-                }
-                // Storing `configuration` needs to be done once configuring SDK is complete
-                // Otherwise integrator can call `configure` and `startEngagement`
-                // asynchronously, without waiting configuration completion.
-                self.configuration = configuration
-
-                let interactor = self.setupInteractor(configuration: configuration)
-                self.interactor = interactor
-                self.callVisualizer.startObservingInteractorEvents()
-
-                let getRemoteString = self.environment.coreSdk.localeProvider.getRemoteString
-                self.stringProvidingPhase = .configured(getRemoteString)
-
-                // Configuration completion handler has to be called in any case,
-                // at the end of the scope, whether there's ongoing engagement or not.
-                defer {
-                    // PendingInteraction is essential part of SC flow, so it's not
-                    // valid to consider SDK configured if PI is not created.
-                    do {
-                        pendingInteraction = try .init(environment: .init(
-                            client: environment.coreSdk,
-                            interactorPublisher: Just(interactor).eraseToAnyPublisher()
-                        ))
-                        startObservingInteractorEvents()
-                        environment.openTelemetry.logger.i(.widgetsSdkConfigured)
-                        completion(.success(()))
-                    } catch let error as SecureConversations.PendingInteraction.Error {
-                        switch error {
-                        case .subscriptionFailure:
-                            completion(.failure(GliaError.internalEventSubscriptionFailure))
-                        }
-                    } catch {
-                        completion(.failure(GliaError.internalError))
-                    }
-                }
-
-                guard let currentEngagement = self.environment.coreSdk.getNonTransferredSecureConversationEngagement() else { return }
-
-                if currentEngagement.source == .callVisualizer {
-                    self.callVisualizer.handleRestoredEngagement()
-                } else {
-                    self.restoreOngoingEngagement(
-                        configuration: configuration,
-                        currentEngagement: currentEngagement,
-                        interactor: interactor,
-                        features: features,
-                        maximize: false
-                    )
-                }
-            case .failure(let error):
-                typealias ProcessError = CoreSdkClient.ConfigurationProcessError
-                var errorForCompletion: GliaError = .internalError
-
-                // To avoid the integrator having to figure out if an error is a `GliaError`
-                // or a `ConfigurationProcessError`, the `ConfigurationProcessError` is translated
-                // into a `GliaError`.
-                if let processError = error as? ProcessError {
-                    if processError == .invalidSiteApiKeyCredentials {
-                        errorForCompletion = GliaError.invalidSiteApiKeyCredentials
-                    } else if processError == .localeRetrieval {
-                        errorForCompletion = GliaError.invalidLocale
-                    }
-                }
-                loggerPhase.logger.error("Glia Widgets SDK initialization failed")
-                debugPrint("💥 Core SDK configuration is not valid. Unexpected error='\(error)'.")
-                completion(.failure(errorForCompletion))
-            }
-        }
     }
-    // swiftlint:enable cyclomatic_complexity function_body_length
-
     /// Minimizes engagement view if ongoing engagement exists.
     /// Use this function to minimize the engagement view programmatically
     /// during ongoing engagement. If you do so, the chat bubble appears.
@@ -440,19 +393,14 @@ public class Glia {
     ///   will occur otherwise.
     ///
     public func clearVisitorSession(_ completion: @escaping (Result<Void, Error>) -> Void) {
-        environment.openTelemetry.logger.logMethodUse(
-            sdkType: .widgetsSdk,
-            className: Self.self,
-            methodName: "clearVisitorSession",
-            methodParams: ["completion"]
-        )
-        loggerPhase.logger.prefixed(Self.self).info("Clear visitor session")
-        guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
-            completion(.failure(GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed))
-            return
+        Task {
+            do {
+                try await clearVisitorSession()
+                completion(.success(()))
+            } catch {
+                completion(.failure(error))
+            }
         }
-        environment.coreSdk.clearSession()
-        completion(.success(()))
     }
 
     /// Fetch current Visitor's information.
@@ -478,17 +426,14 @@ public class Glia {
     ///   this method, because `GliaError.sdkIsNotConfigured` will occur otherwise.
     ///
     public func getVisitorInfo(completion: @escaping (Result<VisitorInfo, Error>) -> Void) {
-        environment.openTelemetry.logger.logMethodUse(
-            sdkType: .widgetsSdk,
-            className: Self.self,
-            methodName: "getVisitorInfo",
-            methodParams: ["completion"]
-        )
-        guard configuration != nil else {
-            completion(.failure(GliaError.sdkIsNotConfigured))
-            return
+        Task {
+            do {
+                let visitorInfo = try await getVisitorInfo()
+                completion(.success(visitorInfo))
+            } catch {
+                completion(.failure(error))
+            }
         }
-        environment.coreSdk.getVisitorInfo(completion)
     }
 
     /// Update current Visitor's information.
@@ -523,59 +468,23 @@ public class Glia {
         _ info: VisitorInfoUpdate,
         completion: @escaping (Result<Bool, Error>) -> Void
     ) {
-        environment.openTelemetry.logger.logMethodUse(
-            sdkType: .widgetsSdk,
-            className: Self.self,
-            methodName: "updateVisitorInfo",
-            methodParams: ["info", "completion"]
-        )
-        guard configuration != nil else {
-            completion(.failure(GliaError.sdkIsNotConfigured))
-            return
+        Task {
+            do {
+                let result = try await updateVisitorInfo(info)
+                completion(.success(result))
+            } catch {
+                completion(.failure(error))
+            }
         }
-        environment.coreSdk.updateVisitorInfo(info, completion)
     }
 
     /// Ends active engagement if existing and closes Widgets SDK UI (includes bubble).
     public func endEngagement(_ completion: @escaping (Result<Void, Error>) -> Void) {
-        environment.openTelemetry.logger.logMethodUse(
-            sdkType: .widgetsSdk,
-            className: Self.self,
-            methodName: "endEngagement",
-            methodParams: ["completion"]
-        )
-        loggerPhase.logger.prefixed(Self.self).info("End engagement by integrator")
-
-        guard configuration != nil else {
-            completion(.failure(GliaError.sdkIsNotConfigured))
-            return
-        }
-
-        guard let interactor else {
-            onEvent?(.ended)
-            completion(.success(()))
-            return
-        }
-
-        interactor.endSession { [weak self] result in
-            guard let self else { return }
-
-            switch result {
-            case .success:
-                guard let rootCoordinator = self.rootCoordinator else {
-                    self.onEvent?(.ended)
-                    completion(.success(()))
-                    return
-                }
-
-                rootCoordinator.popCoordinator()
-                rootCoordinator.end(
-                    surveyPresentation: .doNotPresentSurvey,
-                    dismissalCompletion: {
-                        completion(.success(()))
-                    }
-                )
-            case .failure(let error):
+        Task {
+            do {
+                try await endEngagement()
+                completion(.success(()))
+            } catch {
                 completion(.failure(error))
             }
         }
@@ -589,22 +498,11 @@ public class Glia {
     ///   - completion: A callback that will return the Result struct with `Queue` list or `GliaCoreError`.
     ///
     public func getQueues(_ completion: @escaping (Result<[Queue], Error>) -> Void) {
-        environment.openTelemetry.logger.logMethodUse(
-            sdkType: .widgetsSdk,
-            className: Self.self,
-            methodName: "getQueues",
-            methodParams: ["completion"]
-        )
-        guard configuration != nil else {
-            completion(.failure(GliaError.sdkIsNotConfigured))
-            return
-        }
-
-        environment.coreSdk.getQueues { result in
-            switch result {
-            case let .success(queues):
+        Task {
+            do {
+                let queues = try await getQueues()
                 completion(.success(queues))
-            case let .failure(error):
+            } catch {
                 completion(.failure(error))
             }
         }
@@ -630,6 +528,106 @@ public class Glia {
 
 // MARK: - Internal
 extension Glia {
+    func completeConfiguration(
+        configuration: Configuration,
+        uiConfig: RemoteConfiguration?,
+        features: Features
+    ) async throws {
+        do {
+            try await environment.coreSDKConfigurator.configureWithConfiguration(configuration)
+            try await MainActor.run {
+                try handleCoreSDKConfigured(
+                    configuration: configuration,
+                    uiConfig: uiConfig,
+                    features: features
+                )
+            }
+        } catch {
+            throw mapCoreSDKConfigurationFailure(error)
+        }
+    }
+
+    @MainActor
+    func handleCoreSDKConfigured(
+        configuration: Configuration,
+        uiConfig: RemoteConfiguration?,
+        features: Features
+    ) throws {
+        defer {
+            loggerPhase.logger.prefixed(Self.self).info("Initialize Glia Widgets SDK")
+            if uiConfig != nil {
+                loggerPhase.logger.remoteLogger?.prefixed(Self.self)
+                    .info("Setting Unified UI Config")
+            }
+        }
+        // Storing `configuration` needs to be done once configuring SDK is complete
+        // Otherwise integrator can call `configure` and `startEngagement`
+        // asynchronously, without waiting configuration completion.
+        self.configuration = configuration
+
+        let interactor = setupInteractor(configuration: configuration)
+        self.interactor = interactor
+        callVisualizer.startObservingInteractorEvents()
+
+        let getRemoteString = environment.coreSdk.localeProvider.getRemoteString
+        stringProvidingPhase = .configured(getRemoteString)
+
+        // PendingInteraction is essential part of SC flow, so it's not
+        // valid to consider SDK configured if PI is not created.
+        do {
+            pendingInteraction = try .init(environment: .init(
+                client: environment.coreSdk,
+                interactorPublisher: Just(interactor).eraseToAnyPublisher()
+            ))
+        } catch let error as SecureConversations.PendingInteraction.Error {
+            switch error {
+            case .subscriptionFailure:
+                throw GliaError.internalEventSubscriptionFailure
+            }
+        } catch {
+            throw GliaError.internalError
+        }
+        startObservingInteractorEvents()
+        environment.openTelemetry.logger.i(.widgetsSdkConfigured)
+
+        guard let currentEngagement = environment.coreSdk.getNonTransferredSecureConversationEngagement() else { return }
+
+        if currentEngagement.source == .callVisualizer {
+            Task { @MainActor in
+                await callVisualizer.handleRestoredEngagement()
+            }
+        } else {
+            Task { @MainActor in
+                await restoreOngoingEngagement(
+                    configuration: configuration,
+                    currentEngagement: currentEngagement,
+                    interactor: interactor,
+                    features: features,
+                    maximize: false
+                )
+            }
+        }
+    }
+
+    func mapCoreSDKConfigurationFailure(_ error: Error) -> Error {
+        typealias ProcessError = CoreSdkClient.ConfigurationProcessError
+        var errorForCompletion: GliaError = .internalError
+
+        // To avoid the integrator having to figure out if an error is a `GliaError`
+        // or a `ConfigurationProcessError`, the `ConfigurationProcessError` is translated
+        // into a `GliaError`.
+        if let processError = error as? ProcessError {
+            if processError == .invalidSiteApiKeyCredentials {
+                errorForCompletion = GliaError.invalidSiteApiKeyCredentials
+            } else if processError == .localeRetrieval {
+                errorForCompletion = GliaError.invalidLocale
+            }
+        }
+        loggerPhase.logger.error("Glia Widgets SDK initialization failed")
+        debugPrint("💥 Core SDK configuration is not valid. Unexpected error='\(error)'.")
+        return errorForCompletion
+    }
+
     @discardableResult
     func setupInteractor(
         configuration: Configuration
@@ -665,12 +663,193 @@ extension Glia {
                 case .engaged = interactorState
             else { return }
 
-            self?.restoreOngoingEngagementIfPresent()
+            Task { @MainActor in
+                await self?.restoreOngoingEngagementIfPresent()
+            }
         }
     }
 
     func stopObservingInteractorEvents() {
         interactor?.removeObserver(self)
+    }
+}
+
+public extension Glia {
+    /// Sets up the SDK with a specific engagement configuration without
+    /// starting an engagement.
+    ///
+    /// This method completes after the Core SDK is configured, the Widgets SDK
+    /// state is prepared, and engagement restoration has been scheduled when an
+    /// existing engagement is available.
+    ///
+    /// - Parameters:
+    ///   - configuration: Engagement configuration.
+    ///   - theme: A custom theme to use with engagements.
+    ///   - uiConfig: Remote UI configuration.
+    ///   - assetsBuilder: Provides assets for remote configuration.
+    ///   - features: Set of features to enable in the SDK.
+    /// - Throws:
+    ///   - `GliaError.configuringDuringEngagementIsNotAllowed` if a
+    ///     non-transferred secure conversation is active.
+    ///   - `ConfigurationError` if Core SDK configuration fails.
+    func configure(
+        with configuration: Configuration,
+        theme: Theme = Theme(),
+        uiConfig: RemoteConfiguration? = nil,
+        assetsBuilder: RemoteConfiguration.AssetsBuilder = .standard,
+        features: Features = .all
+    ) async throws {
+        try prepareForConfiguration(
+            configuration: configuration,
+            theme: theme,
+            uiConfig: uiConfig,
+            assetsBuilder: assetsBuilder,
+            features: features,
+            methodParams: ["configuration", "theme", "uiConfig", "assetsBuilder", "features"]
+        )
+        try await completeConfiguration(
+            configuration: configuration,
+            uiConfig: uiConfig,
+            features: features
+        )
+    }
+
+    /// Clears the current visitor session.
+    ///
+    /// - Important: If an engagement is ongoing, end the engagement before
+    ///   calling this method. Otherwise
+    ///   `GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed` is
+    ///   thrown.
+    /// - Throws: `GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed`
+    ///   when a non-transferred secure conversation is active.
+    func clearVisitorSession() async throws {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "clearVisitorSession",
+            methodParams: []
+        )
+        loggerPhase.logger.prefixed(Self.self).info("Clear visitor session")
+        guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
+            throw GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed
+        }
+        environment.coreSdk.clearSession()
+    }
+
+    /// Fetches the current visitor's information.
+    ///
+    /// The returned information is available to operators observing or
+    /// interacting with the visitor and can provide additional visitor context.
+    ///
+    /// - Returns: Current visitor information.
+    /// - Throws:
+    ///   - `GliaError.sdkIsNotConfigured` if the SDK has not been configured.
+    ///   - `GliaCoreSDK.GeneralError.internalError`
+    ///   - `GliaCoreSDK.GeneralError.networkError`
+    ///   - `GliaCoreSDK.ConfigurationError.invalidSite`
+    ///   - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
+    func getVisitorInfo() async throws -> VisitorInfo {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "getVisitorInfo",
+            methodParams: []
+        )
+        guard configuration != nil else {
+            throw GliaError.sdkIsNotConfigured
+        }
+        return try await environment.coreSdk.getVisitorInfo()
+    }
+
+    /// Updates the current visitor's information.
+    ///
+    /// The provided information is available to operators observing or
+    /// interacting with the visitor. Custom attributes can also provide
+    /// additional context, such as account type or visitor priority.
+    ///
+    /// - Parameter info: Visitor information to update.
+    /// - Returns: `true` when the visitor information was updated.
+    /// - Throws:
+    ///   - `GliaError.sdkIsNotConfigured` if the SDK has not been configured.
+    ///   - `GliaCoreSDK.GeneralError.internalError`
+    ///   - `GliaCoreSDK.GeneralError.networkError`
+    ///   - `GliaCoreSDK.ConfigurationError.invalidSite`
+    ///   - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
+    func updateVisitorInfo(_ info: VisitorInfoUpdate) async throws -> Bool {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "updateVisitorInfo",
+            methodParams: ["info"]
+        )
+        guard configuration != nil else {
+            throw GliaError.sdkIsNotConfigured
+        }
+        return try await environment.coreSdk.updateVisitorInfo(info)
+    }
+
+    /// Ends the active engagement and closes the Widgets SDK UI, including the
+    /// bubble.
+    ///
+    /// This method performs UI teardown on the main actor.
+    ///
+    /// - Throws:
+    ///   - `GliaError.sdkIsNotConfigured` if the SDK has not been configured.
+    ///   - Any error produced while ending the active interactor session.
+    @MainActor
+    func endEngagement() async throws {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "endEngagement",
+            methodParams: []
+        )
+        loggerPhase.logger.prefixed(Self.self).info("End engagement by integrator")
+
+        guard configuration != nil else {
+            throw GliaError.sdkIsNotConfigured
+        }
+
+        guard let interactor else {
+            onEvent?(.ended)
+            return
+        }
+
+        try await interactor.endSession()
+
+        guard let rootCoordinator else {
+            onEvent?(.ended)
+            return
+        }
+
+        rootCoordinator.popCoordinator()
+        await withCheckedContinuation { continuation in
+            rootCoordinator.end(
+                surveyPresentation: .doNotPresentSurvey,
+                dismissalCompletion: {
+                    continuation.resume()
+                }
+            )
+        }
+    }
+
+    /// Fetches all queues for the configured site.
+    ///
+    /// - Returns: Queue list for the configured site.
+    /// - Throws:
+    ///   - `GliaError.sdkIsNotConfigured` if the SDK has not been configured.
+    ///   - Any Core SDK error produced while fetching queues.
+    func getQueues() async throws -> [Queue] {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "getQueues",
+            methodParams: []
+        )
+        guard configuration != nil else {
+            throw GliaError.sdkIsNotConfigured
+        }
+        return try await environment.coreSdk.getQueues()
     }
 }
 

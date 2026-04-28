@@ -19,6 +19,82 @@ extension Glia {
     }
 }
 
+public extension Glia.Authentication {
+    /// Authenticates the visitor with an ID token.
+    ///
+    /// Use this method when your app receives visitor authentication tokens from
+    /// an external identity provider and wants to authenticate with Swift
+    /// concurrency.
+    ///
+    /// - Parameters:
+    ///   - idToken: JWT token for visitor authentication.
+    ///   - accessToken: Access token for visitor authentication.
+    /// - Throws: `Glia.Authentication.Error` when authentication fails.
+    func authenticate(
+        with idToken: IdToken,
+        accessToken: AccessToken?
+    ) async throws {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "authenticate",
+            methodParams: ["idToken", "accessToken"]
+        )
+        try await withCheckedThrowingContinuation { continuation in
+            authenticateWithIdToken(idToken, accessToken) { result in
+                continuation.resume(with: result)
+            }
+        }
+    }
+
+    /// Deauthenticates the current visitor.
+    ///
+    /// - Parameter shouldStopPushNotifications: Indicates whether Push
+    ///   Notifications should be stopped after deauthentication.
+    /// - Throws: `Glia.Authentication.Error` when deauthentication fails.
+    func deauthenticate(
+        shouldStopPushNotifications: Bool = false
+    ) async throws {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "deauthenticate",
+            methodParams: ["shouldStopPushNotifications"]
+        )
+        try await withCheckedThrowingContinuation { continuation in
+            deauthenticateWithCallback(shouldStopPushNotifications) { result in
+                continuation.resume(with: result)
+            }
+        }
+    }
+
+    /// Refreshes the current visitor authentication tokens.
+    ///
+    /// Call this method after obtaining refreshed tokens from your identity
+    /// provider.
+    ///
+    /// - Parameters:
+    ///   - idToken: Refreshed JWT token for visitor authentication.
+    ///   - accessToken: Refreshed access token for visitor authentication.
+    /// - Throws: `Glia.Authentication.Error` when token refresh fails.
+    func refresh(
+        with idToken: IdToken,
+        accessToken: AccessToken?
+    ) async throws {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "refresh",
+            methodParams: ["idToken", "accessToken"]
+        )
+        try await withCheckedThrowingContinuation { continuation in
+            refresh(idToken, accessToken) { result in
+                continuation.resume(with: result)
+            }
+        }
+    }
+}
+
 extension Glia.Authentication {
     /// Behavior for authentication and deauthentication.
     public enum Behavior {
@@ -163,13 +239,15 @@ extension Glia {
                    let configuration = self?.configuration, prevEngagementIsNotPresent,
                    let interactor {
                     self?.closeRootCoordinator()
-                    self?.restoreOngoingEngagement(
-                        configuration: configuration,
-                        currentEngagement: ongoingEngagement,
-                        interactor: interactor,
-                        features: self?.features ?? .all,
-                        maximize: false
-                    )
+                    Task { @MainActor in
+                        await self?.restoreOngoingEngagement(
+                            configuration: configuration,
+                            currentEngagement: ongoingEngagement,
+                            interactor: interactor,
+                            features: self?.features ?? .all,
+                            maximize: false
+                        )
+                    }
                 } else {
                     // Handle authentication with possibility to restart engagement.
                     self?.restartEngagementIfNeeded(
@@ -276,17 +354,14 @@ extension Glia.Authentication {
         accessToken: AccessToken?,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        environment.openTelemetry.logger.logMethodUse(
-            sdkType: .widgetsSdk,
-            className: Self.self,
-            methodName: "authenticate",
-            methodParams: ["idToken", "accessToken", "completion"]
-        )
-        self.authenticateWithIdToken(
-            idToken,
-            accessToken,
-            completion
-        )
+        Task {
+            do {
+                try await authenticate(with: idToken, accessToken: accessToken)
+                completion(.success(()))
+            } catch {
+                completion(.failure(Self.authenticationError(from: error)))
+            }
+        }
     }
 
     /// Deauthenticate Visitor.
@@ -299,13 +374,14 @@ extension Glia.Authentication {
         shouldStopPushNotifications: Bool = false,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        environment.openTelemetry.logger.logMethodUse(
-            sdkType: .widgetsSdk,
-            className: Self.self,
-            methodName: "deauthenticate",
-            methodParams: ["shouldStopPushNotifications", "completion"]
-        )
-        self.deauthenticateWithCallback(shouldStopPushNotifications, completion)
+        Task {
+            do {
+                try await deauthenticate(shouldStopPushNotifications: shouldStopPushNotifications)
+                completion(.success(()))
+            } catch {
+                completion(.failure(Self.authenticationError(from: error)))
+            }
+        }
     }
 
     /// Initialize placeholder instance.
@@ -331,13 +407,21 @@ extension Glia.Authentication {
         accessToken: AccessToken?,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        environment.openTelemetry.logger.logMethodUse(
-            sdkType: .widgetsSdk,
-            className: Self.self,
-            methodName: "refresh",
-            methodParams: ["idToken", "accessToken", "completion"]
-        )
-        self.refresh(idToken, accessToken, completion)
+        Task {
+            do {
+                try await refresh(with: idToken, accessToken: accessToken)
+                completion(.success(()))
+            } catch {
+                completion(.failure(Self.authenticationError(from: error)))
+            }
+        }
+    }
+
+    private static func authenticationError(from error: Swift.Error) -> Glia.Authentication.Error {
+        if let error = error as? Glia.Authentication.Error {
+            return error
+        }
+        return .init(reason: error.localizedDescription)
     }
 }
 

@@ -5,7 +5,8 @@ extension Glia {
     /// - started by accepting engagement request;
     /// - started by Outbound message;
     /// - restored from Follow Up.
-    func restoreOngoingEngagementIfPresent() {
+    @MainActor
+    func restoreOngoingEngagementIfPresent() async {
         guard let interactor, let configuration else { return }
 
         guard
@@ -16,7 +17,7 @@ extension Glia {
         // Restore only if rootCoordinator is `nil`, meaning Glia screen is not set up.
         guard rootCoordinator == nil, engagementRestorationState != .restoring else { return }
 
-        restoreOngoingEngagement(
+        await restoreOngoingEngagement(
             configuration: configuration,
             currentEngagement: currentEngagement,
             interactor: interactor,
@@ -26,14 +27,18 @@ extension Glia {
         loggerPhase.logger.prefixed(Self.self).info("Engagement was restored")
     }
 
+    @MainActor
     func restoreOngoingEngagement(
         configuration: Configuration,
         currentEngagement: CoreSdkClient.Engagement,
         interactor: Interactor,
         features: Features,
         maximize: Bool
-    ) {
+    ) async {
         engagementRestorationState = .restoring
+        defer {
+            engagementRestorationState = .restored
+        }
         // In this case, where engagement is restored, LO acknowledgement dialog
         // should not appear again, however snack bar message has to be shown via
         // `showSnackBarIfNeeded` function.
@@ -78,19 +83,21 @@ extension Glia {
             self.rootCoordinator?.minimize()
         }
 
-        func showSnackBarIfNeeded() {
-            environment.coreSdk.fetchSiteConfigurations { [weak self] result in
-                guard case let .success(site) = result else { return }
-                guard site.mobileObservationEnabled == true else { return }
-                guard site.mobileObservationIndicationEnabled == true else { return }
-                self?.showSnackBar(
-                    with: viewFactory.theme.snackBar.text,
-                    style: viewFactory.theme.snackBar
-                )
-            }
+        do {
+            let site = try await environment.coreSdk.fetchSiteConfigurations()
+            guard site.mobileObservationEnabled == true else { return }
+            guard site.mobileObservationIndicationEnabled == true else { return }
+            showSnackBar(viewFactory: viewFactory)
+        } catch {
+            loggerPhase.logger.prefixed(Self.self).warning("Fetching site configuration failed")
         }
+    }
 
-        showSnackBarIfNeeded()
-        engagementRestorationState = .restored
+    @MainActor
+    func showSnackBar(viewFactory: ViewFactory) {
+        showSnackBar(
+            with: viewFactory.theme.snackBar.text,
+            style: viewFactory.theme.snackBar
+        )
     }
 }

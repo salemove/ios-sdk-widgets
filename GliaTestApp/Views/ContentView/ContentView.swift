@@ -45,8 +45,7 @@ struct ContentView: View {
                 )
             }
             .sheet(isPresented: $viewModel.showVisitorInfo) {
-                VisitorInfoView()
-                    .environmentObject(viewModel.appState)
+                VisitorInfoView(appState: viewModel.appState)
             }
             .sheet(isPresented: $viewModel.showSensitiveData) {
                 SensitiveDataView()

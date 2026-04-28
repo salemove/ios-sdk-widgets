@@ -93,6 +93,18 @@ private extension GliaTestApp {
         }
 
         if appState.autoConfigureEnabled {
+            guard appState.sdkFlowMode == .completionHandlers else {
+                Task { @MainActor in
+                    do {
+                        try await appState.configure()
+                        startSecureMessaging()
+                    } catch {
+                        debugPrint("💥 Failed to configure SDK for push action. Error: \(error.localizedDescription)")
+                    }
+                }
+                return
+            }
+
             appState.configure { result in
                 switch result {
                 case .success:
