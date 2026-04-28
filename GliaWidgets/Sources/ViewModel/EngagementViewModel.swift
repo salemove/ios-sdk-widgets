@@ -74,7 +74,9 @@ class EngagementViewModel: CommonEngagementModel {
                 replaceExisting: replaceExisting
             )
         } catch let error as CoreSdkClient.GliaCoreError {
-            self.handleError(error)
+            await MainActor.run {
+                self.handleError(error)
+            }
         } catch {
             return
         }
@@ -117,22 +119,32 @@ class EngagementViewModel: CommonEngagementModel {
             disposeBag.disposeAll()
 
         case let .enqueueing(engagementKind):
-            Task {
+            Task { [weak self] in
+                guard let self else { return }
+
                 do {
-                    let site = try await environment.fetchSiteConfigurations()
-                    if site.mobileConfirmDialogEnabled == false || self.interactor.skipLiveObservationConfirmations {
+                    let site = try await self.environment.fetchSiteConfigurations()
+                    let shouldSkipLiveObservationConfirmation = await MainActor.run {
+                        site.mobileConfirmDialogEnabled == false || self.interactor.skipLiveObservationConfirmations
+                    }
+
+                    if shouldSkipLiveObservationConfirmation {
                         await enqueue(
                             engagementKind: engagementKind,
                             replaceExisting: replaceExistingEnqueueing
                         )
                     } else {
-                        self.showLiveObservationConfirmation(in: engagementKind)
+                        await MainActor.run {
+                            self.showLiveObservationConfirmation(in: engagementKind)
+                        }
                     }
                 } catch {
-                    engagementAction?(.showAlert(.error(
-                        error: error,
-                        dismissed: endSession
-                    )))
+                    await MainActor.run {
+                        self.engagementAction?(.showAlert(.error(
+                            error: error,
+                            dismissed: self.endSession
+                        )))
+                    }
                 }
             }
         default:
