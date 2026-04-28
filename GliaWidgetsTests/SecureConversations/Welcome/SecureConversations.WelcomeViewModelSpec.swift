@@ -1,9 +1,12 @@
+// swiftlint:disable:next blanket_disable_command
+// swiftlint:disable xctfail_message
 import Foundation
 import XCTest
 @testable import GliaWidgets
 
 final class SecureConversationsWelcomeViewModelTests: XCTestCase {
     typealias WelcomeViewModel = SecureConversations.WelcomeViewModel
+
     var viewModel: WelcomeViewModel!
 
     override func setUp() {
@@ -128,7 +131,6 @@ extension SecureConversationsWelcomeViewModelTests {
 
         XCTAssertTrue(isValidInput)
     }
-
 }
 
 // Send message
@@ -205,7 +207,6 @@ extension SecureConversationsWelcomeViewModelTests {
 
     func testReportChangeIsCalledOnMessageInputStateChange() {
         executeReportChangeEvent { viewModel.messageInputState = .active }
-
     }
 
     func testReportChangeIsCalledOnSendMessageRequestStateChange() {
@@ -216,7 +217,7 @@ extension SecureConversationsWelcomeViewModelTests {
         executeReportChangeEvent { viewModel.fileUploadListModel.delegate?(.renderProps(.mock)) }
     }
 
-    private func executeReportChangeEvent(_ event: () -> ()) {
+    private func executeReportChangeEvent(_ event: () -> Void) {
         var count = 0
         viewModel.delegate = { event in
             switch event {
@@ -334,9 +335,8 @@ extension SecureConversationsWelcomeViewModelTests {
 
     func testSendMessageButtonStateFileUploads() {
         viewModel.availabilityStatus = .available(.queues(queueIds: []))
-        let uploadFile: FileUpload.Environment.UploadFile = .toSecureMessaging { file, progress, completion in
-            completion(.failure(CoreSdkClient.GliaCoreError(reason: "")))
-            return .mock
+        let uploadFile: FileUpload.Environment.UploadFile = .toSecureMessaging { _, _ in
+            throw CoreSdkClient.GliaCoreError(reason: "")
         }
 
         let environment = FileUpload.Environment(uploadFile: uploadFile, uuid: { UUID.mock })

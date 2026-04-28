@@ -56,7 +56,10 @@ extension SecureConversations.WelcomeViewModel.Environment {
         createFileUploadListModel: { _ in  .mock() },
         fetchSiteConfigurations: { try .mock() },
         getCurrentEngagement: { .mock() },
-        uploadFileToEngagement: { _, _, _ in },
+        uploadFileToEngagement: { _, _ in
+            try await Task.sleep(nanoseconds: UInt64.max)
+            throw CancellationError()
+        },
         createSendMessagePayload: { _, _ in .mock() },
         log: .mock
     )

@@ -7,7 +7,10 @@ extension ChatViewModel.Environment {
     static let mock = Self(
         secureConversations: .mock,
         fetchFile: { _, _ in .mock() },
-        uploadFileToEngagement: { _, _, _ in },
+        uploadFileToEngagement: { _, _ in
+            try await Task.sleep(nanoseconds: UInt64.max)
+            throw CancellationError()
+        },
         fileManager: .mock,
         data: .mock,
         date: { .mock },

@@ -146,7 +146,15 @@ extension CoreSdkClient {
                     }
                 }
             },
-            uploadFileToEngagement: GliaCore.sharedInstance.uploadFileToEngagement(_:progress:completion:),
+            uploadFileToEngagement: { file, progress in
+                try await AsyncBridge.optionalPair(
+                    nilError: FileError.fileUnavailable
+                ) { completion in
+                    GliaCore.sharedInstance.uploadFileToEngagement(file, progress: progress) { fileInfo, error in
+                        completion(fileInfo, error)
+                    }
+                }
+            },
             fetchFile: { file, progress in
                 try await AsyncBridge.optionalPair(
                     nilError: FileError.fileUnavailable
@@ -213,7 +221,11 @@ extension CoreSdkClient.SecureConversations {
                 ) { completion($0) }
             }
         },
-        uploadFile: GliaCore.sharedInstance.secureConversations.uploadFile(_:progress:completion:),
+        uploadFile: { file, progress in
+            try await CoreSdkClient.AsyncBridge.cancellableResult { completion in
+                GliaCore.sharedInstance.secureConversations.uploadFile(file, progress: progress) { completion($0) }
+            }
+        },
         getUnreadMessageCount: {
             try await CoreSdkClient.AsyncBridge.result(
                 GliaCore.sharedInstance.secureConversations.getUnreadMessageCount
