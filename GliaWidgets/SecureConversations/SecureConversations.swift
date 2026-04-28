@@ -46,7 +46,20 @@ public struct SecureConversations {
             methodName: "subscribeSecureUnreadMessageCount)",
             methodParams: ["completion"]
         )
-        return environment.coreSdk.secureConversations.subscribeForUnreadMessageCount(completion)
+        let token = environment.createUuid().uuidString
+        let task = Task {
+            do {
+                for try await count in environment.coreSdk.secureConversations.subscribeForUnreadMessageCount() {
+                    completion(.success(count))
+                }
+            } catch is CancellationError {
+                return
+            } catch {
+                completion(.failure(error))
+            }
+        }
+        environment.subscriptionStore.store(task, for: token)
+        return token
     }
 
     /// Remove subscription for 'subscribeToUnreadMessageCount' methods updates.
@@ -59,14 +72,37 @@ public struct SecureConversations {
             methodName: "unsubscribeSecureUnreadMessageCount(_:)",
             methodParams: ["subscriptionToken"]
         )
-        return environment.coreSdk.secureConversations.unsubscribeFromUnreadMessageCount(subscriptionToken)
+        environment.subscriptionStore.cancel(subscriptionToken)
     }
 }
 
 extension SecureConversations {
     struct Environment {
         let coreSdk: CoreSdkClient
+        var createUuid: () -> UUID = UUID.init
+        let subscriptionStore = SubscriptionStore()
         @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
+    }
+
+    final class SubscriptionStore {
+        private let tasks: LockIsolated<[String: Task<Void, Never>]> = .init([:])
+
+        deinit {
+            tasks.value.values.forEach { $0.cancel() }
+        }
+
+        func store(_ task: Task<Void, Never>, for token: String) {
+            tasks.withValue { tasks in
+                tasks[token]?.cancel()
+                tasks[token] = task
+            }
+        }
+
+        func cancel(_ token: String) {
+            tasks.withValue { tasks in
+                tasks.removeValue(forKey: token)?.cancel()
+            }
+        }
     }
 }
 
