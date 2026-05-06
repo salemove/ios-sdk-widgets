@@ -417,8 +417,8 @@ extension ChatView {
             )
         case let .callUpgrade(kind, duration):
             return callUpgradeContent(kind: kind, duration: duration)
-        case .operatorConnected:
-            return operatorConnectedContent()
+        case let .operatorConnected(name, imageUrl):
+            return operatorConnectedContent(name: name, imageUrl: imageUrl)
         case .transferring:
             return transferringContent()
         case .unreadMessageDivider:
@@ -967,12 +967,22 @@ extension ChatView {
         return .callUpgrade(view)
     }
 
-    private func operatorConnectedContent() -> ChatItemCell.Content {
-        return .queueOperator(connectView)
+    private func operatorConnectedContent(name: String?, imageUrl: String?) -> ChatItemCell.Content {
+        let view = ChatConnectViewHost(
+            connectStyle: style.connect,
+            imageCache: environment.imageViewCache
+        )
+        view.setState(.connected(name: name, imageUrl: imageUrl))
+        return .queueOperator(view)
     }
 
     private func transferringContent() -> ChatItemCell.Content {
-        return .queueOperator(connectView)
+        let view = ChatConnectViewHost(
+            connectStyle: style.connect,
+            imageCache: environment.imageViewCache
+        )
+        view.setState(.transferring)
+        return .queueOperator(view)
     }
 
     private func unreadMessageDividerContent() -> ChatItemCell.Content {

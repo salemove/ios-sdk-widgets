@@ -43,7 +43,7 @@ final class ChatItemTests: XCTestCase {
             case .gvaGallery, .gvaQuickReply, .gvaResponseText, .gvaPersistentButton:
                 XCTAssertTrue(chatItem.isOperatorMessage)
             case .unreadMessageDivider, .visitorMessage, .transferring,
-                 .outgoingMessage, .queueOperator, .operatorConnected, .callUpgrade:
+                 .outgoingMessage, .queueOperator, .operatorConnected(_, _), .callUpgrade:
                 XCTAssertFalse(chatItem.isOperatorMessage)
             }
         }

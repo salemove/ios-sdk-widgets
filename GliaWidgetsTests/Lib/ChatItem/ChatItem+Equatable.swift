@@ -22,7 +22,7 @@ extension ChatItem.Kind: Equatable {
             return lhsKind.value == rhsKind.value
                 && lhsDuration.value == rhsDuration.value
 
-        case (.operatorConnected, .operatorConnected):
+        case (.operatorConnected(_, _), .operatorConnected(_, _)):
             return true
 
         case (.transferring, .transferring):

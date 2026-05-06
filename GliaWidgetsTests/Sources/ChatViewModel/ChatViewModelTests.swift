@@ -239,7 +239,7 @@ class ChatViewModelTests: XCTestCase {
         
         let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
         let mockOperator: CoreSdkClient.Operator = .mock()
-        let mockItemKind: ChatItem.Kind = .operatorConnected
+        let mockItemKind: ChatItem.Kind = .operatorConnected(name: nil, imageUrl: nil)
 
         interactor.onEngagementTransfer([mockOperator])
 

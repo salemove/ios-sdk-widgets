@@ -633,7 +633,7 @@ extension ChatViewController {
                 environment: viewFactoryEnv
             )
         )
-        chatViewModel.action?(.enqueueing)
+        chatViewModel.action?(.connected(name: nil, imageUrl: nil))
         chatViewModel.invokeSetTextAndSendMessage(text: "mock")
         chatViewModel.invokeSetTextAndSendMessage(text: "mock mock")
         controller.view.updateConstraints()
