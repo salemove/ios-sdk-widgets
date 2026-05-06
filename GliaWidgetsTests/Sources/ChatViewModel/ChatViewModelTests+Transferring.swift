@@ -82,4 +82,59 @@ extension ChatViewModelTests {
             ]
         )
     }
+
+    func test_multipleTransfersAccumulateOperatorConnectedItems() {
+        var interactorEnv: Interactor.Environment = .failing
+        interactorEnv.gcd.mainQueue.async = { $0() }
+        interactorEnv.log.infoClosure = { _, _, _, _ in }
+        interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.loadChatMessagesFromHistory = { true }
+        viewModelEnv.fetchSiteConfigurations = { _ in }
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.log.infoClosure = { _, _, _, _ in }
+        viewModelEnv.log.prefixedClosure = { _ in viewModelEnv.log }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
+
+        let interactor: Interactor = .mock(environment: interactorEnv)
+        interactor.setCurrentEngagement(.mock())
+        let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
+
+        let op1 = CoreSdkClient.Operator.mock(name: "Alice Operator")
+        let op2 = CoreSdkClient.Operator.mock(name: "Bob Operator")
+
+        // First transfer: queue → op1 accepts
+        interactor.onEngagementTransferring()
+        interactor.onEngagementTransfer([op1])
+
+        // Second transfer: op1 → queue → op2 accepts
+        interactor.onEngagementTransferring()
+        interactor.onEngagementTransfer([op2])
+
+        let operatorConnectedItems = viewModel.messagesSection.items.filter {
+            if case .operatorConnected(_, _) = $0.kind { return true }
+            return false
+        }
+
+        XCTAssertEqual(operatorConnectedItems.count, 2)
+
+        if case let .operatorConnected(name, _) = operatorConnectedItems[0].kind {
+            XCTAssertEqual(name, "Alice")
+        } else {
+            XCTFail("Expected .operatorConnected(name:imageUrl:) for first item")
+        }
+
+        if case let .operatorConnected(name, _) = operatorConnectedItems[1].kind {
+            XCTAssertEqual(name, "Bob")
+        } else {
+            XCTFail("Expected .operatorConnected(name:imageUrl:) for second item")
+        }
+
+        XCTAssertFalse(
+            viewModel.messagesSection.items.contains(where: { $0.kind == .transferring }),
+            "No transferring items should remain after transfer completes"
+        )
+    }
 }
