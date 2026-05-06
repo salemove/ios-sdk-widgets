@@ -914,7 +914,7 @@ extension SecureConversations.TranscriptModel {
         let items = chatModel.sections.flatMap(\.items).filter {
             switch $0.kind {
             case .callUpgrade,
-                    .operatorConnected,
+                    .operatorConnected(_, _),
                     .queueOperator,
                     .transferring,
                     .unreadMessageDivider:

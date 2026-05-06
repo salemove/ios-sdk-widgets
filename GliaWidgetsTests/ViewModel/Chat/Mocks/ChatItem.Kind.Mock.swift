@@ -41,7 +41,7 @@ extension ChatItem.Kind {
                 .init(with: .audio),
                 duration: .init(with: .zero)
             )
-        case .operatorConnected: return .operatorConnected
+        case .operatorConnected: return .operatorConnected(name: nil, imageUrl: nil)
         case .transferring: return .transferring
         case .unreadMessageDivider: return .unreadMessageDivider
         case .systemMessage: return .systemMessage(.mock())
