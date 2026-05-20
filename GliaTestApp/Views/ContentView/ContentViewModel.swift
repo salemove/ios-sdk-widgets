@@ -1,5 +1,8 @@
 import SwiftUI
 import GliaWidgets
+#if DEBUG
+import GliaCoreSDK
+#endif
 
 extension ContentView {
     @MainActor
@@ -21,6 +24,11 @@ extension ContentView {
         private var authentication: Glia.Authentication?
         private var entryWidgetContainerView: UIView?
         private var visitorCodeContainerView: UIView?
+
+        #if DEBUG
+        @Published var showWccGalleryPicker = false
+        @Published var isWccUploadInProgress = false
+        #endif
 
         var autoConfigureEnabled: Bool {
             get { appState.autoConfigureEnabled }
@@ -348,3 +356,28 @@ extension ContentView.ViewModel {
         }
     }
 }
+
+#if DEBUG
+extension ContentView.ViewModel {
+    func triggerWccUpload(fileUrl: URL? = nil) {
+        isWccUploadInProgress = true
+        GliaCore.sharedInstance.debugTriggerWccFileUpload(fileUrl: fileUrl) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isWccUploadInProgress = false
+                switch result {
+                case .success(let (fileId, eventId)):
+                    self?.showError = AlertData(
+                        title: "WCC Upload Succeeded",
+                        message: "fileId: \(fileId)\neventId: \(eventId)"
+                    )
+                case .failure(let error):
+                    self?.showError = AlertData(
+                        title: "WCC Upload Failed",
+                        message: error.localizedDescription
+                    )
+                }
+            }
+        }
+    }
+}
+#endif

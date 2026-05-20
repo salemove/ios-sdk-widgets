@@ -1,5 +1,8 @@
 import SwiftUI
 import GliaWidgets
+#if DEBUG
+import PhotosUI
+#endif
 
 struct ContentView: View {
     @StateObject private var viewModel: ViewModel
@@ -58,6 +61,13 @@ struct ContentView: View {
                     dismissButton: .default(Text("OK"))
                 )
             }
+            #if DEBUG
+            .sheet(isPresented: $viewModel.showWccGalleryPicker) {
+                WccGalleryPicker { url in
+                    viewModel.triggerWccUpload(fileUrl: url)
+                }
+            }
+            #endif
         }
     }
 }
@@ -331,6 +341,17 @@ private extension ContentView {
                 label: {
                     Label("End Engagement", systemImage: "xmark.circle")
                 })
+
+            #if DEBUG
+            Divider()
+
+            Button(action: { viewModel.showWccGalleryPicker = true }) {
+                Label(
+                    viewModel.isWccUploadInProgress ? "WCC Uploading…" : "WCC Upload (gallery)",
+                    systemImage: "photo"
+                )
+            }
+            #endif
         } label: {
             Image(systemName: "ellipsis.circle")
                 .font(.system(size: 17, weight: .bold))
@@ -339,3 +360,42 @@ private extension ContentView {
         .accessibilityIdentifier("main_actions_menu")
     }
 }
+
+#if DEBUG
+private struct WccGalleryPicker: UIViewControllerRepresentable {
+    let onPick: (URL) -> Void
+
+    func makeUIViewController(context: Context) -> PHPickerViewController {
+        var config = PHPickerConfiguration()
+        config.selectionLimit = 1
+        config.filter = .images
+        let picker = PHPickerViewController(configuration: config)
+        picker.delegate = context.coordinator
+        return picker
+    }
+
+    func updateUIViewController(_ uiViewController: PHPickerViewController, context: Context) {}
+
+    func makeCoordinator() -> Coordinator { Coordinator(onPick: onPick) }
+
+    final class Coordinator: NSObject, PHPickerViewControllerDelegate {
+        let onPick: (URL) -> Void
+
+        init(onPick: @escaping (URL) -> Void) { self.onPick = onPick }
+
+        func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+            picker.dismiss(animated: true)
+            guard let provider = results.first?.itemProvider,
+                  provider.canLoadObject(ofClass: UIImage.self) else { return }
+            provider.loadObject(ofClass: UIImage.self) { [weak self] object, _ in
+                guard let image = object as? UIImage,
+                      let data = image.jpegData(compressionQuality: 0.9) else { return }
+                let url = FileManager.default.temporaryDirectory
+                    .appendingPathComponent("wcc-photo-\(UUID().uuidString).jpg")
+                try? data.write(to: url)
+                self?.onPick(url)
+            }
+        }
+    }
+}
+#endif
