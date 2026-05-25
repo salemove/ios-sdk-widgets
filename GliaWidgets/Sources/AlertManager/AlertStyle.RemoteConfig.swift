@@ -37,6 +37,8 @@ extension AlertStyle {
             assetsBuilder: assetsBuilder
         )
         applyButtonAxisConfiguration(configuration?.buttonAxis)
+        applyBackgroundConfiguration(configuration?.backgroundColor)
+        applyCloseButtonConfiguration(configuration?.closeButtonColor)
     }
 }
 
