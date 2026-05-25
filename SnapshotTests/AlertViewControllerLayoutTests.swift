@@ -85,4 +85,27 @@ final class AlertViewControllerLayoutTests: SnapshotTestCase {
         alert.assertSnapshot(as: .image, in: .portrait)
         alert.assertSnapshot(as: .image, in: .landscape)
     }
+
+    func test_liveObservationConfirmationAlert_withUnifiedConfigBackground() {
+        guard let config = retrieveRemoteConfigurationForUnifiedCustomization() else {
+            XCTFail("Could not find MockConfiguration json")
+            return
+        }
+        let theme = Theme(uiConfig: config, assetsBuilder: .standard)
+
+        let alert = AlertViewController(
+            type: .liveObservationConfirmation(
+                .liveObservationMock(),
+                link1: { _ in },
+                link2: { _ in },
+                accepted: {},
+                declined: {},
+                onClose: {}
+            ),
+            viewFactory: .mock(theme: theme)
+        )
+
+        alert.assertSnapshot(as: .image, in: .portrait)
+        alert.assertSnapshot(as: .image, in: .landscape)
+    }
 }
