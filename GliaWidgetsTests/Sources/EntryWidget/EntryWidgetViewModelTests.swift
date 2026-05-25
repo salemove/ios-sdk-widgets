@@ -8,7 +8,7 @@ class EntryWidgetViewModelTests: XCTestCase {
         let entryWidget = EntryWidget.mock()
         
         let viewModel = EntryWidgetView.Model(
-            theme: .mock(),
+            theme: { .mock() },
             showHeader: true,
             configuration: .mock(showPoweredBy: true),
             viewStatePublisher: entryWidget.$viewState,
@@ -22,7 +22,7 @@ class EntryWidgetViewModelTests: XCTestCase {
         let entryWidget = EntryWidget.mock()
         
         let viewModel = EntryWidgetView.Model(
-            theme: .mock(),
+            theme: { .mock() },
             showHeader: true,
             configuration: .mock(showPoweredBy: false),
             viewStatePublisher: entryWidget.$viewState,
@@ -36,7 +36,7 @@ class EntryWidgetViewModelTests: XCTestCase {
         let entryWidget = EntryWidget.mock()
         let theme = Theme.mock()
         let viewModel = EntryWidgetView.Model(
-            theme: theme,
+            theme: { theme },
             showHeader: true,
             configuration: .mock(showPoweredBy: true),
             viewStatePublisher: entryWidget.$viewState,
@@ -58,7 +58,7 @@ class EntryWidgetViewModelTests: XCTestCase {
         let theme = Theme.mock()
         let mockStyle = EntryWidgetStyle.MediaTypeItemsStyle.mock()
         let viewModel = EntryWidgetView.Model(
-            theme: theme,
+            theme: { theme },
             showHeader: true,
             configuration: .mock(showPoweredBy: true, mediaTypeItemsStyle: mockStyle),
             viewStatePublisher: entryWidget.$viewState,

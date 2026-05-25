@@ -3,7 +3,7 @@ import SwiftUI
 extension EntryWidgetView {
     class Model: ObservableObject {
         @Published var viewState: EntryWidget.ViewState = .loading
-        let theme: Theme
+        let theme: () -> Theme
         let mediaTypeSelected: (EntryWidget.MediaTypeItem) -> Void
         let configuration: EntryWidget.Configuration
         let showHeader: Bool
@@ -11,21 +11,21 @@ extension EntryWidgetView {
 
         var style: EntryWidgetStyle {
             if let mediaTypeItemsStyle = configuration.mediaTypeItemsStyle {
-                var widgetStyle = theme.entryWidget
+                var widgetStyle = theme().entryWidget
                 widgetStyle.mediaTypeItem = mediaTypeItemsStyle.mediaItemStyle
                 widgetStyle.dividerColor = mediaTypeItemsStyle.dividerColor
                 return widgetStyle
             } else {
-                return theme.entryWidget
+                return theme().entryWidget
             }
         }
 
         var showPoweredBy: Bool {
-            theme.showsPoweredBy && configuration.showPoweredBy
+            theme().showsPoweredBy && configuration.showPoweredBy
         }
 
         init(
-            theme: Theme,
+            theme: @escaping () -> Theme,
             showHeader: Bool,
             configuration: EntryWidget.Configuration,
             viewStatePublisher: Published<EntryWidget.ViewState>.Publisher,

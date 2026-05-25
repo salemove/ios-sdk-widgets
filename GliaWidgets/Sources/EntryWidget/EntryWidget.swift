@@ -318,13 +318,13 @@ private extension EntryWidget {
         })
         let hostingController = UIHostingController(rootView: view)
 
-        switch environment.theme.entryWidget.backgroundColor {
+        switch environment.theme().entryWidget.backgroundColor {
         case .fill(let color):
             hostingController.view.backgroundColor = color
         case .gradient(let colors):
             hostingController.view.makeGradientBackground(
                 colors: colors,
-                cornerRadius: environment.theme.entryWidget.cornerRadius
+                cornerRadius: environment.theme().entryWidget.cornerRadius
             )
         }
 
@@ -340,7 +340,7 @@ private extension EntryWidget {
             }
             sheet.detents = [smallDetent]
             sheet.prefersScrollingExpandsWhenScrolledToEdge = true
-            sheet.preferredCornerRadius = environment.theme.entryWidget.cornerRadius
+            sheet.preferredCornerRadius = environment.theme().entryWidget.cornerRadius
             sheet.prefersEdgeAttachedInCompactHeight = true
             sheet.widthFollowsPreferredContentSizeWhenEdgeAttached = true
         } else {
@@ -531,7 +531,7 @@ extension EntryWidget: UIViewControllerTransitioningDelegate {
             presentedViewController: presented,
             presenting: presenting,
             height: height,
-            cornerRadius: environment.theme.entryWidget.cornerRadius
+            cornerRadius: environment.theme().entryWidget.cornerRadius
         )
     }
 }
