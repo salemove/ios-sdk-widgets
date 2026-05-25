@@ -28,7 +28,7 @@ extension Glia {
                 unsubscribeFromUpdates: environment.coreSdk.unsubscribeFromUpdates,
                 queuesMonitor: queuesMonitor,
                 engagementLauncher: try getEngagementLauncher(queueIds: queueIds),
-                theme: theme,
+                theme: { [weak self] in self?.theme ?? Theme() },
                 log: loggerPhase.logger,
                 isAuthenticated: environment.isAuthenticated,
                 hasPendingInteractionPublisher: { [weak self] in

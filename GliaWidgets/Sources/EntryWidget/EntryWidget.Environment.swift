@@ -8,7 +8,7 @@ extension EntryWidget {
         var unsubscribeFromUpdates: CoreSdkClient.UnsubscribeFromUpdates
         var queuesMonitor: QueuesMonitor
         var engagementLauncher: EngagementLauncher
-        var theme: Theme
+        var theme: () -> Theme
         var log: CoreSdkClient.Logger
         var isAuthenticated: () -> Bool
         var hasPendingInteractionPublisher: AnyPublisher<Bool, Never>
@@ -28,7 +28,7 @@ extension EntryWidget.Environment {
             unsubscribeFromUpdates: { _, _ in },
             queuesMonitor: .mock(),
             engagementLauncher: engagementLauncher,
-            theme: .mock(),
+            theme: { .mock() },
             log: .mock,
             isAuthenticated: { true },
             hasPendingInteractionPublisher: .mock(false),

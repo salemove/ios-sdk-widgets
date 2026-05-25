@@ -295,6 +295,8 @@ public class Glia {
         self.engagementRestorationState = .none
 
         alertManager.overrideTheme(theme)
+        rootCoordinator?.viewFactory.overrideTheme(with: theme)
+        callVisualizer.coordinator.environment.viewFactory.overrideTheme(with: theme)
 
         self.callVisualizer.delegate = { action in
             switch action {
