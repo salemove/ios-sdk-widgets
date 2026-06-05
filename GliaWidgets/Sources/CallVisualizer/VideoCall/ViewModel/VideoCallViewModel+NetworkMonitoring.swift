@@ -3,14 +3,13 @@ import Foundation
 
 extension CallVisualizer.VideoCallViewModel {
     func subscribeOnNetworkReachabilityChanges() {
+        let stream = environment.networkConnectionMonitor.networkStream(true)
         let task = Task { [weak self] in
-            guard let self else { return }
-
             if Task.isCancelled { return }
 
-            let stream = self.environment.networkConnectionMonitor.networkStream(true)
             for await status in stream {
                 if Task.isCancelled { return }
+                guard let self else { return }
                 await self.handleNetworkStatus(status)
             }
         }

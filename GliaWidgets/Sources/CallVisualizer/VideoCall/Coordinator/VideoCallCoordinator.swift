@@ -33,6 +33,7 @@ extension CallVisualizer {
             viewController?.presentingViewController?.dismiss(animated: true)
         }
 
+        @MainActor
         func finish() {
             viewModel?.close()
             viewController?.presentingViewController?.dismiss(animated: true)

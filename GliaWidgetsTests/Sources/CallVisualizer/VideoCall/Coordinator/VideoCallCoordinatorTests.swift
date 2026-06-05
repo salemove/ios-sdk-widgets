@@ -34,6 +34,42 @@ final class VideoCallCoordinatorTests: XCTestCase {
         XCTAssertNotNil(coordinator.viewController)
     }
 
+    @MainActor
+    func test_finishDetachesVideoStreamsFromViewHierarchy() throws {
+        let call = Call(.video(direction: .twoWay), environment: .mock)
+        let coordinator = CallVisualizer.VideoCallCoordinator(
+            environment: .mock,
+            theme: .mock(),
+            call: call
+        )
+        let viewController = try XCTUnwrap(coordinator.start() as? CallVisualizer.VideoCallViewController)
+        _ = viewController.view
+
+        let remoteStreamView = CoreSdkClient.StreamView()
+        let localStreamView = CoreSdkClient.StreamView()
+        let remoteStream = CoreSdkClient.MockVideoStreamable.mock(
+            getStreamViewFunc: { remoteStreamView },
+            getIsRemoteFunc: { true }
+        )
+        let localStream = CoreSdkClient.MockVideoStreamable.mock(
+            getStreamViewFunc: { localStreamView },
+            getIsRemoteFunc: { false }
+        )
+
+        call.updateVideoStream(with: remoteStream)
+        call.updateVideoStream(with: localStream)
+
+        XCTAssertNotNil(remoteStreamView.superview)
+        XCTAssertNotNil(localStreamView.superview)
+
+        coordinator.finish()
+
+        XCTAssertNil(remoteStreamView.superview)
+        XCTAssertNil(localStreamView.superview)
+        XCTAssertNil(viewController.props.videoCallViewProps.remoteVideoStream)
+        XCTAssertNil(viewController.props.videoCallViewProps.localVideoStream)
+    }
+
     // Show delegate
 
     func test_showDelegatePropsUpdated() {
