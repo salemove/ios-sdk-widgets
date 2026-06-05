@@ -42,6 +42,8 @@ extension CallVisualizer {
 
         private var flipCameraAccLabelWithTap: VideoStreamView.FlipCameraAccLabelWithTap? { didSet { reportChange() } }
 
+        private var isClosed = false
+
         // MARK: - Initializer
 
         init(
@@ -94,8 +96,20 @@ extension CallVisualizer {
             environment.proximityManager.stop()
         }
 
+        @MainActor
         func close() {
+            guard !isClosed else { return }
+            isClosed = true
+
             disposeBag.disposeAll()
+            environment.notificationCenter.removeObserver(self)
+            call.kind.removeObserver(self)
+            call.state.removeObserver(self)
+            call.video.stream.removeObserver(self)
+            call.duration.removeObserver(self)
+            remoteVideoStream = nil
+            localVideoStream = nil
+            flipCameraAccLabelWithTap = nil
         }
     }
 }

@@ -134,6 +134,7 @@ extension CallVisualizer.Coordinator {
         }
     }
 
+    @MainActor
     func end() {
         removeBubbleView()
         videoCallCoordinator?.finish()
@@ -217,7 +218,9 @@ extension CallVisualizer.Coordinator {
 extension CallVisualizer.Coordinator {
     func declineEngagement() {
         activeInteractor?.endEngagement { _ in }
-        end()
+        Task { @MainActor [weak self] in
+            self?.end()
+        }
     }
 
     func minimize() {

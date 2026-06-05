@@ -51,6 +51,7 @@ final class VideoCallTests: XCTestCase {
         XCTAssertEqual(wasExecuted, true)
     }
 
+    @MainActor
     func test_proximityManagerStartsAndStops() {
         enum Call: Equatable { case isIdleTimerDisabled(Bool), isProximityMonitoringEnabled(Bool) }
         var calls: [Call] = []

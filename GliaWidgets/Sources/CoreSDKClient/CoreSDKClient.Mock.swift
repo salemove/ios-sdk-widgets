@@ -271,7 +271,7 @@ extension CoreSdkClient {
         }
 
         func getStreamView() -> CoreSdkClient.StreamView {
-            .init()
+            getStreamViewFunc()
         }
 
         func playVideo() {

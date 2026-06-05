@@ -150,8 +150,12 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let sdk = Glia(environment: gliaEnv)
+        let ended = expectation(description: "Ended event")
         sdk.onEvent = {
             calls.append(.onEvent($0))
+            if $0 == .ended {
+                ended.fulfill()
+            }
         }
         try sdk.configure(
             with: .mock(),
@@ -161,6 +165,7 @@ final class GliaTests: XCTestCase {
         sdk.interactor?.setEndedEngagement(.mock(source: .callVisualizer))
         sdk.interactor?.state = .ended(.byOperator)
 
+        wait(for: [ended], timeout: 1)
         XCTAssertEqual(calls, [.onEvent(.ended)])
     }
 
@@ -188,8 +193,12 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let sdk = Glia(environment: gliaEnv)
+        let ended = expectation(description: "Ended event")
         sdk.onEvent = {
             calls.append(.onEvent($0))
+            if $0 == .ended {
+                ended.fulfill()
+            }
         }
         try sdk.configure(
             with: .mock(),
@@ -208,6 +217,7 @@ final class GliaTests: XCTestCase {
         /// added successfully, because observer method is called during
         /// interactor creation.
 
+        wait(for: [ended], timeout: 1)
         XCTAssertEqual(calls, [.onEvent(.ended)])
     }
 
@@ -234,6 +244,7 @@ final class GliaTests: XCTestCase {
         gliaEnv.callVisualizerPresenter = .init(presenter: { nil })
         gliaEnv.gcd.mainQueue.async = { callback in callback() }
         gliaEnv.notificationCenter.addObserverClosure = { _, _, _, _ in }
+        gliaEnv.notificationCenter.removeObserverClosure = { _ in }
         gliaEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
             completion(.success(()))
         }
@@ -241,8 +252,12 @@ final class GliaTests: XCTestCase {
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
 
         let sdk = Glia(environment: gliaEnv)
+        let ended = expectation(description: "Ended event")
         sdk.onEvent = {
             calls.append(.onEvent($0))
+            if $0 == .ended {
+                ended.fulfill()
+            }
         }
         try sdk.configure(
             with: .mock(),
@@ -253,6 +268,7 @@ final class GliaTests: XCTestCase {
         sdk.interactor?.setEndedEngagement(.mock(source: .callVisualizer))
         sdk.interactor?.state = .ended(.byOperator)
 
+        wait(for: [ended], timeout: 1)
         XCTAssertEqual(calls, [.onEvent(.maximized), .onEvent(.ended)])
     }
 

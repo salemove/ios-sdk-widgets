@@ -143,6 +143,13 @@ extension CallVisualizer {
     }
 
     func endSession() {
+        Task { @MainActor [weak self] in
+            self?.endSessionOnMain()
+        }
+    }
+
+    @MainActor
+    private func endSessionOnMain() {
         coordinator.end()
         activeInteractor?.cleanup()
         delegate?(.engagementEnded)
