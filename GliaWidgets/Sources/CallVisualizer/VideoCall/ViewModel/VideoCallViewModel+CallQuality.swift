@@ -3,14 +3,13 @@ import GliaCoreSDK
 
 extension CallVisualizer.VideoCallViewModel {
     func subscribeOnCallQualityChanges() {
+        let stream = environment.callQualityMonitor.mediaQualityStream()
         let task = Task { [weak self] in
-            guard let self else { return }
-
             if Task.isCancelled { return }
 
-            let stream = self.environment.callQualityMonitor.mediaQualityStream()
             for await mediaQuality in stream {
                 if Task.isCancelled { return }
+                guard let self else { return }
                 await self.handleMediaQuality(mediaQuality)
             }
         }
