@@ -81,7 +81,7 @@ class FileDownload {
 
         switch fetchFile {
         case .fromEngagement:
-            engagementFile = CoreSdkClient.EngagementFile(url: fileUrl)
+            engagementFile = CoreSdkClient.EngagementFile(id: file.id, url: fileUrl)
         case .fromSecureMessaging:
             engagementFile = file.id.map(CoreSdkClient.EngagementFile.init(id:)) ?? CoreSdkClient.EngagementFile(url: fileUrl)
         }
