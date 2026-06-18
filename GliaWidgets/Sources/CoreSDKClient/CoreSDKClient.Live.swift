@@ -58,6 +58,7 @@ extension CoreSdkClient {
             requestMediaUpgradeWithOffer: GliaCore.sharedInstance.requestMediaUpgrade(offer:completion:),
             sendMessagePreview: GliaCore.sharedInstance.sendMessagePreview(message:completion:),
             sendMessageWithMessagePayload: GliaCore.sharedInstance.send(messagePayload:completion:),
+            sendFile: GliaCore.sharedInstance.send(file:completion:),
             cancelQueueTicket: GliaCore.sharedInstance.cancel(queueTicket:completion:),
             endEngagement: GliaCore.sharedInstance.endEngagement(completion:),
             requestEngagedOperator: GliaCore.sharedInstance.requestEngagedOperator(completion:),
