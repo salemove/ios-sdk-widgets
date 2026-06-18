@@ -1041,6 +1041,9 @@ class ChatViewModelTests: XCTestCase {
         interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, callback in
             callback(.failure(.mock()))
         }
+        interactorEnv.coreSdk.sendFile = { _, callback in
+            callback(.failure(.mock()))
+        }
         interactorEnv.coreSdk.sendMessagePreview = { _, _ in }
         let interactor = Interactor.mock(environment: interactorEnv)
         interactor.state = .engaged(nil)
@@ -1054,7 +1057,7 @@ class ChatViewModelTests: XCTestCase {
         let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
         fileUploadListViewModelEnv.uploader.uploads = [upload]
         viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
-        viewModelEnv.createSendMessagePayload = { .mock(content: $0, attachment: $1) }
+        viewModelEnv.createSendMessagePayload = { CoreSdkClient.SendMessagePayload(content: $0, attachment: $1) }
         viewModelEnv.createEntryWidget = { _ in .mock() }
 
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
@@ -1062,13 +1065,20 @@ class ChatViewModelTests: XCTestCase {
         let messageContent = "Mock"
         viewModel.invokeSetTextAndSendMessage(text: messageContent)
 
-        switch viewModel.messagesSection.items.last?.kind {
-        case let .outgoingMessage(message, _):
-            XCTAssertNotNil(message.payload.attachment)
-            XCTAssertEqual(message.payload.content, messageContent)
-        default:
-            XCTFail("message kind should be `visitorMessage`")
+        // Text and file are sent as separate messages; both are preserved after failure.
+        let outgoingMessages = viewModel.messagesSection.items.compactMap { item -> OutgoingMessage? in
+            if case let .outgoingMessage(message, _) = item.kind { return message }
+            return nil
         }
+        XCTAssertEqual(outgoingMessages.count, 2)
+        XCTAssertTrue(
+            outgoingMessages.contains(where: { $0.payload.content == messageContent }),
+            "text message content should be preserved after failure"
+        )
+        XCTAssertTrue(
+            outgoingMessages.contains(where: { $0.payload.attachment != nil }),
+            "file attachment should be preserved after failure"
+        )
     }
 
     func test_engagementEndedByOperatorCallsEngagementAndDelegateActions() {
