@@ -198,6 +198,13 @@ extension Interactor {
         environment.coreSdk.sendMessageWithMessagePayload(messagePayload, completion)
     }
 
+    func sendFile(
+        file: CoreSdkClient.EngagementFile,
+        completion: @escaping (Result<CoreSdkClient.Message, CoreSdkClient.GliaCoreError>) -> Void
+    ) {
+        environment.coreSdk.sendFile(file, completion)
+    }
+
     func endSession(completion: @escaping (Result<Void, Error>) -> Void) {
         switch state {
         case .none:
