@@ -21,6 +21,7 @@ extension CoreSdkClient {
         requestMediaUpgradeWithOffer: { _, _ in fail("\(Self.self).requestMediaUpgradeWithOffer") },
         sendMessagePreview: { _, _ in fail("\(Self.self).sendMessagePreview") },
         sendMessageWithMessagePayload: { _, _ in fail("\(Self.self).sendMessageWithMessagePayload") },
+        sendFile: { _, _ in fail("\(Self.self).sendFile") },
         cancelQueueTicket: { _, _ in fail("cancelQueueTicket") },
         endEngagement: { _ in fail("\(Self.self).endEngagement") },
         requestEngagedOperator: { _ in fail("\(Self.self).requestEngagedOperator") },
