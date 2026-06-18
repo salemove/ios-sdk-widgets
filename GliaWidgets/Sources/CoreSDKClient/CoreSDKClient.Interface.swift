@@ -75,6 +75,14 @@ struct CoreSdkClient {
 
     var sendMessageWithMessagePayload: SendMessageWithMessagePayload
 
+    typealias SendFileCallback = (Result<Self.Message, Self.GliaCoreError>) -> Void
+    typealias SendFile = (
+        _ file: Self.EngagementFile,
+        _ completion: @escaping SendFileCallback
+    ) -> Void
+
+    var sendFile: SendFile
+
     typealias CancelQueueTicket = (
         _ queueTicket: Self.QueueTicket,
         _ completion: @escaping GliaCoreSDK.SuccessBlock
