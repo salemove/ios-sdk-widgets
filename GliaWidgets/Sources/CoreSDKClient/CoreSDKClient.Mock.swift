@@ -21,6 +21,7 @@ extension CoreSdkClient {
         requestMediaUpgradeWithOffer: { _, _ in },
         sendMessagePreview: { _, _ in },
         sendMessageWithMessagePayload: { _, _ in },
+        sendFile: { _, _ in },
         cancelQueueTicket: { _, _ in },
         endEngagement: { _ in },
         requestEngagedOperator: { _ in },
