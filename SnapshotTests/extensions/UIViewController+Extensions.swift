@@ -16,7 +16,10 @@ extension UIViewController {
         let snapshotting: Snapshotting<UIViewController, UIImage>
         switch mode {
         case .accessibilityImage:
-            snapshotting = .accessibilityImage(precision: SnapshotTestCase.possiblePrecision)
+            snapshotting = .accessibilityImage(
+                showActivationPoints: .never,
+                precision: SnapshotTestCase.possiblePrecision
+            )
         case .image:
             snapshotting = orientation == .portrait ? .image : .imageLandscape
         case .extra3LargeFont:
