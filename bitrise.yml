@@ -76,7 +76,7 @@ workflows:
     - xcode-test@6:
         inputs:
         - scheme: $TEST_SCHEME
-        - destination: platform=iOS Simulator,name=iPhone 16,OS=18.2
+        - destination: platform=iOS Simulator,name=iPhone 16,OS=18.6
     - git-tag@1:
         inputs:
         - tag: $NEW_VERSION
@@ -198,11 +198,11 @@ workflows:
     - xcode-test@6:
         inputs:
         - scheme: $TEST_SCHEME
-        - destination: platform=iOS Simulator,name=iPhone 16,OS=18.2
+        - destination: platform=iOS Simulator,name=iPhone 16,OS=18.6
     - xcode-test:
         inputs:
         - scheme: $SNAPSHOTS_SCHEME
-        - destination: platform=iOS Simulator,name=iPhone 16,OS=18.2
+        - destination: platform=iOS Simulator,name=iPhone 16,OS=18.6
     - xcode-archive@5:
         inputs:
         - scheme: $APP_SCHEME
@@ -318,5 +318,5 @@ trigger_map:
   workflow: pull-request
 meta:
   bitrise.io:
-    stack: osx-xcode-16.2.x
+    stack: osx-xcode-26.5.x
     machine_type_id: g2.mac.medium

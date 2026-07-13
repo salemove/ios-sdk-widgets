@@ -97,15 +97,36 @@ final class ChatViewTest: XCTestCase {
             engagementLaunching: .direct(kind: .chat),
             environment: coordinatorEnv
         )
-        coordinator.start()
+        weak var controller: ChatViewController?
+        weak var viewModel: ChatViewModel?
 
-        weak var controller = try XCTUnwrap(coordinator.navigationPresenter.viewControllers.last as? ChatViewController)
-        weak var viewModel = try XCTUnwrap(controller?.viewModel.engagementModel as? ChatViewModel)
-        viewModel?.interactorEvent(.stateChanged(.ended(.byVisitor)))
-        viewModel?.event(.closeTapped)
-        
-        XCTAssertNil(controller)
-        XCTAssertNil(viewModel)
+        try autoreleasepool {
+            coordinator.start()
+
+            let chatController = try XCTUnwrap(coordinator.navigationPresenter.viewControllers.last as? ChatViewController)
+            let chatViewModel = try XCTUnwrap(chatController.viewModel.engagementModel as? ChatViewModel)
+            controller = chatController
+            viewModel = chatViewModel
+            chatViewModel.interactorEvent(.stateChanged(.ended(.byVisitor)))
+            chatViewModel.event(.closeTapped)
+        }
+
+        assertChatViewIsReleased(controller: { controller }, viewModel: { viewModel })
+    }
+
+    private func assertChatViewIsReleased(
+        controller: @escaping () -> ChatViewController?,
+        viewModel: @escaping () -> ChatViewModel?,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        let releaseExpectation = expectation(description: "Chat view is released")
+        DispatchQueue.main.async {
+            XCTAssertNil(controller(), file: file, line: line)
+            XCTAssertNil(viewModel(), file: file, line: line)
+            releaseExpectation.fulfill()
+        }
+        wait(for: [releaseExpectation], timeout: 1)
     }
 
     func test_isTopBannerHiddenWhenIsTopBannerAllowedIsFalse() throws {
