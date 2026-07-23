@@ -63,10 +63,10 @@ extension SecureConversations {
 
 extension SecureConversations.PendingInteraction {
     private func observePendingStatus() {
+        let observePendingStatus = environment.observePendingSecureConversationsStatus
         pendingStatusTask = Task { [weak self] in
-            guard let self else { return }
             do {
-                for try await value in environment.observePendingSecureConversationsStatus() {
+                for try await value in observePendingStatus() {
                     await MainActor.run { [weak self] in
                         self?.pendingStatus = value
                     }
@@ -82,10 +82,10 @@ extension SecureConversations.PendingInteraction {
     }
 
     private func observeUnreadMessageCount() {
+        let observeUnreadMessageCount = environment.observeSecureConversationsUnreadMessageCount
         unreadMessageCountTask = Task { [weak self] in
-            guard let self else { return }
             do {
-                for try await count in environment.observeSecureConversationsUnreadMessageCount() {
+                for try await count in observeUnreadMessageCount() {
                     await MainActor.run { [weak self] in
                         self?.unreadMessageCount = count ?? 0
                     }
