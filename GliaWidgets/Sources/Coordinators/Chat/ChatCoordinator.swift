@@ -97,7 +97,11 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             // from view did load initiating socket events observation and loading
             // chat transcript. Now, because of migration back from chat to SC is
             // possible we need to call `start` here.
-            start = { transcriptModel.start(isTranscriptFetchNeeded: true) }
+            start = {
+                Task {
+                    await transcriptModel.start(isTranscriptFetchNeeded: true)
+                }
+            }
         } else {
             model = .chat(chatModel(replaceExistingEnqueueing: replaceExistingEnqueueing))
             start = {}
@@ -208,8 +212,22 @@ extension ChatCoordinator {
         viewModel.delegate = { [weak self] event in
             self?.handleDelegateEvent(event: event)
         }
+        viewModel.asyncDelegate = { [weak self] event in
+            await self?.handleAsyncDelegateEvent(event)
+        }
 
         return viewModel
+    }
+
+    @MainActor
+    private func handleAsyncDelegateEvent(_ event: ChatViewModel.AsyncDelegateEvent) async {
+        switch event {
+        case let .liveChatEngagementUpgradedToSecureMessaging(chatModel):
+            let transcriptModel = self.transcriptModel(with: { [weak controller] in controller })
+            await transcriptModel.checkSecureConversationsAvailability()
+            controller?.swapAndBindViewModel(.transcript(transcriptModel))
+            await transcriptModel.migrate(from: chatModel)
+        }
     }
 
     private func handleDelegateEvent(event: ChatViewModel.DelegateEvent) {
@@ -238,10 +256,6 @@ extension ChatCoordinator {
             delegate?(.call)
         case .minimize:
             delegate?(.minimize)
-        case let .liveChatEngagementUpgradedToSecureMessaging(chatModel):
-            let transcriptModel = self.transcriptModel(with: { [weak controller] in controller })
-            controller?.swapAndBindViewModel(.transcript(transcriptModel))
-            transcriptModel.migrate(from: chatModel)
         }
     }
 
@@ -274,7 +288,6 @@ extension ChatCoordinator {
             unreadMessages: unreadMessages,
             interactor: interactor
         )
-
         viewModel.shouldShowCard = viewFactory.messageRenderer?.shouldShowCard
         viewModel.isInteractableCard = viewFactory.messageRenderer?.isInteractable
         viewModel.engagementDelegate = { [weak self] event in

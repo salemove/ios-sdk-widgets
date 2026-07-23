@@ -9,77 +9,64 @@ extension CoreSdkClient {
             createAppDelegate: Self.AppDelegate.live,
             clearSession: GliaCore.sharedInstance.clearSession,
             localeProvider: .init(getRemoteString: GliaCore.sharedInstance.localeProvider.getRemoteString(_:)),
-            getVisitorInfo: { completion in
-                GliaCore.sharedInstance.fetchVisitorInfo { result in
-                    switch result {
-                    case let .success(coreVisitorInfo):
-                        let visitorInfo = coreVisitorInfo.asWidgetSdkVisitorInfo()
-                        completion(.success(visitorInfo))
-                    case let .failure(error):
-                        completion(.failure(error))
-                    }
-                }
+            configureWithConfiguration: GliaCore.sharedInstance.configure(with:),
+            getVisitorInfo: {
+                let coreVisitorInfo = try await GliaCore.sharedInstance.fetchVisitorInfo()
+                return coreVisitorInfo.asWidgetSdkVisitorInfo()
             },
-            getVisitorInfoDeprecated: GliaCore.sharedInstance.fetchVisitorInfo(_:),
-            updateVisitorInfo: { visitorInfoUpdate, completion in
-                let coreSdkVisitorInfoUpdate = visitorInfoUpdate.asCoreSdkVisitorInfoUpdate()
-                GliaCore.sharedInstance.updateVisitorInfo(coreSdkVisitorInfoUpdate, completion: completion)
+            updateVisitorInfo: { visitorInfoUpdate in
+                try await GliaCore.sharedInstance.updateVisitorInfo(visitorInfoUpdate.asCoreSdkVisitorInfoUpdate())
             },
-            updateVisitorInfoDeprecated: GliaCore.sharedInstance.updateVisitorInfo(_:completion:),
-            configureWithConfiguration: GliaCore.sharedInstance.configure(with:completion:),
             configureWithInteractor: GliaCore.sharedInstance.configure(interactor:),
-            getQueues: { completion in
-                GliaCore.sharedInstance.listQueues { coreQueues, error in
-                    if let error {
-                        completion(.failure(error))
-                        return
-                    }
-
-                    if let coreQueues {
-                        let queues = coreQueues.map { $0.asWidgetSDKQueue() }
-                        completion(.success(queues))
-                        return
-                    }
-                    completion(.failure(GliaError.internalError))
-                }
+            getQueues: {
+                try await GliaCore.sharedInstance.listQueues().map { $0.asWidgetSDKQueue() }
             },
-            queueForEngagement: { options, replaceExisting, completion in
-                let options = QueueForEngagementOptions(
-                    queueIds: options.queueIds,
-                    visitorContext: options.visitorContext,
-                    shouldCloseAllQueues: options.shouldCloseAllQueues,
-                    mediaType: options.mediaType,
-                    engagementOptions: options.engagementOptions
-                )
-                GliaCore.sharedInstance.queueForEngagement(
-                    using: options, replaceExisting: replaceExisting, completion: completion
+            queueForEngagement: { options, replaceExisting in
+                try await GliaCore.sharedInstance.queueForEngagement(
+                    using: options,
+                    replaceExisting: replaceExisting
                 )
             },
-            requestMediaUpgradeWithOffer: GliaCore.sharedInstance.requestMediaUpgrade(offer:completion:),
-            sendMessagePreview: GliaCore.sharedInstance.sendMessagePreview(message:completion:),
-            sendMessageWithMessagePayload: GliaCore.sharedInstance.send(messagePayload:completion:),
-            cancelQueueTicket: GliaCore.sharedInstance.cancel(queueTicket:completion:),
-            endEngagement: GliaCore.sharedInstance.endEngagement(completion:),
-            requestEngagedOperator: GliaCore.sharedInstance.requestEngagedOperator(completion:),
-            uploadFileToEngagement: GliaCore.sharedInstance.uploadFileToEngagement(_:progress:completion:),
-            fetchFile: GliaCore.sharedInstance.fetchFile(engagementFile:progress:completion:),
+            sendMessagePreview: { message in
+                try await GliaCore.sharedInstance.sendMessagePreview(message: message)
+            },
+            sendMessageWithMessagePayload: { payload in
+                try await GliaCore.sharedInstance.send(messagePayload: payload)
+            },
+            cancelQueueTicket: { queueTicket in
+                try await GliaCore.sharedInstance.cancel(queueTicket: queueTicket)
+            },
+            endEngagement: {
+                try await GliaCore.sharedInstance.endEngagement()
+            },
+            requestEngagedOperator: {
+                try await GliaCore.sharedInstance.requestEngagedOperator()
+            },
+            uploadFileToEngagement: { file, progress in
+                try await GliaCore.sharedInstance.uploadFileToEngagement(file, progress: progress)
+            },
+            fetchFile: { file, progress in
+                try await GliaCore.sharedInstance.fetchFile(engagementFile: file, progress: progress)
+            },
             getCurrentEngagement: GliaCore.sharedInstance.getCurrentEngagement,
-            fetchSiteConfigurations: GliaCore.sharedInstance.fetchSiteConfiguration(_:),
-            submitSurveyAnswer: GliaCore.sharedInstance.submitSurveyAnswer(_:surveyId:engagementId:completion:),
-            authentication: GliaCore.sharedInstance.authentication,
-            fetchChatHistory: { completion in
-                GliaCore.sharedInstance.fetchChatTranscript { result in
-                    switch result {
-                    case let .success(messages):
-                        completion(
-                            .success(messages.map { ChatMessage(with: $0) })
-                        )
-                    case let .failure(error):
-                        completion(.failure(error))
-                    }
-                }
+            fetchSiteConfigurations: {
+                try await GliaCore.sharedInstance.fetchSiteConfiguration()
             },
-            requestVisitorCode: GliaCore.sharedInstance.callVisualizer.requestVisitorCode(completion:),
+            submitSurveyAnswer: { answers, surveyId, engagementId in
+                try await GliaCore.sharedInstance.submitSurveyAnswer(
+                    answers,
+                    surveyId: surveyId,
+                    engagementId: engagementId
+                )
+            },
+            authentication: GliaCore.sharedInstance.authentication,
+            fetchChatHistory: {
+                let messages = try await GliaCore.sharedInstance.fetchChatTranscript()
+                return messages.map { ChatMessage(with: $0) }
+            },
+            requestVisitorCode: {
+                try await GliaCore.sharedInstance.callVisualizer.requestVisitorCode()
+            },
             startSocketObservation: GliaCore.sharedInstance.startSocketObservation,
             stopSocketObservation: GliaCore.sharedInstance.stopSocketObservation,
             createSendMessagePayload: CoreSdkClient.SendMessagePayload.init(content:attachment:),
@@ -89,18 +76,23 @@ extension CoreSdkClient {
                     GliaCore.sharedInstance.cameraDeviceManageable()
                 )
             },
-            subscribeForQueuesUpdates: { queues, completion in
-                GliaCore.sharedInstance.subscribeForQueuesUpdates(forQueues: queues) { result in
-                    switch result {
-                    case let .success(coreQueue):
-                        let queue = coreQueue.asWidgetSDKQueue()
-                        completion(.success(queue))
-                    case let .failure(error):
-                        completion(.failure(error))
+            subscribeForQueuesUpdates: { queues in
+                AsyncThrowingStream { continuation in
+                    let task = Task {
+                        do {
+                            for try await coreQueue in GliaCore.sharedInstance.queueUpdatesStream(forQueues: queues) {
+                                continuation.yield(coreQueue.asWidgetSDKQueue())
+                            }
+                            continuation.finish()
+                        } catch {
+                            continuation.finish(throwing: error)
+                        }
+                    }
+                    continuation.onTermination = { _ in
+                        task.cancel()
                     }
                 }
             },
-            unsubscribeFromUpdates: GliaCore.sharedInstance.unsubscribeFromUpdates(queueCallbackId:onError:),
             configureLogLevel: GliaCore.sharedInstance.configureLogLevel(level:)
         )
     }()
@@ -108,16 +100,26 @@ extension CoreSdkClient {
 
 extension CoreSdkClient.SecureConversations {
     static let live = Self(
-        sendMessagePayload: GliaCore.sharedInstance.secureConversations.send(secureMessagePayload:queueIds:completion:),
-        uploadFile: GliaCore.sharedInstance.secureConversations.uploadFile(_:progress:completion:),
-        getUnreadMessageCount: GliaCore.sharedInstance.secureConversations.getUnreadMessageCount(completion:),
-        markMessagesAsRead: GliaCore.sharedInstance.secureConversations.markMessagesAsRead(completion:),
-        downloadFile: GliaCore.sharedInstance.secureConversations.downloadFile(_:progress:completion:),
-        subscribeForUnreadMessageCount: GliaCore.sharedInstance.secureConversations.subscribeToUnreadMessageCount(completion:),
-        unsubscribeFromUnreadMessageCount: GliaCore.sharedInstance.secureConversations.unsubscribeFromUnreadMessageCount,
-        pendingStatus: GliaCore.sharedInstance.secureConversations.pendingSecureConversationStatus,
-        observePendingStatus: GliaCore.sharedInstance.secureConversations.subscribeToPendingSecureConversationStatus,
-        unsubscribeFromPendingStatus: { GliaCore.sharedInstance.secureConversations.unsubscribeFromPendingSecureConversationStatus($0) }
+        sendMessagePayload: { secureMessagePayload, queueIds in
+            try await GliaCore.sharedInstance.secureConversations.send(
+                secureMessagePayload: secureMessagePayload,
+                queueIds: queueIds
+            )
+        },
+        uploadFile: { file, progress in
+            try await GliaCore.sharedInstance.secureConversations.uploadFile(file, progress: progress)
+        },
+        getUnreadMessageCount: {
+            try await GliaCore.sharedInstance.secureConversations.getUnreadMessageCount()
+        },
+        markMessagesAsRead: {
+            try await GliaCore.sharedInstance.secureConversations.markMessagesAsRead()
+        },
+        downloadFile: { file, progress in
+            try await GliaCore.sharedInstance.secureConversations.downloadFile(file, progress: progress)
+        },
+        subscribeForUnreadMessageCount: GliaCore.sharedInstance.secureConversations.unreadMessageCountStream,
+        observePendingStatus: GliaCore.sharedInstance.secureConversations.pendingSecureConversationStatusStream
     )
 }
 

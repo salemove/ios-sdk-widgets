@@ -4,21 +4,21 @@ enum AlertType {
     case message(
         conf: MessageAlertConfiguration,
         accessibilityIdentifier: String?,
-        dismissed: (() -> Void)?,
+        dismissed: (() async -> Void)?,
         onClose: () -> Void
     )
     case criticalError(
         conf: MessageAlertConfiguration,
         accessibilityIdentifier: String?,
-        dismissed: (() -> Void)?,
+        dismissed: (() async -> Void)?,
         onClose: () -> Void
     )
     case confirmation(
         conf: ConfirmationAlertConfiguration,
         accessibilityIdentifier: String,
-        confirmed: () -> Void,
-        dismissed: (() -> Void)?,
-        onClose: () -> Void
+        confirmed: () async -> Void,
+        onClose: () -> Void,
+        dismissed: (() -> Void)?
     )
     case leaveConversation(
         conf: ConfirmationAlertConfiguration,
@@ -30,7 +30,7 @@ enum AlertType {
     case singleAction(
         conf: SingleActionAlertConfiguration,
         accessibilityIdentifier: String,
-        actionTapped: () -> Void,
+        actionTapped: () async -> Void,
         onClose: () -> Void
     )
     case singleMediaUpgrade(
@@ -43,8 +43,8 @@ enum AlertType {
         ConfirmationAlertConfiguration,
         link1: (WebViewController.Link) -> Void,
         link2: (WebViewController.Link) -> Void,
-        accepted: () -> Void,
-        declined: () -> Void,
+        accepted: () async -> Void,
+        declined: () async -> Void,
         onClose: () -> Void
     )
     case systemAlert(
@@ -82,7 +82,7 @@ enum AlertType {
         switch self {
         case .message(_, _, _, let onClose),
                 .criticalError(_, _, _, let onClose),
-                .confirmation(_, _, _, _, let onClose),
+                .confirmation(_, _, _, let onClose, _),
                 .leaveConversation(_, _, _, _, let onClose),
                 .singleAction(_, _, _, let onClose),
                 .singleMediaUpgrade(_, _, _, let onClose),

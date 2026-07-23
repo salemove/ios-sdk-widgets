@@ -1,19 +1,18 @@
-import UIKit
-import GliaCoreSDK
+import Foundation
 
 public extension MessageRenderer {
     /// Message to render AI custom card view.
     struct Message {
-        public typealias Identifier = Tagged<Self, String>
+        typealias Identifier = CoreSdkClient.Tagged<Self, String>
 
         /// Message ID
-        public let id: Identifier
+        let id: Identifier
 
         /// Message metadata. Use `decode()` method to decode into decodable model.
-        public let metadata: MessageMetadata?
+        let metadata: MessageMetadata?
 
         /// Selected option value.
-        public let selectedOption: String?
+        let selectedOption: String?
 
         /// - Parameters:
         ///   - id: message ID

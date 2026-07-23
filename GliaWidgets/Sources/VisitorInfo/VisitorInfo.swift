@@ -1,5 +1,4 @@
 import Foundation
-import GliaCoreSDK
 
 public struct VisitorInfo: Equatable, Decodable {
     /// Visitor's name
@@ -33,7 +32,7 @@ public struct VisitorInfo: Equatable, Decodable {
     public let externalId: String?
 }
 
-extension GliaCore.VisitorInfo {
+extension CoreSdkClient.CoreVisitorInfo {
     func asWidgetSdkVisitorInfo() -> VisitorInfo {
         .init(
             name: name,
@@ -49,3 +48,20 @@ extension GliaCore.VisitorInfo {
         )
     }
 }
+
+#if DEBUG
+extension VisitorInfo {
+    static let mock = VisitorInfo(
+        name: "Test",
+        email: "test@example.com",
+        phone: "+123456789",
+        note: "test note",
+        customAttributes: ["foo": "bar"],
+        banned: false,
+        generatedName: nil,
+        href: nil,
+        id: "id",
+        externalId: "externalId"
+    )
+}
+#endif

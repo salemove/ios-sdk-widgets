@@ -54,6 +54,7 @@ extension SettingsView {
         @Published var manualLocaleOverride: String = ""
         @Published var suppressPushPermission: Bool = false
         @Published var autoConfigureEnabled: Bool = true
+        @Published var sdkFlowMode: SDKFlowMode = .completionHandlers
         @Published var authenticationBehavior: Glia.Authentication.Behavior = .forbiddenDuringEngagement
         @Published var stopPushOnDeauthenticate: Bool = false
         @Published var bubbleFeatureEnabled: Bool = true
@@ -314,6 +315,7 @@ extension SettingsView {
             manualLocaleOverride = config.manualLocaleOverride ?? ""
             suppressPushPermission = config.suppressPushNotificationsPermissionRequestDuringAuthentication
             autoConfigureEnabled = appState.autoConfigureEnabled
+            sdkFlowMode = appState.sdkFlowMode
             authenticationBehavior = appState.authenticationBehavior
             stopPushOnDeauthenticate = appState.stopPushOnDeauthenticate
 
@@ -425,6 +427,7 @@ extension SettingsView.ViewModel {
         appState.queueId = queueId
         appState.useDefaultQueue = useDefaultQueue
         appState.autoConfigureEnabled = autoConfigureEnabled
+        appState.sdkFlowMode = sdkFlowMode
         appState.authenticationBehavior = authenticationBehavior
         appState.stopPushOnDeauthenticate = stopPushOnDeauthenticate
 
@@ -449,6 +452,21 @@ extension SettingsView.ViewModel {
         isLoadingQueues = true
         queueError = nil
         showQueuePicker = true
+
+        guard appState.sdkFlowMode == .completionHandlers else {
+            Task { [weak self] in
+                guard let self else { return }
+                do {
+                    let queues = try await Glia.sharedInstance.getQueues()
+                    isLoadingQueues = false
+                    availableQueues = queues.sorted { $0.name < $1.name }
+                } catch {
+                    isLoadingQueues = false
+                    queueError = error.localizedDescription
+                }
+            }
+            return
+        }
 
         Glia.sharedInstance.getQueues { [weak self] result in
             guard let self = self else { return }

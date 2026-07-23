@@ -4,7 +4,7 @@ class ChatMessageView: BaseView {
     let style: Theme.ChatMessageStyle
     let contentViews = UIStackView().makeView()
     var fileTapped: ((LocalFile) -> Void)?
-    var downloadTapped: ((FileDownload) -> Void)?
+    var downloadTapped: ((FileDownload) async -> Void)?
     var linkTapped: ((URL) -> Void)?
 
     private let contentAlignment: ChatMessageContentAlignment
@@ -135,7 +135,7 @@ class ChatMessageView: BaseView {
                     content: .download(download),
                     contentAlignment: contentAlignment,
                     accessibilityProperties: accessibilityProperties,
-                    tap: { [weak self] in self?.downloadTapped?(download) }
+                    tap: { [weak self] in await self?.downloadTapped?(download) }
                 )
             } else {
                 return ChatFileDownloadContentView(
@@ -143,7 +143,7 @@ class ChatMessageView: BaseView {
                     content: .download(download),
                     accessibilityProperties: accessibilityProperties,
                     environment: .create(with: environment),
-                    tap: { [weak self] in self?.downloadTapped?(download) }
+                    tap: { [weak self] in await self?.downloadTapped?(download) }
                 )
             }
         }
