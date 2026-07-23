@@ -96,7 +96,7 @@ extension ChatViewModelTests {
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
-        viewModelEnv.fetchSiteConfigurations = { _ in }
+        viewModelEnv.fetchSiteConfigurations = { try .mock() }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.log.infoClosure = { _, _, _, _ in }
         viewModelEnv.log.prefixedClosure = { _ in viewModelEnv.log }
