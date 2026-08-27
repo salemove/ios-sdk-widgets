@@ -34,7 +34,6 @@ extension ChatViewModel: ViewModel {
         case setChoiceCardInputModeEnabled(Bool)
         case setMessageText(String)
         case sendButtonDisabled(Bool)
-        case pickMediaButtonEnabled(Bool)
         case appendRows(Int, to: Int, animated: Bool)
         case refreshRow(Int, in: Int, animated: Bool)
         case refreshRows([Int], in: Int, animated: Bool)

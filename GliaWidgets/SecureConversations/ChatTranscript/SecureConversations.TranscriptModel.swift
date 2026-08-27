@@ -63,6 +63,7 @@ extension SecureConversations {
             guard let site = siteConfiguration else { return .disabled }
             guard site.allowedFileSenders.visitor else { return .disabled }
             guard !site.allowedFileContentTypes.isEmpty else { return .disabled }
+            guard !fileUploadListModel.isLimitReached else { return .disabled }
             return .enabled(.secureMessaging)
         }
 
@@ -146,8 +147,9 @@ extension SecureConversations {
                 self?.action?(.updateUnreadMessageIndicator(itemCount: unreadCount))
             }
 
-            uploader.limitReached.addObserver(self) { [weak self] limitReached, _ in
-                self?.action?(.pickMediaButtonEnabled(!limitReached))
+            uploader.limitReached.addObserver(self) { [weak self] _, _ in
+                guard let self else { return }
+                self.action?(.setAttachmentButtonEnabling(self.mediaPickerButtonEnabling))
             }
             checkSecureConversationsAvailability()
         }

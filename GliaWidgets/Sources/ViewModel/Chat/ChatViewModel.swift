@@ -57,6 +57,7 @@ class ChatViewModel: EngagementViewModel {
         guard let site = siteConfiguration else { return .disabled }
         guard site.allowedFileSenders.visitor else { return .disabled }
         guard !site.allowedFileContentTypes.isEmpty else { return .disabled }
+        guard !fileUploadListModel.isLimitReached else { return .disabled }
         guard environment.getCurrentEngagement() != nil else {
             return .enabled(.engagementConnection(isConnected: false))
         }
@@ -144,8 +145,9 @@ class ChatViewModel: EngagementViewModel {
         uploader.state.addObserver(self) { [weak self] state, _ in
             self?.onUploaderStateChanged(state)
         }
-        uploader.limitReached.addObserver(self) { [weak self] limitReached, _ in
-            self?.action?(.pickMediaButtonEnabled(!limitReached))
+        uploader.limitReached.addObserver(self) { [weak self] _, _ in
+            guard let self else { return }
+            self.action?(.setAttachmentButtonEnabling(self.mediaPickerButtonEnabling))
         }
         isViewActive.addObserver(self) { [weak self] isViewActive, _ in
             if isViewActive {

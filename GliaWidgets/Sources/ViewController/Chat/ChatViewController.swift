@@ -127,6 +127,12 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
     private func bind(viewModel: SecureConversations.ChatWithTranscriptModel, to view: ChatView) {
         view.entryWidget = viewModel.entryWidget
 
+        // The view outlives the model it is bound to when chat and transcript models are
+        // swapped, so the attachment state has to start from scratch. Otherwise the button
+        // stays tappable on the incoming model's behalf until it has fetched site
+        // configuration, and tapping it offers no attachment sources at all.
+        view.messageEntryView.setPickMediaButtonVisibility(viewModel.mediaPickerButtonEnabling)
+
         view.header.showBackButton()
 
         let type = Self.currentChatModelType(viewModel)
@@ -393,8 +399,6 @@ extension ChatViewController {
             view?.messageEntryView.messageText = text
         case .sendButtonDisabled(let isDisabled):
             view?.messageEntryView.isSendButtonEnabled = !isDisabled
-        case .pickMediaButtonEnabled(let enabled):
-            view?.messageEntryView.pickMediaButton.isEnabled = enabled
         case .appendRows(let count, let section, let animated):
             view?.appendRows(count, to: section, animated: animated)
         case .refreshRow(let row, let section, let animated):
