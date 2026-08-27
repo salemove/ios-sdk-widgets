@@ -83,6 +83,15 @@ extension SecureConversations.ChatWithTranscriptModel {
         }
     }
 
+    var mediaPickerButtonEnabling: MediaPickerButtonEnabling {
+        switch self {
+        case let .chat(model):
+            return model.mediaPickerButtonEnabling
+        case let .transcript(model):
+            return model.mediaPickerButtonEnabling
+        }
+    }
+
     var numberOfSections: Int {
         switch self {
         case let .chat(model):

@@ -486,6 +486,7 @@
 		8491AF632AA20F9D00CC3E72 /* GliaViewControllerDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF622AA20F9D00CC3E72 /* GliaViewControllerDelegateMock.swift */; };
 		8491AF652AAB281500CC3E72 /* ChatViewModelTests+CustomCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF642AAB281500CC3E72 /* ChatViewModelTests+CustomCard.swift */; };
 		8491AF672AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF662AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift */; };
+		5451B0012E8C1A2B3C4D5E6F /* ChatViewModelTests+AttachmentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5451A0012E8C1A2B3C4D5E6F /* ChatViewModelTests+AttachmentButton.swift */; };
 		8492F9152CAAE30F00242691 /* SecureConversations.ChatWithTranscriptModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492F9142CAAE30F00242691 /* SecureConversations.ChatWithTranscriptModelTests.swift */; };
 		8492F9172CAD2F2000242691 /* TranscriptModelTests+ResponseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492F9162CAD2F2000242691 /* TranscriptModelTests+ResponseCard.swift */; };
 		8492F9192CAD329800242691 /* TranscriptModelTests+MessageRetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492F9182CAD329800242691 /* TranscriptModelTests+MessageRetry.swift */; };
@@ -1634,6 +1635,7 @@
 		8491AF622AA20F9D00CC3E72 /* GliaViewControllerDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaViewControllerDelegateMock.swift; sourceTree = "<group>"; };
 		8491AF642AAB281500CC3E72 /* ChatViewModelTests+CustomCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModelTests+CustomCard.swift"; sourceTree = "<group>"; };
 		8491AF662AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModelTests+Transferring.swift"; sourceTree = "<group>"; };
+		5451A0012E8C1A2B3C4D5E6F /* ChatViewModelTests+AttachmentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModelTests+AttachmentButton.swift"; sourceTree = "<group>"; };
 		8492F9142CAAE30F00242691 /* SecureConversations.ChatWithTranscriptModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.ChatWithTranscriptModelTests.swift; sourceTree = "<group>"; };
 		8492F9162CAD2F2000242691 /* TranscriptModelTests+ResponseCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TranscriptModelTests+ResponseCard.swift"; sourceTree = "<group>"; };
 		8492F9182CAD329800242691 /* TranscriptModelTests+MessageRetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TranscriptModelTests+MessageRetry.swift"; sourceTree = "<group>"; };
@@ -4436,6 +4438,7 @@
 				84681A942A61844000DD7406 /* ChatViewModelTests+Gva.swift */,
 				8491AF642AAB281500CC3E72 /* ChatViewModelTests+CustomCard.swift */,
 				8491AF662AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift */,
+				5451A0012E8C1A2B3C4D5E6F /* ChatViewModelTests+AttachmentButton.swift */,
 				8492F91A2CAD6ADE00242691 /* ChatViewModelTests+MessageRetry.swift */,
 			);
 			path = ChatViewModel;
@@ -7180,6 +7183,7 @@
 				7552DFB12A6FB7DF0093519B /* ChatMessageTests.swift in Sources */,
 				31CCE3E82BCE8F3A00F92535 /* VideoCallCoordinatorTests.swift in Sources */,
 				8491AF672AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift in Sources */,
+				5451B0012E8C1A2B3C4D5E6F /* ChatViewModelTests+AttachmentButton.swift in Sources */,
 				AFEF5C7429929A8D005C3D8D /* SecureConversations.FileUploadListViewModel.Environment.Failing.swift in Sources */,
 				AFF9542C2ADDA10600C277E0 /* CoreSDKConfigurator.Failing.swift in Sources */,
 				31758EC42B5FB192007BBD9F /* EngagementCoordinatorTests.swift in Sources */,

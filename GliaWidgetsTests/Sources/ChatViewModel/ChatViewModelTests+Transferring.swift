@@ -30,7 +30,7 @@ extension ChatViewModelTests {
         env.fileManager.fileExistsAtPath = { _ in true }
         env.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
         env.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
-        env.createFileUploadListModel = { _ in .mock() }
+        env.createFileUploadListModel = SecureConversations.FileUploadListViewModel.mock(environment:)
         env.createSendMessagePayload = { _, _ in .mock() }
         let site: CoreSdkClient.Site = try .mock(
             allowedFileContentTypes: ["image/jpeg"],
