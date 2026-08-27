@@ -78,7 +78,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
     func testMediaPickerButtonEnablingDependsOnSiteConfiguration() throws {
         var modelEnv = TranscriptModel.Environment.failing
         modelEnv.fileManager = .mock
-        modelEnv.createFileUploadListModel = { _ in .mock() }
+        modelEnv.createFileUploadListModel = FileUploadListViewModel.mock(environment:)
         modelEnv.getQueues = { _ in }
         modelEnv.fetchChatHistory = { _ in }
         modelEnv.secureConversations.getUnreadMessageCount = { _ in }

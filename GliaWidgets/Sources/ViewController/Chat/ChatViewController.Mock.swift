@@ -269,7 +269,6 @@ extension ChatViewController {
         chatViewModel.action?(.setChoiceCardInputModeEnabled(false))
         chatViewModel.action?(.connected(name: "Mocked Operator Name", imageUrl: localFileURL.absoluteString))
         chatViewModel.action?(.setAttachmentButtonEnabling(.enabled(.engagementConnection(isConnected: true))))
-        chatViewModel.action?(.pickMediaButtonEnabled(true))
         chatViewModel.action?(.setOperatorTypingIndicatorIsHiddenTo(false, false))
 
         chatViewModel.action?(.fileUploadListPropsUpdated(chatViewModel.fileUploadListModel.props()))
