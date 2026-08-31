@@ -224,11 +224,12 @@ extension EngagementCoordinator {
             }
         }
 
-        guard let engagement = interactor.endedEngagement,
+        let endedEngagement = interactor.takeSurveyEligibleEngagement()
+        guard let engagement = endedEngagement,
                 engagement.actionOnEnd == .showSurvey,
                 surveyPresentation == .presentSurvey else {
             environment.log.prefixed(Self.self).info(
-                "Dismiss Glia screen without showing survey. On end action: \(String(describing: interactor.endedEngagement?.actionOnEnd))"
+                "Dismiss Glia screen without showing survey. On end action: \(String(describing: endedEngagement?.actionOnEnd))"
             )
             dismissGliaViewController()
             return
