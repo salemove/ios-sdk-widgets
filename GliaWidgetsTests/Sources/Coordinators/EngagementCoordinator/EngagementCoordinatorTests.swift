@@ -113,7 +113,10 @@ final class EngagementCoordinatorTests: XCTestCase {
             fetchSurvey: { _, completion in completion(.success(survey)) },
             actionOnEnd: .showSurvey
         )
-        coordinator.interactor.setEndedEngagement(engagement)
+        coordinator.interactor.environment.coreSdk.getCurrentEngagement = { engagement }
+        coordinator.interactor.onEngagementChanged(engagement)
+        coordinator.interactor.end(with: .operatorHungUp)
+        coordinator.interactor.onEngagementChanged(nil)
         coordinator.end(surveyPresentation: .presentSurvey)
 
         let surveyViewController = coordinator.gliaPresenter.topMostViewController as? Survey.ViewController
