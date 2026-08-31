@@ -266,6 +266,7 @@
 		498ABBD52D47E77C001AE866 /* ApplicationVisibilityTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498ABBD42D47E77C001AE866 /* ApplicationVisibilityTracker.swift */; };
 		498C9C0F2EF4B7E8001B7B0E /* AttachmentOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498C9C0E2EF4B7C9001B7B0E /* AttachmentOptions.swift */; };
 		498C9C132EFAC88B001B7B0E /* AttachmentOptionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 498C9C122EFAC88B001B7B0E /* AttachmentOptionsTests.swift */; };
+		5451B0012E8C1A2B3C4D5E6F /* ChatViewModelTests+AttachmentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5451A0012E8C1A2B3C4D5E6F /* ChatViewModelTests+AttachmentButton.swift */; };
 		58B15D0731ACAD45576E6336 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3EF4299F8DD4E0D17D4024D /* UIKit.framework */; };
 		6B2BFCE2274297F100B68506 /* SettingsSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */; };
 		6B48213E2735873300F2900A /* Feature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B48213D2735873300F2900A /* Feature.swift */; };
@@ -486,7 +487,6 @@
 		8491AF632AA20F9D00CC3E72 /* GliaViewControllerDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF622AA20F9D00CC3E72 /* GliaViewControllerDelegateMock.swift */; };
 		8491AF652AAB281500CC3E72 /* ChatViewModelTests+CustomCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF642AAB281500CC3E72 /* ChatViewModelTests+CustomCard.swift */; };
 		8491AF672AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491AF662AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift */; };
-		5451B0012E8C1A2B3C4D5E6F /* ChatViewModelTests+AttachmentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5451A0012E8C1A2B3C4D5E6F /* ChatViewModelTests+AttachmentButton.swift */; };
 		8492F9152CAAE30F00242691 /* SecureConversations.ChatWithTranscriptModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492F9142CAAE30F00242691 /* SecureConversations.ChatWithTranscriptModelTests.swift */; };
 		8492F9172CAD2F2000242691 /* TranscriptModelTests+ResponseCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492F9162CAD2F2000242691 /* TranscriptModelTests+ResponseCard.swift */; };
 		8492F9192CAD329800242691 /* TranscriptModelTests+MessageRetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492F9182CAD329800242691 /* TranscriptModelTests+MessageRetry.swift */; };
@@ -1420,6 +1420,7 @@
 		4BA283B3CF11FA7FB6656650 /* Pods-SnapshotTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapshotTests.debug.xcconfig"; path = "Target Support Files/Pods-SnapshotTests/Pods-SnapshotTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4FDF969C26E0ACBB08CC7B37 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		50597497B681F6DED210F6A1 /* Pods-GliaTestApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GliaTestApp.debug.xcconfig"; path = "Target Support Files/Pods-GliaTestApp/Pods-GliaTestApp.debug.xcconfig"; sourceTree = "<group>"; };
+		5451A0012E8C1A2B3C4D5E6F /* ChatViewModelTests+AttachmentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModelTests+AttachmentButton.swift"; sourceTree = "<group>"; };
 		5B48E08BB6725B5BC63138FA /* Pods-TestingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestingApp.release.xcconfig"; path = "Target Support Files/Pods-TestingApp/Pods-TestingApp.release.xcconfig"; sourceTree = "<group>"; };
 		6B2BFCE1274297F100B68506 /* SettingsSwitchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchCell.swift; sourceTree = "<group>"; };
 		6B48213D2735873300F2900A /* Feature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feature.swift; sourceTree = "<group>"; };
@@ -1635,7 +1636,6 @@
 		8491AF622AA20F9D00CC3E72 /* GliaViewControllerDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GliaViewControllerDelegateMock.swift; sourceTree = "<group>"; };
 		8491AF642AAB281500CC3E72 /* ChatViewModelTests+CustomCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModelTests+CustomCard.swift"; sourceTree = "<group>"; };
 		8491AF662AB8707600CC3E72 /* ChatViewModelTests+Transferring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModelTests+Transferring.swift"; sourceTree = "<group>"; };
-		5451A0012E8C1A2B3C4D5E6F /* ChatViewModelTests+AttachmentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModelTests+AttachmentButton.swift"; sourceTree = "<group>"; };
 		8492F9142CAAE30F00242691 /* SecureConversations.ChatWithTranscriptModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureConversations.ChatWithTranscriptModelTests.swift; sourceTree = "<group>"; };
 		8492F9162CAD2F2000242691 /* TranscriptModelTests+ResponseCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TranscriptModelTests+ResponseCard.swift"; sourceTree = "<group>"; };
 		8492F9182CAD329800242691 /* TranscriptModelTests+MessageRetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TranscriptModelTests+MessageRetry.swift"; sourceTree = "<group>"; };
@@ -7622,7 +7622,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.5.7;
+				MARKETING_VERSION = 3.5.8;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.glia.sdk.widgets-example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Widgets Example App (Bitrise)";
@@ -7654,7 +7654,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.5.7;
+				MARKETING_VERSION = 3.5.8;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.glia.sdk.widgets-example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Widgets Example App (Bitrise)";
@@ -7701,7 +7701,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
-				MARKETING_VERSION = 3.5.7;
+				MARKETING_VERSION = 3.5.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.glia.TestingAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -7720,7 +7720,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
-				MARKETING_VERSION = 3.5.7;
+				MARKETING_VERSION = 3.5.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.glia.TestingAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -7766,7 +7766,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
-				MARKETING_VERSION = 3.5.7;
+				MARKETING_VERSION = 3.5.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.glia.SnapshotTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -7785,7 +7785,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
-				MARKETING_VERSION = 3.5.7;
+				MARKETING_VERSION = 3.5.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.glia.SnapshotTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
