@@ -29,6 +29,12 @@ enum EndEngagementReason {
     case byError
 }
 
+private enum SurveyEligibility {
+    case unavailable
+    case pendingVisitorEnd(requestID: UUID, engagement: CoreSdkClient.Engagement?)
+    case eligible(CoreSdkClient.Engagement)
+}
+
 enum InteractorEvent {
     case stateChanged(InteractorState)
     case receivedMessage(CoreSdkClient.Message)
@@ -73,12 +79,19 @@ class Interactor {
     let visitorContext: Configuration.VisitorContext?
     @Published private(set) var currentEngagement: CoreSdkClient.Engagement?
 
-    // Used to save ended engagement to fetch a survey
+    // The last observed engagement, retained for post-engagement UI decisions.
     private(set) var endedEngagement: CoreSdkClient.Engagement?
+    private var surveyEligibility: SurveyEligibility = .unavailable
 
     private var observers = [() -> (AnyObject?, EventHandler)]()
     private var cancellables = Set<AnyCancellable>()
-    @Published var state: InteractorState = .none
+    @Published var state: InteractorState = .none {
+        willSet {
+            if case .enqueueing = newValue {
+                invalidateSurveyEligibility()
+            }
+        }
+    }
     var environment: Environment
 
     /// Skips Live Observation confirmation alerts/snackbars in
@@ -142,6 +155,8 @@ extension Interactor {
         success: @escaping () -> Void,
         failure: @escaping (CoreSdkClient.SalemoveError) -> Void
     ) {
+        invalidateSurveyEligibility()
+
         switch engagementKind {
         case .chat:
              environment.log.prefixed(Self.self).info("Start queueing for chat engagement")
@@ -239,11 +254,33 @@ extension Interactor {
     }
 
     func endEngagement(completion: @escaping (Result<Void, Error>) -> Void) {
+        let requestID = UUID()
+        surveyEligibility = .pendingVisitorEnd(
+            requestID: requestID,
+            engagement: currentEngagement
+        )
         environment.coreSdk.endEngagement { [weak self] _, error in
             guard let self else { return }
             if let error = error {
+                if case let .pendingVisitorEnd(pendingRequestID, _) = self.surveyEligibility,
+                   pendingRequestID == requestID {
+                    self.surveyEligibility = .unavailable
+                }
                 completion(.failure(error))
             } else {
+                guard case let .pendingVisitorEnd(pendingRequestID, endingEngagement) = self.surveyEligibility,
+                      pendingRequestID == requestID else {
+                    completion(.success(()))
+                    return
+                }
+
+                if let endingEngagement,
+                   self.currentEngagement == nil || self.currentEngagement?.id == endingEngagement.id,
+                   self.endedEngagement?.id == endingEngagement.id {
+                    self.surveyEligibility = .eligible(endingEngagement)
+                } else {
+                    self.surveyEligibility = .unavailable
+                }
                 self.state = .ended(.byVisitor)
                 completion(.success(()))
             }
@@ -254,18 +291,32 @@ extension Interactor {
         Clean up interactor.
      
         Used to clean up:
-        * Cached `endedEngagement` that is used for presenting survey.
+        * Cached `endedEngagement` used for post-engagement UI decisions.
+        * Survey eligibility.
         * Interactor `state`.
     */
     func cleanup(_ policy: CleanupPolicy = .clearEndedEngagement) {
-        state = .none
-
         switch policy {
         case .keepEndedEngagement:
             break
         case .clearEndedEngagement:
             endedEngagement = nil
+            invalidateSurveyEligibility()
         }
+
+        state = .none
+    }
+
+    func takeSurveyEligibleEngagement() -> CoreSdkClient.Engagement? {
+        guard case let .eligible(engagement) = surveyEligibility else {
+            return nil
+        }
+        surveyEligibility = .unavailable
+        return engagement
+    }
+
+    private func invalidateSurveyEligibility() {
+        surveyEligibility = .unavailable
     }
 }
 
@@ -279,13 +330,17 @@ extension Interactor: CoreSdkClient.Interactable {
             currentEngagement = engagement
 
             if let engagement {
-                // Save the last non-nil engagement for survey
                 endedEngagement = engagement
+                if case let .pendingVisitorEnd(_, pendingEngagement?) = surveyEligibility,
+                   pendingEngagement.id == engagement.id {
+                    return
+                }
+                invalidateSurveyEligibility()
                 return
             }
 
-            // engagement became nil:
-            // if we have an ended engagement, keep it for survey; otherwise clear it
+            // Engagement became nil. Keep the last engagement for post-engagement UI
+            // decisions when one was observed; otherwise clear all lifecycle state.
             cleanup(endedEngagement != nil ? .keepEndedEngagement : .clearEndedEngagement)
         }
     }
@@ -414,18 +469,27 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     func end(with reason: CoreSdkClient.EngagementEndingReason) {
+        let endReason: EndEngagementReason
+        // Core invokes this callback before clearing its current engagement.
+        endedEngagement = environment.coreSdk.getCurrentEngagement()
+
         switch reason {
         case .visitorHungUp:
-            state = .ended(.byVisitor)
+            endReason = .byVisitor
         case .operatorHungUp, .followUp:
-            // Save engagement ended by operator to fetch a survey
-            endedEngagement = environment.coreSdk.getCurrentEngagement()
-            state = .ended(.byOperator)
+            endReason = .byOperator
         case .error:
-            state = .ended(.byError)
+            endReason = .byError
         @unknown default:
-            state = .ended(.byError)
+            endReason = .byError
         }
+
+        if let endedEngagement {
+            surveyEligibility = .eligible(endedEngagement)
+        } else {
+            surveyEligibility = .unavailable
+        }
+        state = .ended(endReason)
     }
 
     func fail(error: CoreSdkClient.SalemoveError) {
