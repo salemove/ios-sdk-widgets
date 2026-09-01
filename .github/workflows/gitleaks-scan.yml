@@ -1,0 +1,45 @@
+# Gitleaks secret scanning for public repositories.
+#
+# Public repos cannot run the org-level "Gitleaks Secret Scanning ruleset"
+# workflow (its file lives in a private repo, and GitHub refuses to require
+# a workflow from a less visible repository), so they carry this copy.
+#
+# The `gitleaks-scan` job name is load-bearing: the branch ruleset managed
+# by GHOM (ghom-manifests) requires a check named `gitleaks-scan` posted by
+# GitHub Actions.
+#
+# Note: secrets are not available to workflows triggered by pull requests
+# from forks, so this check fails on external contributors' PRs (accepted
+# trade-off; a maintainer can re-push the branch to run it with the license).
+name: Gitleaks Secret Scanning
+on:
+  push:
+    branches: [ '**' ]
+  pull_request:
+  merge_group:
+
+permissions:
+  contents: read
+
+jobs:
+  gitleaks-scan:
+    name: gitleaks-scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3  # v6
+        with:
+          fetch-depth: 0
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e  # v3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE_PUBLIC }}
+          GITLEAKS_NOTIFY_USER_LIST: '@salemove/tm-devsec'
