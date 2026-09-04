@@ -6,12 +6,13 @@ extension ChatViewModelTests {
     /// Sending a message clears succeeded uploads, which re-publishes the upload limit.
     /// That signal must not be able to enable the attachment button on its own, otherwise
     /// tapping it opens an empty "File attachments" popover while there is no engagement.
-    func test_sendingMessageWhileEnqueuedKeepsAttachmentButtonDisabled() throws {
+    @MainActor
+    func test_sendingMessageWhileEnqueuedKeepsAttachmentButtonDisabled() async throws {
         var interactorEnv = Interactor.Environment.failing
         interactorEnv.gcd.mainQueue.async = { $0() }
-        interactorEnv.coreSdk.queueForEngagement = { _, _, _ in }
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in .mock }
         interactorEnv.coreSdk.configureWithInteractor = { _ in }
-        interactorEnv.coreSdk.sendMessagePreview = { _, _ in }
+        interactorEnv.coreSdk.sendMessagePreview = { _ in true }
         interactorEnv.log.prefixedClosure = { _ in interactorEnv.log }
         interactorEnv.log.infoClosure = { _, _, _, _ in }
         let interactor = Interactor.mock(environment: interactorEnv)
@@ -19,20 +20,20 @@ extension ChatViewModelTests {
         var viewModelEnv = ChatViewModel.Environment.mock
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.createSendMessagePayload = { _, _ in .mock() }
-        viewModelEnv.fetchChatHistory = { $0(.success([])) }
+        viewModelEnv.fetchChatHistory = { [] }
         // The visitor is still waiting in the queue, so no engagement is active
         // and site configuration has not been fetched yet.
         viewModelEnv.getCurrentEngagement = { nil }
-        viewModelEnv.fetchSiteConfigurations = { _ in }
+        viewModelEnv.fetchSiteConfigurations = { throw CoreSdkClient.SalemoveError.mock() }
 
         let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
-        let controller = ChatViewController.mock(chatViewModel: viewModel)
+        let controller = await ChatViewController.mock(chatViewModel: viewModel)
         let entryView = try XCTUnwrap((controller.view as? ChatView)?.messageEntryView)
 
         XCTAssertFalse(entryView.pickMediaButton.isEnabled)
 
         interactor.state = .enqueued(.mock, .chat)
-        viewModel.invokeSetTextAndSendMessage(text: "Test")
+        await viewModel.invokeSetTextAndSendMessage(text: "Test")
 
         XCTAssertTrue(viewModel.mediaPickerButtonEnabling.isDisabled)
         XCTAssertFalse(
@@ -41,7 +42,8 @@ extension ChatViewModelTests {
         )
     }
 
-    func test_sendingSecureMessageWithoutSiteConfigurationKeepsAttachmentButtonDisabled() throws {
+    @MainActor
+    func test_sendingSecureMessageWithoutSiteConfigurationKeepsAttachmentButtonDisabled() async throws {
         let environment = SecureConversations.TranscriptModel.Environment.mock(
             createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:),
             maximumUploads: { 2 }
@@ -64,25 +66,26 @@ extension ChatViewModelTests {
         XCTAssertFalse(entryView.pickMediaButton.isEnabled)
 
         viewModel.event(.messageTextChanged("Test"))
-        viewModel.event(.sendTapped)
+        await viewModel.asyncEvent(.sendTapped)
 
         XCTAssertTrue(viewModel.mediaPickerButtonEnabling.isDisabled)
         XCTAssertFalse(entryView.pickMediaButton.isEnabled)
     }
 
-    func test_mediaPickerButtonEnablingRespectsUploadLimit() throws {
+    @MainActor
+    func test_mediaPickerButtonEnablingRespectsUploadLimit() async throws {
         var environment = ChatViewModel.Environment.mock
         let site = try CoreSdkClient.Site.mock(
             allowedFileContentTypes: ["image/jpeg"],
             allowedFileSenders: .mock(visitor: true)
         )
-        environment.fetchSiteConfigurations = { $0(.success(site)) }
+        environment.fetchSiteConfigurations = { site }
         environment.getCurrentEngagement = { .mock() }
         let viewModel = ChatViewModel.mock(
             environment: environment,
             maximumUploads: { 1 }
         )
-        viewModel.fetchSiteConfigurations()
+        await viewModel.fetchSiteConfigurations()
 
         XCTAssertFalse(viewModel.mediaPickerButtonEnabling.isDisabled)
 
@@ -97,9 +100,10 @@ extension ChatViewModelTests {
         XCTAssertFalse(viewModel.mediaPickerButtonEnabling.isDisabled)
     }
 
-    func test_swappingModelsRefreshesAttachmentButtonEnabling() throws {
+    @MainActor
+    func test_swappingModelsRefreshesAttachmentButtonEnabling() async throws {
         let initialViewModel = ChatViewModel.mock()
-        let controller = ChatViewController.mock(chatViewModel: initialViewModel)
+        let controller = await ChatViewController.mock(chatViewModel: initialViewModel)
         let entryView = try XCTUnwrap((controller.view as? ChatView)?.messageEntryView)
         initialViewModel.action?(
             .setAttachmentButtonEnabling(.enabled(.secureMessaging))
@@ -114,6 +118,7 @@ extension ChatViewModelTests {
     }
 
     /// An attachment popover with no sources renders as a blank sheet, so it must not be shown.
+    @MainActor
     func test_popoverIsNotPresentedWhenNoAttachmentSourcesAreAllowed() {
         final class PresentationSpy: UIViewController, PopoverPresenter {
             private(set) var presentedControllers: [UIViewController] = []

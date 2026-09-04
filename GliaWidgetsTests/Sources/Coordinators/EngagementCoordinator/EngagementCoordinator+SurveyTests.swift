@@ -1,8 +1,9 @@
 @testable import GliaWidgets
 import XCTest
 
+@MainActor
 class EngagementCoordinatorSurveyTests: XCTestCase {
-    func test_endDoesNotFetchSurveyWhenQueueingFailsDuringLiveEngagement() {
+    func test_endDoesNotFetchSurveyWhenQueueingFailsDuringLiveEngagement() async {
         var surveyWasFetched = false
         let engagement = CoreSdkClient.Engagement.mock(
             fetchSurvey: { _, _ in
@@ -11,18 +12,19 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
             actionOnEnd: .showSurvey
         )
         var coreSdkClient = CoreSdkClient.mock
-        coreSdkClient.queueForEngagement = { _, _, completion in
-            completion(.failure(.mock()))
+        coreSdkClient.queueForEngagement = { _, _ in
+            throw CoreSdkClient.SalemoveError.mock()
         }
         let interactor = makeInteractor(coreSdk: coreSdkClient)
         interactor.onEngagementChanged(engagement)
         interactor.state = .enqueueing(.chat)
-        interactor.enqueueForEngagement(
-            engagementKind: .chat,
-            replaceExisting: false,
-            success: { XCTFail("Expected queueing to fail") },
-            failure: { _ in }
-        )
+        do {
+            try await interactor.enqueueForEngagement(
+                engagementKind: .chat,
+                replaceExisting: false
+            )
+            XCTFail("Expected queueing to fail")
+        } catch {}
         let coordinator = makeCoordinator(interactor: interactor)
 
         coordinator.end(surveyPresentation: .presentSurvey)
@@ -75,7 +77,7 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
         XCTAssertEqual(surveyFetchCount, 1)
     }
 
-    func test_endFetchesSurveyAfterVisitorEndsEngagement() {
+    func test_endFetchesSurveyAfterVisitorEndsEngagement() async throws {
         var surveyFetchCount = 0
         let engagement = CoreSdkClient.Engagement.mock(
             fetchSurvey: { _, _ in
@@ -86,9 +88,7 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
         var interactor: Interactor!
         var coordinator: EngagementCoordinator!
         var coreSdkClient = CoreSdkClient.mock
-        coreSdkClient.endEngagement = { completion in
-            completion(true, nil)
-        }
+        coreSdkClient.endEngagement = { true }
         interactor = makeInteractor(coreSdk: coreSdkClient)
         coordinator = makeCoordinator(interactor: interactor)
         interactor.onEngagementChanged(engagement)
@@ -98,17 +98,13 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
             coordinator.end(surveyPresentation: .presentSurvey)
         }
 
-        interactor.endSession { result in
-            if case let .failure(error) = result {
-                XCTFail("Expected engagement to end successfully, got \(error)")
-            }
-        }
+        try await interactor.endSession()
         interactor.onEngagementChanged(nil)
 
         XCTAssertEqual(surveyFetchCount, 1)
     }
 
-    func test_visitorEndCompletionDoesNotConfirmNewerEngagement() {
+    func test_visitorEndCompletionDoesNotConfirmNewerEngagement() async throws {
         var endingSurveyFetchCount = 0
         var newerSurveyFetchCount = 0
         let endingEngagement = CoreSdkClient.Engagement.mock(
@@ -125,22 +121,26 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
             },
             actionOnEnd: .showSurvey
         )
-        var endCompletion: CoreSdkClient.SuccessBlock?
+        var endContinuation: CheckedContinuation<Bool, Error>?
         var coreSdkClient = CoreSdkClient.mock
-        coreSdkClient.endEngagement = { completion in
-            endCompletion = completion
+        coreSdkClient.endEngagement = {
+            try await withCheckedThrowingContinuation { continuation in
+                endContinuation = continuation
+            }
         }
         let interactor = makeInteractor(coreSdk: coreSdkClient)
-        var endResult: Result<Void, Error>?
         interactor.onEngagementChanged(endingEngagement)
         interactor.state = .engaged(.mock())
-        interactor.endSession { endResult = $0 }
+        let endTask = Task { @MainActor in try await interactor.endSession() }
+        await waitUntil { endContinuation != nil }
+        let continuation = try XCTUnwrap(endContinuation)
         interactor.state = .enqueueing(.chat)
         interactor.onEngagementChanged(newerEngagement)
         let newerOperator = CoreSdkClient.Operator.mock(id: "newer-operator")
         interactor.state = .engaged(newerOperator)
 
-        endCompletion?(true, nil)
+        continuation.resume(returning: true)
+        let endResult = await endTask.result
 
         let coordinator = makeCoordinator(interactor: interactor)
         coordinator.end(surveyPresentation: .presentSurvey)
@@ -151,7 +151,7 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
         assertSuccess(endResult)
     }
 
-    func test_delayedVisitorEndCompletionDoesNotOutliveNewQueueLifecycle() {
+    func test_delayedVisitorEndCompletionDoesNotOutliveNewQueueLifecycle() async throws {
         var surveyFetchCount = 0
         let endingEngagement = CoreSdkClient.Engagement.mock(
             id: "ending-engagement",
@@ -160,20 +160,24 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
             },
             actionOnEnd: .showSurvey
         )
-        var endCompletion: CoreSdkClient.SuccessBlock?
+        var endContinuation: CheckedContinuation<Bool, Error>?
         var coreSdkClient = CoreSdkClient.mock
-        coreSdkClient.endEngagement = { completion in
-            endCompletion = completion
+        coreSdkClient.endEngagement = {
+            try await withCheckedThrowingContinuation { continuation in
+                endContinuation = continuation
+            }
         }
         let interactor = makeInteractor(coreSdk: coreSdkClient)
-        var endResult: Result<Void, Error>?
         interactor.onEngagementChanged(endingEngagement)
         interactor.state = .engaged(.mock())
-        interactor.endSession { endResult = $0 }
+        let endTask = Task { @MainActor in try await interactor.endSession() }
+        await waitUntil { endContinuation != nil }
+        let continuation = try XCTUnwrap(endContinuation)
         interactor.onEngagementChanged(nil)
         interactor.state = .enqueueing(.chat)
 
-        endCompletion?(true, nil)
+        continuation.resume(returning: true)
+        let endResult = await endTask.result
 
         makeCoordinator(interactor: interactor).end(surveyPresentation: .presentSurvey)
         XCTAssertEqual(surveyFetchCount, 0)
@@ -181,7 +185,7 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
         assertSuccess(endResult)
     }
 
-    func test_staleVisitorEndFailureDoesNotCancelNewerEndRequest() {
+    func test_staleVisitorEndFailureDoesNotCancelNewerEndRequest() async throws {
         var endingSurveyFetchCount = 0
         var newerSurveyFetchCount = 0
         let endingEngagement = CoreSdkClient.Engagement.mock(
@@ -198,30 +202,39 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
             },
             actionOnEnd: .showSurvey
         )
-        var endCompletions: [CoreSdkClient.SuccessBlock] = []
+        var endContinuations: [CheckedContinuation<Bool, Error>] = []
         var coreSdkClient = CoreSdkClient.mock
-        coreSdkClient.endEngagement = { completion in
-            endCompletions.append(completion)
+        coreSdkClient.endEngagement = {
+            try await withCheckedThrowingContinuation { continuation in
+                endContinuations.append(continuation)
+            }
         }
         let interactor = makeInteractor(coreSdk: coreSdkClient)
         interactor.onEngagementChanged(endingEngagement)
         interactor.state = .engaged(.mock())
-        interactor.endSession { _ in }
+        let firstEndTask = Task { @MainActor in try await interactor.endSession() }
+        await waitUntil { endContinuations.count == 1 }
         interactor.state = .enqueueing(.chat)
         interactor.onEngagementChanged(newerEngagement)
         interactor.state = .engaged(.mock())
-        interactor.endSession { _ in }
+        let secondEndTask = Task { @MainActor in try await interactor.endSession() }
+        await waitUntil { endContinuations.count == 2 }
+        let firstContinuation = try XCTUnwrap(endContinuations.first)
+        let secondContinuation = try XCTUnwrap(endContinuations.dropFirst().first)
 
-        XCTAssertEqual(endCompletions.count, 2)
-        endCompletions[0](false, .mock())
-        endCompletions[1](true, nil)
+        firstContinuation.resume(throwing: CoreSdkClient.SalemoveError.mock())
+        secondContinuation.resume(returning: true)
+        if case .success = await firstEndTask.result {
+            XCTFail("Expected the stale end request to fail")
+        }
+        assertSuccess(await secondEndTask.result)
         makeCoordinator(interactor: interactor).end(surveyPresentation: .presentSurvey)
 
         XCTAssertEqual(endingSurveyFetchCount, 0)
         XCTAssertEqual(newerSurveyFetchCount, 1)
     }
 
-    func test_endFetchesSurveyWhenCoreClearsEngagementBeforeVisitorEndCompletion() {
+    func test_endFetchesSurveyWhenCoreClearsEngagementBeforeVisitorEndCompletion() async throws {
         var surveyFetchCount = 0
         let engagement = CoreSdkClient.Engagement.mock(
             id: "ending-engagement",
@@ -230,22 +243,23 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
             },
             actionOnEnd: .showSurvey
         )
-        var endCompletion: CoreSdkClient.SuccessBlock?
+        var endContinuation: CheckedContinuation<Bool, Error>?
         var coreSdkClient = CoreSdkClient.mock
-        coreSdkClient.endEngagement = { completion in
-            endCompletion = completion
+        coreSdkClient.endEngagement = {
+            try await withCheckedThrowingContinuation { continuation in
+                endContinuation = continuation
+            }
         }
         let interactor = makeInteractor(coreSdk: coreSdkClient)
         interactor.onEngagementChanged(engagement)
         interactor.state = .engaged(.mock())
-        interactor.endSession { result in
-            if case let .failure(error) = result {
-                XCTFail("Expected engagement to end successfully, got \(error)")
-            }
-        }
+        let endTask = Task { @MainActor in try await interactor.endSession() }
+        await waitUntil { endContinuation != nil }
+        let continuation = try XCTUnwrap(endContinuation)
 
         interactor.onEngagementChanged(nil)
-        endCompletion?(true, nil)
+        continuation.resume(returning: true)
+        assertSuccess(await endTask.result)
         makeCoordinator(interactor: interactor).end(surveyPresentation: .presentSurvey)
 
         XCTAssertEqual(surveyFetchCount, 1)
@@ -332,7 +346,7 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
         XCTAssertEqual(surveyFetchCount, 0)
     }
 
-    func test_failedVisitorEndDoesNotMakeSurveyEligible() {
+    func test_failedVisitorEndDoesNotMakeSurveyEligible() async {
         var surveyFetchCount = 0
         let engagement = CoreSdkClient.Engagement.mock(
             fetchSurvey: { _, _ in
@@ -341,18 +355,16 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
             actionOnEnd: .showSurvey
         )
         var coreSdkClient = CoreSdkClient.mock
-        coreSdkClient.endEngagement = { completion in
-            completion(false, .mock())
+        coreSdkClient.endEngagement = {
+            throw CoreSdkClient.SalemoveError.mock()
         }
         let interactor = makeInteractor(coreSdk: coreSdkClient)
         interactor.onEngagementChanged(engagement)
         interactor.state = .engaged(.mock())
-        interactor.endSession { result in
-            guard case .failure = result else {
-                XCTFail("Expected ending the engagement to fail")
-                return
-            }
-        }
+        do {
+            try await interactor.endSession()
+            XCTFail("Expected ending the engagement to fail")
+        } catch {}
 
         makeCoordinator(interactor: interactor).end(surveyPresentation: .presentSurvey)
 
@@ -369,7 +381,14 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
         )
         var coreSdkClient = CoreSdkClient.failing
         coreSdkClient.getCurrentEngagement = { engagement }
-        let interactor = Interactor.mock(environment: .init(coreSdk: coreSdkClient, queuesMonitor: .mock(), gcd: .failing, log: .failing))
+        let interactor = Interactor.mock(
+            environment: .init(
+                coreSdk: coreSdkClient,
+                queuesMonitor: .mock(),
+                gcd: .mock,
+                log: .failing
+            )
+        )
         interactor.onEngagementChanged(engagement)
         interactor.end(with: .visitorHungUp)
         var alertManagerEnv = AlertManager.Environment.failing()
@@ -424,14 +443,10 @@ private extension EngagementCoordinatorSurveyTests {
     }
 
     func assertSuccess(
-        _ result: Result<Void, Error>?,
+        _ result: Result<Void, Error>,
         file: StaticString = #filePath,
         line: UInt = #line
     ) {
-        guard let result else {
-            XCTFail("Expected stale end request to complete", file: file, line: line)
-            return
-        }
         guard case .success = result else {
             XCTFail("Expected successful Core end to remain successful", file: file, line: line)
             return
