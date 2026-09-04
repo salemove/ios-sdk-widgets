@@ -1,0 +1,19 @@
+# Glia standards review bot — reviews new PRs against the Engineering
+# Knowledge Base and posts findings as a non-blocking PR review.
+# Managed centrally: salemove/claude-code-plugins (scripts/glia-review-rollout).
+name: Glia Review
+
+on:
+  pull_request:
+    types: [opened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
+jobs:
+  review:
+    uses: salemove/claude-code-plugins/.github/workflows/glia-review.yml@master
+    secrets:
+      GLIA_REVIEW_APP_PRIVATE_KEY: ${{ secrets.GLIA_REVIEW_APP_PRIVATE_KEY }}
