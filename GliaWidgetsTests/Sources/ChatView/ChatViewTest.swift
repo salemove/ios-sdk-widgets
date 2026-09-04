@@ -151,11 +151,12 @@ final class ChatViewTest: XCTestCase {
         let mockQueue = Queue.mock(id: queueId, media: [.text, .audio, .messaging])
         let queuesMonitor = QueuesMonitor.mock(
             getQueues: { [mockQueue] },
-            subscribeForQueuesUpdates: { _, completion in
-                completion(.success(mockQueue))
-                return UUID.mock.uuidString
-            },
-            unsubscribeFromUpdates: nil
+            subscribeForQueuesUpdates: { _ in
+                AsyncThrowingStream { continuation in
+                    continuation.yield(mockQueue)
+                    continuation.finish()
+                }
+            }
         )
         _ = try await queuesMonitor.fetchAndMonitorQueues(queuesIds: [queueId])
         entryWidgetEnv.queuesMonitor = queuesMonitor
