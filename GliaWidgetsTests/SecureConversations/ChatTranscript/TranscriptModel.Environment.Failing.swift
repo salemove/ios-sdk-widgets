@@ -4,8 +4,9 @@
 extension SecureConversations.TranscriptModel.Environment {
     static let failing = SecureConversations.TranscriptModel.Environment(
         secureConversations: .failing,
-        fetchFile: { _, _, _ in
+        fetchFile: { _, _ in
             fail("\(Self.self).fetchFile")
+            throw NSError(domain: "fetchFile", code: -1)
         },
         fileManager: .failing,
         data: .failing,
@@ -23,13 +24,15 @@ extension SecureConversations.TranscriptModel.Environment {
             fail("\(Self.self).loadChatMessagesFromHistory")
             return false
         },
-        fetchChatHistory: { _ in
+        fetchChatHistory: {
             fail("\(Self.self).fetchChatHistory")
+            throw NSError(domain: "fetchChatHistory", code: -1)
         },
         uiApplication: .failing,
         queueIds: [],
-        getQueues: { _ in
-            fail("\(Self.self).listQueues")
+        getQueues: {
+            fail("\(Self.self).getQueues")
+            throw NSError(domain: "getQueues", code: -1)
         },
         createFileUploadListModel: { _ in
             fail("\(Self.self).createFileUploadListModel")
@@ -40,10 +43,10 @@ extension SecureConversations.TranscriptModel.Environment {
             return .mock
         },
         fileUploadListStyle: .mock,
-        fetchSiteConfigurations: { _ in
+        fetchSiteConfigurations: {
             fail("\(Self.self).fetchSiteConfigurations")
+            throw NSError(domain: "fetchSiteConfigurations", code: -1)
         },
-        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.TestScheduler(startDate: .mock),
         interactor: .mock(),
         startSocketObservation: {
             fail("\(Self.self).startSocketObservation")

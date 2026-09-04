@@ -70,7 +70,9 @@ public final class CallVisualizer {
             methodParams: ["source"]
         )
         environment.log.prefixed(Self.self).info("Show Visitor Code Dialog")
-        coordinator.showVisitorCodeViewController(by: .alert(source))
+        Task { @MainActor in
+            await coordinator.showVisitorCodeViewController(by: .alert(source))
+        }
     }
 
     /// Closes the VisitorCode popup alert if it is currently visible.
@@ -111,9 +113,11 @@ public final class CallVisualizer {
             methodParams: ["container", "onEngagementAccepted"]
         )
         environment.log.prefixed(Self.self).info("Show Visitor Code Dialog")
-        coordinator.showVisitorCodeViewController(
-            by: .embedded(container, onEngagementAccepted: onEngagementAccepted)
-        )
+        Task {
+            await coordinator.showVisitorCodeViewController(
+                by: .embedded(container, onEngagementAccepted: onEngagementAccepted)
+            )
+        }
     }
 
     public func resume() {
@@ -134,8 +138,9 @@ extension CallVisualizer {
         coordinator.handleAcceptedUpgrade()
     }
 
-    func handleEngagementRequest(request: CoreSdkClient.Request, answer: Command<Bool>) {
-        coordinator.handleEngagementRequest(request: request, answer: answer)
+    @MainActor
+    func handleEngagementRequest(request: CoreSdkClient.Request, answer: Command<Bool>) async {
+        await coordinator.handleEngagementRequest(request: request, answer: answer)
     }
 
     func addVideoStream(stream: CoreSdkClient.VideoStreamable) {
@@ -155,8 +160,9 @@ extension CallVisualizer {
         delegate?(.engagementEnded)
     }
 
-    func handleRestoredEngagement() {
-        coordinator.showSnackBarIfNeeded()
+    @MainActor
+    func handleRestoredEngagement() async {
+        await coordinator.showSnackBarIfNeeded()
     }
 
     func restoreVideoIfPossible() {
@@ -196,7 +202,9 @@ extension CallVisualizer {
             else {
                 switch event {
                 case let .onEngagementRequest(request, answer):
-                    handleEngagementRequest(request: request, answer: answer)
+                    Task {
+                        await self.handleEngagementRequest(request: request, answer: answer)
+                    }
                 default:
                     break
                 }
@@ -204,11 +212,12 @@ extension CallVisualizer {
             }
             switch event {
             case let .upgradeOffer(offer, answer):
-                environment.coreSdk.requestEngagedOperator { operators, _ in
+                Task { @MainActor [weak self] in
+                    guard let self else { return }
                     self.environment.alertManager.present(
                         in: .global,
                         as: .mediaUpgrade(
-                            operators: operators?.compactMap { $0.name }.joined(separator: ", ") ?? "",
+                            operators: await self.engagedOperatorNamesForUpgradeOffer(),
                             offer: offer,
                             accepted: { [weak self] in
                                 self?.handleAcceptedUpgrade()
@@ -228,6 +237,20 @@ extension CallVisualizer {
             default:
                 break
             }
+        }
+    }
+
+    @MainActor
+    private func engagedOperatorNamesForUpgradeOffer() async -> String {
+        do {
+            return try await environment.coreSdk.requestEngagedOperator()?
+                .compactMap { $0.name }
+                .joined(separator: ", ") ?? ""
+        } catch {
+            environment.log.prefixed(Self.self).warning(
+                "Failed to request engaged operator for upgrade offer: \(error)"
+            )
+            return ""
         }
     }
 }

@@ -116,7 +116,15 @@ class Interactor {
             .removeDuplicates()
             .compactMap { $0 }
             .sink { [weak self] queueIds in
-                self?.environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds)
+                Task { [weak self] in
+                    do {
+                        _ = try await self?.environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds)
+                    } catch {
+                        self?.environment.log.prefixed(Self.self).warning(
+                            "Failed to fetch and monitor queues: \(error)"
+                        )
+                    }
+                }
             }
             .store(in: &cancellables)
     }
@@ -142,6 +150,13 @@ class Interactor {
                 }
             }
     }
+
+    private func performOnMain(_ work: @escaping (Interactor) -> Void) {
+        environment.gcd.mainQueue.async { [weak self] in
+            guard let self else { return }
+            work(self)
+        }
+    }
 }
 
 extension Interactor {
@@ -149,12 +164,11 @@ extension Interactor {
         self.queueIds = queueIds
     }
 
+    @MainActor
     func enqueueForEngagement(
         engagementKind: EngagementKind,
-        replaceExisting: Bool,
-        success: @escaping () -> Void,
-        failure: @escaping (CoreSdkClient.SalemoveError) -> Void
-    ) {
+        replaceExisting: Bool
+    ) async throws {
         invalidateSurveyEligibility()
 
         switch engagementKind {
@@ -175,116 +189,98 @@ extension Interactor {
             .map(CoreSdkClient.VisitorContext.ContextType.assetId)
             .map(CoreSdkClient.VisitorContext.init(_:))
 
-        self.environment.coreSdk.queueForEngagement(
-            .init(
-                queueIds: queueIds ?? [],
-                visitorContext: coreSdkVisitorContext,
-                // shouldCloseAllQueues is `true` by default core sdk,
-                // here it is passed explicitly
-                shouldCloseAllQueues: true,
-                mediaType: engagementKind.mediaType,
-                engagementOptions: options
-            ),
-            replaceExisting
-        ) { [weak self] result in
-            switch result {
-            case .failure(let error):
-                self?.environment.log.prefixed(Self.self).info("Queue for engagement stopped due to error or empty queue")
-                self?.state = .ended(.byError)
-                failure(error)
-            case .success(let ticket):
-
-                if case .enqueueing = self?.state {
-                    self?.state = .enqueued(ticket, engagementKind)
-                }
-                success()
+        let engagementOptions: CoreSdkClient.QueueForEngagementOptions = .init(
+            queueIds: queueIds ?? [],
+            visitorContext: coreSdkVisitorContext,
+            // shouldCloseAllQueues is `true` by default core sdk,
+            // here it is passed explicitly
+            shouldCloseAllQueues: true,
+            mediaType: engagementKind.mediaType,
+            engagementOptions: options
+        )
+        do {
+            let ticket = try await environment.coreSdk.queueForEngagement(
+                engagementOptions,
+                replaceExisting
+            )
+            if case .enqueueing = state {
+                state = .enqueued(ticket, engagementKind)
             }
+        } catch {
+            self.environment.log.prefixed(Self.self).info("Queue for engagement stopped due to error or empty queue")
+            self.state = .ended(.byError)
+            throw error
         }
     }
 
-    func sendMessagePreview(_ message: String) {
-        environment.coreSdk.sendMessagePreview(message) { _, _ in }
+    func sendMessagePreview(_ message: String) async throws -> Bool {
+        try await environment.coreSdk.sendMessagePreview(message)
     }
 
-    func send(
-        messagePayload: CoreSdkClient.SendMessagePayload,
-        completion: @escaping (Result<CoreSdkClient.Message, CoreSdkClient.GliaCoreError>) -> Void
-    ) {
-        environment.coreSdk.sendMessageWithMessagePayload(messagePayload, completion)
+    func send(messagePayload: CoreSdkClient.SendMessagePayload) async throws -> CoreSdkClient.Message {
+        try await environment.coreSdk.sendMessageWithMessagePayload(messagePayload)
     }
 
-    func endSession(completion: @escaping (Result<Void, Error>) -> Void) {
+    @MainActor
+    func endSession() async throws {
         switch state {
         case .none:
-            completion(.success(()))
+            break
         case .enqueueing:
             state = .ended(.byVisitor)
-            completion(.success(()))
         case let .enqueued(ticket, _):
-            exitQueue(
-                ticket: ticket,
-                completion: completion
-            )
+            try await exitQueue(ticket: ticket)
         case .engaged where currentEngagement?.isTransferredSecureConversation == true:
-            completion(.success(()))
+            break
         case .engaged:
-            endEngagement(completion: completion)
+            try await endEngagement()
         case .ended:
-            completion(.success(()))
-
             // `cleanup` is called once survey fetching is already initiated,
             // so no need to store `endedEngagement` anymore.
             cleanup()
         }
     }
 
-    func exitQueue(
-        ticket: CoreSdkClient.QueueTicket,
-        completion: @escaping (Result<Void, Error>) -> Void
-) {
+    @MainActor
+    func exitQueue(ticket: CoreSdkClient.QueueTicket) async throws {
         environment.log.prefixed(Self.self).info("Cancel queue ticket")
-        environment.coreSdk.cancelQueueTicket(ticket) { [weak self] _, error in
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                self?.state = .ended(.byVisitor)
-                completion(.success(()))
-            }
+        do {
+            _ = try await environment.coreSdk.cancelQueueTicket(ticket)
+            state = .ended(.byVisitor)
+        } catch {
+            throw error
         }
     }
 
-    func endEngagement(completion: @escaping (Result<Void, Error>) -> Void) {
+    @MainActor
+    func endEngagement() async throws {
         let requestID = UUID()
         surveyEligibility = .pendingVisitorEnd(
             requestID: requestID,
             engagement: currentEngagement
         )
-        environment.coreSdk.endEngagement { [weak self] _, error in
-            guard let self else { return }
-            if let error = error {
-                if case let .pendingVisitorEnd(pendingRequestID, _) = self.surveyEligibility,
-                   pendingRequestID == requestID {
-                    self.surveyEligibility = .unavailable
-                }
-                completion(.failure(error))
-            } else {
-                guard case let .pendingVisitorEnd(pendingRequestID, endingEngagement) = self.surveyEligibility,
-                      pendingRequestID == requestID else {
-                    completion(.success(()))
-                    return
-                }
 
-                if let endingEngagement,
-                   self.currentEngagement == nil || self.currentEngagement?.id == endingEngagement.id,
-                   self.endedEngagement?.id == endingEngagement.id {
-                    self.surveyEligibility = .eligible(endingEngagement)
-                } else {
-                    self.surveyEligibility = .unavailable
-                }
-                self.state = .ended(.byVisitor)
-                completion(.success(()))
+        do {
+            _ = try await environment.coreSdk.endEngagement()
+        } catch {
+            if case let .pendingVisitorEnd(pendingRequestID, _) = surveyEligibility,
+               pendingRequestID == requestID {
+                surveyEligibility = .unavailable
             }
+            throw error
         }
+
+        guard case let .pendingVisitorEnd(pendingRequestID, endingEngagement) = surveyEligibility,
+              pendingRequestID == requestID else { return }
+
+        if let endingEngagement,
+           currentEngagement == nil || currentEngagement?.id == endingEngagement.id,
+           endedEngagement?.id == endingEngagement.id {
+            surveyEligibility = .eligible(endingEngagement)
+        } else {
+            surveyEligibility = .unavailable
+        }
+        state = .ended(.byVisitor)
     }
 
     /**
@@ -325,23 +321,23 @@ extension Interactor {
 extension Interactor: CoreSdkClient.Interactable {
     var onEngagementChanged: CoreSdkClient.EngagementChangedBlock {
         return { [weak self] engagement in
-            guard let self else { return }
+            self?.performOnMain { interactor in
+                interactor.currentEngagement = engagement
 
-            currentEngagement = engagement
-
-            if let engagement {
-                endedEngagement = engagement
-                if case let .pendingVisitorEnd(_, pendingEngagement?) = surveyEligibility,
-                   pendingEngagement.id == engagement.id {
+                if let engagement {
+                    interactor.endedEngagement = engagement
+                    if case let .pendingVisitorEnd(_, pendingEngagement?) = interactor.surveyEligibility,
+                       pendingEngagement.id == engagement.id {
+                        return
+                    }
+                    interactor.invalidateSurveyEligibility()
                     return
                 }
-                invalidateSurveyEligibility()
-                return
-            }
 
-            // Engagement became nil. Keep the last engagement for post-engagement UI
-            // decisions when one was observed; otherwise clear all lifecycle state.
-            cleanup(endedEngagement != nil ? .keepEndedEngagement : .clearEndedEngagement)
+                // Engagement became nil. Keep the last engagement for post-engagement UI
+                // decisions when one was observed; otherwise clear all lifecycle state.
+                interactor.cleanup(interactor.endedEngagement != nil ? .keepEndedEngagement : .clearEndedEngagement)
+            }
         }
     }
 
@@ -377,10 +373,12 @@ extension Interactor: CoreSdkClient.Interactable {
 
     var onEngagementTransfer: CoreSdkClient.EngagementTransferBlock {
         return { [weak self] operators in
-            let engagedOperator = operators?.first
+            self?.performOnMain { interactor in
+                let engagedOperator = operators?.first
 
-            self?.state = .engaged(engagedOperator)
-            self?.notify(.engagementTransferred(engagedOperator))
+                interactor.state = .engaged(engagedOperator)
+                interactor.notify(.engagementTransferred(engagedOperator))
+            }
         }
     }
 
@@ -418,24 +416,26 @@ extension Interactor: CoreSdkClient.Interactable {
 
     var onAudioStreamAdded: CoreSdkClient.AudioStreamAddedBlock {
         return { [weak self] stream, error in
-            guard let self else { return }
-            if let stream = stream {
-                notify(.audioStreamAdded(stream))
-                currentEngagement = environment.coreSdk.getCurrentEngagement()
-            } else if let error = error {
-                notify(.audioStreamError(error))
+            self?.performOnMain { interactor in
+                if let stream {
+                    interactor.notify(.audioStreamAdded(stream))
+                    interactor.currentEngagement = interactor.environment.coreSdk.getCurrentEngagement()
+                } else if let error {
+                    interactor.notify(.audioStreamError(error))
+                }
             }
         }
     }
 
     var onVideoStreamAdded: CoreSdkClient.VideoStreamAddedBlock {
         return { [weak self] stream, error in
-            guard let self else { return }
-            if let stream = stream {
-                notify(.videoStreamAdded(stream))
-                currentEngagement = environment.coreSdk.getCurrentEngagement()
-            } else if let error = error {
-                notify(.videoStreamError(error))
+            self?.performOnMain { interactor in
+                if let stream {
+                    interactor.notify(.videoStreamAdded(stream))
+                    interactor.currentEngagement = interactor.environment.coreSdk.getCurrentEngagement()
+                } else if let error {
+                    interactor.notify(.videoStreamError(error))
+                }
             }
         }
     }
@@ -444,52 +444,63 @@ extension Interactor: CoreSdkClient.Interactable {
         notify(.receivedMessage(message))
     }
 
-    func start() {
-        environment.coreSdk.requestEngagedOperator { [weak self] operators, _ in
-            let engagedOperator = operators?.first
-            self?.state = .engaged(engagedOperator)
+    @MainActor
+    func start() async {
+        let operators: [CoreSdkClient.Operator]?
+        do {
+            operators = try await environment.coreSdk.requestEngagedOperator()
+        } catch {
+            environment.log.prefixed(Self.self).warning(
+                "Failed to request engaged operator: \(error)"
+            )
+            operators = nil
         }
+        let engagedOperator = operators?.first
+        state = .engaged(engagedOperator)
         currentEngagement = environment.coreSdk.getCurrentEngagement()
     }
 
     func start(engagement: CoreSdkClient.Engagement) {
         switch engagement.source {
         case .coreEngagement:
-            start()
-
+            Task { @MainActor in
+               await start()
+            }
         case .callVisualizer:
-            start()
-
+            Task { @MainActor in
+                await start()
+            }
         case .unknown(let type):
             debugPrint("Unknown engagement started (type='\(type)').")
-
         @unknown default:
             assertionFailure("Unexpected case in 'EngaagementSource' enum.")
         }
     }
 
     func end(with reason: CoreSdkClient.EngagementEndingReason) {
-        let endReason: EndEngagementReason
-        // Core invokes this callback before clearing its current engagement.
-        endedEngagement = environment.coreSdk.getCurrentEngagement()
+        performOnMain { interactor in
+            let endReason: EndEngagementReason
+            // Core invokes this callback before clearing its current engagement.
+            interactor.endedEngagement = interactor.environment.coreSdk.getCurrentEngagement()
 
-        switch reason {
-        case .visitorHungUp:
-            endReason = .byVisitor
-        case .operatorHungUp, .followUp:
-            endReason = .byOperator
-        case .error:
-            endReason = .byError
-        @unknown default:
-            endReason = .byError
-        }
+            switch reason {
+            case .visitorHungUp:
+                endReason = .byVisitor
+            case .operatorHungUp, .followUp:
+                endReason = .byOperator
+            case .error:
+                endReason = .byError
+            @unknown default:
+                endReason = .byError
+            }
 
-        if let endedEngagement {
-            surveyEligibility = .eligible(endedEngagement)
-        } else {
-            surveyEligibility = .unavailable
+            if let endedEngagement = interactor.endedEngagement {
+                interactor.surveyEligibility = .eligible(endedEngagement)
+            } else {
+                interactor.surveyEligibility = .unavailable
+            }
+            interactor.state = .ended(endReason)
         }
-        state = .ended(endReason)
     }
 
     func fail(error: CoreSdkClient.SalemoveError) {
@@ -497,7 +508,15 @@ extension Interactor: CoreSdkClient.Interactable {
         // and it leads to fetchQueues failure that stops queues observing
         // Also when token expires CoreSDK makes force deauthentication which
         // allows to refetch the queues without errors
-        environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds ?? [])
+        Task { [environment, queueIds] in
+            do {
+                _ = try await environment.queuesMonitor.fetchAndMonitorQueues(queuesIds: queueIds ?? [])
+            } catch {
+                environment.log.prefixed(Self.self).warning(
+                    "Failed to restart queues monitoring after interactor failure: \(error)"
+                )
+            }
+        }
         notify(.error(error))
     }
 }

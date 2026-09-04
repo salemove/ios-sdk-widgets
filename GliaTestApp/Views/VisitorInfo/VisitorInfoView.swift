@@ -3,7 +3,11 @@ import GliaWidgets
 
 struct VisitorInfoView: View {
     @SwiftUI.Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel = VisitorInfoViewModel()
+    @StateObject private var viewModel: VisitorInfoViewModel
+
+    init(appState: AppState) {
+        _viewModel = StateObject(wrappedValue: VisitorInfoViewModel(appState: appState))
+    }
 
     var body: some View {
         NavigationView {

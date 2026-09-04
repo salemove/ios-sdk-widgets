@@ -1,5 +1,4 @@
 @testable import GliaWidgets
-@_spi(GliaWidgets) import GliaCoreSDK
 import XCTest
 
 extension GliaTests {
@@ -77,12 +76,10 @@ private extension GliaTests {
         logger.infoClosure = { _, _, _, _ in }
         sdkEnv.coreSdk.createLogger = { _ in logger }
         sdkEnv.conditionalCompilation.isDebug = { true }
-        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         sdkEnv.isAuthenticated = { isAuthenticated }
         sdkEnv.coreSdk.getCurrentEngagement = { nil }
-        sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        sdkEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         let window = UIWindow(frame: .zero)
         window.rootViewController = UIViewController()
         window.makeKeyAndVisible()

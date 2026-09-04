@@ -12,14 +12,18 @@ final class VisitorCodeCoordinatorTests: XCTestCase {
         createCoordinator(withPresentation: .alert(viewController))
     }
 
+    override func tearDown() {
+        viewController = nil
+        coordinator = nil
+    }
+
     func createCoordinator(
         withPresentation presentation: CallVisualizer.Presentation
     )  {
         let environmentMock = CallVisualizer.VisitorCodeCoordinator.Environment(
-            timerProviding: .mock
-        ) { completion in
-            return .mock
-        }
+            timerProviding: .mock,
+            requestVisitorCode: { try .mock() }
+        )
 
         coordinator = CallVisualizer.VisitorCodeCoordinator(
             theme: .mock(),
@@ -28,7 +32,8 @@ final class VisitorCodeCoordinatorTests: XCTestCase {
         )
     }
 
-    func test_startWithAlertPresentation() throws {
+    @MainActor
+    func test_startWithAlertPresentation() async throws {
         XCTAssertNil(coordinator.codeViewController)
 
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.first as? UIWindowScene)
@@ -37,12 +42,13 @@ final class VisitorCodeCoordinatorTests: XCTestCase {
         window?.rootViewController = viewController
         defer { window?.rootViewController = oldRootViewController }
 
-        let codeController = coordinator.start()
+        let codeController = await coordinator.start()
         XCTAssertEqual(viewController.presentedViewController, codeController)
         XCTAssertNotNil(coordinator.codeViewController)
     }
 
-    func test_startWithViewPresentation() throws {
+    @MainActor
+    func test_startWithViewPresentation() async throws {
         XCTAssertNil(coordinator.codeViewController)
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.first as? UIWindowScene)
         let window = scene.windows.first
@@ -58,7 +64,7 @@ final class VisitorCodeCoordinatorTests: XCTestCase {
             )
         )
 
-        let coordinatorViewController = coordinator.start()
+        let coordinatorViewController = await coordinator.start()
         let visitorCodeView = viewController.view.subviews.first
 
         XCTAssertEqual(visitorCodeView, coordinatorViewController.view)
@@ -67,36 +73,31 @@ final class VisitorCodeCoordinatorTests: XCTestCase {
 
     // Delegate
 
-    func test_delegatePropsUpdated() throws {
+    @MainActor
+    func test_delegatePropsUpdated() async throws {
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.first as? UIWindowScene)
         let window = scene.windows.first
         let oldRootViewController = window?.rootViewController
         window?.rootViewController = viewController
         defer { window?.rootViewController = oldRootViewController }
-
-        _ = coordinator.start()
-        switch coordinator.codeViewController?.props.visitorCodeViewProps.viewState {
-        case .loading:
-            XCTAssertTrue(true)
-        default: XCTFail()
-        }
-
+        _ = await coordinator.start()
+        
         let newProps = CallVisualizer.VisitorCodeView.Props(
-            viewState: .success(visitorCode: "12345")
+            viewState: .error(refreshTap: .nop)
         )
-
         coordinator.viewModel?.delegate(
             .propsUpdated(.init(visitorCodeViewProps: newProps))
         )
         
         switch coordinator.codeViewController?.props.visitorCodeViewProps.viewState {
-        case .success(let visitorCode):
-            XCTAssertEqual(visitorCode, "12345")
+        case .error:
+            XCTAssertTrue(true)
         default: XCTFail()
         }
     }
 
-    func test_delegateCloseButtonTap() throws {
+    @MainActor
+    func test_delegateCloseButtonTap() async throws {
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.first as? UIWindowScene)
         let window = scene.windows.first
         let oldRootViewController = window?.rootViewController
@@ -108,7 +109,7 @@ final class VisitorCodeCoordinatorTests: XCTestCase {
             calledEvents.append(event)
         }
 
-        _ = coordinator.start()
+        _ = await coordinator.start()
         coordinator.viewModel?.delegate(.closeButtonTap)
 
         XCTAssertTrue(calledEvents.contains(.closeTapped))

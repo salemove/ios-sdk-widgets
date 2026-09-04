@@ -1,3 +1,5 @@
+// swiftlint:disable:next blanket_disable_command
+// swiftlint:disable function_body_length
 @testable import GliaWidgets
 @_spi(GliaWidgets) import GliaCoreSDK
 
@@ -7,11 +9,13 @@ extension ChatViewModel.Environment {
     ) -> Self {
         .init(
             secureConversations: .failing,
-            fetchFile: { _, _, _ in
+            fetchFile: { _, _ in
                 fail("\(Self.self).fetchFile")
+                throw NSError(domain: "fetchFile", code: -1)
             },
-            uploadFileToEngagement: { _, _, _ in
+            uploadFileToEngagement: { _, _ in
                 fail("\(Self.self).uploadFileToEngagement")
+                throw NSError(domain: "uploadFileToEngagement", code: -1)
             },
             fileManager: .failing,
             data: .failing,
@@ -30,8 +34,9 @@ extension ChatViewModel.Environment {
                 fail("\(Self.self).loadChatMessagesFromHistory")
                 return true
             },
-            fetchSiteConfigurations: { _ in
+            fetchSiteConfigurations: {
                 fail("\(Self.self).fetchSiteConfigurations")
+                throw NSError(domain: "fetchSiteConfigurations", code: -1)
             },
             getCurrentEngagement: { nil },
             getNonTransferredSecureConversationEngagement: { nil },
@@ -41,8 +46,9 @@ extension ChatViewModel.Environment {
                 return .mock
             },
             uiApplication: .failing,
-            fetchChatHistory: fetchChatHistory ?? { _ in
+            fetchChatHistory: fetchChatHistory ?? {
                 fail("\(Self.self).fetchChatHistory")
+                throw NSError(domain: "fetchChatHistory", code: -1)
             },
             fileUploadListStyle: .mock,
             createFileUploadListModel: { _ in

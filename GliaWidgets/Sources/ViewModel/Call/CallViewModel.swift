@@ -74,17 +74,23 @@ class CallViewModel: EngagementViewModel, ViewModel {
         environment.proximityManager.stop()
     }
 
-    func event(_ event: Event) {
+    func asyncEvent(_ event: AsyncEvent) async {
         switch event {
         case .viewDidLoad:
-            start()
+            await start()
+        }
+    }
+
+    func event(_ event: Event) {
+        switch event {
         case .callButtonTapped(let button):
             callButtonTapped(button)
         }
     }
 
-    override func start() {
-        super.start()
+    @MainActor
+    override func start() async {
+        await super.start()
 
         subscribeOnNetworkReachabilityChanges()
         subscribeOnCallQualityChanges()
@@ -124,7 +130,9 @@ class CallViewModel: EngagementViewModel, ViewModel {
             action?(.queue)
         case .engaged:
             showConnecting()
-            showSnackBarIfNeeded()
+            Task {
+                await showSnackBarIfNeeded()
+            }
         case .ended:
             call.end()
         default:
@@ -229,18 +237,15 @@ class CallViewModel: EngagementViewModel, ViewModel {
         }
     }
 
-    func showSnackBarIfNeeded() {
-        environment.fetchSiteConfigurations { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case let .success(site):
-                guard site.mobileObservationEnabled == true else { return }
-                guard site.mobileObservationIndicationEnabled == true else { return }
-                let style = self.environment.viewFactory.theme.call.snackBar
-                self.engagementAction?(.showSnackBarView(dismissTiming: .default, style: style))
-            default: return
-            }
-        }
+    @MainActor
+    func showSnackBarIfNeeded() async {
+        do {
+            let site = try await environment.fetchSiteConfigurations()
+            guard site.mobileObservationEnabled == true else { return }
+            guard site.mobileObservationIndicationEnabled == true else { return }
+            let style = self.environment.viewFactory.theme.call.snackBar
+            self.engagementAction?(.showSnackBarView(dismissTiming: .default, style: style))
+        } catch {}
     }
 
     override func interactorEvent(_ event: InteractorEvent) {
@@ -532,8 +537,11 @@ extension CallViewModel {
         case inactive
     }
 
-    enum Event {
+    enum AsyncEvent {
         case viewDidLoad
+    }
+
+    enum Event {
         case callButtonTapped(CallButton)
     }
 

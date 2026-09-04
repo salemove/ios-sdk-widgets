@@ -21,9 +21,7 @@ extension ChatViewModel {
 
         case .ended(.byOperator):
             func handleOperatorEndedEngagement() {
-                engagementAction?(.showAlert(.operatorEndedEngagement(action: { [weak self] in
-                    self?.endSession()
-                })))
+                engagementAction?(.showAlert(.operatorEndedEngagement(action: endSession)))
             }
 
             // When operator ends engagement, `endedEngagement` supposed to be
@@ -36,9 +34,13 @@ extension ChatViewModel {
 
             switch endedEngagement.actionOnEnd {
             case .showSurvey:
-                endSession()
+                Task { [weak self] in
+                    await self?.endSession()
+                }
             case .retain:
-                delegate?(.liveChatEngagementUpgradedToSecureMessaging(self))
+                Task {
+                    await asyncDelegate?(.liveChatEngagementUpgradedToSecureMessaging(self))
+                }
             case .showEndedNotification:
                 handleOperatorEndedEngagement()
             case let .unknown(unhandledCase):

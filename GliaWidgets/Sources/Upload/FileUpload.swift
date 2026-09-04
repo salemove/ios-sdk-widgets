@@ -57,6 +57,7 @@ class FileUpload {
     lazy var uuid = environment.uuid()
 
     private let storage: DataStorage
+    private var uploadTask: Task<Void, Never>?
     var environment: Environment
 
     init(with localFile: LocalFile, storage: DataStorage, environment: Environment) {
@@ -65,7 +66,12 @@ class FileUpload {
         self.environment = environment
     }
 
+    deinit {
+        uploadTask?.cancel()
+    }
+
     func startUpload() {
+        uploadTask?.cancel()
         // TODO: - Move to CoreSDK???
         environment.openTelemetry.logger.i(.chatScreenFileUploading) { _ in
             // TODO: - file id does not exist until uploading is finished. Need to rewrite as on Android.
@@ -98,14 +104,23 @@ class FileUpload {
         }
 
         state.value = .uploading(progress: progress)
-        environment.uploadFile.uploadFile(
-            file,
-            progress: onProgress,
-            completion: onCompletion
-        )
+        let uploadFile = environment.uploadFile
+        uploadTask = Task {
+            do {
+                let engagementFile = try await uploadFile.uploadFile(file, progress: onProgress)
+                guard !Task.isCancelled else { return }
+                onCompletion(.success(engagementFile))
+            } catch is CancellationError {
+                return
+            } catch {
+                guard !Task.isCancelled else { return }
+                onCompletion(.failure(error))
+            }
+        }
     }
 
     func removeLocalFile() {
+        uploadTask?.cancel()
         guard let id = engagementFileInformation?.id else { return }
         storage.removeData(for: id)
     }

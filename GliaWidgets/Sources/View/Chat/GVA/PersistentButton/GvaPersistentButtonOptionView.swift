@@ -3,7 +3,7 @@ import UIKit
 class GvaPersistentButtonOptionView: BaseView {
     static let height: CGFloat = 42
 
-    var tap: (() -> Void)?
+    var tap: (() async -> Void)?
 
     private let text: String?
     private let textLabel = UILabel()
@@ -76,6 +76,8 @@ class GvaPersistentButtonOptionView: BaseView {
     }
 
     @objc private func onTap() {
-        tap?()
+        Task {
+            await tap?()
+        }
     }
 }

@@ -2,7 +2,7 @@
 import XCTest
 
 extension SecureConversationsTranscriptModelTests {
-    func test_singleChoiceResponseCardActionIsNotSupported() throws {
+    func test_singleChoiceResponseCardActionIsNotSupported() async throws {
         let viewModel = createViewModel()
         viewModel.delegate = { _ in
             XCTFail("Single choice response card actions should not be handled")
@@ -10,10 +10,10 @@ extension SecureConversationsTranscriptModelTests {
 
         let option = try ChatChoiceCardOption.mock()
 
-        viewModel.event(.choiceOptionSelected(option, "messageId"))
+        await viewModel.asyncEvent(.choiceOptionSelected(option, "messageId"))
     }
 
-    func test_customResponseCardActionIsNotSupported() throws {
+    func test_customResponseCardActionIsNotSupported() async throws {
         let viewModel = createViewModel()
         viewModel.delegate = { _ in
             XCTFail("Custom response card actions should not be handled")
@@ -21,7 +21,7 @@ extension SecureConversationsTranscriptModelTests {
 
         let option = HtmlMetadata.Option(text: "text", value: "value")
         let messageId = MessageRenderer.Message.Identifier(rawValue: "messageId")
-        viewModel.event(
+        await viewModel.asyncEvent(
             .customCardOptionSelected(
                 option: option,
                 messageId: messageId
@@ -40,7 +40,7 @@ private extension SecureConversationsTranscriptModelTests {
         modelEnv.log = logger
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
-        modelEnv.getQueues = { callback in callback(.success([])) }
+        modelEnv.getQueues = { [] }
         modelEnv.uiApplication.canOpenURL = { _ in true }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }

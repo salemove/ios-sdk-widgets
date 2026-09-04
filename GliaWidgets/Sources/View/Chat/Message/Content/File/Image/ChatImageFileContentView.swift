@@ -13,7 +13,7 @@ class ChatImageFileContentView: ChatFileContentView {
         content: Content,
         contentAlignment: ChatMessageContentAlignment,
         accessibilityProperties: ChatFileContentView.AccessibilityProperties,
-        tap: @escaping () -> Void
+        tap: @escaping () async -> Void
     ) {
         self.style = style
         self.contentAlignment = contentAlignment
