@@ -667,10 +667,12 @@ class InteractorTests: XCTestCase {
             return [.mock()]
         }
         
-        queuesMonitor.environment.subscribeForQueuesUpdates = { _, completion in
+        queuesMonitor.environment.subscribeForQueuesUpdates = { _ in
             calls.append(.subscribeForUpdates)
-            completion(.success(.mock()))
-            return UUID().uuidString
+            return AsyncThrowingStream { continuation in
+                continuation.yield(.mock())
+                continuation.finish()
+            }
         }
         
         interactor.environment.queuesMonitor = queuesMonitor
