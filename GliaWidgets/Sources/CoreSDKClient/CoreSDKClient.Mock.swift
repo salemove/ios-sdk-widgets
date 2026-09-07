@@ -1,13 +1,12 @@
 #if DEBUG
 import Foundation
-@_spi(GliaWidgets) import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 extension CoreSdkClient {
     static let mock = Self(
         pushNotifications: .mock,
         liveObservation: .mock,
         secureConversations: .mock,
-        createAppDelegate: { .mock },
         clearSession: {},
         localeProvider: .mock,
         configureWithConfiguration: { _ in },
@@ -76,18 +75,10 @@ extension CoreSdkClient.PushNotifications {
         applicationDidRegisterForRemoteNotificationsWithDeviceToken: { _, _ in },
         applicationDidFailToRegisterForRemoteNotificationsWithError: { _, _ in },
         setPushHandler: { _ in },
-        pushHandler: { nil },
         subscribeTo: { _ in },
         actions: .mock,
         userNotificationCenterWillPresent: { _, _, _ in },
         userNotificationCenterDidReceiveResponse: { _, _, _ in }
-    )
-}
-
-extension CoreSdkClient.AppDelegate {
-    static let mock = Self(
-        applicationDidFinishLaunchingWithOptions: { _, _ in false },
-        applicationDidBecomeActive: { _ in }
     )
 }
 

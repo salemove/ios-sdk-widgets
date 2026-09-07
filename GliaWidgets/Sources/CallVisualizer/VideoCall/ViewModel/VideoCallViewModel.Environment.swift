@@ -1,5 +1,5 @@
 import Foundation
-import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 extension CallVisualizer.VideoCallViewModel {
     struct Environment {

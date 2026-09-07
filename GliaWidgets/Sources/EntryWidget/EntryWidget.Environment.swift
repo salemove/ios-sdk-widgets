@@ -1,6 +1,6 @@
 import Foundation
 import Combine
-@_spi(GliaWidgets) import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 extension EntryWidget {
     struct Environment {

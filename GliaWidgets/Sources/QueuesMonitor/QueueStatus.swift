@@ -1,5 +1,5 @@
 import Foundation
-import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 public enum QueueStatus: Decodable, Equatable, Hashable, RawRepresentable {
     /// Visitor can enqueue
@@ -38,7 +38,7 @@ public enum QueueStatus: Decodable, Equatable, Hashable, RawRepresentable {
         }
     }
 
-    public init(coreStatus: GliaCoreSDK.QueueStatus) {
+    init(coreStatus: GliaCoreSDK.QueueStatus) {
         switch coreStatus {
         case .open:
           self = .open

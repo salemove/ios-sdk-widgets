@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 @testable import GliaWidgets
 
 extension CoreSdkClient {
@@ -5,7 +6,6 @@ extension CoreSdkClient {
         pushNotifications: .failing,
         liveObservation: .failing,
         secureConversations: .failing,
-        createAppDelegate: { .failing },
         clearSession: { fail("\(Self.self).clearSession") },
         localeProvider: .failing,
         configureWithConfiguration: { _ in fail("\(Self.self).configureWithConfiguration") },
@@ -64,7 +64,7 @@ extension CoreSdkClient {
         },
         authentication: { _ in
             fail("\(Self.self).authentication")
-            return .mock
+            return .init()
         },
         fetchChatHistory: { [] },
         requestVisitorCode: {
@@ -152,10 +152,6 @@ extension CoreSdkClient.PushNotifications {
         setPushHandler: { _ in
             fail("\(Self.self).setPushHandler")
         },
-        pushHandler: {
-            fail("\(Self.self).pushHandler")
-            return nil
-        },
         subscribeTo: { _ in
             fail("\(Self.self).subscribeTo")
         },
@@ -165,18 +161,6 @@ extension CoreSdkClient.PushNotifications {
         ),
         userNotificationCenterWillPresent: { _, _, _ in },
         userNotificationCenterDidReceiveResponse: { _, _, _ in }
-    )
-}
-
-extension CoreSdkClient.AppDelegate {
-    static let failing = Self(
-        applicationDidFinishLaunchingWithOptions: { _, _ in
-            fail("\(Self.self).applicationDidFinishLaunchingWithOptions")
-            return false
-        },
-        applicationDidBecomeActive: { _ in
-            fail("\(Self.self).applicationDidBecomeActive")
-        }
     )
 }
 

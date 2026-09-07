@@ -1,4 +1,5 @@
-@_spi(GliaWidgets) import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
+import Combine
 import UIKit
 import GliaCoreDependency
 
@@ -6,7 +7,6 @@ struct CoreSdkClient {
     var pushNotifications: PushNotifications
     var liveObservation: LiveObservation
     var secureConversations: SecureConversations
-    var createAppDelegate: () -> AppDelegate
     var clearSession: () -> Void
     var localeProvider: LocaleProvider
     @Dependency(\.widgets.networkMonitor) var networkConnectionMonitor: NetworkConnectionMonitor
@@ -116,9 +116,9 @@ extension CoreSdkClient.SecureConversations {
         _ progress: @escaping EngagementFileProgressBlock
     ) async throws -> EngagementFileData
 
-    typealias SubscribeForUnreadMessageCount = () -> AsyncThrowingStream<Int?, Error>
+    typealias SubscribeForUnreadMessageCount = () throws -> AsyncThrowingStream<Int?, Error>
 
-    typealias ObservePendingStatus = () -> AsyncThrowingStream<Bool, Error>
+    typealias ObservePendingStatus = () throws -> AsyncThrowingStream<Bool, Error>
 }
 
 extension CoreSdkClient {
@@ -151,9 +151,8 @@ extension CoreSdkClient {
             _ application: UIApplication,
             _ error: any Error
         ) -> Void
-        var setPushHandler: (PushHandler?) -> Void
-        var pushHandler: () -> PushHandler?
-        var subscribeTo: ([GliaCoreSDK.PushNotificationsType]) -> Void
+        var setPushHandler: (PushActionBlock?) -> Void
+        var subscribeTo: ([PushNotificationsType]) -> Void
         var actions: Actions
         var userNotificationCenterWillPresent: (
             _ center: UNUserNotificationCenter,
@@ -165,22 +164,6 @@ extension CoreSdkClient {
             _ didReceiveResponse: UNNotificationResponse,
             _ completionHandler: @escaping () -> Void
         ) -> Void
-    }
-}
-
-extension CoreSdkClient.PushNotifications {
-    typealias Push = GliaCoreSDK.Push
-    typealias PushHandler = GliaCoreSDK.PushActionBlock
-}
-
-extension CoreSdkClient {
-    struct AppDelegate {
-        var applicationDidFinishLaunchingWithOptions: (
-            _ application: UIApplication,
-            _ launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-        ) -> Bool
-
-        var applicationDidBecomeActive: (_ application: UIApplication) -> Void
     }
 }
 
@@ -200,7 +183,6 @@ extension CoreSdkClient {
     typealias AudioStreamAddedBlock = GliaCoreSDK.AudioStreamAddedBlock
     typealias CameraDevice = GliaCoreSDK.CameraDevice
     typealias EngagementFile = GliaCoreSDK.EngagementFile
-    typealias EngagementFileCompletionBlock = GliaCoreSDK.EngagementFileCompletionBlock
     typealias EngagementFileData = GliaCoreSDK.EngagementFileData
     typealias EngagementFileInformation = GliaCoreSDK.EngagementFileInformation
     typealias EngagementFileProgressBlock = GliaCoreSDK.EngagementFileProgressBlock
@@ -229,7 +211,6 @@ extension CoreSdkClient {
     typealias QueueError = GliaCoreSDK.QueueError
     typealias QueueTicket = GliaCoreSDK.QueueTicket
     typealias RequestOfferBlock = GliaCoreSDK.RequestOfferBlock
-//    typealias GliaCore = GliaCoreSDK.GliaCore
     typealias SalemoveError = GliaCoreSDK.GliaCoreError
     typealias SingleChoiceOption = GliaCoreSDK.SingleChoiceOption
     typealias StreamableOnHoldHandler = GliaCoreSDK.StreamableOnHoldHandler
@@ -247,13 +228,8 @@ extension CoreSdkClient {
     typealias EngagementEndingReason = GliaCoreSDK.EngagementEndingReason
     typealias Cancellable = GliaCore.Cancellable
     typealias SendMessagePayload = GliaCoreSDK.SendMessagePayload
-    typealias ConfigureCompletion = GliaCoreSDK.GliaCore.ConfigureCompletion
-    typealias Logging = GliaCoreSDK.Logging
-    typealias LogLevel = GliaCoreSDK.LogLevel
     typealias Request = GliaCoreSDK.Request
     typealias EngagementChangedBlock = GliaCoreSDK.EngagementChangedBlock
-    typealias AnyCombineScheduler = GliaCoreSDK.AnyCombineScheduler
-    typealias AnyScheduler = GliaCoreSDK.AnyScheduler
     typealias QueueForEngagementOptions = GliaCoreSDK.QueueForEngagementOptions
     typealias Region = GliaCore.Region
     typealias AuthorizationMethod = GliaCore.AuthorizationMethod
@@ -268,9 +244,133 @@ extension CoreSdkClient {
     typealias MediaQuality = GliaCoreSDK.MediaQuality
 }
 
-extension CoreSdkClient.AnyCombineScheduler {
-    var main: AnyScheduler { mainScheduler }
-    var global: AnyScheduler { globalScheduler }
+extension CoreSdkClient {
+    struct AnyScheduler: Scheduler {
+        typealias SchedulerTimeType = DispatchQueue.SchedulerTimeType
+        typealias SchedulerOptions = DispatchQueue.SchedulerOptions
+
+        private let nowClosure: () -> SchedulerTimeType
+        private let minimumToleranceClosure: () -> SchedulerTimeType.Stride
+        private let scheduleClosure: (SchedulerOptions?, @escaping () -> Void) -> Void
+        private let scheduleAfterClosure: (
+            SchedulerTimeType,
+            SchedulerTimeType.Stride,
+            SchedulerOptions?,
+            @escaping () -> Void
+        ) -> Void
+        private let scheduleAfterIntervalClosure: (
+            SchedulerTimeType,
+            SchedulerTimeType.Stride,
+            SchedulerTimeType.Stride,
+            SchedulerOptions?,
+            @escaping () -> Void
+        ) -> any Combine.Cancellable
+
+        var now: SchedulerTimeType { nowClosure() }
+        var minimumTolerance: SchedulerTimeType.Stride { minimumToleranceClosure() }
+
+        init<S: Scheduler>(_ scheduler: S) where S.SchedulerTimeType == SchedulerTimeType,
+                                                S.SchedulerOptions == SchedulerOptions {
+            nowClosure = { scheduler.now }
+            minimumToleranceClosure = { scheduler.minimumTolerance }
+            scheduleClosure = { options, action in scheduler.schedule(options: options, action) }
+            scheduleAfterClosure = { date, tolerance, options, action in
+                scheduler.schedule(after: date, tolerance: tolerance, options: options, action)
+            }
+            scheduleAfterIntervalClosure = { date, interval, tolerance, options, action in
+                scheduler.schedule(
+                    after: date,
+                    interval: interval,
+                    tolerance: tolerance,
+                    options: options,
+                    action
+                )
+            }
+        }
+
+        func schedule(options: SchedulerOptions?, _ action: @escaping () -> Void) {
+            scheduleClosure(options, action)
+        }
+
+        func schedule(
+            after date: SchedulerTimeType,
+            tolerance: SchedulerTimeType.Stride,
+            options: SchedulerOptions?,
+            _ action: @escaping () -> Void
+        ) {
+            scheduleAfterClosure(date, tolerance, options, action)
+        }
+
+        func schedule(
+            after date: SchedulerTimeType,
+            interval: SchedulerTimeType.Stride,
+            tolerance: SchedulerTimeType.Stride,
+            options: SchedulerOptions?,
+            _ action: @escaping () -> Void
+        ) -> any Combine.Cancellable {
+            scheduleAfterIntervalClosure(date, interval, tolerance, options, action)
+        }
+    }
+
+    struct ImmediateScheduler: Scheduler {
+        typealias SchedulerTimeType = DispatchQueue.SchedulerTimeType
+        typealias SchedulerOptions = DispatchQueue.SchedulerOptions
+
+        var now: SchedulerTimeType { DispatchQueue.main.now }
+        var minimumTolerance: SchedulerTimeType.Stride { .zero }
+
+        func schedule(options: SchedulerOptions?, _ action: @escaping () -> Void) {
+            action()
+        }
+
+        func schedule(
+            after date: SchedulerTimeType,
+            tolerance: SchedulerTimeType.Stride,
+            options: SchedulerOptions?,
+            _ action: @escaping () -> Void
+        ) {
+            action()
+        }
+
+        func schedule(
+            after date: SchedulerTimeType,
+            interval: SchedulerTimeType.Stride,
+            tolerance: SchedulerTimeType.Stride,
+            options: SchedulerOptions?,
+            _ action: @escaping () -> Void
+        ) -> any Combine.Cancellable {
+            action()
+            return AnyCancellable {}
+        }
+    }
+
+    struct AnyCombineScheduler {
+        let mainScheduler: AnyScheduler
+        let globalScheduler: AnyScheduler
+
+        var main: AnyScheduler { mainScheduler }
+        var global: AnyScheduler { globalScheduler }
+
+        static let live = Self(
+            mainScheduler: AnyScheduler(DispatchQueue.main),
+            globalScheduler: AnyScheduler(DispatchQueue.global(qos: .default))
+        )
+
+        static let mock = Self(
+            mainScheduler: AnyScheduler(ImmediateScheduler()),
+            globalScheduler: AnyScheduler(ImmediateScheduler())
+        )
+    }
+}
+
+extension AnyPublisher {
+    static func mock<T>() -> AnyPublisher<T, Never> {
+        Empty().eraseToAnyPublisher()
+    }
+
+    static func mock<T>(_ value: T) -> AnyPublisher<T, Never> {
+        Just(value).eraseToAnyPublisher()
+    }
 }
 
 extension CoreSdkClient {
@@ -327,7 +427,7 @@ typealias NetworkConnectionMonitor = CoreSdkClient.NetworkConnectionMonitor
 extension CoreSdkClient.NetworkConnectionMonitor {
     static let live: Self = .init(
         networkStream: { replay in
-            GliaCore.sharedInstance.networkConnectionMonitor.networkStream(replay: replay)
+            GliaCore.sharedInstanceForWidgets.networkConnectionMonitor.networkStreamForWidgets(replay: replay)
         }
     )
 
@@ -359,7 +459,7 @@ typealias CallQualityMonitor = CoreSdkClient.CallQualityMonitor
 extension CoreSdkClient.CallQualityMonitor {
     static let live: Self = .init(
         mediaQualityStream: {
-            GliaCore.sharedInstance.callQualityMonitor.mediaQualityStream()
+            GliaCore.sharedInstanceForWidgets.callQualityMonitor.mediaQualityStreamForWidgets()
         }
     )
 

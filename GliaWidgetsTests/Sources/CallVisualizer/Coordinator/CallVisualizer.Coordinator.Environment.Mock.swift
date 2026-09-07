@@ -1,5 +1,5 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
-@_spi(GliaWidgets) import GliaCoreSDK
 @testable import GliaWidgets
 
 extension CallVisualizer.Coordinator.Environment {

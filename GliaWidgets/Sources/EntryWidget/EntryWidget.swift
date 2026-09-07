@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Combine
 import Foundation
 import UIKit
@@ -204,7 +205,8 @@ private extension EntryWidget {
         unreadSecureMessageTask = Task { [weak self] in
             guard let self else { return }
             do {
-                for try await messagesCount in environment.observeSecureUnreadMessageCount() {
+                let stream = try environment.observeSecureUnreadMessageCount()
+                for try await messagesCount in stream {
                     await MainActor.run { [weak self] in
                         self?.unreadSecureMessageCount = messagesCount ?? 0
                     }

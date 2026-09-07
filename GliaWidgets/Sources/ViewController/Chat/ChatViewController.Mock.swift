@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 #if DEBUG
 import Foundation
 import UIKit

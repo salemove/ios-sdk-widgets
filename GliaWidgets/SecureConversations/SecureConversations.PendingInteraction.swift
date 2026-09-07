@@ -14,9 +14,23 @@ extension SecureConversations {
         private var cancelBag = CancelBag()
 
         init(environment: Environment) throws {
+            let pendingStatusStream: AsyncThrowingStream<Bool, Swift.Error>
+            do {
+                pendingStatusStream = try environment.observePendingSecureConversationsStatus()
+            } catch {
+                throw Error.subscriptionFailure(.pendingStatus)
+            }
+
+            let unreadMessageCountStream: AsyncThrowingStream<Int?, Swift.Error>
+            do {
+                unreadMessageCountStream = try environment.observeSecureConversationsUnreadMessageCount()
+            } catch {
+                throw Error.subscriptionFailure(.unreadMessageCount)
+            }
+
             self.environment = environment
-            observePendingStatus()
-            observeUnreadMessageCount()
+            observePendingStatus(pendingStatusStream)
+            observeUnreadMessageCount(unreadMessageCountStream)
 
             let interactorStatePublisher = environment.interactorPublisher
                 .flatMap { interactor -> AnyPublisher<InteractorState, Never> in
@@ -62,11 +76,10 @@ extension SecureConversations {
 }
 
 extension SecureConversations.PendingInteraction {
-    private func observePendingStatus() {
-        let observePendingStatus = environment.observePendingSecureConversationsStatus
+    private func observePendingStatus(_ stream: AsyncThrowingStream<Bool, Swift.Error>) {
         pendingStatusTask = Task { [weak self] in
             do {
-                for try await value in observePendingStatus() {
+                for try await value in stream {
                     await MainActor.run { [weak self] in
                         self?.pendingStatus = value
                     }
@@ -81,11 +94,10 @@ extension SecureConversations.PendingInteraction {
         }
     }
 
-    private func observeUnreadMessageCount() {
-        let observeUnreadMessageCount = environment.observeSecureConversationsUnreadMessageCount
+    private func observeUnreadMessageCount(_ stream: AsyncThrowingStream<Int?, Swift.Error>) {
         unreadMessageCountTask = Task { [weak self] in
             do {
-                for try await count in observeUnreadMessageCount() {
+                for try await count in stream {
                     await MainActor.run { [weak self] in
                         self?.unreadMessageCount = count ?? 0
                     }
@@ -131,7 +143,7 @@ extension SecureConversations.PendingInteraction.Environment {
 }
 
 #if DEBUG
-@_spi(GliaWidgets) import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 extension SecureConversations.PendingInteraction.Environment {
     static let mock: Self = {
         let uuidGen = UUID.incrementing

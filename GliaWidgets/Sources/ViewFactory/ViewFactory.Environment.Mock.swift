@@ -1,5 +1,5 @@
 #if DEBUG
-@_spi(GliaWidgets) import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 extension ViewFactory.Environment {
     static let mock = Self(

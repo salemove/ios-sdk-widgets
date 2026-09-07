@@ -1,18 +1,25 @@
 import Foundation
 
 extension CoreSdkClient.Logger {
-    private class NotConfiguredLogger: CoreSdkClient.Logging {
-        func error(_ object: @autoclosure () -> Any, file: String, function: String, line: Int) {}
-        func warning(_ object: @autoclosure () -> Any, file: String, function: String, line: Int) {}
-        func info(_ object: @autoclosure () -> Any, file: String, function: String, line: Int) {}
-        func debug(_ object: @autoclosure () -> Any, file: String, function: String, line: Int) {}
-        func prefixed(_ prefix: String) -> CoreSdkClient.Logging { self }
-        func prefixed<TypeAsPrefix>(_ prefix: TypeAsPrefix.Type) -> CoreSdkClient.Logging { self }
+    static var notConfigured: Self { makeNotConfigured() }
 
-        var localLogger: (CoreSdkClient.Logging)? { nil }
-        var remoteLogger: (CoreSdkClient.Logging)? { nil }
-        var oneTime: CoreSdkClient.Logging { self }
+    private static func makeNotConfigured() -> Self {
+        Self(
+            oneTimeClosure: makeNotConfigured,
+            prefixedClosure: { _ in makeNotConfigured() },
+            localLoggerClosure: { nil },
+            remoteLoggerClosure: { nil },
+            errorClosure: { _, _, _, _ in },
+            warningClosure: { _, _, _, _ in },
+            infoClosure: { _, _, _, _ in },
+            debugClosure: { _, _, _, _ in },
+            configureLocalLogLevelClosure: { _ in
+                throw LoggingError.localLogLevelConfigurationFailure
+            },
+            configureRemoteLogLevelClosure: { _ in
+                throw LoggingError.remoteLogLevelConfigurationFailure
+            },
+            reportDeprecatedMethodClosure: { _, _, _, _ in }
+        )
     }
-
-    static let notConfigured = Self(NotConfiguredLogger())
 }

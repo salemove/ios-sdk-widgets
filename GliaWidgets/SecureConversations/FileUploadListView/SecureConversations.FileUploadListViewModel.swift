@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import UIKit.UIContentSizeCategory
 
 extension SecureConversations {

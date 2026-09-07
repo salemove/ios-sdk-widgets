@@ -1,7 +1,7 @@
 #if DEBUG
 
 import Foundation
-@_spi(GliaWidgets) import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 extension ChatViewModel.Environment {
     static let mock = Self(

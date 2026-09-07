@@ -1,9 +1,9 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 // swiftlint:disable:next blanket_disable_command
 // swiftlint:disable file_length type_body_length function_body_length force_unwrapping trailing_whitespace unused_closure_parameter
 // swiftlint:disable:next blanket_disable_command
 // swiftlint:disable vertical_whitespace_opening_braces xctfail_message empty_enum_arguments
 @testable import GliaWidgets
-@_spi(GliaWidgets) import GliaCoreSDK
 import Combine
 import XCTest
 

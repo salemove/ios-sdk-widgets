@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 @testable import GliaWidgets
 import XCTest
 

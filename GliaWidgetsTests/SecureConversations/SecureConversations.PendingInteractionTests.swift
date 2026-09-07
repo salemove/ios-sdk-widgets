@@ -1,9 +1,45 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 @testable import GliaWidgets
-@_spi(GliaWidgets) import GliaCoreSDK
 import Combine
 import XCTest
 
 final class SecureConversationsPendingInteractionTests: XCTestCase {
+    func test_initThrowsWhenPendingStatusObservationCannotStart() {
+        var environment = SecureConversations.PendingInteraction.Environment.mock
+        environment.observePendingSecureConversationsStatus = {
+            throw TestError.subscriptionUnavailable
+        }
+
+        XCTAssertThrowsError(
+            try SecureConversations.PendingInteraction(environment: environment)
+        ) { error in
+            guard let error = error as? SecureConversations.PendingInteraction.Error else {
+                return XCTFail("Unexpected error: \(error)")
+            }
+            guard case .subscriptionFailure(.pendingStatus) = error else {
+                return XCTFail("Unexpected error: \(error)")
+            }
+        }
+    }
+
+    func test_initThrowsWhenUnreadCountObservationCannotStart() {
+        var environment = SecureConversations.PendingInteraction.Environment.mock
+        environment.observeSecureConversationsUnreadMessageCount = {
+            throw TestError.subscriptionUnavailable
+        }
+
+        XCTAssertThrowsError(
+            try SecureConversations.PendingInteraction(environment: environment)
+        ) { error in
+            guard let error = error as? SecureConversations.PendingInteraction.Error else {
+                return XCTFail("Unexpected error: \(error)")
+            }
+            guard case .subscriptionFailure(.unreadMessageCount) = error else {
+                return XCTFail("Unexpected error: \(error)")
+            }
+        }
+    }
+
     func test_hasPendingInteractionGetChanged() async throws {
         var environment = SecureConversations.PendingInteraction.Environment.failing
         var pendingContinuation: AsyncThrowingStream<Bool, Swift.Error>.Continuation?
@@ -108,5 +144,11 @@ final class SecureConversationsPendingInteractionTests: XCTestCase {
             timeout: 1
         )
         XCTAssertNil(weakPendingInteraction)
+    }
+}
+
+private extension SecureConversationsPendingInteractionTests {
+    enum TestError: Error {
+        case subscriptionUnavailable
     }
 }

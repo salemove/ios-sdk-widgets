@@ -1,6 +1,5 @@
 import UIKit
 import GliaWidgets
-import GliaCoreSDK
 
 extension ViewController {
     /// Report any thrown error via UIAlertController.
@@ -8,10 +7,6 @@ extension ViewController {
     func catchingError(_ throwing: () throws -> Void) {
         do {
             try throwing()
-        } catch let error as GliaCoreError {
-            self.alert(message: error.reason)
-        } catch let error as ConfigurationError {
-            self.alert(message: "Configuration error: '\(error)'.")
         } catch let error as GliaError {
             self.alert(message: "The operation couldn't be completed. '\(error)'.")
         } catch {

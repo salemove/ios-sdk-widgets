@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
 
 /// Glia's environment. Use the one that our account manager has assigned to you.

@@ -1,86 +1,84 @@
-@_spi(GliaWidgets) import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 extension CoreSdkClient {
     static let live: Self = {
-        .init(
+        let core = GliaCore.sharedInstanceForWidgets
+        return .init(
             pushNotifications: .live,
             liveObservation: .live,
             secureConversations: .live,
-            createAppDelegate: Self.AppDelegate.live,
-            clearSession: GliaCore.sharedInstance.clearSession,
-            localeProvider: .init(getRemoteString: GliaCore.sharedInstance.localeProvider.getRemoteString(_:)),
-            configureWithConfiguration: GliaCore.sharedInstance.configure(with:),
+            clearSession: core.clearSessionForWidgets,
+            localeProvider: .init(getRemoteString: core.localeProvider.getRemoteStringForWidgets(_:)),
+            configureWithConfiguration: core.configureForWidgets(with:),
             getVisitorInfo: {
-                let coreVisitorInfo = try await GliaCore.sharedInstance.fetchVisitorInfo()
+                let coreVisitorInfo = try await core.fetchVisitorInfoForWidgets()
                 return coreVisitorInfo.asWidgetSdkVisitorInfo()
             },
             updateVisitorInfo: { visitorInfoUpdate in
-                try await GliaCore.sharedInstance.updateVisitorInfo(visitorInfoUpdate.asCoreSdkVisitorInfoUpdate())
+                try await core.updateVisitorInfoForWidgets(visitorInfoUpdate.asCoreSdkVisitorInfoUpdate())
             },
-            configureWithInteractor: GliaCore.sharedInstance.configure(interactor:),
+            configureWithInteractor: core.configureForWidgets(interactor:),
             getQueues: {
-                try await GliaCore.sharedInstance.listQueues().map { $0.asWidgetSDKQueue() }
+                try await core.listQueuesForWidgets().map { $0.asWidgetSDKQueue() }
             },
             queueForEngagement: { options, replaceExisting in
-                try await GliaCore.sharedInstance.queueForEngagement(
+                try await core.queueForEngagementForWidgets(
                     using: options,
                     replaceExisting: replaceExisting
                 )
             },
             sendMessagePreview: { message in
-                try await GliaCore.sharedInstance.sendMessagePreview(message: message)
+                try await core.sendMessagePreviewForWidgets(message: message)
             },
             sendMessageWithMessagePayload: { payload in
-                try await GliaCore.sharedInstance.send(messagePayload: payload)
+                try await core.sendForWidgets(messagePayload: payload)
             },
             cancelQueueTicket: { queueTicket in
-                try await GliaCore.sharedInstance.cancel(queueTicket: queueTicket)
+                try await core.cancelForWidgets(queueTicket: queueTicket)
             },
             endEngagement: {
-                try await GliaCore.sharedInstance.endEngagement()
+                try await core.endEngagementForWidgets()
             },
             requestEngagedOperator: {
-                try await GliaCore.sharedInstance.requestEngagedOperator()
+                try await core.requestEngagedOperatorForWidgets()
             },
             uploadFileToEngagement: { file, progress in
-                try await GliaCore.sharedInstance.uploadFileToEngagement(file, progress: progress)
+                try await core.uploadFileToEngagementForWidgets(file, progress: progress)
             },
             fetchFile: { file, progress in
-                try await GliaCore.sharedInstance.fetchFile(engagementFile: file, progress: progress)
+                try await core.fetchFileForWidgets(engagementFile: file, progress: progress)
             },
-            getCurrentEngagement: GliaCore.sharedInstance.getCurrentEngagement,
+            getCurrentEngagement: core.getCurrentEngagementForWidgets,
             fetchSiteConfigurations: {
-                try await GliaCore.sharedInstance.fetchSiteConfiguration()
+                try await core.fetchSiteConfigurationForWidgets()
             },
             submitSurveyAnswer: { answers, surveyId, engagementId in
-                try await GliaCore.sharedInstance.submitSurveyAnswer(
+                try await core.submitSurveyAnswerForWidgets(
                     answers,
                     surveyId: surveyId,
                     engagementId: engagementId
                 )
             },
-            authentication: GliaCore.sharedInstance.authentication,
+            authentication: core.authenticationForWidgets(with:),
             fetchChatHistory: {
-                let messages = try await GliaCore.sharedInstance.fetchChatTranscript()
+                let messages = try await core.fetchChatTranscriptForWidgets()
                 return messages.map { ChatMessage(with: $0) }
             },
             requestVisitorCode: {
-                try await GliaCore.sharedInstance.callVisualizer.requestVisitorCode()
+                try await core.callVisualizer.requestVisitorCodeForWidgets()
             },
-            startSocketObservation: GliaCore.sharedInstance.startSocketObservation,
-            stopSocketObservation: GliaCore.sharedInstance.stopSocketObservation,
+            startSocketObservation: core.startSocketObservationForWidgets,
+            stopSocketObservation: core.stopSocketObservationForWidgets,
             createSendMessagePayload: CoreSdkClient.SendMessagePayload.init(content:attachment:),
-            createLogger: { try Logger(GliaCore.sharedInstance.createLogger(externalParameters: $0)) },
+            createLogger: { try Logger(core.createLoggerForWidgets(externalParameters: $0)) },
             getCameraDeviceManageable: {
-                try CameraDeviceManageableClient(
-                    GliaCore.sharedInstance.cameraDeviceManageable()
-                )
+                try CameraDeviceManageableClient(core.cameraDeviceManageableForWidgets())
             },
             subscribeForQueuesUpdates: { queues in
                 AsyncThrowingStream { continuation in
                     let task = Task {
                         do {
-                            for try await coreQueue in GliaCore.sharedInstance.queueUpdatesStream(forQueues: queues) {
+                            for try await coreQueue in core.queueUpdatesStreamForWidgets(forQueues: queues) {
                                 continuation.yield(coreQueue.asWidgetSDKQueue())
                             }
                             continuation.finish()
@@ -93,77 +91,104 @@ extension CoreSdkClient {
                     }
                 }
             },
-            configureLogLevel: GliaCore.sharedInstance.configureLogLevel(level:)
+            configureLogLevel: { level in
+                core.configureLogLevelForWidgets(level.coreLevel)
+            }
         )
     }()
 }
 
+extension LogLevel {
+    var coreLevel: GliaCoreSDK.LogLevel {
+        switch self {
+        case .none: return .none
+        case .error: return .error
+        case .warning: return .warning
+        case .info: return .info
+        case .debug: return .debug
+        }
+    }
+}
+
 extension CoreSdkClient.SecureConversations {
+    private static var core: GliaCore { .sharedInstanceForWidgets }
+
     static let live = Self(
         sendMessagePayload: { secureMessagePayload, queueIds in
-            try await GliaCore.sharedInstance.secureConversations.send(
-                secureMessagePayload: secureMessagePayload,
+            try await core.secureConversations.sendForWidgets(
+                payload: secureMessagePayload,
                 queueIds: queueIds
             )
         },
         uploadFile: { file, progress in
-            try await GliaCore.sharedInstance.secureConversations.uploadFile(file, progress: progress)
+            try await core.secureConversations.uploadFileForWidgets(file, progress: progress)
         },
         getUnreadMessageCount: {
-            try await GliaCore.sharedInstance.secureConversations.getUnreadMessageCount()
+            try await core.secureConversations.getUnreadMessageCountForWidgets()
         },
         markMessagesAsRead: {
-            try await GliaCore.sharedInstance.secureConversations.markMessagesAsRead()
+            try await core.secureConversations.markMessagesAsReadForWidgets()
         },
         downloadFile: { file, progress in
-            try await GliaCore.sharedInstance.secureConversations.downloadFile(file, progress: progress)
+            try await core.secureConversations.downloadFileForWidgets(file, progress: progress)
         },
-        subscribeForUnreadMessageCount: GliaCore.sharedInstance.secureConversations.unreadMessageCountStream,
-        observePendingStatus: GliaCore.sharedInstance.secureConversations.pendingSecureConversationStatusStream
+        subscribeForUnreadMessageCount: core.secureConversations.unreadMessageCountStreamForWidgets,
+        observePendingStatus: core.secureConversations.pendingSecureConversationStatusStreamForWidgets
     )
 }
 
 extension CoreSdkClient.LiveObservation {
     static let live = Self(
         pause: {
-            GliaCore.sharedInstance.liveObservation.pause()
+            GliaCore.sharedInstanceForWidgets.liveObservation.pauseForWidgets()
         },
         resume: {
-            GliaCore.sharedInstance.liveObservation.resume()
+            GliaCore.sharedInstanceForWidgets.liveObservation.resumeForWidgets()
         }
     )
 }
 
 extension CoreSdkClient.PushNotifications {
+    private static var core: GliaCore { .sharedInstanceForWidgets }
+
     static let live = Self(
         applicationDidRegisterForRemoteNotificationsWithDeviceToken: { application, token in
-            GliaCore.sharedInstance.pushNotifications.application(
+            core.pushNotifications.applicationForWidgets(
                 application,
                 didRegisterForRemoteNotificationsWithDeviceToken: token
             )
         },
         applicationDidFailToRegisterForRemoteNotificationsWithError: { application, error in
-            GliaCore.sharedInstance.pushNotifications.application(
+            core.pushNotifications.applicationForWidgets(
                 application,
                 didFailToRegisterForRemoteNotificationsWithError: error
             )
         },
-        setPushHandler: { GliaCore.sharedInstance.pushNotifications.handler = $0 },
-        pushHandler: { GliaCore.sharedInstance.pushNotifications.handler },
-        subscribeTo: GliaCore.sharedInstance.pushNotifications.subscribeTo(_:),
+        setPushHandler: { handler in
+            core.pushNotifications.handlerForWidgets = handler.map { handler in
+                { handler(Push(corePush: $0)) }
+            }
+        },
+        subscribeTo: { types in
+            core.pushNotifications.subscribeForWidgets(types.map(\.coreType))
+        },
         actions: .init(
-            setSecureMessageAction: { GliaCore.sharedInstance.pushNotificationsActionProcessor.secureMessagePushNotificationAction = $0 },
-            secureMessageAction: { GliaCore.sharedInstance.pushNotificationsActionProcessor.secureMessagePushNotificationAction }
+            setSecureMessageAction: {
+                core.pushNotificationsActionProcessor.secureMessagePushNotificationActionForWidgets = $0
+            },
+            secureMessageAction: {
+                core.pushNotificationsActionProcessor.secureMessagePushNotificationActionForWidgets
+            }
         ),
         userNotificationCenterWillPresent: { center, notification, completionHandler in
-            GliaCore.sharedInstance.pushNotifications.widgetsNotificationCenter(
+            core.pushNotifications.widgetsNotificationCenterForWidgets(
                 center,
                 willPresent: notification,
                 withCompletionHandler: completionHandler
             )
         },
         userNotificationCenterDidReceiveResponse: { center, response, completionHandler in
-            GliaCore.sharedInstance.pushNotifications.widgetsNotificationCenter(
+            core.pushNotifications.widgetsNotificationCenterForWidgets(
                 center, didReceive: response,
                 withCompletionHandler: completionHandler
             )
@@ -171,18 +196,8 @@ extension CoreSdkClient.PushNotifications {
     )
 }
 
-extension CoreSdkClient.AppDelegate {
-    static func live() -> Self {
-        let gliaCoreAppDelegate = GliaCoreAppDelegate()
-        return .init(
-            applicationDidFinishLaunchingWithOptions: gliaCoreAppDelegate.application(_:didFinishLaunchingWithOptions:),
-            applicationDidBecomeActive: gliaCoreAppDelegate.applicationDidBecomeActive
-        )
-    }
-}
-
 extension CoreSdkClient.CameraDeviceManageableClient {
-    init(_ live: CameraDeviceManageable) {
+    init(_ live: GliaCoreSDK.CameraDeviceManageable) {
         self.cameraDevices = { live.cameraDevices() }
         self.currentCameraDevice = { live.currentCameraDevice() }
         self.setCameraDevice = { live.setCameraDevice($0) }

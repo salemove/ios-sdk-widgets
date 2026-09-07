@@ -1,5 +1,5 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
-import GliaCoreSDK
 @testable import GliaWidgets
 
 extension CoreSdkClient.Operator {

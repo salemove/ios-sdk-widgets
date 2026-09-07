@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 #if DEBUG
 extension QueuesMonitor {
     static func mock(
