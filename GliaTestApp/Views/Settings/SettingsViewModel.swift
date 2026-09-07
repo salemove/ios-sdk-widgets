@@ -1,6 +1,5 @@
 import SwiftUI
-import GliaWidgets
-import GliaCoreSDK
+@_spi(GliaTestApp) import GliaWidgets
 
 extension SettingsView {
     enum AuthorizationMethodSelection: String, CaseIterable {
@@ -80,16 +79,11 @@ extension SettingsView {
         }
 
         var gliaCoreSDKVersion: String {
-            getFrameworkVersion(for: GliaCoreSDK.PushNotifications.self, frameworkName: "GliaCoreSDK")
+            StaticValues.coreSDKVersion
         }
 
         var gliaOpenTelemetryVersion: String {
             getFrameworkVersion(bundleIdentifier: "org.cocoapods.GliaOpenTelemetry")
-        }
-
-        private func getFrameworkVersion(for classType: AnyClass, frameworkName: String) -> String {
-            let bundle = Bundle(for: classType)
-            return extractVersion(from: bundle) ?? "Unknown"
         }
 
         private func getFrameworkVersion(bundleIdentifier: String) -> String {

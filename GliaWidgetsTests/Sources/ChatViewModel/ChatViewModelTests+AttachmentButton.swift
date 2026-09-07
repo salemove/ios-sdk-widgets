@@ -1,5 +1,5 @@
 @testable import GliaWidgets
-@_spi(GliaWidgets) import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import XCTest
 
 extension ChatViewModelTests {

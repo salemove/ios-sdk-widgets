@@ -1,8 +1,8 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
 import XCTest
 import QuickLook
 @testable import GliaWidgets
-@_spi(GliaWidgets) import GliaCoreSDK
 
 final class ChatCoordinatorTests: XCTestCase {
     var coordinator: ChatCoordinator!

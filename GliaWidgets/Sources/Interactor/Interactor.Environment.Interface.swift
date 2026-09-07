@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 extension Interactor {
     struct Environment {
         var coreSdk: CoreSdkClient

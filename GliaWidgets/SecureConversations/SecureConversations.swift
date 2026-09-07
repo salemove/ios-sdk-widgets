@@ -1,5 +1,5 @@
 import Foundation
-import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 /// Namespace for all secure conversations functionality
 public struct SecureConversations {
@@ -43,7 +43,8 @@ public struct SecureConversations {
         let token = environment.createUuid().uuidString
         let task = Task {
             do {
-                for try await count in environment.coreSdk.secureConversations.subscribeForUnreadMessageCount() {
+                let stream = try environment.coreSdk.secureConversations.subscribeForUnreadMessageCount()
+                for try await count in stream {
                     completion(.success(count))
                 }
             } catch is CancellationError {
@@ -99,7 +100,13 @@ public struct SecureConversations {
             methodName: "subscribeSecureUnreadMessageCount",
             methodParams: []
         )
-        return environment.coreSdk.secureConversations.subscribeForUnreadMessageCount()
+        do {
+            return try environment.coreSdk.secureConversations.subscribeForUnreadMessageCount()
+        } catch {
+            return AsyncThrowingStream { continuation in
+                continuation.finish(throwing: error)
+            }
+        }
     }
 }
 

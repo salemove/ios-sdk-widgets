@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 extension CallVisualizer.VisitorCodeCoordinator {
     struct Environment {
         var timerProviding: FoundationBased.Timer.Providing

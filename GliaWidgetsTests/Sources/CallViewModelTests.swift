@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import XCTest
 @testable import GliaWidgets
 
@@ -441,7 +442,7 @@ class CallViewModelTests: XCTestCase {
         interactorEnv.coreSdk.queueForEngagement = { _, _ in .mock }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
-        var alertConfig: LiveObservation.Confirmation?
+        var alertConfig: GliaWidgets.LiveObservation.Confirmation?
         let site: CoreSdkClient.Site = try .mock()
 
         var viewModelEnvironment: EngagementViewModel.Environment = .mock
@@ -485,7 +486,7 @@ class CallViewModelTests: XCTestCase {
         }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
-        var alertConfig: LiveObservation.Confirmation?
+        var alertConfig: GliaWidgets.LiveObservation.Confirmation?
         let site: CoreSdkClient.Site = try .mock()
 
         var viewModelEnvironment: EngagementViewModel.Environment = .mock

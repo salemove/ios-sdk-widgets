@@ -1,8 +1,10 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import UIKit
 import XCTest
 @testable import GliaWidgets
 
 extension CallVisualizerTests {
+    @MainActor
     func testLiveObservationIndicatorIsPresentedOnEngagementRequest() async throws {
         enum Call { case presentSnackBar }
         var calls: [Call] = []
@@ -30,7 +32,7 @@ extension CallVisualizerTests {
         DependencyContainer.current.widgets.snackBar = snackBar
         gliaEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: gliaEnv)
-        try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
+        try await configure(sdk)
 
         let request = CoreSdkClient.Request.init(id: "123", outcome: .accepted, platform: nil)
         interactable?.onEngagementRequest(request, { _, _, _ in })
@@ -113,6 +115,7 @@ extension CallVisualizerTests {
         XCTAssertEqual(calls, [])
     }
 
+    @MainActor
     func testLiveObservationIndicatorIsPresentedOnEngagementRestore() async throws {
         enum Call { case presentSnackBar }
         var calls: [Call] = []
@@ -141,7 +144,7 @@ extension CallVisualizerTests {
                 .mock(source: .callVisualizer)
             }
         }
-        try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
+        try await configure(sdk)
 
         // Will be removed when async state observing is implemented
         await waitUntil {
@@ -215,5 +218,21 @@ extension CallVisualizerTests {
         try sdk.configure(with: .mock(), theme: .mock(), completion: { _ in })
 
         XCTAssertEqual(calls, [])
+    }
+}
+
+private extension CallVisualizerTests {
+    func configure(_ sdk: Glia) async throws {
+        try await withCheckedThrowingContinuation { continuation in
+            DispatchQueue.main.async {
+                do {
+                    try sdk.configure(with: .mock(), theme: .mock()) { result in
+                        continuation.resume(with: result)
+                    }
+                } catch {
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
     }
 }

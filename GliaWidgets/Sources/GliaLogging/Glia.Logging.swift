@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 extension Glia {
     enum LoggerPhase {
         case notConfigured(CoreSdkClient.Logger)
