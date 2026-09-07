@@ -1,6 +1,25 @@
-import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Combine
 import UIKit
+
+/// Log levels available for Widgets SDK diagnostic output.
+@_spi(CortexFinancial)
+public enum LogLevel: Int {
+    /// Disables diagnostic output.
+    case none
+
+    /// Emits errors only.
+    case error
+
+    /// Emits warnings and errors.
+    case warning
+
+    /// Emits informational messages, warnings, and errors.
+    case info
+
+    /// Emits all diagnostic messages.
+    case debug
+}
 
 /// Engagement media type.
 public enum EngagementKind: Equatable {
@@ -417,10 +436,9 @@ public class Glia {
     /// If the request is unsuccessful for any reason then the completion will have an Error.
     /// The Error may have one of the following causes:
     ///
-    /// - `GliaCoreSDK.GeneralError.internalError`
-    /// - `GliaCoreSDK.GeneralError.networkError`
-    /// - `GliaCoreSDK.ConfigurationError.invalidSite`
-    /// - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
+    /// - An internal SDK error.
+    /// - A network error.
+    /// - An invalid site or environment configuration.
     /// - `GliaError.sdkIsNotConfigured`
     ///
     /// - Important: Note, that in case of engagement has not been started yet,
@@ -456,10 +474,9 @@ public class Glia {
     /// If the request is unsuccessful for any reason then the completion will have an Error.
     /// The Error may have one of the following causes:
     ///
-    /// - `GliaCoreSDK.GeneralError.internalError`
-    /// - `GliaCoreSDK.GeneralError.networkError`
-    /// - `GliaCoreSDK.ConfigurationError.invalidSite`
-    /// - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
+    /// - An internal SDK error.
+    /// - A network error.
+    /// - An invalid site or environment configuration.
     /// - `GliaError.sdkIsNotConfigured`
     ///
     /// - Important: Note, that in case of engagement has not been started yet,
@@ -516,7 +533,7 @@ public class Glia {
     /// - level: One of the 'LogLevel' values that the logger should use
     ///
     @_spi(CortexFinancial)
-    public func configureLogLevel(level: GliaCoreSDK.LogLevel) {
+    public func configureLogLevel(level: LogLevel) {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
@@ -746,10 +763,9 @@ public extension Glia {
     /// - Returns: Current visitor information.
     /// - Throws:
     ///   - `GliaError.sdkIsNotConfigured` if the SDK has not been configured.
-    ///   - `GliaCoreSDK.GeneralError.internalError`
-    ///   - `GliaCoreSDK.GeneralError.networkError`
-    ///   - `GliaCoreSDK.ConfigurationError.invalidSite`
-    ///   - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
+    ///   - An internal SDK error.
+    ///   - A network error.
+    ///   - An invalid site or environment configuration.
     func getVisitorInfo() async throws -> VisitorInfo {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
@@ -773,10 +789,9 @@ public extension Glia {
     /// - Returns: `true` when the visitor information was updated.
     /// - Throws:
     ///   - `GliaError.sdkIsNotConfigured` if the SDK has not been configured.
-    ///   - `GliaCoreSDK.GeneralError.internalError`
-    ///   - `GliaCoreSDK.GeneralError.networkError`
-    ///   - `GliaCoreSDK.ConfigurationError.invalidSite`
-    ///   - `GliaCoreSDK.ConfigurationError.invalidEnvironment`
+    ///   - An internal SDK error.
+    ///   - A network error.
+    ///   - An invalid site or environment configuration.
     func updateVisitorInfo(_ info: VisitorInfoUpdate) async throws -> Bool {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,

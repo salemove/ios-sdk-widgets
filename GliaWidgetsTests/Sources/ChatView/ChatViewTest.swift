@@ -1,6 +1,6 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import XCTest
 @testable import GliaWidgets
-@_spi(GliaWidgets) import GliaCoreSDK
 
 final class ChatViewTest: XCTestCase {
 

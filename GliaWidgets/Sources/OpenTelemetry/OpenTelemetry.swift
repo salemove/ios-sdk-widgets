@@ -1,4 +1,4 @@
-import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 typealias OpenTelemetry = GliaCoreSDK.OpenTelemetry
 typealias OtelLogEvents = GliaCoreSDK.OtelLogEvents

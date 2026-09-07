@@ -1,6 +1,6 @@
 import AVFoundation
 import Foundation
-import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 extension Glia {
     /// `Environment` is a dependency container that solves the problem exchanging live dependencies to mocked ones during unit testing.

@@ -1,7 +1,7 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 // swiftlint:disable:next blanket_disable_command
 // swiftlint:disable function_body_length
 @testable import GliaWidgets
-@_spi(GliaWidgets) import GliaCoreSDK
 
 extension ChatViewModel.Environment {
     static func failing(

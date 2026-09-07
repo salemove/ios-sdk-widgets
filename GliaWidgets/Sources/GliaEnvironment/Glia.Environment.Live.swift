@@ -1,6 +1,6 @@
 import Foundation
 import AVFoundation
-@_spi(GliaWidgets) import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 extension Glia.Environment {
     static let live = Self(

@@ -1,6 +1,6 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
 @testable import GliaWidgets
-@_spi(GliaWidgets) import GliaCoreSDK
 
 extension SecureConversations.Coordinator.Environment {
     static let mock = Self(

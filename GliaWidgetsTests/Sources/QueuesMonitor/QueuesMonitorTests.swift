@@ -1,6 +1,6 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import XCTest
 import Combine
-@_spi(GliaWidgets) import GliaCoreSDK
 
 @testable import GliaWidgets
 
