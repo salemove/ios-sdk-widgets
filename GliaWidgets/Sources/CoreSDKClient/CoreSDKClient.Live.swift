@@ -46,7 +46,8 @@ extension CoreSdkClient {
                 try await core.uploadFileToEngagementForWidgets(file, progress: progress)
             },
             fetchFile: { file, progress in
-                try await core.fetchFileForWidgets(engagementFile: file, progress: progress)
+                let fileData = try await core.fetchFileForWidgets(engagementFile: file, progress: progress)
+                return .init(data: fileData.data)
             },
             getCurrentEngagement: core.getCurrentEngagementForWidgets,
             fetchSiteConfigurations: {
@@ -130,7 +131,8 @@ extension CoreSdkClient.SecureConversations {
             try await core.secureConversations.markMessagesAsReadForWidgets()
         },
         downloadFile: { file, progress in
-            try await core.secureConversations.downloadFileForWidgets(file, progress: progress)
+            let fileData = try await core.secureConversations.downloadFileForWidgets(file, progress: progress)
+            return .init(data: fileData.data)
         },
         subscribeForUnreadMessageCount: core.secureConversations.unreadMessageCountStreamForWidgets,
         observePendingStatus: core.secureConversations.pendingSecureConversationStatusStreamForWidgets

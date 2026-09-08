@@ -2,6 +2,24 @@
 import XCTest
 
 extension SecureConversationsTranscriptModelTests {
+    @MainActor
+    func testQuickReplyIsHiddenBeforeSending() async {
+        let model = createViewModel()
+        model.environment.createSendMessagePayload = { .mock(content: $0, attachment: $1) }
+        var calls: [String] = []
+        model.action = { action in
+            if case .quickReplyPropsUpdated(.hidden) = action {
+                calls.append("hidden")
+            }
+        }
+        model.environment.secureConversations.sendMessagePayload = { _, _ in
+            await MainActor.run { calls.append("send") }
+            return .mock()
+        }
+        await model.quickReplyOption(.mock(text: "Option", value: "option")).action()
+        XCTAssertEqual(calls, ["hidden", "send"])
+    }
+
     func test_gvaDeepLinkActionCallsMinimize() async {
         let option: GvaOption = .mock(url: "mock://mock.self", urlTarget: "self")
         var calls: [Call] = []

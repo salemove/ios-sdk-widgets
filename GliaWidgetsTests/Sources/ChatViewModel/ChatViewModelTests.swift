@@ -1057,6 +1057,44 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.getPendingMessageForTesting().isEmpty)
     }
 
+    @MainActor
+    func test_sendMessagePreservesDraftEnteredWhileSending() async {
+        for shouldFail in [false, true] {
+            let requestStarted = expectation(description: "Message request started")
+            var response: CheckedContinuation<CoreSdkClient.Message, Error>?
+            var interactorEnvironment = Interactor.Environment.mock
+            interactorEnvironment.coreSdk.sendMessagePreview = { _ in true }
+            interactorEnvironment.coreSdk.sendMessageWithMessagePayload = { _ in
+                try await withCheckedThrowingContinuation {
+                    response = $0
+                    requestStarted.fulfill()
+                }
+            }
+            let interactor = Interactor.mock(environment: interactorEnvironment)
+            interactor.state = .engaged(nil)
+            let model = ChatViewModel.mock(interactor: interactor)
+            var hideCount = 0
+            model.action = { action in
+                if case .quickReplyPropsUpdated(.hidden) = action { hideCount += 1 }
+            }
+            model.event(.messageTextChanged("First message"))
+            let sending = Task { await model.asyncEvent(.sendTapped) }
+            await fulfillment(of: [requestStarted], timeout: 1)
+
+            XCTAssertEqual(hideCount, 1)
+            XCTAssertEqual(model.messageText, "")
+            model.event(.messageTextChanged("Next draft"))
+            if shouldFail {
+                response?.resume(throwing: CoreSdkClient.GliaCoreError.mock())
+            } else {
+                response?.resume(returning: .mock())
+            }
+            await sending.value
+            XCTAssertEqual(model.messageText, "Next draft")
+            XCTAssertEqual(hideCount, 1)
+        }
+    }
+
     func test_messageAttachmentIsKeptAfterFailureSending() async throws {
         var interactorEnv = Interactor.Environment.mock
         interactorEnv.coreSdk.sendMessageWithMessagePayload = { _ in

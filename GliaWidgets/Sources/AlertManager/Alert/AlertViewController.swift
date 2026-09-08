@@ -108,7 +108,7 @@ class AlertViewController: UIViewController, Replaceable {
                 accessibilityIdentifier: accessibilityIdentifier,
                 dismissed: dismissed
             )
-        case let .confirmation(conf, accessibilityIdentifier, confirmed, dismissed, _):
+        case let .confirmation(conf, accessibilityIdentifier, confirmed, _, dismissed):
             return makeConfirmationAlertView(
                 with: conf,
                 accessibilityIdentifier: accessibilityIdentifier,
@@ -166,6 +166,16 @@ class AlertViewController: UIViewController, Replaceable {
                 declined: declined
             )
         }
+    }
+
+    @MainActor
+    func dismissThenPerform(_ action: () async -> Void) async {
+        await withCheckedContinuation { continuation in
+            dismiss(animated: true) {
+                continuation.resume()
+            }
+        }
+        await action()
     }
 
     override func dismiss(animated: Bool, completion: (() -> Void)? = nil) {

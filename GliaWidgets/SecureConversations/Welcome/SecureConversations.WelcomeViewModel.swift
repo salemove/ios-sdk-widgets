@@ -132,14 +132,15 @@ private extension SecureConversations.WelcomeViewModel {
             messageText,
             fileUploadListModel.attachment
         )
-        sendMessageRequestState = .waiting
         do {
             _ = try await environment.secureConversations.sendMessagePayload(
                 payload,
                 queueIds
             )
+            sendMessageRequestState = .waiting
             delegate?(.confirmationScreenRequested)
         } catch {
+            sendMessageRequestState = .waiting
             delegate?(.showAlert(.error(error: error)))
         }
     }
@@ -148,7 +149,7 @@ private extension SecureConversations.WelcomeViewModel {
     func loadAttachmentAvailability() async {
         do {
             let site = try await environment.fetchSiteConfigurations()
-            isAttachmentsAvailable = site.allowedFileSenders.visitor
+            isAttachmentsAvailable = site.allowedFileSenders.visitor && !site.allowedFileContentTypes.isEmpty
             allowedFileContentTypes = site.allowedFileContentTypes
         } catch {
             delegate?(.showAlert(.error(error: error)))

@@ -545,6 +545,24 @@ class InteractorTests: XCTestCase {
         XCTAssertEqual(interactor.state, .ended(.byVisitor))
     }
 
+    func test_endCapturesEngagementBeforeDispatchingToMainQueue() {
+        let engagement = CoreSdkClient.Engagement.mock(id: UUID.mock.uuidString)
+        var coreEngagement: CoreSdkClient.Engagement? = engagement
+        var scheduledBlocks: [() -> Void] = []
+        let interactor = Interactor.mock()
+        interactor.environment.coreSdk.getCurrentEngagement = { coreEngagement }
+        interactor.environment.gcd.mainQueue.async = { scheduledBlocks.append($0) }
+
+        interactor.end(with: .operatorHungUp)
+        coreEngagement = nil
+        XCTAssertEqual(scheduledBlocks.count, 1)
+        scheduledBlocks.removeFirst()()
+
+        XCTAssertEqual(interactor.endedEngagement, engagement)
+        XCTAssertEqual(interactor.takeSurveyEligibleEngagement(), engagement)
+        XCTAssertEqual(interactor.state, .ended(.byOperator))
+    }
+
     func test_endWithReasonSetsProperState() {
         let interactor = Interactor.failing
         interactor.environment.gcd = .mock

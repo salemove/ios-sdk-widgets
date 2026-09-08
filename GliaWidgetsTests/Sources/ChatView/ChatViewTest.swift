@@ -109,7 +109,7 @@ final class ChatViewTest: XCTestCase {
             chatViewModel.event(.closeTapped)
         }
 
-        assertChatViewIsReleased(controller: { controller }, viewModel: { viewModel })
+        await assertChatViewIsReleased(controller: { controller }, viewModel: { viewModel })
     }
 
     private func assertChatViewIsReleased(
@@ -117,14 +117,10 @@ final class ChatViewTest: XCTestCase {
         viewModel: @escaping () -> ChatViewModel?,
         file: StaticString = #filePath,
         line: UInt = #line
-    ) {
-        let releaseExpectation = expectation(description: "Chat view is released")
-        DispatchQueue.main.async {
-            XCTAssertNil(controller(), file: file, line: line)
-            XCTAssertNil(viewModel(), file: file, line: line)
-            releaseExpectation.fulfill()
+    ) async {
+        await waitUntil(file: file, line: line) {
+            controller() == nil && viewModel() == nil
         }
-        wait(for: [releaseExpectation], timeout: 1)
     }
 
     @MainActor

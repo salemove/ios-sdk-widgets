@@ -82,17 +82,12 @@ class FileDownloader {
     }
 
     private func downloadImages(for downloads: [FileDownload]) async {
-        for download in downloads
-            .filter({ $0.file.isImage })
-            .filter({
-                switch $0.state.value {
-                case .none, .error:
-                    return true
-                case .downloading, .downloaded:
-                    return false
+        await withTaskGroup(of: Void.self) { group in
+            for download in downloads where download.file.isImage {
+                group.addTask {
+                    await download.startDownload()
                 }
-            }) {
-            await download.startDownload()
+            }
         }
     }
 }

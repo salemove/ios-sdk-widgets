@@ -31,6 +31,7 @@ public extension Glia.Authentication {
     ///   - idToken: JWT token for visitor authentication.
     ///   - accessToken: Access token for visitor authentication.
     /// - Throws: `Glia.Authentication.Error` when authentication fails.
+    @MainActor
     func authenticate(
         with idToken: IdToken,
         accessToken: AccessToken?
@@ -53,6 +54,7 @@ public extension Glia.Authentication {
     /// - Parameter shouldStopPushNotifications: Indicates whether Push
     ///   Notifications should be stopped after deauthentication.
     /// - Throws: `Glia.Authentication.Error` when deauthentication fails.
+    @MainActor
     func deauthenticate(
         shouldStopPushNotifications: Bool = false
     ) async throws {
@@ -78,6 +80,7 @@ public extension Glia.Authentication {
     ///   - idToken: Refreshed JWT token for visitor authentication.
     ///   - accessToken: Refreshed access token for visitor authentication.
     /// - Throws: `Glia.Authentication.Error` when token refresh fails.
+    @MainActor
     func refresh(
         with idToken: IdToken,
         accessToken: AccessToken?
@@ -355,7 +358,7 @@ extension Glia.Authentication {
         accessToken: AccessToken?,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        Task {
+        Task { @MainActor in
             do {
                 try await authenticate(with: idToken, accessToken: accessToken)
                 completion(.success(()))
@@ -375,7 +378,7 @@ extension Glia.Authentication {
         shouldStopPushNotifications: Bool = false,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        Task {
+        Task { @MainActor in
             do {
                 try await deauthenticate(shouldStopPushNotifications: shouldStopPushNotifications)
                 completion(.success(()))
@@ -408,7 +411,7 @@ extension Glia.Authentication {
         accessToken: AccessToken?,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        Task {
+        Task { @MainActor in
             do {
                 try await refresh(with: idToken, accessToken: accessToken)
                 completion(.success(()))

@@ -44,8 +44,7 @@ extension AlertViewController {
                 style: declineButtonStyle,
                 tap: .async(
                     .init { [weak self] in
-                        await declined()
-                        self?.dismiss(animated: true)
+                        await self?.dismissThenPerform(declined)
                     }
                 )
             )
@@ -56,8 +55,7 @@ extension AlertViewController {
                 style: acceptButtonStyle,
                 tap: .async(
                     .init { [weak self] in
-                        await accepted()
-                        self?.dismiss(animated: true)
+                        await self?.dismissThenPerform(accepted)
                     }
                 )
             )

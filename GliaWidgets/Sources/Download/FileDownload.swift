@@ -69,6 +69,13 @@ class FileDownload {
 
     @MainActor
     func startDownload() async {
+        switch state.value {
+        case .downloading, .downloaded, .error(.deleted):
+            return
+        case .none, .error:
+            break
+        }
+
         guard let fileUrl = file.url else {
             state.value = .error(.missingFileURL)
             return

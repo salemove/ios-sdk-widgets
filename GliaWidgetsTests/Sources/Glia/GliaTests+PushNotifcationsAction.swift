@@ -2,15 +2,15 @@
 import XCTest
 
 extension GliaTests {
-    func test_startSecureMessageWhenSecureMessagePushReceivedBeforeConfigure() throws {
+    func test_startSecureMessageWhenSecureMessagePushReceivedBeforeConfigure() async throws {
         let sdk = makeConfigurableSDK()
 
         sdk.environment.coreSdk.pushNotifications.actions.secureMessageAction()?("queue_id")
 
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(),
             theme: .mock()
-        ) { _ in }
+        )
 
         sdk.engagementRestorationState = .restored
 
@@ -18,13 +18,13 @@ extension GliaTests {
         XCTAssertEqual(sdk.engagement, .messaging(.chatTranscript))
     }
 
-    func test_startSecureMessageWhenSecureMessagePushReceivedAfterConfigure() throws {
+    func test_startSecureMessageWhenSecureMessagePushReceivedAfterConfigure() async throws {
         let sdk = makeConfigurableSDK()
 
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(),
             theme: .mock()
-        ) { _ in }
+        )
 
         sdk.engagementRestorationState = .restored
 
@@ -34,13 +34,13 @@ extension GliaTests {
         XCTAssertEqual(sdk.engagement, .messaging(.chatTranscript))
     }
 
-    func test_startSecureMessageWhenSecureMessagePushReceivedForUnauthenticatedUser() throws {
+    func test_startSecureMessageWhenSecureMessagePushReceivedForUnauthenticatedUser() async throws {
         let sdk = makeConfigurableSDK(isAuthenticated: false)
 
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(),
             theme: .mock()
-        ) { _ in }
+        )
 
         sdk.engagementRestorationState = .restored
 

@@ -323,6 +323,11 @@ extension SecureConversations.TranscriptModel {
             animated: true
         )
 
+        // Clear inputs, thus disabling them
+        // and preventing the message to be sent again.
+        clearInputs()
+        action?(.scrollToBottom(animated: true))
+
         do {
             let message = try await environment.secureConversations.sendMessagePayload(
                 outgoingMessage.payload,
@@ -332,11 +337,6 @@ extension SecureConversations.TranscriptModel {
         } catch {
             markMessageAsFailed(outgoingMessage, in: pendingSection)
         }
-
-        // Clear inputs, thus disabling them
-        // and preventing the message to be sent again.
-        clearInputs()
-        action?(.scrollToBottom(animated: true))
     }
 
     func replace(

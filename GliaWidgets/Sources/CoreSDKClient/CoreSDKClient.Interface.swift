@@ -114,7 +114,7 @@ extension CoreSdkClient.SecureConversations {
     typealias DownloadFile = (
         _ file: EngagementFile,
         _ progress: @escaping EngagementFileProgressBlock
-    ) async throws -> EngagementFileData
+    ) async throws -> CoreSdkClient.EngagementFileData
 
     typealias SubscribeForUnreadMessageCount = () throws -> AsyncThrowingStream<Int?, Error>
 
@@ -183,7 +183,6 @@ extension CoreSdkClient {
     typealias AudioStreamAddedBlock = GliaCoreSDK.AudioStreamAddedBlock
     typealias CameraDevice = GliaCoreSDK.CameraDevice
     typealias EngagementFile = GliaCoreSDK.EngagementFile
-    typealias EngagementFileData = GliaCoreSDK.EngagementFileData
     typealias EngagementFileInformation = GliaCoreSDK.EngagementFileInformation
     typealias EngagementFileProgressBlock = GliaCoreSDK.EngagementFileProgressBlock
     typealias EngagementOptions = GliaCoreSDK.EngagementOptions

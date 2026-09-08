@@ -92,7 +92,7 @@ class ChatMessage: Codable {
         sender = ChatMessageSender(with: message.sender)
         content = message.content
         attachment = ChatAttachment(with: message.attachment)
-        metadata = message.metadata
+        metadata = message.metadata.map(MessageMetadata.init(coreMetadata:))
     }
 
     required init(from decoder: Decoder) throws {

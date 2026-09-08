@@ -87,6 +87,18 @@ extension SecureConversationsWelcomeViewModelTests {
         XCTAssertTrue(viewModel.isAttachmentsAvailable)
     }
 
+    func testAttachmentsUnavailableWhenNoFileTypesAreAllowed() async throws {
+        var environment = WelcomeViewModel.Environment.mock()
+        let site: CoreSdkClient.Site = try .mock(
+            allowedFileContentTypes: [],
+            allowedFileSenders: .init(operator: true, visitor: true)
+        )
+        environment.fetchSiteConfigurations = { site }
+        let model = WelcomeViewModel(environment: environment, availability: .mock)
+        await model.start()
+        XCTAssertFalse(model.isAttachmentsAvailable)
+    }
+
     func testIsAttachmentNotAvailable() throws {
         var environment: WelcomeViewModel.Environment = .mock()
         let site: CoreSdkClient.Site = try .mock(
@@ -135,6 +147,32 @@ extension SecureConversationsWelcomeViewModelTests {
 
 // Send message
 extension SecureConversationsWelcomeViewModelTests {
+    @MainActor
+    func testMessageRemainsLoadingUntilSendCompletes() async {
+        for shouldFail in [false, true] {
+            let requestStarted = expectation(description: "Welcome message request started")
+            var response: CheckedContinuation<CoreSdkClient.Message, Error>?
+            var environment = WelcomeViewModel.Environment.mock()
+            environment.secureConversations.sendMessagePayload = { _, _ in
+                try await withCheckedThrowingContinuation {
+                    response = $0
+                    requestStarted.fulfill()
+                }
+            }
+            let model = WelcomeViewModel(environment: environment, availability: .mock)
+            let sending = Task { await model.sendMessageCommand() }
+            await fulfillment(of: [requestStarted], timeout: 1)
+            XCTAssertEqual(model.sendMessageRequestState, .loading)
+            if shouldFail {
+                response?.resume(throwing: CoreSdkClient.GliaCoreError.mock())
+            } else {
+                response?.resume(returning: .mock())
+            }
+            await sending.value
+            XCTAssertEqual(model.sendMessageRequestState, .waiting)
+        }
+    }
+
     func testSuccessfulMessageSend() async {
         var isCalled = false
         viewModel.environment.secureConversations.sendMessagePayload = { _, _ in

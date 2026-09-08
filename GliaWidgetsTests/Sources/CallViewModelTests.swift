@@ -468,7 +468,7 @@ class CallViewModelTests: XCTestCase {
 
         // Will be removed when async state observing is implemented
         await waitUntil {
-            interactor.state == .enqueueing(.audioCall)
+            alertConfig != nil
         }
         await alertConfig?.accepted()
         XCTAssertEqual(interactor.state, .enqueued(.mock, .audioCall))

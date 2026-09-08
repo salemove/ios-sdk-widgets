@@ -349,8 +349,8 @@ extension ChatViewModel {
             isViewLoaded = true
             await start()
         case .sendTapped:
-            await sendMessage()
             action?(.quickReplyPropsUpdated(.hidden))
+            await sendMessage()
         case .customCardOptionSelected(let option, let messageId):
             await sendSelectedCustomCardOption(option, for: messageId)
         case .gvaButtonTapped(let option):
@@ -578,6 +578,9 @@ extension ChatViewModel {
             files: files
         )
 
+        // Consume the draft before sending can suspend.
+        messageText = ""
+
         switch interactor.state {
         case .engaged where shouldForceEnqueueing, .enqueueing, .ended, .none:
             handle(pendingMessage: outgoingMessage)
@@ -588,7 +591,6 @@ extension ChatViewModel {
             fileUploadListModel.succeededUploads.forEach { action?(.removeUpload($0)) }
             fileUploadListModel.removeSucceededUploads()
             action?(.scrollToBottom(animated: true))
-            messageText = ""
 
             do {
                 let message = try await interactor.send(messagePayload: outgoingMessage.payload)
@@ -603,8 +605,6 @@ extension ChatViewModel {
         case .enqueued:
             handle(pendingMessage: outgoingMessage)
         }
-
-        messageText = ""
     }
 
     @MainActor

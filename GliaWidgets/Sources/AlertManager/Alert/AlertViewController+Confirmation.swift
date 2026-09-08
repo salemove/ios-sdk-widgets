@@ -95,8 +95,7 @@ extension AlertViewController {
                 style: positiveButtonStyle,
                 tap: .async(
                     .init { [weak self] in
-                        await confirmed()
-                        self?.dismiss(animated: true)
+                        await self?.dismissThenPerform(confirmed)
                     }
                 ),
                 accessibilityIdentifier: "alert_positive_button"

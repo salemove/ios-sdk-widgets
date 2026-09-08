@@ -202,8 +202,7 @@ extension EntryWidget {
 // MARK: - Private methods
 private extension EntryWidget {
     func observeSecureUnreadMessageCount() {
-        unreadSecureMessageTask = Task { [weak self] in
-            guard let self else { return }
+        unreadSecureMessageTask = Task { [weak self, environment] in
             do {
                 let stream = try environment.observeSecureUnreadMessageCount()
                 for try await messagesCount in stream {

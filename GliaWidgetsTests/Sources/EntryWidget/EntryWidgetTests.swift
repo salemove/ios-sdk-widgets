@@ -3,13 +3,33 @@ import Combine
 
 @testable import GliaWidgets
 
+@MainActor
 class EntryWidgetTests: XCTestCase {
     private enum Call: Equatable {
         case observeSecureUnreadMessageCount
         case start(EngagementKind)
     }
 
-    @MainActor
+    func test_deinitCancelsUnreadMessageSubscription() async {
+        let subscribed = expectation(description: "Subscribed")
+        let terminated = expectation(description: "Subscription terminated")
+        var environment = EntryWidget.Environment.mock()
+        environment.observeSecureUnreadMessageCount = {
+            AsyncThrowingStream { continuation in
+                continuation.onTermination = { _ in terminated.fulfill() }
+                subscribed.fulfill()
+            }
+        }
+        var widget: EntryWidget? = EntryWidget(
+            queueIds: [], configuration: .default, environment: environment
+        )
+        weak var weakWidget = widget
+        await fulfillment(of: [subscribed], timeout: 1)
+        widget = nil
+        XCTAssertNil(weakWidget)
+        await fulfillment(of: [terminated], timeout: 1)
+    }
+
     func test_secureMessagingIsHiddenWhenUserIsNotAuthenticated() async throws {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
@@ -38,7 +58,6 @@ class EntryWidgetTests: XCTestCase {
         }
     }
 
-    @MainActor
     func test_secureMessagingIsShownWhenUserIsAuthenticated() async throws {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
@@ -65,7 +84,6 @@ class EntryWidgetTests: XCTestCase {
         }
     }
 
-    @MainActor
     func test__secureMessagingIsShownWhenUserIsAuthenticatedAndHasUnreadMessages() async throws {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
@@ -472,7 +490,6 @@ class EntryWidgetTests: XCTestCase {
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.video))
     }
 
-    @MainActor
     func test_viewStateShowsMessagingWhenTransferredSCExists() async throws {
         var environment = EntryWidget.Environment.mock()
         let interactor: Interactor = .mock()
@@ -592,7 +609,6 @@ class EntryWidgetTests: XCTestCase {
         XCTAssertEqual(entryWidget.viewState, .ongoingEngagement(.audio))
     }
 
-    @MainActor
     func test_secureMessagingIsShownIfQueueIsUnstaffedOrFullAndSCAvailable() async throws {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, status: .unstaffed, media: [.messaging, .audio, .video])
@@ -621,7 +637,6 @@ class EntryWidgetTests: XCTestCase {
         }
     }
 
-    @MainActor
     func test_offlineIsShownIfQueueIsUnstaffedOrFullAndSCNotAvailable() async throws {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, status: .full, media: [.audio, .video])
@@ -647,7 +662,6 @@ class EntryWidgetTests: XCTestCase {
         XCTAssertEqual(entryWidget.viewState, .offline)
     }
 
-    @MainActor
     func test_entryWidgetShowsMediaIfAnyQueueIsOpen() async throws {
         let mockQueueId = "mockQueueId"
         let mockQueue = Queue.mock(id: mockQueueId, status: .open, media: [.audio, .video])

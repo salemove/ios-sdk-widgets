@@ -285,7 +285,7 @@ public class Glia {
             methodParams: ["configuration", "theme", "uiConfig", "assetsBuilder", "features", "completion"]
         )
 
-        Task { [weak self] in
+        Task { @MainActor [weak self] in
             guard let self else { return }
             do {
                 try await self.completeConfiguration(
@@ -414,7 +414,7 @@ public class Glia {
     ///   will occur otherwise.
     ///
     public func clearVisitorSession(_ completion: @escaping (Result<Void, Error>) -> Void) {
-        Task {
+        Task { @MainActor in
             do {
                 try await clearVisitorSession()
                 completion(.success(()))
@@ -446,7 +446,7 @@ public class Glia {
     ///   this method, because `GliaError.sdkIsNotConfigured` will occur otherwise.
     ///
     public func getVisitorInfo(completion: @escaping (Result<VisitorInfo, Error>) -> Void) {
-        Task {
+        Task { @MainActor in
             do {
                 let visitorInfo = try await getVisitorInfo()
                 completion(.success(visitorInfo))
@@ -487,7 +487,7 @@ public class Glia {
         _ info: VisitorInfoUpdate,
         completion: @escaping (Result<Bool, Error>) -> Void
     ) {
-        Task {
+        Task { @MainActor in
             do {
                 let result = try await updateVisitorInfo(info)
                 completion(.success(result))
@@ -499,7 +499,7 @@ public class Glia {
 
     /// Ends active engagement if existing and closes Widgets SDK UI (includes bubble).
     public func endEngagement(_ completion: @escaping (Result<Void, Error>) -> Void) {
-        Task {
+        Task { @MainActor in
             do {
                 try await endEngagement()
                 completion(.success(()))
@@ -517,7 +517,7 @@ public class Glia {
     ///   - completion: A callback that will return the Result struct with `Queue` list or `GliaCoreError`.
     ///
     public func getQueues(_ completion: @escaping (Result<[Queue], Error>) -> Void) {
-        Task {
+        Task { @MainActor in
             do {
                 let queues = try await getQueues()
                 completion(.success(queues))
@@ -554,15 +554,15 @@ extension Glia {
     ) async throws {
         do {
             try await environment.coreSDKConfigurator.configureWithConfiguration(configuration)
-            try await MainActor.run {
-                try handleCoreSDKConfigured(
-                    configuration: configuration,
-                    uiConfig: uiConfig,
-                    features: features
-                )
-            }
         } catch {
             throw mapCoreSDKConfigurationFailure(error)
+        }
+        try await MainActor.run {
+            try handleCoreSDKConfigured(
+                configuration: configuration,
+                uiConfig: uiConfig,
+                features: features
+            )
         }
     }
 
@@ -711,6 +711,7 @@ public extension Glia {
     ///   - `GliaError.configuringDuringEngagementIsNotAllowed` if a
     ///     non-transferred secure conversation is active.
     ///   - `ConfigurationError` if Core SDK configuration fails.
+    @MainActor
     func configure(
         with configuration: Configuration,
         theme: Theme = Theme(),

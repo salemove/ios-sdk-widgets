@@ -12,7 +12,7 @@ public struct SecureConversations {
     /// - Parameter completion: A callback that will return a `Result` with the number of unread
     /// secure conversation messages on success, or `Swift.Error` on failure.
     public func getUnreadMessageCount(_ callback: @escaping (Result<Int, Error>) -> Void) {
-        Task {
+        Task { @MainActor in
             do {
                 let unreadMessageCount = try await getUnreadMessageCount()
                 callback(.success(unreadMessageCount))
@@ -40,16 +40,24 @@ public struct SecureConversations {
             methodName: "subscribeSecureUnreadMessageCount)",
             methodParams: ["completion"]
         )
+        let stream: AsyncThrowingStream<Int?, Error>
+        do {
+            stream = try environment.coreSdk.secureConversations.subscribeForUnreadMessageCount()
+        } catch {
+            completion(.failure(error))
+            return nil
+        }
         let token = environment.createUuid().uuidString
-        let task = Task {
+        let task = Task { @MainActor in
             do {
-                let stream = try environment.coreSdk.secureConversations.subscribeForUnreadMessageCount()
                 for try await count in stream {
+                    guard !Task.isCancelled else { return }
                     completion(.success(count))
                 }
             } catch is CancellationError {
                 return
             } catch {
+                guard !Task.isCancelled else { return }
                 completion(.failure(error))
             }
         }

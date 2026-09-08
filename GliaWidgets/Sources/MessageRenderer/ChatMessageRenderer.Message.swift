@@ -4,16 +4,35 @@ import Foundation
 public extension MessageRenderer {
     /// Message to render AI custom card view.
     struct Message {
-        typealias Identifier = CoreSdkClient.Tagged<Self, String>
+        public struct Identifier: RawRepresentable, Hashable, Codable, ExpressibleByStringLiteral {
+            public var rawValue: String
+
+            public init(rawValue: String) {
+                self.rawValue = rawValue
+            }
+
+            public init(stringLiteral value: String) {
+                self.init(rawValue: value)
+            }
+
+            public init(from decoder: Decoder) throws {
+                self.init(rawValue: try decoder.singleValueContainer().decode(String.self))
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                try container.encode(rawValue)
+            }
+        }
 
         /// Message ID
-        let id: Identifier
+        public let id: Identifier
 
         /// Message metadata. Use `decode()` method to decode into decodable model.
-        let metadata: MessageMetadata?
+        public let metadata: MessageMetadata?
 
         /// Selected option value.
-        let selectedOption: String?
+        public let selectedOption: String?
 
         /// - Parameters:
         ///   - id: message ID

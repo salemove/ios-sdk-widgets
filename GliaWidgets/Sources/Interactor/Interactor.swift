@@ -479,10 +479,11 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     func end(with reason: CoreSdkClient.EngagementEndingReason) {
+        // Core clears its engagement as soon as this callback returns.
+        let endingEngagement = environment.coreSdk.getCurrentEngagement()
         performOnMain { interactor in
             let endReason: EndEngagementReason
-            // Core invokes this callback before clearing its current engagement.
-            interactor.endedEngagement = interactor.environment.coreSdk.getCurrentEngagement()
+            interactor.endedEngagement = endingEngagement
 
             switch reason {
             case .visitorHungUp:

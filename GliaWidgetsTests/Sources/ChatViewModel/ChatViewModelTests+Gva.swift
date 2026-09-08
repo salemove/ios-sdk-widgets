@@ -2,6 +2,25 @@
 import XCTest
 
 extension ChatViewModelTests {
+    @MainActor
+    func testQuickReplyIsHiddenBeforeSending() async {
+        let interactor = Interactor.mock()
+        interactor.state = .engaged(nil)
+        let model = ChatViewModel.mock(interactor: interactor)
+        var calls: [String] = []
+        model.action = { action in
+            if case .quickReplyPropsUpdated(.hidden) = action {
+                calls.append("hidden")
+            }
+        }
+        interactor.environment.coreSdk.sendMessageWithMessagePayload = { _ in
+            await MainActor.run { calls.append("send") }
+            return .mock()
+        }
+        await model.quickReplyOption(.mock(text: "Option", value: "option")).action()
+        XCTAssertEqual(calls, ["hidden", "send"])
+    }
+
     func test_gvaDeepLinkActionCallsMinimize() async {
         let option: GvaOption = .mock(url: "mock://mock.self", urlTarget: "self")
         var calls: [Call] = []
