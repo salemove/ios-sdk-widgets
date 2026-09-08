@@ -48,6 +48,7 @@ extension CallVisualizer.Coordinator {
         environment.eventHandler(.maximized)
     }
 
+    @MainActor
     func showVisitorCodeViewController(by presentation: CallVisualizer.Presentation) async {
         let coordinator = CallVisualizer.VisitorCodeCoordinator(
             theme: environment.viewFactory.theme,
@@ -73,6 +74,9 @@ extension CallVisualizer.Coordinator {
             }
         }
 
+        // Register the presentation before the visitor code request suspends so
+        // a close or engagement acceptance can dismiss it while it is loading.
+        self.visitorCodeCoordinator = coordinator
         await coordinator.start()
         self.environment.openTelemetry.logger.i(.visitorCodeShown) {
             switch presentation {
@@ -82,7 +86,6 @@ extension CallVisualizer.Coordinator {
                 $0[.viewType] = .string(OtelViewTypes.dialog.rawValue)
             }
         }
-        self.visitorCodeCoordinator = coordinator
     }
 
     func handleAcceptedUpgrade() {

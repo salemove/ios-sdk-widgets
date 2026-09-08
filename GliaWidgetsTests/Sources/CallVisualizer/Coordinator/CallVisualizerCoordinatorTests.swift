@@ -11,6 +11,34 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
     }
 
     @MainActor
+    func testVisitorCodeCanCloseWhileRequestIsPending() async {
+        let requestStarted = expectation(description: "Visitor code request started")
+        var resumeRequest: CheckedContinuation<Void, Never>?
+        coordinator.environment.requestVisitorCode = {
+            await withCheckedContinuation { continuation in
+                resumeRequest = continuation
+                requestStarted.fulfill()
+            }
+            return try .mock()
+        }
+        var acceptedCount = 0
+        let presentation = Task { @MainActor in
+            await coordinator.showVisitorCodeViewController(
+                by: .embedded(UIView(), onEngagementAccepted: { acceptedCount += 1 })
+            )
+        }
+        await fulfillment(of: [requestStarted], timeout: 1)
+
+        coordinator.closeVisitorCode()
+        XCTAssertEqual(acceptedCount, 1)
+
+        resumeRequest?.resume()
+        await presentation.value
+        coordinator.closeVisitorCode()
+        XCTAssertEqual(acceptedCount, 1, "Completing the request must not restore the closed coordinator")
+    }
+
+    @MainActor
     func test_showVisitorCodeViewController() async throws {
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.first as? UIWindowScene)
         let window = scene.windows.first

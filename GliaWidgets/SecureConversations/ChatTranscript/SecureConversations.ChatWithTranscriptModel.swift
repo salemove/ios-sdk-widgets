@@ -124,8 +124,8 @@ extension SecureConversations.ChatWithTranscriptModel {
         switch self {
         case let .chat(model):
             await model.asyncEvent(event)
-        case .transcript:
-            break
+        case let .transcript(model):
+            await model.asyncEvent(event)
         }
     }
 

@@ -341,8 +341,8 @@ extension ChatViewModel {
             isViewLoaded = true
             await start()
         case .sendTapped:
-            await sendMessage()
             action?(.quickReplyPropsUpdated(.hidden))
+            await sendMessage()
         case .customCardOptionSelected(let option, let messageId):
             await sendSelectedCustomCardOption(option, for: messageId)
         case .gvaButtonTapped(let option):
