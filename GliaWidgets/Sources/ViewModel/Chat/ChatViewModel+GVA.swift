@@ -9,8 +9,8 @@ private extension String {
 extension ChatViewModel {
     func quickReplyOption(_ gvaOption: GvaOption) -> QuickReplyButtonCell.Props {
         let action = AsyncCmd { [weak self] in
-            await self?.gvaOptionAction(for: gvaOption)()
             self?.action?(.quickReplyPropsUpdated(.hidden))
+            await self?.gvaOptionAction(for: gvaOption)()
         }
         return .init(
             title: gvaOption.text,

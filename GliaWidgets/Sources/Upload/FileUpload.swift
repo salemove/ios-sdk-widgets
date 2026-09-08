@@ -106,7 +106,7 @@ class FileUpload {
 
         state.value = .uploading(progress: progress)
         let uploadFile = environment.uploadFile
-        uploadTask = Task {
+        uploadTask = Task { @MainActor in
             do {
                 let engagementFile = try await uploadFile.uploadFile(file, progress: onProgress)
                 guard !Task.isCancelled else { return }

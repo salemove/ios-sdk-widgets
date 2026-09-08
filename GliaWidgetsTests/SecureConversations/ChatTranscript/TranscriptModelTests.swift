@@ -348,6 +348,50 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         XCTAssertTrue(viewModel.validateMessage())
     }
 
+    @MainActor
+    func testSendMessageConsumesDraftBeforeSuspendingAndPreservesNewDraft() async {
+        for shouldFail in [false, true] {
+            let requestStarted = expectation(description: "Secure message request started")
+            var response: CheckedContinuation<CoreSdkClient.Message, Error>?
+            var environment = TranscriptModel.Environment.mock(
+                createFileUploadListModel: { .init(environment: $0) },
+                maximumUploads: { 2 }
+            )
+            environment.secureConversations.sendMessagePayload = { _, _ in
+                try await withCheckedThrowingContinuation {
+                    response = $0
+                    requestStarted.fulfill()
+                }
+            }
+            let model = TranscriptModel(
+                isCustomCardSupported: false,
+                environment: environment,
+                availability: .mock(),
+                deliveredStatusText: "",
+                failedToDeliverStatusText: "",
+                unreadMessages: .init(with: 0),
+                interactor: .mock()
+            )
+            model.event(.messageTextChanged("First message"))
+            XCTAssertTrue(model.validateMessage())
+            let sending = Task {
+                await SecureConversations.ChatWithTranscriptModel.transcript(model).asyncEvent(.sendTapped)
+            }
+            await fulfillment(of: [requestStarted], timeout: 1)
+
+            XCTAssertEqual(model.messageText, "")
+            XCTAssertFalse(model.validateMessage())
+            model.event(.messageTextChanged("Next draft"))
+            if shouldFail {
+                response?.resume(throwing: CoreSdkClient.GliaCoreError.mock())
+            } else {
+                response?.resume(returning: .mock())
+            }
+            await sending.value
+            XCTAssertEqual(model.messageText, "Next draft")
+        }
+    }
+
     func testSendMessageUsesSecureEndpoint() async {
         var modelEnv = TranscriptModel.Environment.failing
         let fileUploadListModel = FileUploadListViewModel.mock()

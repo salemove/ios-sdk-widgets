@@ -49,7 +49,7 @@ extension GliaTests {
         let sdk = Glia(environment: sdkEnv)
         sdk.rootCoordinator = rootCoordinator
 
-        try sdk.configure(with: .mock(), features: .all) { _ in }
+        try await sdk.configure(with: .mock(), features: .all)
         sdk.stringProvidingPhase = .configured { _ in
             return ""
         }
@@ -122,7 +122,7 @@ extension GliaTests {
 
         // WidgetSDK
         let sdk = Glia(environment: sdkEnv)
-        try sdk.configure(with: .mock(), features: .all) { _ in }
+        try await sdk.configure(with: .mock(), features: .all)
 
         // Start chat engagement
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
@@ -177,9 +177,8 @@ extension GliaTests {
 
         // WidgetSDK
         let sdk = Glia(environment: sdkEnv)
-        try sdk.configure(with: .mock(), features: .all) { _ in
-            configured.value = true
-        }
+        try await sdk.configure(with: .mock(), features: .all)
+        configured.value = true
 
         // Set restoring engagement state
         sdk.engagementRestorationState = .restoring
@@ -234,7 +233,7 @@ extension GliaTests {
         DependencyContainer.current.widgets.snackBar = snackBar
 
         let sdk = Glia(environment: sdkEnv)
-        try sdk.configure(with: .mock(), features: .all) { _ in }
+        try await sdk.configure(with: .mock(), features: .all)
         sdk.environment.coreSdk.getCurrentEngagement = { .mock() }
         sdk.stringProvidingPhase = .configured { _ in
             return ""
@@ -263,7 +262,7 @@ extension GliaTests {
         XCTAssertEqual(calls, [.engagementStarted, .minimized, .snackBarPresent])
     }
 
-    func test_sdkDoesNotRestoreOngoingTransferredSecureConversation() throws {
+    func test_sdkDoesNotRestoreOngoingTransferredSecureConversation() async throws {
         var sdkEnv = Glia.Environment.failing
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         sdkEnv.createRootCoordinator = { _, _, _, _, _, _, _ in
@@ -298,7 +297,7 @@ extension GliaTests {
         DependencyContainer.current.widgets.snackBar = snackBar
 
         let sdk = Glia(environment: sdkEnv)
-        try sdk.configure(with: .mock(), features: .all) { _ in }
+        try await sdk.configure(with: .mock(), features: .all)
         sdk.environment.coreSdk.getCurrentEngagement = {
             .mock(status: .transferring, capabilities: .init(text: true))
         }
@@ -370,7 +369,7 @@ extension GliaTests {
         sdkEnv.uiApplication.windows = { [window] }
 
         let sdk = Glia(environment: sdkEnv)
-        try sdk.configure(with: .mock(), features: .all) { _ in }
+        try await sdk.configure(with: .mock(), features: .all)
         sdk.environment.coreSdk.getCurrentEngagement = { .mock() }
         sdk.stringProvidingPhase = .configured { _ in
             return ""
@@ -403,7 +402,7 @@ extension GliaTests {
     @MainActor
     func test_restoreOngoingEngagementResetsStateWhenMobileObservationIsDisabled() async throws {
         let site = try CoreSdkClient.Site.mock(mobileObservationEnabled: false)
-        let (sdk, interactor) = try makeConfiguredSdkForRestoreStateTests {
+        let (sdk, interactor) = try await makeConfiguredSdkForRestoreStateTests {
             site
         }
 
@@ -421,7 +420,7 @@ extension GliaTests {
     @MainActor
     func test_restoreOngoingEngagementResetsStateWhenSiteConfigurationFetchFails() async throws {
         let expectedError = NSError(domain: "restore-site-config", code: 1)
-        let (sdk, interactor) = try makeConfiguredSdkForRestoreStateTests {
+        let (sdk, interactor) = try await makeConfiguredSdkForRestoreStateTests {
             throw expectedError
         }
 
@@ -441,7 +440,7 @@ private extension GliaTests {
     @MainActor
     func makeConfiguredSdkForRestoreStateTests(
         fetchSiteConfigurations: @escaping CoreSdkClient.FetchSiteConfigurations
-    ) throws -> (sdk: Glia, interactor: Interactor) {
+    ) async throws -> (sdk: Glia, interactor: Interactor) {
         var sdkEnv = Glia.Environment.failing
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         sdkEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _, _ in
@@ -473,7 +472,7 @@ private extension GliaTests {
         sdkEnv.coreSdk.subscribeForQueuesUpdates = { _ in AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: sdkEnv)
-        try sdk.configure(with: .mock(), features: .all) { _ in }
+        try await sdk.configure(with: .mock(), features: .all)
         sdk.stringProvidingPhase = .configured { _ in "" }
 
         return (sdk, try XCTUnwrap(sdk.interactor))

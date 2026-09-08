@@ -340,7 +340,7 @@ extension ChatViewController {
 
         let jsonData = mockGvaPersistentButtonJson() ?? Data()
         let metadataContainer = try CoreSdkMessageMetadataContainer(jsonData: jsonData, jsonDecoder: .init())
-        let metadata = CoreSdkClient.Message.Metadata(container: metadataContainer.container)
+        let metadata = MessageMetadata(container: metadataContainer.container)
 
         let messages: [ChatMessage] = [
             .mock(
@@ -386,7 +386,7 @@ extension ChatViewController {
 
         let jsonData = mockGvaResponseTextJson() ?? Data()
         let metadataContainer = try CoreSdkMessageMetadataContainer(jsonData: jsonData, jsonDecoder: .init())
-        let metadata = CoreSdkClient.Message.Metadata(container: metadataContainer.container)
+        let metadata = MessageMetadata(container: metadataContainer.container)
 
         let messages: [ChatMessage] = [
             .mock(
@@ -432,7 +432,7 @@ extension ChatViewController {
 
         let jsonData = mockGvaGalleryCardJson() ?? Data()
         let metadataContainer = try CoreSdkMessageMetadataContainer(jsonData: jsonData, jsonDecoder: .init())
-        let metadata = CoreSdkClient.Message.Metadata(container: metadataContainer.container)
+        let metadata = MessageMetadata(container: metadataContainer.container)
 
         let messages: [ChatMessage] = [
             .mock(

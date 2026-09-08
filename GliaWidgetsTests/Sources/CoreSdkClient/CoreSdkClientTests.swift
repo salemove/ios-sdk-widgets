@@ -3,6 +3,10 @@ import XCTest
 @testable import GliaWidgets
 
 final class CoreSdkClientTests: XCTestCase {
+    func testEngagementFileDataMockContainsPayload() {
+        XCTAssertEqual(CoreSdkClient.EngagementFileData.mock().data, Data("mock file content".utf8))
+    }
+
     func testWidgetPushNotificationTypesMapToCoreTypes() {
         let mappings: [(GliaWidgets.PushNotificationsType, GliaCoreSDK.PushNotificationsType)] = [
             (.start, .start),

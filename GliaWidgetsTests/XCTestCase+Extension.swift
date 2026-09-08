@@ -1,6 +1,7 @@
 import XCTest
 
 extension XCTestCase {
+    @MainActor
     func waitUntil(
         timeout: TimeInterval = 1.0,
         pollInterval: TimeInterval = 0.01,

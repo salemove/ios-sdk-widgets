@@ -23,6 +23,10 @@ final class QueuesMonitor {
         self.environment = environment
     }
 
+    deinit {
+        queueUpdatesTask?.cancel()
+    }
+
     /// Fetches all available site's queues for given queues IDs.
     ///
     /// - Parameters:
@@ -116,18 +120,18 @@ private extension QueuesMonitor {
 
     func observeQueuesUpdates(_ queues: [Queue]) {
         let queuesIds = queues.map { $0.id }
-        queueUpdatesTask = Task { [weak self] in
-            guard let self else { return }
+        queueUpdatesTask = Task { [weak self, environment] in
             do {
                 for try await queue in environment.subscribeForQueuesUpdates(queuesIds) {
                     guard !Task.isCancelled else { break }
+                    guard let self else { return }
                     self.updateQueue(queue)
                     self.setState(.updated(self.observedQueues))
                 }
             } catch is CancellationError {
                 return
             } catch {
-                self.setState(.failed(error))
+                self?.setState(.failed(error))
             }
         }
     }
