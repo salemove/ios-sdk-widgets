@@ -52,6 +52,20 @@ In parallel: Run SwiftLint, build the framework, and execute snapshot tests
 
 ---
 
+## Platform Services
+
+> Read by Glia's engineering knowledge base and review bots. Update it when a
+> dependency is added or removed.
+
+This SDK reaches no Glia backend service directly — all networking, auth and
+data flow through the Core SDK. The Glia libraries it embeds:
+
+| Library | Role |
+|---------|------|
+| `ios-sdk` | GliaCoreSDK — the only layer that talks to the platform |
+| `ios-telemetry` | GliaOpenTelemetry — logging and tracing |
+| `phoenix-channels-kmm-bundle` | XCFramework wrapping the shared KMM Phoenix Channels client |
+
 ## Project Architecture
 
 ### Framework Type
