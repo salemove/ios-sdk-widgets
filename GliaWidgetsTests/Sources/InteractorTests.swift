@@ -685,7 +685,7 @@ class InteractorTests: XCTestCase {
             return [.mock()]
         }
         
-        queuesMonitor.environment.subscribeForQueuesUpdates = { _ in
+        queuesMonitor.environment.queueUpdatesStream = { _ in
             calls.append(.subscribeForUpdates)
             return AsyncThrowingStream { continuation in
                 continuation.yield(.mock())

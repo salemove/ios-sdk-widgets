@@ -122,7 +122,7 @@ private extension QueuesMonitor {
         let queuesIds = queues.map { $0.id }
         queueUpdatesTask = Task { [weak self, environment] in
             do {
-                for try await queue in environment.subscribeForQueuesUpdates(queuesIds) {
+                for try await queue in environment.queueUpdatesStream(queuesIds) {
                     guard !Task.isCancelled else { break }
                     guard let self else { return }
                     self.updateQueue(queue)

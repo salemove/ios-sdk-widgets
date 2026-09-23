@@ -220,7 +220,7 @@ public class Glia {
         )
         queuesMonitor = .init(environment: .init(
             getQueues: environment.coreSdk.getQueues,
-            subscribeForQueuesUpdates: environment.coreSdk.subscribeForQueuesUpdates,
+            queueUpdatesStream: environment.coreSdk.queueUpdatesStream,
             logger: loggerPhase.logger
         ))
         alertManager = .init(

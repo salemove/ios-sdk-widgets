@@ -6,7 +6,7 @@ import XCTest
 final class SecureConversationsPendingInteractionTests: XCTestCase {
     func test_initThrowsWhenPendingStatusObservationCannotStart() {
         var environment = SecureConversations.PendingInteraction.Environment.mock
-        environment.observePendingSecureConversationsStatus = {
+        environment.pendingSecureConversationStatusStream = {
             throw TestError.subscriptionUnavailable
         }
 
@@ -24,7 +24,7 @@ final class SecureConversationsPendingInteractionTests: XCTestCase {
 
     func test_initThrowsWhenUnreadCountObservationCannotStart() {
         var environment = SecureConversations.PendingInteraction.Environment.mock
-        environment.observeSecureConversationsUnreadMessageCount = {
+        environment.unreadMessageCountStream = {
             throw TestError.subscriptionUnavailable
         }
 
@@ -53,8 +53,8 @@ final class SecureConversationsPendingInteractionTests: XCTestCase {
         let interactor = Interactor.mock()
         interactor.state = .none
         environment.interactorPublisher = Just(interactor).eraseToAnyPublisher()
-        environment.observePendingSecureConversationsStatus = { pendingStream }
-        environment.observeSecureConversationsUnreadMessageCount = { unreadCountStream }
+        environment.pendingSecureConversationStatusStream = { pendingStream }
+        environment.unreadMessageCountStream = { unreadCountStream }
 
         let pendingInteraction = try SecureConversations.PendingInteraction(environment: environment)
         // Assert initial pending interaction is false.
@@ -121,11 +121,11 @@ final class SecureConversationsPendingInteractionTests: XCTestCase {
             }
         }
         var environment = SecureConversations.PendingInteraction.Environment.failing
-        environment.observePendingSecureConversationsStatus = {
+        environment.pendingSecureConversationStatusStream = {
             pendingObservationStarted.fulfill()
             return pendingStream
         }
-        environment.observeSecureConversationsUnreadMessageCount = {
+        environment.unreadMessageCountStream = {
             unreadCountObservationStarted.fulfill()
             return unreadCountStream
         }

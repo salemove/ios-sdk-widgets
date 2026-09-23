@@ -22,7 +22,7 @@ extension GliaTests {
         logger.infoClosure = { _, _, _, _ in }
         sdkEnv.coreSdk.createLogger = { _ in logger }
         sdkEnv.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
-        sdkEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
+        sdkEnv.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
         sdkEnv.conditionalCompilation.isDebug = { true }
         sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         let window = UIWindow(frame: .zero)
@@ -55,7 +55,7 @@ extension GliaTests {
         gliaEnv.conditionalCompilation.isDebug = { false }
         gliaEnv.coreSdk.createLogger = { _ in logger }
         gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
+        gliaEnv.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: gliaEnv)
         sdk.queuesMonitor = .mock()
         sdk.environment.conditionalCompilation.isDebug = { true }
@@ -102,7 +102,7 @@ extension GliaTests {
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
         environment.coreSdk.getCurrentEngagement = { nil }
         environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
-        environment.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
         try await sdk.configure(
@@ -146,7 +146,7 @@ extension GliaTests {
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
         environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
-        environment.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -192,7 +192,7 @@ extension GliaTests {
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
         environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
-        environment.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
 
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
@@ -253,7 +253,7 @@ extension GliaTests {
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
         environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
-        environment.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -302,7 +302,7 @@ extension GliaTests {
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
         environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
-        environment.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -353,7 +353,7 @@ extension GliaTests {
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
         environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
-        environment.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -408,7 +408,7 @@ extension GliaTests {
         environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
         environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
-        environment.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -449,13 +449,13 @@ extension GliaTests {
         environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         let uuIdGen = UUID.incrementing
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.secureConversations.subscribeForUnreadMessageCount = {
+        environment.coreSdk.secureConversations.unreadMessageCountStream = {
             AsyncThrowingStream { continuation in
                 continuation.yield(0)
                 continuation.finish()
             }
         }
-        environment.coreSdk.secureConversations.observePendingStatus = {
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = {
             AsyncThrowingStream { continuation in
                 continuation.yield(true)
                 continuation.finish()
@@ -499,7 +499,7 @@ extension GliaTests {
         environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
         environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
-        environment.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -538,13 +538,13 @@ extension GliaTests {
         environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         let uuIdGen = UUID.incrementing
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.secureConversations.subscribeForUnreadMessageCount = {
+        environment.coreSdk.secureConversations.unreadMessageCountStream = {
             AsyncThrowingStream { continuation in
                 continuation.yield(0)
                 continuation.finish()
             }
         }
-        environment.coreSdk.secureConversations.observePendingStatus = {
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = {
             AsyncThrowingStream { continuation in
                 continuation.yield(true)
                 continuation.finish()
@@ -587,8 +587,8 @@ extension GliaTests {
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
-        environment.coreSdk.secureConversations.subscribeForUnreadMessageCount = { AsyncThrowingStream { $0.finish() } }
-        environment.coreSdk.secureConversations.observePendingStatus = { AsyncThrowingStream { $0.finish() } }
+        environment.coreSdk.secureConversations.unreadMessageCountStream = { AsyncThrowingStream { $0.finish() } }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
         environment.coreSdk.fetchSiteConfigurations = { try .mock() }
 
         let sdk = Glia(environment: environment)

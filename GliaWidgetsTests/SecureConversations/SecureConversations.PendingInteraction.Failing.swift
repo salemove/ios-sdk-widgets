@@ -3,12 +3,12 @@ import Combine
 
 extension SecureConversations.PendingInteraction.Environment {
     static let failing = Self(
-        observePendingSecureConversationsStatus: {
-            fail("\(Self.self).observePendingSecureConversationsStatus")
+        pendingSecureConversationStatusStream: {
+            fail("\(Self.self).pendingSecureConversationStatusStream")
             return AsyncThrowingStream { $0.finish() }
         },
-        observeSecureConversationsUnreadMessageCount: {
-            fail("\(Self.self).observeSecureConversationsUnreadMessageCount")
+        unreadMessageCountStream: {
+            fail("\(Self.self).unreadMessageCountStream")
             return AsyncThrowingStream { $0.finish() }
         },
         // InteractorPublisher cannot call fail because it is a

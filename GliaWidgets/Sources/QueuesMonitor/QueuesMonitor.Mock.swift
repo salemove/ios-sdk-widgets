@@ -3,12 +3,12 @@
 extension QueuesMonitor {
     static func mock(
         getQueues: CoreSdkClient.GetQueues? = nil,
-        subscribeForQueuesUpdates: CoreSdkClient.SubscribeForQueuesUpdates? = nil
+        queueUpdatesStream: CoreSdkClient.QueueUpdatesStream? = nil
     ) -> Self {
         Self(
             environment: .init(
                 getQueues: getQueues ?? QueuesMonitor.Environment.mock.getQueues,
-                subscribeForQueuesUpdates: subscribeForQueuesUpdates ?? QueuesMonitor.Environment.mock.subscribeForQueuesUpdates,
+                queueUpdatesStream: queueUpdatesStream ?? QueuesMonitor.Environment.mock.queueUpdatesStream,
                 logger: .mock
             )
         )
