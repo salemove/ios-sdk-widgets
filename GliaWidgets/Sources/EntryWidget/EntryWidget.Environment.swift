@@ -4,7 +4,7 @@ import Combine
 
 extension EntryWidget {
     struct Environment {
-        var observeSecureUnreadMessageCount: CoreSdkClient.SecureConversations.SubscribeForUnreadMessageCount
+        var observeSecureUnreadMessageCount: CoreSdkClient.SecureConversations.UnreadMessageCountStream
         var queuesMonitor: QueuesMonitor
         var engagementLauncher: EngagementLauncher
         var theme: () -> Theme

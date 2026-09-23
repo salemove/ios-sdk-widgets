@@ -7,7 +7,7 @@ import Combine
 class QueuesMonitorTests: XCTestCase {
     private enum Call {
         case getQueues
-        case subscribeForQueuesUpdates
+        case queueUpdatesStream
     }
 
     private var monitor: QueuesMonitor!
@@ -28,7 +28,7 @@ class QueuesMonitorTests: XCTestCase {
     func test_deinitCancelsQueueSubscription() async throws {
         let subscribed = expectation(description: "Subscribed")
         let terminated = expectation(description: "Subscription terminated")
-        monitor.environment.subscribeForQueuesUpdates = { _ in
+        monitor.environment.queueUpdatesStream = { _ in
             AsyncThrowingStream { continuation in
                 continuation.onTermination = { _ in terminated.fulfill() }
                 subscribed.fulfill()
@@ -57,8 +57,8 @@ class QueuesMonitorTests: XCTestCase {
             envCalls.append(.getQueues)
             return mockQueues
         }
-        monitor.environment.subscribeForQueuesUpdates = { _ in
-            envCalls.append(.subscribeForQueuesUpdates)
+        monitor.environment.queueUpdatesStream = { _ in
+            envCalls.append(.queueUpdatesStream)
             return Self.stream(yielding: expectedObservedQueues[0])
         }
 
@@ -77,7 +77,7 @@ class QueuesMonitorTests: XCTestCase {
         await waitUntil { updateCount == 2 }
 
         XCTAssertEqual(receivedQueues, expectedObservedQueues)
-        XCTAssertEqual(envCalls, [.getQueues, .subscribeForQueuesUpdates])
+        XCTAssertEqual(envCalls, [.getQueues, .queueUpdatesStream])
         XCTAssertEqual(receivedLogMessage, expectedLogMessage)
     }
 
@@ -99,8 +99,8 @@ class QueuesMonitorTests: XCTestCase {
             envCalls.append(.getQueues)
             return mockQueues
         }
-        monitor.environment.subscribeForQueuesUpdates = { _ in
-            envCalls.append(.subscribeForQueuesUpdates)
+        monitor.environment.queueUpdatesStream = { _ in
+            envCalls.append(.queueUpdatesStream)
             return Self.stream(yielding: mockedQueue)
         }
 
@@ -119,7 +119,7 @@ class QueuesMonitorTests: XCTestCase {
         await waitUntil { updateCount == 2 }
 
         XCTAssertEqual(receivedQueues, expectedObservedQueues)
-        XCTAssertEqual(envCalls, [.getQueues, .subscribeForQueuesUpdates])
+        XCTAssertEqual(envCalls, [.getQueues, .queueUpdatesStream])
         XCTAssertEqual(expectedLogMessages, receivedLogMessage)
     }
 
@@ -135,8 +135,8 @@ class QueuesMonitorTests: XCTestCase {
             envCalls.append(.getQueues)
             throw expectedError
         }
-        monitor.environment.subscribeForQueuesUpdates = { _ in
-            envCalls.append(.subscribeForQueuesUpdates)
+        monitor.environment.queueUpdatesStream = { _ in
+            envCalls.append(.queueUpdatesStream)
             return Self.finishedStream()
         }
 
@@ -175,8 +175,8 @@ class QueuesMonitorTests: XCTestCase {
             envCalls.append(.getQueues)
             return mockQueues
         }
-        monitor.environment.subscribeForQueuesUpdates = { [expectedUpdatedQueue] _ in
-            envCalls.append(.subscribeForQueuesUpdates)
+        monitor.environment.queueUpdatesStream = { [expectedUpdatedQueue] _ in
+            envCalls.append(.queueUpdatesStream)
             return Self.stream(yielding: expectedUpdatedQueue)
         }
 
@@ -199,7 +199,7 @@ class QueuesMonitorTests: XCTestCase {
 
         XCTAssertEqual(receivedQueues, [expectedUpdatedQueue])
         XCTAssertEqual(receivedUpdatedQueue?.status, .open)
-        XCTAssertEqual(envCalls, [.getQueues, .subscribeForQueuesUpdates])
+        XCTAssertEqual(envCalls, [.getQueues, .queueUpdatesStream])
     }
 
     func test_fetchAndMonitorQueuesWithQueuesStopsPreviousMonitoring() async throws {
@@ -220,8 +220,8 @@ class QueuesMonitorTests: XCTestCase {
             envCalls.append(.getQueues)
             return mockQueues
         }
-        monitor.environment.subscribeForQueuesUpdates = { _ in
-            envCalls.append(.subscribeForQueuesUpdates)
+        monitor.environment.queueUpdatesStream = { _ in
+            envCalls.append(.queueUpdatesStream)
             subscriptionCount += 1
             let isFirstSubscription = subscriptionCount == 1
             return AsyncThrowingStream { continuation in
@@ -259,9 +259,9 @@ class QueuesMonitorTests: XCTestCase {
             envCalls,
             [
                 .getQueues,
-                .subscribeForQueuesUpdates,
+                .queueUpdatesStream,
                 .getQueues,
-                .subscribeForQueuesUpdates
+                .queueUpdatesStream
             ]
         )
     }
@@ -276,8 +276,8 @@ class QueuesMonitorTests: XCTestCase {
             envCalls.append(.getQueues)
             return mockQueues
         }
-        monitor.environment.subscribeForQueuesUpdates = { _ in
-            envCalls.append(.subscribeForQueuesUpdates)
+        monitor.environment.queueUpdatesStream = { _ in
+            envCalls.append(.queueUpdatesStream)
             return Self.stream(throwing: expectedError)
         }
 
@@ -296,7 +296,7 @@ class QueuesMonitorTests: XCTestCase {
         await waitUntil { receivedError != nil }
 
         XCTAssertEqual(receivedError, expectedError)
-        XCTAssertEqual(envCalls, [.getQueues, .subscribeForQueuesUpdates])
+        XCTAssertEqual(envCalls, [.getQueues, .queueUpdatesStream])
     }
 
     // MARK: Stop monitoring
@@ -308,8 +308,8 @@ class QueuesMonitorTests: XCTestCase {
             envCalls.append(.getQueues)
             return []
         }
-        monitor.environment.subscribeForQueuesUpdates = { _ in
-            envCalls.append(.subscribeForQueuesUpdates)
+        monitor.environment.queueUpdatesStream = { _ in
+            envCalls.append(.queueUpdatesStream)
             return AsyncThrowingStream { continuation in
                 continuation.onTermination = { termination in
                     guard case .cancelled = termination else { return }
@@ -319,12 +319,12 @@ class QueuesMonitorTests: XCTestCase {
         }
 
         _ = try await monitor.fetchAndMonitorQueues(queuesIds: ["1"])
-        await waitUntil { envCalls.contains(.subscribeForQueuesUpdates) }
+        await waitUntil { envCalls.contains(.queueUpdatesStream) }
 
         monitor.stopMonitoring()
         await fulfillment(of: [streamCancelled], timeout: 1)
 
-        XCTAssertEqual(envCalls, [.getQueues, .subscribeForQueuesUpdates])
+        XCTAssertEqual(envCalls, [.getQueues, .queueUpdatesStream])
     }
 
     func test_receiveOlderQueue_doesNotReplaceExistingQueue() async throws {
@@ -343,8 +343,8 @@ class QueuesMonitorTests: XCTestCase {
             envCalls.append(.getQueues)
             return [existingQueue]
         }
-        monitor.environment.subscribeForQueuesUpdates = { _ in
-            envCalls.append(.subscribeForQueuesUpdates)
+        monitor.environment.queueUpdatesStream = { _ in
+            envCalls.append(.queueUpdatesStream)
             return Self.stream(yielding: olderQueue)
         }
         var receivedQueues: [GliaWidgets.Queue]?
@@ -361,7 +361,7 @@ class QueuesMonitorTests: XCTestCase {
         _ = try await monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
         await waitUntil { receivedQueues != nil }
 
-        XCTAssertEqual(envCalls, [.getQueues, .subscribeForQueuesUpdates])
+        XCTAssertEqual(envCalls, [.getQueues, .queueUpdatesStream])
         XCTAssertEqual(receivedQueues?.count, 1)
         XCTAssertEqual(receivedQueues?.first?.lastUpdated, existingQueue.lastUpdated)
     }
@@ -384,8 +384,8 @@ class QueuesMonitorTests: XCTestCase {
             envCalls.append(.getQueues)
             return [oldQueue]
         }
-        monitor.environment.subscribeForQueuesUpdates = { _ in
-            envCalls.append(.subscribeForQueuesUpdates)
+        monitor.environment.queueUpdatesStream = { _ in
+            envCalls.append(.queueUpdatesStream)
             return Self.stream(yielding: newerQueue)
         }
 
@@ -403,7 +403,7 @@ class QueuesMonitorTests: XCTestCase {
         _ = try await monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
         await waitUntil { receivedQueues != nil }
 
-        XCTAssertEqual(envCalls, [.getQueues, .subscribeForQueuesUpdates])
+        XCTAssertEqual(envCalls, [.getQueues, .queueUpdatesStream])
         XCTAssertEqual(receivedQueues?.count, 1)
         XCTAssertEqual(receivedQueues?.first?.lastUpdated, newerQueue.lastUpdated)
     }
@@ -425,8 +425,8 @@ class QueuesMonitorTests: XCTestCase {
             envCalls.append(.getQueues)
             return [knownQueue]
         }
-        monitor.environment.subscribeForQueuesUpdates = { _ in
-            envCalls.append(.subscribeForQueuesUpdates)
+        monitor.environment.queueUpdatesStream = { _ in
+            envCalls.append(.queueUpdatesStream)
             return Self.stream(yielding: brandNewQueue)
         }
 
@@ -444,7 +444,7 @@ class QueuesMonitorTests: XCTestCase {
         _ = try await monitor.fetchAndMonitorQueues(queuesIds: [knownQueueId])
         await waitUntil { receivedQueues?.count == 2 }
 
-        XCTAssertEqual(envCalls, [.getQueues, .subscribeForQueuesUpdates])
+        XCTAssertEqual(envCalls, [.getQueues, .queueUpdatesStream])
         XCTAssertEqual(receivedQueues?.count, 2)
         XCTAssertTrue(receivedQueues?.contains(where: { $0.id == knownQueueId }) == true)
         XCTAssertTrue(receivedQueues?.contains(where: { $0.id == unknownQueueId }) == true)

@@ -147,7 +147,7 @@ final class ChatViewTest: XCTestCase {
         let mockQueue = Queue.mock(id: queueId, media: [.text, .audio, .messaging])
         let queuesMonitor = QueuesMonitor.mock(
             getQueues: { [mockQueue] },
-            subscribeForQueuesUpdates: { _ in
+            queueUpdatesStream: { _ in
                 AsyncThrowingStream { continuation in
                     continuation.yield(mockQueue)
                     continuation.finish()
