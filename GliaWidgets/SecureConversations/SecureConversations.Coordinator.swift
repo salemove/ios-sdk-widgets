@@ -210,6 +210,7 @@ extension SecureConversations.Coordinator {
             isWindowVisible: environment.isWindowVisible,
             startAction: .startEngagement,
             environment: .create(with: environment),
+            layoutMode: environment.layoutMode,
             startWithSecureTranscriptFlow: true,
             skipTransferredSCHandling: false
         )

@@ -77,7 +77,8 @@ class ChatViewModelTests: XCTestCase {
                 topBannerItemsStyle: .mock(),
                 switchToEngagement: .nop,
                 shouldShowLeaveSecureConversationDialog: { _ in false },
-                viewFactory: .mock()
+                viewFactory: .mock(),
+                layoutMode: .fullScreen
             ),
             maximumUploads: { 2 }
         )
@@ -1764,5 +1765,30 @@ extension ChatChoiceCardOption {
             from: Data(json)
         )
         return .init(with: mockedOption)
+    }
+}
+
+// MARK: - Side-panel call bubble
+extension ChatViewModelTests {
+    // The in-chat call bubble is the way back to a call that covers the chat;
+    // in side-panel mode the call is visible beside the chat, so no bubble.
+    func test_mediaUpgradeAcceptedShowsCallBubbleOnlyInFullScreenMode() throws {
+        let cases: [(EngagementLayoutMode, Bool)] = [(.fullScreen, true), (.sidePanel, false)]
+        for (layoutMode, expectsCallBubble) in cases {
+            var env = ChatViewModel.Environment.mock
+            env.layoutMode = layoutMode
+            let viewModel = ChatViewModel.mock(environment: env)
+            var actions: [ChatViewModel.Action] = []
+            viewModel.action = { actions.append($0) }
+            let offer = try XCTUnwrap(CoreSdkClient.MediaUpgradeOffer(type: .video, direction: .twoWay))
+
+            viewModel.mediaUpgradeAccepted(offer: offer, answer: { _, _ in })
+
+            let showsCallBubble = actions.contains {
+                if case .showCallBubble = $0 { return true }
+                return false
+            }
+            XCTAssertEqual(showsCallBubble, expectsCallBubble, "layoutMode: \(layoutMode)")
+        }
     }
 }

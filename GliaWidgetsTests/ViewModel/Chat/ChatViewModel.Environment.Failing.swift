@@ -77,7 +77,8 @@ extension ChatViewModel.Environment {
                 fail("\(Self.self).shouldShowLeaveSecureConversationDialog")
                 return false
             },
-            viewFactory: .mock()
+            viewFactory: .mock(),
+            layoutMode: .fullScreen
         )
     }
 }

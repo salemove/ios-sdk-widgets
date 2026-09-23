@@ -43,7 +43,7 @@ extension EngagementCoordinator.Environment {
         submitSurveyAnswer: { _, _, _, _ in
             fail("\(Self.self).submitSurveyAnswer")
         },
-        uiApplication: .failing,
+        uiApplication: .failingWithNoConnectedScenes,
         uiScreen: .failing,
         notificationCenter: .failing,
         fetchChatHistory: { _ in fail("\(Self.self).fetchChatHistory") },
@@ -95,6 +95,10 @@ extension EngagementCoordinator.Environment {
             return .mock()
         },
         dismissManager: .failing,
-        combineScheduler: .mock
+        combineScheduler: .mock,
+        // Invoked unconditionally by `EngagementCoordinator.init`, so unlike the
+        // other properties here it can't fail loudly without breaking every
+        // `.failing`-based coordinator construction.
+        resolveLayoutMode: { _ in .fullScreen }
     )
 }

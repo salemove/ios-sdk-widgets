@@ -23,7 +23,7 @@ extension Glia.Environment {
             return true
         },
         timerProviding: .failing,
-        uiApplication: .failing,
+        uiApplication: .failingWithNoConnectedScenes,
         uiScreen: .failing,
         uiDevice: .failing,
         notificationCenter: .failing,

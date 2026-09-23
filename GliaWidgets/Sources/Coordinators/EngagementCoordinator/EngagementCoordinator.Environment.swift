@@ -1,3 +1,4 @@
+import UIKit
 import Foundation
 
 extension EngagementCoordinator {
@@ -45,6 +46,7 @@ extension EngagementCoordinator {
         var createEntryWidget: EntryWidgetBuilder
         var dismissManager: GliaPresenter.DismissManager
         var combineScheduler: CoreSdkClient.AnyCombineScheduler
+        var resolveLayoutMode: (UIWindowScene?) -> EngagementLayoutMode
     }
 }
 
@@ -103,7 +105,8 @@ extension EngagementCoordinator.Environment {
             hasPendingInteraction: hasPendingInteraction,
             createEntryWidget: createEntryWidget,
             dismissManager: environment.dismissManager,
-            combineScheduler: environment.combineScheduler
+            combineScheduler: environment.combineScheduler,
+            resolveLayoutMode: EngagementLayoutMode.resolve(for:)
         )
     }
 }

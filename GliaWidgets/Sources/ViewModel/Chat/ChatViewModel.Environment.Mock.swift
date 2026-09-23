@@ -45,7 +45,8 @@ extension ChatViewModel.Environment {
         topBannerItemsStyle: .mock(),
         switchToEngagement: .nop,
         shouldShowLeaveSecureConversationDialog: { _ in false },
-        viewFactory: .mock()
+        viewFactory: .mock(),
+        layoutMode: .fullScreen
     )
 }
 #endif

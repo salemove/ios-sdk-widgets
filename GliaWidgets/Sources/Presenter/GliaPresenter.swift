@@ -6,24 +6,24 @@ final class GliaPresenter {
     var window: UIWindow? {
         // Retrieve all available windows.
         let allWindows = environment.appWindowsProvider.windows()
-        // It is likely that there is one more window except BubbleWindow,
-        // so we filter out `BubbleWindow` based windows.
-        let nonBubbleWindows = allWindows.filter { !($0 is BubbleWindow) }
-        // In case if there are no windows except `BubbleWindow`, we return
-        // the one that is the key window, even if it is `BubbleWindow`.
+        // It is likely that there is one more window except SDK-owned ones,
+        // so we filter out `GliaOwnedWindow` based windows.
+        let nonSDKWindows = allWindows.filter { !($0 is GliaOwnedWindow) }
+        // In case if there are no windows except SDK-owned ones, we return
+        // the one that is the key window, even if it is SDK-owned.
         // In case if there are no key windows, we take first one with
         // non `nil` `rootViewController`.
-        if nonBubbleWindows.isEmpty {
+        if nonSDKWindows.isEmpty {
             return Self.windowForPresenting(from: allWindows) ?? allWindows.first
         } else {
-            // First try to get non-bubble key window.
-            // In case non-bubble key window is not found, substitute it with the one that has non-nil
+            // First try to get non-SDK-owned key window.
+            // In case non-SDK-owned key window is not found, substitute it with the one that has non-nil
             // root view controller, if there's one.
-            let nonBubbleWindow = Self.windowForPresenting(from: nonBubbleWindows)
-            // In case non-bubble window with root view controller is not found, fallback to any key window,
-            // including bubble window.
+            let nonSDKWindow = Self.windowForPresenting(from: nonSDKWindows)
+            // In case non-SDK-owned window with root view controller is not found, fallback to any key window,
+            // including SDK-owned ones.
             let fallbackWindow = Self.windowForPresenting(from: allWindows)
-            return nonBubbleWindow ?? fallbackWindow ?? allWindows.first
+            return nonSDKWindow ?? fallbackWindow ?? allWindows.first
         }
     }
 

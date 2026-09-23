@@ -1,6 +1,13 @@
 import UIKit
 
 class NavigationController: UINavigationController {
+    /// When set, alerts raised by the screens on this stack are presented within
+    /// this controller's bounds instead of over the whole window. Used by the iPad
+    /// side panel so alerts dim the panel only, leaving the host app untouched.
+    /// `UINavigationController` already defines a presentation context by default,
+    /// so this flag is what actually opts a stack into the contained behaviour.
+    var confinesAlertsToOwnBounds = false
+
     private let transitionDuration: CFTimeInterval = 0.3
 
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {

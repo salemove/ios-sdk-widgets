@@ -1,4 +1,5 @@
 #if DEBUG
+import UIKit
 @_spi(GliaWidgets) import GliaCoreSDK
 
 extension EngagementCoordinator.Environment {
@@ -47,7 +48,8 @@ extension EngagementCoordinator.Environment {
         hasPendingInteraction: @escaping () -> Bool = { false },
         createEntryWidget: @escaping EntryWidgetBuilder = { _ in .mock() },
         dismissManager: GliaPresenter.DismissManager = .init { _, _, _ in },
-        combineScheduler: CoreSdkClient.AnyCombineScheduler = .mock
+        combineScheduler: CoreSdkClient.AnyCombineScheduler = .mock,
+        resolveLayoutMode: @escaping (UIWindowScene?) -> EngagementLayoutMode = { _ in .fullScreen }
     ) -> Self {
         Self(
             secureConversations: secureConversations,
@@ -92,7 +94,8 @@ extension EngagementCoordinator.Environment {
             hasPendingInteraction: hasPendingInteraction,
             createEntryWidget: createEntryWidget,
             dismissManager: dismissManager,
-            combineScheduler: combineScheduler
+            combineScheduler: combineScheduler,
+            resolveLayoutMode: resolveLayoutMode
         )
     }
 }

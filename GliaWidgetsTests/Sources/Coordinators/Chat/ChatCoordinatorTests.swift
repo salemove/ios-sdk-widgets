@@ -15,7 +15,8 @@ final class ChatCoordinatorTests: XCTestCase {
     func createCoordinator(
         environment: ChatCoordinator.Environment = .mock,
         startWithSecureTranscriptFlow: Bool = false,
-        skipTransferredSCHandling: Bool = false
+        skipTransferredSCHandling: Bool = false,
+        layoutMode: EngagementLayoutMode = .fullScreen
     ) -> ChatCoordinator {
         return ChatCoordinator(
             interactor: .mock(),
@@ -27,6 +28,7 @@ final class ChatCoordinatorTests: XCTestCase {
             isWindowVisible: .init(with: true),
             startAction: .startEngagement,
             environment: environment,
+            layoutMode: layoutMode,
             startWithSecureTranscriptFlow: startWithSecureTranscriptFlow,
             skipTransferredSCHandling: skipTransferredSCHandling
         )
@@ -613,5 +615,60 @@ final class ChatCoordinatorTests: XCTestCase {
         }
 
         XCTAssertEqual(chatModel.chatType, .authenticated)
+    }
+}
+
+// MARK: - Side-panel secondary presentations
+extension ChatCoordinatorTests {
+    // Pickers and previews raised from a 400pt panel should not take the whole
+    // iPad scene; in full-screen mode every controller keeps its existing style.
+    // `UIDocumentPickerViewController` is not covered here: it reports `.formSheet`
+    // whatever style it is given, so the setter's effect is not observable.
+    func test_sidePanelModePresentsQuickLookAsFormSheet() throws {
+        let coordinator = createCoordinator(layoutMode: .sidePanel)
+        let viewController = try installInWindow(coordinator.start())
+
+        try showFile(on: viewController)
+
+        XCTAssertEqual(coordinator.quickLookController?.viewController.modalPresentationStyle, .formSheet)
+    }
+
+    func test_fullScreenModeLeavesQuickLookDefaultPresentation() throws {
+        let viewController = try installInWindow(coordinator.start())
+
+        try showFile(on: viewController)
+
+        let quickLook = try XCTUnwrap(coordinator.quickLookController?.viewController)
+        XCTAssertEqual(quickLook.modalPresentationStyle, QLPreviewController().modalPresentationStyle)
+    }
+
+    func test_sidePanelModePresentsPhotoLibraryAsFormSheet() throws {
+        let coordinator = createCoordinator(layoutMode: .sidePanel)
+        let viewController = try installInWindow(coordinator.start())
+
+        switch viewController.viewModel {
+        case .chat(let viewModel):
+            viewModel.delegate?(.pickMedia(.init(with: .cancelled), [.image]))
+            var presentedStyle: UIModalPresentationStyle?
+            coordinator.mediaPickerController?.viewController { presentedStyle = $0.modalPresentationStyle }
+            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                XCTAssertEqual(presentedStyle, .formSheet)
+            }
+        default: XCTFail()
+        }
+    }
+
+    private func installInWindow(_ viewController: ChatViewController) throws -> ChatViewController {
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.first as? UIWindowScene)
+        let window = scene.windows.first
+        let oldRootViewController = window?.rootViewController
+        window?.rootViewController = viewController
+        addTeardownBlock { window?.rootViewController = oldRootViewController }
+        return viewController
+    }
+
+    private func showFile(on viewController: ChatViewController) throws {
+        guard case .chat(let viewModel) = viewController.viewModel else { return XCTFail() }
+        viewModel.delegate?(.showFile(.mock()))
     }
 }

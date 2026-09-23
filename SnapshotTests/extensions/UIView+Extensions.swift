@@ -12,16 +12,24 @@ extension UIView {
         line: UInt = #line
     ) {
         let snapshotting: Snapshotting<UIView, UIImage>
-        switch mode {
-        case .accessibilityImage:
+        switch (mode, orientation) {
+        case (.accessibilityImage, _):
             snapshotting = .accessibilityImage(
                 showActivationPoints: .never,
                 precision: SnapshotTestCase.possiblePrecision
             )
-        case .image:
-            snapshotting = orientation == .portrait ? .image : .imageLandscape
-        case .extra3LargeFont:
-            snapshotting = orientation == .portrait ? .extra3LargeFontStrategy : .extra3LargeFontStrategyLandscape
+        case (.image, .portrait):
+            snapshotting = .image
+        case (.image, .landscape):
+            snapshotting = .imageLandscape
+        case (.image, .padPanel):
+            snapshotting = .imagePadPanel
+        case (.extra3LargeFont, .portrait):
+            snapshotting = .extra3LargeFontStrategy
+        case (.extra3LargeFont, .landscape):
+            snapshotting = .extra3LargeFontStrategyLandscape
+        case (.extra3LargeFont, .padPanel):
+            snapshotting = .extra3LargeFontStrategyPadPanel
         }
         let snapshotName = snapshotName(name, orientation: orientation)
         SnapshotTesting.assertSnapshot(
@@ -53,12 +61,20 @@ extension UIView {
             return [baseName, deviceName, "landscape"]
                 .compactMap { $0 }
                 .joined(separator: "-")
+        case .padPanel:
+            // `deviceName` still comes from the simulator screen, so the suffix is
+            // what keeps panel references apart from the portrait set.
+            return [baseName, deviceName, "padPanel"]
+                .compactMap { $0 }
+                .joined(separator: "-")
         }
     }
 
     enum SnapshotOrientation {
         case portrait
         case landscape
+        /// The 400pt-wide iPad side panel at full iPad height.
+        case padPanel
     }
 
     enum SnapshotMode {
