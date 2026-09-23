@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
 
 public enum StaticValues {
@@ -7,4 +8,11 @@ public enum StaticValues {
     /// always have the correct version regardless of what our integrators do with
     /// our plist files.
     public static let sdkVersion = "3.5.9"
+
+    /// The version of GliaCoreSDK embedded in GliaWidgets.
+    @_spi(GliaTestApp)
+    public static var coreSDKVersion: String {
+        let bundle = Bundle(for: GliaCore.self)
+        return bundle.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
+    }
 }

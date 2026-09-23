@@ -5,7 +5,7 @@ extension Survey {
         struct Props {
             let header: String
             var questionsProps: [QuestionPropsProtocol]
-            var submit: (Props) -> Void
+            var submit: (Props) async -> Void
             var cancel: () -> Void
             var endEditing: () -> Void
 
@@ -69,10 +69,12 @@ extension Survey {
 
         @objc
         private func submit(sender: UIButton) {
+            Task {
+                await props.submit(props)
+            }
             environment.openTelemetry.logger.i(.surveyScreenButtonClicked) {
                 $0[.buttonName] = .string(OtelButtonNames.submit.rawValue)
             }
-            props.submit(props)
         }
 
         @objc

@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 @testable import GliaWidgets
 
 extension CoreSdkClient {
@@ -5,38 +6,70 @@ extension CoreSdkClient {
         pushNotifications: .failing,
         liveObservation: .failing,
         secureConversations: .failing,
-        createAppDelegate: { .failing },
         clearSession: { fail("\(Self.self).clearSession") },
         localeProvider: .failing,
-        getVisitorInfo: { _ in fail("\(Self.self).getVisitorInfo") },
-        getVisitorInfoDeprecated: { _ in fail("\(Self.self).getVisitorInfoDeprecated")},
-        updateVisitorInfo: { _, _ in fail("\(Self.self).updateVisitorInfo") },
-        updateVisitorInfoDeprecated: { _, _ in fail("\(Self.self).updateVisitorInfoDeprecated") },
-        configureWithConfiguration: { _, _ in fail("\(Self.self).configureWithConfiguration") },
-        configureWithInteractor: { _ in fail("\(Self.self).configureWithInteractor") },
-        getQueues: { _ in fail("\(Self.self).getQueues") },
-        queueForEngagement: { _, _, _ in
-            fail("\(Self.self).queueForEngagement")
+        configureWithConfiguration: { _ in fail("\(Self.self).configureWithConfiguration") },
+        getVisitorInfo: {
+            fail("\(Self.self).getVisitorInfo")
+            throw NSError(domain: "getVisitorInfo", code: -1, userInfo: nil)
         },
-        requestMediaUpgradeWithOffer: { _, _ in fail("\(Self.self).requestMediaUpgradeWithOffer") },
-        sendMessagePreview: { _, _ in fail("\(Self.self).sendMessagePreview") },
-        sendMessageWithMessagePayload: { _, _ in fail("\(Self.self).sendMessageWithMessagePayload") },
-        cancelQueueTicket: { _, _ in fail("cancelQueueTicket") },
-        endEngagement: { _ in fail("\(Self.self).endEngagement") },
-        requestEngagedOperator: { _ in fail("\(Self.self).requestEngagedOperator") },
-        uploadFileToEngagement: { _, _, _ in fail("\(Self.self).uploadFileToEngagement") },
-        fetchFile: { _, _, _ in fail("\(Self.self).fetchFile") },
+        updateVisitorInfo: { _ in
+            fail("\(Self.self).updateVisitorInfo")
+            throw NSError(domain: "updateVisitorInfo", code: -1, userInfo: nil)
+        },
+        configureWithInteractor: { _ in fail("\(Self.self).configureWithInteractor") },
+        getQueues: {
+            fail("\(Self.self).getQueues")
+            throw NSError(domain: "getQueues", code: -1)
+        },
+        queueForEngagement: { _, _ in
+            fail("\(Self.self).queueForEngagement")
+            throw NSError(domain: "queueForEngagement", code: -1, userInfo: nil)
+        },
+        sendMessagePreview: { _ in
+            fail("\(Self.self).sendMessagePreview")
+            throw NSError(domain: "CoreSdkClient", code: -1, userInfo: nil)
+        },
+        sendMessageWithMessagePayload: { _ in fail("\(Self.self).sendMessageWithMessagePayload")
+            throw NSError(domain: "CoreSdkClient", code: -1, userInfo: nil)
+        },
+        cancelQueueTicket: { _ in
+            fail("cancelQueueTicket")
+            throw NSError(domain: "cancelQueueTicket", code: -1, userInfo: nil)
+        },
+        endEngagement: {
+            fail("\(Self.self).endEngagement")
+            throw NSError(domain: "endEngagement", code: -1)
+        },
+        requestEngagedOperator: {
+            fail("\(Self.self).requestEngagedOperator")
+            throw NSError(domain: "requestEngagedOperator", code: -1)
+        },
+        uploadFileToEngagement: { _, _ in
+            fail("\(Self.self).uploadFileToEngagement")
+            throw NSError(domain: "uploadFileToEngagement", code: -1)
+        },
+        fetchFile: { _, _ in
+            fail("\(Self.self).fetchFile")
+            throw NSError(domain: "fetchFile", code: -1)
+        },
         getCurrentEngagement: { return nil },
-        fetchSiteConfigurations: { _ in fail("\(Self.self).fetchSiteConfigurations") },
-        submitSurveyAnswer: { _, _, _, _ in },
+        fetchSiteConfigurations: {
+            fail("\(Self.self).fetchSiteConfigurations")
+            throw NSError(domain: "fetchSiteConfigurations", code: -1)
+        },
+        submitSurveyAnswer: { _, _, _ in
+            fail("\(Self.self).submitSurveyAnswer")
+            throw NSError(domain: "submitSurveyAnswer", code: -1)
+        },
         authentication: { _ in
             fail("\(Self.self).authentication")
-            return .mock
-        },
-        fetchChatHistory: { _ in },
-        requestVisitorCode: { _ in
-            fail("\(Self.self).requestVisitorCode")
             return .init()
+        },
+        fetchChatHistory: { [] },
+        requestVisitorCode: {
+            fail("\(Self.self).requestVisitorCode")
+            throw NSError(domain: "requestVisitorCode", code: -1)
         },
         startSocketObservation: {
             fail("\(Self.self).startSocketObservation")
@@ -55,12 +88,9 @@ extension CoreSdkClient {
         getCameraDeviceManageable: {
             .failing
         },
-        subscribeForQueuesUpdates: { _, _ in
-            fail("\(Self.self).subscribeForQueuesUpdates")
-            return ""
-        },
-        unsubscribeFromUpdates: { _, _ in
-            fail("\(Self.self).unsubscribeFromUpdates")
+        queueUpdatesStream: { _ in
+            fail("\(Self.self).queueUpdatesStream")
+            return AsyncThrowingStream { $0.finish() }
         },
         configureLogLevel: { _ in
             fail("\(Self.self).configureLogLevel")
@@ -70,41 +100,33 @@ extension CoreSdkClient {
 
 extension CoreSdkClient.SecureConversations {
     static let failing = Self(
-        sendMessagePayload: { _, _, _ in
+        sendMessagePayload: { _, _ in
             fail("\(Self.self).sendMessagePayload")
-            return .mock
+            throw NSError(domain: "sendMessagePayload", code: -1)
         },
-        uploadFile: { _, _, _ in
+        uploadFile: { _, _ in
             fail("\(Self.self).uploadFile")
-            return .mock
+            throw NSError(domain: "uploadFile", code: -1)
         },
-        getUnreadMessageCount: { _ in
+        getUnreadMessageCount: {
             fail("\(Self.self).getUnreadMessageCount")
+            throw NSError(domain: "getUnreadMessageCount", code: -1)
         },
-        markMessagesAsRead: { _ in
+        markMessagesAsRead: {
             fail("\(Self.self).markMessagesAsRead")
-            return .mock
+            throw NSError(domain: "markMessagesAsRead", code: -1)
         },
-        downloadFile: { _, _, _ in
+        downloadFile: { _, _ in
             fail("\(Self.self).downloadFile")
-            return .mock
+            throw NSError(domain: "downloadFile", code: -1)
         },
-        subscribeForUnreadMessageCount: { _ in
-            fail("\(Self.self).subscribeForUnreadMessageCount")
-            return ""
+        unreadMessageCountStream: {
+            fail("\(Self.self).unreadMessageCountStream")
+            return AsyncThrowingStream { $0.finish() }
         },
-        unsubscribeFromUnreadMessageCount: { _ in
-            fail("\(Self.self).unsubscribeFromUnreadCount")
-        },
-        pendingStatus: { _ in
-            fail("\(Self.self).pendingStatus")
-        },
-        observePendingStatus: { _ in
-            fail("\(Self.self).observePendingStatus")
-            return nil
-        },
-        unsubscribeFromPendingStatus: { _ in
-            fail("\(Self.self).unsubscribeFromPendingStatus")
+        pendingSecureConversationStatusStream: {
+            fail("\(Self.self).pendingSecureConversationStatusStream")
+            return AsyncThrowingStream { $0.finish() }
         }
     )
 }
@@ -130,10 +152,6 @@ extension CoreSdkClient.PushNotifications {
         setPushHandler: { _ in
             fail("\(Self.self).setPushHandler")
         },
-        pushHandler: {
-            fail("\(Self.self).pushHandler")
-            return nil
-        },
         subscribeTo: { _ in
             fail("\(Self.self).subscribeTo")
         },
@@ -143,18 +161,6 @@ extension CoreSdkClient.PushNotifications {
         ),
         userNotificationCenterWillPresent: { _, _, _ in },
         userNotificationCenterDidReceiveResponse: { _, _, _ in }
-    )
-}
-
-extension CoreSdkClient.AppDelegate {
-    static let failing = Self(
-        applicationDidFinishLaunchingWithOptions: { _, _ in
-            fail("\(Self.self).applicationDidFinishLaunchingWithOptions")
-            return false
-        },
-        applicationDidBecomeActive: { _ in
-            fail("\(Self.self).applicationDidBecomeActive")
-        }
     )
 }
 

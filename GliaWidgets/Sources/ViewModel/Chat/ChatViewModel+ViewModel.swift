@@ -1,24 +1,28 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
 
 extension ChatViewModel: ViewModel {
     enum Event {
-        case viewDidLoad
         case messageTextChanged(String)
-        case sendTapped
         case removeUploadTapped(FileUpload)
         case pickMediaTapped
         case callBubbleTapped
         case fileTapped(LocalFile)
-        case downloadTapped(FileDownload)
-        case choiceOptionSelected(ChatChoiceCardOption, String)
         case chatScrolled(bottomReached: Bool)
         case linkTapped(URL)
+    }
+
+    enum AsyncEvent {
+        case viewDidLoad
+        case sendTapped
         case customCardOptionSelected(
             option: HtmlMetadata.Option,
             messageId: MessageRenderer.Message.Identifier
         )
         case gvaButtonTapped(GvaOption)
         case retryMessageTapped(OutgoingMessage)
+        case choiceOptionSelected(ChatChoiceCardOption, String)
+        case downloadTapped(FileDownload)
     }
 
     enum Action {
@@ -71,6 +75,9 @@ extension ChatViewModel: ViewModel {
         case showFile(LocalFile)
         case call
         case minimize
+    }
+
+    enum AsyncDelegateEvent {
         case liveChatEngagementUpgradedToSecureMessaging(ChatViewModel)
     }
 

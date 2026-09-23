@@ -1,17 +1,16 @@
 @testable import GliaWidgets
-@_spi(GliaWidgets) import GliaCoreSDK
 import XCTest
 
 extension GliaTests {
-    func test_startSecureMessageWhenSecureMessagePushReceivedBeforeConfigure() throws {
+    func test_startSecureMessageWhenSecureMessagePushReceivedBeforeConfigure() async throws {
         let sdk = makeConfigurableSDK()
 
         sdk.environment.coreSdk.pushNotifications.actions.secureMessageAction()?("queue_id")
 
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(),
             theme: .mock()
-        ) { _ in }
+        )
 
         sdk.engagementRestorationState = .restored
 
@@ -19,13 +18,13 @@ extension GliaTests {
         XCTAssertEqual(sdk.engagement, .messaging(.chatTranscript))
     }
 
-    func test_startSecureMessageWhenSecureMessagePushReceivedAfterConfigure() throws {
+    func test_startSecureMessageWhenSecureMessagePushReceivedAfterConfigure() async throws {
         let sdk = makeConfigurableSDK()
 
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(),
             theme: .mock()
-        ) { _ in }
+        )
 
         sdk.engagementRestorationState = .restored
 
@@ -35,13 +34,13 @@ extension GliaTests {
         XCTAssertEqual(sdk.engagement, .messaging(.chatTranscript))
     }
 
-    func test_startSecureMessageWhenSecureMessagePushReceivedForUnauthenticatedUser() throws {
+    func test_startSecureMessageWhenSecureMessagePushReceivedForUnauthenticatedUser() async throws {
         let sdk = makeConfigurableSDK(isAuthenticated: false)
 
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(),
             theme: .mock()
-        ) { _ in }
+        )
 
         sdk.engagementRestorationState = .restored
 
@@ -77,12 +76,10 @@ private extension GliaTests {
         logger.infoClosure = { _, _, _, _ in }
         sdkEnv.coreSdk.createLogger = { _ in logger }
         sdkEnv.conditionalCompilation.isDebug = { true }
-        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         sdkEnv.isAuthenticated = { isAuthenticated }
         sdkEnv.coreSdk.getCurrentEngagement = { nil }
-        sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        sdkEnv.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
         let window = UIWindow(frame: .zero)
         window.rootViewController = UIViewController()
         window.makeKeyAndVisible()

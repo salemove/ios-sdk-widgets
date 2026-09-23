@@ -42,7 +42,9 @@ final class QuickReplyButtonCell: UICollectionViewCell {
     }
 
     @objc private func tap() {
-        props.action()
+        Task {
+            await props.action()
+        }
     }
 
     override func layoutSubviews() {
@@ -78,7 +80,7 @@ private extension QuickReplyButtonCell {
 extension QuickReplyButtonCell {
     struct Props {
         let title: String
-        let action: Cmd
+        let action: AsyncCmd
 
         static var nop: Props { .init(title: "", action: .nop) }
     }

@@ -3,7 +3,7 @@ import XCTest
 @testable import GliaWidgets
 
 extension GliaTests {
-    func testStartEngagementNoLongerThrowsErrorWhenEngagementAlreadyExists() throws {
+    func testStartEngagementNoLongerThrowsErrorWhenEngagementAlreadyExists() async throws {
         var sdkEnv = Glia.Environment.failing
         sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
         sdkEnv.coreSdk.localeProvider = .mock
@@ -21,29 +21,26 @@ extension GliaTests {
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
         sdkEnv.coreSdk.createLogger = { _ in logger }
-        sdkEnv.coreSdk.secureConversations.pendingStatus = { _ in }
-        sdkEnv.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
-        sdkEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        sdkEnv.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
+        sdkEnv.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
         sdkEnv.conditionalCompilation.isDebug = { true }
-        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in }
         let window = UIWindow(frame: .zero)
         window.makeKeyAndVisible()
         sdkEnv.uiApplication.windows = { [window] }
         let sdk = Glia(environment: sdkEnv)
         sdk.queuesMonitor = .mock()
         sdk.rootCoordinator = rootCoordinator
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(),
             theme: .mock()
-        ) { _ in }
+        )
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
 
         XCTAssertNoThrow(try engagementLauncher.startChat())
     }
 
-    func testStartEngagementShowsSnackBarDuringActiveCallVisualizerEngagement() throws {
+    func testStartEngagementShowsSnackBarDuringActiveCallVisualizerEngagement() async throws {
         enum Call {
             case presentSnackBar
         }
@@ -58,14 +55,12 @@ extension GliaTests {
         gliaEnv.conditionalCompilation.isDebug = { false }
         gliaEnv.coreSdk.createLogger = { _ in logger }
         gliaEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        gliaEnv.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        gliaEnv.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: gliaEnv)
         sdk.queuesMonitor = .mock()
         sdk.environment.conditionalCompilation.isDebug = { true }
         sdk.environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        sdk.environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         let window = UIWindow(frame: .zero)
         window.rootViewController = UIViewController()
         window.makeKeyAndVisible()
@@ -77,10 +72,10 @@ extension GliaTests {
         }
         DependencyContainer.current.widgets.snackBar = snackBar
 
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(),
             theme: .mock()
-        ) { _ in }
+        )
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueID"])
         sdk.environment.coreSdk.getCurrentEngagement = { .mock(source: .callVisualizer) }
  
@@ -90,7 +85,7 @@ extension GliaTests {
         XCTAssertEqual(snackBarMessage, Localization.EntryWidget.CallVisualizer.description)
     }
 
-    func testStartEngagementWithNoQueueIds() throws {
+    func testStartEngagementWithNoQueueIds() async throws {
         var environment = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
         logger.infoClosure = { _, _, _, _ in }
@@ -103,19 +98,17 @@ extension GliaTests {
                 .mock(environment: .engagementCoordEnvironmentWithKeyWindow)
         }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
-        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(),
             theme: .mock()
-        ) { _ in }
+        )
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: [])
 
         XCTAssertNoThrow(
@@ -123,7 +116,7 @@ extension GliaTests {
         )
     }
 
-    func testCompanyNameIsReceivedFromTheme() throws {
+    func testCompanyNameIsReceivedFromTheme() async throws {
         var environment = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
@@ -149,13 +142,11 @@ extension GliaTests {
                 environment: .engagementCoordEnvironmentWithKeyWindow
             )
         }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
-        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -163,16 +154,15 @@ extension GliaTests {
         theme.call.connect.queue.firstText = "Glia 1"
         theme.chat.connect.queue.firstText = "Glia 2"
 
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(),
             theme: theme
-        ) { _ in
-            do {
-                let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
-                try engagementLauncher.startChat()
-            } catch {
-                XCTFail("startEngagement unexpectedly failed with error \(error), but should succeed instead.")
-            }
+        )
+        do {
+            let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
+            try engagementLauncher.startChat()
+        } catch {
+            XCTFail("startEngagement unexpectedly failed with error \(error), but should succeed instead.")
         }
 
         let configuredSdkTheme = resultingViewFactory?.theme
@@ -180,7 +170,7 @@ extension GliaTests {
         XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "Glia 2")
     }
 
-    func testCompanyNameIsReceivedFromRemoteStrings() throws {
+    func testCompanyNameIsReceivedFromRemoteStrings() async throws {
         var environment = Glia.Environment.failing
         var resultingViewFactory: ViewFactory?
 
@@ -198,14 +188,11 @@ extension GliaTests {
         }
         environment.conditionalCompilation.isDebug = { true }
         environment.coreSdk.localeProvider.getRemoteString = { _ in "Glia" }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        environment.coreSdk.secureConversations.pendingStatus = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
-        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
 
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
@@ -221,16 +208,15 @@ extension GliaTests {
         theme.call.connect.queue.firstText = "Glia 1"
         theme.chat.connect.queue.firstText = "Glia 2"
 
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(),
             theme: .mock()
-        ) { _ in
-            do {
-                let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
-                try engagementLauncher.startChat()
-            } catch {
-                XCTFail("startEngagement unexpectedly failed with error \(error), but should succeed instead.")
-            }
+        )
+        do {
+            let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
+            try engagementLauncher.startChat()
+        } catch {
+            XCTFail("startEngagement unexpectedly failed with error \(error), but should succeed instead.")
         }
 
         let configuredSdkTheme = resultingViewFactory?.theme
@@ -238,7 +224,7 @@ extension GliaTests {
         XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "Glia")
     }
 
-    func testCompanyNameIsReceivedFromConfiguration() throws {
+    func testCompanyNameIsReceivedFromConfiguration() async throws {
         var environment = Glia.Environment.failing
         environment.coreSdk.createLogger = { _ in .failing }
         environment.conditionalCompilation.isDebug = { true }
@@ -263,26 +249,23 @@ extension GliaTests {
                 environment: .engagementCoordEnvironmentWithKeyWindow
             )
         }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
-        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(companyName: "Glia"),
             theme: .mock()
-        ) { _ in
-            do {
-                let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
-                try engagementLauncher.startChat()
-            } catch {
-                XCTFail("startEngagement unexpectedly failed with error \(error), but should succeed instead.")
-            }
+        )
+        do {
+            let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
+            try engagementLauncher.startChat()
+        } catch {
+            XCTFail("startEngagement unexpectedly failed with error \(error), but should succeed instead.")
         }
 
         let configuredSdkTheme = resultingViewFactory?.theme
@@ -290,7 +273,7 @@ extension GliaTests {
         XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "Glia")
     }
 
-    func testCompanyNameIsReceivedFromLocalStrings() throws {
+    func testCompanyNameIsReceivedFromLocalStrings() async throws {
         var environment = Glia.Environment.failing
         environment.coreSdk.createLogger = { _ in .failing }
         environment.conditionalCompilation.isDebug = { true }
@@ -315,26 +298,23 @@ extension GliaTests {
                 environment: .engagementCoordEnvironmentWithKeyWindow
             )
         }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.localeProvider.getRemoteString = { _ in nil }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
-        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(),
             theme: .mock()
-        ) { _ in
-            do {
-                let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
-                try engagementLauncher.startChat()
-            } catch {
-                XCTFail("startEngagement unexpectedly failed with error \(error), but should succeed instead.")
-            }
+        )
+        do {
+            let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
+            try engagementLauncher.startChat()
+        } catch {
+            XCTFail("startEngagement unexpectedly failed with error \(error), but should succeed instead.")
         }
 
         let configuredSdkTheme = resultingViewFactory?.theme
@@ -342,7 +322,7 @@ extension GliaTests {
         XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "")
     }
 
-    func testCompanyNameIsReceivedFromThemeIfCustomLocalesIsEmpty() throws {
+    func testCompanyNameIsReceivedFromThemeIfCustomLocalesIsEmpty() async throws {
         var environment = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
@@ -369,13 +349,11 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
-        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -383,16 +361,15 @@ extension GliaTests {
         theme.call.connect.queue.firstText = "Glia 1"
         theme.chat.connect.queue.firstText = "Glia 2"
 
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(),
             theme: theme
-        ) { _ in
-            do {
-                let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
-                try engagementLauncher.startChat()
-            } catch {
-                XCTFail("startEngagement unexpectedly failed with error \(error), but should succeed instead.")
-            }
+        )
+        do {
+            let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
+            try engagementLauncher.startChat()
+        } catch {
+            XCTFail("startEngagement unexpectedly failed with error \(error), but should succeed instead.")
         }
 
         let configuredSdkTheme = resultingViewFactory?.theme
@@ -400,7 +377,7 @@ extension GliaTests {
         XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, "Glia 2")
     }
 
-    func testCompanyNameIsReceivedFromLocalFallbackIfCustomLocalesIsEmpty() throws {
+    func testCompanyNameIsReceivedFromLocalFallbackIfCustomLocalesIsEmpty() async throws {
         var environment = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
@@ -428,19 +405,17 @@ extension GliaTests {
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
-        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(),
             theme: .mock()
-        ) { _ in }
+        )
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
         try engagementLauncher.startChat()
 
@@ -450,7 +425,7 @@ extension GliaTests {
         XCTAssertEqual(configuredSdkTheme?.chat.connect.queue.firstText, localFallbackCompanyName)
     }
 
-    func testStartEngagementChangesEngagementKindIfPendingSecureConversationExists() throws {
+    func testStartEngagementChangesEngagementKindIfPendingSecureConversationExists() async throws {
         var environment = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
@@ -470,28 +445,29 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.secureConversations.pendingStatus = { $0(.success(true)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         let uuIdGen = UUID.incrementing
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.secureConversations.subscribeForUnreadMessageCount = {
-            $0(.success(0))
-            return uuIdGen().uuidString
+        environment.coreSdk.secureConversations.unreadMessageCountStream = {
+            AsyncThrowingStream { continuation in
+                continuation.yield(0)
+                continuation.finish()
+            }
         }
-        environment.coreSdk.secureConversations.observePendingStatus = {
-            $0(.success(true))
-            return uuIdGen().uuidString
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = {
+            AsyncThrowingStream { continuation in
+                continuation.yield(true)
+                continuation.finish()
+            }
         }
-        environment.coreSdk.secureConversations.unsubscribeFromPendingStatus = { _ in }
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(),
             theme: .mock()
-        ) { _ in }
+        )
+        await waitUntil { sdk.pendingInteraction?.hasPendingInteraction == true }
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
         try engagementLauncher.startChat()
 
@@ -499,7 +475,7 @@ extension GliaTests {
         XCTAssertEqual(engagementLaunching.initialKind, engagementKind)
     }
 
-    func testStartEngagementDoesNotChangeEngagementKindIfNoPendingSecureConversationExists() throws {
+    func testStartEngagementDoesNotChangeEngagementKindIfNoPendingSecureConversationExists() async throws {
         var environment = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
@@ -519,28 +495,25 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.secureConversations.pendingStatus = { $0(.success(false)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
-        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(),
             theme: .mock()
-        ) { _ in }
+        )
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
         try engagementLauncher.startChat()
 
         XCTAssertEqual(engagementLaunching.currentKind, engagementKind)
     }
 
-    func testStartEngagementWithMessagingIfPendingSecureConversationExists() throws {
+    func testStartEngagementWithMessagingIfPendingSecureConversationExists() async throws {
         var environment = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
@@ -561,36 +534,37 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.secureConversations.pendingStatus = { $0(.success(true)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
         let uuIdGen = UUID.incrementing
         environment.coreSdk.getCurrentEngagement = { nil }
-        environment.coreSdk.secureConversations.subscribeForUnreadMessageCount = { callback in
-            callback(.success(0))
-            return uuIdGen().uuidString
+        environment.coreSdk.secureConversations.unreadMessageCountStream = {
+            AsyncThrowingStream { continuation in
+                continuation.yield(0)
+                continuation.finish()
+            }
         }
-        environment.coreSdk.secureConversations.observePendingStatus = { callback in
-            callback(.success(true))
-            return uuIdGen().uuidString
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = {
+            AsyncThrowingStream { continuation in
+                continuation.yield(true)
+                continuation.finish()
+            }
         }
-        environment.coreSdk.secureConversations.unsubscribeFromPendingStatus = { _ in }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(),
             theme: .mock()
-        ) { _ in }
+        )
+        await waitUntil { sdk.pendingInteraction?.hasPendingInteraction == true }
         let engagementLauncher = try sdk.getEngagementLauncher(queueIds: ["queueId"])
         try engagementLauncher.startSecureMessaging()
 
         XCTAssertEqual(engagementLaunching.currentKind, .messaging(.chatTranscript))
     }
 
-    func testEngagementParamsDoNotLeakThroughEngagements() throws {
+    func testEngagementParamsDoNotLeakThroughEngagements() async throws {
         var environment = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
         logger.configureLocalLogLevelClosure = { _ in }
@@ -610,15 +584,12 @@ extension GliaTests {
         }
 
         environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
-        environment.coreSdk.secureConversations.pendingStatus = { $0(.success(false)) }
         environment.coreSDKConfigurator.configureWithInteractor = { _ in }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.success(()))
-        }
-        environment.coreSdk.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
-        environment.coreSdk.secureConversations.subscribeForUnreadMessageCount = { _ in nil }
-        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
-        environment.coreSdk.fetchSiteConfigurations = { _ in }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
+        environment.coreSdk.secureConversations.getUnreadMessageCount = { 0 }
+        environment.coreSdk.secureConversations.unreadMessageCountStream = { AsyncThrowingStream { $0.finish() } }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
+        environment.coreSdk.fetchSiteConfigurations = { try .mock() }
 
         let sdk = Glia(environment: environment)
         sdk.queuesMonitor = .mock()
@@ -626,10 +597,10 @@ extension GliaTests {
         window.rootViewController = UIViewController()
         window.makeKeyAndVisible()
         sdk.environment.uiApplication.windows = { [window] }
-        try sdk.configure(
+        try await sdk.configure(
             with: .mock(),
             theme: .mock()
-        ) { _ in }
+        )
         // Mock ongoing Audio engagement
         let engagement = CoreSdkClient.Engagement.mock(media: .init(audio: .twoWay, video: nil))
         sdk.environment.coreSdk.getCurrentEngagement = { engagement }
@@ -651,7 +622,10 @@ extension GliaTests {
 extension EngagementCoordinator.Environment: Transformable {
     static var engagementCoordEnvironmentWithKeyWindow: Self {
         EngagementCoordinator.Environment.mock().transform {
-            $0.uiApplication = .failing.transform { $0.windows = { [ .mock() ] } }
+            $0.uiApplication = .failing.transform {
+                $0.windows = { [ .mock() ] }
+                $0.preferredContentSizeCategory = { .unspecified }
+            }
         }
     }
 }

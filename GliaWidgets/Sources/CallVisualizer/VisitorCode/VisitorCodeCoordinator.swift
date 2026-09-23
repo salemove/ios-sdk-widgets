@@ -1,7 +1,7 @@
 import UIKit
 
 extension CallVisualizer {
-    class VisitorCodeCoordinator: FlowCoordinator {
+    class VisitorCodeCoordinator {
         typealias ViewController = UIViewController
 
         let theme: Theme
@@ -22,11 +22,12 @@ extension CallVisualizer {
         }
 
         @discardableResult
-        func start() -> UIViewController {
-            showVisitorCodeViewController(by: presentation)
+        func start() async -> UIViewController {
+            await showVisitorCodeViewController(by: presentation)
         }
 
-        func showVisitorCodeViewController(by presentation: CallVisualizer.Presentation) -> UIViewController {
+        @MainActor
+        func showVisitorCodeViewController(by presentation: CallVisualizer.Presentation) async -> UIViewController {
             let viewModel = VisitorCodeViewModel(
                 presentation: presentation,
                 environment: .create(with: environment),
@@ -42,7 +43,6 @@ extension CallVisualizer {
                 }
             )
 
-            viewModel.requestVisitorCode()
             self.viewModel = viewModel
 
             let codeController = VisitorCodeViewController(props: viewModel.makeProps())
@@ -64,7 +64,7 @@ extension CallVisualizer {
                     codeController.view.centerYAnchor.constraint(equalTo: parentView.centerYAnchor)
                 ])
             }
-
+            await viewModel.requestVisitorCode()
             return codeController
         }
     }

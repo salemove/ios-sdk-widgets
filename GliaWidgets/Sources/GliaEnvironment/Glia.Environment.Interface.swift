@@ -1,6 +1,6 @@
 import AVFoundation
 import Foundation
-import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 extension Glia {
     /// `Environment` is a dependency container that solves the problem exchanging live dependencies to mocked ones during unit testing.
@@ -44,7 +44,6 @@ extension Glia {
         var bundleManaging: BundleManaging
         var createFileUploader: FileUploader.Create
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
-        var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
         var orientationManager: OrientationManager
         var coreSDKConfigurator: CoreSDKConfigurator
         var proximityManager: ProximityManager
