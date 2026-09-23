@@ -405,6 +405,27 @@ class CallViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.interactor.state, .none)
     }
 
+    func test_sidePanelModeDoesNotEmitMediaUpgradeAlert() throws {
+        var env = CallViewModel.Environment.failing()
+        env.layoutMode = .sidePanel
+        // A failing `AlertManager` proves the alert was never presented: any
+        // attempt to present it would trip its failing dependencies.
+        env.alertManager = .failing(viewFactory: .mock())
+        // Unrelated to this test; deinit unconditionally stops the proximity
+        // manager, which would otherwise trip the failing environment too.
+        env.proximityManager = .mock
+
+        let viewModel: CallViewModel = .mock(environment: env)
+
+        var answerCalled = false
+        let offer = try XCTUnwrap(
+            CoreSdkClient.MediaUpgradeOffer(type: .video, direction: .twoWay)
+        )
+        viewModel.interactorEvent(.upgradeOffer(offer, answer: { _, _ in answerCalled = true }))
+
+        XCTAssertFalse(answerCalled)
+    }
+
     func test_liveObservationAlertPresentationInitiatedWhenInteractorStateIsEnqueuing() throws {
         enum Call {
             case showLiveObservationAlert

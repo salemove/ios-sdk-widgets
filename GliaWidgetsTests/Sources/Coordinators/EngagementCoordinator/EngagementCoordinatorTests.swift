@@ -280,6 +280,18 @@ final class EngagementCoordinatorTests: XCTestCase {
         XCTAssertEqual(calledEvents.first, .started)
     }
 
+    func test_startForwardsSceneProviderToGliaViewController() throws {
+        let sceneProvider = MockedSceneProvider()
+        let coordinator = createCoordinator(
+            with: .direct(kind: .chat),
+            sceneProvider: sceneProvider
+        )
+
+        coordinator.start()
+
+        XCTAssertTrue(try XCTUnwrap(coordinator.gliaViewController?.sceneProvider) === sceneProvider)
+    }
+
     func test_startingCallCoordinatorShoulNotChangeInteractorStateIfAlreadyEngagedAndRestoring() throws {
         let engagementRestorationState: () -> (EngagementRestorationState) = {
             .restoring
@@ -312,7 +324,8 @@ extension EngagementCoordinatorTests {
 
     func createCoordinator(
         with engagementLaunching: EngagementCoordinator.EngagementLaunching,
-        engagementRestorationState: @escaping () -> (EngagementRestorationState) = { .none }
+        engagementRestorationState: @escaping () -> (EngagementRestorationState) = { .none },
+        sceneProvider: SceneProvider = MockedSceneProvider()
     ) -> EngagementCoordinator {
         var env = EngagementCoordinator.Environment.mock()
         env.dismissManager.dismissViewControllerAnimateWithCompletion = { _, _, completion in
@@ -325,7 +338,7 @@ extension EngagementCoordinatorTests {
         return EngagementCoordinator(
             interactor: .mock(),
             viewFactory: .mock(),
-            sceneProvider: MockedSceneProvider(),
+            sceneProvider: sceneProvider,
             engagementLaunching: engagementLaunching,
             features: [],
             engagementRestorationState: engagementRestorationState,

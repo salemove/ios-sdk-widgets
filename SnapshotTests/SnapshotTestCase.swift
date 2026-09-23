@@ -40,6 +40,13 @@ extension SnapshotTestCase {
 
     static let possiblePrecision: Float = 1.0
 
+    /// Geometry of the iPad side-panel presentation. Rendered as fixed-size
+    /// `ViewImageConfig`s on the existing iPhone simulator, because
+    /// `checkSimulatorEnvironment` pins CI to a single device.
+    static let padPanelSize = CGSize(width: 400, height: 1024)
+    static let padLandscapeSize = CGSize(width: 1024, height: 768)
+    static let padSafeArea = UIEdgeInsets(top: 24, left: 0, bottom: 20, right: 0)
+
     private static func checkSimulatorEnvironment() {
         guard SnapshotTestCase.testedDevices.contains(where: { $0.matchesCurrentDevice() }) else {
             fatalError("Attempting to run tests on a device for which we have not collected test data")
@@ -277,11 +284,38 @@ extension Snapshotting where Value == UIView, Format == UIImage {
         return Self.image(traits: traits)
     }
 
+    static var imagePadPanel: Self {
+        let traits = UITraitCollection(traitsFrom: [
+            .init(preferredContentSizeCategory: .medium),
+        ] + SnapshotTestCase.padTraitCollection)
+
+        return Self.image(traits: traits)
+    }
+
+    static var extra3LargeFontStrategyPadPanel: Self {
+        let traits = UITraitCollection(traitsFrom: [
+            .init(preferredContentSizeCategory: .accessibilityExtraExtraExtraLarge)
+        ] + SnapshotTestCase.padTraitCollection)
+
+        return Self.image(traits: traits)
+    }
+
     private static var commonTraitCollection: [UITraitCollection] = [
         .init(layoutDirection: .leftToRight),
         .init(userInterfaceIdiom: .phone),
         .init(horizontalSizeClass: .regular),
         .init(verticalSizeClass: .compact),
+    ]
+}
+
+extension SnapshotTestCase {
+    /// Trait collection for iPad side-panel snapshots. Deliberately separate from
+    /// the landscape `commonTraitCollection`, which hardcodes `.phone`.
+    static let padTraitCollection: [UITraitCollection] = [
+        .init(layoutDirection: .leftToRight),
+        .init(userInterfaceIdiom: .pad),
+        .init(horizontalSizeClass: .regular),
+        .init(verticalSizeClass: .regular),
     ]
 }
 
@@ -304,6 +338,33 @@ extension Snapshotting where Value == UIViewController, Format == UIImage {
         let safeArea: UIEdgeInsets = .init(top: 0, left: 47, bottom: 21, right: 47)
         let size: CGSize = .init(width: 852, height: 393)
         let viewImageConfig: ViewImageConfig = .init(safeArea: safeArea, size: size, traits: traits)
+
+        return Self.image(on: viewImageConfig)
+    }
+
+    /// The 400pt iPad side panel at full iPad height.
+    static var imagePadPanel: Self {
+        imagePad(size: SnapshotTestCase.padPanelSize, contentSizeCategory: .medium)
+    }
+
+    static var extra3LargeFontStrategyPadPanel: Self {
+        imagePad(size: SnapshotTestCase.padPanelSize, contentSizeCategory: .accessibilityExtraExtraExtraLarge)
+    }
+
+    /// A whole landscape iPad scene, for the split container that hosts the panel.
+    static var imagePadLandscape: Self {
+        imagePad(size: SnapshotTestCase.padLandscapeSize, contentSizeCategory: .medium)
+    }
+
+    private static func imagePad(size: CGSize, contentSizeCategory: UIContentSizeCategory) -> Self {
+        let traits = UITraitCollection(traitsFrom: [
+            .init(preferredContentSizeCategory: contentSizeCategory)
+        ] + SnapshotTestCase.padTraitCollection)
+        let viewImageConfig = ViewImageConfig(
+            safeArea: SnapshotTestCase.padSafeArea,
+            size: size,
+            traits: traits
+        )
 
         return Self.image(on: viewImageConfig)
     }

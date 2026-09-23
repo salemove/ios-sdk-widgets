@@ -385,6 +385,7 @@ class EngagementCoordinatorSurveyTests: XCTestCase {
         engagementCoordinatorEnv.alertManager = .failing(environment: alertManagerEnv, viewFactory: .mock())
         engagementCoordinatorEnv.alertManager.setViewControllerPresentationAnimated(false)
         engagementCoordinatorEnv.uiApplication.applicationState = { .inactive }
+        engagementCoordinatorEnv.log = log
         let coordinator = EngagementCoordinator(
             interactor: interactor,
             viewFactory: ViewFactory.mock(),

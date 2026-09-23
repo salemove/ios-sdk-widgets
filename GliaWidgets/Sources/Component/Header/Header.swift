@@ -18,6 +18,10 @@ final class Header: BaseView {
             renderProps()
         }
     }
+    /// When set, back, end and close stay hidden regardless of `show*` calls, so a
+    /// screen that shares the scene with another Glia screen does not duplicate
+    /// that screen's navigation controls.
+    private(set) var areControlsHidden = false
     private let leftItemContainer = UIView()
     private let titleLabel = UILabel()
     private let contentView = UIView()
@@ -60,7 +64,7 @@ final class Header: BaseView {
     }
 
     func renderProps() {
-        backButton?.isHidden = props.backButton == nil
+        backButton?.isHidden = props.backButton == nil || areControlsHidden
         if let backButtonProps = props.backButton {
             backButton?.props = backButtonProps
         }
@@ -88,22 +92,30 @@ final class Header: BaseView {
     }
 
     func showBackButton() {
-        backButton?.isHidden = false
+        backButton?.isHidden = areControlsHidden
     }
 
     func showCloseButton() {
         self.endButton?.isHidden = true
-        self.closeButton?.isHidden = false
+        self.closeButton?.isHidden = areControlsHidden
     }
 
     func showEndButton() {
-        self.endButton?.isHidden = false
+        self.endButton?.isHidden = areControlsHidden
         self.closeButton?.isHidden = true
     }
 
     func hideCloseAndEndButtons() {
         self.endButton?.isHidden = true
         self.closeButton?.isHidden = true
+    }
+
+    func setControlsHidden(_ hidden: Bool) {
+        areControlsHidden = hidden
+        if hidden {
+            backButton?.isHidden = true
+            hideCloseAndEndButtons()
+        }
     }
 
     override func setup() {

@@ -26,6 +26,7 @@ extension SecureConversations.Coordinator {
         var unreadMessages: ObservableValue<Int>
         var showsCallBubble: Bool
         var isWindowVisible: ObservableValue<Bool>
+        var layoutMode: EngagementLayoutMode
         var uploadFileToEngagement: CoreSdkClient.UploadFileToEngagement
         var getCurrentEngagement: CoreSdkClient.GetCurrentEngagement
         var getNonTransferredSecureConversationEngagement: CoreSdkClient.GetCurrentEngagement
@@ -67,6 +68,7 @@ extension SecureConversations.Coordinator.Environment {
         unreadMessages: ObservableValue<Int>,
         showCallBubble: Bool,
         isWindowVisible: ObservableValue<Bool>,
+        layoutMode: EngagementLayoutMode,
         interactor: Interactor,
         shouldShowLeaveSecureConversationDialog: @escaping (SecureConversations.ShouldShowLeaveCurrentConversationSource) -> Bool,
         leaveCurrentSecureConversation: Command<Bool>,
@@ -97,6 +99,7 @@ extension SecureConversations.Coordinator.Environment {
             unreadMessages: unreadMessages,
             showsCallBubble: showCallBubble,
             isWindowVisible: isWindowVisible,
+            layoutMode: layoutMode,
             uploadFileToEngagement: environment.uploadFileToEngagement,
             getCurrentEngagement: environment.getCurrentEngagement,
             getNonTransferredSecureConversationEngagement: environment.getNonTransferredSecureConversationEngagement,

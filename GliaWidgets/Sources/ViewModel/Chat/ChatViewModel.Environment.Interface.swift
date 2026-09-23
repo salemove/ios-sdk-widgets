@@ -38,6 +38,10 @@ extension EngagementViewModel {
         var switchToEngagement: Command<EngagementKind>
         var shouldShowLeaveSecureConversationDialog: (SecureConversations.ShouldShowLeaveCurrentConversationSource) -> Bool
         var viewFactory: ViewFactory
+        // In side-panel mode chat and call are visible at once, so `CallViewModel`
+        // suppresses its own media-upgrade alert, chat button and proximity sensor,
+        // and `ChatViewModel` suppresses its in-chat call bubble.
+        var layoutMode: EngagementLayoutMode
         @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
         @Dependency(\.widgets.networkMonitor) var networkConnectionMonitor: CoreSdkClient.NetworkConnectionMonitor
         @Dependency(\.widgets.callQualityMonitor) var callQualityMonitor: CoreSdkClient.CallQualityMonitor
@@ -47,7 +51,8 @@ extension EngagementViewModel {
 extension EngagementViewModel.Environment {
     static func create(
         with environment: ChatCoordinator.Environment,
-        viewFactory: ViewFactory
+        viewFactory: ViewFactory,
+        layoutMode: EngagementLayoutMode
     ) -> EngagementViewModel.Environment {
         .init(
             secureConversations: environment.secureConversations,
@@ -84,13 +89,15 @@ extension EngagementViewModel.Environment {
             topBannerItemsStyle: viewFactory.theme.chat.secureMessagingExpandedTopBannerItemsStyle,
             switchToEngagement: environment.switchToEngagement,
             shouldShowLeaveSecureConversationDialog: environment.shouldShowLeaveSecureConversationDialog,
-            viewFactory: viewFactory
+            viewFactory: viewFactory,
+            layoutMode: layoutMode
         )
     }
 
     static func create(
         with environment: CallCoordinator.Environment,
-        viewFactory: ViewFactory
+        viewFactory: ViewFactory,
+        layoutMode: EngagementLayoutMode
     ) -> EngagementViewModel.Environment {
         .init(
             secureConversations: environment.secureConversations,
@@ -127,7 +134,8 @@ extension EngagementViewModel.Environment {
             topBannerItemsStyle: viewFactory.theme.chat.secureMessagingExpandedTopBannerItemsStyle,
             switchToEngagement: .nop,
             shouldShowLeaveSecureConversationDialog: { _ in false },
-            viewFactory: viewFactory
+            viewFactory: viewFactory,
+            layoutMode: layoutMode
         )
     }
 }

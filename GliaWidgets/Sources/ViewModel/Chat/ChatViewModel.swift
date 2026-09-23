@@ -495,12 +495,24 @@ extension ChatViewModel {
                 operators: interactor.engagedOperator?.firstName ?? "",
                 offer: offer,
                 accepted: { [weak self] in
-                    self?.delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
-                    self?.showCallBubble()
+                    self?.mediaUpgradeAccepted(offer: offer, answer: answer)
                 },
                 answer: answer
             )
         )
+    }
+
+    func mediaUpgradeAccepted(
+        offer: CoreSdkClient.MediaUpgradeOffer,
+        answer: @escaping CoreSdkClient.AnswerWithSuccessBlock
+    ) {
+        delegate?(.mediaUpgradeAccepted(offer: offer, answer: answer))
+        // The in-chat call bubble is the way back to a call that covers the chat.
+        // In side-panel mode the call screen is visible beside the chat, so the
+        // bubble would only duplicate it.
+        if environment.layoutMode == .fullScreen {
+            showCallBubble()
+        }
     }
 }
 

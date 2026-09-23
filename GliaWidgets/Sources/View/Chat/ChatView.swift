@@ -715,6 +715,9 @@ extension ChatView {
     private func observeKeyboard() {
         keyboardObserver.keyboardWillShow = { [weak self] properties in
             guard let self else { return }
+            // Keyboard notifications are app-wide. In iPad side-panel mode the host
+            // app is live beside the chat, and its keyboard must not move our entry.
+            guard self.messageEntryView.textView.isFirstResponder else { return }
 
             let bottomInset = self.safeAreaInsets.bottom
             let newEntryConstraint = -properties.finalFrame.height + bottomInset

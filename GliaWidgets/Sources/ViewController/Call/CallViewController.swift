@@ -121,6 +121,10 @@ private extension CallViewController {
     }
 
     func bind(viewModel: CallViewModel, to view: CallView) {
+        // In side-panel mode the chat panel beside the call already offers back
+        // (minimize) and end, and the call view auto-hides its own header in
+        // landscape video, so it cannot be the only home of those controls.
+        view.header.setControlsHidden(viewModel.environment.layoutMode == .sidePanel)
         view.header.showBackButton()
         view.header.showCloseButton()
 

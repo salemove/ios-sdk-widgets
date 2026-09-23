@@ -23,7 +23,8 @@ final class CallCoordinatorTests: XCTestCase {
             call: .mock(),
             unreadMessages: .init(with: 0),
             startAction: startAction,
-            environment: .mock
+            environment: .mock,
+            layoutMode: .fullScreen
         )
     }
 

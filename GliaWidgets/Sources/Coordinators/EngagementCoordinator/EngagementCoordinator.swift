@@ -1,35 +1,6 @@
 import UIKit
 import Foundation
 
-extension EngagementCoordinator {
-    /// `EngagementLaunching` is used to start one of two possible flows:
-    /// - `direct` case is used to start regular engagement flow with single `EngagementKind`. 
-    /// In this case `EngagementCoordinator` starts regular engagement.
-    /// - `indirect` case is used to temporarily save initial `EngagementKind` and replace it with necessary kind.
-    /// Use case is if there is pending secure conversation, but requested `EngagementKind` is
-    /// one of `[.chat, . audioCall, .videoCall]`, then `EngagementCoordinator` opens
-    /// ChatTranscript screen and shows Leave Engagement Dialog. Then if user presses "Leave" button,
-    /// `EngagementCoordinator` replaces current screen with the one corresponding to initial `EngagementKind`.
-    enum EngagementLaunching: Equatable {
-        case direct(kind: EngagementKind)
-        case indirect(kind: EngagementKind, initialKind: EngagementKind)
-
-        var currentKind: EngagementKind {
-            switch self {
-            case let .direct(engagementKind), let .indirect(engagementKind, _):
-                return engagementKind
-            }
-        }
-
-        var initialKind: EngagementKind {
-            switch self {
-            case let .direct(engagementKind), let .indirect(_, engagementKind):
-                return engagementKind
-            }
-        }
-    }
-}
-
 class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     var delegate: ((DelegateEvent) -> Void)?
 
@@ -47,6 +18,10 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let chatCall = ObservableValue<Call?>(with: nil)
     private let unreadMessages = ObservableValue<Int>(with: 0)
     private let isWindowVisible = ObservableValue<Bool>(with: false)
+    private let layoutMode: EngagementLayoutMode
+    private(set) var panelWindow: EngagementPanelWindow?
+    private(set) var splitViewController: EngagementSplitViewController?
+    private var bubblePresenter: BubblePresenter?
 
     private let navigationController = NavigationController()
     let navigationPresenter: NavigationPresenter
@@ -79,6 +54,12 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.features = features
         self.engagementRestorationState = engagementRestorationState
         self.environment = environment
+        self.layoutMode = environment.resolveLayoutMode(
+            Self.resolveWindowScene(
+                sceneProvider: sceneProvider,
+                connectedScenes: environment.uiApplication.connectionScenes()
+            )
+        )
         navigationController.modalPresentationStyle = .fullScreen
         navigationController.isNavigationBarHidden = true
     }
@@ -88,21 +69,42 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
     }
 
     func start(maximize: Bool) {
-        setupEngagementController(
-            skipTransferredSCHandling: false,
-            replaceExistingEnqueueing: false
-        )
-
         let bubbleView = viewFactory.makeBubbleView()
         unreadMessages.addObserver(self) { unreadCount, _ in
             bubbleView.setBadge(itemCount: unreadCount)
         }
 
-        gliaViewController = makeGliaView(
-            bubbleView: bubbleView,
-            features: features
+        // The panel/split surface is created before the engagement content, so
+        // that `setupEngagementController` can place the call view controller
+        // into `splitViewController` when starting directly into a call.
+        switch layoutMode {
+        case .fullScreen:
+            gliaViewController = makeGliaView(
+                bubbleView: bubbleView,
+                features: features
+            )
+            gliaViewController?.insertChild(navigationController)
+        case .sidePanel:
+            bubblePresenter = makeBubblePresenter(
+                bubbleView: bubbleView,
+                features: features
+            )
+            // Alerts the chat raises over itself must dim the panel only, not the
+            // whole scene including the host app.
+            navigationController.confinesAlertsToOwnBounds = true
+            navigationController.definesPresentationContext = true
+            navigationController.providesPresentationContextTransitionStyle = true
+            let splitViewController = EngagementSplitViewController()
+            splitViewController.setPanel(navigationController)
+            self.splitViewController = splitViewController
+            panelWindow = makePanelWindow(rootViewController: splitViewController)
+        }
+
+        setupEngagementController(
+            skipTransferredSCHandling: false,
+            replaceExistingEnqueueing: false
         )
-        gliaViewController?.insertChild(navigationController)
+
         if maximize {
             delegateEvent(.maximized)
         }
@@ -131,44 +133,11 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
                 animated: animated
             )
         case .audioCall, .videoCall:
-            let kind: CallKind = engagementKind == .audioCall ? .audio : .video(direction: .twoWay)
-
-            let mediaType: CoreSdkClient.MediaType = engagementKind == .audioCall ? .audio : .video
-            let call = Call(kind, environment: .create(with: environment))
-            call.kind.addObserver(self) { [weak self] _, _ in
-                self?.engagementLaunching = .direct(kind: EngagementKind(with: call.kind.value))
-            }
-            let callViewController = startCall(
-                call,
-                withAction: .engagement(mediaType: mediaType),
-                replaceExistingEnqueueing: replaceExistingEnqueueing
-            )
-
-            // Do not set the state back to `enqueueing` if we are already engaged
-            // and simply restoring the session. This situation occurs when a user
-            // authenticates during an active call, and preventing this state change
-            // avoids breaking the UI controls on the Call screen.
-            if !(interactor.isEngaged && engagementRestorationState() == .restoring) {
-                interactor.state = .enqueueing(engagementKind)
-            }
-
-            let chatViewController = startChat(
-                withAction: .none,
-                showsCallBubble: true,
+            setupCallEngagementController(
+                engagementKind: engagementKind,
                 skipTransferredSCHandling: skipTransferredSCHandling,
+                animated: animated,
                 replaceExistingEnqueueing: replaceExistingEnqueueing
-            )
-
-            engagement = .call(
-                callViewController,
-                chatViewController,
-                .none,
-                call
-            )
-
-            navigationPresenter.setViewControllers(
-                [callViewController],
-                animated: animated
             )
         case .messaging(let messagingInitialScreen):
             let secureConversationsWelcomeViewController = startSecureConversations(
@@ -183,8 +152,66 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
         }
     }
 
+    private func setupCallEngagementController(
+        engagementKind: EngagementKind,
+        skipTransferredSCHandling: Bool,
+        animated: Bool,
+        replaceExistingEnqueueing: Bool
+    ) {
+        let kind: CallKind = engagementKind == .audioCall ? .audio : .video(direction: .twoWay)
+
+        let mediaType: CoreSdkClient.MediaType = engagementKind == .audioCall ? .audio : .video
+        let call = Call(kind, environment: .create(with: environment))
+        call.kind.addObserver(self) { [weak self] _, _ in
+            self?.engagementLaunching = .direct(kind: EngagementKind(with: call.kind.value))
+        }
+        let callViewController = startCall(
+            call,
+            withAction: .engagement(mediaType: mediaType),
+            replaceExistingEnqueueing: replaceExistingEnqueueing
+        )
+
+        // Do not set the state back to `enqueueing` if we are already engaged
+        // and simply restoring the session. This situation occurs when a user
+        // authenticates during an active call, and preventing this state change
+        // avoids breaking the UI controls on the Call screen.
+        if !(interactor.isEngaged && engagementRestorationState() == .restoring) {
+            interactor.state = .enqueueing(engagementKind)
+        }
+
+        let chatViewController = startChat(
+            withAction: .none,
+            // The in-chat call bubble is a phone affordance for returning to a
+            // hidden chat screen — meaningless when both screens are visible at once.
+            showsCallBubble: layoutMode == .fullScreen,
+            skipTransferredSCHandling: skipTransferredSCHandling,
+            replaceExistingEnqueueing: replaceExistingEnqueueing
+        )
+
+        engagement = .call(
+            callViewController,
+            chatViewController,
+            .none,
+            call
+        )
+
+        switch layoutMode {
+        case .fullScreen:
+            navigationPresenter.setViewControllers(
+                [callViewController],
+                animated: animated
+            )
+        case .sidePanel:
+            splitViewController?.setLeading(callViewController)
+            navigationPresenter.setViewControllers(
+                [chatViewController],
+                animated: animated
+            )
+        }
+    }
+
     deinit {
-        print("\(Self.self) is deallocated.")
+        environment.log.prefixed(Self.self).info("\(Self.self) is deallocated.")
     }
 }
 
@@ -207,10 +234,7 @@ extension EngagementCoordinator {
         let dismissGliaViewController: () -> Void = { [weak self] in
             self?.dismissGliaViewController(animated: true) { [weak self] in
                 self?.delegateEvent(.minimized)
-                self?.engagement = .none
-                self?.navigationPresenter.setViewControllers([], animated: false)
-                self?.removeAllCoordinators()
-                self?.engagementLaunching = .direct(kind: .none)
+                self?.resetEngagementState()
                 // If engagement was ended then pass `ended` event. This
                 // initiates sending `ended` event to integrators.
                 // Otherwise, pass `closed` meaning that Glia screen was closed
@@ -262,6 +286,15 @@ extension EngagementCoordinator {
                 in: self
             )
         }
+    }
+
+    private func resetEngagementState() {
+        engagement = .none
+        navigationPresenter.setViewControllers([], animated: false)
+        splitViewController?.setPanel(nil)
+        splitViewController?.setLeading(nil)
+        removeAllCoordinators()
+        engagementLaunching = .direct(kind: .none)
     }
 
     func presentSurveyError(
@@ -319,8 +352,35 @@ extension EngagementCoordinator {
                 }
             }
         )
-        self.gliaViewController?.removeBubbleWindow()
-        self.gliaPresenter.present(viewController, animated: true)
+        self.removeBubbleWindow()
+        self.presentOverEngagement(viewController, animated: true)
+    }
+
+    /// Presents `viewController` above whatever Glia surface is currently on
+    /// screen. `GliaPresenter` targets the host window, which in side-panel
+    /// mode sits *below* the panel window, so anything presented there would be
+    /// partially covered by the panel; presenting on the split container keeps
+    /// it above both panes while `EngagementPanelWindow.hitTest` still routes
+    /// touches to it.
+    private func presentOverEngagement(
+        _ viewController: UIViewController,
+        animated: Bool,
+        completion: (() -> Void)? = nil
+    ) {
+        switch layoutMode {
+        case .fullScreen:
+            gliaPresenter.present(viewController, animated: animated, completion: completion)
+        case .sidePanel:
+            guard let splitViewController else {
+                gliaPresenter.present(viewController, animated: animated, completion: completion)
+                return
+            }
+            var presenter: UIViewController = splitViewController
+            while let presented = presenter.presentedViewController {
+                presenter = presented
+            }
+            presenter.present(viewController, animated: animated, completion: completion)
+        }
     }
 
     private func startChat(
@@ -359,6 +419,7 @@ extension EngagementCoordinator {
                     )
                 }
             ),
+            layoutMode: layoutMode,
             startWithSecureTranscriptFlow: false,
             skipTransferredSCHandling: skipTransferredSCHandling
         )
@@ -379,13 +440,20 @@ extension EngagementCoordinator {
                     popCoordinator()
                     end(surveyPresentation: .presentSurvey)
                 } else {
-                    gliaViewController?.minimize(animated: true)
+                    minimizeBubble(animated: true)
                 }
             case .call(let callViewController, _, let upgradedFrom, _):
-                if upgradedFrom == .chat {
-                    gliaViewController?.minimize(animated: true)
-                } else {
-                    navigationPresenter.pop(to: callViewController, animated: true)
+                switch layoutMode {
+                case .sidePanel:
+                    // Chat and call are both visible side by side; there is no
+                    // navigation stack relationship between them to unwind.
+                    minimizeBubble(animated: true)
+                case .fullScreen:
+                    if upgradedFrom == .chat {
+                        minimizeBubble(animated: true)
+                    } else {
+                        navigationPresenter.pop(to: callViewController, animated: true)
+                    }
                 }
             default:
                 popCoordinator()
@@ -394,12 +462,15 @@ extension EngagementCoordinator {
         case let .openLink(link):
             presentSafariViewController(for: link)
         case .engaged(let operatorImageUrl):
-            gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
+            setBubbleKind(.userImage(url: operatorImageUrl))
         case .mediaUpgradeAccepted(let offer, let answer):
             chatMediaUpgradeAccepted(offer: offer, answer: answer)
         case .secureTranscriptUpgradedToLiveChat(let chatViewController):
             upgradeSecureTranscriptToChat(chatViewController: chatViewController)
         case .call:
+            // In side-panel mode the call is already visible in the leading
+            // region, so there is nothing to navigate to.
+            guard layoutMode == .fullScreen else { break }
             switch engagement {
             case .call(let callViewController, _, let upgradedFrom, _):
                 switch upgradedFrom {
@@ -431,27 +502,38 @@ extension EngagementCoordinator {
             call: call,
             unreadMessages: unreadMessages,
             startAction: startAction,
-            environment: .create(with: environment)
+            environment: .create(with: environment),
+            layoutMode: layoutMode
         )
         coordinator.delegate = { [weak self] event in
             guard let self = self else { return }
             switch event {
             case .back:
-                switch self.engagement {
-                case .call(_, let chatViewController, let upgradedFrom, _):
-                    if upgradedFrom == .chat {
-                        self.navigationPresenter.pop(to: chatViewController, animated: true)
-                    } else {
-                        self.gliaViewController?.minimize(animated: true)
+                switch self.layoutMode {
+                case .sidePanel:
+                    // Chat and call are both visible side by side; there is no
+                    // navigation stack relationship between them to unwind.
+                    self.minimizeBubble(animated: true)
+                case .fullScreen:
+                    switch self.engagement {
+                    case .call(_, let chatViewController, let upgradedFrom, _):
+                        if upgradedFrom == .chat {
+                            self.navigationPresenter.pop(to: chatViewController, animated: true)
+                        } else {
+                            self.minimizeBubble(animated: true)
+                        }
+                    default:
+                        break
                     }
-                default:
-                    break
                 }
             case let .openLink(link):
                 self.presentSafariViewController(for: link)
             case .engaged(let operatorImageUrl):
-                self.gliaViewController?.bubbleKind = .userImage(url: operatorImageUrl)
+                self.setBubbleKind(.userImage(url: operatorImageUrl))
             case .chat:
+                // In side-panel mode the chat button is hidden, and chat is
+                // already visible in the panel, so there is nothing to do.
+                guard self.layoutMode == .fullScreen else { break }
                 switch self.engagement {
                 case .call(_, let chatViewController, let upgradedFrom, _):
                     if upgradedFrom == .chat {
@@ -463,12 +545,12 @@ extension EngagementCoordinator {
                     break
                 }
             case .minimize:
-                self.gliaViewController?.minimize(animated: true)
+                self.minimizeBubble(animated: true)
             case .finished:
                 self.popCoordinator()
                 self.end(surveyPresentation: .presentSurvey)
             case .visitorOnHoldUpdated(let isOnHold):
-                self.gliaViewController?.setVisitorHoldState(isOnHold: isOnHold)
+                self.setBubbleVisitorHoldState(isOnHold: isOnHold)
             }
         }
         pushCoordinator(coordinator)
@@ -480,13 +562,49 @@ extension EngagementCoordinator {
         bubbleView: BubbleView,
         features: Features
     ) -> GliaViewController {
-        let animate: (
-            _ animated: Bool,
-            _ animations: @escaping () -> Void,
-            _ completion: @escaping (
-                Bool
-            ) -> Void
-        ) -> Void = { animated, animations, completion in
+        GliaViewController(
+            bubbleView: bubbleView,
+            delegate: { [weak self] event in
+                self?.delegateEvent(event)
+            },
+            sceneProvider: sceneProvider,
+            features: features,
+            environment: .create(
+                with: environment,
+                animate: makeAnimate()
+            )
+        )
+    }
+
+    private func makeBubblePresenter(
+        bubbleView: BubbleView,
+        features: Features
+    ) -> BubblePresenter {
+        BubblePresenter(
+            bubbleView: bubbleView,
+            delegate: { [weak self] event in
+                self?.delegateEvent(event)
+            },
+            sceneProvider: sceneProvider,
+            // Stealing key-window status is disruptive when the host app stays
+            // visible and interactive beside the panel.
+            becomesKeyWindow: false,
+            features: features,
+            environment: .create(
+                with: environment,
+                animate: makeAnimate()
+            )
+        )
+    }
+
+    private func makeAnimate() -> (
+        _ animated: Bool,
+        _ animations: @escaping () -> Void,
+        _ completion: @escaping (
+            Bool
+        ) -> Void
+    ) -> Void {
+        { animated, animations, completion in
             UIView.animate(
                 withDuration: animated ? 0.4 : 0.0,
                 delay: 0.0,
@@ -497,32 +615,39 @@ extension EngagementCoordinator {
                 completion: completion
             )
         }
+    }
 
-        if sceneProvider != nil {
-            return GliaViewController(
-                bubbleView: bubbleView,
-                delegate: { [weak self] event in
-                    self?.delegateEvent(event)
-                },
-                features: features,
-                environment: .create(
-                    with: environment,
-                    animate: animate
-                )
-            )
+    private func makePanelWindow(rootViewController: UIViewController) -> EngagementPanelWindow {
+        let window: EngagementPanelWindow
+        let windowScene = Self.resolveWindowScene(
+            sceneProvider: sceneProvider,
+            connectedScenes: environment.uiApplication.connectionScenes()
+        )
+        if let windowScene {
+            window = EngagementPanelWindow(windowScene: windowScene)
         } else {
-            return GliaViewController(
-                bubbleView: bubbleView,
-                delegate: { [weak self] event in
-                    self?.delegateEvent(event)
-                },
-                features: features,
-                environment: .create(
-                    with: environment,
-                    animate: animate
-                )
-            )
+            window = EngagementPanelWindow(frame: environment.uiScreen.bounds())
         }
+        window.rootViewController = rootViewController
+        return window
+    }
+
+    /// Falls back to the app's foreground scene when the integrator has not
+    /// supplied a `SceneProvider` — otherwise both layout-mode resolution and
+    /// the panel window default to `.fullScreen`/a detached frame even on a
+    /// qualifying iPad scene, since most integrators never set `sceneProvider`.
+    /// An inactive foreground scene is accepted as a last resort because a cold
+    /// launch from a push or an engagement restore can run before activation.
+    static func resolveWindowScene(
+        sceneProvider: SceneProvider?,
+        connectedScenes: Set<UIScene>
+    ) -> UIWindowScene? {
+        if let windowScene = sceneProvider?.windowScene() {
+            return windowScene
+        }
+        let windowScenes = connectedScenes.compactMap { $0 as? UIWindowScene }
+        return windowScenes.first { $0.activationState == .foregroundActive }
+            ?? windowScenes.first { $0.activationState == .foregroundInactive }
     }
 
     private func startSecureConversations(
@@ -554,6 +679,7 @@ extension EngagementCoordinator {
                 unreadMessages: unreadMessages,
                 showCallBubble: false,
                 isWindowVisible: isWindowVisible,
+                layoutMode: layoutMode,
                 interactor: interactor,
                 shouldShowLeaveSecureConversationDialog: { [weak self] source in
                     guard let self else { return false }
@@ -591,7 +717,7 @@ extension EngagementCoordinator {
             self.popCoordinator()
             self.end(surveyPresentation: surveyPresentation)
         case .backTapped:
-            self.gliaViewController?.minimize(animated: true)
+            self.minimizeBubble(animated: true)
         case let .chat(chatEvent):
             self.handleChatCoordinatorEvent(event: chatEvent)
         }
@@ -612,18 +738,81 @@ extension EngagementCoordinator {
 
 extension EngagementCoordinator {
     private func presentGliaViewController(animated: Bool, completion: (() -> Void)? = nil) {
-        guard let gliaViewController = gliaViewController else { return }
-        gliaPresenter.present(gliaViewController, animated: animated) { [weak self] in
-            self?.isWindowVisible.value = true
+        switch layoutMode {
+        case .fullScreen:
+            guard let gliaViewController = gliaViewController else { return }
+            gliaPresenter.present(gliaViewController, animated: animated) { [weak self] in
+                self?.isWindowVisible.value = true
+                completion?()
+            }
+        case .sidePanel:
+            panelWindow?.isHidden = false
+            isWindowVisible.value = true
             completion?()
         }
     }
 
     private func dismissGliaViewController(animated: Bool, completion: (() -> Void)? = nil) {
-        guard let gliaViewController = gliaViewController else { return }
-        gliaPresenter.dismiss(gliaViewController, animated: animated) { [weak self] in
-            self?.isWindowVisible.value = false
+        switch layoutMode {
+        case .fullScreen:
+            guard let gliaViewController = gliaViewController else { return }
+            gliaPresenter.dismiss(gliaViewController, animated: animated) { [weak self] in
+                self?.isWindowVisible.value = false
+                completion?()
+            }
+        case .sidePanel:
+            // A hidden window must never stay key, or the host loses keyboard input.
+            panelWindow?.resignKeyToHostWindow()
+            panelWindow?.isHidden = true
+            isWindowVisible.value = false
             completion?()
+        }
+    }
+}
+
+extension EngagementCoordinator {
+    private func minimizeBubble(animated: Bool) {
+        switch layoutMode {
+        case .fullScreen:
+            gliaViewController?.minimize(animated: animated)
+        case .sidePanel:
+            bubblePresenter?.minimize(animated: animated)
+        }
+    }
+
+    private func maximizeBubble(animated: Bool) {
+        switch layoutMode {
+        case .fullScreen:
+            gliaViewController?.maximize(animated: animated)
+        case .sidePanel:
+            bubblePresenter?.maximize(animated: animated)
+        }
+    }
+
+    private func setBubbleKind(_ kind: BubbleKind) {
+        switch layoutMode {
+        case .fullScreen:
+            gliaViewController?.bubbleKind = kind
+        case .sidePanel:
+            bubblePresenter?.bubbleKind = kind
+        }
+    }
+
+    private func setBubbleVisitorHoldState(isOnHold: Bool) {
+        switch layoutMode {
+        case .fullScreen:
+            gliaViewController?.setVisitorHoldState(isOnHold: isOnHold)
+        case .sidePanel:
+            bubblePresenter?.setVisitorHoldState(isOnHold: isOnHold)
+        }
+    }
+
+    private func removeBubbleWindow() {
+        switch layoutMode {
+        case .fullScreen:
+            gliaViewController?.removeBubbleWindow()
+        case .sidePanel:
+            bubblePresenter?.removeBubbleWindow()
         }
     }
 }
@@ -665,7 +854,12 @@ extension EngagementCoordinator {
                 call
             )
             chatCall.value = call
-            navigationPresenter.push(callViewController)
+            switch layoutMode {
+            case .fullScreen:
+                navigationPresenter.push(callViewController)
+            case .sidePanel:
+                splitViewController?.setLeading(callViewController)
+            }
 
         case .call(let callViewController, let chatViewController, _, let call):
             call.upgrade(to: offer)
@@ -675,10 +869,15 @@ extension EngagementCoordinator {
                 .none,
                 call
             )
-            navigationPresenter.setViewControllers(
-                [callViewController],
-                animated: true
-            )
+            // In side-panel mode both the call and chat panes are already
+            // visible; the existing call view controller reflects the
+            // upgraded media kind via its own `Call` observers.
+            if layoutMode == .fullScreen {
+                navigationPresenter.setViewControllers(
+                    [callViewController],
+                    animated: true
+                )
+            }
             answer(true, nil)
             environment.log.prefixed(Self.self).info(
                 "Media upgrade request accepted by visitor"
@@ -724,7 +923,7 @@ extension EngagementCoordinator {
             externalOpen: openBrowser
         )
         viewController.props = props
-        gliaPresenter.present(viewController, animated: true)
+        presentOverEngagement(viewController, animated: true)
     }
 }
 
@@ -746,47 +945,11 @@ extension EngagementCoordinator {
 }
 
 extension EngagementCoordinator {
-    func minimize() {
-        gliaViewController?.minimize(animated: true)
+    func minimize(animated: Bool = true) {
+        minimizeBubble(animated: animated)
     }
 
     func maximize() {
-        gliaViewController?.maximize(animated: true)
-    }
-}
-
-extension EngagementKind {
-    init(with kind: CallKind) {
-        switch kind {
-        case .audio:
-            self = .audioCall
-        case .video:
-            self = .videoCall
-        }
-    }
-}
-
-extension EngagementCoordinator {
-    enum DelegateEvent: Equatable {
-        case started
-        case engagementChanged(EngagementKind)
-        // Glia screen is closed after once an engagement is ended
-        case ended
-        // Glia screen is closed without having an engagement
-        case closed
-        case minimized
-        case maximized
-    }
-
-    private enum Engagement {
-        case none
-        case chat(ChatViewController)
-        case call(CallViewController, ChatViewController, UpgradedFrom, Call)
-        case secureConversations(UIViewController)
-    }
-
-    private enum UpgradedFrom {
-        case none
-        case chat
+        maximizeBubble(animated: true)
     }
 }

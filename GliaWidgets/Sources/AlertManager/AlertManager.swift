@@ -20,7 +20,7 @@ final class AlertManager {
     private var alertViewController: AlertViewController?
 
     /// The window used to present global alerts.
-    private var alertWindow: UIWindow?
+    private var alertWindow: AlertWindow?
 
     /// Flag used internally to specify if view controller presentation has to be animated.
     /// Useful to be set to false during unit tests to avoid dealing with delays, thus slow tests.
@@ -81,6 +81,22 @@ extension AlertManager {
         alertViewController.dismiss(animated: true)
         cleanup()
     }
+
+    /// A `.root` alert should dim only the screen it belongs to. When that screen
+    /// sits on a `NavigationController` that confines alerts (the iPad side panel),
+    /// the alert is presented in that controller's context; otherwise it covers
+    /// the window exactly as before.
+    static func rootAlertPresentationStyle(for viewController: UIViewController) -> UIModalPresentationStyle {
+        var current: UIViewController? = viewController
+        while let candidate = current {
+            if let navigationController = candidate as? NavigationController,
+               navigationController.confinesAlertsToOwnBounds {
+                return .overCurrentContext
+            }
+            current = candidate.parent
+        }
+        return .overFullScreen
+    }
 }
 
 // MARK: - Private Methods
@@ -127,6 +143,7 @@ private extension AlertManager {
                 viewController.view.trailingAnchor.constraint(equalTo: alertViewController.view.trailingAnchor)
             ])
         default:
+            alertViewController.modalPresentationStyle = Self.rootAlertPresentationStyle(for: viewController)
             let completion: () -> Void = { [isViewControllerPresentationAnimated] in
                 viewController.present(
                     alertViewController,
@@ -222,9 +239,9 @@ private extension AlertManager {
 private extension AlertManager {
     func createAlertWindow() {
         if let windowScene = windowScene() {
-            alertWindow = UIWindow(windowScene: windowScene)
+            alertWindow = AlertWindow(windowScene: windowScene)
         } else {
-            alertWindow = UIWindow(frame: UIScreen.main.bounds)
+            alertWindow = AlertWindow(frame: UIScreen.main.bounds)
         }
 
         alertWindow?.windowLevel = UIWindow.Level.alert + 1
@@ -237,6 +254,9 @@ private extension AlertManager {
             .first
     }
 }
+
+/// The window `AlertManager` presents global alerts on.
+final class AlertWindow: UIWindow, GliaOwnedWindow {}
 
 #if DEBUG
 extension AlertManager {
