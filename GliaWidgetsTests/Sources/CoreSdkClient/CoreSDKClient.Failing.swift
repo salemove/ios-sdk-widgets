@@ -88,8 +88,8 @@ extension CoreSdkClient {
         getCameraDeviceManageable: {
             .failing
         },
-        subscribeForQueuesUpdates: { _ in
-            fail("\(Self.self).subscribeForQueuesUpdates")
+        queueUpdatesStream: { _ in
+            fail("\(Self.self).queueUpdatesStream")
             return AsyncThrowingStream { $0.finish() }
         },
         configureLogLevel: { _ in
@@ -120,12 +120,12 @@ extension CoreSdkClient.SecureConversations {
             fail("\(Self.self).downloadFile")
             throw NSError(domain: "downloadFile", code: -1)
         },
-        subscribeForUnreadMessageCount: {
-            fail("\(Self.self).subscribeForUnreadMessageCount")
+        unreadMessageCountStream: {
+            fail("\(Self.self).unreadMessageCountStream")
             return AsyncThrowingStream { $0.finish() }
         },
-        observePendingStatus: {
-            fail("\(Self.self).observePendingStatus")
+        pendingSecureConversationStatusStream: {
+            fail("\(Self.self).pendingSecureConversationStatusStream")
             return AsyncThrowingStream { $0.finish() }
         }
     )

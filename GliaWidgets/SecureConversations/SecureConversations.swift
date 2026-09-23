@@ -32,7 +32,7 @@ public struct SecureConversations {
     ///
     /// - returns:
     /// A unique callback ID or `nil` if callback was not registered due to error.
-    /// This callback ID could be used to usubscribe from Secure Conversation unread messages count updates.
+    /// Use this callback ID with `unsubscribeSecureUnreadMessageCount(_:)` to stop receiving updates.
     public func subscribeSecureUnreadMessageCount(_ completion: @escaping (Result<Int?, Error>) -> Void) -> String? {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
@@ -42,7 +42,7 @@ public struct SecureConversations {
         )
         let stream: AsyncThrowingStream<Int?, Error>
         do {
-            stream = try environment.coreSdk.secureConversations.subscribeForUnreadMessageCount()
+            stream = try environment.coreSdk.secureConversations.unreadMessageCountStream()
         } catch {
             completion(.failure(error))
             return nil
@@ -65,9 +65,9 @@ public struct SecureConversations {
         return token
     }
 
-    /// Remove subscription for 'subscribeToUnreadMessageCount' methods updates.
-    /// 
-    /// - Parameter subscriptionToken: Subscription token produced by `subscribeToUnreadMessageCount` method.
+    /// Stops unread message count updates for a callback subscription.
+    ///
+    /// - Parameter subscriptionToken: Token returned by `subscribeSecureUnreadMessageCount(_:)`.
     public func unsubscribeSecureUnreadMessageCount(_ subscriptionToken: String) {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
@@ -109,7 +109,7 @@ public struct SecureConversations {
             methodParams: []
         )
         do {
-            return try environment.coreSdk.secureConversations.subscribeForUnreadMessageCount()
+            return try environment.coreSdk.secureConversations.unreadMessageCountStream()
         } catch {
             return AsyncThrowingStream { continuation in
                 continuation.finish(throwing: error)

@@ -75,7 +75,7 @@ extension CoreSdkClient {
             getCameraDeviceManageable: {
                 try CameraDeviceManageableClient(core.cameraDeviceManageableForWidgets())
             },
-            subscribeForQueuesUpdates: { queues in
+            queueUpdatesStream: { queues in
                 AsyncThrowingStream { continuation in
                     let task = Task {
                         do {
@@ -134,8 +134,8 @@ extension CoreSdkClient.SecureConversations {
             let fileData = try await core.secureConversations.downloadFileForWidgets(file, progress: progress)
             return .init(data: fileData.data)
         },
-        subscribeForUnreadMessageCount: core.secureConversations.unreadMessageCountStreamForWidgets,
-        observePendingStatus: core.secureConversations.pendingSecureConversationStatusStreamForWidgets
+        unreadMessageCountStream: core.secureConversations.unreadMessageCountStreamForWidgets,
+        pendingSecureConversationStatusStream: core.secureConversations.pendingSecureConversationStatusStreamForWidgets
     )
 }
 

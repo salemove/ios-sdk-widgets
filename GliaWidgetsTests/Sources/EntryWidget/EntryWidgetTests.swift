@@ -89,7 +89,7 @@ class EntryWidgetTests: XCTestCase {
         let mockQueue = Queue.mock(id: mockQueueId, media: [.messaging, .audio])
         var queueMonitorEnvironment: QueuesMonitor.Environment = .mock
         queueMonitorEnvironment.getQueues = { [mockQueue] }
-        let observeMessageCount: CoreSdkClient.SecureConversations.SubscribeForUnreadMessageCount = {
+        let observeMessageCount: CoreSdkClient.SecureConversations.UnreadMessageCountStream = {
             AsyncThrowingStream { continuation in
                 continuation.yield(5)
                 continuation.finish()
@@ -124,7 +124,7 @@ class EntryWidgetTests: XCTestCase {
     func test_initStartsObservingSecureUnreadMessageCount() async {
         var envCalls: [Call] = []
 
-        let observeMessageCount: CoreSdkClient.SecureConversations.SubscribeForUnreadMessageCount = {
+        let observeMessageCount: CoreSdkClient.SecureConversations.UnreadMessageCountStream = {
             envCalls.append(.observeSecureUnreadMessageCount)
             return AsyncThrowingStream { $0.finish() }
         }

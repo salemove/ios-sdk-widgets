@@ -24,7 +24,7 @@ extension Glia {
             queueIds: queueIds,
             configuration: configuration,
             environment: .init(
-                observeSecureUnreadMessageCount: environment.coreSdk.secureConversations.subscribeForUnreadMessageCount,
+                observeSecureUnreadMessageCount: environment.coreSdk.secureConversations.unreadMessageCountStream,
                 queuesMonitor: queuesMonitor,
                 engagementLauncher: try getEngagementLauncher(queueIds: queueIds),
                 theme: { [weak self] in self?.theme ?? Theme() },

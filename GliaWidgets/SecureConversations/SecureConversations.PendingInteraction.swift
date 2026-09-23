@@ -16,21 +16,21 @@ extension SecureConversations {
         init(environment: Environment) throws {
             let pendingStatusStream: AsyncThrowingStream<Bool, Swift.Error>
             do {
-                pendingStatusStream = try environment.observePendingSecureConversationsStatus()
+                pendingStatusStream = try environment.pendingSecureConversationStatusStream()
             } catch {
                 throw Error.subscriptionFailure(.pendingStatus)
             }
 
             let unreadMessageCountStream: AsyncThrowingStream<Int?, Swift.Error>
             do {
-                unreadMessageCountStream = try environment.observeSecureConversationsUnreadMessageCount()
+                unreadMessageCountStream = try environment.unreadMessageCountStream()
             } catch {
                 throw Error.subscriptionFailure(.unreadMessageCount)
             }
 
             self.environment = environment
-            observePendingStatus(pendingStatusStream)
-            observeUnreadMessageCount(unreadMessageCountStream)
+            consumePendingStatusStream(pendingStatusStream)
+            consumeUnreadMessageCountStream(unreadMessageCountStream)
 
             let interactorStatePublisher = environment.interactorPublisher
                 .flatMap { interactor -> AnyPublisher<InteractorState, Never> in
@@ -76,7 +76,7 @@ extension SecureConversations {
 }
 
 extension SecureConversations.PendingInteraction {
-    private func observePendingStatus(_ stream: AsyncThrowingStream<Bool, Swift.Error>) {
+    private func consumePendingStatusStream(_ stream: AsyncThrowingStream<Bool, Swift.Error>) {
         pendingStatusTask = Task { [weak self] in
             do {
                 for try await value in stream {
@@ -94,7 +94,7 @@ extension SecureConversations.PendingInteraction {
         }
     }
 
-    private func observeUnreadMessageCount(_ stream: AsyncThrowingStream<Int?, Swift.Error>) {
+    private func consumeUnreadMessageCountStream(_ stream: AsyncThrowingStream<Int?, Swift.Error>) {
         unreadMessageCountTask = Task { [weak self] in
             do {
                 for try await count in stream {
@@ -115,8 +115,8 @@ extension SecureConversations.PendingInteraction {
 
 extension SecureConversations.PendingInteraction {
     struct Environment {
-        var observePendingSecureConversationsStatus: CoreSdkClient.SecureConversations.ObservePendingStatus
-        var observeSecureConversationsUnreadMessageCount: CoreSdkClient.SecureConversations.SubscribeForUnreadMessageCount
+        var pendingSecureConversationStatusStream: CoreSdkClient.SecureConversations.PendingSecureConversationStatusStream
+        var unreadMessageCountStream: CoreSdkClient.SecureConversations.UnreadMessageCountStream
         var interactorPublisher: AnyPublisher<Interactor?, Never>
     }
 }
@@ -136,8 +136,8 @@ extension SecureConversations.PendingInteraction.Environment {
         client: CoreSdkClient,
         interactorPublisher: AnyPublisher<Interactor?, Never>
     ) {
-        self.observePendingSecureConversationsStatus = client.secureConversations.observePendingStatus
-        self.observeSecureConversationsUnreadMessageCount = client.secureConversations.subscribeForUnreadMessageCount
+        self.pendingSecureConversationStatusStream = client.secureConversations.pendingSecureConversationStatusStream
+        self.unreadMessageCountStream = client.secureConversations.unreadMessageCountStream
         self.interactorPublisher = interactorPublisher
     }
 }
@@ -148,8 +148,8 @@ extension SecureConversations.PendingInteraction.Environment {
     static let mock: Self = {
         let uuidGen = UUID.incrementing
         return Self(
-            observePendingSecureConversationsStatus: { AsyncThrowingStream { $0.finish() } },
-            observeSecureConversationsUnreadMessageCount: { AsyncThrowingStream { $0.finish() } },
+            pendingSecureConversationStatusStream: { AsyncThrowingStream { $0.finish() } },
+            unreadMessageCountStream: { AsyncThrowingStream { $0.finish() } },
             interactorPublisher: .mock(.mock())
         )
     }()

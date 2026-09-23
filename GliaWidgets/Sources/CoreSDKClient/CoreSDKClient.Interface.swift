@@ -35,7 +35,7 @@ struct CoreSdkClient {
     var createSendMessagePayload: CreateSendMessagePayload
     var createLogger: CreateLogger
     var getCameraDeviceManageable: GetCameraDeviceManageable
-    var subscribeForQueuesUpdates: SubscribeForQueuesUpdates
+    var queueUpdatesStream: QueueUpdatesStream
     var configureLogLevel: (LogLevel) -> Void
 }
 
@@ -77,7 +77,7 @@ extension CoreSdkClient {
     typealias CreateSendMessagePayload = (_ content: String, _ attachment: Attachment?) -> SendMessagePayload
     typealias CreateLogger = ([String: String]) throws -> Logger
     typealias GetCameraDeviceManageable = () throws -> CameraDeviceManageableClient
-    typealias SubscribeForQueuesUpdates = (_ queueIds: [String]) -> AsyncThrowingStream<Queue, Error>
+    typealias QueueUpdatesStream = (_ queueIds: [String]) -> AsyncThrowingStream<Queue, Error>
 }
 
 extension CoreSdkClient {
@@ -87,8 +87,8 @@ extension CoreSdkClient {
         var getUnreadMessageCount: GetUnreadMessageCount
         var markMessagesAsRead: MarkMessagesAsRead
         var downloadFile: DownloadFile
-        var subscribeForUnreadMessageCount: SubscribeForUnreadMessageCount
-        var observePendingStatus: ObservePendingStatus
+        var unreadMessageCountStream: UnreadMessageCountStream
+        var pendingSecureConversationStatusStream: PendingSecureConversationStatusStream
     }
 }
 
@@ -116,9 +116,9 @@ extension CoreSdkClient.SecureConversations {
         _ progress: @escaping EngagementFileProgressBlock
     ) async throws -> CoreSdkClient.EngagementFileData
 
-    typealias SubscribeForUnreadMessageCount = () throws -> AsyncThrowingStream<Int?, Error>
+    typealias UnreadMessageCountStream = () throws -> AsyncThrowingStream<Int?, Error>
 
-    typealias ObservePendingStatus = () throws -> AsyncThrowingStream<Bool, Error>
+    typealias PendingSecureConversationStatusStream = () throws -> AsyncThrowingStream<Bool, Error>
 }
 
 extension CoreSdkClient {
