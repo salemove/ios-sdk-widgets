@@ -13,6 +13,7 @@ final class AppState: ObservableObject {
     @Published var autoConfigureEnabled: Bool
     @Published var authenticationBehavior: Glia.Authentication.Behavior
     @Published var stopPushOnDeauthenticate: Bool
+    @Published var endEngagementOnClearSession: Bool
     @Published var isConfigured: Bool = false
     @Published var currentEngagement: EngagementKind?
     @Published var authentication: Glia.Authentication?
@@ -31,6 +32,7 @@ final class AppState: ObservableObject {
         self.autoConfigureEnabled = UserDefaults.standard.autoConfigureEnabled
         self.authenticationBehavior = UserDefaults.standard.authenticationBehavior
         self.stopPushOnDeauthenticate = UserDefaults.standard.stopPushOnDeauthenticate
+        self.endEngagementOnClearSession = UserDefaults.standard.endEngagementOnClearSession
     }
 
     func configure(completion: @escaping (Result<Void, Error>) -> Void) {
@@ -125,7 +127,10 @@ final class AppState: ObservableObject {
     }
 
     func clearSession(completion: @escaping (Result<Void, Error>) -> Void) {
-        Glia.sharedInstance.clearVisitorSession { result in
+        Glia.sharedInstance.clearVisitorSession(
+            shouldEndEngagementIfPresent: endEngagementOnClearSession,
+            shouldStopPushNotifications: stopPushOnDeauthenticate
+        ) { result in
             DispatchQueue.main.async {
                 completion(result)
             }
@@ -140,6 +145,7 @@ final class AppState: ObservableObject {
         UserDefaults.standard.autoConfigureEnabled = autoConfigureEnabled
         UserDefaults.standard.authenticationBehavior = authenticationBehavior
         UserDefaults.standard.stopPushOnDeauthenticate = stopPushOnDeauthenticate
+        UserDefaults.standard.endEngagementOnClearSession = endEngagementOnClearSession
     }
 
     private func setupEngagementLauncher() {
@@ -162,6 +168,7 @@ extension UserDefaults {
         static let autoConfigureEnabled = "autoConfigureEnabled"
         static let authenticationBehavior = "authenticationBehavior"
         static let stopPushOnDeauthenticate = "stopPushOnDeauthenticate"
+        static let endEngagementOnClearSession = "endEngagementOnClearSession"
     }
 
     var configuration: Configuration {
@@ -239,6 +246,18 @@ extension UserDefaults {
         }
         set {
             set(newValue, forKey: Keys.stopPushOnDeauthenticate)
+        }
+    }
+
+    var endEngagementOnClearSession: Bool {
+        get {
+            guard object(forKey: Keys.endEngagementOnClearSession) != nil else {
+                return false
+            }
+            return bool(forKey: Keys.endEngagementOnClearSession)
+        }
+        set {
+            set(newValue, forKey: Keys.endEngagementOnClearSession)
         }
     }
 }

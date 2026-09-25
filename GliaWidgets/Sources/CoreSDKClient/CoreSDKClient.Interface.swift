@@ -7,7 +7,7 @@ struct CoreSdkClient {
     var liveObservation: LiveObservation
     var secureConversations: SecureConversations
     var createAppDelegate: () -> AppDelegate
-    var clearSession: () -> Void
+    var clearSession: (_ stopPushNotifications: Bool, _ completion: @escaping () -> Void) -> Void
     var localeProvider: LocaleProvider
     @Dependency(\.widgets.networkMonitor) var networkConnectionMonitor: NetworkConnectionMonitor
     @Dependency(\.widgets.callQualityMonitor) var callQualityMonitor: CallQualityMonitor

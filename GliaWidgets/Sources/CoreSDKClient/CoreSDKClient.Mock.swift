@@ -8,7 +8,7 @@ extension CoreSdkClient {
         liveObservation: .mock,
         secureConversations: .mock,
         createAppDelegate: { .mock },
-        clearSession: {},
+        clearSession: { _, completion in completion() },
         localeProvider: .mock,
         getVisitorInfo: { _ in },
         getVisitorInfoDeprecated: { _ in },

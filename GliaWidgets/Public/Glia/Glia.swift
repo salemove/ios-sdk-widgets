@@ -435,26 +435,61 @@ public class Glia {
     /// Clear visitor session
     ///
     /// - Parameters:
-    ///   - completion: Completion handler.
+    ///   - shouldEndEngagementIfPresent: If `false` (default) and the visitor is queued or in an
+    ///     ongoing engagement, `completion` is called with
+    ///     `GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed` and nothing is cleared.
+    ///     If `true`, queue tickets are cancelled and the ongoing engagement is ended first, the
+    ///     engagement UI is closed, and the session is cleared. Ending is best-effort: if the
+    ///     backend cannot be reached the UI is still closed and the session is still cleared.
+    ///   - shouldStopPushNotifications: Whether to unsubscribe from Secure Conversations push
+    ///     notifications for the visitor. Has no effect if the visitor was never externally
+    ///     authenticated. Best-effort: a failure to unsubscribe does not prevent the session
+    ///     from being cleared.
+    ///   - completion: Completion handler, called on the main queue.
     ///
-    /// - Important: Note, that in case of ongoing engagement, `clearVisitorSession` must be called
-    ///   after ending engagement, because `GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed`
-    ///   will occur otherwise.
+    /// - Important: With `shouldEndEngagementIfPresent` left `false`, `clearVisitorSession` must be
+    ///   called after ending the engagement, because
+    ///   `GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed` will occur otherwise.
     ///
-    public func clearVisitorSession(_ completion: @escaping (Result<Void, Error>) -> Void) {
+    public func clearVisitorSession(
+        shouldEndEngagementIfPresent: Bool = false,
+        shouldStopPushNotifications: Bool = false,
+        _ completion: @escaping (Result<Void, Error>) -> Void
+    ) {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
             methodName: "clearVisitorSession",
-            methodParams: ["completion"]
+            methodParams: ["shouldEndEngagementIfPresent", "shouldStopPushNotifications", "completion"]
         )
         loggerPhase.logger.prefixed(Self.self).info("Clear visitor session")
-        guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
+
+        let ongoingEngagement = environment.coreSdk.getNonTransferredSecureConversationEngagement()
+        let isQueueing = interactor?.state.isQueueing == true
+        let hasOngoingInteraction = ongoingEngagement != nil || isQueueing
+
+        guard !hasOngoingInteraction || shouldEndEngagementIfPresent else {
             completion(.failure(GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed))
             return
         }
-        environment.coreSdk.clearSession()
-        completion(.success(()))
+
+        let endedCallVisualizerEngagement = ongoingEngagement.map { $0.source == .callVisualizer } ?? false
+        let mainQueue = environment.gcd.mainQueue
+
+        environment.coreSdk.clearSession(shouldStopPushNotifications) { [weak self] in
+            mainQueue.asyncIfNeeded {
+                guard let self else {
+                    completion(.success(()))
+                    return
+                }
+                self.closeEngagementUI(endedCallVisualizerEngagement: endedCallVisualizerEngagement)
+                // Call Visualizer reports `.ended` itself when its session ends.
+                if hasOngoingInteraction, !endedCallVisualizerEngagement {
+                    self.onEvent?(.ended)
+                }
+                completion(.success(()))
+            }
+        }
     }
 
     /// Fetch current Visitor's information.
