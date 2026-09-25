@@ -56,6 +56,7 @@ extension SettingsView {
         @Published var autoConfigureEnabled: Bool = true
         @Published var authenticationBehavior: Glia.Authentication.Behavior = .forbiddenDuringEngagement
         @Published var stopPushOnDeauthenticate: Bool = false
+        @Published var endEngagementOnClearSession: Bool = false
         @Published var bubbleFeatureEnabled: Bool = true
         @Published var useRemoteConfiguration: Bool = false
         @Published var selectedRemoteConfig: String = "None"
@@ -316,6 +317,7 @@ extension SettingsView {
             autoConfigureEnabled = appState.autoConfigureEnabled
             authenticationBehavior = appState.authenticationBehavior
             stopPushOnDeauthenticate = appState.stopPushOnDeauthenticate
+            endEngagementOnClearSession = appState.endEngagementOnClearSession
 
             bubbleFeatureEnabled = appState.features.contains(.bubbleView)
 
@@ -427,6 +429,7 @@ extension SettingsView.ViewModel {
         appState.autoConfigureEnabled = autoConfigureEnabled
         appState.authenticationBehavior = authenticationBehavior
         appState.stopPushOnDeauthenticate = stopPushOnDeauthenticate
+        appState.endEngagementOnClearSession = endEngagementOnClearSession
 
         var features = Features.all
         if !bubbleFeatureEnabled {

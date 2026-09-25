@@ -218,6 +218,12 @@ private extension SettingsView {
                 isOn: $viewModel.autoConfigureEnabled
             )
             .accessibilityIdentifier("settings_auto_configure_switch")
+
+            Toggle(
+                "End Engagement on Clear Session",
+                isOn: $viewModel.endEngagementOnClearSession
+            )
+            .accessibilityIdentifier("settings_end_engagement_on_clear_session_switch")
         }
     }
 
