@@ -6,7 +6,7 @@ extension CoreSdkClient {
         liveObservation: .failing,
         secureConversations: .failing,
         createAppDelegate: { .failing },
-        clearSession: { fail("\(Self.self).clearSession") },
+        clearSession: { _, _ in fail("\(Self.self).clearSession") },
         localeProvider: .failing,
         getVisitorInfo: { _ in fail("\(Self.self).getVisitorInfo") },
         getVisitorInfoDeprecated: { _ in fail("\(Self.self).getVisitorInfoDeprecated")},
