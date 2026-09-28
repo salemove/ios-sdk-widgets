@@ -13,6 +13,15 @@ enum InteractorState {
         return true
     }
 
+    var isQueueing: Bool {
+        switch self {
+        case .enqueueing, .enqueued:
+            return true
+        case .none, .engaged, .ended:
+            return false
+        }
+    }
+
     var enqueueingEngagementKind: EngagementKind? {
         switch self {
         case .enqueued(_, let engagementKind), .enqueueing(let engagementKind):

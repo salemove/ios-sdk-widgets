@@ -113,10 +113,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction private func clearSessionTapped() {
-        Glia.sharedInstance.clearVisitorSession { [weak self] result in
-            guard case let .failure(error) = result else { return }
-            self?.alert(message: "The operation couldn't be completed. '\(error)'.")
-        }
+        Glia.sharedInstance.clearVisitorData()
     }
 
     @IBAction private func endEngagementTapped() {
