@@ -1,6 +1,6 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Combine
 import Foundation
-import GliaCoreSDK
 import UIKit
 import SwiftUI
 
@@ -15,10 +15,10 @@ public final class EntryWidget: NSObject {
     private let configuration: Configuration
     private let environment: Environment
     @Published private var unreadSecureMessageCount: Int?
-    private(set) var unreadSecureMessageSubscriptionId: String?
+    private var unreadSecureMessageTask: Task<Void, Never>?
     @Published private var hasPendingInteraction: Bool = false
     @Published var viewState: ViewState = .loading
-    private var ongoingEngagement: Engagement?
+    private var ongoingEngagement: CoreSdkClient.Engagement?
     private var interactorState: InteractorState = .none
     private var cancellables = CancelBag()
 
@@ -50,7 +50,7 @@ public final class EntryWidget: NSObject {
             .store(in: &cancellables)
 
         environment.interactorPublisher
-            .flatMap { interactor -> AnyPublisher<Engagement?, Never> in
+            .flatMap { interactor -> AnyPublisher<CoreSdkClient.Engagement?, Never> in
                 guard let interactor else {
                     return Just(nil).eraseToAnyPublisher()
                 }
@@ -99,13 +99,7 @@ public final class EntryWidget: NSObject {
     }
 
     deinit {
-        if let unreadSecureMessageSubscriptionId {
-            environment.unsubscribeFromUpdates(unreadSecureMessageSubscriptionId) { [environment] error in
-                environment.log.prefixed(Self.self).warning(
-                    "Unsubscribing from unread secure messages count without configured SDK: \(error.localizedDescription)"
-                )
-            }
-        }
+        unreadSecureMessageTask?.cancel()
     }
 }
 
@@ -208,12 +202,24 @@ extension EntryWidget {
 // MARK: - Private methods
 private extension EntryWidget {
     func observeSecureUnreadMessageCount() {
-        self.unreadSecureMessageSubscriptionId = environment.observeSecureUnreadMessageCount { [weak self] result in
-            guard let self else {
+        unreadSecureMessageTask = Task { [weak self, environment] in
+            do {
+                let stream = try environment.observeSecureUnreadMessageCount()
+                for try await messagesCount in stream {
+                    await MainActor.run { [weak self] in
+                        self?.unreadSecureMessageCount = messagesCount ?? 0
+                    }
+                }
+            } catch is CancellationError {
                 return
+            } catch {
+                await MainActor.run { [weak self] in
+                    self?.environment.log.prefixed(Self.self).warning(
+                        "Observing unread secure messages count failed: \(error.localizedDescription)"
+                    )
+                    self?.unreadSecureMessageCount = 0
+                }
             }
-            let messagesCount = try? result.get()
-            self.unreadSecureMessageCount = messagesCount ?? 0
         }
     }
 
@@ -430,7 +436,7 @@ private extension EntryWidget {
         }
     }
 
-    func resolveViewState(for ongoingEngagement: Engagement?) -> EntryWidget.ViewState? {
+    func resolveViewState(for ongoingEngagement: CoreSdkClient.Engagement?) -> EntryWidget.ViewState? {
         guard let ongoingEngagement else {
             return nil
         }

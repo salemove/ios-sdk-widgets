@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
 
 extension SecureConversations.Coordinator {
@@ -31,7 +32,6 @@ extension SecureConversations.Coordinator {
         var getNonTransferredSecureConversationEngagement: CoreSdkClient.GetCurrentEngagement
         var submitSurveyAnswer: CoreSdkClient.SubmitSurveyAnswer
         var interactor: Interactor
-        var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
         var isAuthenticated: () -> Bool
         var startSocketObservation: CoreSdkClient.StartSocketObservation
         var stopSocketObservation: CoreSdkClient.StopSocketObservation
@@ -102,7 +102,6 @@ extension SecureConversations.Coordinator.Environment {
             getNonTransferredSecureConversationEngagement: environment.getNonTransferredSecureConversationEngagement,
             submitSurveyAnswer: environment.submitSurveyAnswer,
             interactor: interactor,
-            messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
             isAuthenticated: environment.isAuthenticated,
             startSocketObservation: environment.startSocketObservation,
             stopSocketObservation: environment.stopSocketObservation,

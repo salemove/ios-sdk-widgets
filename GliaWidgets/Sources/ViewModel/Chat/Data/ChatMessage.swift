@@ -1,5 +1,5 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
-import GliaCoreSDK
 
 enum ChatMessageSender: Int, Codable {
     case visitor = 0
@@ -92,7 +92,7 @@ class ChatMessage: Codable {
         sender = ChatMessageSender(with: message.sender)
         content = message.content
         attachment = ChatAttachment(with: message.attachment)
-        metadata = message.metadata
+        metadata = message.metadata.map(MessageMetadata.init(coreMetadata:))
     }
 
     required init(from decoder: Decoder) throws {
@@ -117,7 +117,7 @@ class ChatMessage: Codable {
         try container.encode(sender, forKey: .sender)
         try container.encode(content, forKey: .content)
         try container.encode(attachment, forKey: .attachment)
-        let metadata = try? metadata?.decode([String: AnyCodable].self)
+        let metadata = try? metadata?.decode([String: CoreSdkClient.AnyCodable].self)
         try container.encode(metadata, forKey: .metadata)
     }
 

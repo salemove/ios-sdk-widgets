@@ -1,6 +1,6 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import XCTest
 @testable import GliaWidgets
-@_spi(GliaWidgets) import GliaCoreSDK
 
 final class ChatViewTest: XCTestCase {
 
@@ -48,7 +48,8 @@ final class ChatViewTest: XCTestCase {
         }
     }
 
-    func test_viewIsReleasedOnceModuleIsClosedWithResponseCardsInTranscript() throws {
+    @MainActor
+    func test_viewIsReleasedOnceModuleIsClosedWithResponseCardsInTranscript() async throws {
         guard #available(iOS 17, *) else {
             throw XCTSkip("""
                 This test does not pass on OS lower than iOS 17, but actual fix work well.
@@ -72,6 +73,7 @@ final class ChatViewTest: XCTestCase {
         coordinatorEnv.isAuthenticated = { true }
         coordinatorEnv.maximumUploads = { 1 }
         coordinatorEnv.getNonTransferredSecureConversationEngagement = { nil }
+        coordinatorEnv.gcd = .live
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
@@ -80,18 +82,14 @@ final class ChatViewTest: XCTestCase {
         coordinatorEnv.createEntryWidget = { _ in .mock() }
         let options: [ChatChoiceCardOption] = [try .mock()]
         coordinatorEnv.fetchChatHistory = {
-            $0(
-                .success(
-                    [
-                        .mock(attachment: .mock(
-                            type: .singleChoice,
-                            files: [],
-                            imageUrl: nil,
-                            options: options
-                        ))
-                    ]
-                )
-            )
+            [
+                .mock(attachment: .mock(
+                    type: .singleChoice,
+                    files: [],
+                    imageUrl: nil,
+                    options: options
+                ))
+            ]
         }
         let coordinator = EngagementCoordinator.mock(
             engagementLaunching: .direct(kind: .chat),
@@ -111,7 +109,7 @@ final class ChatViewTest: XCTestCase {
             chatViewModel.event(.closeTapped)
         }
 
-        assertChatViewIsReleased(controller: { controller }, viewModel: { viewModel })
+        await assertChatViewIsReleased(controller: { controller }, viewModel: { viewModel })
     }
 
     private func assertChatViewIsReleased(
@@ -119,17 +117,14 @@ final class ChatViewTest: XCTestCase {
         viewModel: @escaping () -> ChatViewModel?,
         file: StaticString = #filePath,
         line: UInt = #line
-    ) {
-        let releaseExpectation = expectation(description: "Chat view is released")
-        DispatchQueue.main.async {
-            XCTAssertNil(controller(), file: file, line: line)
-            XCTAssertNil(viewModel(), file: file, line: line)
-            releaseExpectation.fulfill()
+    ) async {
+        await waitUntil(file: file, line: line) {
+            controller() == nil && viewModel() == nil
         }
-        wait(for: [releaseExpectation], timeout: 1)
     }
 
-    func test_isTopBannerHiddenWhenIsTopBannerAllowedIsFalse() throws {
+    @MainActor
+    func test_isTopBannerHiddenWhenIsTopBannerAllowedIsFalse() async throws {
         let env = EngagementView.Environment(
             data: .failing,
             uuid: { .mock },
@@ -151,16 +146,15 @@ final class ChatViewTest: XCTestCase {
         let queueId = "queueId"
         let mockQueue = Queue.mock(id: queueId, media: [.text, .audio, .messaging])
         let queuesMonitor = QueuesMonitor.mock(
-            getQueues: {
-                $0(.success([mockQueue]))
-            },
-            subscribeForQueuesUpdates: { _, completion in
-                completion(.success(mockQueue))
-                return UUID.mock.uuidString
-            },
-            unsubscribeFromUpdates: nil
+            getQueues: { [mockQueue] },
+            queueUpdatesStream: { _ in
+                AsyncThrowingStream { continuation in
+                    continuation.yield(mockQueue)
+                    continuation.finish()
+                }
+            }
         )
-        queuesMonitor.fetchAndMonitorQueues(queuesIds: [queueId])
+        _ = try await queuesMonitor.fetchAndMonitorQueues(queuesIds: [queueId])
         entryWidgetEnv.queuesMonitor = queuesMonitor
         let entryWidget = EntryWidget(
             queueIds: [queueId],

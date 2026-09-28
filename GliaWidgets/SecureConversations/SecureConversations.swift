@@ -1,5 +1,5 @@
 import Foundation
-import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 /// Namespace for all secure conversations functionality
 public struct SecureConversations {
@@ -12,13 +12,14 @@ public struct SecureConversations {
     /// - Parameter completion: A callback that will return a `Result` with the number of unread
     /// secure conversation messages on success, or `Swift.Error` on failure.
     public func getUnreadMessageCount(_ callback: @escaping (Result<Int, Error>) -> Void) {
-        environment.openTelemetry.logger.logMethodUse(
-            sdkType: .widgetsSdk,
-            className: Self.self,
-            methodName: "getUnreadMessageCount",
-            methodParams: ["callback"]
-        )
-        environment.coreSdk.secureConversations.getUnreadMessageCount(callback)
+        Task { @MainActor in
+            do {
+                let unreadMessageCount = try await getUnreadMessageCount()
+                callback(.success(unreadMessageCount))
+            } catch {
+                callback(.failure(error))
+            }
+        }
     }
 
     /// Observes the count of unread messages sent through secure conversations.
@@ -31,7 +32,7 @@ public struct SecureConversations {
     ///
     /// - returns:
     /// A unique callback ID or `nil` if callback was not registered due to error.
-    /// This callback ID could be used to usubscribe from Secure Conversation unread messages count updates.
+    /// Use this callback ID with `unsubscribeSecureUnreadMessageCount(_:)` to stop receiving updates.
     public func subscribeSecureUnreadMessageCount(_ completion: @escaping (Result<Int?, Error>) -> Void) -> String? {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
@@ -39,12 +40,34 @@ public struct SecureConversations {
             methodName: "subscribeSecureUnreadMessageCount)",
             methodParams: ["completion"]
         )
-        return environment.coreSdk.secureConversations.subscribeForUnreadMessageCount(completion)
+        let stream: AsyncThrowingStream<Int?, Error>
+        do {
+            stream = try environment.coreSdk.secureConversations.unreadMessageCountStream()
+        } catch {
+            completion(.failure(error))
+            return nil
+        }
+        let token = environment.createUuid().uuidString
+        let task = Task { @MainActor in
+            do {
+                for try await count in stream {
+                    guard !Task.isCancelled else { return }
+                    completion(.success(count))
+                }
+            } catch is CancellationError {
+                return
+            } catch {
+                guard !Task.isCancelled else { return }
+                completion(.failure(error))
+            }
+        }
+        environment.subscriptionStore.store(task, for: token)
+        return token
     }
 
-    /// Remove subscription for 'subscribeToUnreadMessageCount' methods updates.
-    /// 
-    /// - Parameter subscriptionToken: Subscription token produced by `subscribeToUnreadMessageCount` method.
+    /// Stops unread message count updates for a callback subscription.
+    ///
+    /// - Parameter subscriptionToken: Token returned by `subscribeSecureUnreadMessageCount(_:)`.
     public func unsubscribeSecureUnreadMessageCount(_ subscriptionToken: String) {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
@@ -52,14 +75,76 @@ public struct SecureConversations {
             methodName: "unsubscribeSecureUnreadMessageCount(_:)",
             methodParams: ["subscriptionToken"]
         )
-        return environment.coreSdk.secureConversations.unsubscribeFromUnreadMessageCount(subscriptionToken)
+        environment.subscriptionStore.cancel(subscriptionToken)
+    }
+
+    /// Gets the count of unread messages sent through secure conversations.
+    ///
+    /// This count increases when an operator sends a message and the visitor has
+    /// not marked the message as read.
+    ///
+    /// - Returns: Number of unread secure conversation messages.
+    /// - Throws: `Swift.Error` when the unread count cannot be fetched.
+    public func getUnreadMessageCount() async throws -> Int {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "getUnreadMessageCount",
+            methodParams: []
+        )
+        return try await environment.coreSdk.secureConversations.getUnreadMessageCount()
+    }
+
+    /// Observes unread secure conversation message count changes.
+    ///
+    /// The stream yields a value every time the unread message count changes.
+    /// Cancelling iteration stops the subscription.
+    ///
+    /// - Returns: An async stream of unread secure conversation message counts.
+    public func subscribeSecureUnreadMessageCount() -> AsyncThrowingStream<Int?, Error> {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "subscribeSecureUnreadMessageCount",
+            methodParams: []
+        )
+        do {
+            return try environment.coreSdk.secureConversations.unreadMessageCountStream()
+        } catch {
+            return AsyncThrowingStream { continuation in
+                continuation.finish(throwing: error)
+            }
+        }
     }
 }
 
 extension SecureConversations {
     struct Environment {
         let coreSdk: CoreSdkClient
+        var createUuid: () -> UUID = UUID.init
+        let subscriptionStore = SubscriptionStore()
         @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
+    }
+
+    final class SubscriptionStore {
+        private let tasks: LockIsolated<[String: Task<Void, Never>]> = .init([:])
+
+        deinit {
+            tasks.value.values.forEach { $0.cancel() }
+        }
+
+        func store(_ task: Task<Void, Never>, for token: String) {
+            tasks.withValue { tasks in
+                tasks[token]?.cancel()
+                tasks[token] = task
+            }
+        }
+
+        func cancel(_ token: String) {
+            tasks.withValue { tasks in
+                tasks.removeValue(forKey: token)?.cancel()
+            }
+        }
     }
 }
 

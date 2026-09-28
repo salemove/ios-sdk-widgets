@@ -4,36 +4,27 @@ import XCTest
 final class AvailabilityTests: XCTestCase {
     typealias Availability = SecureConversations.Availability
 
-    func testListQueuesErrorPassedToResult() throws {
+    func testListQueuesErrorPassedToResult() async throws {
         var env = Availability.Environment.failing
         let expectedError = CoreSdkClient.SalemoveError.mock()
-        env.getQueues = { callback in
-            callback(.failure(expectedError))
-        }
+        env.getQueues = { throw expectedError }
         env.isAuthenticated = { true }
         env.queuesMonitor = .mock(getQueues: env.getQueues)
         let queueIds = [UUID.mock.uuidString]
         let availability = Availability(environment: env)
-        var receivedResult: Result<Availability.Status, Error>?
-        availability.checkSecureConversationsAvailability(for: queueIds) { result in
-            receivedResult = result
-        }
-        let result = try XCTUnwrap(receivedResult)
-        switch result {
-        case .failure(let error as CoreSdkClient.SalemoveError):
-            XCTAssertEqual(error, expectedError)
-        case .failure(let error):
-            XCTFail("Unexpected error type: \(error)")
-        case .success:
+        do {
+            _ = try await availability.checkSecureConversationsAvailability(for: queueIds)
             XCTFail("Expected failure, got success")
+        } catch let error as CoreSdkClient.SalemoveError {
+            XCTAssertEqual(error, expectedError)
+        } catch {
+            XCTFail("Unexpected error type: \(error)")
         }
     }
 
-    func testEmptyQueueStatus() throws {
+    func testEmptyQueueStatus() async throws {
         var env = Availability.Environment.failing
-        env.getQueues = { callback in
-            callback(.success([]))
-        }
+        env.getQueues = { [] }
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.warningClosure = { _, _, _, _ in }
@@ -43,24 +34,13 @@ final class AvailabilityTests: XCTestCase {
         env.getCurrentEngagement = { .mock() }
         let queueIds = [UUID.mock.uuidString]
         let availability = Availability(environment: env)
-        var receivedResult: Result<Availability.Status, Error>?
-        availability.checkSecureConversationsAvailability(for: queueIds) { result in
-            receivedResult = result
-        }
-        let result = try XCTUnwrap(receivedResult)
-        switch result {
-        case .success(let status):
-            XCTAssertEqual(status, .unavailable(.emptyQueue))
-        case .failure(let error):
-            XCTFail("Expected success, but got failure: \(error)")
-        }
+        let status = try await availability.checkSecureConversationsAvailability(for: queueIds)
+        XCTAssertEqual(status, .unavailable(.emptyQueue))
     }
 
-    func testUnauthenticatedQueueStatus() throws {
+    func testUnauthenticatedQueueStatus() async throws {
         var env = Availability.Environment.failing
-        env.getQueues = { callback in
-            callback(.success([]))
-        }
+        env.getQueues = { [] }
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.warningClosure = { _, _, _, _ in }
@@ -69,26 +49,15 @@ final class AvailabilityTests: XCTestCase {
         env.queuesMonitor = .mock(getQueues: env.getQueues)
         let queueIds = [UUID.mock.uuidString]
         let availability = Availability(environment: env)
-        var receivedResult: Result<Availability.Status, Error>?
-        availability.checkSecureConversationsAvailability(for: queueIds) { result in
-            receivedResult = result
-        }
-        let result = try XCTUnwrap(receivedResult)
-        switch result {
-        case .success(let status):
-            XCTAssertEqual(status, .unavailable(.unauthenticated))
-        case .failure(let error):
-            XCTFail("Expected success, but got failure: \(error)")
-        }
+        let status = try await availability.checkSecureConversationsAvailability(for: queueIds)
+        XCTAssertEqual(status, .unavailable(.unauthenticated))
     }
 
-    func testAvailableQueueStatus() throws {
+    func testAvailableQueueStatus() async throws {
         var env = Availability.Environment.failing
         let queueId = UUID.mock.uuidString
         let mockQueue: Queue = .mock(id: queueId, status: .open, media: [.messaging])
-        env.getQueues = { callback in
-            callback(.success([mockQueue]))
-        }
+        env.getQueues = { [mockQueue] }
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
@@ -96,27 +65,21 @@ final class AvailabilityTests: XCTestCase {
         env.isAuthenticated = { true }
         env.queuesMonitor = .mock(getQueues: env.getQueues)
         let availability = Availability(environment: env)
-        var receivedResult: Result<Availability.Status, Error>?
-        availability.checkSecureConversationsAvailability(for: [queueId]) { result in
-            receivedResult = result
-        }
-        let result = try XCTUnwrap(receivedResult)
-        switch result {
-        case let .success(.available(queueIds)):
+        let status = try await availability.checkSecureConversationsAvailability(for: [queueId])
+        switch status {
+        case .available(let queueIds):
             XCTAssertEqual(queueIds, .queues(queueIds: [queueId]))
-        default:
+        case .unavailable(let unavailabilityReason):
             XCTFail("Result should be `.success(.available)`")
         }
     }
 
-    func testEmptyQueueStatusIfQueueIdsAreDifferent() throws {
+    func testEmptyQueueStatusIfQueueIdsAreDifferent() async throws {
         var env = Availability.Environment.failing
         let generateUUID = UUID.incrementing
         let queueIds = [generateUUID().uuidString]
         let mockQueue: Queue = .mock(id: generateUUID().uuidString, status: .open, media: [.messaging])
-        env.getQueues = { callback in
-            callback(.success([mockQueue]))
-        }
+        env.getQueues = { [mockQueue] }
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.warningClosure = { _, _, _, _ in }
@@ -125,27 +88,16 @@ final class AvailabilityTests: XCTestCase {
         env.queuesMonitor = .mock(getQueues: env.getQueues)
         env.getCurrentEngagement = { .mock() }
         let availability = Availability(environment: env)
-        var receivedResult: Result<Availability.Status, Error>?
-        availability.checkSecureConversationsAvailability(for: queueIds) { result in
-            receivedResult = result
-        }
-        let result = try XCTUnwrap(receivedResult)
-        switch result {
-        case .success(let status):
-            XCTAssertEqual(status, .unavailable(.emptyQueue))
-        case .failure(let error):
-            XCTFail("Expected success, but got failure: \(error)")
-        }
+        let status = try await availability.checkSecureConversationsAvailability(for: queueIds)
+        XCTAssertEqual(status, .unavailable(.emptyQueue))
     }
 
-    func testEmptyQueueStatusIfQueueStatusIsClosed() throws {
+    func testEmptyQueueStatusIfQueueStatusIsClosed() async throws {
         var env = Availability.Environment.failing
         let generateUUID = UUID.incrementing
         let queueId = generateUUID().uuidString
         let mockQueue: Queue = .mock(id: queueId, status: .closed, media: [.messaging])
-        env.getQueues = { callback in
-            callback(.success([mockQueue]))
-        }
+        env.getQueues = { [mockQueue] }
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.warningClosure = { _, _, _, _ in }
@@ -154,27 +106,16 @@ final class AvailabilityTests: XCTestCase {
         env.queuesMonitor = .mock(getQueues: env.getQueues)
         env.getCurrentEngagement = { .mock() }
         let availability = Availability(environment: env)
-        var receivedResult: Result<Availability.Status, Error>?
-        availability.checkSecureConversationsAvailability(for: [queueId]) { result in
-            receivedResult = result
-        }
-        let result = try XCTUnwrap(receivedResult)
-        switch result {
-        case .success(let status):
-            XCTAssertEqual(status, .unavailable(.emptyQueue))
-        case .failure(let error):
-            XCTFail("Expected success, but got failure: \(error)")
-        }
+        let status = try await availability.checkSecureConversationsAvailability(for: [queueId])
+        XCTAssertEqual(status, .unavailable(.emptyQueue))
     }
 
-    func testEmptyQueueStatusIfMediaDoesNotContainMessaging() throws {
+    func testEmptyQueueStatusIfMediaDoesNotContainMessaging() async throws {
         var env = Availability.Environment.failing
         let generateUUID = UUID.incrementing
         let queueId = generateUUID().uuidString
         let mockQueue: Queue = .mock(id: queueId, status: .closed, media: [.text])
-        env.getQueues = { callback in
-            callback(.success([mockQueue]))
-        }
+        env.getQueues = { [mockQueue] }
         env.getCurrentEngagement = { .mock() }
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
@@ -183,26 +124,15 @@ final class AvailabilityTests: XCTestCase {
         env.isAuthenticated = { true }
         env.queuesMonitor = .mock(getQueues: env.getQueues)
         let availability = Availability(environment: env)
-        var receivedResult: Result<Availability.Status, Error>?
-        availability.checkSecureConversationsAvailability(for: [queueId]) { result in
-            receivedResult = result
-        }
-        let result = try XCTUnwrap(receivedResult)
-        switch result {
-        case .success(let status):
-            XCTAssertEqual(status, .unavailable(.emptyQueue))
-        case .failure(let error):
-            XCTFail("Expected success, but got failure: \(error)")
-        }
+        let status = try await availability.checkSecureConversationsAvailability(for: [queueId])
+        XCTAssertEqual(status, .unavailable(.emptyQueue))
     }
 
-    func testAvailableStatusIfNoQueueIsPassed() throws {
+    func testAvailableStatusIfNoQueueIsPassed() async throws {
         var env = Availability.Environment.failing
         let queueId = UUID.mock.uuidString
         let mockQueue: Queue = .mock(id: queueId, status: .open, isDefault: true, media: [.messaging])
-        env.getQueues = { callback in
-            callback(.success([mockQueue]))
-        }
+        env.getQueues = { [mockQueue] }
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
@@ -211,26 +141,19 @@ final class AvailabilityTests: XCTestCase {
         env.isAuthenticated = { true }
         env.queuesMonitor = .mock(getQueues: env.getQueues)
         let availability = Availability(environment: env)
-        var receivedResult: Result<Availability.Status, Error>?
-        availability.checkSecureConversationsAvailability(for: []) { result in
-            receivedResult = result
-        }
-        let result = try XCTUnwrap(receivedResult)
-        switch result {
-        case let .success(.available(.queues(queueIds))):
-            XCTAssertEqual(queueIds, [queueId])
-        default:
+        let status = try await availability.checkSecureConversationsAvailability(for: [])
+        if case let .available(.queues(queueIds)) = status {
+            XCTAssertTrue(true)
+        } else {
             XCTFail("Result should be `.success(.available)`")
         }
     }
 
-    func testEmptyQueueStatusStatusIfThereIsNoDefaultQueuesWithProperConditions() throws {
+    func testEmptyQueueStatusStatusIfThereIsNoDefaultQueuesWithProperConditions() async throws {
         var env = Availability.Environment.failing
         let queueId = UUID.mock.uuidString
         let mockQueue: Queue = .mock(id: queueId, status: .closed, isDefault: true, media: [.text])
-        env.getQueues = { callback in
-            callback(.success([mockQueue]))
-        }
+        env.getQueues = { [mockQueue] }
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.warningClosure = { _, _, _, _ in }
@@ -239,27 +162,16 @@ final class AvailabilityTests: XCTestCase {
         env.queuesMonitor = .mock(getQueues: env.getQueues)
         env.getCurrentEngagement = { .mock() }
         let availability = Availability(environment: env)
-        var receivedResult: Result<Availability.Status, Error>?
-        availability.checkSecureConversationsAvailability(for: []) { result in
-            receivedResult = result
-        }
-        let result = try XCTUnwrap(receivedResult)
-        switch result {
-        case .success(let status):
-            XCTAssertEqual(status, .unavailable(.emptyQueue))
-        case .failure(let error):
-            XCTFail("Expected success, but got failure: \(error)")
-        }
+        let status = try await availability.checkSecureConversationsAvailability(for: [])
+        XCTAssertEqual(status, .unavailable(.emptyQueue))
     }
 
-    func testAvailableStatusIfTransferredAndCapabilitiesTextTrue() throws {
+    func testAvailableStatusIfTransferredAndCapabilitiesTextTrue() async throws {
         var env = Availability.Environment.failing
         env.getCurrentEngagement = {
             .mock(status: .transferring, capabilities: .init(text: true))
         }
-        env.getQueues = { callback in
-            callback(.success([]))
-        }
+        env.getQueues = { [] }
         var logger = CoreSdkClient.Logger.failing
         logger.prefixedClosure = { _ in logger }
         logger.infoClosure = { _, _, _, _ in }
@@ -268,16 +180,7 @@ final class AvailabilityTests: XCTestCase {
         env.isAuthenticated = { true }
         env.queuesMonitor = .mock(getQueues: env.getQueues)
         let availability = Availability(environment: env)
-        var receivedResult: Result<Availability.Status, Error>?
-        availability.checkSecureConversationsAvailability(for: []) { result in
-            receivedResult = result
-        }
-        let result = try XCTUnwrap(receivedResult)
-        switch result {
-        case let .success(status):
-            XCTAssertEqual(status, .available(.transferred))
-        default:
-            XCTFail("Result should be `.success(.available)`. Got `\(result)` instead.")
-        }
+        let status = try await availability.checkSecureConversationsAvailability(for: [])
+        XCTAssertEqual(status, .available(.transferred))
     }
 }

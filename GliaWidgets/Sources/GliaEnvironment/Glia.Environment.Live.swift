@@ -1,6 +1,6 @@
 import Foundation
 import AVFoundation
-@_spi(GliaWidgets) import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 extension Glia.Environment {
     static let live = Self(
@@ -27,7 +27,6 @@ extension Glia.Environment {
         bundleManaging: .live,
         createFileUploader: FileUploader.init(maximumUploads:environment:),
         createFileUploadListModel: SecureConversations.FileUploadListViewModel.init,
-        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.QueueScheduler.main,
         orientationManager: .init(environment: .init(
             uiApplication: .live,
             uiDevice: .live,

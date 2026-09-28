@@ -1,8 +1,8 @@
 #if DEBUG
 extension FileDownload.Environment {
     static let mock = Self(
-        fetchFile: { _, _, _ in },
-        downloadSecureFile: { _, _, _ in .mock },
+        fetchFile: { _, _ in .mock() },
+        downloadSecureFile: { _, _ in .mock() },
         fileManager: .mock,
         gcd: .mock,
         uiScreen: .mock,

@@ -1,8 +1,8 @@
 import Foundation
-@_spi(GliaWidgets) import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 extension CoreSdkClient.Logger {
-    init(_ logging: CoreSdkClient.Logging) {
+    init(_ logging: GliaCoreSDK.Logging) {
         self.debugClosure = {
             logging.debug($0, file: $1, function: $2, line: $3)
         }
@@ -26,18 +26,17 @@ extension CoreSdkClient.Logger {
         }
         self.prefixedClosure = { Self(logging.prefixed($0)) }
         self.configureLocalLogLevelClosure = {
-            guard let logConfigurable = logging as? LogConfigurable else {
+            guard let configurable = logging as? GliaCoreSDK.LogConfigurable else {
                 throw LoggingError.localLogLevelConfigurationFailure
             }
-
-            logConfigurable.configureLocalLogLevel($0)
+            configurable.configureLocalLogLevel($0.coreLevel)
         }
 
         self.configureRemoteLogLevelClosure = {
-            guard let logConfigurable = logging as? LogConfigurable else {
+            guard let configurable = logging as? GliaCoreSDK.LogConfigurable else {
                 throw LoggingError.remoteLogLevelConfigurationFailure
             }
-            logConfigurable.configureRemoteLogLevel($0)
+            configurable.configureRemoteLogLevel($0.coreLevel)
         }
 
         self.reportDeprecatedMethodClosure = {

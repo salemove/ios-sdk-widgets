@@ -6,7 +6,7 @@ extension ActionButton.Props {
     static func mock(
         style: ActionButtonStyle = .mock(),
         height: CGFloat = 40,
-        tap: Cmd = .nop,
+        tap: ActionButton.Tap = .sync(.nop),
         accessibilityIdentifier: String = ""
     ) -> ActionButton.Props {
         return .init(
@@ -17,5 +17,4 @@ extension ActionButton.Props {
         )
     }
 }
-
 #endif

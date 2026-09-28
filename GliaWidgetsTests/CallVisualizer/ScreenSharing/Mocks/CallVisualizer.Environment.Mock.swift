@@ -1,5 +1,5 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 #if DEBUG
-@_spi(GliaWidgets) import GliaCoreSDK
 
 extension CallVisualizer.Environment {
     static let mock = Self(
@@ -12,7 +12,7 @@ extension CallVisualizer.Environment {
         uiScreen: .mock,
         uiDevice: .mock,
         notificationCenter: .mock,
-        requestVisitorCode: { _ in .init() },
+        requestVisitorCode: { try .mock() },
         interactorPublisher: .mock(.mock()),
         callVisualizerPresenter: .init(presenter: { nil }),
         bundleManaging: .init { .main },
@@ -25,7 +25,7 @@ extension CallVisualizer.Environment {
         orientationManager: .mock(),
         proximityManager: .mock,
         log: .mock,
-        fetchSiteConfigurations: { _ in },
+        fetchSiteConfigurations: { try .mock() },
         coreSdk: .mock,
         cameraDeviceManager: { .mock },
         alertManager: .mock(),

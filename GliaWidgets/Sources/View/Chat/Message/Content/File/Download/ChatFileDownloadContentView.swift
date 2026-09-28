@@ -14,7 +14,7 @@ class ChatFileDownloadContentView: ChatFileContentView {
         content: Content,
         accessibilityProperties: ChatFileContentView.AccessibilityProperties,
         environment: Environment,
-        tap: @escaping () -> Void
+        tap: @escaping () async -> Void
     ) {
         self.style = style
         self.filePreviewView = FilePreviewView(

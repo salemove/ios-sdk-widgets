@@ -1,5 +1,4 @@
 import Foundation
-import GliaCoreSDK
 import Combine
 
 final class QueuesMonitor {
@@ -13,18 +12,19 @@ final class QueuesMonitor {
 
     // Declared as internal var for unit tests purposes
     var environment: Environment
-    private var subscriptionId: String? {
-        _subscriptionId.value
-    }
     private var observedQueues: [Queue] {
         _observedQueues.value
     }
 
-    private var _subscriptionId: LockIsolated<String?> = .init(nil)
+    private var queueUpdatesTask: Task<Void, Never>?
     private var _observedQueues: LockIsolated<[Queue]> = .init([])
 
     init(environment: Environment) {
         self.environment = environment
+    }
+
+    deinit {
+        queueUpdatesTask?.cancel()
     }
 
     /// Fetches all available site's queues for given queues IDs.
@@ -34,21 +34,18 @@ final class QueuesMonitor {
     ///   - fetchedQueuesCompletion: Returns fetched queues result for given `queuesIds`
     ///   if no queues were found among site's queues returns default queues.
     ///
-    func fetchQueues(queuesIds: [String], completion: @escaping (Result<[Queue], Error>) -> Void) {
-        environment.getQueues { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case let .success(queues):
-                let observedQueues = evaluateQueues(queuesIds: queuesIds, fetchedQueues: queues)
-                state = .updated(observedQueues)
-                self._observedQueues.setValue(observedQueues)
-                completion(.success(observedQueues))
-            case let .failure(error):
-                environment.logger.error("Setting up queues. Failed to get site queues: \(error)")
-                self.state = .failed(error)
-                completion(.failure(error))
-                return
-            }
+    @MainActor
+    func fetchQueues(queuesIds: [String]) async throws -> [Queue] {
+        do {
+            let queues = try await environment.getQueues()
+            let observedQueues = evaluateQueues(queuesIds: queuesIds, fetchedQueues: queues)
+            state = .updated(observedQueues)
+            self._observedQueues.setValue(observedQueues)
+            return observedQueues
+        } catch {
+            environment.logger.error("Setting up queues. Failed to get site queues: \(error)")
+            self.state = .failed(error)
+            throw error
         }
     }
 
@@ -59,31 +56,31 @@ final class QueuesMonitor {
     ///   - fetchedQueuesCompletion: Returns fetched queues result for given `queuesIds`
     ///   if no queues were found among site's queues returns default queues.
     ///
-    func fetchAndMonitorQueues(
-        queuesIds: [String] = [],
-        fetchedQueuesCompletion: ((Result<[Queue], Error>) -> Void)? = nil
-    ) {
+    func fetchAndMonitorQueues(queuesIds: [String] = []) async throws -> [Queue] {
         stopMonitoring()
-
-        fetchQueues(queuesIds: queuesIds) { [weak self] result in
-            if case let .success(queues) = result {
-                self?.observeQueuesUpdates(queues)
-            }
-            fetchedQueuesCompletion?(result)
+        do {
+            let queues = try await fetchQueues(queuesIds: queuesIds)
+            observeQueuesUpdates(queues)
+            return queues
+        } catch {
+            throw error
         }
     }
 
     /// Stops monitoring queues.
     func stopMonitoring() {
-        if let subscriptionId {
-            environment.unsubscribeFromUpdates(subscriptionId) { [weak self] error in
-                self?.state = .failed(error)
-            }
-        }
+        queueUpdatesTask?.cancel()
+        queueUpdatesTask = nil
     }
 }
 
 private extension QueuesMonitor {
+    func setState(_ state: State) {
+        Task { @MainActor [weak self] in
+            self?.state = state
+        }
+    }
+
     func evaluateQueues(queuesIds: [String], fetchedQueues: [Queue]?) -> [Queue] {
         guard let queues = fetchedQueues, !queues.isEmpty else {
             environment.logger.warning("Setting up queues. Site has no queues.")
@@ -123,20 +120,19 @@ private extension QueuesMonitor {
 
     func observeQueuesUpdates(_ queues: [Queue]) {
         let queuesIds = queues.map { $0.id }
-        let subscriptionId = environment.subscribeForQueuesUpdates(queuesIds) { [weak self] result in
-            guard let self else {
+        queueUpdatesTask = Task { [weak self, environment] in
+            do {
+                for try await queue in environment.queueUpdatesStream(queuesIds) {
+                    guard !Task.isCancelled else { break }
+                    guard let self else { return }
+                    self.updateQueue(queue)
+                    self.setState(.updated(self.observedQueues))
+                }
+            } catch is CancellationError {
                 return
-            }
-            switch result {
-            case .success(let queue):
-                self.updateQueue(queue)
-                self.state = .updated(self.observedQueues)
-                return
-            case .failure(let error):
-                self.state = .failed(error)
-                return
+            } catch {
+                self?.setState(.failed(error))
             }
         }
-        _subscriptionId.setValue(subscriptionId)
     }
 }

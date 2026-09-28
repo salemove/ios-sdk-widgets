@@ -1,9 +1,14 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 @testable import GliaWidgets
-@_spi(GliaWidgets) import GliaCoreSDK
 
 extension Glia.Environment {
     static let failing = Self(
-        coreSdk: .failing,
+        coreSdk: {
+            var coreSdk = CoreSdkClient.failing
+            coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
+            coreSdk.secureConversations.unreadMessageCountStream = { AsyncThrowingStream { $0.finish() } }
+            return coreSdk
+        }(),
         audioSession: .failing,
         uuid: {
             fail("\(Self.self).uuid")
@@ -53,7 +58,6 @@ extension Glia.Environment {
             fail("\(Self.self).createFileUploadListModel")
             return .mock()
         },
-        messagesWithUnreadCountLoaderScheduler: CoreSdkClient.reactiveSwiftDateSchedulerMock,
         orientationManager: .mock(),
         coreSDKConfigurator: .failing,
         proximityManager: .failing,

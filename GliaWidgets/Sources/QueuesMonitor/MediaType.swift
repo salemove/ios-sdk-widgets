@@ -1,7 +1,7 @@
 import Foundation
-import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
-public enum MediaType: String, Decodable {
+public enum MediaType: String, Decodable, Equatable {
     /// Audio stream
     case audio
 
@@ -20,7 +20,7 @@ public enum MediaType: String, Decodable {
     /// Current SDK version unsupported media type
     case unknown
 
-    public init(mediaType: GliaCoreSDK.MediaType) {
+    init(mediaType: GliaCoreSDK.MediaType) {
         switch mediaType {
         case .audio:
             self = .audio

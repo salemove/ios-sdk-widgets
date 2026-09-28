@@ -2,12 +2,12 @@
 import XCTest
 
 extension ChatViewModelTests {
-    func testSendMessageRetrySuccess() {
+    func testSendMessageRetrySuccess() async {
         let outgoingMessage = OutgoingMessage.mock()
         var calls: [Call] = []
         var interactorEnv = Interactor.Environment.mock
-        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, completion in
-            completion(.success(.mock(id: outgoingMessage.payload.messageId.rawValue)))
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _ in
+            return .mock(id: outgoingMessage.payload.messageId.rawValue)
         }
         let interactorMock = Interactor.mock(environment: interactorEnv)
         let deliveredStatusText = "Delivered"
@@ -52,7 +52,7 @@ extension ChatViewModelTests {
         viewModel.messagesSection.append(.init(kind: .outgoingMessage(outgoingMessage, error: "Failed")))
         viewModel.messagesSection.append(.init(kind: .visitorMessage(ChatMessage.mock(), status: nil)))
 
-        viewModel.event(.retryMessageTapped(outgoingMessage))
+        await viewModel.asyncEvent(.retryMessageTapped(outgoingMessage))
 
         XCTAssertEqual(calls, expectedCalls)
         XCTAssertEqual(viewModel.messagesSection.itemCount, 3)
@@ -67,12 +67,12 @@ extension ChatViewModelTests {
         }
     }
 
-    func testSendMessageRetryFailure() {
+    func testSendMessageRetryFailure() async  {
         let outgoingMessage = OutgoingMessage.mock()
         var calls: [Call] = []
         var interactorEnv = Interactor.Environment.mock
-        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, completion in
-            completion(.failure(.mock()))
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _ in
+            throw CoreSdkClient.GliaCoreError.mock()
         }
         let interactorMock = Interactor.mock(environment: interactorEnv)
         let failedToDeliverStatusText = "Failed"
@@ -116,7 +116,7 @@ extension ChatViewModelTests {
         viewModel.messagesSection.append(.init(kind: .outgoingMessage(outgoingMessage, error: "Failed")))
         viewModel.messagesSection.append(.init(kind: .visitorMessage(ChatMessage.mock(), status: nil)))
 
-        viewModel.event(.retryMessageTapped(outgoingMessage))
+        await viewModel.asyncEvent(.retryMessageTapped(outgoingMessage))
 
         XCTAssertEqual(calls, expectedCalls)
         XCTAssertEqual(viewModel.messagesSection.itemCount, 3)
@@ -131,7 +131,7 @@ extension ChatViewModelTests {
         }
     }
 
-    func testSendMessageRetryUpdatesCustomCard() {
+    func testSendMessageRetryUpdatesCustomCard() async {
         let selectedOption = "selected_option"
         let customCardMessageId = UUID.mock.uuidString
         let outgoingMessage = OutgoingMessage.mock(
@@ -139,8 +139,8 @@ extension ChatViewModelTests {
         )
         var calls: [Call] = []
         var interactorEnv = Interactor.Environment.mock
-        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, completion in
-            completion(.success(.mock(id: outgoingMessage.payload.messageId.rawValue)))
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _ in
+            return .mock(id: outgoingMessage.payload.messageId.rawValue)
         }
         let interactorMock = Interactor.mock(environment: interactorEnv)
         let deliveredStatusText = "Delivered"
@@ -212,7 +212,7 @@ extension ChatViewModelTests {
             files: nil,
             imageUrl: nil
         )
-        viewModel.event(.retryMessageTapped(outgoingMessage))
+        await viewModel.asyncEvent(.retryMessageTapped(outgoingMessage))
 
         XCTAssertEqual(calls, expectedCalls)
         XCTAssertEqual(viewModel.messagesSection.itemCount, 3)
@@ -235,7 +235,7 @@ extension ChatViewModelTests {
         }
     }
 
-    func testSendMessageRetryUpdatesResponseCard() {
+    func testSendMessageRetryUpdatesResponseCard() async {
         let selectedOption = "selected_option"
         let responseCardMessageId = UUID.mock.uuidString
         let outgoingMessage = OutgoingMessage.mock(
@@ -243,8 +243,8 @@ extension ChatViewModelTests {
         )
         var calls: [Call] = []
         var interactorEnv = Interactor.Environment.mock
-        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _, completion in
-            completion(.success(.mock(id: outgoingMessage.payload.messageId.rawValue)))
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _ in
+            return .mock(id: outgoingMessage.payload.messageId.rawValue)
         }
         let interactorMock = Interactor.mock(environment: interactorEnv)
         let deliveredStatusText = "Delivered"
@@ -324,7 +324,7 @@ extension ChatViewModelTests {
             files: nil,
             imageUrl: nil
         )
-        viewModel.event(.retryMessageTapped(outgoingMessage))
+        await viewModel.asyncEvent(.retryMessageTapped(outgoingMessage))
 
         XCTAssertEqual(calls, expectedCalls)
         XCTAssertEqual(viewModel.messagesSection.itemCount, 3)

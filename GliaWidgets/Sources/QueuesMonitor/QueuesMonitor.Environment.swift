@@ -1,10 +1,10 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
 
 extension QueuesMonitor {
     struct Environment {
         var getQueues: CoreSdkClient.GetQueues
-        var subscribeForQueuesUpdates: CoreSdkClient.SubscribeForQueuesUpdates
-        var unsubscribeFromUpdates: CoreSdkClient.UnsubscribeFromUpdates
+        var queueUpdatesStream: CoreSdkClient.QueueUpdatesStream
         var logger: CoreSdkClient.Logger
     }
 }

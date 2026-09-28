@@ -1,5 +1,5 @@
 import Foundation
-import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 extension Glia {
     /// Locale provider is used for retrieving remote strings for associated key

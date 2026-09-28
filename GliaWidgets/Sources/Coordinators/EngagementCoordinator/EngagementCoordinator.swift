@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import UIKit
 import Foundation
 
@@ -292,7 +293,7 @@ extension EngagementCoordinator {
             engagementId: engagementId,
             submitSurveyAnswer: { [environment] in
                 environment.log.prefixed(Self.self).info("Submit survey answers")
-                environment.submitSurveyAnswer($0, $1, $2, $3)
+                try await environment.submitSurveyAnswer($0, $1, $2)
             },
             cancel: { [weak self] in
                 guard let self else { return }

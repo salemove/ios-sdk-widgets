@@ -1,6 +1,6 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import XCTest
 @testable import GliaWidgets
-@_spi(GliaWidgets) import GliaCoreSDK
 
 final class VideoCallTests: XCTestCase {
     func test_vc_deinit() {

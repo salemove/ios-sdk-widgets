@@ -2,7 +2,25 @@
 import XCTest
 
 extension SecureConversationsTranscriptModelTests {
-    func test_gvaDeepLinkActionCallsMinimize() {
+    @MainActor
+    func testQuickReplyIsHiddenBeforeSending() async {
+        let model = createViewModel()
+        model.environment.createSendMessagePayload = { .mock(content: $0, attachment: $1) }
+        var calls: [String] = []
+        model.action = { action in
+            if case .quickReplyPropsUpdated(.hidden) = action {
+                calls.append("hidden")
+            }
+        }
+        model.environment.secureConversations.sendMessagePayload = { _, _ in
+            await MainActor.run { calls.append("send") }
+            return .mock()
+        }
+        await model.quickReplyOption(.mock(text: "Option", value: "option")).action()
+        XCTAssertEqual(calls, ["hidden", "send"])
+    }
+
+    func test_gvaDeepLinkActionCallsMinimize() async {
         let option: GvaOption = .mock(url: "mock://mock.self", urlTarget: "self")
         var calls: [Call] = []
         let viewModel = createViewModel()
@@ -17,12 +35,12 @@ extension SecureConversationsTranscriptModelTests {
         }
         viewModel.environment.uiApplication.open = { _ in }
 
-        viewModel.gvaOptionAction(for: option)()
+        await viewModel.gvaOptionAction(for: option)()
 
         XCTAssertEqual(calls, [.minimize])
     }
 
-    func test_gvaDeepLinkActionDoesNotCallMinimize() {
+    func test_gvaDeepLinkActionDoesNotCallMinimize() async {
         let option: GvaOption = .mock(url: "mock://mock.modal", urlTarget: "modal")
         var calls: [Call] = []
         let viewModel = createViewModel()
@@ -37,11 +55,11 @@ extension SecureConversationsTranscriptModelTests {
         }
         viewModel.environment.uiApplication.open = { _ in }
 
-        viewModel.gvaOptionAction(for: option)()
+        await viewModel.gvaOptionAction(for: option)()
         XCTAssertTrue(calls.isEmpty)
     }
 
-    func test_gvaLinkButtonAction() {
+    func test_gvaLinkButtonAction() async{
         let options: [GvaOption] = [
             .mock(url: "http://mock.mock"),
             .mock(url: "https://mock.mock"),
@@ -57,12 +75,13 @@ extension SecureConversationsTranscriptModelTests {
         viewModel.environment.uiApplication.open = { url in
             calls.append(.openUrl(url.absoluteString))
         }
-        viewModel.environment.secureConversations.sendMessagePayload = { payload, _, _ in
+        viewModel.environment.secureConversations.sendMessagePayload = { payload, _ in
             calls.append(.sendOption(payload.content, payload.attachment?.selectedOption))
-            return .mock
+            return .mock()
         }
-        options.forEach {
-            viewModel.gvaOptionAction(for: $0)()
+
+        for option in options {
+            await viewModel.gvaOptionAction(for: option)()
         }
 
         let expectedResult: [Call] = [
@@ -76,7 +95,7 @@ extension SecureConversationsTranscriptModelTests {
         XCTAssertEqual(calls, expectedResult)
     }
 
-    func test_gvaPostbackButtonAction() {
+    func test_gvaPostbackButtonAction() async {
         let option = GvaOption.mock(text: "text", value: "value")
         var calls: [Call] = []
         let viewModel = createViewModel()
@@ -84,9 +103,9 @@ extension SecureConversationsTranscriptModelTests {
         viewModel.environment.uiApplication.open = { url in
             calls.append(.openUrl(url.absoluteString))
         }
-        viewModel.environment.secureConversations.sendMessagePayload = { payload, _, _ in
+        viewModel.environment.secureConversations.sendMessagePayload = { payload, _ in
             calls.append(.sendOption(payload.content, payload.attachment?.selectedOption))
-            return .mock
+            return .mock()
         }
         viewModel.environment.createSendMessagePayload = {
             .mock(
@@ -95,12 +114,12 @@ extension SecureConversationsTranscriptModelTests {
                 attachment: $1
             )
         }
-        viewModel.gvaOptionAction(for: option)()
+        await viewModel.gvaOptionAction(for: option)()
 
         XCTAssertEqual(calls, [.sendOption("text", "value")])
     }
 
-    func test_broadcastEventAction() {
+    func test_broadcastEventAction() async {
         let option = GvaOption.mock(text: "text", destinationPdBroadcastEvent: "mock")
         var calls: [Call] = []
         let viewModel = createViewModel()
@@ -109,19 +128,19 @@ extension SecureConversationsTranscriptModelTests {
             calls.append(.showAlert)
         }
 
-        viewModel.gvaOptionAction(for: option)()
+        await viewModel.gvaOptionAction(for: option)()
 
         XCTAssertEqual(calls, [.showAlert])
     }
 
-    func test_quickReplyIsShownWhenItIsLastMessage() throws {
+    func test_quickReplyIsShownWhenItIsLastMessage() async throws {
         enum Call { case quickReply }
         var calls: [Call] = []
 
         var modelEnv = TranscriptModel.Environment.failing
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
-        modelEnv.getQueues = { callback in callback(.success([])) }
+        modelEnv.getQueues = { [] }
         modelEnv.uiApplication.canOpenURL = { _ in true }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }
@@ -141,14 +160,12 @@ extension SecureConversationsTranscriptModelTests {
             ChatMessage.self,
             from: Data(json)
         )
-        modelEnv.fetchChatHistory = { $0(.success([message])) }
+        modelEnv.fetchChatHistory = { [message] }
         modelEnv.loadChatMessagesFromHistory = { true }
-        modelEnv.fetchSiteConfigurations = { _ in }
-        modelEnv.secureConversations.getUnreadMessageCount = { $0(.success(0)) }
+        modelEnv.fetchSiteConfigurations = { try .mock() }
+        modelEnv.secureConversations.getUnreadMessageCount = { 0 }
         modelEnv.startSocketObservation = {}
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
-        let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()
-        modelEnv.messagesWithUnreadCountLoaderScheduler = scheduler
 
         let availabilityEnv = SecureConversations.Availability.Environment(
             getQueues: modelEnv.getQueues,
@@ -171,8 +188,7 @@ extension SecureConversationsTranscriptModelTests {
             guard case .quickReplyPropsUpdated = action else { return }
             calls.append(.quickReply)
         }
-        viewModel.start(isTranscriptFetchNeeded: true)
-        scheduler.run()
+        await viewModel.start(isTranscriptFetchNeeded: true)
 
         XCTAssertEqual(calls, [.quickReply])
     }
@@ -195,7 +211,7 @@ private extension SecureConversationsTranscriptModelTests {
         modelEnv.log = logger
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
-        modelEnv.getQueues = { callback in callback(.success([])) }
+        modelEnv.getQueues = { [] }
         modelEnv.uiApplication.canOpenURL = { _ in true }
         modelEnv.maximumUploads = { 2 }
         modelEnv.createEntryWidget = { _ in .mock() }

@@ -28,7 +28,9 @@ class FileDownloader {
 
         switch autoDownload {
         case .images:
-            downloadImages(for: downloads)
+            Task {
+                await downloadImages(for: downloads)
+            }
         case .nothing:
             break
         }
@@ -79,18 +81,14 @@ class FileDownloader {
         }
     }
 
-    private func downloadImages(for downloads: [FileDownload]) {
-        downloads
-            .filter { $0.file.isImage }
-            .filter {
-                switch $0.state.value {
-                case .none, .error:
-                    return true
-                case .downloading, .downloaded:
-                    return false
+    private func downloadImages(for downloads: [FileDownload]) async {
+        await withTaskGroup(of: Void.self) { group in
+            for download in downloads where download.file.isImage {
+                group.addTask {
+                    await download.startDownload()
                 }
             }
-            .forEach { $0.startDownload() }
+        }
     }
 }
 

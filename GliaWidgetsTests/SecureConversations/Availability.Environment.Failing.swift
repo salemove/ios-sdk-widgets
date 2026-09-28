@@ -2,8 +2,9 @@
 
 extension SecureConversations.Availability.Environment {
     static let failing = Self(
-        getQueues: { _ in
-            fail("\(Self.self).listQueues")
+        getQueues: {
+            fail("\(Self.self).getQueues")
+            throw NSError(domain: "getQueues", code: -1)
         },
         isAuthenticated: {
             fail("\(Self.self).isAuthenticated")

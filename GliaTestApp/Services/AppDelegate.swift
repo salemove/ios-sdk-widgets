@@ -1,21 +1,13 @@
 import UIKit
 import GliaWidgets
-import GliaCoreSDK
 
 final class AppDelegate: UIResponder, UIApplicationDelegate {
-    private let gliaCoreAppDelegate = GliaCoreAppDelegate()
-
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-        gliaCoreAppDelegate.application(application, didFinishLaunchingWithOptions: launchOptions)
         debugPrint("🚀 GliaTestApp AppDelegate didFinishLaunching")
         return true
-    }
-
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        gliaCoreAppDelegate.applicationDidBecomeActive(application)
     }
 
     func application(

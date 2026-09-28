@@ -19,10 +19,28 @@ final class VisitorInfoViewModel: ObservableObject {
     @Published var hasChanges = false
 
     private var originalInfo: VisitorInfo?
+    private let appState: AppState
+
+    init(appState: AppState) {
+        self.appState = appState
+    }
 
     func loadVisitorInfo() async {
         isLoading = true
         error = nil
+
+        guard appState.sdkFlowMode == .completionHandlers else {
+            do {
+                let info = try await Glia.sharedInstance.getVisitorInfo()
+                isLoading = false
+                populateFields(from: info)
+                originalInfo = info
+            } catch {
+                isLoading = false
+                self.error = error.localizedDescription
+            }
+            return
+        }
 
         Glia.sharedInstance.getVisitorInfo { [weak self] result in
             Task { @MainActor [weak self] in
@@ -54,6 +72,18 @@ final class VisitorInfoViewModel: ObservableObject {
             ),
             customAttributesUpdateMethod: attributesUpdateMethod
         )
+
+        guard appState.sdkFlowMode == .completionHandlers else {
+            do {
+                _ = try await Glia.sharedInstance.updateVisitorInfo(info)
+                isSaving = false
+                hasChanges = false
+            } catch {
+                isSaving = false
+                self.error = error.localizedDescription
+            }
+            return
+        }
 
         Glia.sharedInstance.updateVisitorInfo(info) { [weak self] result in
             Task { @MainActor [weak self] in
@@ -105,4 +135,3 @@ final class VisitorInfoViewModel: ObservableObject {
         hasChanges = false
     }
 }
-

@@ -1,5 +1,5 @@
 import UIKit
-import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 struct SnackBar {
     var present: (

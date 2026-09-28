@@ -1,7 +1,5 @@
 import Foundation
 import GliaWidgets
-import enum GliaCoreSDK.ConfigurationError
-
 
 extension Configuration {
     static func empty(with env: Environment = .beta) -> Self {
@@ -216,25 +214,6 @@ extension Configuration.PushNotifications: RawRepresentable, Codable {
             self = .production
         default:
             return nil
-        }
-    }
-}
-
-extension ConfigurationError: CustomStringConvertible {
-    public var description: String {
-        switch self {
-        case .invalidSite:
-            return "invalidSite"
-        case .invalidEnvironment:
-            return "invalidEnvironment"
-        case .invalidSiteApiKey:
-            return "invalidSiteApiKey"
-        case .invalidRegionEndpoint:
-            return "invalidRegionEndpoint"
-        case .invalidConfiguration:
-            return "invalidConfiguration"
-        @unknown default:
-            return "unknown default: '\(self.rawValue)'"
         }
     }
 }
