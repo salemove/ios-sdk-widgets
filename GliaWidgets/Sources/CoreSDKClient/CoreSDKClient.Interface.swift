@@ -7,7 +7,10 @@ struct CoreSdkClient {
     var liveObservation: LiveObservation
     var secureConversations: SecureConversations
     var createAppDelegate: () -> AppDelegate
-    var clearSession: () -> Void
+    var clearSession: (_ stopPushNotifications: Bool, _ completion: @escaping () -> Void) -> Void
+    /// Core's released synchronous `clearSession()`: no engagement end, no de-authentication.
+    /// Backs only the deprecated `Glia.clearVisitorSession(_:)`.
+    var legacyClearSession: () -> Void
     var localeProvider: LocaleProvider
     @Dependency(\.widgets.networkMonitor) var networkConnectionMonitor: NetworkConnectionMonitor
     @Dependency(\.widgets.callQualityMonitor) var callQualityMonitor: CallQualityMonitor

@@ -7,7 +7,8 @@ extension CoreSdkClient {
             liveObservation: .live,
             secureConversations: .live,
             createAppDelegate: Self.AppDelegate.live,
-            clearSession: GliaCore.sharedInstance.clearSession,
+            clearSession: GliaCore.sharedInstance.clearSession(stopPushNotifications:completion:),
+            legacyClearSession: GliaCore.sharedInstance.clearSession,
             localeProvider: .init(getRemoteString: GliaCore.sharedInstance.localeProvider.getRemoteString(_:)),
             getVisitorInfo: { completion in
                 GliaCore.sharedInstance.fetchVisitorInfo { result in

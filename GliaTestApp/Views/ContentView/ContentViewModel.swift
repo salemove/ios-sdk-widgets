@@ -321,17 +321,10 @@ extension ContentView.ViewModel {
     }
 
     func clearSession() {
-        appState.clearSession { [weak self] result in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                if case .failure(let error) = result {
-                    self.showError = AlertData(
-                        title: "Clear Session Failed",
-                        message: error.localizedDescription
-                    )
-                }
-            }
-        }
+        appState.clearSession()
+        // clearVisitorData always de-authenticates, but Core does it asynchronously.
+        authentication = nil
+        isAuthenticated = false
     }
 
     func endEngagement() {

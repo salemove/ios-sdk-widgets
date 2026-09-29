@@ -432,29 +432,36 @@ public class Glia {
         self.messageRenderer = messageRenderer
     }
 
-    /// Clear visitor session
+    /// Clears everything the SDK knows about the current visitor and starts over with a new anonymous one.
     ///
-    /// - Parameters:
-    ///   - completion: Completion handler.
-    ///
-    /// - Important: Note, that in case of ongoing engagement, `clearVisitorSession` must be called
-    ///   after ending engagement, because `GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed`
-    ///   will occur otherwise.
-    ///
-    public func clearVisitorSession(_ completion: @escaping (Result<Void, Error>) -> Void) {
+    /// Leaves the queue or ends the ongoing engagement and closes its UI without a survey,
+    /// de-authenticates the visitor, unsubscribes them from Secure Conversations push
+    /// notifications and clears the visitor session. Steps that need the network are
+    /// best-effort: without a connection they are only logged, and the visitor is still
+    /// de-authenticated and cleared locally.
+    public func clearVisitorData() {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
             className: Self.self,
-            methodName: "clearVisitorSession",
-            methodParams: ["completion"]
+            methodName: "clearVisitorData"
         )
-        loggerPhase.logger.prefixed(Self.self).info("Clear visitor session")
-        guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
-            completion(.failure(GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed))
-            return
+        loggerPhase.logger.prefixed(Self.self).info("Clear visitor data")
+
+        let ongoingEngagement = environment.coreSdk.getNonTransferredSecureConversationEngagement()
+        let hadOngoingInteraction = ongoingEngagement != nil || interactor?.state.isQueueing == true
+        let endedCallVisualizerEngagement = ongoingEngagement.map { $0.source == .callVisualizer } ?? false
+        let mainQueue = environment.gcd.mainQueue
+
+        environment.coreSdk.clearSession(true) { [weak self] in
+            mainQueue.asyncIfNeeded {
+                guard let self else { return }
+                self.closeEngagementUI(endedCallVisualizerEngagement: endedCallVisualizerEngagement)
+                // Call Visualizer reports `.ended` itself when its session ends.
+                if hadOngoingInteraction, !endedCallVisualizerEngagement {
+                    self.onEvent?(.ended)
+                }
+            }
         }
-        environment.coreSdk.clearSession()
-        completion(.success(()))
     }
 
     /// Fetch current Visitor's information.

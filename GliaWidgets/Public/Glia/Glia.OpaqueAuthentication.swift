@@ -116,14 +116,10 @@ extension Glia {
                 auth.deauthenticate(shouldStopPushNotifications: shouldStopPushNotifications) { result in
                     switch result {
                     case .success:
-                        // Erase interactor state.
-                        self?.interactor?.cleanup()
-                        // Cleanup navigation and views.
-                        self?.closeRootCoordinator()
+                        self?.closeEngagementUI()
                     case .failure:
-                        break
+                        self?.engagementRestorationState = .none
                     }
-                    self?.engagementRestorationState = .none
                     callback(result.mapError(Glia.Authentication.Error.init))
                 }
             },
@@ -248,12 +244,6 @@ extension Glia {
             closeRootCoordinator()
             engagementRestorationState = .restored
         }
-    }
-
-    private func closeRootCoordinator() {
-        rootCoordinator?.popCoordinator()
-        rootCoordinator?.end(surveyPresentation: .doNotPresentSurvey)
-        rootCoordinator = nil
     }
 }
 
