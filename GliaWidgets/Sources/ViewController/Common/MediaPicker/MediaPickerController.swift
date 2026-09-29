@@ -4,6 +4,7 @@ import AVFoundation
 final class MediaPickerController: NSObject {
     let viewModel: MediaPickerViewModel
     private let environment: Environment
+    private let libraryPresentationStyle: UIModalPresentationStyle
 
     private var viewController: UIImagePickerController {
         let source = UIImagePickerController.SourceType(with: viewModel.source)
@@ -11,7 +12,9 @@ final class MediaPickerController: NSObject {
         let imagePicker = UIImagePickerController()
         imagePicker.sourceType = source
         imagePicker.mediaTypes = media
-        imagePicker.modalPresentationStyle = .fullScreen
+        // The camera offers no alternative to full screen; only the library
+        // adapts to the presentation the host screen asks for.
+        imagePicker.modalPresentationStyle = source == .camera ? .fullScreen : libraryPresentationStyle
         imagePicker.allowsEditing = false
         imagePicker.delegate = self
 
@@ -20,10 +23,12 @@ final class MediaPickerController: NSObject {
 
     init(
         environment: Environment = Environment(),
-        viewModel: MediaPickerViewModel
+        viewModel: MediaPickerViewModel,
+        libraryPresentationStyle: UIModalPresentationStyle = .fullScreen
     ) {
         self.environment = environment
         self.viewModel = viewModel
+        self.libraryPresentationStyle = libraryPresentationStyle
     }
 
     func viewController(_ completion: @escaping (UIViewController) -> Void) {

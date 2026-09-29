@@ -7,18 +7,21 @@ final class ChatViewControllerLayoutTests: SnapshotTestCase {
         let viewController = ChatViewController.mockHistoryMessagesScreen()
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
+        viewController.assertSnapshot(as: .image, in: .padPanel)
     }
 
     func test_visitorUploadedFileStates() throws {
         let viewController = try ChatViewController.mockVisitorFileUploadStates()
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
+        viewController.assertSnapshot(as: .image, in: .padPanel)
     }
 
     func test_choiceCard() throws {
         let viewController = try ChatViewController.mockChoiceCard()
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
+        viewController.assertSnapshot(as: .image, in: .padPanel)
     }
 
     func test_gvaPersistentButton() throws {
@@ -78,6 +81,7 @@ final class ChatViewControllerLayoutTests: SnapshotTestCase {
         let viewController = try ChatViewController.mockMessageSendingFailedState()
         viewController.assertSnapshot(as: .image, in: .portrait)
         viewController.assertSnapshot(as: .image, in: .landscape)
+        viewController.assertSnapshot(as: .image, in: .padPanel)
     }
 
     func test_secureMessagingBottomAndCollapsedTopBanner() {

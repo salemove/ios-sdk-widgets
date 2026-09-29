@@ -651,7 +651,7 @@ extension GliaTests {
 extension EngagementCoordinator.Environment: Transformable {
     static var engagementCoordEnvironmentWithKeyWindow: Self {
         EngagementCoordinator.Environment.mock().transform {
-            $0.uiApplication = .failing.transform { $0.windows = { [ .mock() ] } }
+            $0.uiApplication = .failingWithNoConnectedScenes.transform { $0.windows = { [ .mock() ] } }
         }
     }
 }

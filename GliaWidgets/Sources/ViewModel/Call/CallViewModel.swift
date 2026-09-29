@@ -89,7 +89,11 @@ class CallViewModel: EngagementViewModel, ViewModel {
         subscribeOnNetworkReachabilityChanges()
         subscribeOnCallQualityChanges()
 
-        environment.proximityManager.start()
+        // Proximity-based screen blanking is wrong when a chat panel is visible
+        // beside the video on a tablet.
+        if environment.layoutMode == .fullScreen {
+            environment.proximityManager.start()
+        }
         update(for: call.kind.value)
 
         // In the case when SDK is configured once and then
@@ -281,6 +285,10 @@ extension CallViewModel {
         _ offer: CoreSdkClient.MediaUpgradeOffer,
         answer: @escaping CoreSdkClient.AnswerWithSuccessBlock
     ) {
+        // In side-panel mode, `ChatViewModel` owns the single media-upgrade alert,
+        // since both screens are visible at once and its accept path already
+        // handles both the chat→call and audio→video cases.
+        guard environment.layoutMode == .fullScreen else { return }
         environment.alertManager.present(
             in: .global,
             as: .mediaUpgrade(
@@ -415,12 +423,19 @@ extension CallViewModel {
     }
 
     private func buttons(for call: Call) -> [CallButton] {
+        let allButtons: [CallButton]
         switch call.kind.value {
         case .audio:
-            return [.chat, .mute, .speaker, .minimize]
+            allButtons = [.chat, .mute, .speaker, .minimize]
         case .video:
-            return [.chat, .video, .mute, .speaker, .minimize]
+            allButtons = [.chat, .video, .mute, .speaker, .minimize]
         }
+        // Chat is already on screen in side-panel mode, so its own button here
+        // would be redundant.
+        guard environment.layoutMode == .fullScreen else {
+            return allButtons.filter { $0 != .chat }
+        }
+        return allButtons
     }
 
     private func updateChatButton() {
@@ -519,7 +534,7 @@ extension CallViewModel {
 }
 
 extension CallViewModel {
-    enum CallButton {
+    enum CallButton: Equatable {
         case chat
         case video
         case mute

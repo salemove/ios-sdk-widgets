@@ -30,6 +30,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
     private(set) var filePickerController: FilePickerController?
     private(set) var quickLookController: QuickLookController?
     private let environment: Environment
+    private let layoutMode: EngagementLayoutMode
     private let startWithSecureTranscriptFlow: Bool
 
     /// Used to determine if handling Transferred SC should be skipped.
@@ -50,6 +51,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         isWindowVisible: ObservableValue<Bool>,
         startAction: ChatViewModel.StartAction,
         environment: Environment,
+        layoutMode: EngagementLayoutMode,
         startWithSecureTranscriptFlow: Bool,
         skipTransferredSCHandling: Bool
     ) {
@@ -62,6 +64,7 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.isWindowVisible = isWindowVisible
         self.startAction = startAction
         self.environment = environment
+        self.layoutMode = layoutMode
         self.startWithSecureTranscriptFlow = startWithSecureTranscriptFlow
         self.skipTransferredSCHandling = skipTransferredSCHandling
     }
@@ -133,7 +136,10 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
             }
         }
 
-        let controller = MediaPickerController(viewModel: viewModel)
+        let controller = MediaPickerController(
+            viewModel: viewModel,
+            libraryPresentationStyle: secondaryPresentationStyle ?? .fullScreen
+        )
         mediaPickerController = controller
         controller.viewController { [weak self] viewController in
             self?.navigationPresenter.present(viewController)
@@ -151,7 +157,8 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
 
         let controller = FilePickerController(
             viewModel: viewModel,
-            environment: .create(with: environment)
+            environment: .create(with: environment),
+            presentationStyle: secondaryPresentationStyle ?? .fullScreen
         )
         filePickerController = controller
         navigationPresenter.present(controller.viewController)
@@ -165,9 +172,24 @@ class ChatCoordinator: SubFlowCoordinator, FlowCoordinator {
                 self?.quickLookController = nil
             }
         }
-        let controller = QuickLookController(viewModel: viewModel)
+        let controller = QuickLookController(
+            viewModel: viewModel,
+            presentationStyle: secondaryPresentationStyle
+        )
         quickLookController = controller
         navigationPresenter.present(controller.viewController)
+    }
+
+    /// Pickers and previews raised from a 400pt side panel should not take the
+    /// whole iPad scene; a form sheet is the standard iPad presentation for them.
+    /// `nil` in full-screen mode leaves every controller's existing default alone.
+    private var secondaryPresentationStyle: UIModalPresentationStyle? {
+        switch layoutMode {
+        case .fullScreen:
+            return nil
+        case .sidePanel:
+            return .formSheet
+        }
     }
 }
 
@@ -196,7 +218,8 @@ extension ChatCoordinator {
             replaceExistingEnqueueing: replaceExistingEnqueueing,
             environment: .create(
                 with: environment,
-                viewFactory: viewFactory
+                viewFactory: viewFactory,
+                layoutMode: layoutMode
             ),
             maximumUploads: environment.maximumUploads
         )

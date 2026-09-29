@@ -12,7 +12,7 @@ final class FilePickerController: NSObject {
 
         documentPicker.delegate = self
         documentPicker.allowsMultipleSelection = false
-        documentPicker.modalPresentationStyle = .fullScreen
+        documentPicker.modalPresentationStyle = presentationStyle
 
         let urls = environment.fileManager.urlsForDirectoryInDomainMask(.documentDirectory, .userDomainMask)
         documentPicker.directoryURL = urls.first
@@ -22,13 +22,16 @@ final class FilePickerController: NSObject {
 
     private let viewModel: FilePickerViewModel
     private let environment: Environment
+    private let presentationStyle: UIModalPresentationStyle
 
     init(
         viewModel: FilePickerViewModel,
-        environment: Environment
+        environment: Environment,
+        presentationStyle: UIModalPresentationStyle = .fullScreen
     ) {
         self.viewModel = viewModel
         self.environment = environment
+        self.presentationStyle = presentationStyle
     }
 }
 

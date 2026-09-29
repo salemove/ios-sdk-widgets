@@ -1,6 +1,6 @@
 import UIKit
 
-class BubbleWindow: UIWindow {
+class BubbleWindow: UIWindow, GliaOwnedWindow {
     var bubbleKind: BubbleKind {
         get { return bubbleView.kind }
         set { bubbleView.kind = newValue }
@@ -13,8 +13,10 @@ class BubbleWindow: UIWindow {
     private let kBubbleInset: CGFloat = 8
     private let kEdgeInset: CGFloat = 0
     private var initialFrame: CGRect {
-        let bounds = environment.uiApplication.windows().first?.frame ?? environment.uiScreen.bounds()
-        let safeAreaInsets = environment.uiApplication.windows().first?.safeAreaInsets ?? .zero
+        // Scene-scoped, so a multi-window iPad scene doesn't pick another scene's
+        // bounds or safe area (`environment.uiScreen`/`uiApplication` are app-wide).
+        let bounds = windowScene?.coordinateSpace.bounds ?? environment.uiScreen.bounds()
+        let safeAreaInsets = windowScene?.windows.first?.safeAreaInsets ?? .zero
         let origin = CGPoint(
             x: bounds.width - kSize.width - safeAreaInsets.right - kEdgeInset,
             y: bounds.height - kSize.height - safeAreaInsets.bottom - kEdgeInset
@@ -77,8 +79,8 @@ class BubbleWindow: UIWindow {
             right: -kEdgeInset
         )
         let insetFrame = frame.inset(by: insets)
-        let boundsInsets = environment.uiApplication.windows().first?.safeAreaInsets ?? .zero
-        let bounds = environment.uiScreen.bounds().inset(by: boundsInsets)
+        let boundsInsets = windowScene?.windows.first?.safeAreaInsets ?? .zero
+        let bounds = (windowScene?.coordinateSpace.bounds ?? environment.uiScreen.bounds()).inset(by: boundsInsets)
 
         if bounds.contains(insetFrame) {
             self.frame = frame

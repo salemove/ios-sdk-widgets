@@ -20,6 +20,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
     private let unreadMessages: ObservableValue<Int>
     private let startAction: CallViewModel.StartAction
     private let environment: Environment
+    private let layoutMode: EngagementLayoutMode
 
     init(
         interactor: Interactor,
@@ -28,7 +29,8 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
         call: Call,
         unreadMessages: ObservableValue<Int>,
         startAction: CallViewModel.StartAction,
-        environment: Environment
+        environment: Environment,
+        layoutMode: EngagementLayoutMode
     ) {
         self.interactor = interactor
         self.viewFactory = viewFactory
@@ -37,6 +39,7 @@ class CallCoordinator: SubFlowCoordinator, FlowCoordinator {
         self.unreadMessages = unreadMessages
         self.startAction = startAction
         self.environment = environment
+        self.layoutMode = layoutMode
     }
 
     func start() -> CallViewController {
@@ -66,7 +69,8 @@ private extension CallCoordinator {
             interactor: interactor,
             environment: .create(
                 with: environment,
-                viewFactory: viewFactory
+                viewFactory: viewFactory,
+                layoutMode: layoutMode
             ),
             call: call,
             unreadMessages: unreadMessages,

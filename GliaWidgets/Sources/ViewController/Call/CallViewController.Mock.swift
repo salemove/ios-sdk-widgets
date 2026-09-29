@@ -74,7 +74,9 @@ extension CallViewController {
         return viewController
     }
 
-    static func mockAudioCallConnectedState() throws -> CallViewController {
+    static func mockAudioCallConnectedState(
+        layoutMode: EngagementLayoutMode = .fullScreen
+    ) throws -> CallViewController {
         var interactorEnv = Interactor.Environment.mock
         interactorEnv.coreSdk.configureWithConfiguration = { _, callback in
             callback(.success(()))
@@ -103,6 +105,7 @@ extension CallViewController {
         let startAction = CallViewModel.StartAction.engagement(mediaType: .audio)
 
         var callViewModelEnv = CallViewModel.Environment.mock
+        callViewModelEnv.layoutMode = layoutMode
             callViewModelEnv.timerProviding.scheduledTimerWithTimeIntervalAndTarget = { _, target, _, _, _ in
                 (target as? GliaWidgets.CallDurationCounter)?.update()
                 return .mock

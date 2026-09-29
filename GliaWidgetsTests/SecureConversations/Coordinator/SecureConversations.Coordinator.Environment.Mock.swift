@@ -28,6 +28,7 @@ extension SecureConversations.Coordinator.Environment {
         unreadMessages: .init(with: 0),
         showsCallBubble: true,
         isWindowVisible: .init(with: true),
+        layoutMode: .fullScreen,
         uploadFileToEngagement: { file, progress, completion in },
         getCurrentEngagement: { .mock() },
         getNonTransferredSecureConversationEngagement: { .mock() },

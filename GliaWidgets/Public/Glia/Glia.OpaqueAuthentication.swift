@@ -236,7 +236,7 @@ extension Glia {
                     features: features,
                     maximize: false
                 )
-                rootCoordinator?.gliaViewController?.minimize(animated: false)
+                rootCoordinator?.minimize(animated: false)
                 engagementRestorationState = .restored
             }
             .store(in: &cancelBag)

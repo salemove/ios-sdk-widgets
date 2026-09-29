@@ -10,6 +10,15 @@ extension UIKitBased.UIImage {
 }
 
 extension UIKitBased.UIApplication {
+    /// `EngagementCoordinator.init` reads connected scenes unconditionally to
+    /// resolve the layout mode, so environments that build a coordinator can't
+    /// let this one fail loudly (same reasoning as `resolveLayoutMode`).
+    static var failingWithNoConnectedScenes: Self {
+        var application = Self.failing
+        application.connectionScenes = { [] }
+        return application
+    }
+
     static let failing = Self(
         open: { _ in
             fail("\(Self.self).open")

@@ -5,6 +5,9 @@ final class QuickLookController: NSObject {
         let controller = QLPreviewController()
         controller.dataSource = self
         controller.delegate = self
+        if let presentationStyle {
+            controller.modalPresentationStyle = presentationStyle
+        }
         viewModel.environment.log.prefixed(Self.self).info(
             "Create Image Preview screen",
             function: "\(\FilePickerController.viewController)"
@@ -13,9 +16,16 @@ final class QuickLookController: NSObject {
     }
 
     private let viewModel: QuickLookViewModel
+    /// `nil` keeps `QLPreviewController`'s own default, which is what the
+    /// full-screen (iPhone) presentation has always used.
+    private let presentationStyle: UIModalPresentationStyle?
 
-    init(viewModel: QuickLookViewModel) {
+    init(
+        viewModel: QuickLookViewModel,
+        presentationStyle: UIModalPresentationStyle? = nil
+    ) {
         self.viewModel = viewModel
+        self.presentationStyle = presentationStyle
     }
 
     deinit {

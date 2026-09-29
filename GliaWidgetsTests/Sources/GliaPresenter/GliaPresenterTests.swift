@@ -65,6 +65,30 @@ final class GliaPresenterTests: XCTestCase {
         )
         XCTAssertEqual(bubbleWindow, gliaPresenter.window)
     }
+
+    func test_windowIgnoresAllGliaOwnedWindows() {
+        let hostWindow = UIWindow.mock(rootViewController: .init())
+        hostWindow.makeKeyAndVisible()
+        let bubbleWindow = BubbleWindow.mock(makeKeyAndVisible: true)
+        let alertWindow = AlertWindow(frame: .zero)
+        let gliaPresenter = GliaPresenter(
+            environment: .failing.transform {
+                $0.appWindowsProvider.windows = { [hostWindow, bubbleWindow, alertWindow] }
+            }
+        )
+        XCTAssertEqual(hostWindow, gliaPresenter.window)
+    }
+
+    func test_windowResolvesNonNilWhenOnlyGliaOwnedWindowsPresent() {
+        let bubbleWindow = BubbleWindow.mock(makeKeyAndVisible: true)
+        let alertWindow = AlertWindow(frame: .zero)
+        let gliaPresenter = GliaPresenter(
+            environment: .failing.transform {
+                $0.appWindowsProvider.windows = { [bubbleWindow, alertWindow] }
+            }
+        )
+        XCTAssertNotNil(gliaPresenter.window)
+    }
 }
 
 extension BubbleWindow.Environment {
