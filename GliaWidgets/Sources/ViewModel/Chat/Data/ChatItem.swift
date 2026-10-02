@@ -21,6 +21,24 @@ class ChatItem {
 
     let kind: Kind
 
+    /// The chat message this item renders, if it renders one.
+    var chatMessage: ChatMessage? {
+        switch kind {
+        case let .visitorMessage(message, _),
+             let .operatorMessage(message, _, _),
+             let .choiceCard(message, _, _, _),
+             let .customCard(message, _, _, _),
+             let .systemMessage(message),
+             let .gvaPersistentButton(message, _, _, _),
+             let .gvaResponseText(message, _, _, _),
+             let .gvaQuickReply(message, _, _, _),
+             let .gvaGallery(message, _, _, _):
+            return message
+        case .queueOperator, .outgoingMessage, .callUpgrade, .operatorConnected, .transferring, .unreadMessageDivider:
+            return nil
+        }
+    }
+
     init(
         kind: Kind
     ) {
