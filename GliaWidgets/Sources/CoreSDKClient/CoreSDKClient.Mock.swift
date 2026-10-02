@@ -32,6 +32,8 @@ extension CoreSdkClient {
         submitSurveyAnswer: { _, _, _, _ in },
         authentication: { _ in .mock },
         fetchChatHistory: { _ in },
+        fetchOlderChatHistory: { _ in },
+        hasOlderChatHistory: { false },
         requestVisitorCode: { _ in .mock },
         startSocketObservation: {},
         stopSocketObservation: {},

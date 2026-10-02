@@ -53,6 +53,8 @@ class ChatViewModelTests: XCTestCase {
                 uuid: { .mock },
                 uiApplication: .mock,
                 fetchChatHistory: { _ in },
+                fetchOlderChatHistory: { _ in },
+                hasOlderChatHistory: { false },
                 fileUploadListStyle: .mock,
                 createFileUploadListModel: { _ in
                     .mock()

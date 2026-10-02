@@ -457,6 +457,10 @@ extension ChatViewController {
             view?.hideEntryWidget()
         case let .setMessageEntryConnected(isConnected):
             view?.messageEntryView.isConnected = isConnected
+        case .olderHistoryStateUpdated:
+            break
+        case .prependRows:
+            view?.refreshAll()
         }
         renderProps()
     }
