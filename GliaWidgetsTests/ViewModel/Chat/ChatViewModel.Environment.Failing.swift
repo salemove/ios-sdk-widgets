@@ -3,7 +3,9 @@
 
 extension ChatViewModel.Environment {
     static func failing(
-        fetchChatHistory: CoreSdkClient.FetchChatHistory? = nil
+        fetchChatHistory: CoreSdkClient.FetchChatHistory? = nil,
+        fetchOlderChatHistory: CoreSdkClient.FetchOlderChatHistory? = nil,
+        hasOlderChatHistory: CoreSdkClient.HasOlderChatHistory? = nil
     ) -> Self {
         .init(
             secureConversations: .failing,
@@ -43,6 +45,13 @@ extension ChatViewModel.Environment {
             uiApplication: .failing,
             fetchChatHistory: fetchChatHistory ?? { _ in
                 fail("\(Self.self).fetchChatHistory")
+            },
+            fetchOlderChatHistory: fetchOlderChatHistory ?? { _ in
+                fail("\(Self.self).fetchOlderChatHistory")
+            },
+            hasOlderChatHistory: hasOlderChatHistory ?? {
+                fail("\(Self.self).hasOlderChatHistory")
+                return false
             },
             fileUploadListStyle: .mock,
             createFileUploadListModel: { _ in
