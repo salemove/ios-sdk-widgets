@@ -28,6 +28,10 @@ class Section<Item> {
         items_.append(contentsOf: newItems)
     }
 
+    func prepend(_ newItems: [Item]) {
+        items_.insert(contentsOf: newItems, at: 0)
+    }
+
     func replaceItem(at index: Int, with item: Item) {
         items_[index] = item
     }

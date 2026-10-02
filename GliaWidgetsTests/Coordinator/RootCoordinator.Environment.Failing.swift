@@ -47,6 +47,11 @@ extension EngagementCoordinator.Environment {
         uiScreen: .failing,
         notificationCenter: .failing,
         fetchChatHistory: { _ in fail("\(Self.self).fetchChatHistory") },
+        fetchOlderChatHistory: { _ in fail("\(Self.self).fetchOlderChatHistory") },
+        hasOlderChatHistory: {
+            fail("\(Self.self).hasOlderChatHistory")
+            return false
+        },
         listQueues: { _ in fail("\(Self.self).listQueues") },
         createFileUploader: { _, _ in
             .failing

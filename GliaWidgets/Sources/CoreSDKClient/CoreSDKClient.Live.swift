@@ -80,6 +80,19 @@ extension CoreSdkClient {
                     }
                 }
             },
+            fetchOlderChatHistory: { completion in
+                GliaCore.sharedInstance.fetchOlderChatTranscript { result in
+                    switch result {
+                    case let .success(messages):
+                        completion(
+                            .success(messages.map { ChatMessage(with: $0) })
+                        )
+                    case let .failure(error):
+                        completion(.failure(error))
+                    }
+                }
+            },
+            hasOlderChatHistory: { GliaCore.sharedInstance.hasOlderChatTranscript },
             requestVisitorCode: GliaCore.sharedInstance.callVisualizer.requestVisitorCode(completion:),
             startSocketObservation: GliaCore.sharedInstance.startSocketObservation,
             stopSocketObservation: GliaCore.sharedInstance.stopSocketObservation,

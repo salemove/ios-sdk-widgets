@@ -89,6 +89,7 @@ class ChatViewControllerTests: XCTestCase {
         var viewModelEnv = ChatViewModel.Environment.failing { completion in
             completion(.success([]))
         }
+        viewModelEnv.hasOlderChatHistory = { false }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
             mobileConfirmDialogEnabled: true,
@@ -151,6 +152,7 @@ class ChatViewControllerTests: XCTestCase {
         var viewModelEnv = ChatViewModel.Environment.failing { completion in
             completion(.success([]))
         }
+        viewModelEnv.hasOlderChatHistory = { false }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
             mobileConfirmDialogEnabled: true,
@@ -200,6 +202,7 @@ class ChatViewControllerTests: XCTestCase {
         var viewModelEnv = ChatViewModel.Environment.failing { completion in
             completion(.success([]))
         }
+        viewModelEnv.hasOlderChatHistory = { false }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: false,
             mobileConfirmDialogEnabled: true,
