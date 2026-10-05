@@ -4,22 +4,42 @@ import WebKit
 
 class WKNavigationPolicyProviderTests: XCTestCase {
     func test_policy() throws {
-        typealias Result = (url: URL, policy: WKNavigationActionPolicy, shouldHandle: Bool)
+        typealias Request = WKNavigationPolicyProvider.Request
+        struct Result {
+            let request: Request
+            let policy: WKNavigationActionPolicy
+            let shouldHandle: Bool
+
+            init(_ request: Request, _ policy: WKNavigationActionPolicy, _ shouldHandle: Bool) {
+                self.request = request
+                self.policy = policy
+                self.shouldHandle = shouldHandle
+            }
+        }
         let policyProvider = WKNavigationPolicyProvider.customResponseCard
-        let url = { try XCTUnwrap(URL(string: $0)) }
+        let request = { (url: String, type: WKNavigationType, target: Request.Target) in
+            Request(url: try XCTUnwrap(URL(string: url)), navigationType: type, target: target)
+        }
         let data: [Result] = try [
-            (url("about://mock.mock"), .allow, false),
-            (url("http://mock.mock"), .cancel, true),
-            (url("https://mock.mock"), .cancel, true),
-            (url("tel:12345678"), .cancel, true),
-            (url("mailto:mock@mock.mock"), .cancel, true),
-            (url("mock:mock"), .cancel, false)
+            Result(request("about:blank", .other, .mainFrame), .allow, false),
+            Result(request("https://mock.mock", .linkActivated, .mainFrame), .cancel, true),
+            Result(request("https://mock.mock", .linkActivated, .newWindow), .cancel, true),
+            Result(request("HTTPS://mock.mock", .linkActivated, .mainFrame), .cancel, true),
+            Result(request("http://mock.mock", .linkActivated, .mainFrame), .cancel, true),
+            Result(request("tel:12345678", .linkActivated, .mainFrame), .cancel, true),
+            Result(request("mailto:mock@mock.mock", .linkActivated, .mainFrame), .cancel, true),
+            Result(request("https://mock.mock", .other, .mainFrame), .cancel, false),
+            Result(request("tel:12345678", .other, .mainFrame), .cancel, false),
+            Result(request("https://mock.mock", .formSubmitted, .mainFrame), .cancel, false),
+            Result(request("https://mock.mock", .other, .subframe), .cancel, false),
+            Result(request("https://mock.mock", .linkActivated, .subframe), .cancel, false),
+            Result(request("mock:mock", .linkActivated, .mainFrame), .cancel, false)
         ]
 
         data.forEach { item in
-            let result = policyProvider.policy(item.0)
-            XCTAssertEqual(result.policy, item.policy)
-            XCTAssertEqual(result.shouldHandleUrlSelection, item.shouldHandle)
+            let result = policyProvider.policy(item.request)
+            XCTAssertEqual(result.policy, item.policy, "\(item.request)")
+            XCTAssertEqual(result.shouldHandleUrlSelection, item.shouldHandle, "\(item.request)")
         }
     }
 }
