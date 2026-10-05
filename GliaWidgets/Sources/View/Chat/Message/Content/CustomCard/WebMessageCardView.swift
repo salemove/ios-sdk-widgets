@@ -59,6 +59,8 @@ final class WebMessageCardView: UIView {
 
     private lazy var webView: WKWebView = {
         let config = WKWebViewConfiguration()
+        // Matches the iOS default; keeps `window.open` inert if a `uiDelegate` is ever added.
+        config.preferences.javaScriptCanOpenWindowsAutomatically = false
         // Script used to disable zooming HTML content
         let zoomingScript = WKUserScript(
             source: .disableZooming,
@@ -221,14 +223,14 @@ extension WebMessageCardView: WKNavigationDelegate {
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
-        guard let url = navigationAction.request.url else {
-            decisionHandler(.allow)
+        guard let request = WKNavigationPolicyProvider.Request(navigationAction) else {
+            decisionHandler(.cancel)
             return
         }
 
-        let result = policyProvider.policy(url)
+        let result = policyProvider.policy(request)
         if result.shouldHandleUrlSelection {
-            delegate?.didSelectURL(self, url: url)
+            delegate?.didSelectURL(self, url: request.url)
         }
         decisionHandler(result.policy)
     }
