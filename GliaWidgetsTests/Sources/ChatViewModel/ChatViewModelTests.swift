@@ -310,7 +310,6 @@ class ChatViewModelTests: XCTestCase {
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
-        viewModelEnv.uiApplication.canOpenURL = { _ in true }
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.uiApplication.open = {
             calls.append(.openUrl($0))
@@ -331,7 +330,6 @@ class ChatViewModelTests: XCTestCase {
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
-        viewModelEnv.uiApplication.canOpenURL = { _ in true }
         viewModelEnv.uiApplication.open = {
             calls.append(.openUrl($0))
         }
