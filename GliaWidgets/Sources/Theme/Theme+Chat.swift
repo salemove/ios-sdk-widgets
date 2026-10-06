@@ -467,7 +467,7 @@ extension Theme {
             dividerColor: entryWidgetStyle.dividerColor
         )
 
-        return ChatStyle(
+        let chatStyle = ChatStyle(
             header: header,
             connect: connect,
             backgroundColor: .fill(color: color.baseLight),
@@ -498,6 +498,8 @@ extension Theme {
             sendingMessageUnavailableBannerViewStyle: sendingMessageUnavailableBannerViewStyle,
             secureMessagingExpandedTopBannerItemsStyle: secureMessagingExpandedTopBannerItemsStyle
         )
+        chatStyle.olderMessagesIndicatorColor = color.primary
+        return chatStyle
     }
 
     private var uploadListStyle: FileUploadListStyle {

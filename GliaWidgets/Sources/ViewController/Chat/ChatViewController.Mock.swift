@@ -42,8 +42,9 @@ extension ChatViewController {
     }
 
     // MARK: - Messages from Chat Storage
-    static func mockHistoryMessagesScreen() -> ChatViewController {
+    static func mockHistoryMessagesScreen(hasOlderChatHistory: Bool = false) -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
+        chatViewModelEnv.hasOlderChatHistory = { hasOlderChatHistory }
         var fileManager = FoundationBased.FileManager.mock
         fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         chatViewModelEnv.fileManager = fileManager

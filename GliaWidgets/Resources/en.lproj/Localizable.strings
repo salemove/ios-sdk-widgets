@@ -132,6 +132,7 @@
 "chat.status.typing" = "Operator is typing";
 "chat.status.typing.accessibility.label" = "{operatorName} is typing";
 "chat.unread_message_divider" = "New Messages";
+"chat.older_messages_loaded.accessibility.announcement" = "Older messages loaded";
 "chat.media_upgrade.audio.system_message" = "Upgraded to Audio";
 "chat.media_upgrade.video.system_message" = "Upgraded to Video";
 "chat.file.remove_upload.accessibility.label" = "Remove upload";

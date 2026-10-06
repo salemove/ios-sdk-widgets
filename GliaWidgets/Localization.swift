@@ -309,6 +309,12 @@ internal enum Localization {
         }
       }
     }
+    internal enum OlderMessagesLoaded {
+      internal enum Accessibility {
+        /// Older messages loaded
+        internal static var announcement: String { Localization.tr("Localizable", "chat.older_messages_loaded.accessibility.announcement", fallback: "Older messages loaded") }
+      }
+    }
     internal enum OperatorAvatar {
       internal enum Accessibility {
         /// Operator Picture
