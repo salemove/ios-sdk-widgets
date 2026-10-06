@@ -996,7 +996,7 @@ extension ChatViewModel {
     }
 
     func linkTapped(_ url: URL) {
-        if url.scheme == URLScheme.http.rawValue || url.scheme == URLScheme.https.rawValue {
+        if url.hasSystemDefaultScheme {
             environment.uiApplication.open(url)
             return
         }
