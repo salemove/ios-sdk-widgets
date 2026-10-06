@@ -137,17 +137,30 @@ struct CoreSdkClient {
 
     var authentication: CreateAuthentication
 
-    typealias FetchChatHistory = (_ completion: @escaping (Result<[ChatMessage], GliaCoreSDK.GliaCoreError>) -> Void) -> Void
+    typealias OlderChatHistoryPage = GliaCoreSDK.ChatHistory.OlderPage
+
+    /// A page of chat history as the chat models consume it. `olderPage` is the key for the
+    /// page before this one, or `nil` when there is none.
+    struct ChatHistoryPage {
+        var messages: [ChatMessage]
+        var olderPage: OlderChatHistoryPage?
+
+        init(messages: [ChatMessage], olderPage: OlderChatHistoryPage? = nil) {
+            self.messages = messages
+            self.olderPage = olderPage
+        }
+    }
+
+    typealias FetchChatHistory = (_ completion: @escaping (Result<ChatHistoryPage, GliaCoreSDK.GliaCoreError>) -> Void) -> Void
 
     var fetchChatHistory: FetchChatHistory
 
-    typealias FetchOlderChatHistory = (_ completion: @escaping (Result<[ChatMessage], GliaCoreSDK.GliaCoreError>) -> Void) -> Void
+    typealias FetchOlderChatHistory = (
+        _ olderPage: OlderChatHistoryPage,
+        _ completion: @escaping (Result<ChatHistoryPage, GliaCoreSDK.GliaCoreError>) -> Void
+    ) -> Void
 
     var fetchOlderChatHistory: FetchOlderChatHistory
-
-    typealias HasOlderChatHistory = () -> Bool
-
-    var hasOlderChatHistory: HasOlderChatHistory
 
     typealias RequestVisitorCode = (_ completion: @escaping (VisitorCodeBlock) -> Void) -> GliaCore.Cancellable
 

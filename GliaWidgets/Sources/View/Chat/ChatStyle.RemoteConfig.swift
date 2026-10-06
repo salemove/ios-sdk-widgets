@@ -51,6 +51,10 @@ extension ChatStyle {
             assetsBuilder: assetsBuilder
         )
         operatorTypingIndicator.apply(configuration: configuration?.typingIndicator)
+        configuration?.olderMessagesIndicator?.value
+            .map { UIColor(hex: $0) }
+            .first
+            .unwrap { olderMessagesIndicatorColor = $0 }
         unreadMessageDivider.apply(
             lineColor: configuration?.newMessagesDividerColor,
             text: configuration?.newMessagesDividerText,

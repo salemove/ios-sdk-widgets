@@ -23,7 +23,6 @@ extension CallCoordinator {
         var notificationCenter: FoundationBased.NotificationCenter
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var fetchOlderChatHistory: CoreSdkClient.FetchOlderChatHistory
-        var hasOlderChatHistory: CoreSdkClient.HasOlderChatHistory
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
         var proximityManager: ProximityManager
@@ -62,7 +61,6 @@ extension CallCoordinator.Environment {
             notificationCenter: environment.notificationCenter,
             fetchChatHistory: environment.fetchChatHistory,
             fetchOlderChatHistory: environment.fetchOlderChatHistory,
-            hasOlderChatHistory: environment.hasOlderChatHistory,
             createFileUploadListModel: environment.createFileUploadListModel,
             createSendMessagePayload: environment.createSendMessagePayload,
             proximityManager: environment.proximityManager,

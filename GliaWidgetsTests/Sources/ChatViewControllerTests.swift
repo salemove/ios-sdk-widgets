@@ -38,7 +38,7 @@ class ChatViewControllerTests: XCTestCase {
         var calls: [Call] = []
 
         var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
+            completion(.success(.init(messages: [])))
         }
 
         let site = try CoreSdkClient.Site.mock(
@@ -87,9 +87,8 @@ class ChatViewControllerTests: XCTestCase {
         var calls: [Call] = []
 
         var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
+            completion(.success(.init(messages: [])))
         }
-        viewModelEnv.hasOlderChatHistory = { false }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
             mobileConfirmDialogEnabled: true,
@@ -150,9 +149,8 @@ class ChatViewControllerTests: XCTestCase {
         var calls: [Call] = []
 
         var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
+            completion(.success(.init(messages: [])))
         }
-        viewModelEnv.hasOlderChatHistory = { false }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
             mobileConfirmDialogEnabled: true,
@@ -200,9 +198,8 @@ class ChatViewControllerTests: XCTestCase {
         var calls: [Call] = []
 
         var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
+            completion(.success(.init(messages: [])))
         }
-        viewModelEnv.hasOlderChatHistory = { false }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: false,
             mobileConfirmDialogEnabled: true,
@@ -251,7 +248,7 @@ class ChatViewControllerTests: XCTestCase {
         var calls: [Call] = []
 
         var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
+            completion(.success(.init(messages: [])))
         }
 
         let site = try CoreSdkClient.Site.mock(

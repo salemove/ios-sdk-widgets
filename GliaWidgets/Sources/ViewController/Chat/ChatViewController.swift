@@ -1,6 +1,7 @@
 import MobileCoreServices
 import UIKit
 
+// swiftlint:disable type_body_length
 final class ChatViewController: EngagementViewController, PopoverPresenter {
     private(set) var viewModel: SecureConversations.ChatWithTranscriptModel {
         didSet {
@@ -213,6 +214,10 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             viewModel.event(.gvaButtonTapped(option))
         }
 
+        view.loadOlderHistoryRequested = {
+            viewModel.event(.loadOlderHistoryRequested)
+        }
+
         view.retryMessageTapped = { [weak self] message in
             self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
                 $0[.buttonName] = .string(OtelButtonNames.retry.rawValue)
@@ -297,6 +302,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         viewModel.environment.log.prefixed(Self.self).info("Destroy Chat screen")
     }
 }
+// swiftlint:enable type_body_length
 
 extension ChatViewController {
     func swapAndBindViewModel(_ viewModel: SecureConversations.ChatWithTranscriptModel) {
@@ -457,10 +463,10 @@ extension ChatViewController {
             view?.hideEntryWidget()
         case let .setMessageEntryConnected(isConnected):
             view?.messageEntryView.isConnected = isConnected
-        case .olderHistoryStateUpdated:
-            break
-        case .prependRows:
-            view?.refreshAll()
+        case let .olderHistoryStateUpdated(canLoad, isLoading):
+            view?.setOlderHistoryState(canLoad: canLoad, isLoading: isLoading)
+        case let .prependRows(count, section):
+            view?.prependRows(count, to: section)
         }
         renderProps()
     }

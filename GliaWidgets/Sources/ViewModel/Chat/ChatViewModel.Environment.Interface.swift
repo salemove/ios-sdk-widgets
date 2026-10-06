@@ -22,7 +22,6 @@ extension EngagementViewModel {
         var uiApplication: UIKitBased.UIApplication
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var fetchOlderChatHistory: CoreSdkClient.FetchOlderChatHistory
-        var hasOlderChatHistory: CoreSdkClient.HasOlderChatHistory
         var fileUploadListStyle: FileUploadListStyle
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var createSendMessagePayload: CoreSdkClient.CreateSendMessagePayload
@@ -71,7 +70,6 @@ extension EngagementViewModel.Environment {
             uiApplication: environment.uiApplication,
             fetchChatHistory: environment.fetchChatHistory,
             fetchOlderChatHistory: environment.fetchOlderChatHistory,
-            hasOlderChatHistory: environment.hasOlderChatHistory,
             fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.enabled.uploadList,
             createFileUploadListModel: environment.createFileUploadListModel,
             createSendMessagePayload: environment.createSendMessagePayload,
@@ -116,7 +114,6 @@ extension EngagementViewModel.Environment {
             uiApplication: environment.uiApplication,
             fetchChatHistory: environment.fetchChatHistory,
             fetchOlderChatHistory: environment.fetchOlderChatHistory,
-            hasOlderChatHistory: environment.hasOlderChatHistory,
             fileUploadListStyle: viewFactory.theme.chatStyle.messageEntry.enabled.uploadList,
             createFileUploadListModel: environment.createFileUploadListModel,
             createSendMessagePayload: environment.createSendMessagePayload,

@@ -3,18 +3,44 @@
 import XCTest
 
 extension ChatViewModelTests {
+    static let olderPage2 = CoreSdkClient.OlderChatHistoryPage(url: "/api/v2/interactions/participants?p=2")
+    static let olderPage3 = CoreSdkClient.OlderChatHistoryPage(url: "/api/v2/interactions/participants?p=3")
+
     func test_loadHistoryEmitsOlderHistoryAvailability() {
-        let olderAvailable = makeOlderHistoryViewModel(hasOlderChatHistory: { true })
+        let olderAvailable = Self.makeOlderHistoryViewModel(olderPage: Self.olderPage2)
         olderAvailable.viewModel.start()
         XCTAssertEqual(olderAvailable.spy.olderHistoryStates.last, .init(canLoad: true, isLoading: false))
 
-        let nothingOlder = makeOlderHistoryViewModel(hasOlderChatHistory: { false })
+        let nothingOlder = Self.makeOlderHistoryViewModel(olderPage: nil)
         nothingOlder.viewModel.start()
         XCTAssertEqual(nothingOlder.spy.olderHistoryStates.last, .init(canLoad: false, isLoading: false))
     }
 
+    func test_loadHistoryWithEmptyFirstPageAndKeyAllowsOlderHistory() {
+        let (viewModel, spy) = Self.makeOlderHistoryViewModel(history: [], olderPage: Self.olderPage2)
+
+        viewModel.start()
+
+        XCTAssertEqual(spy.olderHistoryStates.last, .init(canLoad: true, isLoading: false))
+    }
+
+    func test_loadHistoryFailureLeavesNoKey() {
+        var viewModelEnv = Self.olderHistoryEnvironment(fetchOlderChatHistory: { _, _ in
+            XCTFail("Unexpected fetchOlderChatHistory")
+        })
+        viewModelEnv.fetchChatHistory = { $0(.failure(CoreSdkClient.GliaCoreError(reason: "offline"))) }
+        let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
+        let spy = OlderHistoryActionSpy()
+        viewModel.action = { spy.actions.append($0) }
+
+        viewModel.start()
+        viewModel.event(.loadOlderHistoryRequested)
+
+        XCTAssertEqual(spy.olderHistoryStates, [.init(canLoad: false, isLoading: false)])
+    }
+
     func test_loadOlderHistoryRequestedWhenNothingOlderDoesNotFetch() {
-        let (viewModel, spy) = makeOlderHistoryViewModel(hasOlderChatHistory: { false })
+        let (viewModel, spy) = Self.makeOlderHistoryViewModel(olderPage: nil)
         viewModel.start()
         spy.actions.removeAll()
 
@@ -25,9 +51,9 @@ extension ChatViewModelTests {
 
     func test_loadOlderHistoryRequestedWhileLoadingDoesNotFetchAgain() {
         var fetchCount = 0
-        let (viewModel, _) = makeOlderHistoryViewModel(
-            hasOlderChatHistory: { true },
-            fetchOlderChatHistory: { _ in fetchCount += 1 }
+        let (viewModel, _) = Self.makeOlderHistoryViewModel(
+            olderPage: Self.olderPage2,
+            fetchOlderChatHistory: { _, _ in fetchCount += 1 }
         )
         viewModel.start()
 
@@ -37,14 +63,31 @@ extension ChatViewModelTests {
         XCTAssertEqual(fetchCount, 1)
     }
 
+    func test_loadOlderHistoryRequestedPassesKeysFromPreviousPages() {
+        var requestedKeys: [CoreSdkClient.OlderChatHistoryPage] = []
+        let (viewModel, _) = Self.makeOlderHistoryViewModel(
+            olderPage: Self.olderPage2,
+            fetchOlderChatHistory: { key, completion in
+                requestedKeys.append(key)
+                let next = key == Self.olderPage2 ? Self.olderPage3 : nil
+                completion(.success(.init(messages: [.mock(id: "older-\(requestedKeys.count)")], olderPage: next)))
+            }
+        )
+        viewModel.start()
+
+        viewModel.event(.loadOlderHistoryRequested)
+        viewModel.event(.loadOlderHistoryRequested)
+        viewModel.event(.loadOlderHistoryRequested)
+
+        XCTAssertEqual(requestedKeys, [Self.olderPage2, Self.olderPage3])
+    }
+
     func test_loadOlderHistoryRequestedPrependsOlderMessagesInOrder() {
-        var hasOlder = true
-        let (viewModel, spy) = makeOlderHistoryViewModel(
+        let (viewModel, spy) = Self.makeOlderHistoryViewModel(
             history: [.mock(id: "msg-3")],
-            hasOlderChatHistory: { hasOlder },
-            fetchOlderChatHistory: { completion in
-                hasOlder = false
-                completion(.success([.mock(id: "msg-1"), .mock(id: "msg-2")]))
+            olderPage: Self.olderPage2,
+            fetchOlderChatHistory: { _, completion in
+                completion(.success(.init(messages: [.mock(id: "msg-1"), .mock(id: "msg-2")], olderPage: nil)))
             }
         )
         viewModel.start()
@@ -61,11 +104,11 @@ extension ChatViewModelTests {
     }
 
     func test_loadOlderHistoryRequestedDropsMessagesAlreadyShown() {
-        let (viewModel, spy) = makeOlderHistoryViewModel(
+        let (viewModel, spy) = Self.makeOlderHistoryViewModel(
             history: [.mock(id: "msg-2")],
-            hasOlderChatHistory: { true },
-            fetchOlderChatHistory: { completion in
-                completion(.success([.mock(id: "msg-1"), .mock(id: "MSG-2"), .mock(id: "msg-3")]))
+            olderPage: Self.olderPage2,
+            fetchOlderChatHistory: { _, completion in
+                completion(.success(.init(messages: [.mock(id: "msg-1"), .mock(id: "MSG-2"), .mock(id: "msg-3")])))
             }
         )
         viewModel.start()
@@ -79,14 +122,18 @@ extension ChatViewModelTests {
         XCTAssertTrue(viewModel.historyMessageIds.contains("MSG-1"))
     }
 
-    func test_loadOlderHistoryRequestedFailureStopsLoadingAndKeepsHistory() {
+    func test_loadOlderHistoryRequestedFailureStopsLoadingKeepsHistoryAndKey() {
         var logger = CoreSdkClient.Logger.mock
         var warnings: [String] = []
         logger.warningClosure = { message, _, _, _ in warnings.append("\(message)") }
-        let (viewModel, spy) = makeOlderHistoryViewModel(
+        var requestedKeys: [CoreSdkClient.OlderChatHistoryPage] = []
+        let (viewModel, spy) = Self.makeOlderHistoryViewModel(
             history: [.mock(id: "msg-3")],
-            hasOlderChatHistory: { true },
-            fetchOlderChatHistory: { $0(.failure(CoreSdkClient.GliaCoreError(reason: "offline"))) },
+            olderPage: Self.olderPage2,
+            fetchOlderChatHistory: { key, completion in
+                requestedKeys.append(key)
+                completion(.failure(CoreSdkClient.GliaCoreError(reason: "offline")))
+            },
             log: logger
         )
         viewModel.start()
@@ -101,13 +148,18 @@ extension ChatViewModelTests {
         ])
         XCTAssertTrue(spy.prependedRows.isEmpty)
         XCTAssertEqual(warnings.count, 1)
+
+        viewModel.event(.loadOlderHistoryRequested)
+        XCTAssertEqual(requestedKeys, [Self.olderPage2, Self.olderPage2])
     }
 
     func test_loadOlderHistoryRequestedWithOnlyKnownMessagesDoesNotPrepend() {
-        let (viewModel, spy) = makeOlderHistoryViewModel(
+        let (viewModel, spy) = Self.makeOlderHistoryViewModel(
             history: [.mock(id: "msg-1")],
-            hasOlderChatHistory: { true },
-            fetchOlderChatHistory: { $0(.success([.mock(id: "msg-1")])) }
+            olderPage: Self.olderPage2,
+            fetchOlderChatHistory: { _, completion in
+                completion(.success(.init(messages: [.mock(id: "msg-1")], olderPage: Self.olderPage3)))
+            }
         )
         viewModel.start()
         spy.actions.removeAll()
@@ -124,9 +176,9 @@ extension ChatViewModelTests {
             sender: .operator,
             attachment: .mock(type: .singleChoice, files: [], imageUrl: nil, options: [try .mock()])
         )
-        let (viewModel, _) = makeOlderHistoryViewModel(
-            hasOlderChatHistory: { true },
-            fetchOlderChatHistory: { $0(.success([choiceCard])) }
+        let (viewModel, _) = Self.makeOlderHistoryViewModel(
+            olderPage: Self.olderPage2,
+            fetchOlderChatHistory: { _, completion in completion(.success(.init(messages: [choiceCard]))) }
         )
         viewModel.start()
 
@@ -170,18 +222,15 @@ extension ChatViewModelTests {
         }
     }
 
-    private func makeOlderHistoryViewModel(
+    static func olderHistoryEnvironment(
         history: [ChatMessage] = [],
-        hasOlderChatHistory: @escaping CoreSdkClient.HasOlderChatHistory,
-        fetchOlderChatHistory: @escaping CoreSdkClient.FetchOlderChatHistory = { _ in
-            XCTFail("Unexpected fetchOlderChatHistory")
-        },
+        olderPage: CoreSdkClient.OlderChatHistoryPage? = nil,
+        fetchOlderChatHistory: @escaping CoreSdkClient.FetchOlderChatHistory,
         log: CoreSdkClient.Logger = .mock
-    ) -> (viewModel: ChatViewModel, spy: OlderHistoryActionSpy) {
+    ) -> ChatViewModel.Environment {
         var viewModelEnv = ChatViewModel.Environment.failing(
-            fetchChatHistory: { $0(.success(history)) },
-            fetchOlderChatHistory: fetchOlderChatHistory,
-            hasOlderChatHistory: hasOlderChatHistory
+            fetchChatHistory: { $0(.success(.init(messages: history, olderPage: olderPage))) },
+            fetchOlderChatHistory: fetchOlderChatHistory
         )
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
@@ -190,6 +239,23 @@ extension ChatViewModelTests {
         viewModelEnv.fetchSiteConfigurations = { _ in }
         viewModelEnv.createEntryWidget = { _ in .mock() }
         viewModelEnv.log = log
+        return viewModelEnv
+    }
+
+    static func makeOlderHistoryViewModel(
+        history: [ChatMessage] = [],
+        olderPage: CoreSdkClient.OlderChatHistoryPage?,
+        fetchOlderChatHistory: @escaping CoreSdkClient.FetchOlderChatHistory = { _, _ in
+            XCTFail("Unexpected fetchOlderChatHistory")
+        },
+        log: CoreSdkClient.Logger = .mock
+    ) -> (viewModel: ChatViewModel, spy: OlderHistoryActionSpy) {
+        let viewModelEnv = olderHistoryEnvironment(
+            history: history,
+            olderPage: olderPage,
+            fetchOlderChatHistory: fetchOlderChatHistory,
+            log: log
+        )
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
         let spy = OlderHistoryActionSpy()
         viewModel.action = { spy.actions.append($0) }

@@ -1,6 +1,7 @@
 extension ChatViewModel {
     func migrate(from transcript: SecureConversations.TranscriptModel) {
         sections = transcript.sections
+        takeOverOlderHistory(from: transcript.olderHistoryLoader)
         // There's a possibility where migration to engagement
         // happens when there are awaiting uploads.
         // For that case we need to make sure that theses uploads
@@ -26,5 +27,13 @@ extension ChatViewModel {
         // Set view active, to avoid unread message button
         // to be shown.
         isViewActive.value = true
+    }
+
+    /// Moves the older-page key along with the history items copied from the other model, and
+    /// clears it there so a load still in flight in that model is dropped.
+    func takeOverOlderHistory(from source: OlderChatHistoryLoader) {
+        olderHistoryLoader.replaceOlderPage(source.olderPage)
+        source.replaceOlderPage(nil)
+        action?(.olderHistoryStateUpdated(canLoad: olderHistoryLoader.canLoad, isLoading: false))
     }
 }
