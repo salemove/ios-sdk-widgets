@@ -16,7 +16,7 @@ extension SecureConversationsTranscriptModelTests {
         let telUrl = try XCTUnwrap(URL(string: "tel:12345678"))
         viewModel.linkTapped(telUrl)
 
-        XCTAssertEqual(calls, [.canOpen(telUrl), .open(telUrl)])
+        XCTAssertEqual(calls, [.open(telUrl)])
     }
 
     func test_handleUrlWithEmailOpensURLWithUIApplication() throws {
@@ -33,7 +33,7 @@ extension SecureConversationsTranscriptModelTests {
         let mailUrl = try XCTUnwrap(URL(string: "mailto:mock@mock.mock"))
         viewModel.linkTapped(mailUrl)
 
-        XCTAssertEqual(calls, [.canOpen(mailUrl), .open(mailUrl)])
+        XCTAssertEqual(calls, [.open(mailUrl)])
     }
 
     func test_handleUrlWithLinkOpensCalsLinkTapped() throws {

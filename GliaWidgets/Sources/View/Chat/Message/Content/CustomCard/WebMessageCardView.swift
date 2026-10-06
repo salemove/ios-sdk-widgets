@@ -25,6 +25,18 @@ private extension String {
         var head = document.getElementsByTagName('head')[0];
         head.appendChild(meta);
     """
+    static let linkClickGuardWorld = "gliaCustomCardLinkGuard"
+    // Runs in an isolated content world before any card script.
+    // A script-generated click (`a.click()`, `dispatchEvent`) has isTrusted == false.
+    // Real taps do not, so cancelling the default action keeps card script from following links.
+    static let linkClickGuardScript = """
+        window.addEventListener('click', function (event) {
+            if (event.isTrusted) { return; }
+            var target = event.target;
+            var link = target && target.closest ? target.closest('a[href], area[href]') : null;
+            if (link) { event.preventDefault(); }
+        }, true);
+    """
 }
 
 protocol WebMessageCardViewDelegate: AnyObject {
@@ -59,6 +71,16 @@ final class WebMessageCardView: UIView {
 
     private lazy var webView: WKWebView = {
         let config = WKWebViewConfiguration()
+        // Matches the iOS default; keeps `window.open` inert if a `uiDelegate` is ever added.
+        config.preferences.javaScriptCanOpenWindowsAutomatically = false
+        // Isolated world keeps card script from removing or patching the guard.
+        let linkClickGuard = WKUserScript(
+            source: .linkClickGuardScript,
+            injectionTime: .atDocumentStart,
+            forMainFrameOnly: false,
+            in: WKContentWorld.world(name: .linkClickGuardWorld)
+        )
+        config.userContentController.addUserScript(linkClickGuard)
         // Script used to disable zooming HTML content
         let zoomingScript = WKUserScript(
             source: .disableZooming,
@@ -221,14 +243,14 @@ extension WebMessageCardView: WKNavigationDelegate {
         decidePolicyFor navigationAction: WKNavigationAction,
         decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
-        guard let url = navigationAction.request.url else {
-            decisionHandler(.allow)
+        guard let request = WKNavigationPolicyProvider.Request(navigationAction) else {
+            decisionHandler(.cancel)
             return
         }
 
-        let result = policyProvider.policy(url)
+        let result = policyProvider.policy(request)
         if result.shouldHandleUrlSelection {
-            delegate?.didSelectURL(self, url: url)
+            delegate?.didSelectURL(self, url: request.url)
         }
         decisionHandler(result.policy)
     }
