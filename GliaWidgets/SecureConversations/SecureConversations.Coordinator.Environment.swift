@@ -22,7 +22,6 @@ extension SecureConversations.Coordinator {
         var loadChatMessagesFromHistory: () -> Bool
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
         var fetchOlderChatHistory: CoreSdkClient.FetchOlderChatHistory
-        var hasOlderChatHistory: CoreSdkClient.HasOlderChatHistory
         var fetchSiteConfigurations: CoreSdkClient.FetchSiteConfigurations
         var chatCall: ObservableValue<Call?>
         var unreadMessages: ObservableValue<Int>
@@ -95,7 +94,6 @@ extension SecureConversations.Coordinator.Environment {
             loadChatMessagesFromHistory: environment.loadChatMessagesFromHistory,
             fetchChatHistory: environment.fetchChatHistory,
             fetchOlderChatHistory: environment.fetchOlderChatHistory,
-            hasOlderChatHistory: environment.hasOlderChatHistory,
             fetchSiteConfigurations: environment.fetchSiteConfigurations,
             chatCall: chatCall,
             unreadMessages: unreadMessages,

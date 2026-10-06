@@ -4,6 +4,7 @@ extension SecureConversations {
     struct MessagesWithUnreadCount {
         var messages: [ChatMessage]
         var unreadCount: Int
+        var olderPage: CoreSdkClient.OlderChatHistoryPage?
     }
 
     /// Due to async nature of requests, we need to make sure
@@ -30,7 +31,7 @@ extension SecureConversations {
                 unreadCountTimeoutSource.output
             ).take(first: 1)
 
-            let messagesSource = ReactiveSwift.Signal<Result<[ChatMessage], CoreSdkClient.SalemoveError>, Never>.pipe()
+            let messagesSource = ReactiveSwift.Signal<Result<CoreSdkClient.ChatHistoryPage, CoreSdkClient.SalemoveError>, Never>.pipe()
 
             let combined = ReactiveSwift.Signal.zip(
                 messagesSource.output,
@@ -59,7 +60,7 @@ extension SecureConversations {
         }
 
         static func messageWithUnreadCountResult(
-            messageResult: Result<[ChatMessage], Error>,
+            messageResult: Result<CoreSdkClient.ChatHistoryPage, Error>,
             unreadCountResult: Result<Int, Error>
         ) -> Result<MessagesWithUnreadCount, Error> {
                 // Without messages unread count does not make much sense,
@@ -67,10 +68,10 @@ extension SecureConversations {
                 // of failure for both requests. Same for success - ignore
                 // unreadCount failure in case of successful loading of messages.
                 switch (messageResult, unreadCountResult) {
-                case let (.success(messages), .success(unreadCount)):
-                    return .success(MessagesWithUnreadCount(messages: messages, unreadCount: unreadCount))
-                case let (.success(messages), .failure):
-                    return .success(MessagesWithUnreadCount(messages: messages, unreadCount: .zero))
+                case let (.success(page), .success(unreadCount)):
+                    return .success(MessagesWithUnreadCount(messages: page.messages, unreadCount: unreadCount, olderPage: page.olderPage))
+                case let (.success(page), .failure):
+                    return .success(MessagesWithUnreadCount(messages: page.messages, unreadCount: .zero, olderPage: page.olderPage))
                 case let (.failure(error), .failure), let (.failure(error), .success):
                     return .failure(error)
                 }
@@ -81,6 +82,7 @@ extension SecureConversations {
 extension SecureConversations.MessagesWithUnreadCount {
     static let empty = SecureConversations.MessagesWithUnreadCount(
         messages: [],
-        unreadCount: 0
+        unreadCount: 0,
+        olderPage: nil
     )
 }

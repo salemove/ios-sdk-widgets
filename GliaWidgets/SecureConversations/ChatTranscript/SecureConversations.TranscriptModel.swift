@@ -622,6 +622,7 @@ extension SecureConversations.TranscriptModel {
                 self.historySection.set(itemsWithDivider)
                 self.action?(.refreshSection(self.historySection.index))
                 self.action?(.scrollToBottom(animated: false))
+                self.olderHistoryLoader.replaceOlderPage(messagesWithUnreadCount.olderPage)
                 self.action?(.olderHistoryStateUpdated(canLoad: self.olderHistoryLoader.canLoad, isLoading: false))
                 completion(messagesWithUnreadCount.messages)
                 markMessagesAsRead(
@@ -633,6 +634,8 @@ extension SecureConversations.TranscriptModel {
                     self.action?(.quickReplyPropsUpdated(.shown(props)))
                 }
             case .failure:
+                self.olderHistoryLoader.replaceOlderPage(nil)
+                self.action?(.olderHistoryStateUpdated(canLoad: false, isLoading: false))
                 completion([])
             }
         }
@@ -948,6 +951,7 @@ extension SecureConversations.TranscriptModel {
 
         historySection.set(itemsWithDivider)
         action?(.refreshAll)
+        takeOverOlderHistory(from: chatModel.olderHistoryLoader)
 
         // There's a possibility where migration to SC (this actually doesn't seem to work ATM, needs checking (MOB-3988)).
         // happens when there are awaiting uploads.

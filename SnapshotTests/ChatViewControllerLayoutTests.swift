@@ -9,6 +9,12 @@ final class ChatViewControllerLayoutTests: SnapshotTestCase {
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
+    func test_messagesFromHistoryWithOlderHistoryAvailable() {
+        let viewController = ChatViewController.mockHistoryMessagesScreen(hasOlderChatHistory: true)
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
+    }
+
     func test_visitorUploadedFileStates() throws {
         let viewController = try ChatViewController.mockVisitorFileUploadStates()
         viewController.assertSnapshot(as: .image, in: .portrait)
