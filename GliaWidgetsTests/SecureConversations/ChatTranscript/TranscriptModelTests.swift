@@ -80,6 +80,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         var modelEnv = TranscriptModel.Environment.failing
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = FileUploadListViewModel.mock(environment:)
+        modelEnv.uiApplication.preferredContentSizeCategory = { .unspecified }
         modelEnv.getQueues = { [] }
         modelEnv.fetchChatHistory = { [] }
         modelEnv.secureConversations.getUnreadMessageCount = { 0 }
@@ -170,12 +171,44 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             interactor: .failing
         )
         await viewModel.start(isTranscriptFetchNeeded: true)
-        let expectedCalls: [Call] = [Call.loadSiteConfiguration, .fetchChatHistory, .getSecureUnreadMessageCount]
+        let historyCalls = calls.filter { $0 != .loadSiteConfiguration }
 
-        XCTAssertEqual(
-            calls.map(\.rawValue),
-            expectedCalls.map(\.rawValue)
+        XCTAssertEqual(calls.filter { $0 == .loadSiteConfiguration }.count, 1)
+        XCTAssertEqual(historyCalls, [.fetchChatHistory, .getSecureUnreadMessageCount])
+    }
+
+    func testStartChecksSecureConversationsAvailability() async {
+        var modelEnv = TranscriptModel.Environment.failing
+        modelEnv.fileManager = .mock
+        modelEnv.createFileUploadListModel = { _ in .mock() }
+        modelEnv.getQueues = { [] }
+        modelEnv.maximumUploads = { 2 }
+        modelEnv.createEntryWidget = { _ in .mock() }
+        modelEnv.fetchSiteConfigurations = { try .mock() }
+        modelEnv.startSocketObservation = {}
+        let availabilityEnv = SecureConversations.Availability.Environment(
+            getQueues: modelEnv.getQueues,
+            isAuthenticated: { true },
+            log: .mock,
+            queuesMonitor: .mock(getQueues: modelEnv.getQueues),
+            getCurrentEngagement: { nil }
         )
+        let viewModel = TranscriptModel(
+            isCustomCardSupported: false,
+            environment: modelEnv,
+            availability: .init(
+                environment: availabilityEnv
+            ),
+            deliveredStatusText: "",
+            failedToDeliverStatusText: "",
+            unreadMessages: ObservableValue<Int>.init(with: .zero),
+            interactor: .failing
+        )
+        XCTAssertTrue(viewModel.isSecureConversationsAvailable)
+
+        await viewModel.start(isTranscriptFetchNeeded: false)
+
+        XCTAssertFalse(viewModel.isSecureConversationsAvailable)
     }
 
     func testClearInputsSetMessageTextEmpty() async {

@@ -158,7 +158,9 @@ class EngagementViewModel: CommonEngagementModel {
         do {
             try await interactor.endSession()
         } catch {
+            // Finishing here would close the screen before the error alert is shown.
             environment.log.prefixed(Self.self).warning("Ending session failed: \(error)")
+            return
         }
         self.engagementDelegate?(.finished)
     }

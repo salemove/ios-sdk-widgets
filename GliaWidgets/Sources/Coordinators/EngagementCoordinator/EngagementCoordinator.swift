@@ -206,21 +206,12 @@ extension EngagementCoordinator {
         let engagementEnded = interactor.state.isEnded
 
         let dismissGliaViewController: () -> Void = { [weak self] in
-            self?.dismissGliaViewController(animated: true) { [weak self] in
-                self?.delegateEvent(.minimized)
-                self?.engagement = .none
-                self?.navigationPresenter.setViewControllers([], animated: false)
-                self?.removeAllCoordinators()
-                self?.engagementLaunching = .direct(kind: .none)
-                // If engagement was ended then pass `ended` event. This
-                // initiates sending `ended` event to integrators.
-                // Otherwise, pass `closed` meaning that Glia screen was closed
-                // without having an engagement. This does not send `ended` event to integrators.
-                if engagementEnded {
-                    self?.delegate?(.ended)
-                } else {
-                    self?.delegate?(.closed)
-                }
+            guard let self, self.gliaViewController != nil else {
+                dismissalCompletion?()
+                return
+            }
+            self.dismissGliaViewController(animated: true) { [weak self] in
+                self?.resetAfterEnding(engagementEnded: engagementEnded)
                 dismissalCompletion?()
             }
         }
@@ -257,11 +248,31 @@ extension EngagementCoordinator {
         }
 
         engagement.getSurvey { [weak self] surveyResult in
-            guard let self else { return }
+            guard let self else {
+                dismissalCompletion?()
+                return
+            }
             handleSurveyResult(
                 surveyResult,
                 in: self
             )
+        }
+    }
+
+    private func resetAfterEnding(engagementEnded: Bool) {
+        delegateEvent(.minimized)
+        engagement = .none
+        navigationPresenter.setViewControllers([], animated: false)
+        removeAllCoordinators()
+        engagementLaunching = .direct(kind: .none)
+        // If engagement was ended then pass `ended` event. This
+        // initiates sending `ended` event to integrators.
+        // Otherwise, pass `closed` meaning that Glia screen was closed
+        // without having an engagement. This does not send `ended` event to integrators.
+        if engagementEnded {
+            delegate?(.ended)
+        } else {
+            delegate?(.closed)
         }
     }
 

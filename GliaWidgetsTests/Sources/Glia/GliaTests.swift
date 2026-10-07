@@ -646,6 +646,7 @@ final class GliaTests: XCTestCase {
     func test_isConfiguredIsFalseWhenSecondConfigureCallThrowsError() async throws {
         var environment = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
+        logger.debugClosure = { _, _, _, _ in }
         logger.configureLocalLogLevelClosure = { _ in }
         logger.configureRemoteLogLevelClosure = { _ in }
         logger.infoClosure = { _, _, _, _ in }
@@ -681,6 +682,7 @@ final class GliaTests: XCTestCase {
     func test_isConfiguredIsFalseWhenConfigureWithConfigurationThrowsError() async {
         var environment = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
+        logger.debugClosure = { _, _, _, _ in }
         logger.infoClosure = { _, _, _, _ in }
         logger.errorClosure = { _, _, _, _ in }
         logger.prefixedClosure = { _ in logger }
@@ -1038,10 +1040,7 @@ final class GliaTests: XCTestCase {
                 accessToken: nil
             ) { _ in }
 
-
-
         await waitUntil { !messages.isEmpty }
         XCTAssertEqual(messages, ["Show Push Notifications Intermediate Dialog"])
-        
     }
 }

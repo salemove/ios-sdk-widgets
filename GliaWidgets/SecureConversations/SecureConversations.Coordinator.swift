@@ -54,7 +54,7 @@ extension SecureConversations {
             environment.log.prefixed(Self.self).info("Create Message Center screen")
             let viewModel = makeWelcomeViewModel()
             Task {
-                await viewModel.checkSecureConversationsAvailability()
+                await viewModel.start()
             }
 
             let controller = SecureConversations.WelcomeViewController(

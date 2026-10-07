@@ -62,7 +62,7 @@ class AlertView: BaseView {
         return actionsStackView.arrangedSubviews.count
     }
 
-    var closeTapped: (() async -> Void)?
+    var closeTapped: (@MainActor () async -> Void)?
 
     private let style: AlertStyle
     private let titleImageView = UIImageView().makeView()
@@ -193,7 +193,7 @@ class AlertView: BaseView {
 
         let closeButton = Button(
             kind: .alertClose,
-            tap: closeTapped
+            tap: { [weak self] in await self?.closeTapped?() }
         )
 
         switch style.closeButtonColor {

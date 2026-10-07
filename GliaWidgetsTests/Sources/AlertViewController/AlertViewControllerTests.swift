@@ -82,6 +82,57 @@ final class AlertViewControllerTests: XCTestCase {
     }
 
     @MainActor
+    func test_messageCloseButtonInvokesDismissedAfterDismissalCompletion() async throws {
+        var dismissed = false
+        let controller = DeferredDismissAlertViewController(
+            type: .message(conf: .mock(), accessibilityIdentifier: nil, dismissed: nil, onClose: {}),
+            viewFactory: .mock()
+        )
+        let alert = controller.makeMessageAlertView(
+            with: .mock(),
+            accessibilityIdentifier: nil,
+            dismissed: { dismissed = true }
+        )
+        let closeButton = try XCTUnwrap(
+            alert.subviews.compactMap { $0 as? Button }.first { $0.accessibilityIdentifier == "alert_close_button" }
+        )
+
+        let task = Task { await closeButton.tap?() }
+        await waitUntil { controller.dismissalCompletion != nil }
+        XCTAssertFalse(dismissed)
+
+        controller.dismissalCompletion?()
+        await task.value
+        XCTAssertTrue(dismissed)
+    }
+
+    @MainActor
+    func test_dismissThenPerformRunsActionWhenNotPresented() async {
+        var performed = false
+        let controller = AlertViewController.mock(
+            type: .message(conf: .mock(), accessibilityIdentifier: nil, dismissed: nil, onClose: {})
+        )
+
+        await controller.dismissThenPerform { performed = true }
+
+        XCTAssertTrue(performed)
+    }
+
+    @MainActor
+    func test_dismissThenPerformRunsActionOnlyOnce() async {
+        var performCount = 0
+        let controller = ImmediateDismissAlertViewController(
+            type: .message(conf: .mock(), accessibilityIdentifier: nil, dismissed: nil, onClose: {}),
+            viewFactory: .mock()
+        )
+
+        await controller.dismissThenPerform { performCount += 1 }
+        await controller.dismissThenPerform { performCount += 1 }
+
+        XCTAssertEqual(performCount, 1)
+    }
+
+    @MainActor
     private func actionButtons(in view: UIView) -> [ActionButton] {
         if let button = view as? ActionButton { return [button] }
         return view.subviews.flatMap { actionButtons(in: $0) }

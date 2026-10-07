@@ -256,19 +256,22 @@ extension SecureConversations {
             }
         }
 
-        /// Starts socket observation, fetches site configuration and loads chat history if needed.
+        /// Starts socket observation, checks Secure Conversations availability,
+        /// fetches site configuration and loads chat history if needed.
         /// - Parameter isTranscriptFetchNeeded: A flag indicating whether chat history will be loaded.
         @MainActor
         func start(isTranscriptFetchNeeded: Bool) async {
             environment.startSocketObservation()
-            await fetchSiteConfigurations()
+            async let availabilityCheck: Void = checkSecureConversationsAvailability()
+            async let siteConfigurationsFetch: Void = fetchSiteConfigurations()
 
-            guard isTranscriptFetchNeeded else {
-                return
+            if isTranscriptFetchNeeded {
+                await loadHistory()
+                showLeaveConversationDialogIfNeeded()
             }
 
-            await loadHistory()
-            showLeaveConversationDialogIfNeeded()
+            await siteConfigurationsFetch
+            await availabilityCheck
         }
 
         deinit {
@@ -593,6 +596,7 @@ extension SecureConversations.TranscriptModel {
 extension SecureConversations.TranscriptModel {
     @MainActor
     private func loadHistory() async {
+        environment.openTelemetry.logger.i(.chatScreenHistoryLoading)
         do {
             let messagesWithUnreadCount = try await transcriptMessageLoader.loadMessagesWithUnreadCount()
             environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
@@ -915,7 +919,7 @@ extension SecureConversations.TranscriptModel {
         let items = chatModel.sections.flatMap(\.items).filter {
             switch $0.kind {
             case .callUpgrade,
-                    .operatorConnected(_, _),
+                    .operatorConnected,
                     .queueOperator,
                     .transferring,
                     .unreadMessageDivider:

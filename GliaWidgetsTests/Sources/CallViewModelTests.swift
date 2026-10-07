@@ -116,7 +116,7 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video), 
+            startWith: .engagement(mediaType: .video),
             replaceExistingEnqueueing: false
         )
 
@@ -173,7 +173,7 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video), 
+            startWith: .engagement(mediaType: .video),
             replaceExistingEnqueueing: false
         )
 
@@ -258,7 +258,7 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video), 
+            startWith: .engagement(mediaType: .video),
             replaceExistingEnqueueing: false
         )
 
@@ -337,7 +337,7 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video), 
+            startWith: .engagement(mediaType: .video),
             replaceExistingEnqueueing: false
         )
 
@@ -377,7 +377,7 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video), 
+            startWith: .engagement(mediaType: .video),
             replaceExistingEnqueueing: false
         )
 
@@ -541,7 +541,7 @@ class CallViewModelTests: XCTestCase {
             environment: env,
             call: .mock(),
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video), 
+            startWith: .engagement(mediaType: .video),
             replaceExistingEnqueueing: false
         )
 
@@ -591,7 +591,7 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .audio), 
+            startWith: .engagement(mediaType: .audio),
             replaceExistingEnqueueing: false
         )
 
@@ -653,7 +653,7 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video), 
+            startWith: .engagement(mediaType: .video),
             replaceExistingEnqueueing: false
         )
 
@@ -844,5 +844,45 @@ class CallViewModelTests: XCTestCase {
         XCTAssertEqual(receivedAccessibilitiesWithCallbacks[0]?.tapCallback, nil)
         XCTAssertEqual(receivedAccessibilitiesWithCallbacks[0]?.accessibility, nil)
         XCTAssertEqual(warnings, ["Unable to access camera device manager: 'cameraIsNotAccessibleOnStream'."])
+    }
+
+    @MainActor
+    func test_endSessionDoesNotFinishWhenEndingEngagementFails() async {
+        var interactorEnv = Interactor.Environment.mock
+        interactorEnv.coreSdk.endEngagement = {
+            throw CoreSdkClient.GliaCoreError.mock()
+        }
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.state = .engaged(.mock())
+        viewModel = .mock(interactor: interactor)
+        var isFinished = false
+        viewModel.engagementDelegate = { event in
+            if case .finished = event {
+                isFinished = true
+            }
+        }
+
+        await viewModel.endSession()
+
+        XCTAssertFalse(isFinished)
+    }
+
+    @MainActor
+    func test_endSessionFinishesWhenEndingEngagementSucceeds() async {
+        var interactorEnv = Interactor.Environment.mock
+        interactorEnv.coreSdk.endEngagement = { true }
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.state = .engaged(.mock())
+        viewModel = .mock(interactor: interactor)
+        var isFinished = false
+        viewModel.engagementDelegate = { event in
+            if case .finished = event {
+                isFinished = true
+            }
+        }
+
+        await viewModel.endSession()
+
+        XCTAssertTrue(isFinished)
     }
 }

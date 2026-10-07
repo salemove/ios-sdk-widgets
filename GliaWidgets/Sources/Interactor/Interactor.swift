@@ -204,10 +204,19 @@ extension Interactor {
                 engagementOptions,
                 replaceExisting
             )
-            if case .enqueueing = state {
+            switch state {
+            case .enqueueing:
                 state = .enqueued(ticket, engagementKind)
+            case .ended(.byVisitor):
+                // Visitor left the queue while the ticket was being created.
+                await cancelOrphanedQueueTicket(ticket)
+            default:
+                break
             }
         } catch {
+            guard !(error is CancellationError), state != .ended(.byVisitor) else {
+                throw error
+            }
             self.environment.log.prefixed(Self.self).info("Queue for engagement stopped due to error or empty queue")
             self.state = .ended(.byError)
             throw error
@@ -239,6 +248,16 @@ extension Interactor {
             // `cleanup` is called once survey fetching is already initiated,
             // so no need to store `endedEngagement` anymore.
             cleanup()
+        }
+    }
+
+    @MainActor
+    private func cancelOrphanedQueueTicket(_ ticket: CoreSdkClient.QueueTicket) async {
+        environment.log.prefixed(Self.self).info("Cancel queue ticket created after leaving the queue")
+        do {
+            _ = try await environment.coreSdk.cancelQueueTicket(ticket)
+        } catch {
+            environment.log.prefixed(Self.self).warning("Cancelling queue ticket failed: \(error)")
         }
     }
 
@@ -355,11 +374,11 @@ extension Interactor: CoreSdkClient.Interactable {
     }
 
     var onEngagementRequest: CoreSdkClient.RequestOfferBlock {
-        return { [weak self] request, answer  in
+        return { [weak self, environment] request, answer  in
             let action = Command<Bool> { agreed in
                 let completion: CoreSdkClient.SuccessBlock = { _, error in
                     if let reason = error?.reason {
-                        debugPrint(reason)
+                        environment.log.prefixed(Self.self).warning("Answering engagement request failed: \(reason)")
                     }
                 }
                 let coreSdkVisitorContext: CoreSdkClient.VisitorContext? = (self?.visitorContext?.assetId)
@@ -447,6 +466,8 @@ extension Interactor: CoreSdkClient.Interactable {
 
     @MainActor
     func start() async {
+        currentEngagement = environment.coreSdk.getCurrentEngagement()
+        let wasEndedBeforeRequest = state.isEnded
         let operators: [CoreSdkClient.Operator]?
         do {
             operators = try await environment.coreSdk.requestEngagedOperator()
@@ -456,9 +477,10 @@ extension Interactor: CoreSdkClient.Interactable {
             )
             operators = nil
         }
+        // The engagement may have ended while the engaged operator was being requested.
+        guard wasEndedBeforeRequest || !state.isEnded else { return }
         let engagedOperator = operators?.first
         state = .engaged(engagedOperator)
-        currentEngagement = environment.coreSdk.getCurrentEngagement()
     }
 
     func start(engagement: CoreSdkClient.Engagement) {
@@ -472,7 +494,7 @@ extension Interactor: CoreSdkClient.Interactable {
                 await start()
             }
         case .unknown(let type):
-            debugPrint("Unknown engagement started (type='\(type)').")
+            environment.log.prefixed(Self.self).warning("Unknown engagement started (type='\(type)').")
         @unknown default:
             assertionFailure("Unexpected case in 'EngaagementSource' enum.")
         }

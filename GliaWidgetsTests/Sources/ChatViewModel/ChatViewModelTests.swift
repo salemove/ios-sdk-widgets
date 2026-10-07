@@ -1057,6 +1057,71 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.getPendingMessageForTesting().isEmpty)
     }
 
+    func test_pendingMessagesAreSentSequentiallyInOrder() async {
+        let sentMessageIds = LockIsolated<[String]>([])
+        let firstResponse = LockIsolated<CheckedContinuation<CoreSdkClient.Message, Error>?>(nil)
+        var interactorEnv = Interactor.Environment(coreSdk: .failing, queuesMonitor: .failing, gcd: .live, log: .mock)
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { payload in
+            let messageId = payload.messageId.rawValue
+            sentMessageIds.withValue { $0.append(messageId) }
+            guard sentMessageIds.value.count == 1 else { return .mock(id: messageId) }
+            return try await withCheckedThrowingContinuation { continuation in
+                firstResponse.setValue(continuation)
+            }
+        }
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.setCurrentEngagement(.mock())
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.gcd = .live
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.fetchSiteConfigurations = { try .mock() }
+        viewModelEnv.log = .mock
+        viewModelEnv.createEntryWidget = { _ in .mock() }
+
+        let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
+        let pendingMessages: [OutgoingMessage] = [
+            .mock(payload: .mock(messageIdSuffix: "0")),
+            .mock(payload: .mock(messageIdSuffix: "1"))
+        ]
+        let expectedOrder = pendingMessages.map(\.payload.messageId.rawValue)
+        viewModel.setPendingMessagesForTesting(pendingMessages)
+        viewModel.update(for: .engaged(.mock()))
+
+        await waitUntil { firstResponse.value != nil }
+        XCTAssertEqual(sentMessageIds.value, [expectedOrder[0]])
+
+        firstResponse.value?.resume(returning: .mock(id: expectedOrder[0]))
+        await waitUntil { viewModel.getPendingMessageForTesting().isEmpty }
+
+        XCTAssertEqual(sentMessageIds.value, expectedOrder)
+    }
+
+    @MainActor
+    func test_startSubscribesToNetworkReachabilityChanges() async {
+        let previousNetworkMonitor = DependencyContainer.current.widgets.networkMonitor
+        defer { DependencyContainer.current.widgets.networkMonitor = previousNetworkMonitor }
+        DependencyContainer.current.widgets.networkMonitor = .init(networkStream: { _ in
+            AsyncStream { continuation in
+                continuation.yield(.disconnected)
+                continuation.finish()
+            }
+        })
+        var isNoConnectionSnackBarShown = false
+        let viewModel = ChatViewModel.mock(startAction: .none)
+        viewModel.engagementAction = { action in
+            if case .showNoConnectionSnackBarView = action {
+                isNoConnectionSnackBarShown = true
+            }
+        }
+
+        await viewModel.start()
+        await waitUntil { isNoConnectionSnackBarShown }
+
+        XCTAssertTrue(isNoConnectionSnackBarShown)
+    }
+
     @MainActor
     func test_sendMessagePreservesDraftEnteredWhileSending() async {
         for shouldFail in [false, true] {

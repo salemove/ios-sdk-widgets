@@ -10,7 +10,11 @@ extension CallVisualizer.VisitorCodeViewModel {
     ) -> CallVisualizer.VisitorCodeViewModel {
         CallVisualizer.VisitorCodeViewModel(
             presentation: presentation,
-            environment: .init(timerProviding: environment.timerProviding, requestVisitorCode: environment.requestVisitorCode),
+            environment: .init(
+                timerProviding: environment.timerProviding,
+                requestVisitorCode: environment.requestVisitorCode,
+                log: environment.log
+            ),
             theme: theme,
             delegate: { _ in }
         )

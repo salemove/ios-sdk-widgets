@@ -85,6 +85,7 @@ public struct SecureConversations {
     ///
     /// - Returns: Number of unread secure conversation messages.
     /// - Throws: `Swift.Error` when the unread count cannot be fetched.
+    @MainActor
     public func getUnreadMessageCount() async throws -> Int {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,

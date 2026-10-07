@@ -19,10 +19,11 @@ final class VisitorCodeCoordinatorTests: XCTestCase {
 
     func createCoordinator(
         withPresentation presentation: CallVisualizer.Presentation
-    )  {
+    ) {
         let environmentMock = CallVisualizer.VisitorCodeCoordinator.Environment(
             timerProviding: .mock,
-            requestVisitorCode: { try .mock() }
+            requestVisitorCode: { try .mock() },
+            log: .mock
         )
 
         coordinator = CallVisualizer.VisitorCodeCoordinator(
@@ -59,7 +60,7 @@ final class VisitorCodeCoordinatorTests: XCTestCase {
 
         createCoordinator(
             withPresentation: .embedded(
-                viewController.view, 
+                viewController.view,
                 onEngagementAccepted: {}
             )
         )
@@ -81,14 +82,14 @@ final class VisitorCodeCoordinatorTests: XCTestCase {
         window?.rootViewController = viewController
         defer { window?.rootViewController = oldRootViewController }
         _ = await coordinator.start()
-        
+
         let newProps = CallVisualizer.VisitorCodeView.Props(
             viewState: .error(refreshTap: .nop)
         )
         coordinator.viewModel?.delegate(
             .propsUpdated(.init(visitorCodeViewProps: newProps))
         )
-        
+
         switch coordinator.codeViewController?.props.visitorCodeViewProps.viewState {
         case .error:
             XCTAssertTrue(true)

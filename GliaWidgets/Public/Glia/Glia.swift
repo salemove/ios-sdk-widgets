@@ -616,14 +616,15 @@ extension Glia {
                 await callVisualizer.handleRestoredEngagement()
             }
         } else {
-            Task { @MainActor in
-                await restoreOngoingEngagement(
-                    configuration: configuration,
-                    currentEngagement: currentEngagement,
-                    interactor: interactor,
-                    features: features,
-                    maximize: false
-                )
+            let viewFactory = startRestoringOngoingEngagement(
+                configuration: configuration,
+                currentEngagement: currentEngagement,
+                interactor: interactor,
+                features: features,
+                maximize: false
+            )
+            Task { @MainActor [weak self] in
+                await self?.showSnackBarIfNeeded(viewFactory: viewFactory)
             }
         }
     }
@@ -643,7 +644,7 @@ extension Glia {
             }
         }
         loggerPhase.logger.error("Glia Widgets SDK initialization failed")
-        debugPrint("💥 Core SDK configuration is not valid. Unexpected error='\(error)'.")
+        loggerPhase.logger.prefixed(Self.self).debug("Core SDK configuration is not valid. Unexpected error='\(error)'.")
         return errorForCompletion
     }
 
@@ -698,8 +699,9 @@ public extension Glia {
     /// starting an engagement.
     ///
     /// This method completes after the Core SDK is configured, the Widgets SDK
-    /// state is prepared, and engagement restoration has been scheduled when an
-    /// existing engagement is available.
+    /// state is prepared, and an existing engagement, if available, has been
+    /// restored. The Live Observation snack bar for a restored engagement may
+    /// still be shown after this method returns.
     ///
     /// - Parameters:
     ///   - configuration: Engagement configuration.
@@ -742,6 +744,7 @@ public extension Glia {
     ///   thrown.
     /// - Throws: `GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed`
     ///   when a non-transferred secure conversation is active.
+    @MainActor
     func clearVisitorSession() async throws {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
@@ -767,6 +770,7 @@ public extension Glia {
     ///   - An internal SDK error.
     ///   - A network error.
     ///   - An invalid site or environment configuration.
+    @MainActor
     func getVisitorInfo() async throws -> VisitorInfo {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
@@ -793,6 +797,7 @@ public extension Glia {
     ///   - An internal SDK error.
     ///   - A network error.
     ///   - An invalid site or environment configuration.
+    @MainActor
     func updateVisitorInfo(_ info: VisitorInfoUpdate) async throws -> Bool {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,
@@ -857,6 +862,7 @@ public extension Glia {
     /// - Throws:
     ///   - `GliaError.sdkIsNotConfigured` if the SDK has not been configured.
     ///   - Any Core SDK error produced while fetching queues.
+    @MainActor
     func getQueues() async throws -> [Queue] {
         environment.openTelemetry.logger.logMethodUse(
             sdkType: .widgetsSdk,

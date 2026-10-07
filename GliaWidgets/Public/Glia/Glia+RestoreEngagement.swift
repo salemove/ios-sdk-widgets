@@ -36,10 +36,28 @@ extension Glia {
         features: Features,
         maximize: Bool
     ) async {
+        let viewFactory = startRestoringOngoingEngagement(
+            configuration: configuration,
+            currentEngagement: currentEngagement,
+            interactor: interactor,
+            features: features,
+            maximize: maximize
+        )
+        await showSnackBarIfNeeded(viewFactory: viewFactory)
+    }
+
+    /// Restores the engagement UI synchronously and returns the view factory
+    /// to be used for showing the Live Observation snack bar afterwards.
+    @MainActor
+    @discardableResult
+    func startRestoringOngoingEngagement(
+        configuration: Configuration,
+        currentEngagement: CoreSdkClient.Engagement,
+        interactor: Interactor,
+        features: Features,
+        maximize: Bool
+    ) -> ViewFactory {
         engagementRestorationState = .restoring
-        defer {
-            engagementRestorationState = .restored
-        }
         // In this case, where engagement is restored, LO acknowledgement dialog
         // should not appear again, however snack bar message has to be shown via
         // `showSnackBarIfNeeded` function.
@@ -84,6 +102,12 @@ extension Glia {
             self.rootCoordinator?.minimize()
         }
 
+        engagementRestorationState = .restored
+        return viewFactory
+    }
+
+    @MainActor
+    func showSnackBarIfNeeded(viewFactory: ViewFactory) async {
         do {
             let site = try await environment.coreSdk.fetchSiteConfigurations()
             guard site.mobileObservationEnabled == true else { return }

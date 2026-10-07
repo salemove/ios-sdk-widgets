@@ -173,6 +173,30 @@ extension SecureConversationsWelcomeViewModelTests {
         }
     }
 
+    @MainActor
+    func testRepeatedSendTapWhileLoadingSendsMessageOnce() async {
+        let requestStarted = expectation(description: "Welcome message request started")
+        var response: CheckedContinuation<CoreSdkClient.Message, Error>?
+        var sendCount = 0
+        var environment = WelcomeViewModel.Environment.mock()
+        environment.secureConversations.sendMessagePayload = { _, _ in
+            sendCount += 1
+            return try await withCheckedThrowingContinuation {
+                response = $0
+                requestStarted.fulfill()
+            }
+        }
+        let model = WelcomeViewModel(environment: environment, availability: .mock)
+        let firstSending = Task { await model.sendMessageCommand() }
+        await fulfillment(of: [requestStarted], timeout: 1)
+
+        await model.sendMessageCommand()
+        response?.resume(returning: .mock())
+        await firstSending.value
+
+        XCTAssertEqual(sendCount, 1)
+    }
+
     func testSuccessfulMessageSend() async {
         var isCalled = false
         viewModel.environment.secureConversations.sendMessagePayload = { _, _ in

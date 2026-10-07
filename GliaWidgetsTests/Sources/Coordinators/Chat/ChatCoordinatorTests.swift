@@ -60,7 +60,7 @@ final class ChatCoordinatorTests: XCTestCase {
         switch viewController.viewModel {
         case .transcript:
             XCTAssertTrue(true)
-        default: 
+        default:
             XCTFail()
         }
     }
@@ -82,7 +82,7 @@ final class ChatCoordinatorTests: XCTestCase {
         switch viewController.viewModel {
         case .chat(let viewModel):
             viewModel.delegate?(.pickMedia(.init(with: .cancelled), [.image]))
-            coordinator.mediaPickerController?.viewController{ shownViewController in
+            coordinator.mediaPickerController?.viewController { shownViewController in
                 XCTAssertNotNil(shownViewController as? UIImagePickerController)
             }
         default: XCTFail()
@@ -114,7 +114,7 @@ final class ChatCoordinatorTests: XCTestCase {
             type: .audio,
             direction: .twoWay
         )
-        
+
         var calledEvents: [ChatCoordinator.DelegateEvent] = []
         coordinator.delegate = { event in
             calledEvents.append(event)
@@ -126,7 +126,7 @@ final class ChatCoordinatorTests: XCTestCase {
             viewModel.delegate?(
                 .mediaUpgradeAccepted(
                     offer: mediaOffer,
-                    answer: { _, _ in}
+                    answer: { _, _ in }
                 )
             )
         default: XCTFail()
@@ -339,7 +339,7 @@ final class ChatCoordinatorTests: XCTestCase {
         switch viewController.viewModel {
         case .transcript(let viewModel):
             viewModel.delegate?(.pickMedia(.init(with: .cancelled), [.image]))
-            coordinator.mediaPickerController?.viewController{ shownViewController in
+            coordinator.mediaPickerController?.viewController { shownViewController in
                 XCTAssertNotNil(shownViewController as? UIImagePickerController)
             }
         default: XCTFail()
@@ -479,6 +479,9 @@ final class ChatCoordinatorTests: XCTestCase {
         chatModel.messagesSection.append(.init(kind: .mock(kind: .transferring)))
         chatModel.messagesSection.append(.init(kind: .mock(kind: .unreadMessageDivider)))
 
+        // Upgrade to SC happens on an already loaded chat screen.
+        controller.loadViewIfNeeded()
+        await waitUntil { chatModel.isViewLoaded }
         await chatModel.asyncDelegate?(.liveChatEngagementUpgradedToSecureMessaging(chatModel))
 
         let transcriptModel: SecureConversations.TranscriptModel

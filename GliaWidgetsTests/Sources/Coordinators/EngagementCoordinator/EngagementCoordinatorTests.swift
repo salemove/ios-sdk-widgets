@@ -300,6 +300,33 @@ final class EngagementCoordinatorTests: XCTestCase {
         XCTAssertEqual(calledEvents.count, 1)
         XCTAssertEqual(calledEvents.first, .started)
     }
+
+    // End
+
+    func test_endCallsDismissalCompletionWhenGliaViewControllerIsMissing() {
+        XCTAssertNil(coordinator.gliaViewController)
+        var dismissalCompletionCallCount = 0
+
+        coordinator.end(surveyPresentation: .doNotPresentSurvey) {
+            dismissalCompletionCallCount += 1
+        }
+
+        XCTAssertEqual(dismissalCompletionCallCount, 1)
+    }
+
+    func test_endCallsDismissalCompletionAfterDismissingGliaViewController() {
+        var calledEvents: [EngagementCoordinator.DelegateEvent] = []
+        coordinator.delegate = { calledEvents.append($0) }
+        coordinator.start()
+        var dismissalCompletionCallCount = 0
+
+        coordinator.end(surveyPresentation: .doNotPresentSurvey) {
+            dismissalCompletionCallCount += 1
+        }
+
+        XCTAssertEqual(dismissalCompletionCallCount, 1)
+        XCTAssertEqual(calledEvents.last, .closed)
+    }
 }
 
 extension EngagementCoordinatorTests {

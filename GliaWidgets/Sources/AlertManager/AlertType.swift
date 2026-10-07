@@ -4,19 +4,19 @@ enum AlertType {
     case message(
         conf: MessageAlertConfiguration,
         accessibilityIdentifier: String?,
-        dismissed: (() async -> Void)?,
+        dismissed: (@MainActor () async -> Void)?,
         onClose: () -> Void
     )
     case criticalError(
         conf: MessageAlertConfiguration,
         accessibilityIdentifier: String?,
-        dismissed: (() async -> Void)?,
+        dismissed: (@MainActor () async -> Void)?,
         onClose: () -> Void
     )
     case confirmation(
         conf: ConfirmationAlertConfiguration,
         accessibilityIdentifier: String,
-        confirmed: () async -> Void,
+        confirmed: @MainActor () async -> Void,
         onClose: () -> Void,
         dismissed: (() -> Void)?
     )
@@ -30,7 +30,7 @@ enum AlertType {
     case singleAction(
         conf: SingleActionAlertConfiguration,
         accessibilityIdentifier: String,
-        actionTapped: () async -> Void,
+        actionTapped: @MainActor () async -> Void,
         onClose: () -> Void
     )
     case singleMediaUpgrade(
@@ -43,8 +43,8 @@ enum AlertType {
         ConfirmationAlertConfiguration,
         link1: (WebViewController.Link) -> Void,
         link2: (WebViewController.Link) -> Void,
-        accepted: () async -> Void,
-        declined: () async -> Void,
+        accepted: @MainActor () async -> Void,
+        declined: @MainActor () async -> Void,
         onClose: () -> Void
     )
     case systemAlert(

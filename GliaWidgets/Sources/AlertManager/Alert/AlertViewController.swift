@@ -13,6 +13,7 @@ class AlertViewController: UIViewController, Replaceable {
 
     private let type: AlertType
     private var alertView: AlertView?
+    private var isDismissingToPerformAction = false
     private let alertInsets = UIEdgeInsets(top: 0, left: 20, bottom: 10, right: 20)
 
     init(
@@ -169,7 +170,9 @@ class AlertViewController: UIViewController, Replaceable {
     }
 
     @MainActor
-    func dismissThenPerform(_ action: () async -> Void) async {
+    func dismissThenPerform(_ action: @MainActor () async -> Void) async {
+        guard !isDismissingToPerformAction else { return }
+        isDismissingToPerformAction = true
         await withCheckedContinuation { continuation in
             dismiss(animated: true) {
                 continuation.resume()
@@ -180,6 +183,14 @@ class AlertViewController: UIViewController, Replaceable {
 
     override func dismiss(animated: Bool, completion: (() -> Void)? = nil) {
         hideAlertView(animated: animated)
+        // UIKit never invokes the completion when there is nothing to dismiss
+        // or a dismissal is already in progress, which would drop the action
+        // or leave an awaiting continuation suspended forever.
+        let hasPresentationToDismiss = presentingViewController != nil || presentedViewController != nil
+        guard hasPresentationToDismiss, !isBeingDismissed else {
+            completion?()
+            return
+        }
         super.dismiss(animated: animated, completion: completion)
     }
 }

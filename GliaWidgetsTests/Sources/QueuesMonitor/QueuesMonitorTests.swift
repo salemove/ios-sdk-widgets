@@ -299,6 +299,90 @@ class QueuesMonitorTests: XCTestCase {
         XCTAssertEqual(envCalls, [.getQueues, .queueUpdatesStream])
     }
 
+    func test_queueUpdatesStreamFailingBeforeSocketConnectsKeepsUpdatedState() async throws {
+        let mockQueueId = "mock_queue_id"
+        let expectedQueues = [Queue.mock(id: mockQueueId)]
+        let streamFailed = expectation(description: "Queue updates stream failed")
+        var receivedWarning: String?
+        monitor.environment.logger.warningClosure = { message, _, _, _ in
+            receivedWarning = message as? String
+        }
+        monitor.environment.getQueues = { expectedQueues }
+        monitor.environment.queueUpdatesStream = { _ in
+            AsyncThrowingStream { continuation in
+                continuation.finish(
+                    throwing: CoreSdkClient.GliaCoreError(
+                        reason: "Subscribing failed. Socket connection is not established.",
+                        error: CoreSdkClient.GeneralError.internalError
+                    )
+                )
+                streamFailed.fulfill()
+            }
+        }
+
+        var receivedStates: [QueuesMonitor.State] = []
+        monitor.$state
+            .sink { receivedStates.append($0) }
+            .store(in: &cancellables)
+
+        _ = try await monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        await fulfillment(of: [streamFailed], timeout: 1)
+        await waitUntil { receivedWarning != nil }
+
+        XCTAssertFalse(receivedStates.contains { state in
+            if case .failed = state { return true }
+            return false
+        })
+        guard case let .updated(queues) = monitor.state else {
+            return XCTFail("Expected updated state, got \(monitor.state)")
+        }
+        XCTAssertEqual(queues, expectedQueues)
+    }
+
+    func test_concurrentFetchAndMonitorQueuesKeepsSingleObservation() async throws {
+        let mockQueueId = "mock_queue_id"
+        let mockQueues = [Queue.mock(id: mockQueueId)]
+        let fetchCount = LockIsolated(0)
+        let subscriptionCount = LockIsolated(0)
+        let cancelledSubscriptionCount = LockIsolated(0)
+        let firstFetchGate = LockIsolated<CheckedContinuation<Void, Never>?>(nil)
+
+        monitor.environment.getQueues = {
+            let isFirstFetch = fetchCount.withValue { count -> Bool in
+                count += 1
+                return count == 1
+            }
+            if isFirstFetch {
+                await withCheckedContinuation { continuation in
+                    firstFetchGate.setValue(continuation)
+                }
+            }
+            return mockQueues
+        }
+        monitor.environment.queueUpdatesStream = { _ in
+            subscriptionCount.withValue { $0 += 1 }
+            return AsyncThrowingStream { continuation in
+                continuation.onTermination = { termination in
+                    guard case .cancelled = termination else { return }
+                    cancelledSubscriptionCount.withValue { $0 += 1 }
+                }
+            }
+        }
+
+        let firstRequest = Task { [monitor] in
+            try await monitor?.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        }
+        await waitUntil { firstFetchGate.value != nil }
+
+        _ = try await monitor.fetchAndMonitorQueues(queuesIds: [mockQueueId])
+        firstFetchGate.value?.resume()
+        _ = try await firstRequest.value
+
+        XCTAssertEqual(fetchCount.value, 2)
+        XCTAssertEqual(subscriptionCount.value, 1)
+        XCTAssertEqual(cancelledSubscriptionCount.value, 0)
+    }
+
     // MARK: Stop monitoring
     func test_stopMonitoringSuccess() async throws {
         var envCalls: [Call] = []
@@ -321,7 +405,7 @@ class QueuesMonitorTests: XCTestCase {
         _ = try await monitor.fetchAndMonitorQueues(queuesIds: ["1"])
         await waitUntil { envCalls.contains(.queueUpdatesStream) }
 
-        monitor.stopMonitoring()
+        await monitor.stopMonitoring()
         await fulfillment(of: [streamCancelled], timeout: 1)
 
         XCTAssertEqual(envCalls, [.getQueues, .queueUpdatesStream])
