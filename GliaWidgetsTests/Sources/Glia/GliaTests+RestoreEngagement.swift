@@ -66,7 +66,6 @@ extension GliaTests {
             features: .all,
             maximize: false
         )
-        
 
         try XCTAssertTrue(XCTUnwrap(sdk.interactor?.skipLiveObservationConfirmations))
         XCTAssertEqual(calls, [.snackBarPresent])
@@ -304,7 +303,7 @@ extension GliaTests {
         sdk.stringProvidingPhase = .configured { _ in
             return ""
         }
-        sdk.onEvent = { event in
+        sdk.onEvent = { _ in
             XCTFail("Unexpected event received")
         }
         guard let interactor = sdk.interactor else {
@@ -432,6 +431,76 @@ extension GliaTests {
             maximize: false
         )
 
+        XCTAssertEqual(sdk.engagementRestorationState, .restored)
+    }
+
+    @MainActor
+    func test_restoreOngoingEngagementMarksRestoredBeforeFetchingSiteConfiguration() async throws {
+        let site = try CoreSdkClient.Site.mock(mobileObservationEnabled: false)
+        var sdkReference: Glia?
+        var stateDuringSiteFetch: EngagementRestorationState?
+        let (sdk, interactor) = try await makeConfiguredSdkForRestoreStateTests {
+            stateDuringSiteFetch = await MainActor.run { sdkReference?.engagementRestorationState }
+            return site
+        }
+        sdkReference = sdk
+
+        await sdk.restoreOngoingEngagement(
+            configuration: .mock(),
+            currentEngagement: .mock(),
+            interactor: interactor,
+            features: .all,
+            maximize: false
+        )
+
+        XCTAssertEqual(stateDuringSiteFetch, .restored)
+    }
+
+    @MainActor
+    func test_configureRestoresOngoingEngagementBeforeCompleting() async throws {
+        var sdkEnv = Glia.Environment.failing
+        sdkEnv.coreSDKConfigurator.configureWithInteractor = { _ in }
+        sdkEnv.createRootCoordinator = { _, _, _, engagementLaunching, _, _, _ in
+            EngagementCoordinator.mock(
+                engagementLaunching: engagementLaunching,
+                environment: .engagementCoordEnvironmentWithKeyWindow
+            )
+        }
+        sdkEnv.print.printClosure = { _, _, _ in }
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        logger.prefixedClosure = { _ in logger }
+        logger.infoClosure = { _, _, _, _ in }
+        logger.warningClosure = { _, _, _, _ in }
+        sdkEnv.coreSdk.createLogger = { _ in logger }
+        let site = try CoreSdkClient.Site.mock(mobileObservationEnabled: false)
+        sdkEnv.coreSdk.fetchSiteConfigurations = { site }
+        sdkEnv.conditionalCompilation.isDebug = { true }
+        sdkEnv.coreSdk.localeProvider.getRemoteString = { _ in nil }
+        var isEngagementRestoredByCore = false
+        sdkEnv.coreSDKConfigurator.configureWithConfiguration = { _ in
+            isEngagementRestoredByCore = true
+        }
+        sdkEnv.coreSdk.getCurrentEngagement = {
+            isEngagementRestoredByCore ? .mock() : nil
+        }
+        sdkEnv.coreSdk.secureConversations.unreadMessageCountStream = { AsyncThrowingStream { $0.finish() } }
+        sdkEnv.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
+        sdkEnv.gcd.mainQueue.async = { $0() }
+        sdkEnv.coreSdk.getQueues = { [] }
+        sdkEnv.coreSdk.queueUpdatesStream = { _ in AsyncThrowingStream { $0.finish() } }
+
+        let window = UIWindow(frame: .zero)
+        window.rootViewController = .init()
+        window.makeKeyAndVisible()
+        sdkEnv.uiApplication.windows = { [window] }
+
+        let sdk = Glia(environment: sdkEnv)
+        sdk.stringProvidingPhase = .configured { _ in "" }
+        try await sdk.configure(with: .mock(), features: .all)
+
+        XCTAssertNotNil(sdk.rootCoordinator)
         XCTAssertEqual(sdk.engagementRestorationState, .restored)
     }
 }

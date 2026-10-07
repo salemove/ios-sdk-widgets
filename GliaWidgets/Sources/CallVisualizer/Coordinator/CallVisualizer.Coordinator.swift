@@ -77,7 +77,6 @@ extension CallVisualizer.Coordinator {
         // Register the presentation before the visitor code request suspends so
         // a close or engagement acceptance can dismiss it while it is loading.
         self.visitorCodeCoordinator = coordinator
-        await coordinator.start()
         self.environment.openTelemetry.logger.i(.visitorCodeShown) {
             switch presentation {
             case .embedded:
@@ -86,6 +85,7 @@ extension CallVisualizer.Coordinator {
                 $0[.viewType] = .string(OtelViewTypes.dialog.rawValue)
             }
         }
+        await coordinator.start()
     }
 
     func handleAcceptedUpgrade() {
@@ -228,11 +228,11 @@ extension CallVisualizer.Coordinator {
     func declineEngagement() {
         Task { @MainActor [weak self] in
             do {
-                try await activeInteractor?.endEngagement()
-                self?.end()
+                try await self?.activeInteractor?.endEngagement()
             } catch {
-                environment.log.prefixed(Self.self).warning("Ending call visualizer engagement failed: \(error)")
+                self?.environment.log.prefixed(Self.self).warning("Ending call visualizer engagement failed: \(error)")
             }
+            self?.end()
         }
     }
 

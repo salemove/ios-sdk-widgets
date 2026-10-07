@@ -66,13 +66,13 @@ extension CallVisualizer {
                 viewState = .success(visitorCode: visitorCode.code)
             } catch {
                 viewState = .error(refreshTap: AsyncCmd { [weak self] in
-					self?.environment.openTelemetry.logger.i(.visitorCodeButtonClicked) {
-                       $0[.buttonName] = .string(OtelButtonNames.refreshVisitorCode.rawValue)
+                    self?.environment.openTelemetry.logger.i(.visitorCodeButtonClicked) {
+                        $0[.buttonName] = .string(OtelButtonNames.refreshVisitorCode.rawValue)
                     }
                     self?.viewState = .loading
                     await self?.requestVisitorCode()
                 })
-                debugPrint("Error getting vistior code:", error.localizedDescription)
+                environment.log.prefixed(Self.self).warning("Error getting visitor code: \(error.localizedDescription)")
             }
         }
 

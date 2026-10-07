@@ -75,14 +75,14 @@ struct AsyncCommand<T>: Hashable {
     let file: String
     let function: String
     let line: UInt
-    let closure: (T) async -> Void
+    let closure: @MainActor (T) async -> Void
 
     init(
         tag: String = "",
         file: StaticString = #file,
         function: StaticString = #function,
         line: UInt = #line,
-        closure: @escaping (T) async -> Void
+        closure: @escaping @MainActor (T) async -> Void
     ) {
         self.tag = tag
         self.file = "\(file)"

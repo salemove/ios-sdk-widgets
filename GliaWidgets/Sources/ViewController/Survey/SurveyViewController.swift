@@ -5,7 +5,7 @@ extension Survey {
         struct Props {
             let header: String
             var questionsProps: [QuestionPropsProtocol]
-            var submit: (Props) async -> Void
+            var submit: @MainActor (Props) async -> Void
             var cancel: () -> Void
             var endEditing: () -> Void
 

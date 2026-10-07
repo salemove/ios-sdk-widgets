@@ -41,9 +41,13 @@ class ChatViewModel: EngagementViewModel {
     private(set) var messageText = "" {
         didSet {
             validateMessage()
-            messagePreviewTask?.cancel()
             let message = messageText
+            let previousMessagePreviewTask = messagePreviewTask
+            previousMessagePreviewTask?.cancel()
+            // Chained so previews reach the server in typing order,
+            // e.g. a stale preview must not land after the cleared one.
             messagePreviewTask = Task { [weak self] in
+                await previousMessagePreviewTask?.value
                 await self?.sendMessagePreview(message)
             }
             action?(.setMessageText(messageText))
@@ -182,6 +186,7 @@ class ChatViewModel: EngagementViewModel {
     @MainActor
     override func start() async {
         await super.start()
+        subscribeOnNetworkReachabilityChanges()
         let history = await loadHistory()
         guard case .startEngagement = self.startAction else { return }
         if history.isEmpty || self.environment.getNonTransferredSecureConversationEngagement() != nil || self.replaceExistingEnqueueing {
@@ -228,12 +233,57 @@ class ChatViewModel: EngagementViewModel {
                 await fetchSiteConfigurations()
             }
 
-            pendingMessages.forEach { [weak self] outgoingMessage in
-                guard let self else { return }
-                sendOutgoingMessage(outgoingMessage, movingFrom: pendingSection, to: messagesSection)
+            let messagesToSend = pendingMessages
+            Task { [weak self] in
+                await self?.sendPendingMessages(messagesToSend)
             }
         default:
             break
+        }
+    }
+
+    override func interactorEvent(_ event: InteractorEvent) {
+        super.interactorEvent(event)
+
+        switch event {
+        case .receivedMessage(let message):
+            receivedMessage(message)
+        case .messagesUpdated(let messages):
+            messagesUpdated(messages)
+        case .upgradeOffer(let offer, answer: let answer):
+            offerMediaUpgrade(offer, answer: answer)
+        case .typingStatusUpdated(let status):
+            typingStatusUpdated(status)
+        case .engagementTransferring:
+            onEngagementTransferring()
+        case .onLiveToSecureConversationsEngagementTransferring:
+            setChatType(.secureTranscript(upgradedFromChat: true))
+            engagementAction?(.showCloseButton)
+            action?(.refreshAll)
+        case .engagementTransferred:
+            onEngagementTransferred()
+        case let .stateChanged(state):
+            handleInteractorStateChanged(state)
+        default:
+            break
+        }
+    }
+}
+
+// MARK: Pending messages
+extension ChatViewModel {
+    @MainActor
+    private func sendPendingMessages(_ outgoingMessages: [OutgoingMessage]) async {
+        for outgoingMessage in outgoingMessages {
+            do {
+                let message = try await interactor.send(messagePayload: outgoingMessage.payload)
+                onSuccessSendPendingMessages(
+                    message: message,
+                    outgoingMessage: outgoingMessage
+                )
+            } catch {
+                onFailureSendPendingMessages(outgoingMessage: outgoingMessage)
+            }
         }
     }
 
@@ -262,33 +312,6 @@ class ChatViewModel: EngagementViewModel {
             outgoingMessage,
             in: messagesSection
         )
-    }
-
-    override func interactorEvent(_ event: InteractorEvent) {
-        super.interactorEvent(event)
-
-        switch event {
-        case .receivedMessage(let message):
-            receivedMessage(message)
-        case .messagesUpdated(let messages):
-            messagesUpdated(messages)
-        case .upgradeOffer(let offer, answer: let answer):
-            offerMediaUpgrade(offer, answer: answer)
-        case .typingStatusUpdated(let status):
-            typingStatusUpdated(status)
-        case .engagementTransferring:
-            onEngagementTransferring()
-        case .onLiveToSecureConversationsEngagementTransferring:
-            setChatType(.secureTranscript(upgradedFromChat: true))
-            engagementAction?(.showCloseButton)
-            action?(.refreshAll)
-        case .engagementTransferred:
-            onEngagementTransferred()
-        case let .stateChanged(state):
-            handleInteractorStateChanged(state)
-        default:
-            break
-        }
     }
 }
 
@@ -452,6 +475,7 @@ extension ChatViewModel {
 extension ChatViewModel {
     @MainActor
     private func loadHistory() async -> [ChatMessage] {
+        environment.openTelemetry.logger.i(.chatScreenHistoryLoading)
         let page: CoreSdkClient.ChatHistoryPage
         do {
             page = try await environment.fetchChatHistory()
@@ -460,6 +484,9 @@ extension ChatViewModel {
             page = CoreSdkClient.ChatHistoryPage(messages: [])
         }
         let messages = page.messages
+        environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
+            $0[.messageCount] = .string("\(messages.count)")
+        }
 
         // Store message ids from history,
         // to be able to discard duplicates

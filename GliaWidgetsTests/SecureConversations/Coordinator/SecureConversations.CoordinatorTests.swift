@@ -25,8 +25,23 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
     // Start
     func test_startGeneratesWelcomeViewController() {
         let viewController = coordinator.start() as? SecureConversations.WelcomeViewController
-        
+
         XCTAssertNotNil(viewController)
+    }
+
+    func test_startWelcomeLoadsAttachmentAvailability() async {
+        let isSiteConfigurationFetched = LockIsolated(false)
+        var environment = SecureConversations.Coordinator.Environment.mock
+        environment.fetchSiteConfigurations = {
+            isSiteConfigurationFetched.setValue(true)
+            return try .mock()
+        }
+        let coordinator = createCoordinator(environment: environment)
+
+        _ = coordinator.start()
+        await waitUntil { isSiteConfigurationFetched.value }
+
+        XCTAssertTrue(isSiteConfigurationFetched.value)
     }
 
     func test_socketObservation() {
@@ -132,7 +147,7 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
 
         viewController?.viewModel.delegate?(.pickMedia(.nop, [.image]))
         XCTAssertNotNil(coordinator.selectedPickerController)
-        
+
         switch coordinator.selectedPickerController {
         case .mediaPickerController(let controller):
             XCTAssertEqual(controller.viewModel.source, .library)

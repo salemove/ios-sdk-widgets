@@ -5,8 +5,8 @@ extension AlertViewController {
         with conf: ConfirmationAlertConfiguration,
         link1: @escaping (WebViewController.Link) -> Void,
         link2: @escaping (WebViewController.Link) -> Void,
-        accepted: @escaping () async -> Void,
-        declined: @escaping () async -> Void
+        accepted: @escaping @MainActor () async -> Void,
+        declined: @escaping @MainActor () async -> Void
     ) -> AlertView {
         let alertView = viewFactory.makeAlertView()
         alertView.title = conf.title

@@ -4,19 +4,19 @@ import Foundation
 enum AlertInputType: Equatable {
     case error(
         error: (any Error)?,
-        dismissed: (() async -> Void)? = nil
+        dismissed: (@MainActor () async -> Void)? = nil
     )
     case cameraSettings(dismissed: (() -> Void)? = nil)
-    case endEngagement(confirmed: () async -> Void)
-    case leaveQueue(confirmed: () async -> Void)
+    case endEngagement(confirmed: @MainActor () async -> Void)
+    case leaveQueue(confirmed: @MainActor () async -> Void)
     case liveObservationConfirmation(
         link: (WebViewController.Link) -> Void,
-        accepted: () async -> Void,
-        declined: () async -> Void
+        accepted: @MainActor () async -> Void,
+        declined: @MainActor () async -> Void
     )
     case mediaSourceNotAvailable(dismissed: (() -> Void)? = nil)
     case microphoneSettings(dismissed: (() -> Void)? = nil)
-    case operatorEndedEngagement(action: () async -> Void)
+    case operatorEndedEngagement(action: @MainActor () async -> Void)
     case unsupportedGvaBroadcastError(dismissed: (() -> Void)? = nil)
     case unavailableMessageCenter(dismissed: (() -> Void)? = nil)
     case unavailableMessageCenterForBeingUnauthenticated(dismissed: (() -> Void)? = nil)

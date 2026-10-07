@@ -102,7 +102,7 @@ private extension AlertManager.AlertTypeComposer {
     ///
     func composeErrorAlert(
         error: (any Error)?,
-        dismissed: (() async -> Void)? = nil
+        dismissed: (@MainActor () async -> Void)? = nil
     ) -> AlertType {
         switch error {
         case let queueError as CoreSdkClient.QueueError:
@@ -126,7 +126,7 @@ private extension AlertManager.AlertTypeComposer {
         }
     }
 
-    func queueClosedAlertType(dismissed: (() async -> Void)? = nil) -> AlertType {
+    func queueClosedAlertType(dismissed: (@MainActor () async -> Void)? = nil) -> AlertType {
         logDialogShown(dialog: .queueIsClosed)
         return .message(
             conf: theme.alertConfiguration.operatorsUnavailable,
@@ -140,7 +140,7 @@ private extension AlertManager.AlertTypeComposer {
         )
     }
 
-    func queueFullAlertType(dismissed: (() async -> Void)? = nil) -> AlertType {
+    func queueFullAlertType(dismissed: (@MainActor () async -> Void)? = nil) -> AlertType {
         logDialogShown(dialog: .queueIsClosed)
         environment.log.prefixed(Self.self).info("Show No More Operators Dialog")
         return .message(
@@ -155,7 +155,7 @@ private extension AlertManager.AlertTypeComposer {
         )
     }
 
-    func unexpectedErrorAlertType(dismissed: (() async -> Void)? = nil) -> AlertType {
+    func unexpectedErrorAlertType(dismissed: (@MainActor () async -> Void)? = nil) -> AlertType {
         environment.log.prefixed(Self.self).info("Show Unexpected error Dialog")
         logDialogShown(dialog: .unexpectedError)
         return .message(
@@ -170,7 +170,7 @@ private extension AlertManager.AlertTypeComposer {
         )
     }
 
-    func expiredAccessTokenAlertType(dismissed: (() async -> Void)? = nil) -> AlertType {
+    func expiredAccessTokenAlertType(dismissed: (@MainActor () async -> Void)? = nil) -> AlertType {
         environment.log.prefixed(Self.self).info("Show authentication error Dialog")
         logDialogShown(dialog: .unauthenticatedError)
         return .criticalError(
@@ -272,8 +272,8 @@ private extension AlertManager.AlertTypeComposer {
 
     func liveObservationConfirmationAlertType(
         link: @escaping (WebViewController.Link) -> Void,
-        accepted: @escaping () async -> Void,
-        declined: @escaping () async -> Void
+        accepted: @escaping @MainActor () async -> Void,
+        declined: @escaping @MainActor () async -> Void
     ) -> AlertType {
         logDialogShown(dialog: .liveObservationConfirmation)
         return .liveObservationConfirmation(
@@ -299,7 +299,7 @@ private extension AlertManager.AlertTypeComposer {
         )
     }
 
-    func operatorEndedEngagementAlertType(action: @escaping () async -> Void) -> AlertType {
+    func operatorEndedEngagementAlertType(action: @escaping @MainActor () async -> Void) -> AlertType {
         environment.log.prefixed(Self.self).info("Show Engagement Ended Dialog")
         logDialogShown(dialog: .engagementEnded)
         return .singleAction(
@@ -314,7 +314,7 @@ private extension AlertManager.AlertTypeComposer {
         )
     }
 
-    func leaveQueueAlertType(confirmed: @escaping () async -> Void) -> AlertType {
+    func leaveQueueAlertType(confirmed: @escaping @MainActor () async -> Void) -> AlertType {
         environment.log.prefixed(Self.self).info("Show Exit Queue Dialog")
         logDialogShown(dialog: .leaveQueueConfirmation)
         return .confirmation(
@@ -332,7 +332,7 @@ private extension AlertManager.AlertTypeComposer {
         )
     }
 
-    func endEngagementAlertType(confirmed: @escaping () async -> Void) -> AlertType {
+    func endEngagementAlertType(confirmed: @escaping @MainActor () async -> Void) -> AlertType {
         environment.log.prefixed(Self.self).info("Show End Engagement Dialog")
         logDialogShown(dialog: .leaveEngagementConfirmation)
         return .confirmation(
