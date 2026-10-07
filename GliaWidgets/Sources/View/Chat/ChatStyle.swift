@@ -65,6 +65,10 @@ public class ChatStyle: EngagementStyle {
     /// Style for unavailability to send messages banner view.
     public var sendingMessageUnavailableBannerViewStyle: SendingMessageUnavailableBannerViewStyle
 
+    /// Color of the activity indicator shown while older messages load after the visitor pulls
+    /// down at the top of the chat. `nil` uses the system default.
+    public var olderMessagesIndicatorColor: UIColor?
+
     /// - Parameters:
     ///   - header: Style of the view's header (navigation bar area) when the screen is displaying live chat.
     ///   - connect: Styles for different engagement connection states.

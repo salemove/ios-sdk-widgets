@@ -141,6 +141,14 @@ struct CoreSdkClient {
 
     var fetchChatHistory: FetchChatHistory
 
+    typealias FetchOlderChatHistory = (_ completion: @escaping (Result<[ChatMessage], GliaCoreSDK.GliaCoreError>) -> Void) -> Void
+
+    var fetchOlderChatHistory: FetchOlderChatHistory
+
+    typealias HasOlderChatHistory = () -> Bool
+
+    var hasOlderChatHistory: HasOlderChatHistory
+
     typealias RequestVisitorCode = (_ completion: @escaping (VisitorCodeBlock) -> Void) -> GliaCore.Cancellable
 
     var requestVisitorCode: RequestVisitorCode

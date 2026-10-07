@@ -79,6 +79,7 @@ final class ChatViewTest: XCTestCase {
         coordinatorEnv.log = logger
         coordinatorEnv.createEntryWidget = { _ in .mock() }
         let options: [ChatChoiceCardOption] = [try .mock()]
+        coordinatorEnv.hasOlderChatHistory = { false }
         coordinatorEnv.fetchChatHistory = {
             $0(
                 .success(

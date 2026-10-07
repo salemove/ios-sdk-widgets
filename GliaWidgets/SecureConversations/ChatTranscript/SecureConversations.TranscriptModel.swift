@@ -42,7 +42,7 @@ extension SecureConversations {
             }
         }
 
-        private let isCustomCardSupported: Bool
+        let isCustomCardSupported: Bool
         private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
         private(set) var isViewLoaded: Bool = false
 
@@ -91,6 +91,8 @@ extension SecureConversations {
         let unreadMessages: ObservableValue<Int>
 
         private var markMessagesAsReadCancellables = CancelBag()
+
+        private(set) lazy var olderHistoryLoader = OlderChatHistoryLoader(environment: .create(with: environment))
 
         init(
             isCustomCardSupported: Bool,
@@ -242,6 +244,8 @@ extension SecureConversations {
                 gvaOptionAction(for: option)()
             case let .retryMessageTapped(message):
                 retryMessageSending(message)
+            case .loadOlderHistoryRequested:
+                loadOlderHistory()
             }
         }
 
@@ -618,6 +622,7 @@ extension SecureConversations.TranscriptModel {
                 self.historySection.set(itemsWithDivider)
                 self.action?(.refreshSection(self.historySection.index))
                 self.action?(.scrollToBottom(animated: false))
+                self.action?(.olderHistoryStateUpdated(canLoad: self.olderHistoryLoader.canLoad, isLoading: false))
                 completion(messagesWithUnreadCount.messages)
                 markMessagesAsRead(
                     with: self.hasUnreadMessages && !environment.shouldShowLeaveSecureConversationDialog(.transcriptOpened)

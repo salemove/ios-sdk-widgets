@@ -27,6 +27,8 @@ class ChatView: EngagementView {
     var selectCustomCardOption: ((HtmlMetadata.Option, MessageRenderer.Message.Identifier) -> Void)?
     var gvaButtonTapped: ((GvaOption) -> Void)?
     var retryMessageTapped: ((OutgoingMessage) -> Void)?
+    var loadOlderHistoryRequested: (() -> Void)?
+    let olderHistoryRefreshControl = UIRefreshControl()
     lazy var secureMessagingTopBannerView = SecureMessagingTopBannerView(
         isExpanded: $isTopBannerExpanded,
         environment: .create(with: environment)
@@ -158,6 +160,7 @@ class ChatView: EngagementView {
         tableView.separatorStyle = .none
         tableView.contentInset = Constants.chatTableViewInsets
         tableView.register(cell: ChatItemCell.self)
+        setupOlderHistoryRefreshControl()
         unreadMessageIndicatorView.tapped = { [weak self] in
             self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
                 $0[.buttonName] = .string(OtelButtonNames.newMessagesIndicator.rawValue)

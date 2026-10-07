@@ -457,10 +457,24 @@ extension ChatViewController {
             view?.hideEntryWidget()
         case let .setMessageEntryConnected(isConnected):
             view?.messageEntryView.isConnected = isConnected
+        case let .olderHistoryStateUpdated(canLoad, isLoading):
+            updateOlderHistoryState(canLoad: canLoad, isLoading: isLoading, view: view)
+        case let .prependRows(count, section):
+            view?.prependRows(count, to: section)
         }
         renderProps()
     }
     // swiftlint:enable function_body_length
+
+    private func updateOlderHistoryState(canLoad: Bool, isLoading: Bool, view: ChatView?) {
+        // Bound here rather than in `bind(viewModel:to:)`: the pull gesture only exists once a
+        // state update has attached the refresh control, and reading `viewModel` at pull time
+        // follows a switch between the chat and transcript models.
+        view?.loadOlderHistoryRequested = { [weak self] in
+            self?.viewModel.event(.loadOlderHistoryRequested)
+        }
+        view?.setOlderHistoryState(canLoad: canLoad, isLoading: isLoading)
+    }
 }
 
 private enum CurrentChatModelType {

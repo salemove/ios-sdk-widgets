@@ -35,6 +35,8 @@ extension CoreSdkClient {
             return .mock
         },
         fetchChatHistory: { _ in },
+        fetchOlderChatHistory: { _ in },
+        hasOlderChatHistory: { false },
         requestVisitorCode: { _ in
             fail("\(Self.self).requestVisitorCode")
             return .init()
