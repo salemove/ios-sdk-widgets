@@ -4,7 +4,7 @@ extension AlertViewController {
     func makeSingleActionAlertView(
         with conf: SingleActionAlertConfiguration,
         accessibilityIdentifier: String,
-        actionTapped: @escaping () async -> Void
+        actionTapped: @escaping @MainActor () async -> Void
     ) -> AlertView {
         let alertView = viewFactory.makeAlertView()
         alertView.title = conf.title

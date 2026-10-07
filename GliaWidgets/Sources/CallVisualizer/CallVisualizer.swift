@@ -16,6 +16,7 @@ public final class CallVisualizer {
     private var environment: Environment
     var delegate: ((Action) -> Void)?
     private var interactorSubscription: AnyCancellable?
+    private var pendingVisitorCodeAlertTask: Task<Void, Never>?
     private(set) var activeInteractor: Interactor? {
         willSet {
             // try restoring video if initial interactor has state 'engaged'
@@ -71,8 +72,13 @@ public final class CallVisualizer {
             methodParams: ["source"]
         )
         environment.log.prefixed(Self.self).info("Show Visitor Code Dialog")
-        Task { @MainActor in
-            await coordinator.showVisitorCodeViewController(by: .alert(source))
+        pendingVisitorCodeAlertTask?.cancel()
+        pendingVisitorCodeAlertTask = Task { @MainActor [weak self] in
+            // `hideVisitorCodeViewController` cancels the task if called before presentation.
+            // Once presenting, the handle is cleared so hiding dismisses the alert instead.
+            guard let self, !Task.isCancelled else { return }
+            self.pendingVisitorCodeAlertTask = nil
+            await self.coordinator.showVisitorCodeViewController(by: .alert(source))
         }
     }
 
@@ -84,6 +90,8 @@ public final class CallVisualizer {
             methodName: "hideVisitorCodeViewController"
         )
         environment.log.prefixed(Self.self).info("Hide Visitor Code Dialog")
+        pendingVisitorCodeAlertTask?.cancel()
+        pendingVisitorCodeAlertTask = nil
         coordinator.closeVisitorCode(event: .closeRequested)
     }
 

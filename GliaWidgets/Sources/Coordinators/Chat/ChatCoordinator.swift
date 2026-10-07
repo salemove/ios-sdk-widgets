@@ -225,7 +225,6 @@ extension ChatCoordinator {
         switch event {
         case let .liveChatEngagementUpgradedToSecureMessaging(chatModel):
             let transcriptModel = self.transcriptModel(with: { [weak controller] in controller })
-            await transcriptModel.checkSecureConversationsAvailability()
             controller?.swapAndBindViewModel(.transcript(transcriptModel))
             await transcriptModel.migrate(from: chatModel)
         }

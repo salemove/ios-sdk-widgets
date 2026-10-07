@@ -17,6 +17,7 @@ final class QueuesMonitor {
     }
 
     private var queueUpdatesTask: Task<Void, Never>?
+    private var monitoringRequestId = UUID()
     private var _observedQueues: LockIsolated<[Queue]> = .init([])
 
     init(environment: Environment) {
@@ -56,18 +57,22 @@ final class QueuesMonitor {
     ///   - fetchedQueuesCompletion: Returns fetched queues result for given `queuesIds`
     ///   if no queues were found among site's queues returns default queues.
     ///
+    @MainActor
     func fetchAndMonitorQueues(queuesIds: [String] = []) async throws -> [Queue] {
         stopMonitoring()
-        do {
-            let queues = try await fetchQueues(queuesIds: queuesIds)
+        let requestId = UUID()
+        monitoringRequestId = requestId
+        let queues = try await fetchQueues(queuesIds: queuesIds)
+        // A newer monitoring request was made while queues were being fetched,
+        // so that request is responsible for observing updates.
+        if monitoringRequestId == requestId {
             observeQueuesUpdates(queues)
-            return queues
-        } catch {
-            throw error
         }
+        return queues
     }
 
     /// Stops monitoring queues.
+    @MainActor
     func stopMonitoring() {
         queueUpdatesTask?.cancel()
         queueUpdatesTask = nil
@@ -75,12 +80,6 @@ final class QueuesMonitor {
 }
 
 private extension QueuesMonitor {
-    func setState(_ state: State) {
-        Task { @MainActor [weak self] in
-            self?.state = state
-        }
-    }
-
     func evaluateQueues(queuesIds: [String], fetchedQueues: [Queue]?) -> [Queue] {
         guard let queues = fetchedQueues, !queues.isEmpty else {
             environment.logger.warning("Setting up queues. Site has no queues.")
@@ -118,21 +117,37 @@ private extension QueuesMonitor {
         }
     }
 
+    @MainActor
     func observeQueuesUpdates(_ queues: [Queue]) {
+        stopMonitoring()
         let queuesIds = queues.map { $0.id }
-        queueUpdatesTask = Task { [weak self, environment] in
+        let updates = environment.queueUpdatesStream(queuesIds)
+        queueUpdatesTask = Task { @MainActor [weak self] in
             do {
-                for try await queue in environment.queueUpdatesStream(queuesIds) {
-                    guard !Task.isCancelled else { break }
+                for try await queue in updates {
+                    guard !Task.isCancelled else { return }
                     guard let self else { return }
                     self.updateQueue(queue)
-                    self.setState(.updated(self.observedQueues))
+                    self.state = .updated(self.observedQueues)
                 }
-            } catch is CancellationError {
-                return
             } catch {
-                self?.setState(.failed(error))
+                guard !Task.isCancelled, let self else { return }
+                self.handleQueueUpdatesFailure(error)
             }
+        }
+    }
+
+    @MainActor
+    func handleQueueUpdatesFailure(_ error: Error) {
+        switch error {
+        case is CancellationError:
+            return
+        case let error as CoreSdkClient.GliaCoreError where error.error as? CoreSdkClient.GeneralError == .internalError:
+            // Core SDK fails the subscription with an internal error when the socket is not
+            // connected yet. Fetched queues stay valid, so this must not surface as a failure.
+            environment.logger.warning("Setting up queues. Queue updates are unavailable: \(error.reason)")
+        default:
+            state = .failed(error)
         }
     }
 }

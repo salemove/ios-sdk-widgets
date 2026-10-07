@@ -51,6 +51,26 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
         XCTAssertTrue(viewController.presentedViewController is CallVisualizer.VisitorCodeViewController)
     }
 
+    @MainActor
+    func test_declineEngagementEndsCoordinatorWhenEndingEngagementFails() async {
+        var interactorEnv = Interactor.Environment.mock
+        interactorEnv.coreSdk.endEngagement = {
+            throw CoreSdkClient.GliaCoreError.mock()
+        }
+        let interactor = Interactor.mock(environment: interactorEnv)
+        let presentingViewController = UIViewController()
+        var environment = CallVisualizer.Coordinator.Environment.mock
+        environment.interactorPublisher = .mock(interactor)
+        environment.presenter = .init(presenter: { presentingViewController })
+        coordinator = .init(environment: environment)
+        coordinator.showVideoCallViewController()
+        XCTAssertFalse(presentingViewController.view.subviews.isEmpty)
+
+        coordinator.declineEngagement()
+
+        await waitUntil { presentingViewController.view.subviews.isEmpty }
+    }
+
     func test_handleAcceptedUpgrade() {
         var calledEvents: [CallVisualizer.Coordinator.DelegateEvent] = []
         coordinator.environment.eventHandler = { calledEvents.append($0) }

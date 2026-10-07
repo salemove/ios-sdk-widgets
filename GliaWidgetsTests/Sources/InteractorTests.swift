@@ -283,7 +283,7 @@ class InteractorTests: XCTestCase {
                 return
             }
         }
-        
+
         try await interactor.endSession()
 
         XCTAssertEqual(callbacks, [.stateChangedToEnded])
@@ -352,7 +352,7 @@ class InteractorTests: XCTestCase {
 
         XCTAssertEqual(callbacks, [.cancelQueueTicket])
     }
-    
+
     func test_endEngagementCallsEndEngagementOnCoreSdkClient() async throws {
         enum Callback: Equatable {
             case endEngagement
@@ -481,7 +481,7 @@ class InteractorTests: XCTestCase {
             reason: "Expired access token",
             error: CoreSdkClient.Authentication.Error.expiredAccessToken
         )
-        interactorEnv.coreSdk.sendMessageWithMessagePayload = { payload in
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _ in
             throw expectedError
         }
         interactorEnv.gcd = .live
@@ -502,7 +502,7 @@ class InteractorTests: XCTestCase {
 
         XCTAssertEqual(callbacks, [.expiredAccessToken])
     }
-    
+
     func test_onMediaUpgradeOfferSendsMediaUpgradeOfferEvent() throws {
         enum Callback: Equatable {
             case mediaUpgradeOffered
@@ -582,7 +582,7 @@ class InteractorTests: XCTestCase {
 
         items.forEach(test)
     }
-    
+
     func test_endAfterEnqueuedEngagementSetsEndedState() async {
         let mockQueueTicket = CoreSdkClient.QueueTicket.mock
         let interactor = makeEnqueuingSetupInteractor(
@@ -623,7 +623,7 @@ class InteractorTests: XCTestCase {
         XCTAssertEqual(interactor.state, .none)
         XCTAssertEqual(interactor.endedEngagement, nil)
     }
-    
+
     func test_endSessionMakesCleanupWhenEngagementEndedForFollowUp() async throws {
         let mockQueueTicket = CoreSdkClient.QueueTicket.mock
         let mockEngagement = CoreSdkClient.Engagement.mock(id: UUID.mock.uuidString)
@@ -671,7 +671,7 @@ class InteractorTests: XCTestCase {
         XCTAssertEqual(interactor.state, .none)
         XCTAssertEqual(interactor.endedEngagement, nil)
     }
-    
+
     func test_interactorFailShouldRefetchAndRestartQueuesMonitor() async {
         enum Call {
             case getQueues
@@ -684,7 +684,7 @@ class InteractorTests: XCTestCase {
             calls.append(.getQueues)
             return [.mock()]
         }
-        
+
         queuesMonitor.environment.queueUpdatesStream = { _ in
             calls.append(.subscribeForUpdates)
             return AsyncThrowingStream { continuation in
@@ -692,7 +692,7 @@ class InteractorTests: XCTestCase {
                 continuation.finish()
             }
         }
-        
+
         interactor.environment.queuesMonitor = queuesMonitor
 
         interactor.fail(error: .mock())
@@ -782,5 +782,114 @@ extension InteractorTests {
         // Both current and ended engagement should be set
         XCTAssertEqual(interactor.currentEngagement?.id, mockEngagement.id)
         XCTAssertEqual(interactor.endedEngagement?.id, mockEngagement.id)
+    }
+
+    func test_startDoesNotOverwriteEndedStateWhenEngagementEndsDuringOperatorRequest() async {
+        var interactor: Interactor!
+        var interactorEnv = Interactor.Environment.failing
+        interactorEnv.coreSdk.requestEngagedOperator = {
+            await MainActor.run {
+                interactor.state = .ended(.byOperator)
+            }
+            return [.mock()]
+        }
+        interactor = Interactor.mock(environment: interactorEnv)
+        interactor.state = .enqueueing(.chat)
+
+        await interactor.start()
+
+        XCTAssertEqual(interactor.state, .ended(.byOperator))
+    }
+
+    func test_startSetsEngagedStateWithoutOperatorWhenOperatorRequestFails() async {
+        var interactorEnv = Interactor.Environment.failing
+        var log = CoreSdkClient.Logger.failing
+        log.prefixedClosure = { _ in log }
+        log.warningClosure = { _, _, _, _ in }
+        interactorEnv.log = log
+        interactorEnv.coreSdk.requestEngagedOperator = {
+            throw CoreSdkClient.GliaCoreError.mock()
+        }
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.state = .enqueueing(.chat)
+
+        await interactor.start()
+
+        XCTAssertEqual(interactor.state, .engaged(nil))
+    }
+
+    func test_enqueueForEngagementCancellationDoesNotEndEngagementWithError() async {
+        var interactorEnv = Interactor.Environment.failing
+        var log = CoreSdkClient.Logger.failing
+        log.prefixedClosure = { _ in log }
+        log.infoClosure = { _, _, _, _ in }
+        interactorEnv.log = log
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in
+            throw CancellationError()
+        }
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.state = .enqueueing(.chat)
+
+        do {
+            try await interactor.enqueueForEngagement(engagementKind: .chat, replaceExisting: false)
+            XCTFail("Enqueueing should throw")
+        } catch {
+            XCTAssertTrue(error is CancellationError)
+        }
+
+        XCTAssertEqual(interactor.state, .enqueueing(.chat))
+    }
+
+    func test_enqueueForEngagementFailureAfterVisitorEndedKeepsEndedByVisitorState() async {
+        var interactor: Interactor!
+        var interactorEnv = Interactor.Environment.failing
+        var log = CoreSdkClient.Logger.failing
+        log.prefixedClosure = { _ in log }
+        log.infoClosure = { _, _, _, _ in }
+        interactorEnv.log = log
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in
+            await MainActor.run {
+                interactor.state = .ended(.byVisitor)
+            }
+            throw CoreSdkClient.GliaCoreError.mock()
+        }
+        interactor = Interactor.mock(environment: interactorEnv)
+        interactor.state = .enqueueing(.chat)
+
+        try? await interactor.enqueueForEngagement(engagementKind: .chat, replaceExisting: false)
+
+        XCTAssertEqual(interactor.state, .ended(.byVisitor))
+    }
+
+    func test_enqueueForEngagementCancelsTicketCreatedAfterVisitorEndedSession() async throws {
+        enum Call: Equatable {
+            case queueForEngagement
+            case cancelQueueTicket
+        }
+        var calls: [Call] = []
+        var interactor: Interactor!
+        let ticket = CoreSdkClient.QueueTicket.mock
+        var interactorEnv = Interactor.Environment.failing
+        var log = CoreSdkClient.Logger.failing
+        log.prefixedClosure = { _ in log }
+        log.infoClosure = { _, _, _, _ in }
+        interactorEnv.log = log
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in
+            calls.append(.queueForEngagement)
+            try await interactor.endSession()
+            return ticket
+        }
+        interactorEnv.coreSdk.cancelQueueTicket = { cancelledTicket in
+            XCTAssertTrue(cancelledTicket === ticket)
+            calls.append(.cancelQueueTicket)
+            return true
+        }
+        interactor = Interactor.mock(environment: interactorEnv)
+        interactor.state = .enqueueing(.chat)
+
+        try await interactor.enqueueForEngagement(engagementKind: .chat, replaceExisting: false)
+
+        XCTAssertEqual(calls, [.queueForEngagement, .cancelQueueTicket])
+        XCTAssertEqual(interactor.state, .ended(.byVisitor))
     }
 }
