@@ -84,7 +84,7 @@ class FileUpload {
                 progress.value = $0.fractionCompleted
             }
         }
-        let onCompletion: (FileUploadResult) -> Void = { [weak self] result in
+        let onCompletion: @MainActor (FileUploadResult) async -> Void = { [weak self] result in
             guard let self else { return }
             switch result {
             case let .success(engagementFile):
@@ -93,7 +93,8 @@ class FileUpload {
                 self.environment.openTelemetry.logger.i(.chatScreenFileUploaded) {
                     $0[.fileId] = .string(engagementFile.id)
                 }
-                self.storage.store(from: self.localFile.url, for: storageID)
+                await self.storage.storeInBackground(from: self.localFile.url, for: storageID)
+                guard !Task.isCancelled else { return }
                 self.state.value = .uploaded(file: engagementFile)
             case let .failure(error):
                 if let err = error as? CoreSdkClient.SalemoveError {
@@ -110,12 +111,12 @@ class FileUpload {
             do {
                 let engagementFile = try await uploadFile.uploadFile(file, progress: onProgress)
                 guard !Task.isCancelled else { return }
-                onCompletion(.success(engagementFile))
+                await onCompletion(.success(engagementFile))
             } catch is CancellationError {
                 return
             } catch {
                 guard !Task.isCancelled else { return }
-                onCompletion(.failure(error))
+                await onCompletion(.failure(error))
             }
         }
     }

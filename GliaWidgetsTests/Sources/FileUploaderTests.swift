@@ -3,21 +3,27 @@ import XCTest
 
 class FileUploaderTests: XCTestCase {
     @MainActor
-    func test_uploadCompletionUpdatesStorageOnMainThread() async {
+    func test_uploadStoresOffMainBeforePublishingCompletionOnMain() async {
         let stored = expectation(description: "Uploaded file stored")
+        let completed = expectation(description: "Upload completion published")
         var fileManager = FoundationBased.FileManager.mock
         fileManager.copyItemAtPath = { _, _ in
-            XCTAssertTrue(Thread.isMainThread)
+            XCTAssertFalse(Thread.isMainThread)
             stored.fulfill()
         }
         let storage = FileSystemStorage.mock(environment: .mock(fileManager: fileManager))
         var environment = FileUpload.Environment.mock
         environment.uploadFile = .toEngagement { _, _ in try .mock() }
         let upload = FileUpload.mock(storage: storage, environment: environment)
+        upload.state.addObserver(self) { state, _ in
+            guard case .uploaded = state else { return }
+            XCTAssertTrue(Thread.isMainThread)
+            completed.fulfill()
+        }
 
         upload.startUpload()
 
-        await fulfillment(of: [stored], timeout: 1)
+        await fulfillment(of: [stored, completed], timeout: 1, enforceOrder: true)
         withExtendedLifetime(upload) {}
     }
 
