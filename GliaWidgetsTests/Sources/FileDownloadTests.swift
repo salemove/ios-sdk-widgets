@@ -6,6 +6,36 @@ class FileDownloadTests: XCTestCase {
     typealias FetchFile = FileDownload.Environment.FetchFile
 
     @MainActor
+    func test_downloadStoresOffMainBeforePublishingCompletionOnMain() async {
+        let stored = expectation(description: "Downloaded file stored")
+        let completed = expectation(description: "Download completion published")
+        let expectedData = Data("attachment".utf8)
+        var data = FoundationBased.Data.mock
+        data.writeDataToUrl = { receivedData, _ in
+            XCTAssertFalse(Thread.isMainThread)
+            XCTAssertEqual(receivedData, expectedData)
+            stored.fulfill()
+        }
+        let storage = FileSystemStorage.mock(environment: .mock(data: data))
+        var environment = FileDownload.Environment.mock
+        environment.fetchFile = { _, _ in .init(data: expectedData) }
+        let download = FileDownload.mock(
+            file: .mock(id: "file", url: URL(string: "https://example.test/file"), name: "file"),
+            storage: storage,
+            environment: environment
+        )
+        download.state.addObserver(self) { state, _ in
+            guard case .downloaded = state else { return }
+            XCTAssertTrue(Thread.isMainThread)
+            completed.fulfill()
+        }
+
+        await download.startDownload()
+
+        await fulfillment(of: [stored, completed], timeout: 1, enforceOrder: true)
+    }
+
+    @MainActor
     func test_repeatedStartDoesNotDownloadAnInFlightOrCompletedFileAgain() async {
         let started = expectation(description: "Download started")
         var continuation: CheckedContinuation<CoreSdkClient.EngagementFileData, Never>?

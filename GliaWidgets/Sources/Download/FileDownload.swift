@@ -112,7 +112,7 @@ class FileDownload {
                 with: url,
                 environment: .create(with: environment)
             )
-            storage.store(fileData.data, for: storageID)
+            await storage.storeInBackground(fileData.data, for: storageID)
             state.value = .downloaded(file)
         } catch let error as CoreSdkClient.GliaCoreError {
             state.value = .error(Error(with: error))
