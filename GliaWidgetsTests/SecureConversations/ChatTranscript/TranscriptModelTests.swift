@@ -434,7 +434,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.getQueues = { _ in }
         modelEnv.maximumUploads = { 2 }
         modelEnv.fetchChatHistory = { callback in
-            callback(.success([.mock(sender: .operator)]))
+            callback(.success(.init(messages: [.mock(sender: .operator)])))
         }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.secureConversations.getUnreadMessageCount = { callback in
@@ -812,7 +812,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { _ in }
         modelEnv.loadChatMessagesFromHistory = { true }
-        modelEnv.fetchChatHistory = { $0(.success([.mock(), .mock(), .mock()])) }
+        modelEnv.fetchChatHistory = { $0(.success(.init(messages: [.mock(), .mock(), .mock()]))) }
         modelEnv.secureConversations.getUnreadMessageCount = { $0(.success(5)) }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.startSocketObservation = {}
@@ -871,7 +871,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { _ in }
         modelEnv.loadChatMessagesFromHistory = { true }
-        modelEnv.fetchChatHistory = { $0(.success([.mock(), .mock(), .mock()])) }
+        modelEnv.fetchChatHistory = { $0(.success(.init(messages: [.mock(), .mock(), .mock()]))) }
         modelEnv.secureConversations.getUnreadMessageCount = { $0(.success(5)) }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.startSocketObservation = {}
@@ -924,7 +924,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.createFileUploadListModel = { _ in fileUploadListModel }
         modelEnv.getQueues = { _ in }
         modelEnv.loadChatMessagesFromHistory = { true }
-        modelEnv.fetchChatHistory = { $0(.success([.mock(), .mock(), .mock()])) }
+        modelEnv.fetchChatHistory = { $0(.success(.init(messages: [.mock(), .mock(), .mock()]))) }
         modelEnv.secureConversations.getUnreadMessageCount = { $0(.success(5)) }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.startSocketObservation = {}
@@ -1006,7 +1006,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
             return .mock
         }
         modelEnv.fetchChatHistory = { completion in
-            completion(.success([.mock()]))
+            completion(.success(.init(messages: [.mock()])))
         }
         modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
         let scheduler = CoreSdkClient.ReactiveSwift.TestScheduler()

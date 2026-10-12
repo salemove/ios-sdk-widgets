@@ -2,6 +2,14 @@ import Foundation
 
 // MARK: Older history
 extension SecureConversations.TranscriptModel {
+    /// Moves the older-page key along with the history items copied from the other model, and
+    /// clears it there so a load still in flight in that model is dropped.
+    func takeOverOlderHistory(from source: OlderChatHistoryLoader) {
+        olderHistoryLoader.replaceOlderPage(source.olderPage)
+        source.replaceOlderPage(nil)
+        action?(.olderHistoryStateUpdated(canLoad: olderHistoryLoader.canLoad, isLoading: false))
+    }
+
     func loadOlderHistory() {
         guard olderHistoryLoader.canStartLoading else { return }
         environment.openTelemetry.logger.i(.chatScreenHistoryLoading)

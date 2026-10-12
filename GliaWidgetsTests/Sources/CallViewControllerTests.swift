@@ -19,7 +19,7 @@ class CallViewControllerTests: XCTestCase {
         var calls: [Call] = []
 
         var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
+            completion(.success(.init(messages: [])))
         }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
@@ -74,7 +74,7 @@ class CallViewControllerTests: XCTestCase {
         var calls: [Call] = []
 
         var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
+            completion(.success(.init(messages: [])))
         }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: true,
@@ -128,7 +128,7 @@ class CallViewControllerTests: XCTestCase {
         var calls: [Call] = []
 
         var viewModelEnv = ChatViewModel.Environment.failing { completion in
-            completion(.success([]))
+            completion(.success(.init(messages: [])))
         }
         let site = try CoreSdkClient.Site.mock(
             mobileObservationEnabled: false,

@@ -53,8 +53,7 @@ class ChatViewModelTests: XCTestCase {
                 uuid: { .mock },
                 uiApplication: .mock,
                 fetchChatHistory: { _ in },
-                fetchOlderChatHistory: { _ in },
-                hasOlderChatHistory: { false },
+                fetchOlderChatHistory: { _, _ in },
                 fileUploadListStyle: .mock,
                 createFileUploadListModel: { _ in
                     .mock()
@@ -589,7 +588,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fetchSiteConfigurations = { _ in }
         let expectedMessageId = "expected_message_id".uppercased()
         viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([.mock(id: expectedMessageId)]))
+            callback(.success(.init(messages: [.mock(id: expectedMessageId)])))
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
@@ -606,7 +605,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fetchSiteConfigurations = { _ in }
         let expectedMessageId = "expected_message_id".uppercased()
         viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([.mock(id: expectedMessageId)]))
+            callback(.success(.init(messages: [.mock(id: expectedMessageId)])))
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
@@ -629,7 +628,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fetchSiteConfigurations = { _ in }
         let expectedMessageId = "expected_message_id"
         viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([.mock(id: expectedMessageId)]))
+            callback(.success(.init(messages: [.mock(id: expectedMessageId)])))
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
@@ -683,7 +682,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fetchSiteConfigurations = { _ in }
         let expectedMessageId = "expected_message_id"
         viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([]))
+            callback(.success(.init(messages: [])))
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
         let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
@@ -710,7 +709,7 @@ class ChatViewModelTests: XCTestCase {
         let messageIdSuffix = "1D_123"
         let expectedMessageId = "expected_message_id"
         viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([]))
+            callback(.success(.init(messages: [])))
         }
         viewModelEnv.createSendMessagePayload = {
             .mock(messageIdSuffix: messageIdSuffix, content: $0, attachment: $1)
@@ -770,7 +769,7 @@ class ChatViewModelTests: XCTestCase {
         let messageIdSuffix = "1D_123"
         let expectedMessageId = "expected_message_id"
         viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([]))
+            callback(.success(.init(messages: [])))
         }
         viewModelEnv.createSendMessagePayload = {
             .mock(messageIdSuffix: messageIdSuffix, content: $0, attachment: $1)
@@ -826,7 +825,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([]))
+            callback(.success(.init(messages: [])))
         }
         viewModelEnv.createEntryWidget = { _ in .mock() }
 
@@ -1275,7 +1274,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fetchSiteConfigurations = { _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([.mock()]))
+            callback(.success(.init(messages: [.mock()])))
         }
         viewModelEnv.getNonTransferredSecureConversationEngagement = { nil }
 
@@ -1307,7 +1306,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fetchSiteConfigurations = { _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([]))
+            callback(.success(.init(messages: [])))
         }
         viewModelEnv.getNonTransferredSecureConversationEngagement = { nil }
 
@@ -1338,7 +1337,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.fetchSiteConfigurations = { _ in }
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([.mock()]))
+            callback(.success(.init(messages: [.mock()])))
         }
         viewModelEnv.getNonTransferredSecureConversationEngagement = { .mock() }
 
@@ -1451,7 +1450,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([]))
+            callback(.success(.init(messages: [])))
         }
         viewModelEnv.markUnreadMessagesDelay = { .zero }
         viewModelEnv.getCurrentEngagement = { .mock(actionOnEnd: .retain) }
@@ -1485,7 +1484,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([]))
+            callback(.success(.init(messages: [])))
         }
         viewModelEnv.markUnreadMessagesDelay = { .zero }
         viewModelEnv.getCurrentEngagement = { .mock(actionOnEnd: .showSurvey) }
@@ -1519,7 +1518,7 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.loadChatMessagesFromHistory = { true }
         viewModelEnv.fetchSiteConfigurations = { _ in }
         viewModelEnv.fetchChatHistory = { callback in
-            callback(.success([]))
+            callback(.success(.init(messages: [])))
         }
         viewModelEnv.markUnreadMessagesDelay = { .zero }
         viewModelEnv.getCurrentEngagement = { .mock(actionOnEnd: .retain) }

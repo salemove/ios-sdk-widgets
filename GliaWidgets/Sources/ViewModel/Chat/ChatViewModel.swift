@@ -70,7 +70,7 @@ class ChatViewModel: EngagementViewModel {
 
     private(set) var entryWidget: EntryWidget?
 
-    private lazy var olderHistoryLoader = OlderChatHistoryLoader(environment: .create(with: environment))
+    private(set) lazy var olderHistoryLoader = OlderChatHistoryLoader(environment: .create(with: environment))
 
     // swiftlint:disable function_body_length
     init(
@@ -417,7 +417,8 @@ extension ChatViewModel {
         environment.openTelemetry.logger.i(.chatScreenHistoryLoading)
         environment.fetchChatHistory { [weak self] result in
             guard let self else { return }
-            let messages = (try? result.get()) ?? []
+            let page = (try? result.get()) ?? CoreSdkClient.ChatHistoryPage(messages: [])
+            let messages = page.messages
             environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
                 $0[.messageCount] = .string("\(messages.count)")
             }
@@ -459,6 +460,7 @@ extension ChatViewModel {
             self.historySection.set(items)
             self.action?(.refreshSection(self.historySection.index))
             self.action?(.scrollToBottom(animated: false))
+            self.olderHistoryLoader.replaceOlderPage(page.olderPage)
             self.action?(.olderHistoryStateUpdated(canLoad: self.olderHistoryLoader.canLoad, isLoading: false))
             completion(messages)
         }

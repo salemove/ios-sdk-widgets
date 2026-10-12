@@ -1,7 +1,7 @@
 #if DEBUG
 import Foundation
 import UIKit
-import GliaCoreSDK
+@_spi(GliaWidgets) import GliaCoreSDK
 
 // swiftlint:disable function_body_length
 extension ChatViewController {
@@ -44,7 +44,6 @@ extension ChatViewController {
     // MARK: - Messages from Chat Storage
     static func mockHistoryMessagesScreen(hasOlderChatHistory: Bool = false) -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
-        chatViewModelEnv.hasOlderChatHistory = { hasOlderChatHistory }
         var fileManager = FoundationBased.FileManager.mock
         fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         chatViewModelEnv.fileManager = fileManager
@@ -192,7 +191,8 @@ extension ChatViewController {
                 downloads: []
             )
         ]
-        chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
+        let olderPage = hasOlderChatHistory ? CoreSdkClient.OlderChatHistoryPage(url: "/api/v2/interactions/participants?p=mock") : nil
+        chatViewModelEnv.fetchChatHistory = { $0(.success(.init(messages: messages, olderPage: olderPage))) }
         let chatViewModel = ChatViewModel.mock(environment: chatViewModelEnv)
         var factoryEnv = ViewFactory.Environment.mock
         factoryEnv.data.dataWithContentsOfFileUrl = { _ in UIImage.mock.pngData() ?? Data() }
@@ -207,7 +207,7 @@ extension ChatViewController {
     static func mockVisitorFileUploadStates() throws -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
-        chatViewModelEnv.fetchChatHistory = { $0(.success([])) }
+        chatViewModelEnv.fetchChatHistory = { $0(.success(.init(messages: []))) }
         var interEnv = Interactor.Environment.mock
         interEnv.coreSdk.configureWithConfiguration = { _, callback in
             callback(.success(()))
@@ -309,7 +309,7 @@ extension ChatViewController {
                 downloads: []
             )
         ]
-        chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
+        chatViewModelEnv.fetchChatHistory = { $0(.success(.init(messages: messages))) }
 
         var viewFactoryEnv = ViewFactory.Environment.mock
         viewFactoryEnv.imageViewCache.getImageForKey = { _ in UIImage.mock }
@@ -357,7 +357,7 @@ extension ChatViewController {
             )
         ]
 
-        chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
+        chatViewModelEnv.fetchChatHistory = { $0(.success(.init(messages: messages))) }
 
         var viewFactoryEnv = ViewFactory.Environment.mock
         viewFactoryEnv.imageViewCache.getImageForKey = { _ in UIImage.mock }
@@ -403,7 +403,7 @@ extension ChatViewController {
             )
         ]
 
-        chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
+        chatViewModelEnv.fetchChatHistory = { $0(.success(.init(messages: messages))) }
 
         var viewFactoryEnv = ViewFactory.Environment.mock
         viewFactoryEnv.imageViewCache.getImageForKey = { _ in nil }
@@ -449,7 +449,7 @@ extension ChatViewController {
             )
         ]
 
-        chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
+        chatViewModelEnv.fetchChatHistory = { $0(.success(.init(messages: messages))) }
 
         var viewFactoryEnv = ViewFactory.Environment.mock
         viewFactoryEnv.imageViewCache.getImageForKey = { _ in UIImage.mock }
@@ -472,7 +472,7 @@ extension ChatViewController {
     static func mockVisitorFileDownloadStates(completion: ([ChatMessage]) -> Void) throws -> ChatViewController {
         var chatViewModelEnv = ChatViewModel.Environment.mock
         chatViewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
-        chatViewModelEnv.fetchChatHistory = { $0(.success([])) }
+        chatViewModelEnv.fetchChatHistory = { $0(.success(.init(messages: []))) }
         let messages: [ChatMessage] =
         (0 ..< 4).map { idx in
             ChatMessage.mock(
@@ -502,7 +502,7 @@ extension ChatViewController {
                 downloads: []
             )
         }
-        chatViewModelEnv.fetchChatHistory = { $0(.success(messages)) }
+        chatViewModelEnv.fetchChatHistory = { $0(.success(.init(messages: messages))) }
         var interEnv = Interactor.Environment.mock
         interEnv.coreSdk.configureWithConfiguration = { _, callback in
             callback(.success(()))
