@@ -90,13 +90,14 @@ extension SecureConversationsTranscriptModelTests {
         XCTAssertEqual(withoutKey.spy.olderHistoryStates.last, .init(canLoad: false, isLoading: false))
     }
 
-    func test_loadHistoryFailureLeavesNoKey() {
+    func test_loadHistoryFailureLeavesNoKeyAndDetachesPullToLoad() {
         let result = loadHistoryInTranscriptModel(
             olderPage: nil,
             fetchChatHistory: { $0(.failure(CoreSdkClient.GliaCoreError(reason: "offline"))) }
         )
 
         XCTAssertNil(result.model.olderHistoryLoader.olderPage)
+        XCTAssertEqual(result.spy.olderHistoryStates, [.init(canLoad: false, isLoading: false)])
     }
 
     func test_messagesWithUnreadCountPassesOlderPageThrough() {

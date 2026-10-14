@@ -1,4 +1,5 @@
 import Foundation
+import GliaCoreSDK
 
 /// Loads older pages of chat history for the chat and transcript models, keeping at most one
 /// request in flight. Holds the key for the next older page; the Core SDK keeps no paging state.
@@ -6,6 +7,7 @@ final class OlderChatHistoryLoader {
     struct Environment {
         var fetchOlderChatHistory: CoreSdkClient.FetchOlderChatHistory
         var log: CoreSdkClient.Logger
+        @Dependency(\.widgets.openTelemetry) var openTelemetry: OpenTelemetry
     }
 
     private let environment: Environment
@@ -53,6 +55,44 @@ final class OlderChatHistoryLoader {
                 environment.log.warning("Older chat history load failed: \(error)")
                 completion(nil)
             }
+        }
+    }
+}
+
+extension OlderChatHistoryLoader {
+    /// Loads the next older page and prepends the messages not shown yet to `section`, reporting
+    /// the refresh control state and the prepended rows through `action`, as both the chat and
+    /// transcript models need.
+    /// - Parameters:
+    ///   - knownMessageIds: Uppercased ids of the messages already shown, so they are not added again.
+    ///   - makeItem: Builds the chat item for an older message, or returns `nil` to skip it.
+    ///   - didPrependMessages: Called with the older messages that were not known before.
+    func loadOlderItems(
+        into section: Section<ChatItem>,
+        knownMessageIds: @escaping () -> Set<String>,
+        makeItem: @escaping (ChatMessage) -> ChatItem?,
+        didPrependMessages: @escaping ([ChatMessage]) -> Void = { _ in },
+        action: @escaping (ChatViewModel.Action) -> Void
+    ) {
+        guard canStartLoading else { return }
+        environment.openTelemetry.logger.i(.chatScreenHistoryLoading)
+        action(.olderHistoryStateUpdated(canLoad: true, isLoading: true))
+        load { [weak self, weak section] messages in
+            guard let self, let section else { return }
+            if let messages {
+                environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
+                    $0[.messageCount] = .string("\(messages.count)")
+                }
+                let known = knownMessageIds()
+                let olderMessages = messages.filter { !known.contains($0.id.uppercased()) }
+                didPrependMessages(olderMessages)
+                let items = olderMessages.compactMap(makeItem)
+                if !items.isEmpty {
+                    section.prepend(items)
+                    action(.prependRows(items.count, to: section.index))
+                }
+            }
+            action(.olderHistoryStateUpdated(canLoad: canLoad, isLoading: false))
         }
     }
 }

@@ -11,34 +11,21 @@ extension SecureConversations.TranscriptModel {
     }
 
     func loadOlderHistory() {
-        guard olderHistoryLoader.canStartLoading else { return }
-        environment.openTelemetry.logger.i(.chatScreenHistoryLoading)
-        action?(.olderHistoryStateUpdated(canLoad: true, isLoading: true))
-        olderHistoryLoader.load { [weak self] messages in
-            self?.olderHistoryLoaded(messages)
-        }
-    }
-
-    private func olderHistoryLoaded(_ messages: [ChatMessage]?) {
-        if let messages {
-            environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
-                $0[.messageCount] = .string("\(messages.count)")
-            }
-            let knownMessageIds = Set(historySection.items.compactMap { $0.chatMessage?.id.uppercased() })
-            let items = messages
-                .filter { !knownMessageIds.contains($0.id.uppercased()) }
-                .compactMap {
-                    ChatItem(
-                        with: $0,
-                        isCustomCardSupported: isCustomCardSupported,
-                        fromHistory: environment.loadChatMessagesFromHistory()
-                    )
-                }
-            if !items.isEmpty {
-                historySection.prepend(items)
-                action?(.prependRows(items.count, to: historySection.index))
-            }
-        }
-        action?(.olderHistoryStateUpdated(canLoad: olderHistoryLoader.canLoad, isLoading: false))
+        olderHistoryLoader.loadOlderItems(
+            into: historySection,
+            knownMessageIds: { [weak self] in
+                guard let self else { return [] }
+                return Set(historySection.items.compactMap { $0.chatMessage?.id.uppercased() })
+            },
+            makeItem: { [weak self] message in
+                guard let self else { return nil }
+                return ChatItem(
+                    with: message,
+                    isCustomCardSupported: isCustomCardSupported,
+                    fromHistory: environment.loadChatMessagesFromHistory()
+                )
+            },
+            action: { [weak self] in self?.action?($0) }
+        )
     }
 }

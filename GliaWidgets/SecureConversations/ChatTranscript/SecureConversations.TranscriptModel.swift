@@ -635,6 +635,7 @@ extension SecureConversations.TranscriptModel {
                 }
             case .failure:
                 self.olderHistoryLoader.replaceOlderPage(nil)
+                self.action?(.olderHistoryStateUpdated(canLoad: false, isLoading: false))
                 completion([])
             }
         }

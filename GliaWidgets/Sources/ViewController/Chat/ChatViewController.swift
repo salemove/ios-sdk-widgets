@@ -1,6 +1,7 @@
 import MobileCoreServices
 import UIKit
 
+// swiftlint:disable type_body_length
 final class ChatViewController: EngagementViewController, PopoverPresenter {
     private(set) var viewModel: SecureConversations.ChatWithTranscriptModel {
         didSet {
@@ -213,6 +214,10 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
             viewModel.event(.gvaButtonTapped(option))
         }
 
+        view.loadOlderHistoryRequested = {
+            viewModel.event(.loadOlderHistoryRequested)
+        }
+
         view.retryMessageTapped = { [weak self] message in
             self?.environment.openTelemetry.logger.i(.chatScreenButtonClicked) {
                 $0[.buttonName] = .string(OtelButtonNames.retry.rawValue)
@@ -297,6 +302,7 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         viewModel.environment.log.prefixed(Self.self).info("Destroy Chat screen")
     }
 }
+// swiftlint:enable type_body_length
 
 extension ChatViewController {
     func swapAndBindViewModel(_ viewModel: SecureConversations.ChatWithTranscriptModel) {
@@ -458,23 +464,13 @@ extension ChatViewController {
         case let .setMessageEntryConnected(isConnected):
             view?.messageEntryView.isConnected = isConnected
         case let .olderHistoryStateUpdated(canLoad, isLoading):
-            updateOlderHistoryState(canLoad: canLoad, isLoading: isLoading, view: view)
+            view?.setOlderHistoryState(canLoad: canLoad, isLoading: isLoading)
         case let .prependRows(count, section):
             view?.prependRows(count, to: section)
         }
         renderProps()
     }
     // swiftlint:enable function_body_length
-
-    private func updateOlderHistoryState(canLoad: Bool, isLoading: Bool, view: ChatView?) {
-        // Bound here rather than in `bind(viewModel:to:)`: the pull gesture only exists once a
-        // state update has attached the refresh control, and reading `viewModel` at pull time
-        // follows a switch between the chat and transcript models.
-        view?.loadOlderHistoryRequested = { [weak self] in
-            self?.viewModel.event(.loadOlderHistoryRequested)
-        }
-        view?.setOlderHistoryState(canLoad: canLoad, isLoading: isLoading)
-    }
 }
 
 private enum CurrentChatModelType {

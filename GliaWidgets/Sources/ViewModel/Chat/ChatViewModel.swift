@@ -467,36 +467,25 @@ extension ChatViewModel {
     }
 
     private func loadOlderHistory() {
-        guard olderHistoryLoader.canStartLoading else { return }
-        environment.openTelemetry.logger.i(.chatScreenHistoryLoading)
-        action?(.olderHistoryStateUpdated(canLoad: true, isLoading: true))
-        olderHistoryLoader.load { [weak self] messages in
-            self?.olderHistoryLoaded(messages)
-        }
-    }
-
-    private func olderHistoryLoaded(_ messages: [ChatMessage]?) {
-        if let messages {
-            environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
-                $0[.messageCount] = .string("\(messages.count)")
-            }
-            let knownMessageIds = historyMessageIds.union(receivedMessageIds)
-            let olderMessages = messages.filter { !knownMessageIds.contains($0.id.uppercased()) }
-            historyMessageIds.formUnion(olderMessages.map { $0.id.uppercased() })
-
-            let items = olderMessages.compactMap {
-                ChatItem(
-                    with: $0,
+        olderHistoryLoader.loadOlderItems(
+            into: historySection,
+            knownMessageIds: { [weak self] in
+                guard let self else { return [] }
+                return historyMessageIds.union(receivedMessageIds)
+            },
+            makeItem: { [weak self] message in
+                guard let self else { return nil }
+                return ChatItem(
+                    with: message,
                     isCustomCardSupported: isCustomCardSupported,
                     fromHistory: environment.loadChatMessagesFromHistory()
                 )
-            }
-            if !items.isEmpty {
-                historySection.prepend(items)
-                action?(.prependRows(items.count, to: historySection.index))
-            }
-        }
-        action?(.olderHistoryStateUpdated(canLoad: olderHistoryLoader.canLoad, isLoading: false))
+            },
+            didPrependMessages: { [weak self] messages in
+                self?.historyMessageIds.formUnion(messages.map { $0.id.uppercased() })
+            },
+            action: { [weak self] in self?.action?($0) }
+        )
     }
 }
 

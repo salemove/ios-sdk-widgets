@@ -25,11 +25,24 @@ extension ChatView {
     }
 
     func prependRows(_ count: Int, to section: Int) {
-        guard count > 0 else { return }
+        guard let rows = numberOfRows?(section), rows >= count, count > 0 else { return }
         let previousContentHeight = tableView.contentSize.height
         let previousOffsetY = tableView.contentOffset.y
         UIView.performWithoutAnimation {
-            tableView.reloadData()
+            // Same crash workarounds as `appendRows`: batch updates crash on a zero-sized table
+            // view and inserting with no visible cells can crash, so fall back to a full reload.
+            if tableView.visibleCells.isEmpty {
+                tableView.reloadData()
+            } else {
+                let indexPaths = (0 ..< count).map { IndexPath(row: $0, section: section) }
+                if tableView.frame.size == .zero {
+                    tableView.insertRows(at: indexPaths, with: .none)
+                } else {
+                    tableView.performBatchUpdates {
+                        tableView.insertRows(at: indexPaths, with: .none)
+                    }
+                }
+            }
             tableView.layoutIfNeeded()
         }
         // Rows are inserted above the visible ones, so shift the offset by the added height to
