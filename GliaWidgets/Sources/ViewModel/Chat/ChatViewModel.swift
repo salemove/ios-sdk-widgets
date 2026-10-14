@@ -70,6 +70,8 @@ class ChatViewModel: EngagementViewModel {
 
     private(set) var entryWidget: EntryWidget?
 
+    private(set) lazy var olderHistoryLoader = OlderChatHistoryLoader(environment: .create(with: environment))
+
     // swiftlint:disable function_body_length
     init(
         interactor: Interactor,
@@ -333,6 +335,8 @@ extension ChatViewModel {
             gvaOptionAction(for: option)()
         case .retryMessageTapped(let message):
             retryMessageSending(message)
+        case .loadOlderHistoryRequested:
+            loadOlderHistory()
         }
     }
 
@@ -413,7 +417,8 @@ extension ChatViewModel {
         environment.openTelemetry.logger.i(.chatScreenHistoryLoading)
         environment.fetchChatHistory { [weak self] result in
             guard let self else { return }
-            let messages = (try? result.get()) ?? []
+            let page = (try? result.get()) ?? CoreSdkClient.ChatHistoryPage(messages: [])
+            let messages = page.messages
             environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
                 $0[.messageCount] = .string("\(messages.count)")
             }
@@ -455,8 +460,32 @@ extension ChatViewModel {
             self.historySection.set(items)
             self.action?(.refreshSection(self.historySection.index))
             self.action?(.scrollToBottom(animated: false))
+            self.olderHistoryLoader.replaceOlderPage(page.olderPage)
+            self.action?(.olderHistoryStateUpdated(canLoad: self.olderHistoryLoader.canLoad, isLoading: false))
             completion(messages)
         }
+    }
+
+    private func loadOlderHistory() {
+        olderHistoryLoader.loadOlderItems(
+            into: historySection,
+            knownMessageIds: { [weak self] in
+                guard let self else { return [] }
+                return historyMessageIds.union(receivedMessageIds)
+            },
+            makeItem: { [weak self] message in
+                guard let self else { return nil }
+                return ChatItem(
+                    with: message,
+                    isCustomCardSupported: isCustomCardSupported,
+                    fromHistory: environment.loadChatMessagesFromHistory()
+                )
+            },
+            didPrependMessages: { [weak self] messages in
+                self?.historyMessageIds.formUnion(messages.map { $0.id.uppercased() })
+            },
+            action: { [weak self] in self?.action?($0) }
+        )
     }
 }
 

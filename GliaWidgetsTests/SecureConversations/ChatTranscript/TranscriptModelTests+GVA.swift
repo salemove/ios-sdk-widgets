@@ -141,7 +141,7 @@ extension SecureConversationsTranscriptModelTests {
             ChatMessage.self,
             from: Data(json)
         )
-        modelEnv.fetchChatHistory = { $0(.success([message])) }
+        modelEnv.fetchChatHistory = { $0(.success(.init(messages: [message]))) }
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.fetchSiteConfigurations = { _ in }
         modelEnv.secureConversations.getUnreadMessageCount = { $0(.success(0)) }

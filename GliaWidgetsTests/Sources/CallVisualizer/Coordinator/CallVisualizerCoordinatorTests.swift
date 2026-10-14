@@ -42,7 +42,8 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
             mobileObservationIndicationEnabled: true,
             mobileObservationVideoFps: try videoFps(),
             mobileObservationEnabled: true,
-            readOnlySettings: nil
+            readOnlySettings: nil,
+            accountId: nil
         )
 
         coordinator.environment.fetchSiteConfigurations = { callback in
@@ -80,7 +81,8 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
             mobileObservationIndicationEnabled: true,
             mobileObservationVideoFps: try videoFps(),
             mobileObservationEnabled: true,
-            readOnlySettings: nil
+            readOnlySettings: nil,
+            accountId: nil
         )
 
         coordinator.environment.fetchSiteConfigurations = { callback in
@@ -115,7 +117,8 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
             mobileObservationIndicationEnabled: true,
             mobileObservationVideoFps: try videoFps(),
             mobileObservationEnabled: true,
-            readOnlySettings: nil
+            readOnlySettings: nil,
+            accountId: nil
         )
 
         coordinator.environment.fetchSiteConfigurations = { callback in
@@ -141,7 +144,8 @@ final class CallVisualizerCoordinatorTests: XCTestCase {
             mobileObservationIndicationEnabled: true,
             mobileObservationVideoFps: try videoFps(),
             mobileObservationEnabled: true,
-            readOnlySettings: nil
+            readOnlySettings: nil,
+            accountId: nil
         )
 
         coordinator.environment.fetchSiteConfigurations = { callback in

@@ -16,6 +16,7 @@ extension RemoteConfiguration {
         let attachmentSourceList: AttachmentSourceList?
         let unreadIndicator: UnreadIndicator?
         let typingIndicator: Color?
+        let olderMessagesIndicator: Color?
         let newMessagesDividerColor: Color?
         let newMessagesDividerText: Text?
         let systemMessage: MessageBalloon?

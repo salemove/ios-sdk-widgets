@@ -70,14 +70,12 @@ extension CoreSdkClient {
             authentication: GliaCore.sharedInstance.authentication,
             fetchChatHistory: { completion in
                 GliaCore.sharedInstance.fetchChatTranscript { result in
-                    switch result {
-                    case let .success(messages):
-                        completion(
-                            .success(messages.map { ChatMessage(with: $0) })
-                        )
-                    case let .failure(error):
-                        completion(.failure(error))
-                    }
+                    completion(result.map(CoreSdkClient.ChatHistoryPage.init(with:)))
+                }
+            },
+            fetchOlderChatHistory: { olderPage, completion in
+                GliaCore.sharedInstance.fetchChatTranscript(olderPage: olderPage) { result in
+                    completion(result.map(CoreSdkClient.ChatHistoryPage.init(with:)))
                 }
             },
             requestVisitorCode: GliaCore.sharedInstance.callVisualizer.requestVisitorCode(completion:),
@@ -185,5 +183,11 @@ extension CoreSdkClient.CameraDeviceManageableClient {
         self.cameraDevices = { live.cameraDevices() }
         self.currentCameraDevice = { live.currentCameraDevice() }
         self.setCameraDevice = { live.setCameraDevice($0) }
+    }
+}
+
+extension CoreSdkClient.ChatHistoryPage {
+    init(with history: GliaCoreSDK.ChatHistory) {
+        self.init(messages: history.messages.map { ChatMessage(with: $0) }, olderPage: history.olderPage)
     }
 }

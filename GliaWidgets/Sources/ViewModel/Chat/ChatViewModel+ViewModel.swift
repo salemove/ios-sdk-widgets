@@ -19,6 +19,7 @@ extension ChatViewModel: ViewModel {
         )
         case gvaButtonTapped(GvaOption)
         case retryMessageTapped(OutgoingMessage)
+        case loadOlderHistoryRequested
     }
 
     enum Action {
@@ -57,6 +58,8 @@ extension ChatViewModel: ViewModel {
         case transcript(TranscriptAction)
         case switchToEngagement
         case setMessageEntryConnected(Bool)
+        case olderHistoryStateUpdated(canLoad: Bool, isLoading: Bool)
+        case prependRows(Int, to: Int)
     }
 
     enum DelegateEvent {

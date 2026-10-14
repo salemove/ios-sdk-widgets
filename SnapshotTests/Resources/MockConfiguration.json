@@ -2805,6 +2805,12 @@
         "#04728c"
       ]
     },
+    "olderMessagesIndicator": {
+      "type": "fill",
+      "value": [
+        "#7c19dd"
+      ]
+    },
     "unreadIndicator": {
       "backgroundColor": {
         "type": "fill",

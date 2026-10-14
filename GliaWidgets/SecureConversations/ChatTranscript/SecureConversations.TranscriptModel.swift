@@ -42,7 +42,7 @@ extension SecureConversations {
             }
         }
 
-        private let isCustomCardSupported: Bool
+        let isCustomCardSupported: Bool
         private let isChatScrolledToBottom = ObservableValue<Bool>(with: true)
         private(set) var isViewLoaded: Bool = false
 
@@ -91,6 +91,8 @@ extension SecureConversations {
         let unreadMessages: ObservableValue<Int>
 
         private var markMessagesAsReadCancellables = CancelBag()
+
+        private(set) lazy var olderHistoryLoader = OlderChatHistoryLoader(environment: .create(with: environment))
 
         init(
             isCustomCardSupported: Bool,
@@ -242,6 +244,8 @@ extension SecureConversations {
                 gvaOptionAction(for: option)()
             case let .retryMessageTapped(message):
                 retryMessageSending(message)
+            case .loadOlderHistoryRequested:
+                loadOlderHistory()
             }
         }
 
@@ -618,6 +622,8 @@ extension SecureConversations.TranscriptModel {
                 self.historySection.set(itemsWithDivider)
                 self.action?(.refreshSection(self.historySection.index))
                 self.action?(.scrollToBottom(animated: false))
+                self.olderHistoryLoader.replaceOlderPage(messagesWithUnreadCount.olderPage)
+                self.action?(.olderHistoryStateUpdated(canLoad: self.olderHistoryLoader.canLoad, isLoading: false))
                 completion(messagesWithUnreadCount.messages)
                 markMessagesAsRead(
                     with: self.hasUnreadMessages && !environment.shouldShowLeaveSecureConversationDialog(.transcriptOpened)
@@ -628,6 +634,8 @@ extension SecureConversations.TranscriptModel {
                     self.action?(.quickReplyPropsUpdated(.shown(props)))
                 }
             case .failure:
+                self.olderHistoryLoader.replaceOlderPage(nil)
+                self.action?(.olderHistoryStateUpdated(canLoad: false, isLoading: false))
                 completion([])
             }
         }
@@ -943,6 +951,7 @@ extension SecureConversations.TranscriptModel {
 
         historySection.set(itemsWithDivider)
         action?(.refreshAll)
+        takeOverOlderHistory(from: chatModel.olderHistoryLoader)
 
         // There's a possibility where migration to SC (this actually doesn't seem to work ATM, needs checking (MOB-3988)).
         // happens when there are awaiting uploads.

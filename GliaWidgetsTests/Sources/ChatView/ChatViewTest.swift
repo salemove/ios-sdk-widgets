@@ -81,7 +81,7 @@ final class ChatViewTest: XCTestCase {
         let options: [ChatChoiceCardOption] = [try .mock()]
         coordinatorEnv.fetchChatHistory = {
             $0(
-                .success(
+                .success(.init(messages: 
                     [
                         .mock(attachment: .mock(
                             type: .singleChoice,
@@ -90,7 +90,7 @@ final class ChatViewTest: XCTestCase {
                             options: options
                         ))
                     ]
-                )
+                ))
             )
         }
         let coordinator = EngagementCoordinator.mock(

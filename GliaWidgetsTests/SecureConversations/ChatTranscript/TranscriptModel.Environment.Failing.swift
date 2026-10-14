@@ -26,6 +26,9 @@ extension SecureConversations.TranscriptModel.Environment {
         fetchChatHistory: { _ in
             fail("\(Self.self).fetchChatHistory")
         },
+        fetchOlderChatHistory: { _, _ in
+            fail("\(Self.self).fetchOlderChatHistory")
+        },
         uiApplication: .failing,
         queueIds: [],
         getQueues: { _ in

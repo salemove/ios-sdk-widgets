@@ -23,6 +23,7 @@ extension EngagementCoordinator {
         var uiScreen: UIKitBased.UIScreen
         var notificationCenter: FoundationBased.NotificationCenter
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
+        var fetchOlderChatHistory: CoreSdkClient.FetchOlderChatHistory
         var listQueues: CoreSdkClient.GetQueues
         var createFileUploader: FileUploader.Create
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
@@ -82,6 +83,7 @@ extension EngagementCoordinator.Environment {
             uiScreen: environment.uiScreen,
             notificationCenter: environment.notificationCenter,
             fetchChatHistory: environment.coreSdk.fetchChatHistory,
+            fetchOlderChatHistory: environment.coreSdk.fetchOlderChatHistory,
             listQueues: environment.coreSdk.getQueues,
             createFileUploader: environment.createFileUploader,
             createFileUploadListModel: environment.createFileUploadListModel,

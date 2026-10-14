@@ -19,7 +19,7 @@ extension ChatViewModelTests {
         var viewModelEnv = ChatViewModel.Environment.mock
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.createSendMessagePayload = { _, _ in .mock() }
-        viewModelEnv.fetchChatHistory = { $0(.success([])) }
+        viewModelEnv.fetchChatHistory = { $0(.success(.init(messages: []))) }
         // The visitor is still waiting in the queue, so no engagement is active
         // and site configuration has not been fetched yet.
         viewModelEnv.getCurrentEngagement = { nil }

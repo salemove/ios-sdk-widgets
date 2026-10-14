@@ -20,6 +20,7 @@ extension ChatCoordinator {
         var uuid: () -> UUID
         var uiApplication: UIKitBased.UIApplication
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
+        var fetchOlderChatHistory: CoreSdkClient.FetchOlderChatHistory
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var queueIds: [String]
         var listQueues: CoreSdkClient.GetQueues
@@ -78,6 +79,7 @@ extension ChatCoordinator.Environment {
             uuid: environment.uuid,
             uiApplication: environment.uiApplication,
             fetchChatHistory: environment.fetchChatHistory,
+            fetchOlderChatHistory: environment.fetchOlderChatHistory,
             createFileUploadListModel: environment.createFileUploadListModel,
             queueIds: interactor.queueIds ?? [],
             listQueues: environment.listQueues,
@@ -125,6 +127,7 @@ extension ChatCoordinator.Environment {
             uuid: environment.uuid,
             uiApplication: environment.uiApplication,
             fetchChatHistory: environment.fetchChatHistory,
+            fetchOlderChatHistory: environment.fetchOlderChatHistory,
             createFileUploadListModel: environment.createFileUploadListModel,
             queueIds: environment.queueIds,
             listQueues: environment.listQueues,

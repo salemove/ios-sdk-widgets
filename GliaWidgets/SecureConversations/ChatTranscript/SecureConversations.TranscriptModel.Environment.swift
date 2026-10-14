@@ -14,6 +14,7 @@ extension SecureConversations.TranscriptModel {
         var createFileDownload: FileDownloader.CreateFileDownload
         var loadChatMessagesFromHistory: () -> Bool
         var fetchChatHistory: CoreSdkClient.FetchChatHistory
+        var fetchOlderChatHistory: CoreSdkClient.FetchOlderChatHistory
         var uiApplication: UIKitBased.UIApplication
         var queueIds: [String]
         var getQueues: CoreSdkClient.GetQueues
@@ -61,6 +62,7 @@ extension SecureConversations.TranscriptModel.Environment {
             createFileDownload: environment.createFileDownload,
             loadChatMessagesFromHistory: environment.fromHistory,
             fetchChatHistory: environment.fetchChatHistory,
+            fetchOlderChatHistory: environment.fetchOlderChatHistory,
             uiApplication: environment.uiApplication,
             queueIds: environment.queueIds,
             getQueues: environment.listQueues,
@@ -102,6 +104,7 @@ extension SecureConversations.TranscriptModel.Environment {
         createFileDownload: @escaping FileDownloader.CreateFileDownload = { _, _, _ in .mock() },
         loadChatMessagesFromHistory: @escaping () -> Bool = { false },
         fetchChatHistory: @escaping CoreSdkClient.FetchChatHistory = { _ in },
+        fetchOlderChatHistory: @escaping CoreSdkClient.FetchOlderChatHistory = { _, _ in },
         uiApplication: UIKitBased.UIApplication = .mock,
         queueIds: [String] = [],
         getQueues: @escaping CoreSdkClient.GetQueues = { _ in },
@@ -137,6 +140,7 @@ extension SecureConversations.TranscriptModel.Environment {
             createFileDownload: createFileDownload,
             loadChatMessagesFromHistory: loadChatMessagesFromHistory,
             fetchChatHistory: fetchChatHistory,
+            fetchOlderChatHistory: fetchOlderChatHistory,
             uiApplication: uiApplication,
             queueIds: queueIds,
             getQueues: getQueues,
