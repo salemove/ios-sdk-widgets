@@ -85,7 +85,9 @@ extension EngagementCoordinatorTests {
         XCTAssertTrue(calledEvents.contains(.ended))
     }
 
-    func test_sidePanelModeVideoCallPutsCallInLeadingAndChatInPanel() throws {
+    // A call takes the whole scene: the chat stays the panel's content but the
+    // panel is collapsed until the call's chat button reveals it.
+    func test_sidePanelModeVideoCallPutsCallInLeadingAndCollapsesChatPanel() throws {
         let coordinator = createPanelCoordinator(withKind: .videoCall)
         coordinator.start()
 
@@ -93,6 +95,63 @@ extension EngagementCoordinatorTests {
         XCTAssertTrue(splitViewController.leadingViewController is CallViewController)
         XCTAssertTrue(splitViewController.panelViewController === coordinator.navigationPresenter.navigationController)
         XCTAssertTrue(coordinator.navigationPresenter.viewControllers.first is ChatViewController)
+        XCTAssertTrue(splitViewController.isPanelCollapsed)
+    }
+
+    // While a call is active the call header owns End, so the revealed chat
+    // header keeps only back; a chat-only engagement keeps its full header.
+    func test_sidePanelModeCallHidesChatHeaderEndControlsButChatOnlyDoesNot() throws {
+        let callCoordinator = createPanelCoordinator(withKind: .videoCall)
+        callCoordinator.start()
+        let chatBesideCall = try XCTUnwrap(callCoordinator.navigationPresenter.viewControllers.first as? ChatViewController)
+        let headerBesideCall = try XCTUnwrap((chatBesideCall.view as? ChatView)?.header)
+        XCTAssertTrue(headerBesideCall.areEndControlsHidden)
+        XCTAssertFalse(headerBesideCall.areControlsHidden)
+
+        let chatCoordinator = createPanelCoordinator(withKind: .chat)
+        chatCoordinator.start()
+        let chatOnly = try XCTUnwrap(chatCoordinator.navigationPresenter.viewControllers.first as? ChatViewController)
+        let chatOnlyHeader = try XCTUnwrap((chatOnly.view as? ChatView)?.header)
+        XCTAssertFalse(chatOnlyHeader.areEndControlsHidden)
+    }
+
+    func test_sidePanelModeCallChatButtonTogglesCollapsedPanel() throws {
+        let coordinator = createPanelCoordinator(withKind: .videoCall)
+        var calledEvents: [EngagementCoordinator.DelegateEvent] = []
+        coordinator.delegate = { calledEvents.append($0) }
+        coordinator.start()
+        let splitViewController = try XCTUnwrap(coordinator.splitViewController)
+        let callCoordinator = try XCTUnwrap(coordinator.coordinators.first { $0 is CallCoordinator } as? CallCoordinator)
+        XCTAssertTrue(splitViewController.isPanelCollapsed)
+
+        callCoordinator.delegate?(.chat)
+        XCTAssertFalse(splitViewController.isPanelCollapsed)
+
+        callCoordinator.delegate?(.chat)
+        XCTAssertTrue(splitViewController.isPanelCollapsed)
+
+        XCTAssertFalse(calledEvents.contains(.minimized))
+        XCTAssertFalse(try XCTUnwrap(coordinator.panelWindow).isHidden)
+    }
+
+    func test_sidePanelModeMinimizeAndMaximizePreserveRevealedPanel() throws {
+        let coordinator = createPanelCoordinator(withKind: .videoCall)
+        coordinator.start()
+        let splitViewController = try XCTUnwrap(coordinator.splitViewController)
+        let callCoordinator = try XCTUnwrap(coordinator.coordinators.first { $0 is CallCoordinator } as? CallCoordinator)
+        callCoordinator.delegate?(.chat)
+        XCTAssertFalse(splitViewController.isPanelCollapsed)
+
+        coordinator.minimize()
+        XCTAssertTrue(try XCTUnwrap(coordinator.panelWindow).isHidden)
+        XCTAssertFalse(splitViewController.isPanelCollapsed)
+
+        let maximized = expectation(description: "maximized")
+        coordinator.delegate = { if $0 == .maximized { maximized.fulfill() } }
+        coordinator.maximize()
+        wait(for: [maximized], timeout: 1)
+        XCTAssertFalse(try XCTUnwrap(coordinator.panelWindow).isHidden)
+        XCTAssertFalse(splitViewController.isPanelCollapsed)
     }
 
     func test_sidePanelModeChatToCallUpgradeInstallsCallInLeadingAndLeavesChatInPanel() throws {
@@ -113,6 +172,7 @@ extension EngagementCoordinatorTests {
         let splitViewController = try XCTUnwrap(coordinator.splitViewController)
         XCTAssertTrue(splitViewController.leadingViewController is CallViewController)
         XCTAssertTrue(coordinator.navigationPresenter.viewControllers.first is ChatViewController)
+        XCTAssertTrue(splitViewController.isPanelCollapsed)
     }
 
     func test_sidePanelModeAudioToVideoUpgradeDoesNotDiscardChatViewController() throws {
@@ -147,10 +207,9 @@ extension EngagementCoordinatorTests {
         XCTAssertTrue(coordinator.navigationPresenter.viewControllers.first is ChatViewController)
     }
 
-    // The call's minimize button and the chat panel's back button must be
-    // interchangeable while both screens are visible: both collapse the whole
-    // panel window to the bubble and emit `.minimized`.
-    func test_sidePanelModeCallMinimizeButtonCollapsesPanelLikeChatBack() throws {
+    // The call's minimize button hides the whole panel window, while back on the
+    // revealed chat panel only collapses the panel behind the call.
+    func test_sidePanelModeCallMinimizeHidesPanelWindow() throws {
         let coordinator = createPanelCoordinator(withKind: .videoCall)
         var calledEvents: [EngagementCoordinator.DelegateEvent] = []
         coordinator.delegate = { calledEvents.append($0) }
@@ -164,21 +223,25 @@ extension EngagementCoordinatorTests {
 
         XCTAssertTrue(panelWindow.isHidden)
         XCTAssertEqual(calledEvents.last, .minimized)
+    }
 
-        coordinator.maximize()
-        let maximized = expectation(description: "maximized")
-        coordinator.delegate = { event in
-            calledEvents.append(event)
-            if event == .maximized { maximized.fulfill() }
-        }
-        wait(for: [maximized], timeout: 1)
-        XCTAssertFalse(panelWindow.isHidden)
+    func test_sidePanelModeChatBackDuringCallCollapsesPanelWithoutMinimizing() throws {
+        let coordinator = createPanelCoordinator(withKind: .videoCall)
+        var calledEvents: [EngagementCoordinator.DelegateEvent] = []
+        coordinator.delegate = { calledEvents.append($0) }
+        coordinator.start()
+        coordinator.interactor.state = .engaged(nil)
+        let splitViewController = try XCTUnwrap(coordinator.splitViewController)
+        let callCoordinator = try XCTUnwrap(coordinator.coordinators.first { $0 is CallCoordinator } as? CallCoordinator)
+        callCoordinator.delegate?(.chat)
+        XCTAssertFalse(splitViewController.isPanelCollapsed)
 
         let chatCoordinator = try XCTUnwrap(coordinator.coordinators.first { $0 is ChatCoordinator } as? ChatCoordinator)
         chatCoordinator.delegate?(.back)
 
-        XCTAssertTrue(panelWindow.isHidden)
-        XCTAssertEqual(calledEvents.last, .minimized)
+        XCTAssertTrue(splitViewController.isPanelCollapsed)
+        XCTAssertFalse(try XCTUnwrap(coordinator.panelWindow).isHidden)
+        XCTAssertFalse(calledEvents.contains(.minimized))
     }
 
     func test_sidePanelModeEndPresentsSurveyAboveThePanel() throws {

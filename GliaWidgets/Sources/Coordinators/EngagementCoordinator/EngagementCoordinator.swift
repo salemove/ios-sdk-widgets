@@ -207,7 +207,16 @@ class EngagementCoordinator: SubFlowCoordinator, FlowCoordinator {
                 [chatViewController],
                 animated: animated
             )
+            collapseChatBehindCall(chatViewController, animated: false)
         }
+    }
+
+    /// In side-panel mode a call takes the whole scene: the chat panel collapses
+    /// until the call's chat button reveals it, and because the call header owns
+    /// End, the chat header keeps only back (which collapses the panel again).
+    private func collapseChatBehindCall(_ chatViewController: ChatViewController, animated: Bool) {
+        chatViewController.setHeaderEndControlsHidden(true)
+        splitViewController?.setPanelCollapsed(true, animated: animated)
     }
 
     deinit {
@@ -445,9 +454,9 @@ extension EngagementCoordinator {
             case .call(let callViewController, _, let upgradedFrom, _):
                 switch layoutMode {
                 case .sidePanel:
-                    // Chat and call are both visible side by side; there is no
-                    // navigation stack relationship between them to unwind.
-                    minimizeBubble(animated: true)
+                    // Back on the revealed chat panel returns to the full-width
+                    // call; the call's own controls handle minimising.
+                    splitViewController?.setPanelCollapsed(true, animated: true)
                 case .fullScreen:
                     if upgradedFrom == .chat {
                         minimizeBubble(animated: true)
@@ -531,9 +540,12 @@ extension EngagementCoordinator {
             case .engaged(let operatorImageUrl):
                 self.setBubbleKind(.userImage(url: operatorImageUrl))
             case .chat:
-                // In side-panel mode the chat button is hidden, and chat is
-                // already visible in the panel, so there is nothing to do.
-                guard self.layoutMode == .fullScreen else { break }
+                if case .sidePanel = self.layoutMode {
+                    // The chat button toggles the collapsed panel beside the call.
+                    guard let splitViewController = self.splitViewController else { break }
+                    splitViewController.setPanelCollapsed(!splitViewController.isPanelCollapsed, animated: true)
+                    break
+                }
                 switch self.engagement {
                 case .call(_, let chatViewController, let upgradedFrom, _):
                     if upgradedFrom == .chat {
@@ -859,6 +871,7 @@ extension EngagementCoordinator {
                 navigationPresenter.push(callViewController)
             case .sidePanel:
                 splitViewController?.setLeading(callViewController)
+                collapseChatBehindCall(chatViewController, animated: true)
             }
 
         case .call(let callViewController, let chatViewController, _, let call):

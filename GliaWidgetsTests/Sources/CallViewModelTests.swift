@@ -850,3 +850,25 @@ class CallViewModelTests: XCTestCase {
         XCTAssertEqual(warnings, ["Unable to access camera device manager: 'cameraIsNotAccessibleOnStream'."])
     }
 }
+
+// MARK: - Side-panel chat button
+extension CallViewModelTests {
+    // The chat panel is collapsed behind the call in side-panel mode, so the
+    // call keeps its chat button as the way to reveal it.
+    func test_sidePanelModeKeepsChatButton() throws {
+        var env = CallViewModel.Environment.mock
+        env.layoutMode = .sidePanel
+        let viewModel: CallViewModel = .mock(environment: env)
+        var shownButtons: [[CallViewModel.CallButton]] = []
+        viewModel.action = { action in
+            if case let .showButtons(buttons) = action {
+                shownButtons.append(buttons)
+            }
+        }
+
+        viewModel.event(.viewDidLoad)
+
+        let lastShown = try XCTUnwrap(shownButtons.last)
+        XCTAssertTrue(lastShown.contains(.chat))
+    }
+}

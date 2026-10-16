@@ -180,9 +180,9 @@ class CallViewControllerTests: XCTestCase {
 
 // MARK: - Side-panel header controls
 extension CallViewControllerTests {
-    // In side-panel mode the chat panel beside the call already offers back and
-    // end, so the call header must not duplicate them.
-    func test_sidePanelModeHidesCallHeaderControls() throws {
+    // In side-panel mode the chat panel is collapsed behind the call, so the call
+    // header keeps its own back and end controls.
+    func test_sidePanelModeKeepsCallHeaderControls() throws {
         var env = CallViewModel.Environment.mock
         env.layoutMode = .sidePanel
         let viewController = CallViewController.mock(viewModel: .mock(environment: env))
@@ -190,8 +190,8 @@ extension CallViewControllerTests {
         viewController.loadView()
 
         let callView = try XCTUnwrap(viewController.view as? CallView)
-        XCTAssertTrue(callView.header.areControlsHidden)
-        XCTAssertEqual(callView.header.backButton?.isHidden, true)
+        XCTAssertFalse(callView.header.areControlsHidden)
+        XCTAssertEqual(callView.header.backButton?.isHidden, false)
     }
 
     func test_fullScreenModeKeepsCallHeaderControls() throws {

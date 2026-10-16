@@ -22,6 +22,10 @@ final class Header: BaseView {
     /// screen that shares the scene with another Glia screen does not duplicate
     /// that screen's navigation controls.
     private(set) var areControlsHidden = false
+    /// When set, end and close stay hidden while back remains available. Used by
+    /// the chat panel while a call is active on iPad: back collapses the panel,
+    /// and the call header owns End.
+    private(set) var areEndControlsHidden = false
     private let leftItemContainer = UIView()
     private let titleLabel = UILabel()
     private let contentView = UIView()
@@ -97,11 +101,11 @@ final class Header: BaseView {
 
     func showCloseButton() {
         self.endButton?.isHidden = true
-        self.closeButton?.isHidden = areControlsHidden
+        self.closeButton?.isHidden = areControlsHidden || areEndControlsHidden
     }
 
     func showEndButton() {
-        self.endButton?.isHidden = areControlsHidden
+        self.endButton?.isHidden = areControlsHidden || areEndControlsHidden
         self.closeButton?.isHidden = true
     }
 
@@ -114,6 +118,13 @@ final class Header: BaseView {
         areControlsHidden = hidden
         if hidden {
             backButton?.isHidden = true
+            hideCloseAndEndButtons()
+        }
+    }
+
+    func setEndControlsHidden(_ hidden: Bool) {
+        areEndControlsHidden = hidden
+        if hidden {
             hideCloseAndEndButtons()
         }
     }

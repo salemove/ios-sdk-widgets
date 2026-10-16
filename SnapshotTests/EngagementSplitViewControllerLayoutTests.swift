@@ -14,13 +14,28 @@ final class EngagementSplitViewControllerLayoutTests: SnapshotTestCase {
         assertPadLandscapeSnapshot(of: splitViewController)
     }
 
-    // In panel mode the call header hides back/end and the button bar drops the
-    // chat button, because the chat panel beside it already provides them.
+    // The chat panel revealed beside a call via the call's chat button. The call
+    // keeps its own header controls and chat button; the chat header keeps back
+    // only, because the call header owns End.
     func test_callBesideChatPanel() throws {
+        let chat = ChatViewController.mockHistoryMessagesScreen()
+        chat.setHeaderEndControlsHidden(true)
+        let splitViewController = makeSplitViewController(
+            panel: chat,
+            leading: try CallViewController.mockAudioCallConnectedState(layoutMode: .sidePanel)
+        )
+
+        assertPadLandscapeSnapshot(of: splitViewController)
+    }
+
+    // The default state during a call: the chat panel is collapsed and the call
+    // takes the whole scene.
+    func test_callWithChatCollapsed() throws {
         let splitViewController = makeSplitViewController(
             panel: ChatViewController.mockHistoryMessagesScreen(),
             leading: try CallViewController.mockAudioCallConnectedState(layoutMode: .sidePanel)
         )
+        splitViewController.setPanelCollapsed(true, animated: false)
 
         assertPadLandscapeSnapshot(of: splitViewController)
     }

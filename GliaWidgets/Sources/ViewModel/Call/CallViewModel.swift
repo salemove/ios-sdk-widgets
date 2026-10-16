@@ -430,11 +430,6 @@ extension CallViewModel {
         case .video:
             allButtons = [.chat, .video, .mute, .speaker, .minimize]
         }
-        // Chat is already on screen in side-panel mode, so its own button here
-        // would be redundant.
-        guard environment.layoutMode == .fullScreen else {
-            return allButtons.filter { $0 != .chat }
-        }
         return allButtons
     }
 

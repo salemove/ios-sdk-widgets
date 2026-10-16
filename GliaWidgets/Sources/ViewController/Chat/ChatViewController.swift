@@ -299,6 +299,12 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
 }
 
 extension ChatViewController {
+    /// While a call is active in the iPad side panel the call header owns End, so
+    /// the chat header keeps only back, which collapses the panel.
+    func setHeaderEndControlsHidden(_ hidden: Bool) {
+        (view as? ChatView)?.header.setEndControlsHidden(hidden)
+    }
+
     func swapAndBindViewModel(_ viewModel: SecureConversations.ChatWithTranscriptModel) {
         // Binding is only possible for `ChatView` so casting is required.
         guard let chatView = view as? ChatView else { return }
