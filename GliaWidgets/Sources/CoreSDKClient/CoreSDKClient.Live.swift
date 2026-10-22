@@ -71,9 +71,9 @@ extension CoreSdkClient {
             fetchChatHistory: { completion in
                 GliaCore.sharedInstance.fetchChatTranscript { result in
                     switch result {
-                    case let .success(messages):
+                    case let .success(history):
                         completion(
-                            .success(messages.map { ChatMessage(with: $0) })
+                            .success(history.messages.map { ChatMessage(with: $0) })
                         )
                     case let .failure(error):
                         completion(.failure(error))
