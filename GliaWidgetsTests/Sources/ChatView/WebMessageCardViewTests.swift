@@ -1,9 +1,34 @@
 @testable import GliaWidgets
+import WebKit
 import XCTest
 
 final class WebMessageCardViewTests: XCTestCase {
     private var window: UIWindow!
     private var delegate: DelegateMock!
+
+    /// WebKit runs out of process and its first page load on a cold simulator can take
+    /// several seconds on a slow CI runner. Loading one page here keeps that cost out of
+    /// every test's own timeout.
+    override static func setUp() {
+        super.setUp()
+        let warmedUp = XCTestExpectation(description: "WebKit warmed up")
+        let delegate = DelegateMock()
+        delegate.onMobileAction = { action in
+            if action == "warm-up" { warmedUp.fulfill() }
+        }
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 480))
+        let view = WebMessageCardView(
+            policyProvider: .customResponseCard,
+            message: .init(chatMessage: .mock()),
+            metadata: .init(html: "<html><body><script>window.onload = function () { callMobileAction('warm-up'); };</script></body></html>")
+        )
+        view.delegate = delegate
+        view.frame = window.bounds
+        window.addSubview(view)
+        view.startLoading()
+        _ = XCTWaiter.wait(for: [warmedUp], timeout: 60)
+        withExtendedLifetime((window, delegate)) {}
+    }
 
     override func setUp() {
         super.setUp()
@@ -17,38 +42,38 @@ final class WebMessageCardViewTests: XCTestCase {
         super.tearDown()
     }
 
-    func test_scriptClickOnLinkDoesNotSelectURL() {
-        assertNoURLSelected(
+    func test_scriptClickOnLinkIsCancelled() {
+        assertScriptClickIsCancelled(
             body: #"<a id="link" href="https://mock.mock">link</a>"#,
-            onLoad: "document.getElementById('link').click();"
+            click: "document.getElementById('link').click();"
         )
     }
 
-    func test_dispatchedClickOnLinkDoesNotSelectURL() {
-        assertNoURLSelected(
+    func test_dispatchedClickOnLinkIsCancelled() {
+        assertScriptClickIsCancelled(
             body: #"<a id="link" href="https://mock.mock">link</a>"#,
-            onLoad: "document.getElementById('link').dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));"
+            click: "document.getElementById('link').dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));"
         )
     }
 
-    func test_scriptClickOnElementInsideLinkDoesNotSelectURL() {
-        assertNoURLSelected(
+    func test_scriptClickOnElementInsideLinkIsCancelled() {
+        assertScriptClickIsCancelled(
             body: #"<a href="https://mock.mock"><span id="inner">link</span></a>"#,
-            onLoad: "document.getElementById('inner').click();"
+            click: "document.getElementById('inner').click();"
         )
     }
 
-    func test_scriptClickOnBlankTargetLinkDoesNotSelectURL() {
-        assertNoURLSelected(
+    func test_scriptClickOnBlankTargetLinkIsCancelled() {
+        assertScriptClickIsCancelled(
             body: #"<a id="link" target="_blank" href="https://mock.mock">link</a>"#,
-            onLoad: "document.getElementById('link').click();"
+            click: "document.getElementById('link').click();"
         )
     }
 
-    func test_scriptClickOnLinkWithPatchedPreventDefaultDoesNotSelectURL() {
-        assertNoURLSelected(
+    func test_scriptClickOnLinkWithPatchedPreventDefaultIsCancelled() {
+        assertScriptClickIsCancelled(
             body: #"<a id="link" href="https://mock.mock">link</a>"#,
-            onLoad: """
+            click: """
                 Event.prototype.preventDefault = function () {};
                 document.getElementById('link').click();
             """
@@ -56,14 +81,14 @@ final class WebMessageCardViewTests: XCTestCase {
     }
 
     func test_scriptLocationChangeDoesNotSelectURL() {
-        assertNoURLSelected(
+        assertNavigationDoesNotSelectURL(
             body: "",
             onLoad: "location.href = 'https://mock.mock';"
         )
     }
 
     func test_iframeDoesNotSelectURL() {
-        assertNoURLSelected(
+        assertNavigationDoesNotSelectURL(
             body: #"<iframe src="https://mock.mock"></iframe>"#,
             onLoad: ""
         )
@@ -83,30 +108,33 @@ final class WebMessageCardViewTests: XCTestCase {
             </body></html>
         """)
 
-        wait(for: [mobileActionCalled], timeout: 3)
+        wait(for: [mobileActionCalled], timeout: Self.webViewTimeout)
     }
 }
 
 private extension WebMessageCardViewTests {
-    static let loadedAction = "mock-loaded"
+    /// WebKit runs out of process, so the first page load on a cold simulator can take several seconds.
+    /// Every wait below ends as soon as its expectation is fulfilled, so a generous timeout costs nothing.
+    static let webViewTimeout: TimeInterval = 10
+    static let mockHost = "mock.mock"
+    static let defaultPreventedAction = "defaultPrevented:"
 
-    /// `onLoad` runs after the card's bridge scripts are injected, then signals a mobile action,
-    /// so the test knows the card script ran before checking that no URL was selected.
-    func assertNoURLSelected(
+    /// The link click guard runs on `window` in the capture phase, so a page listener
+    /// on `document` observes `defaultPrevented` after the guard has made its decision.
+    func assertScriptClickIsCancelled(
         body: String,
-        onLoad: String,
+        click: String,
         file: StaticString = #filePath,
         line: UInt = #line
     ) {
-        let cardScriptRan = expectation(description: "Card script ran")
-        let urlSelected = expectation(description: "URL selected")
-        urlSelected.isInverted = true
+        let clickObserved = expectation(description: "Click observed by page script")
         delegate.onMobileAction = { action in
-            if action == Self.loadedAction { cardScriptRan.fulfill() }
+            guard action.hasPrefix(Self.defaultPreventedAction) else { return }
+            XCTAssertEqual(action, Self.defaultPreventedAction + "true", file: file, line: line)
+            clickObserved.fulfill()
         }
         delegate.onSelectURL = { url in
             XCTFail("Unexpected URL selection: \(url)", file: file, line: line)
-            urlSelected.fulfill()
         }
 
         startLoading(html: """
@@ -114,19 +142,58 @@ private extension WebMessageCardViewTests {
             \(body)
             <script>
                 window.onload = function () {
-                    \(onLoad)
-                    callMobileAction('\(Self.loadedAction)');
+                    document.addEventListener('click', function (event) {
+                        callMobileAction('\(Self.defaultPreventedAction)' + event.defaultPrevented);
+                    }, true);
+                    \(click)
                 };
             </script>
             </body></html>
         """)
 
-        wait(for: [cardScriptRan, urlSelected], timeout: 3)
+        wait(for: [clickObserved], timeout: Self.webViewTimeout)
     }
 
-    func startLoading(html: String) {
+    /// Navigations that are not clicks bypass the guard and reach the navigation policy,
+    /// so the policy decision for the mock host is the signal that the card handled them.
+    func assertNavigationDoesNotSelectURL(
+        body: String,
+        onLoad: String,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        let policyDecided = expectation(description: "Navigation policy decided for mock host")
+        let policyProvider = WKNavigationPolicyProvider { request in
+            let result = WKNavigationPolicyProvider.customResponseCard.policy(request)
+            guard request.url.host == Self.mockHost else { return result }
+            XCTAssertEqual(result.policy, .cancel, file: file, line: line)
+            XCTAssertFalse(result.shouldHandleUrlSelection, file: file, line: line)
+            policyDecided.fulfill()
+            return result
+        }
+        delegate.onSelectURL = { url in
+            XCTFail("Unexpected URL selection: \(url)", file: file, line: line)
+        }
+
+        startLoading(
+            html: """
+                <html><body>
+                \(body)
+                <script>window.onload = function () { \(onLoad) };</script>
+                </body></html>
+            """,
+            policyProvider: policyProvider
+        )
+
+        wait(for: [policyDecided], timeout: Self.webViewTimeout)
+    }
+
+    func startLoading(
+        html: String,
+        policyProvider: WKNavigationPolicyProvider = .customResponseCard
+    ) {
         let view = WebMessageCardView(
-            policyProvider: .customResponseCard,
+            policyProvider: policyProvider,
             message: .init(chatMessage: .mock()),
             metadata: .init(html: html)
         )

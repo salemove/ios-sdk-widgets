@@ -143,8 +143,10 @@ extension CallVisualizer {
     }
 
     func endSession() {
-        Task { @MainActor [weak self] in
-            self?.endSessionOnMain()
+        environment.gcd.mainQueue.async { [weak self] in
+            MainActor.assumeIsolated {
+                self?.endSessionOnMain()
+            }
         }
     }
 

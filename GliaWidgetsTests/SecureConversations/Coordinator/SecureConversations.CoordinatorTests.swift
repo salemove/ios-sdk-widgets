@@ -141,6 +141,9 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
     }
 
     func test_pickFile() {
+        let navigationController = RecordingNavigationController()
+        navigationPresenter = NavigationPresenter(with: navigationController)
+        let coordinator = createCoordinator()
         let viewController = coordinator.start() as? SecureConversations.WelcomeViewController
 
         XCTAssertNil(coordinator.selectedPickerController)
@@ -152,6 +155,7 @@ final class SecureConversationsCoordinatorTests: XCTestCase {
         case .filePickerController: XCTAssertTrue(true)
         default: XCTFail()
         }
+        XCTAssertEqual(navigationController.presentedViewControllers.count, 1)
     }
 
     func test_showAlert() throws {

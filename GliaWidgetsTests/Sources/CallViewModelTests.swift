@@ -530,7 +530,7 @@ class CallViewModelTests: XCTestCase {
             environment: env,
             call: .mock(),
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video), 
+            startWith: .engagement(mediaType: .video),
             replaceExistingEnqueueing: false
         )
 

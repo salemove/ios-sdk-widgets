@@ -86,20 +86,17 @@ final class ChatCoordinatorTests: XCTestCase {
     }
 
     func test_chatModelPickFile() throws {
+        let navigationController = RecordingNavigationController()
+        navigationPresenter = NavigationPresenter(with: navigationController)
+        let coordinator = createCoordinator()
         let viewController = coordinator.start()
-
-        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.first as? UIWindowScene)
-        let window = scene.windows.first
-        let oldRootViewController = window?.rootViewController
-        window?.rootViewController = viewController
-        defer { window?.rootViewController = oldRootViewController }
 
         switch viewController.viewModel {
         case .chat(let viewModel):
             viewModel.delegate?(.pickFile(.init(with: .cancelled), .default))
-            let filePickerController = coordinator.filePickerController?.viewController as? UIDocumentPickerViewController
 
-            XCTAssertNotNil(filePickerController)
+            XCTAssertNotNil(coordinator.filePickerController)
+            XCTAssertEqual(navigationController.presentedViewControllers.count, 1)
         default: XCTFail()
         }
     }
@@ -342,21 +339,17 @@ final class ChatCoordinatorTests: XCTestCase {
     }
 
     func test_transcriptModelPickFile() throws {
+        let navigationController = RecordingNavigationController()
+        navigationPresenter = NavigationPresenter(with: navigationController)
         let coordinator = createCoordinator(startWithSecureTranscriptFlow: true)
         let viewController = coordinator.start()
-
-        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.first as? UIWindowScene)
-        let window = scene.windows.first
-        let oldRootViewController = window?.rootViewController
-        window?.rootViewController = viewController
-        defer { window?.rootViewController = oldRootViewController }
 
         switch viewController.viewModel {
         case .transcript(let viewModel):
             viewModel.delegate?(.pickFile(.init(with: .cancelled), .default))
-            let filePickerController = coordinator.filePickerController?.viewController as? UIDocumentPickerViewController
 
-            XCTAssertNotNil(filePickerController)
+            XCTAssertNotNil(coordinator.filePickerController)
+            XCTAssertEqual(navigationController.presentedViewControllers.count, 1)
         default: XCTFail()
         }
     }
