@@ -123,6 +123,46 @@ final class EngagementCoordinatorTests: XCTestCase {
         XCTAssertNotNil(surveyViewController)
     }
 
+    func test_failedSurveySubmitPresentsNoAlert() throws {
+        var submitCount = 0
+        var alertLogMessages: [String] = []
+        var alertLog = CoreSdkClient.Logger.mock
+        alertLog.prefixedClosure = { _ in alertLog }
+        alertLog.infoClosure = { message, _, _, _ in alertLogMessages.append("\(message)") }
+        var errorLogMessages: [String] = []
+        var coordinatorLog = CoreSdkClient.Logger.mock
+        coordinatorLog.prefixedClosure = { _ in coordinatorLog }
+        coordinatorLog.errorClosure = { message, _, _, _ in errorLogMessages.append("\(message)") }
+        coordinator = createCoordinator(
+            with: .direct(kind: .chat),
+            environment: .mock(
+                submitSurveyAnswer: { _, _, _, completion in
+                    submitCount += 1
+                    completion(.failure(.init(reason: "Submit failed")))
+                },
+                log: coordinatorLog,
+                alertManager: .mock(environment: .mock(log: alertLog))
+            )
+        )
+        let survey: CoreSdkClient.Survey = try .mock()
+        let engagement: CoreSdkClient.Engagement = .mock(
+            fetchSurvey: { _, completion in completion(.success(survey)) },
+            actionOnEnd: .showSurvey
+        )
+        coordinator.interactor.environment.coreSdk.getCurrentEngagement = { engagement }
+        coordinator.interactor.onEngagementChanged(engagement)
+        coordinator.interactor.end(with: .operatorHungUp)
+        coordinator.interactor.onEngagementChanged(nil)
+        coordinator.end(surveyPresentation: .presentSurvey)
+        let surveyViewController = try XCTUnwrap(coordinator.gliaPresenter.topMostViewController as? Survey.ViewController)
+
+        surveyViewController.props.submit(surveyViewController.props)
+
+        XCTAssertEqual(submitCount, 1)
+        XCTAssertEqual(alertLogMessages, [])
+        XCTAssertEqual(errorLogMessages, ["Submitting survey answers failed: Submit failed"])
+    }
+
     func test_endChatWithoutSurvey() throws {
         var calledEvents: [EngagementCoordinator.DelegateEvent] = []
 
@@ -312,9 +352,10 @@ extension EngagementCoordinatorTests {
 
     func createCoordinator(
         with engagementLaunching: EngagementCoordinator.EngagementLaunching,
-        engagementRestorationState: @escaping () -> (EngagementRestorationState) = { .none }
+        engagementRestorationState: @escaping () -> (EngagementRestorationState) = { .none },
+        environment: EngagementCoordinator.Environment = .mock()
     ) -> EngagementCoordinator {
-        var env = EngagementCoordinator.Environment.mock()
+        var env = environment
         env.dismissManager.dismissViewControllerAnimateWithCompletion = { _, _, completion in
             completion?()
         }

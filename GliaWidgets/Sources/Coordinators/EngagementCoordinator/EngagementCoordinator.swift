@@ -290,9 +290,13 @@ extension EngagementCoordinator {
         viewController.props = .live(
             sdkSurvey: survey,
             engagementId: engagementId,
-            submitSurveyAnswer: { [environment] in
+            submitSurveyAnswer: { [environment] answers, surveyId, engagementId in
                 environment.log.prefixed(Self.self).info("Submit survey answers")
-                environment.submitSurveyAnswer($0, $1, $2, $3)
+                // The survey is best effort, so a failure is only logged.
+                environment.submitSurveyAnswer(answers, surveyId, engagementId) { result in
+                    guard case let .failure(error) = result else { return }
+                    environment.log.prefixed(Self.self).error("Submitting survey answers failed: \(error.reason)")
+                }
             },
             cancel: { [weak self] in
                 guard let self else { return }
@@ -303,14 +307,6 @@ extension EngagementCoordinator {
             },
             endEditing: { viewController.view.endEditing(true) },
             updateProps: { viewController.props = $0 },
-            onError: { [weak self] error in
-                guard let self else { return }
-                self.interactor.cleanup()
-                environment.alertManager.present(
-                    in: .root(viewController),
-                    as: .error(error: error)
-                )
-            },
             completion: { [weak self] in
                 guard let self else { return }
                 viewController.dismiss(animated: true) {

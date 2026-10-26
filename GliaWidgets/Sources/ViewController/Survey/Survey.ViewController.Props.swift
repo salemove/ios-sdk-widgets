@@ -5,11 +5,14 @@ extension Survey.ViewController.Props {
     static func live(
         sdkSurvey: CoreSdkClient.Survey,
         engagementId: String,
-        submitSurveyAnswer: @escaping CoreSdkClient.SubmitSurveyAnswer,
+        submitSurveyAnswer: @escaping (
+            _ answers: [CoreSdkClient.Survey.Answer],
+            _ surveyId: CoreSdkClient.Survey.Id,
+            _ engagementId: String
+        ) -> Void,
         cancel: @escaping () -> Void,
         endEditing: @escaping () -> Void,
         updateProps: @escaping (Self) -> Void,
-        onError: @escaping (Error) -> Void,
         completion: @escaping () -> Void
     ) -> Self {
         var props = Survey.ViewController.Props(
@@ -70,20 +73,22 @@ extension Survey.ViewController.Props {
         }
 
         props.questionsProps = questionsOrder.compactMap { questions[$0] }
+        // Submit stays tappable while the screen closes, so a second tap must not send the answers again.
+        var isSubmitted = false
         props.submit = { currentProps in
+            guard !isSubmitted else { return }
             if currentProps.questionsProps.contains(where: { !$0.isValid }) {
                 updateProps(validate(props: currentProps, setQuestion: { questions[$0] = $1 }))
                 return
             }
 
+            isSubmitted = true
             submitSurveyAnswer(
                 currentProps.toCoreSdkAnswers(),
                 sdkSurvey.id,
                 engagementId
-            ) { result in
-                guard case .failure(let error) = result else { return completion() }
-                onError(error)
-            }
+            )
+            completion()
         }
         return props
     }
