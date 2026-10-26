@@ -501,6 +501,7 @@
 		8492F91B2CAD6ADE00242691 /* ChatViewModelTests+MessageRetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492F91A2CAD6ADE00242691 /* ChatViewModelTests+MessageRetry.swift */; };
 		849648912EC723B500AD0C17 /* VideoCallViewModel+NetworkMonitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849648902EC723B500AD0C17 /* VideoCallViewModel+NetworkMonitoring.swift */; };
 		8497C1E82E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8497C1E72E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift */; };
+		5E7A1C0B2F00000100A1B2C3 /* SurveyViewControllerPropsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7A1C0A2F00000100A1B2C3 /* SurveyViewControllerPropsTests.swift */; };
 		84A318A12869ECFC00CA1DE5 /* Unavailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A318A02869ECFC00CA1DE5 /* Unavailable.swift */; };
 		84B21DF32E604E220048AB64 /* PlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B21DF22E604E220048AB64 /* PlaceholderTextView.swift */; };
 		84BCC3FA2EF4490B00C94AA7 /* CallViewModel+CallQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84BCC3F92EF4490B00C94AA7 /* CallViewModel+CallQuality.swift */; };
@@ -1654,6 +1655,7 @@
 		8492F91A2CAD6ADE00242691 /* ChatViewModelTests+MessageRetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatViewModelTests+MessageRetry.swift"; sourceTree = "<group>"; };
 		849648902EC723B500AD0C17 /* VideoCallViewModel+NetworkMonitoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VideoCallViewModel+NetworkMonitoring.swift"; sourceTree = "<group>"; };
 		8497C1E72E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleChoiceQuestionViewTests.swift; sourceTree = "<group>"; };
+		5E7A1C0A2F00000100A1B2C3 /* SurveyViewControllerPropsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyViewControllerPropsTests.swift; sourceTree = "<group>"; };
 		84A318A02869ECFC00CA1DE5 /* Unavailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unavailable.swift; sourceTree = "<group>"; };
 		84B21DF22E604E220048AB64 /* PlaceholderTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTextView.swift; sourceTree = "<group>"; };
 		84BCC3F92EF4490B00C94AA7 /* CallViewModel+CallQuality.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CallViewModel+CallQuality.swift"; sourceTree = "<group>"; };
@@ -4656,6 +4658,7 @@
 			isa = PBXGroup;
 			children = (
 				8497C1E62E0952E200FE1F1F /* SingleChoiceQuestionView */,
+				5E7A1C0A2F00000100A1B2C3 /* SurveyViewControllerPropsTests.swift */,
 			);
 			path = Survey;
 			sourceTree = "<group>";
@@ -7132,6 +7135,7 @@
 				AF1C19802B14FE9F00F8810F /* ConditionalCompilationClient.Failing.swift in Sources */,
 				84520BED2B19FD3000F97617 /* CallVisualizerTests+LO.swift in Sources */,
 				8497C1E82E0952F300FE1F1F /* SingleChoiceQuestionViewTests.swift in Sources */,
+				5E7A1C0B2F00000100A1B2C3 /* SurveyViewControllerPropsTests.swift in Sources */,
 				9A19927027D3BCAE00161AAE /* GCD.Failing.swift in Sources */,
 				215A25982CABC7DF0013023E /* EngagementLauncherTests.swift in Sources */,
 				3142696A29FFB712003DF62E /* Interactor.Failing.swift in Sources */,
