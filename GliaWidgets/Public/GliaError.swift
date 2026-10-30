@@ -22,9 +22,6 @@ public enum GliaError: Error {
     @available(*, deprecated, message: "Starting engagement with no queue ids is allowed")
     case startingEngagementWithNoQueueIdsIsNotAllowed
 
-    /// The site API key credentials are invalid.
-    case invalidSiteApiKeyCredentials
-
     /// The locale is invalid.
     case invalidLocale
 

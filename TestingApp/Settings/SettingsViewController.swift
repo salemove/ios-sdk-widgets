@@ -285,7 +285,6 @@ private extension SettingsViewController {
 
         props.changeConfig(
             Configuration(
-                authorizationMethod: .userApiKey(id: "unused", secret: "unused"),
                 environment: environmentCell.environment,
                 site: siteCell.textField.text ?? "",
                 visitorContext: uuid.map { Configuration.VisitorContext(assetId: $0) },
