@@ -2,9 +2,6 @@ import Foundation
 
 /// Glia's engagement configuration.
 public struct Configuration {
-    /// Site authorization method
-    public let authorizationMethod: AuthorizationMethod
-
     /// Environment
     public let environment: Environment
 
@@ -37,7 +34,6 @@ public struct Configuration {
     /// Initializes the configuration.
     ///
     /// - Parameters:
-    ///   - authorizationMethod: The site authorization method.
     ///   - environment: The environment to use.
     ///   - site: The site to use.
     ///   - visitorContext: Additional context about the visitor that operator may need.
@@ -49,7 +45,6 @@ public struct Configuration {
     /// notification permissions during authentication.
     ///
     public init(
-        authorizationMethod: AuthorizationMethod,
         environment: Environment,
         site: String,
         visitorContext: VisitorContext? = nil,
@@ -59,7 +54,6 @@ public struct Configuration {
         suppressPushNotificationsPermissionRequestDuringAuthentication: Bool = false,
         isPushNotificationProxyEnabled: Bool = true
     ) {
-        self.authorizationMethod = authorizationMethod
         self.environment = environment
         self.site = site
         self.visitorContext = visitorContext
@@ -68,45 +62,6 @@ public struct Configuration {
         self.manualLocaleOverride = manualLocaleOverride
         self.suppressPushNotificationsPermissionRequestDuringAuthentication = suppressPushNotificationsPermissionRequestDuringAuthentication
         self.isPushNotificationProxyEnabled = isPushNotificationProxyEnabled
-    }
-}
-
-public extension Configuration {
-    /// Site authorization method.
-    enum AuthorizationMethod {
-        /// Site API key authorization.
-        @available(*, deprecated, message: "Use .userApiKey(id:secret:) instead.")
-        case siteApiKey(id: String, secret: String)
-
-        /// User API key authorization.
-        case userApiKey(id: String, secret: String)
-
-        var coreAuthorizationMethod: CoreSdkClient.Salemove.AuthorizationMethod {
-            switch self {
-            case .siteApiKey(let id, let secret):
-                return .siteApiKey(id: id, secret: secret)
-            case let .userApiKey(id, secret):
-                return .userApiKey(id: id, secret: secret)
-            }
-        }
-
-        var id: String {
-            switch self {
-            case let .siteApiKey(id, _):
-                return id
-            case let .userApiKey(id, _):
-                return id
-            }
-        }
-
-        var secret: String {
-            switch self {
-            case let .siteApiKey(_, secret):
-                return secret
-            case let .userApiKey(_, secret):
-                return secret
-            }
-        }
     }
 }
 

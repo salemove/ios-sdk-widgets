@@ -136,7 +136,6 @@ extension SettingsView.ViewModel {
         let locale = manualLocaleOverride.isEmpty ? nil : manualLocaleOverride
 
         appState.configuration = Configuration(
-            authorizationMethod: .userApiKey(id: "unused", secret: "unused"),
             environment: env,
             site: site,
             visitorContext: uuid.map { Configuration.VisitorContext(assetId: $0) },

@@ -30,8 +30,6 @@ extension ViewController {
                 alert(message: "Failed to start\nCall Visualizer engagement is ongoing")
             case GliaError.configuringDuringEngagementIsNotAllowed:
                 alert(message: "The operation couldn't be completed. '\(gliaError)'.")
-            case GliaError.invalidSiteApiKeyCredentials:
-                alert(message: "Failed to configure the SDK, invalid credentials")
             case GliaError.invalidLocale:
                 alert(message: "Failed to configure the SDK, invalid locale override specified")
             default:
