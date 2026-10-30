@@ -236,7 +236,7 @@ public class Glia {
         }
     }
 
-    // swiftlint:disable cyclomatic_complexity function_body_length
+    // swiftlint:disable function_body_length
     /// Setup SDK using specific engagement configuration without starting the engagement.
     /// - Parameters:
     ///   - configuration: Engagement configuration.
@@ -273,7 +273,6 @@ public class Glia {
         }
 
         environment.openTelemetry.logger.i(.widgetsSdkConfiguring) {
-            $0[.apiKeyId] = .string(configuration.authorizationMethod.id)
             $0[.environment] = .string(configuration.environment.rawValue)
             $0[.localeCode] = .string(configuration.manualLocaleOverride ?? "N/A")
         }
@@ -374,9 +373,7 @@ public class Glia {
                 // or a `ConfigurationProcessError`, the `ConfigurationProcessError` is translated
                 // into a `GliaError`.
                 if let processError = error as? ProcessError {
-                    if processError == .invalidSiteApiKeyCredentials {
-                        errorForCompletion = GliaError.invalidSiteApiKeyCredentials
-                    } else if processError == .localeRetrieval {
+                    if processError == .localeRetrieval {
                         errorForCompletion = GliaError.invalidLocale
                     }
                 }
@@ -386,7 +383,7 @@ public class Glia {
             }
         }
     }
-    // swiftlint:enable cyclomatic_complexity function_body_length
+    // swiftlint:enable function_body_length
 
     /// Minimizes engagement view if ongoing engagement exists.
     /// Use this function to minimize the engagement view programmatically

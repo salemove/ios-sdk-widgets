@@ -874,3 +874,83 @@ final class GliaTests: XCTestCase {
         
     }
 }
+
+extension GliaTests {
+    func test_configureLogsEnvironmentAndLocaleOnly() throws {
+        var environment = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.infoClosure = { _, _, _, _ in }
+        logger.prefixedClosure = { _ in logger }
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        environment.coreSdk.createLogger = { _ in logger }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.success(()))
+        }
+        environment.conditionalCompilation.isDebug = { true }
+        environment.coreSDKConfigurator.configureWithInteractor = { _ in }
+        environment.coreSdk.secureConversations.observePendingStatus = { _ in nil }
+
+        let originalOpenTelemetry = DependencyContainer.current.widgets.openTelemetry
+        defer { DependencyContainer.current.widgets.openTelemetry = originalOpenTelemetry }
+        var configuringAttributes: Set<OtelAttributes>?
+        DependencyContainer.current.widgets.openTelemetry = .mock(
+            configuration: .init(domain: ""),
+            logger: .mock(i: { event, _, attributesBuilder in
+                guard event == .widgetsSdkConfiguring else { return }
+                var attributes: [OtelAttributes: OtelAttributeValue] = [:]
+                attributesBuilder?(&attributes)
+                configuringAttributes = Set(attributes.keys)
+            })
+        )
+
+        let sdk = Glia(environment: environment)
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { _ in }
+
+        XCTAssertEqual(configuringAttributes, [.environment, .localeCode])
+    }
+
+    func test_configureReportsInvalidLocaleWhenLocaleRetrievalFails() throws {
+        let error = try configureError(for: .localeRetrieval)
+
+        XCTAssertEqual(error as? GliaError, .invalidLocale)
+    }
+
+    func test_configureReportsInternalErrorWhenSiteSettingsRetrievalFails() throws {
+        let error = try configureError(for: .siteSettingsRetrieval)
+
+        XCTAssertEqual(error as? GliaError, .internalError)
+    }
+
+    private func configureError(
+        for processError: CoreSdkClient.ConfigurationProcessError
+    ) throws -> Error? {
+        var environment = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.infoClosure = { _, _, _, _ in }
+        logger.errorClosure = { _, _, _, _ in }
+        logger.prefixedClosure = { _ in logger }
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        environment.coreSdk.createLogger = { _ in logger }
+        environment.conditionalCompilation.isDebug = { false }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
+            completion(.failure(processError))
+        }
+        let sdk = Glia(environment: environment)
+
+        var receivedError: Error?
+        try sdk.configure(
+            with: .mock(),
+            theme: .mock()
+        ) { result in
+            if case let .failure(error) = result {
+                receivedError = error
+            }
+        }
+        return receivedError
+    }
+}
