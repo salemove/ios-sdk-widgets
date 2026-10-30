@@ -6,7 +6,7 @@ import enum GliaCoreSDK.ConfigurationError
 extension Configuration {
     static func empty(with env: Environment = .beta) -> Self {
         .init(
-            authorizationMethod: .siteApiKey(id: "", secret: ""),
+            authorizationMethod: .userApiKey(id: "unused", secret: "unused"),
             environment: env,
             site: "",
             manualLocaleOverride: nil,
@@ -19,8 +19,6 @@ extension Configuration {
     init?(queryItems: [URLQueryItem]) {
         guard
             let siteId = queryItems.first(where: { $0.name == "site_id" })?.value,
-            let siteApiKeyId = queryItems.first(where: { $0.name == "api_key_id" })?.value,
-            let siteApiKeySecret = queryItems.first(where: { $0.name == "api_key_secret" })?.value,
             let envName = queryItems.first(where: { $0.name == "env" })?.value,
             let environment = Environment(rawValue: envName)
         else {
@@ -33,7 +31,7 @@ extension Configuration {
         let manualLocaleOverride = queryItems.first { $0.name == "manual_locale_override" }?.value ?? nil
 
         self = .init(
-            authorizationMethod: .siteApiKey(id: siteApiKeyId, secret: siteApiKeySecret),
+            authorizationMethod: .userApiKey(id: "unused", secret: "unused"),
             environment: environment,
             site: siteId,
             visitorContext: visitorContext,
@@ -61,8 +59,7 @@ private extension Environment {
 
 extension Configuration: Codable {
     enum CodingKeys: String, CodingKey {
-        case authorizationMethod,
-             environment,
+        case environment,
              site,
              visitorContext,
              pushNotifications,
@@ -74,7 +71,7 @@ extension Configuration: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self = try .init(
-            authorizationMethod: container.decode(Configuration.AuthorizationMethod.self, forKey: .authorizationMethod),
+            authorizationMethod: .userApiKey(id: "unused", secret: "unused"),
             environment: container.decode(Environment.self, forKey: .environment),
             site: container.decode(String.self, forKey: .site),
             visitorContext: container.decodeIfPresent(VisitorContext.self, forKey: .visitorContext),
@@ -90,7 +87,6 @@ extension Configuration: Codable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(authorizationMethod, forKey: .authorizationMethod)
         try container.encode(environment, forKey: .environment)
         try container.encode(site, forKey: .site)
         try container.encode(visitorContext, forKey: .visitorContext)
@@ -100,47 +96,6 @@ extension Configuration: Codable {
             suppressPushNotificationsPermissionRequestDuringAuthentication,
             forKey: .suppressPushNotificationsPermissionRequestDuringAuthentication
         )
-    }
-}
-
-extension Configuration.AuthorizationMethod: Codable {
-    enum CodingKeys: String, CodingKey {
-        case type, id, secret
-    }
-
-    private enum AuthorizationType: String, Codable {
-        case siteApiKey
-        case userApiKey
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let type = try container.decodeIfPresent(AuthorizationType.self, forKey: .type) ?? .siteApiKey
-        let id = try container.decode(String.self, forKey: .id)
-        let secret = try container.decode(String.self, forKey: .secret)
-
-        switch type {
-        case .userApiKey:
-            self = .userApiKey(id: id, secret: secret)
-        case .siteApiKey:
-            self = .siteApiKey(id: id, secret: secret)
-        }
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        switch self {
-        case let .siteApiKey(id, secret):
-            try container.encode(AuthorizationType.siteApiKey, forKey: .type)
-            try container.encode(id, forKey: .id)
-            try container.encode(secret, forKey: .secret)
-        case let .userApiKey(id, secret):
-            try container.encode(AuthorizationType.userApiKey, forKey: .type)
-            try container.encode(id, forKey: .id)
-            try container.encode(secret, forKey: .secret)
-        @unknown default:
-            debugPrint("💥 Can't encode AuthorizationMethod: \(self)")
-        }
     }
 }
 

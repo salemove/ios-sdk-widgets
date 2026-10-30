@@ -46,9 +46,6 @@ struct SettingsView: View {
             .onReceive(appState.$queueId) { _ in
                 viewModel.loadCurrentSettings()
             }
-            .onChange(of: viewModel.authorizationMethodSelection) { selection in
-                viewModel.didChangeAuthorizationMethodSelection(to: selection)
-            }
             .sheet(isPresented: $viewModel.showQueuePicker) {
                 QueuePickerView(
                     queues: viewModel.availableQueues,
@@ -153,36 +150,6 @@ private extension SettingsView {
 
             TextField("Company Name", text: $viewModel.companyName)
                 .accessibilityIdentifier("settings_companyName_textfield")
-
-            Picker("Auth Method", selection: $viewModel.authorizationMethodSelection) {
-                Text("Site API Key")
-                    .tag(SettingsView.AuthorizationMethodSelection.siteApiKey)
-                    .accessibilityIdentifier("settings_authMethod_siteApiKey_segment")
-                Text("User API Key")
-                    .tag(SettingsView.AuthorizationMethodSelection.userApiKey)
-                    .accessibilityIdentifier("settings_authMethod_userApiKey_segment")
-            }
-            .pickerStyle(.segmented)
-            .accessibilityIdentifier("settings_authMethod_segmentedControl")
-
-            TextField(
-                viewModel.selectedApiKeyIdentifierTitle,
-                text: Binding(
-                    get: { viewModel.selectedApiKeyId },
-                    set: { viewModel.selectedApiKeyId = $0 }
-                )
-            )
-                .autocapitalization(.none)
-                .accessibilityIdentifier("settings_apiKeyId_textfield")
-
-            TextField(
-                viewModel.selectedApiKeySecretTitle,
-                text: Binding(
-                    get: { viewModel.selectedApiKeySecret },
-                    set: { viewModel.selectedApiKeySecret = $0 }
-                )
-            )
-                .accessibilityIdentifier("settings_apiKeySecret_textfield")
 
             Toggle(
                 "Use Default Queue",
