@@ -86,7 +86,7 @@ data flow through the Core SDK. The Glia libraries it embeds:
 - **Glia.sharedInstance:** Singleton providing SDK configuration and engagement management
 - **Main Features:**
   - `startEngagement()` - Launch chat, audio, or video engagements
-  - `configure()` - Initialize SDK with site credentials
+  - `configure()` - Initialize SDK with the site ID and environment
   - `startSecureConversation()` - Launch secure messaging flows
 - **Engagement Types:** `.none`, `.chat`, `.audioCall`, `.videoCall`, `.messaging`
 

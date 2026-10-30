@@ -6,7 +6,6 @@ import enum GliaCoreSDK.ConfigurationError
 extension Configuration {
     static func empty(with env: Environment = .beta) -> Self {
         .init(
-            authorizationMethod: .userApiKey(id: "unused", secret: "unused"),
             environment: env,
             site: "",
             manualLocaleOverride: nil,
@@ -31,7 +30,6 @@ extension Configuration {
         let manualLocaleOverride = queryItems.first { $0.name == "manual_locale_override" }?.value ?? nil
 
         self = .init(
-            authorizationMethod: .userApiKey(id: "unused", secret: "unused"),
             environment: environment,
             site: siteId,
             visitorContext: visitorContext,
@@ -71,7 +69,6 @@ extension Configuration: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self = try .init(
-            authorizationMethod: .userApiKey(id: "unused", secret: "unused"),
             environment: container.decode(Environment.self, forKey: .environment),
             site: container.decode(String.self, forKey: .site),
             visitorContext: container.decodeIfPresent(VisitorContext.self, forKey: .visitorContext),
@@ -182,8 +179,6 @@ extension ConfigurationError: CustomStringConvertible {
             return "invalidSite"
         case .invalidEnvironment:
             return "invalidEnvironment"
-        case .invalidSiteApiKey:
-            return "invalidSiteApiKey"
         case .invalidRegionEndpoint:
             return "invalidRegionEndpoint"
         case .invalidConfiguration:

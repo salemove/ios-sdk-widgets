@@ -6,7 +6,6 @@ class InteractorTests: XCTestCase {
     let mock = (
         queueId: "i'm-queue-identifier",
         config: Configuration.mock(
-            authMethod: .siteApiKey(id: "id", secret: "secret"),
             environment: .usa,
             site: "mocked-id"
         ),
