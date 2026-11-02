@@ -106,6 +106,12 @@ class CallViewModel: EngagementViewModel, ViewModel {
             update(for: interactor.state)
         }
 
+        // The call can start while the Call screen is minimized and its view is not loaded yet;
+        // the `.started` transition then happened with no view to update.
+        if call.state.value == .started {
+            showConnected()
+        }
+
         switch startWith {
         case .engagement:
             break
@@ -114,6 +120,11 @@ class CallViewModel: EngagementViewModel, ViewModel {
             showConnecting()
             answer(true, nil)
         }
+    }
+
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        reattachVideoStreams()
     }
 
     override func update(for state: InteractorState) {
@@ -355,6 +366,15 @@ extension CallViewModel {
         } else {
             hideLocalVideo()
         }
+    }
+
+    /// Video streams that arrive while the Call screen is minimized are attached to an off-screen
+    /// view, or dropped when the view is not loaded yet, and do not render once the screen is shown.
+    private func reattachVideoStreams() {
+        let video = call.video.stream.value
+        guard video.hasRemoteStream || video.hasLocalStream else { return }
+        updateRemoteVideoVisible()
+        updateLocalVideoVisible()
     }
 }
 
