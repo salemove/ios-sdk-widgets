@@ -928,29 +928,6 @@ extension GliaTests {
     private func configureError(
         for processError: CoreSdkClient.ConfigurationProcessError
     ) throws -> Error? {
-        var environment = Glia.Environment.failing
-        var logger = CoreSdkClient.Logger.failing
-        logger.infoClosure = { _, _, _, _ in }
-        logger.errorClosure = { _, _, _, _ in }
-        logger.prefixedClosure = { _ in logger }
-        logger.configureLocalLogLevelClosure = { _ in }
-        logger.configureRemoteLogLevelClosure = { _ in }
-        environment.coreSdk.createLogger = { _ in logger }
-        environment.conditionalCompilation.isDebug = { false }
-        environment.coreSDKConfigurator.configureWithConfiguration = { _, completion in
-            completion(.failure(processError))
-        }
-        let sdk = Glia(environment: environment)
-
-        var receivedError: Error?
-        try sdk.configure(
-            with: .mock(),
-            theme: .mock()
-        ) { result in
-            if case let .failure(error) = result {
-                receivedError = error
-            }
-        }
-        return receivedError
+        try configureFailure(for: processError).error
     }
 }
