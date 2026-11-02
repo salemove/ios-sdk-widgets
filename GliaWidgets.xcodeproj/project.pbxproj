@@ -166,6 +166,7 @@
 		1AFB1E7425F8B00B00CA460D /* ChatTextContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E7325F8B00B00CA460D /* ChatTextContentView.swift */; };
 		1AFB1E7825F8B26800CA460D /* ChatTextContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFB1E7725F8B26800CA460D /* ChatTextContentStyle.swift */; };
 		1B819F8999EE7CF1A2932B8D /* ChatViewOlderHistoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD024C838B9FA09DD4883A7 /* ChatViewOlderHistoryTests.swift */; };
+		1E4A6D48678E89FC8DD7F7D6 /* GliaTests+ConfigurationFailure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D26B30A424E0E2EC7263504 /* GliaTests+ConfigurationFailure.swift */; };
 		1EA2B94D8A47E06A4132A686 /* SecureConversations.TranscriptModel.OlderHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607C658A55650F5A339497C0 /* SecureConversations.TranscriptModel.OlderHistory.swift */; };
 		2100B47C2CB66B6500AC7527 /* EntryWidget.Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2100B47B2CB66B6500AC7527 /* EntryWidget.Environment.swift */; };
 		2100B4802CB6B5A400AC7527 /* LockIsolated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2100B47F2CB6B5A400AC7527 /* LockIsolated.swift */; };
@@ -205,6 +206,7 @@
 		21BADEBB2D2D7F94000AD9CF /* MockConfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 21BADEBA2D2D7F94000AD9CF /* MockConfiguration.json */; };
 		21C07F7A2D39095F00AEBE3E /* Glia+SnackBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C07F792D39095F00AEBE3E /* Glia+SnackBar.swift */; };
 		247E6CF60FA07796045ADE12 /* ChatView.OlderHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0547E9794CE96A39BCCC437 /* ChatView.OlderHistory.swift */; };
+		248D122ADDD02905047E2BA5 /* Glia+ConfigurationFailure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C64189BFE99284C10378209 /* Glia+ConfigurationFailure.swift */; };
 		25636B8E81D5FEBF05C13D22 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F70C4B2F27B7E1001E4C58 /* SectionHeader.swift */; };
 		26D44766F06BF4850A825EA1 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B1E6A0C378B1D89072AAB97E /* SwiftUI.framework */; };
 		2BC656672E8FDC1F007AECA6 /* Boxed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC656652E8FDC1F007AECA6 /* Boxed.swift */; };
@@ -1535,6 +1537,8 @@
 		75FF151C27F4F8E000FE7BE2 /* Theme.Survey.InputQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.Survey.InputQuestion.swift; sourceTree = "<group>"; };
 		7AFF5BAA75979BB24C463329 /* OlderChatHistoryLoader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OlderChatHistoryLoader.swift; sourceTree = "<group>"; };
 		7E9E64D1FF29D6013E3DE04C /* ChatViewModelTests+OlderHistory.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "ChatViewModelTests+OlderHistory.swift"; sourceTree = "<group>"; };
+		7C64189BFE99284C10378209 /* Glia+ConfigurationFailure.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Glia+ConfigurationFailure.swift"; sourceTree = "<group>"; };
+		7D26B30A424E0E2EC7263504 /* GliaTests+ConfigurationFailure.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "GliaTests+ConfigurationFailure.swift"; sourceTree = "<group>"; };
 		84265E49298D7B1900D65842 /* CallVisualizer.Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallVisualizer.Coordinator.swift; sourceTree = "<group>"; };
 		84265E4A298D7B1900D65842 /* CallVisualizer.Coordinator.Environment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallVisualizer.Coordinator.Environment.swift; sourceTree = "<group>"; };
 		84265E6A29912E2100D65842 /* RemoteConfiguration+CallVisualizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteConfiguration+CallVisualizer.swift"; sourceTree = "<group>"; };
@@ -4048,6 +4052,7 @@
 				215A258F2CA44D8A0013023E /* Glia+EngagementLauncher.swift */,
 				C0F7EA3B2CA581E70038019C /* Glia+EntryWidget.swift */,
 				21C07F792D39095F00AEBE3E /* Glia+SnackBar.swift */,
+				7C64189BFE99284C10378209 /* Glia+ConfigurationFailure.swift */,
 			);
 			path = Glia;
 			sourceTree = "<group>";
@@ -4489,6 +4494,7 @@
 				846A5C4429F6BEFA0049B29F /* GliaTests+StartEngagement.swift */,
 				AFFA99812C57D658004A2825 /* GliaTests+RestoreEngagement.swift */,
 				215A25992CAC19780013023E /* GliaTests+EngagementLauncher.swift */,
+				7D26B30A424E0E2EC7263504 /* GliaTests+ConfigurationFailure.swift */,
 			);
 			path = Glia;
 			sourceTree = "<group>";
@@ -6905,6 +6911,7 @@
 				C09047192B7E1A1B003C437C /* GvaGalleryListViewStyle.RemoteConfig.swift in Sources */,
 				C0D6C9F32C0D293B00D4709B /* AlertTypeComposer.swift in Sources */,
 				1AFB1E5E25F7ADDA00CA460D /* ChatOperator.swift in Sources */,
+				248D122ADDD02905047E2BA5 /* Glia+ConfigurationFailure.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7044,6 +7051,7 @@
 				210150742CC13E8900294BA4 /* QueuesMonitorTests.swift in Sources */,
 				31CCE3E42BCE8F3A00F92535 /* CallVisualizerCoordinatorTests.swift in Sources */,
 				C971476A7D6F0461EC00A6AC /* WebMessageCardViewTests.swift in Sources */,
+				1E4A6D48678E89FC8DD7F7D6 /* GliaTests+ConfigurationFailure.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
