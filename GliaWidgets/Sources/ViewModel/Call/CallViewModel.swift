@@ -9,6 +9,7 @@ class CallViewModel: EngagementViewModel, ViewModel {
     private let startWith: StartAction
     private let durationCounter: CallDurationCounter
     private let unreadMessages: ObservableValue<Int>
+    private var hasVideoChangedWhileViewInactive = false
 
     /// Speaker button state used for logging.
     private(set) var loggedSpeakerButtonOnState: Bool = false {
@@ -124,6 +125,8 @@ class CallViewModel: EngagementViewModel, ViewModel {
 
     override func viewWillAppear() {
         super.viewWillAppear()
+        guard hasVideoChangedWhileViewInactive else { return }
+        hasVideoChangedWhileViewInactive = false
         reattachVideoStreams()
     }
 
@@ -370,6 +373,8 @@ extension CallViewModel {
 
     /// Video streams that arrive while the Call screen is minimized are attached to an off-screen
     /// view, or dropped when the view is not loaded yet, and do not render once the screen is shown.
+    /// Re-attaching resets the local video preview to its default corner, so it is done only when
+    /// the streams changed while the screen was not visible.
     private func reattachVideoStreams() {
         let video = call.video.stream.value
         guard video.hasRemoteStream || video.hasLocalStream else { return }
@@ -408,6 +413,9 @@ extension CallViewModel {
     }
 
     private func onVideoChanged(_ stream: MediaStream<CoreSdkClient.VideoStreamable>) {
+        if !isViewActive.value {
+            hasVideoChangedWhileViewInactive = true
+        }
         updateButtons()
         updateRemoteVideoVisible()
         updateLocalVideoVisible()

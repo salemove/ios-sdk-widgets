@@ -693,6 +693,37 @@ class CallViewModelTests: XCTestCase {
         XCTAssertEqual(playedVideos, ["remote", "local"])
     }
 
+    func test_viewWillAppearDoesNotReattachVideoStreamsAddedWhileCallScreenWasVisible() {
+        var attachedVideosCount = 0
+
+        call = .init(.video(direction: .twoWay), environment: .mock)
+        viewModel = .init(
+            interactor: .mock(),
+            environment: .mock,
+            call: call,
+            unreadMessages: .init(with: 0),
+            startWith: .engagement(mediaType: .video),
+            replaceExistingEnqueueing: false
+        )
+        viewModel.event(EngagementViewModel.Event.viewDidAppear)
+        call.updateVideoStream(with: Self.videoStream(isRemote: true))
+        call.updateVideoStream(with: Self.videoStream(isRemote: false))
+        viewModel.event(EngagementViewModel.Event.viewDidDisappear)
+
+        viewModel.action = { action in
+            switch action {
+            case .setRemoteVideo(let streamView) where streamView != nil,
+                 .setLocalVideo(let streamView) where streamView != nil:
+                attachedVideosCount += 1
+            default:
+                break
+            }
+        }
+        viewModel.event(EngagementViewModel.Event.viewWillAppear)
+
+        XCTAssertEqual(attachedVideosCount, 0)
+    }
+
     func test_viewWillAppearWithoutVideoStreamsSendsNoVideoActions() {
         var videoActionsCount = 0
 
