@@ -306,7 +306,7 @@ public class Glia {
             }
         }
 
-        try environment.coreSDKConfigurator.configureWithConfiguration(configuration) { [weak self] result in
+        try configureCoreSdk(with: configuration) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success:
@@ -377,7 +377,13 @@ public class Glia {
                         errorForCompletion = GliaError.invalidLocale
                     }
                 }
-                loggerPhase.logger.error("Glia Widgets SDK initialization failed")
+                let failure = ConfigurationFailure(error)
+                switch failure.level {
+                case .warning:
+                    loggerPhase.logger.warning(failure.logMessage)
+                case .error:
+                    loggerPhase.logger.error(failure.logMessage)
+                }
                 debugPrint("💥 Core SDK configuration is not valid. Unexpected error='\(error)'.")
                 completion(.failure(errorForCompletion))
             }
@@ -650,6 +656,27 @@ extension Glia {
         self.interactor = interactor
 
         return interactor
+    }
+
+    private func configureCoreSdk(
+        with configuration: Configuration,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) throws {
+        do {
+            try environment.coreSDKConfigurator.configureWithConfiguration(configuration, completion)
+        } catch let error as CoreSdkClient.ConfigurationError {
+            let failure = ConfigurationFailure(error)
+            // Thrown before Core is configured, so the remote logger has no endpoint yet
+            // and OTel is the only channel that can carry it. These are integrator input
+            // errors, hence warning.
+            environment.openTelemetry.logger.w(
+                .widgetsSdkConfigured,
+                message: failure.logMessage
+            )
+            // `ConfigurationError` is an `@objc` enum, so `\(error)` would print only its type name.
+            debugPrint("💥 Glia Widgets SDK configuration is not valid. Error='\(failure.name)'.")
+            throw error
+        }
     }
 
     /// Used to restore a bubble for Secure Conversation engagement:
