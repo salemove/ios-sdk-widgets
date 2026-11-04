@@ -2,6 +2,31 @@ import Foundation
 import GliaCoreSDK
 
 extension Glia {
+    /// Clear visitor session
+    ///
+    /// - Parameters:
+    ///   - completion: Completion handler.
+    ///
+    /// - Important: Note, that in case of ongoing engagement, `clearVisitorSession` must be called
+    ///   after ending engagement, because `GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed`
+    ///   will occur otherwise.
+    ///
+    @available(*, deprecated, message: "Deprecated, use ``Glia.clearVisitorData()`` instead.")
+    public func clearVisitorSession(_ completion: @escaping (Result<Void, Error>) -> Void) {
+        environment.openTelemetry.logger.logDeprecatedApiUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "clearVisitorSession(_:)"
+        )
+        loggerPhase.logger.prefixed(Self.self).info("Clear visitor session")
+        guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
+            completion(.failure(GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed))
+            return
+        }
+        environment.coreSdk.legacyClearSession()
+        completion(.success(()))
+    }
+
     /// Deprecated, use ``Glia.getVisitorInfo(completion:)`` instead.
     @available(*, deprecated, message: "Deprecated, use ``Glia.getVisitorInfo(completion:)`` instead. ")
     public func fetchVisitorInfo(completion: @escaping (Result<GliaCore.VisitorInfo, Error>) -> Void) {
