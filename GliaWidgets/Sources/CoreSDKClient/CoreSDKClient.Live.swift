@@ -33,7 +33,7 @@ extension CoreSdkClient {
             sendMessageWithMessagePayload: { payload in
                 try await core.sendForWidgets(messagePayload: payload)
             },
-            sendFile: GliaCore.sharedInstance.send(file:completion:),
+            sendFile: { try await core.sendForWidgets(file: $0) },
             cancelQueueTicket: { queueTicket in
                 try await core.cancelForWidgets(queueTicket: queueTicket)
             },
@@ -66,10 +66,9 @@ extension CoreSdkClient {
                 let history = try await core.fetchChatTranscriptForWidgets()
                 return CoreSdkClient.ChatHistoryPage(with: history)
             },
-            fetchOlderChatHistory: { olderPage, completion in
-                GliaCore.sharedInstance.fetchChatTranscript(olderPage: olderPage) { result in
-                    completion(result.map(CoreSdkClient.ChatHistoryPage.init(with:)))
-                }
+            fetchOlderChatHistory: { olderPage in
+                let history = try await core.fetchChatTranscriptForWidgets(olderPage: olderPage)
+                return CoreSdkClient.ChatHistoryPage(with: history)
             },
             requestVisitorCode: {
                 try await core.callVisualizer.requestVisitorCodeForWidgets()

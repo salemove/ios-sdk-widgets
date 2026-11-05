@@ -33,7 +33,10 @@ extension CoreSdkClient {
         sendMessageWithMessagePayload: { _ in fail("\(Self.self).sendMessageWithMessagePayload")
             throw NSError(domain: "CoreSdkClient", code: -1, userInfo: nil)
         },
-        sendFile: { _, _ in fail("\(Self.self).sendFile") },
+        sendFile: { _ in
+            fail("\(Self.self).sendFile")
+            throw NSError(domain: "sendFile", code: -1)
+        },
         cancelQueueTicket: { _ in
             fail("cancelQueueTicket")
             throw NSError(domain: "cancelQueueTicket", code: -1, userInfo: nil)
@@ -68,7 +71,7 @@ extension CoreSdkClient {
             return .init()
         },
         fetchChatHistory: { .init(messages: []) },
-        fetchOlderChatHistory: { _, _ in },
+        fetchOlderChatHistory: { _ in .init(messages: []) },
         requestVisitorCode: {
             fail("\(Self.self).requestVisitorCode")
             throw NSError(domain: "requestVisitorCode", code: -1)

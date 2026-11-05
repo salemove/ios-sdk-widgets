@@ -25,7 +25,7 @@ extension ChatCoordinator.Environment {
         uuid: { .mock },
         uiApplication: .mock,
         fetchChatHistory: { .init(messages: []) },
-        fetchOlderChatHistory: { _, _ in },
+        fetchOlderChatHistory: { _ in .init(messages: []) },
         createFileUploadListModel: { _ in .mock() },
         queueIds: [],
         listQueues: { [.mock()] },

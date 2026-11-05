@@ -32,7 +32,7 @@ extension ChatViewModel.Environment {
         uuid: { UUID.mock },
         uiApplication: .mock,
         fetchChatHistory: { .init(messages: []) },
-        fetchOlderChatHistory: { _, _ in },
+        fetchOlderChatHistory: { _ in .init(messages: []) },
         fileUploadListStyle: .initial,
         createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:),
         createSendMessagePayload: { _, _ in .mock() },

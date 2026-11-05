@@ -272,11 +272,23 @@ class ChatViewModel: EngagementViewModel {
 
 // MARK: Pending messages
 extension ChatViewModel {
+    /// A message with a single file and no text is sent as a file entry; anything else as a
+    /// message payload.
+    @MainActor
+    private func send(_ outgoingMessage: OutgoingMessage) async throws -> CoreSdkClient.Message {
+        let files = outgoingMessage.payload.attachment?.files ?? []
+        if let file = files.first, files.count == 1,
+           outgoingMessage.payload.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return try await interactor.sendFile(file: file)
+        }
+        return try await interactor.send(messagePayload: outgoingMessage.payload)
+    }
+
     @MainActor
     private func sendPendingMessages(_ outgoingMessages: [OutgoingMessage]) async {
         for outgoingMessage in outgoingMessages {
             do {
-                let message = try await interactor.send(messagePayload: outgoingMessage.payload)
+                let message = try await send(outgoingMessage)
                 onSuccessSendPendingMessages(
                     message: message,
                     outgoingMessage: outgoingMessage
@@ -295,8 +307,9 @@ extension ChatViewModel {
         // When pending message is successfully delivered,
         // it has to be removed from the `pendingMessages` list, to avoid
         // situation where it gets sent again, for example after
-        // transfer to another operator.
-        removePendingMessage(by: message.id)
+        // transfer to another operator. A file entry comes back with the
+        // file's id, so the outgoing payload's id identifies the pending item.
+        removePendingMessage(by: outgoingMessage.payload.messageId.rawValue)
         self.replace(
             outgoingMessage,
             uploads: [],
@@ -609,41 +622,6 @@ extension ChatViewModel {
         }
     }
 
-    private func sendOutgoingMessage(
-        _ outgoingMessage: OutgoingMessage,
-        movingFrom pendingSection: Section<ChatItem>,
-        to messagesSection: Section<ChatItem>
-    ) {
-        let files = outgoingMessage.payload.attachment?.files ?? []
-        if let file = files.first, files.count == 1,
-           outgoingMessage.payload.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            interactor.sendFile(file: file) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(message):
-                    self.removePendingMessage(by: message.id)
-                    self.replace(outgoingMessage, uploads: [], with: message, in: messagesSection)
-                    self.action?(.scrollToBottom(animated: true))
-                case .failure:
-                    self.markMessageAsFailed(outgoingMessage, in: messagesSection)
-                }
-            }
-        } else {
-            Task { [weak self] in
-                guard let self else { return }
-                do {
-                    let message = try await self.interactor.send(messagePayload: outgoingMessage.payload)
-                    await self.onSuccessSendPendingMessages(
-                        message: message,
-                        outgoingMessage: outgoingMessage
-                    )
-                } catch {
-                    await self.onFailureSendPendingMessages(outgoingMessage: outgoingMessage)
-                }
-            }
-        }
-    }
-
     @MainActor
     private func sendMessage() async {
         guard validateMessage() else { return }
@@ -656,76 +634,47 @@ extension ChatViewModel {
         messageText = ""
         action?(.scrollToBottom(animated: true))
 
+        let outgoingMessages = makeOutgoingMessages(text: capturedText, uploads: uploads)
+
         switch interactor.state {
         case .engaged where shouldForceEnqueueing, .enqueueing, .ended, .none:
-            var pendingItems: [OutgoingMessage] = []
-            if !capturedText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                let textPayload = environment.createSendMessagePayload(capturedText, nil)
-                pendingItems.append(OutgoingMessage(payload: textPayload))
-            }
-            for upload in uploads {
-                guard let info = upload.engagementFileInformation else { continue }
-                let file = CoreSdkClient.EngagementFile(id: info.id)
-                let filePayload = environment.createSendMessagePayload("", CoreSdkClient.Attachment(file: file))
-                pendingItems.append(OutgoingMessage(payload: filePayload, files: [upload.localFile]))
-            }
-            pendingItems.forEach { handle(pendingMessage: $0) }
+            outgoingMessages.forEach { handle(pendingMessage: $0) }
             interactor.state = .enqueueing(.chat)
 
         case .engaged:
-            if !capturedText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                let textPayload = environment.createSendMessagePayload(capturedText, nil)
-                let textOutgoing = OutgoingMessage(payload: textPayload)
-                appendItem(ChatItem(with: textOutgoing), to: messagesSection, animated: true)
-
+            // All bubbles appear at once; sending one by one keeps the server order.
+            outgoingMessages.forEach { appendItem(ChatItem(with: $0), to: messagesSection, animated: true) }
+            for outgoingMessage in outgoingMessages {
                 do {
-                    let message = try await interactor.send(messagePayload: textOutgoing.payload)
+                    let message = try await send(outgoingMessage)
                     onSuccessSendMessage(
                         message: message,
-                        outgoingMessage: textOutgoing,
+                        outgoingMessage: outgoingMessage,
                         uploads: []
                     )
                 } catch {
-                    onFailureSendMessage(outgoingMessage: textOutgoing)
-                }
-            }
-
-            for upload in uploads {
-                guard let info = upload.engagementFileInformation else { continue }
-                let file = CoreSdkClient.EngagementFile(id: info.id)
-                let filePayload = environment.createSendMessagePayload("", CoreSdkClient.Attachment(file: file))
-                let fileOutgoing = OutgoingMessage(payload: filePayload, files: [upload.localFile])
-                appendItem(ChatItem(with: fileOutgoing), to: messagesSection, animated: true)
-
-                interactor.sendFile(file: file) { [weak self] result in
-                    guard let self else { return }
-                    switch result {
-                    case let .success(message):
-                        if !self.hasReceivedMessage(messageId: message.id) {
-                            self.registerReceivedMessage(messageId: message.id)
-                            self.replace(fileOutgoing, uploads: [], with: message, in: self.messagesSection)
-                            self.action?(.scrollToBottom(animated: true))
-                        }
-                    case .failure:
-                        self.markMessageAsFailed(fileOutgoing, in: self.messagesSection)
-                    }
+                    onFailureSendMessage(outgoingMessage: outgoingMessage)
                 }
             }
 
         case .enqueued:
-            var pendingItems: [OutgoingMessage] = []
-            if !capturedText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                let textPayload = environment.createSendMessagePayload(capturedText, nil)
-                pendingItems.append(OutgoingMessage(payload: textPayload))
-            }
-            for upload in uploads {
-                guard let info = upload.engagementFileInformation else { continue }
-                let file = CoreSdkClient.EngagementFile(id: info.id)
-                let filePayload = environment.createSendMessagePayload("", CoreSdkClient.Attachment(file: file))
-                pendingItems.append(OutgoingMessage(payload: filePayload, files: [upload.localFile]))
-            }
-            pendingItems.forEach { handle(pendingMessage: $0) }
+            outgoingMessages.forEach { handle(pendingMessage: $0) }
         }
+    }
+
+    /// The text, if any, and each uploaded file become separate messages.
+    private func makeOutgoingMessages(text: String, uploads: [FileUpload]) -> [OutgoingMessage] {
+        var outgoingMessages: [OutgoingMessage] = []
+        if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            outgoingMessages.append(OutgoingMessage(payload: environment.createSendMessagePayload(text, nil)))
+        }
+        for upload in uploads {
+            guard let info = upload.engagementFileInformation else { continue }
+            let file = CoreSdkClient.EngagementFile(id: info.id)
+            let filePayload = environment.createSendMessagePayload("", CoreSdkClient.Attachment(file: file))
+            outgoingMessages.append(OutgoingMessage(payload: filePayload, files: [upload.localFile]))
+        }
+        return outgoingMessages
     }
 
     @MainActor
@@ -1157,32 +1106,14 @@ extension ChatViewModel {
         appendItem(item, to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
 
-        let files = outgoingMessage.payload.attachment?.files ?? []
-        if let file = files.first, files.count == 1,
-           outgoingMessage.payload.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            interactor.sendFile(file: file) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(message):
-                    if !self.hasReceivedMessage(messageId: message.id) {
-                        self.registerReceivedMessage(messageId: message.id)
-                        self.replace(outgoingMessage, uploads: [], with: message, in: self.messagesSection)
-                        self.action?(.scrollToBottom(animated: true))
-                    }
-                case .failure:
-                    self.markMessageAsFailed(outgoingMessage, in: self.messagesSection)
-                }
-            }
-        } else {
-            do {
-                let message = try await interactor.send(messagePayload: outgoingMessage.payload)
-                onSuccessRetryMessageSending(
-                    message: message,
-                    outgoingMessage: outgoingMessage
-                )
-            } catch {
-                onFailureRetryMessageSending(outgoingMessage: outgoingMessage)
-            }
+        do {
+            let message = try await send(outgoingMessage)
+            onSuccessRetryMessageSending(
+                message: message,
+                outgoingMessage: outgoingMessage
+            )
+        } catch {
+            onFailureRetryMessageSending(outgoingMessage: outgoingMessage)
         }
     }
 

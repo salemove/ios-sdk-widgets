@@ -28,8 +28,9 @@ extension SecureConversations.TranscriptModel.Environment {
             fail("\(Self.self).fetchChatHistory")
             throw NSError(domain: "fetchChatHistory", code: -1)
         },
-        fetchOlderChatHistory: { _, _ in
+        fetchOlderChatHistory: { _ in
             fail("\(Self.self).fetchOlderChatHistory")
+            throw NSError(domain: "fetchOlderChatHistory", code: -1)
         },
         uiApplication: .failing,
         queueIds: [],
