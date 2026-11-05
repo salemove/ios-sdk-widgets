@@ -23,7 +23,7 @@ jobs:
     steps:
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4.4.0
 
       - name: Install Dependencies
         run: |
@@ -93,7 +93,7 @@ jobs:
         shell: bash
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676  # v7.0.11
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -103,7 +103,7 @@ jobs:
             GliaWidgets SDK XCFramework Release ${{ steps.fetch_semver.outputs.semver}}
           base: ${{ github.ref_name }}
 
-      - uses: actions/create-release@v1
+      - uses: actions/create-release@0cb9c9b65d5d1901c1f53e5e66eaf4afd303e70e  # v1.1.4
         id: create_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -116,7 +116,7 @@ jobs:
             GliaWidgetsSDK Release
             xcframework checksum: `${{ steps.calculate_xcf_checksum.outputs.checksum }}`
 
-      - uses: actions/upload-release-asset@v1.0.1
+      - uses: actions/upload-release-asset@64e5e85fc528f162d7ba7ce2d15a3bb67efb3d80  # v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
