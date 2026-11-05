@@ -27,7 +27,7 @@ extension EngagementCoordinator.Environment {
         uiScreen: UIKitBased.UIScreen = .mock,
         notificationCenter: FoundationBased.NotificationCenter = .mock,
         fetchChatHistory: @escaping CoreSdkClient.FetchChatHistory = { .init(messages: []) },
-        fetchOlderChatHistory: @escaping CoreSdkClient.FetchOlderChatHistory = { _, _ in },
+        fetchOlderChatHistory: @escaping CoreSdkClient.FetchOlderChatHistory = { _ in .init(messages: []) },
         listQueues: @escaping CoreSdkClient.GetQueues = { [.mock()] },
         createFileUploader: @escaping FileUploader.Create = FileUploader.mock,
         createFileUploadListModel: @escaping SecureConversations.FileUploadListViewModel.Create =

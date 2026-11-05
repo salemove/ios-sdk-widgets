@@ -231,11 +231,8 @@ extension Interactor {
         try await environment.coreSdk.sendMessageWithMessagePayload(messagePayload)
     }
 
-    func sendFile(
-        file: CoreSdkClient.EngagementFile,
-        completion: @escaping (Result<CoreSdkClient.Message, CoreSdkClient.GliaCoreError>) -> Void
-    ) {
-        environment.coreSdk.sendFile(file, completion)
+    func sendFile(file: CoreSdkClient.EngagementFile) async throws -> CoreSdkClient.Message {
+        try await environment.coreSdk.sendFile(file)
     }
 
     @MainActor

@@ -54,7 +54,10 @@ extension EngagementCoordinator.Environment {
             fail("\(Self.self).fetchChatHistory")
             throw NSError(domain: "fetchChatHistory", code: -1)
         },
-        fetchOlderChatHistory: { _, _ in fail("\(Self.self).fetchOlderChatHistory") },
+        fetchOlderChatHistory: { _ in
+            fail("\(Self.self).fetchOlderChatHistory")
+            throw NSError(domain: "fetchOlderChatHistory", code: -1)
+        },
         listQueues: {
             fail("\(Self.self).getQueues")
             throw NSError(domain: "getQueues", code: -1)

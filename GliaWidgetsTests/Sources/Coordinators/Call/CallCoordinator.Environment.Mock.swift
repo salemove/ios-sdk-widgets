@@ -27,7 +27,7 @@ extension CallCoordinator.Environment {
         uiScreen: .mock,
         notificationCenter: .mock,
         fetchChatHistory: { .init(messages: []) },
-        fetchOlderChatHistory: { _, _ in },
+        fetchOlderChatHistory: { _ in .init(messages: []) },
         createFileUploadListModel: { _ in .mock() },
         createSendMessagePayload: { _, _ in .mock() },
         proximityManager: .mock,

@@ -67,6 +67,36 @@ extension ChatViewModelTests {
         }
     }
 
+    func testSendMessageRetryOfFileMessageUsesSendFile() async {
+        let outgoingMessage = OutgoingMessage(
+            payload: CoreSdkClient.SendMessagePayload(
+                content: "",
+                attachment: CoreSdkClient.Attachment(file: CoreSdkClient.EngagementFile(id: "file-1"))
+            )
+        )
+        var sentFileIds: [String?] = []
+        var interactorEnv = Interactor.Environment.mock
+        interactorEnv.coreSdk.sendMessageWithMessagePayload = { _ in
+            XCTFail("A file-only message must be retried through sendFile")
+            return .mock()
+        }
+        interactorEnv.coreSdk.sendFile = { file in
+            sentFileIds.append(file.id)
+            return .mock(id: file.id ?? "")
+        }
+        viewModel = .mock(interactor: .mock(environment: interactorEnv))
+        viewModel.messagesSection.append(.init(kind: .outgoingMessage(outgoingMessage, error: "Failed")))
+
+        await viewModel.asyncEvent(.retryMessageTapped(outgoingMessage))
+
+        XCTAssertEqual(sentFileIds, ["file-1"])
+        let hasFailedOutgoingMessage = viewModel.messagesSection.items.contains {
+            if case .outgoingMessage = $0.kind { return true }
+            return false
+        }
+        XCTAssertFalse(hasFailedOutgoingMessage)
+    }
+
     func testSendMessageRetryFailure() async  {
         let outgoingMessage = OutgoingMessage.mock()
         var calls: [Call] = []

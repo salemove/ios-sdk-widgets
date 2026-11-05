@@ -54,11 +54,7 @@ extension CoreSdkClient {
         _ replaceExisting: Bool
     ) async throws -> QueueTicket
     typealias CancelQueueTicket = (_ queueTicket: QueueTicket) async throws -> Bool
-    typealias SendFileCallback = (Result<Message, GliaCoreError>) -> Void
-    typealias SendFile = (
-        _ file: EngagementFile,
-        _ completion: @escaping SendFileCallback
-    ) -> Void
+    typealias SendFile = (_ file: EngagementFile) async throws -> Message
     typealias UploadFileToEngagement = (
         _ file: EngagementFile,
         _ progress: EngagementFileProgressBlock?
@@ -93,10 +89,7 @@ extension CoreSdkClient {
     }
 
     typealias FetchChatHistory = () async throws -> ChatHistoryPage
-    typealias FetchOlderChatHistory = (
-        _ olderPage: OlderChatHistoryPage,
-        _ completion: @escaping (Result<ChatHistoryPage, GliaCoreSDK.GliaCoreError>) -> Void
-    ) -> Void
+    typealias FetchOlderChatHistory = (_ olderPage: OlderChatHistoryPage) async throws -> ChatHistoryPage
     typealias RequestVisitorCode = () async throws -> VisitorCode
     typealias StartSocketObservation = () -> Void
     typealias StopSocketObservation = () -> Void
