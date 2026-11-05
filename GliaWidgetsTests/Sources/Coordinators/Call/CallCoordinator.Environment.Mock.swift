@@ -1,32 +1,35 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
 @testable import GliaWidgets
-@_spi(GliaWidgets) import GliaCoreSDK
 
 extension CallCoordinator.Environment {
     static let mock = Self(
         secureConversations: .mock,
-        fetchFile: { engagementFile, progress, completion in },
-        uploadFileToEngagement: { file, progress, completion in },
+        fetchFile: { _, _ in .mock() },
+        uploadFileToEngagement: { _, _ in
+            try await Task.sleep(nanoseconds: UInt64.max)
+            throw CancellationError()
+        },
         fileManager: .mock,
         data: .mock,
         date: { .mock },
         gcd: .mock,
         createThumbnailGenerator: { .mock },
-        createFileDownload: { file, storage, environment in .mock() },
+        createFileDownload: { _, _, _ in .mock() },
         fromHistory: { false },
-        fetchSiteConfigurations: { completion in },
+        fetchSiteConfigurations: { try .mock() },
         getCurrentEngagement: { .mock() },
         getNonTransferredSecureConversationEngagement: { .mock() },
         timerProviding: .mock,
-        submitSurveyAnswer: { answers, surveyId, engagementId, completion in },
+        submitSurveyAnswer: { _, _, _ in },
         uuid: { .mock },
         uiApplication: .mock,
         uiScreen: .mock,
         notificationCenter: .mock,
-        fetchChatHistory: { completion in },
-        fetchOlderChatHistory: { _, _ in },
-        createFileUploadListModel: { environment in .mock() },
-        createSendMessagePayload: { content, attachment in .mock() },
+        fetchChatHistory: { .init(messages: []) },
+        fetchOlderChatHistory: { _ in .init(messages: []) },
+        createFileUploadListModel: { _ in .mock() },
+        createSendMessagePayload: { _, _ in .mock() },
         proximityManager: .mock,
         log: .mock,
         cameraDeviceManager: { .mock },

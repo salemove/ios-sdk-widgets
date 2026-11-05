@@ -1,10 +1,29 @@
-import UIKit
-import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
+import Foundation
 
 public extension MessageRenderer {
     /// Message to render AI custom card view.
     struct Message {
-        public typealias Identifier = Tagged<Self, String>
+        public struct Identifier: RawRepresentable, Hashable, Codable, ExpressibleByStringLiteral {
+            public var rawValue: String
+
+            public init(rawValue: String) {
+                self.rawValue = rawValue
+            }
+
+            public init(stringLiteral value: String) {
+                self.init(rawValue: value)
+            }
+
+            public init(from decoder: Decoder) throws {
+                self.init(rawValue: try decoder.singleValueContainer().decode(String.self))
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                try container.encode(rawValue)
+            }
+        }
 
         /// Message ID
         public let id: Identifier

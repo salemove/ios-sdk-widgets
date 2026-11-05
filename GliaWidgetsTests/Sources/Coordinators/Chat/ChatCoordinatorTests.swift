@@ -1,8 +1,8 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
 import XCTest
 import QuickLook
 @testable import GliaWidgets
-@_spi(GliaWidgets) import GliaCoreSDK
 
 final class ChatCoordinatorTests: XCTestCase {
     var coordinator: ChatCoordinator!
@@ -12,12 +12,16 @@ final class ChatCoordinatorTests: XCTestCase {
         coordinator = createCoordinator()
     }
 
+    override func tearDown() {
+        coordinator = nil
+    }
+
     func createCoordinator(
         environment: ChatCoordinator.Environment = .mock,
         startWithSecureTranscriptFlow: Bool = false,
         skipTransferredSCHandling: Bool = false
     ) -> ChatCoordinator {
-        return ChatCoordinator(
+        ChatCoordinator(
             interactor: .mock(),
             viewFactory: .mock(),
             navigationPresenter: navigationPresenter,
@@ -56,7 +60,7 @@ final class ChatCoordinatorTests: XCTestCase {
         switch viewController.viewModel {
         case .transcript:
             XCTAssertTrue(true)
-        default: 
+        default:
             XCTFail()
         }
     }
@@ -78,7 +82,7 @@ final class ChatCoordinatorTests: XCTestCase {
         switch viewController.viewModel {
         case .chat(let viewModel):
             viewModel.delegate?(.pickMedia(.init(with: .cancelled), [.image]))
-            coordinator.mediaPickerController?.viewController{ shownViewController in
+            coordinator.mediaPickerController?.viewController { shownViewController in
                 XCTAssertNotNil(shownViewController as? UIImagePickerController)
             }
         default: XCTFail()
@@ -107,7 +111,7 @@ final class ChatCoordinatorTests: XCTestCase {
             type: .audio,
             direction: .twoWay
         )
-        
+
         var calledEvents: [ChatCoordinator.DelegateEvent] = []
         coordinator.delegate = { event in
             calledEvents.append(event)
@@ -119,7 +123,7 @@ final class ChatCoordinatorTests: XCTestCase {
             viewModel.delegate?(
                 .mediaUpgradeAccepted(
                     offer: mediaOffer,
-                    answer: { _, _ in}
+                    answer: { _, _ in }
                 )
             )
         default: XCTFail()
@@ -133,9 +137,10 @@ final class ChatCoordinatorTests: XCTestCase {
         }
     }
 
-    func test_chatModelSecureTranscriptUpgradedToLiveChat() throws {
+    @MainActor
+    func test_chatModelSecureTranscriptUpgradedToLiveChat() async throws {
         let viewController = coordinator.start()
-        let mockedChatViewController: ChatViewController = .mock()
+        let mockedChatViewController: ChatViewController = await .mock()
 
         var calledEvents: [ChatCoordinator.DelegateEvent] = []
         coordinator.delegate = { event in
@@ -331,7 +336,7 @@ final class ChatCoordinatorTests: XCTestCase {
         switch viewController.viewModel {
         case .transcript(let viewModel):
             viewModel.delegate?(.pickMedia(.init(with: .cancelled), [.image]))
-            coordinator.mediaPickerController?.viewController{ shownViewController in
+            coordinator.mediaPickerController?.viewController { shownViewController in
                 XCTAssertNotNil(shownViewController as? UIImagePickerController)
             }
         default: XCTFail()
@@ -422,7 +427,8 @@ final class ChatCoordinatorTests: XCTestCase {
         XCTAssertEqual(chatType, .nonAuthenticated)
     }
 
-    func test_delegateEventUpgradesChatToSC() {
+    @MainActor
+    func test_delegateEventUpgradesChatToSC() async {
         let coordinator = createCoordinator(startWithSecureTranscriptFlow: false)
         let controller = coordinator.start()
         let chatModel: ChatViewModel
@@ -466,7 +472,10 @@ final class ChatCoordinatorTests: XCTestCase {
         chatModel.messagesSection.append(.init(kind: .mock(kind: .transferring)))
         chatModel.messagesSection.append(.init(kind: .mock(kind: .unreadMessageDivider)))
 
-        chatModel.delegate?(.liveChatEngagementUpgradedToSecureMessaging(chatModel))
+        // Upgrade to SC happens on an already loaded chat screen.
+        controller.loadViewIfNeeded()
+        await waitUntil { chatModel.isViewLoaded }
+        await chatModel.asyncDelegate?(.liveChatEngagementUpgradedToSecureMessaging(chatModel))
 
         let transcriptModel: SecureConversations.TranscriptModel
 
@@ -477,7 +486,7 @@ final class ChatCoordinatorTests: XCTestCase {
             XCTFail("Unexpected model of type \(type(of: model)). Expected \(SecureConversations.TranscriptModel.self)")
             return
         }
-
+        await transcriptModel.checkSecureConversationsAvailability()
         // Since `Section` does not conform to `Equatable`,
         // some extra checks are required to make sure
         // that migration happens as expected.
@@ -513,6 +522,8 @@ final class ChatCoordinatorTests: XCTestCase {
             case refreshAll
             case scrollToBottom
             case updateItemsUserImage
+            case transcript
+            case fileUploadListPropsUpdated
         }
 
         var calls: [Call] = []
@@ -530,6 +541,10 @@ final class ChatCoordinatorTests: XCTestCase {
                 calls.append(.setChoiceCardInputModeEnabled)
             case .scrollToBottom:
                 calls.append(.scrollToBottom)
+            case .transcript:
+                calls.append(.transcript)
+            case .fileUploadListPropsUpdated:
+                calls.append(.fileUploadListPropsUpdated)
             default:
                 XCTFail("Unexpected action \(action)")
             }

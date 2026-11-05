@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
 
 extension SecureConversations {
@@ -153,26 +154,31 @@ extension SecureConversations {
                 guard let self else { return }
                 self.action?(.setAttachmentButtonEnabling(self.mediaPickerButtonEnabling))
             }
-            checkSecureConversationsAvailability()
         }
 
-        private func checkSecureConversationsAvailability() {
-            availability.checkSecureConversationsAvailability(for: environment.queueIds) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(.available(.queues(queueIds))):
-                    self.environment.queueIds = queueIds
-                    self.isSecureConversationsAvailable = true
-                    self.fileUploadListModel.isEnabled = true
-                case .success(.available(.transferred)):
-                    self.environment.queueIds = []
-                    self.isSecureConversationsAvailable = true
-                    self.fileUploadListModel.isEnabled = true
-                case .failure, .success(.unavailable(.emptyQueue)), .success(.unavailable(.unauthenticated)):
-                    // For chat screen we no longer show unavailability dialog, but unavailability banner instead.
+        @MainActor
+        func checkSecureConversationsAvailability() async {
+            do {
+                let status = try await availability.checkSecureConversationsAvailability(for: environment.queueIds)
+                switch status {
+                case .available(let availability):
+                    switch availability {
+                    case .transferred:
+                        self.environment.queueIds = []
+                        self.isSecureConversationsAvailable = true
+                        self.fileUploadListModel.isEnabled = true
+                    case let .queues(queueIds):
+                        self.environment.queueIds = queueIds
+                        self.isSecureConversationsAvailable = true
+                        self.fileUploadListModel.isEnabled = true
+                    }
+                case .unavailable:
                     self.isSecureConversationsAvailable = false
                     self.fileUploadListModel.isEnabled = false
                 }
+            } catch {
+                self.isSecureConversationsAvailable = false
+                self.fileUploadListModel.isEnabled = false
             }
         }
 
@@ -211,14 +217,31 @@ extension SecureConversations {
             }
         }
 
-        func event(_ event: Event) {
+        @MainActor
+        func asyncEvent(_ event: ChatViewModel.AsyncEvent) async {
             switch event {
             case .viewDidLoad:
                 isViewLoaded = true
+            case .sendTapped:
+                await sendMessage()
+            case .customCardOptionSelected:
+                break
+            case let .gvaButtonTapped(option):
+                await gvaOptionAction(for: option)()
+            case let .retryMessageTapped(message):
+                await retryMessageSending(message)
+            case .choiceOptionSelected:
+                // Not supported for transcript.
+                break
+            case .downloadTapped(let download):
+                await downloadTapped(download)
+            }
+        }
+
+        func event(_ event: Event) {
+            switch event {
             case .messageTextChanged(let text):
                 messageText = text
-            case .sendTapped:
-                sendMessage()
             case .removeUploadTapped(let upload):
                 removeUpload(upload)
             case .pickMediaTapped:
@@ -228,39 +251,31 @@ extension SecureConversations {
                 break
             case .fileTapped(let file):
                 fileTapped(file)
-            case .downloadTapped(let download):
-                downloadTapped(download)
-            case .choiceOptionSelected:
-                // Not supported for transcript.
-                break
             case .chatScrolled(let bottomReached):
                 isChatScrolledToBottom.value = bottomReached
             case .linkTapped(let url):
                 linkTapped(url)
-            case .customCardOptionSelected:
-                // Not supported for transcript.
-                break
-            case let .gvaButtonTapped(option):
-                gvaOptionAction(for: option)()
-            case let .retryMessageTapped(message):
-                retryMessageSending(message)
             case .loadOlderHistoryRequested:
                 loadOlderHistory()
             }
         }
 
-        /// Starts socket observation, fetches site configuration and loads chat history if needed.
+        /// Starts socket observation, checks Secure Conversations availability,
+        /// fetches site configuration and loads chat history if needed.
         /// - Parameter isTranscriptFetchNeeded: A flag indicating whether chat history will be loaded.
-        func start(isTranscriptFetchNeeded: Bool) {
-            fetchSiteConfigurations()
+        @MainActor
+        func start(isTranscriptFetchNeeded: Bool) async {
+            environment.startSocketObservation()
+            async let availabilityCheck: Void = checkSecureConversationsAvailability()
+            async let siteConfigurationsFetch: Void = fetchSiteConfigurations()
 
-            guard isTranscriptFetchNeeded else {
-                return
+            if isTranscriptFetchNeeded {
+                await loadHistory()
+                showLeaveConversationDialogIfNeeded()
             }
 
-            loadHistory { [weak self] _ in
-                self?.showLeaveConversationDialogIfNeeded()
-            }
+            await siteConfigurationsFetch
+            await availabilityCheck
         }
 
         deinit {
@@ -292,7 +307,8 @@ extension SecureConversations.TranscriptModel {
 
 // MARK: Message management
 extension SecureConversations.TranscriptModel {
-    func sendMessage() {
+    @MainActor
+    func sendMessage() async {
         guard validateMessage() else { return }
 
         let uploads = fileUploadListModel.succeededUploads
@@ -314,26 +330,20 @@ extension SecureConversations.TranscriptModel {
             animated: true
         )
 
-        _ = environment.secureConversations.sendMessagePayload(
-            outgoingMessage.payload,
-            environment.queueIds
-        ) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case let .success(message):
-                self.receiveMessage(from: .api(message, outgoingMessage: outgoingMessage))
-            case .failure:
-                self.markMessageAsFailed(
-                    outgoingMessage,
-                    in: self.pendingSection
-                )
-            }
-        }
-
         // Clear inputs, thus disabling them
         // and preventing the message to be sent again.
         clearInputs()
         action?(.scrollToBottom(animated: true))
+
+        do {
+            let message = try await environment.secureConversations.sendMessagePayload(
+                outgoingMessage.payload,
+                environment.queueIds
+            )
+            receiveMessage(from: .api(message, outgoingMessage: outgoingMessage))
+        } catch {
+            markMessageAsFailed(outgoingMessage, in: pendingSection)
+        }
     }
 
     func replace(
@@ -362,7 +372,8 @@ extension SecureConversations.TranscriptModel {
 
 // MARK: Message sending retry
 extension SecureConversations.TranscriptModel {
-    private func retryMessageSending(_ outgoingMessage: OutgoingMessage) {
+    @MainActor
+    private func retryMessageSending(_ outgoingMessage: OutgoingMessage) async {
         removeMessage(
             outgoingMessage,
             in: pendingSection
@@ -372,20 +383,14 @@ extension SecureConversations.TranscriptModel {
         appendItem(item, to: pendingSection, animated: true)
         action?(.scrollToBottom(animated: true))
 
-        _ = environment.secureConversations.sendMessagePayload(
-            outgoingMessage.payload,
-            environment.queueIds
-        ) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case let .success(message):
-                self.receiveMessage(from: .api(message, outgoingMessage: outgoingMessage))
-            case .failure:
-                self.markMessageAsFailed(
-                    outgoingMessage,
-                    in: self.pendingSection
-                )
-            }
+        do {
+            let message = try await environment.secureConversations.sendMessagePayload(
+                outgoingMessage.payload,
+                environment.queueIds
+            )
+            receiveMessage(from: .api(message, outgoingMessage: outgoingMessage))
+        } catch {
+            markMessageAsFailed(outgoingMessage, in: pendingSection)
         }
     }
 }
@@ -424,16 +429,17 @@ extension SecureConversations.TranscriptModel {
         delegate?(.showFile(file))
     }
 
-    private func downloadTapped(_ download: FileDownload) {
+    @MainActor
+    private func downloadTapped(_ download: FileDownload) async {
         switch download.state.value {
         case .none:
-            download.startDownload()
+            await download.startDownload()
         case .downloading:
             break
         case .downloaded(let file):
             delegate?(.showFile(file))
         case .error:
-            download.startDownload()
+            await download.startDownload()
         }
     }
 
@@ -578,66 +584,61 @@ extension SecureConversations.TranscriptModel {
 
 // MARK: Site Confgurations
 extension SecureConversations.TranscriptModel {
-    func fetchSiteConfigurations() {
-        environment.fetchSiteConfigurations { [weak self] result in
-            guard let self = self else { return }
-
-            switch result {
-            case .success(let site):
-                self.siteConfiguration = site
-                self.action?(.setAttachmentButtonEnabling(self.mediaPickerButtonEnabling))
-            case let .failure(error):
-                self.engagementAction?(.showAlert(.error(error: error)))
-            }
+    @MainActor
+    func fetchSiteConfigurations() async {
+        do {
+            let site = try await environment.fetchSiteConfigurations()
+            self.siteConfiguration = site
+            self.action?(.setAttachmentButtonEnabling(self.mediaPickerButtonEnabling))
+        } catch {
+            self.engagementAction?(.showAlert(.error(error: error)))
         }
     }
 }
 
 // MARK: History
 extension SecureConversations.TranscriptModel {
-    private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
+    @MainActor
+    private func loadHistory() async {
         environment.openTelemetry.logger.i(.chatScreenHistoryLoading)
-        transcriptMessageLoader.loadMessagesWithUnreadCount { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case let .success(messagesWithUnreadCount):
-                environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
-                    $0[.messageCount] = .string("\(messagesWithUnreadCount.messages.count)")
-                }
-                let items: [ChatItem] = messagesWithUnreadCount.messages.compactMap {
-                    ChatItem(
-                        with: $0,
-                        isCustomCardSupported: self.isCustomCardSupported,
-                        fromHistory: self.environment.loadChatMessagesFromHistory()
-                    )
-                }
-
-                let itemsWithDivider = Self.dividedChatItemsForUnreadCount(
-                    chatItems: items,
-                    unreadCount: messagesWithUnreadCount.unreadCount,
-                    divider: ChatItem(kind: .unreadMessageDivider)
-                )
-
-                self.hasUnreadMessages = messagesWithUnreadCount.unreadCount > 0
-                self.historySection.set(itemsWithDivider)
-                self.action?(.refreshSection(self.historySection.index))
-                self.action?(.scrollToBottom(animated: false))
-                self.olderHistoryLoader.replaceOlderPage(messagesWithUnreadCount.olderPage)
-                self.action?(.olderHistoryStateUpdated(canLoad: self.olderHistoryLoader.canLoad, isLoading: false))
-                completion(messagesWithUnreadCount.messages)
-                markMessagesAsRead(
-                    with: self.hasUnreadMessages && !environment.shouldShowLeaveSecureConversationDialog(.transcriptOpened)
-                )
-
-                if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
-                    let props = button.options.compactMap { [weak self] in self?.quickReplyOption($0) }
-                    self.action?(.quickReplyPropsUpdated(.shown(props)))
-                }
-            case .failure:
-                self.olderHistoryLoader.replaceOlderPage(nil)
-                self.action?(.olderHistoryStateUpdated(canLoad: false, isLoading: false))
-                completion([])
+        do {
+            let messagesWithUnreadCount = try await transcriptMessageLoader.loadMessagesWithUnreadCount()
+            environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
+                $0[.messageCount] = .string("\(messagesWithUnreadCount.messages.count)")
             }
+            let items: [ChatItem] = messagesWithUnreadCount.messages.compactMap {
+                ChatItem(
+                    with: $0,
+                    isCustomCardSupported: self.isCustomCardSupported,
+                    fromHistory: self.environment.loadChatMessagesFromHistory()
+                )
+            }
+
+            let itemsWithDivider = Self.dividedChatItemsForUnreadCount(
+                chatItems: items,
+                unreadCount: messagesWithUnreadCount.unreadCount,
+                divider: ChatItem(kind: .unreadMessageDivider)
+            )
+
+            self.hasUnreadMessages = messagesWithUnreadCount.unreadCount > 0
+            self.historySection.set(itemsWithDivider)
+            self.action?(.refreshSection(self.historySection.index))
+            self.action?(.scrollToBottom(animated: false))
+            self.olderHistoryLoader.replaceOlderPage(messagesWithUnreadCount.olderPage)
+            self.action?(.olderHistoryStateUpdated(canLoad: self.olderHistoryLoader.canLoad, isLoading: false))
+            markMessagesAsRead(
+                with: self.hasUnreadMessages && !environment.shouldShowLeaveSecureConversationDialog(.transcriptOpened)
+            )
+
+            if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
+                let props = button.options.compactMap { [weak self] in self?.quickReplyOption($0) }
+                self.action?(.quickReplyPropsUpdated(.shown(props)))
+            }
+            return
+        } catch {
+            self.olderHistoryLoader.replaceOlderPage(nil)
+            self.action?(.olderHistoryStateUpdated(canLoad: false, isLoading: false))
+            return
         }
     }
 
@@ -840,36 +841,37 @@ extension SecureConversations.TranscriptModel: ApplicationVisibilityTracker {
             delayScheduler: environment.combineScheduler.global
         )
         .sink { [weak self] _ in
-            self?.performMarkMessagesAsReadRequest()
+            Task {
+                do {
+                    try await self?.performMarkMessagesAsReadRequest()
+                } catch {
+                    self?.environment.log.prefixed(Self.self).warning(
+                        "Marking transcript messages as read failed: \(error)"
+                    )
+                }
+            }
         }
         .store(in: &markMessagesAsReadCancellables)
     }
 
-    fileprivate func performMarkMessagesAsReadRequest() {
-        _ = environment.secureConversations.markMessagesAsRead { [weak self] result in
-            guard let self else { return }
-
-            switch result {
-            case .success:
-                historySection.removeAll(where: {
-                    if case .unreadMessageDivider = $0.kind {
-                        return true
-                    }
-
-                    return false
-                })
-
-                action?(.refreshSection(self.historySection.index, animated: true))
-
-                if isChatScrolledToBottom.value {
-                    action?(.scrollToBottom(animated: true))
-                }
-
-                unreadMessages.value = 0
-            case .failure:
-                break
+    @MainActor
+    fileprivate func performMarkMessagesAsReadRequest() async throws {
+        try await environment.secureConversations.markMessagesAsRead()
+        historySection.removeAll(where: {
+            if case .unreadMessageDivider = $0.kind {
+                return true
             }
+
+            return false
+        })
+
+        action?(.refreshSection(self.historySection.index, animated: true))
+
+        if isChatScrolledToBottom.value {
+            action?(.scrollToBottom(animated: true))
         }
+
+        unreadMessages.value = 0
     }
 }
 
@@ -916,15 +918,16 @@ extension SecureConversations.TranscriptModel {
 }
 
 extension SecureConversations.TranscriptModel {
+    @MainActor
     func migrate(
         from chatModel: ChatViewModel
-    ) {
+    ) async {
         clearSections(sections)
         // Filter out items that are not reflected in transcript
         let items = chatModel.sections.flatMap(\.items).filter {
             switch $0.kind {
             case .callUpgrade,
-                    .operatorConnected(_, _),
+                    .operatorConnected,
                     .queueOperator,
                     .transferring,
                     .unreadMessageDivider:
@@ -979,7 +982,7 @@ extension SecureConversations.TranscriptModel {
         engagementAction?(.showCloseButton)
         // Since we only need to start socket observation,
         // we skip chat transcript loading.
-        start(isTranscriptFetchNeeded: false)
+        await start(isTranscriptFetchNeeded: false)
         showLeaveConversationDialogIfNeeded()
 
         markMessagesAsRead(with: unreadMessages.value > 0)

@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
 
 extension EngagementCoordinator {
@@ -27,7 +28,6 @@ extension EngagementCoordinator {
         var listQueues: CoreSdkClient.GetQueues
         var createFileUploader: FileUploader.Create
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
-        var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
         var markUnreadMessagesDelay: () -> DispatchQueue.SchedulerTimeType.Stride
         var isAuthenticated: () -> Bool
         var startSocketObservation: CoreSdkClient.StartSocketObservation
@@ -87,7 +87,6 @@ extension EngagementCoordinator.Environment {
             listQueues: environment.coreSdk.getQueues,
             createFileUploader: environment.createFileUploader,
             createFileUploadListModel: environment.createFileUploadListModel,
-            messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
             markUnreadMessagesDelay: markUnreadMessagesDelay,
             isAuthenticated: environment.isAuthenticated,
             startSocketObservation: environment.coreSdk.startSocketObservation,

@@ -1,15 +1,14 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 #if DEBUG
 extension QueuesMonitor {
     static func mock(
         getQueues: CoreSdkClient.GetQueues? = nil,
-        subscribeForQueuesUpdates: CoreSdkClient.SubscribeForQueuesUpdates? = nil,
-        unsubscribeFromUpdates: CoreSdkClient.UnsubscribeFromUpdates? = nil
+        queueUpdatesStream: CoreSdkClient.QueueUpdatesStream? = nil
     ) -> Self {
         Self(
             environment: .init(
                 getQueues: getQueues ?? QueuesMonitor.Environment.mock.getQueues,
-                subscribeForQueuesUpdates: subscribeForQueuesUpdates ?? QueuesMonitor.Environment.mock.subscribeForQueuesUpdates,
-                unsubscribeFromUpdates: unsubscribeFromUpdates ?? QueuesMonitor.Environment.mock.unsubscribeFromUpdates,
+                queueUpdatesStream: queueUpdatesStream ?? QueuesMonitor.Environment.mock.queueUpdatesStream,
                 logger: .mock
             )
         )

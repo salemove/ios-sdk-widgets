@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
 import Combine
 
@@ -5,9 +6,11 @@ import Combine
 class ChatViewModel: EngagementViewModel {
     typealias ActionCallback = (Action) -> Void
     typealias DelegateCallback = (DelegateEvent) -> Void
+    typealias AsyncDelegateCallback = (AsyncDelegateEvent) async -> Void
 
     var action: ActionCallback?
     var delegate: DelegateCallback?
+    var asyncDelegate: AsyncDelegateCallback?
     // Used to check whether custom card contains interactable metadata.
     var isInteractableCard: ((MessageRenderer.Message) -> Bool)?
     // Used to check whether custom card should be hidden.
@@ -38,11 +41,20 @@ class ChatViewModel: EngagementViewModel {
     private(set) var messageText = "" {
         didSet {
             validateMessage()
-            sendMessagePreview(messageText)
+            let message = messageText
+            let previousMessagePreviewTask = messagePreviewTask
+            previousMessagePreviewTask?.cancel()
+            // Chained so previews reach the server in typing order,
+            // e.g. a stale preview must not land after the cleared one.
+            messagePreviewTask = Task { [weak self] in
+                await previousMessagePreviewTask?.value
+                await self?.sendMessagePreview(message)
+            }
             action?(.setMessageText(messageText))
         }
     }
 
+    private var messagePreviewTask: Task<Void, Never>?
     private var pendingMessages: [OutgoingMessage] = []
     var isViewLoaded: Bool = false
     var isChoiceCardInputModeEnabled: Bool = false
@@ -161,6 +173,8 @@ class ChatViewModel: EngagementViewModel {
     }
     // swiftlint:enable function_body_length
 
+    deinit { messagePreviewTask?.cancel() }
+
     override func viewDidAppear() {
         super.viewDidAppear()
 
@@ -169,21 +183,14 @@ class ChatViewModel: EngagementViewModel {
         }
     }
 
-    override func start() {
-        super.start()
-
+    @MainActor
+    override func start() async {
+        await super.start()
         subscribeOnNetworkReachabilityChanges()
-
-        loadHistory { [weak self] history in
-            guard let self = self else { return }
-            // We only proceed to considering enqueue flow if `startAction` is about starting of engagement.
-            guard case .startEngagement = self.startAction else { return }
-            // We enqueue eagerly in case if this is the first engagement for visitor (by  evaluating previous chat history)
-            // or in case if engagement has been restored.
-
-            if history.isEmpty || self.environment.getNonTransferredSecureConversationEngagement() != nil || self.replaceExistingEnqueueing {
-                self.interactor.state = .enqueueing(.chat)
-            }
+        let history = await loadHistory()
+        guard case .startEngagement = self.startAction else { return }
+        if history.isEmpty || self.environment.getNonTransferredSecureConversationEngagement() != nil || self.replaceExistingEnqueueing {
+            self.interactor.state = .enqueueing(.chat)
         }
     }
 
@@ -222,11 +229,13 @@ class ChatViewModel: EngagementViewModel {
             action?(.scrollToBottom(animated: false))
             action?(.setMessageEntryEnabled(true))
 
-            fetchSiteConfigurations()
+            Task {
+                await fetchSiteConfigurations()
+            }
 
-            pendingMessages.forEach { [weak self] outgoingMessage in
-                guard let self else { return }
-                sendOutgoingMessage(outgoingMessage, movingFrom: pendingSection, to: messagesSection)
+            let messagesToSend = pendingMessages
+            Task { [weak self] in
+                await self?.sendPendingMessages(messagesToSend)
             }
         default:
             break
@@ -258,6 +267,64 @@ class ChatViewModel: EngagementViewModel {
         default:
             break
         }
+    }
+}
+
+// MARK: Pending messages
+extension ChatViewModel {
+    /// A message with a single file and no text is sent as a file entry; anything else as a
+    /// message payload.
+    @MainActor
+    private func send(_ outgoingMessage: OutgoingMessage) async throws -> CoreSdkClient.Message {
+        let files = outgoingMessage.payload.attachment?.files ?? []
+        if let file = files.first, files.count == 1,
+           outgoingMessage.payload.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return try await interactor.sendFile(file: file)
+        }
+        return try await interactor.send(messagePayload: outgoingMessage.payload)
+    }
+
+    @MainActor
+    private func sendPendingMessages(_ outgoingMessages: [OutgoingMessage]) async {
+        for outgoingMessage in outgoingMessages {
+            do {
+                let message = try await send(outgoingMessage)
+                onSuccessSendPendingMessages(
+                    message: message,
+                    outgoingMessage: outgoingMessage
+                )
+            } catch {
+                onFailureSendPendingMessages(outgoingMessage: outgoingMessage)
+            }
+        }
+    }
+
+    @MainActor
+    func onSuccessSendPendingMessages(
+        message: CoreSdkClient.Message,
+        outgoingMessage: OutgoingMessage
+    ) {
+        // When pending message is successfully delivered,
+        // it has to be removed from the `pendingMessages` list, to avoid
+        // situation where it gets sent again, for example after
+        // transfer to another operator. A file entry comes back with the
+        // file's id, so the outgoing payload's id identifies the pending item.
+        removePendingMessage(by: outgoingMessage.payload.messageId.rawValue)
+        self.replace(
+            outgoingMessage,
+            uploads: [],
+            with: message,
+            in: self.messagesSection
+        )
+        self.action?(.scrollToBottom(animated: true))
+    }
+
+    @MainActor
+    func onFailureSendPendingMessages(outgoingMessage: OutgoingMessage) {
+        markMessageAsFailed(
+            outgoingMessage,
+            in: messagesSection
+        )
     }
 }
 
@@ -303,16 +370,32 @@ extension ChatViewModel {
 }
 
 extension ChatViewModel {
-    func event(_ event: Event) {
+    @MainActor
+    func asyncEvent(_ event: AsyncEvent) async {
         switch event {
         case .viewDidLoad:
-            start()
             isViewLoaded = true
+            await start()
+        case .sendTapped:
+            action?(.quickReplyPropsUpdated(.hidden))
+            await sendMessage()
+        case .customCardOptionSelected(let option, let messageId):
+            await sendSelectedCustomCardOption(option, for: messageId)
+        case .gvaButtonTapped(let option):
+            await gvaOptionAction(for: option)()
+        case .retryMessageTapped(let message):
+            await retryMessageSending(message)
+        case .choiceOptionSelected(let option, let messageId):
+            await sendChoiceCardResponse(option, to: messageId)
+        case .downloadTapped(let download):
+            await downloadTapped(download)
+        }
+    }
+
+    func event(_ event: Event) {
+        switch event {
         case .messageTextChanged(let text):
             messageText = text
-        case .sendTapped:
-            sendMessage()
-            action?(.quickReplyPropsUpdated(.hidden))
         case .removeUploadTapped(let upload):
             removeUpload(upload)
         case .pickMediaTapped:
@@ -321,20 +404,10 @@ extension ChatViewModel {
             delegate?(.call)
         case .fileTapped(let file):
             fileTapped(file)
-        case .downloadTapped(let download):
-            downloadTapped(download)
-        case .choiceOptionSelected(let option, let messageId):
-            sendChoiceCardResponse(option, to: messageId)
         case .chatScrolled(let bottomReached):
             isChatScrolledToBottom.value = bottomReached
         case .linkTapped(let url):
             linkTapped(url)
-        case .customCardOptionSelected(let option, let messageId):
-            sendSelectedCustomCardOption(option, for: messageId)
-        case .gvaButtonTapped(let option):
-            gvaOptionAction(for: option)()
-        case .retryMessageTapped(let message):
-            retryMessageSending(message)
         case .loadOlderHistoryRequested:
             loadOlderHistory()
         }
@@ -413,57 +486,63 @@ extension ChatViewModel {
 // MARK: History
 
 extension ChatViewModel {
-    private func loadHistory(_ completion: @escaping ([ChatMessage]) -> Void) {
+    @MainActor
+    private func loadHistory() async -> [ChatMessage] {
         environment.openTelemetry.logger.i(.chatScreenHistoryLoading)
-        environment.fetchChatHistory { [weak self] result in
-            guard let self else { return }
-            let page = (try? result.get()) ?? CoreSdkClient.ChatHistoryPage(messages: [])
-            let messages = page.messages
-            environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
-                $0[.messageCount] = .string("\(messages.count)")
-            }
-            // Store message ids from history,
-            // to be able to discard duplicates
-            // delivered by sockets.
-            self.historyMessageIds = Set(messages.map(\.id).map { $0.uppercased() })
-
-            // Remove all messages that have been already received from sockets
-            // in prior of those that have been received from history to avoid duplication.
-            let duplicatedIds = self.historyMessageIds.intersection(self.receivedMessageIds)
-            duplicatedIds.forEach { self.receivedMessageIds.remove($0) }
-
-            self.messagesSection.removeAll { item in
-                switch item.kind {
-                case .visitorMessage(let chatMessage, _) where duplicatedIds.contains(chatMessage.id.uppercased()):
-                    return true
-                case .operatorMessage(let chatMessage, _, _) where duplicatedIds.contains(chatMessage.id.uppercased()):
-                    return true
-                default:
-                    return false
-                }
-            }
-
-            self.action?(.refreshSection(self.messagesSection.index))
-
-            let items = messages.compactMap {
-                ChatItem(
-                    with: $0,
-                    isCustomCardSupported: self.isCustomCardSupported,
-                    fromHistory: self.environment.loadChatMessagesFromHistory()
-                )
-            }
-            if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
-                let props = button.options.map { self.quickReplyOption($0) }
-                self.action?(.quickReplyPropsUpdated(.shown(props)))
-            }
-
-            self.historySection.set(items)
-            self.action?(.refreshSection(self.historySection.index))
-            self.action?(.scrollToBottom(animated: false))
-            self.olderHistoryLoader.replaceOlderPage(page.olderPage)
-            self.action?(.olderHistoryStateUpdated(canLoad: self.olderHistoryLoader.canLoad, isLoading: false))
-            completion(messages)
+        let page: CoreSdkClient.ChatHistoryPage
+        do {
+            page = try await environment.fetchChatHistory()
+        } catch {
+            environment.log.prefixed(Self.self).warning("Fetching chat history failed: \(error)")
+            page = CoreSdkClient.ChatHistoryPage(messages: [])
         }
+        let messages = page.messages
+        environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
+            $0[.messageCount] = .string("\(messages.count)")
+        }
+
+        // Store message ids from history,
+        // to be able to discard duplicates
+        // delivered by sockets.
+        self.historyMessageIds = Set(messages.map(\.id).map { $0.uppercased() })
+
+        // Remove all messages that have been already received from sockets
+        // in prior of those that have been received from history to avoid duplication.
+        let duplicatedIds = self.historyMessageIds.intersection(self.receivedMessageIds)
+        duplicatedIds.forEach { self.receivedMessageIds.remove($0) }
+
+        self.messagesSection.removeAll { item in
+            switch item.kind {
+            case .visitorMessage(let chatMessage, _) where duplicatedIds.contains(chatMessage.id.uppercased()):
+                return true
+            case .operatorMessage(let chatMessage, _, _) where duplicatedIds.contains(chatMessage.id.uppercased()):
+                return true
+            default:
+                return false
+            }
+        }
+
+        self.action?(.refreshSection(self.messagesSection.index))
+
+        let items = messages.compactMap {
+            ChatItem(
+                with: $0,
+                isCustomCardSupported: self.isCustomCardSupported,
+                fromHistory: self.environment.loadChatMessagesFromHistory()
+            )
+        }
+        if let item = items.last, case .gvaQuickReply(_, let button, _, _) = item.kind {
+            let props = button.options.map { self.quickReplyOption($0) }
+            self.action?(.quickReplyPropsUpdated(.shown(props)))
+        }
+
+        self.historySection.set(items)
+        self.action?(.refreshSection(self.historySection.index))
+        self.action?(.scrollToBottom(animated: false))
+        self.olderHistoryLoader.replaceOlderPage(page.olderPage)
+        self.action?(.olderHistoryStateUpdated(canLoad: self.olderHistoryLoader.canLoad, isLoading: false))
+
+        return messages
     }
 
     private func loadOlderHistory() {
@@ -531,49 +610,20 @@ extension ChatViewModel {
         self.receivedMessageIds.contains(messageId.uppercased())
     }
 
-    private func sendMessagePreview(_ message: String) {
-        interactor.sendMessagePreview(message)
-    }
+    private func sendMessagePreview(_ message: String) async {
+        guard !Task.isCancelled else { return }
 
-    private func sendOutgoingMessage(
-        _ outgoingMessage: OutgoingMessage,
-        movingFrom pendingSection: Section<ChatItem>,
-        to messagesSection: Section<ChatItem>
-    ) {
-        let files = outgoingMessage.payload.attachment?.files ?? []
-        if let file = files.first, files.count == 1,
-           outgoingMessage.payload.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            interactor.sendFile(file: file) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(message):
-                    self.removePendingMessage(by: message.id)
-                    self.replace(outgoingMessage, uploads: [], with: message, in: messagesSection)
-                    self.action?(.scrollToBottom(animated: true))
-                case .failure:
-                    self.markMessageAsFailed(outgoingMessage, in: messagesSection)
-                }
-            }
-        } else {
-            interactor.send(messagePayload: outgoingMessage.payload) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(message):
-                    // When pending message is successfully delivered,
-                    // it has to be removed from the `pendingMessages` list, to avoid
-                    // situation where it gets sent again, for example after
-                    // transfer to another operator.
-                    self.removePendingMessage(by: message.id)
-                    self.replace(outgoingMessage, uploads: [], with: message, in: messagesSection)
-                    self.action?(.scrollToBottom(animated: true))
-                case .failure:
-                    self.markMessageAsFailed(outgoingMessage, in: messagesSection)
-                }
-            }
+        do {
+            _ = try await interactor.sendMessagePreview(message)
+        } catch is CancellationError {
+            return
+        } catch {
+            environment.log.prefixed(Self.self).debug("Sending message preview failed: \(error)")
         }
     }
 
-    private func sendMessage() {
+    @MainActor
+    private func sendMessage() async {
         guard validateMessage() else { return }
 
         let uploads = fileUploadListModel.succeededUploads
@@ -584,79 +634,73 @@ extension ChatViewModel {
         messageText = ""
         action?(.scrollToBottom(animated: true))
 
+        let outgoingMessages = makeOutgoingMessages(text: capturedText, uploads: uploads)
+
         switch interactor.state {
         case .engaged where shouldForceEnqueueing, .enqueueing, .ended, .none:
-            var pendingItems: [OutgoingMessage] = []
-            if !capturedText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                let textPayload = environment.createSendMessagePayload(capturedText, nil)
-                pendingItems.append(OutgoingMessage(payload: textPayload))
-            }
-            for upload in uploads {
-                guard let info = upload.engagementFileInformation else { continue }
-                let file = CoreSdkClient.EngagementFile(id: info.id)
-                let filePayload = environment.createSendMessagePayload("", CoreSdkClient.Attachment(file: file))
-                pendingItems.append(OutgoingMessage(payload: filePayload, files: [upload.localFile]))
-            }
-            pendingItems.forEach { handle(pendingMessage: $0) }
+            outgoingMessages.forEach { handle(pendingMessage: $0) }
             interactor.state = .enqueueing(.chat)
 
         case .engaged:
-            if !capturedText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                let textPayload = environment.createSendMessagePayload(capturedText, nil)
-                let textOutgoing = OutgoingMessage(payload: textPayload)
-                appendItem(ChatItem(with: textOutgoing), to: messagesSection, animated: true)
-
-                interactor.send(messagePayload: textOutgoing.payload) { [weak self] result in
-                    guard let self else { return }
-                    switch result {
-                    case let .success(message):
-                        if !self.hasReceivedMessage(messageId: message.id) {
-                            self.registerReceivedMessage(messageId: message.id)
-                            self.replace(textOutgoing, uploads: [], with: message, in: self.messagesSection)
-                            self.action?(.scrollToBottom(animated: true))
-                        }
-                    case .failure:
-                        self.markMessageAsFailed(textOutgoing, in: self.messagesSection)
-                    }
-                }
-            }
-
-            for upload in uploads {
-                guard let info = upload.engagementFileInformation else { continue }
-                let file = CoreSdkClient.EngagementFile(id: info.id)
-                let filePayload = environment.createSendMessagePayload("", CoreSdkClient.Attachment(file: file))
-                let fileOutgoing = OutgoingMessage(payload: filePayload, files: [upload.localFile])
-                appendItem(ChatItem(with: fileOutgoing), to: messagesSection, animated: true)
-
-                interactor.sendFile(file: file) { [weak self] result in
-                    guard let self else { return }
-                    switch result {
-                    case let .success(message):
-                        if !self.hasReceivedMessage(messageId: message.id) {
-                            self.registerReceivedMessage(messageId: message.id)
-                            self.replace(fileOutgoing, uploads: [], with: message, in: self.messagesSection)
-                            self.action?(.scrollToBottom(animated: true))
-                        }
-                    case .failure:
-                        self.markMessageAsFailed(fileOutgoing, in: self.messagesSection)
-                    }
+            // All bubbles appear at once; sending one by one keeps the server order.
+            outgoingMessages.forEach { appendItem(ChatItem(with: $0), to: messagesSection, animated: true) }
+            for outgoingMessage in outgoingMessages {
+                do {
+                    let message = try await send(outgoingMessage)
+                    onSuccessSendMessage(
+                        message: message,
+                        outgoingMessage: outgoingMessage,
+                        uploads: []
+                    )
+                } catch {
+                    onFailureSendMessage(outgoingMessage: outgoingMessage)
                 }
             }
 
         case .enqueued:
-            var pendingItems: [OutgoingMessage] = []
-            if !capturedText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                let textPayload = environment.createSendMessagePayload(capturedText, nil)
-                pendingItems.append(OutgoingMessage(payload: textPayload))
-            }
-            for upload in uploads {
-                guard let info = upload.engagementFileInformation else { continue }
-                let file = CoreSdkClient.EngagementFile(id: info.id)
-                let filePayload = environment.createSendMessagePayload("", CoreSdkClient.Attachment(file: file))
-                pendingItems.append(OutgoingMessage(payload: filePayload, files: [upload.localFile]))
-            }
-            pendingItems.forEach { handle(pendingMessage: $0) }
+            outgoingMessages.forEach { handle(pendingMessage: $0) }
         }
+    }
+
+    /// The text, if any, and each uploaded file become separate messages.
+    private func makeOutgoingMessages(text: String, uploads: [FileUpload]) -> [OutgoingMessage] {
+        var outgoingMessages: [OutgoingMessage] = []
+        if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            outgoingMessages.append(OutgoingMessage(payload: environment.createSendMessagePayload(text, nil)))
+        }
+        for upload in uploads {
+            guard let info = upload.engagementFileInformation else { continue }
+            let file = CoreSdkClient.EngagementFile(id: info.id)
+            let filePayload = environment.createSendMessagePayload("", CoreSdkClient.Attachment(file: file))
+            outgoingMessages.append(OutgoingMessage(payload: filePayload, files: [upload.localFile]))
+        }
+        return outgoingMessages
+    }
+
+    @MainActor
+    func onSuccessSendMessage(
+        message: CoreSdkClient.Message,
+        outgoingMessage: OutgoingMessage,
+        uploads: [FileUpload]
+    ) {
+        if !hasReceivedMessage(messageId: message.id) {
+            registerReceivedMessage(messageId: message.id)
+            replace(
+                outgoingMessage,
+                uploads: uploads,
+                with: message,
+                in: messagesSection
+            )
+            action?(.scrollToBottom(animated: true))
+        }
+    }
+
+    @MainActor
+    func onFailureSendMessage(outgoingMessage: OutgoingMessage) {
+        markMessageAsFailed(
+            outgoingMessage,
+            in: messagesSection
+        )
     }
 
     func handle(pendingMessage: OutgoingMessage) {
@@ -1037,16 +1081,17 @@ extension ChatViewModel {
         environment.uiApplication.open(url)
     }
 
-    private func downloadTapped(_ download: FileDownload) {
+    @MainActor
+    private func downloadTapped(_ download: FileDownload) async {
         switch download.state.value {
         case .none:
-            download.startDownload()
+            await download.startDownload()
         case .downloading:
             break
         case .downloaded(let file):
             delegate?(.showFile(file))
         case .error:
-            download.startDownload()
+            await download.startDownload()
         }
     }
 }
@@ -1054,44 +1099,50 @@ extension ChatViewModel {
 // MARK: Message sending retry
 
 extension ChatViewModel {
-    private func retryMessageSending(_ outgoingMessage: OutgoingMessage) {
+    @MainActor
+    private func retryMessageSending(_ outgoingMessage: OutgoingMessage) async {
         removeMessage(outgoingMessage, in: messagesSection)
         let item = ChatItem(with: outgoingMessage)
         appendItem(item, to: messagesSection, animated: true)
         action?(.scrollToBottom(animated: true))
 
-        let files = outgoingMessage.payload.attachment?.files ?? []
-        if let file = files.first, files.count == 1,
-           outgoingMessage.payload.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            interactor.sendFile(file: file) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(message):
-                    if !self.hasReceivedMessage(messageId: message.id) {
-                        self.registerReceivedMessage(messageId: message.id)
-                        self.replace(outgoingMessage, uploads: [], with: message, in: self.messagesSection)
-                        self.action?(.scrollToBottom(animated: true))
-                    }
-                case .failure:
-                    self.markMessageAsFailed(outgoingMessage, in: self.messagesSection)
-                }
-            }
-        } else {
-            interactor.send(messagePayload: outgoingMessage.payload) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(message):
-                    if !self.hasReceivedMessage(messageId: message.id) {
-                        self.registerReceivedMessage(messageId: message.id)
-                        self.replace(outgoingMessage, uploads: [], with: message, in: self.messagesSection)
-                        self.action?(.scrollToBottom(animated: true))
-                    }
-                    self.updateSelectedOption(with: outgoingMessage)
-                case .failure:
-                    self.markMessageAsFailed(outgoingMessage, in: self.messagesSection)
-                }
-            }
+        do {
+            let message = try await send(outgoingMessage)
+            onSuccessRetryMessageSending(
+                message: message,
+                outgoingMessage: outgoingMessage
+            )
+        } catch {
+            onFailureRetryMessageSending(outgoingMessage: outgoingMessage)
         }
+    }
+
+    @MainActor
+    func onSuccessRetryMessageSending(
+        message: CoreSdkClient.Message,
+        outgoingMessage: OutgoingMessage
+    ) {
+        if !hasReceivedMessage(messageId: message.id) {
+            registerReceivedMessage(messageId: message.id)
+
+            replace(
+                outgoingMessage,
+                uploads: [],
+                with: message,
+                in: messagesSection
+            )
+            action?(.scrollToBottom(animated: true))
+        }
+
+        updateSelectedOption(with: outgoingMessage)
+    }
+
+    @MainActor
+    func onFailureRetryMessageSending(outgoingMessage: OutgoingMessage) {
+        markMessageAsFailed(
+            outgoingMessage,
+            in: messagesSection
+        )
     }
 
     // Updates Response Card or Custom Card selected option
@@ -1181,20 +1232,17 @@ extension ChatViewModel {
 // MARK: Site Configurations
 
 extension ChatViewModel {
-    func fetchSiteConfigurations() {
-        environment.fetchSiteConfigurations { [weak self] result in
-            guard let self = self else { return }
-
-            switch result {
-            case .success(let site):
-                self.siteConfiguration = site
-                self.action?(
-                    .setAttachmentButtonEnabling(self.mediaPickerButtonEnabling)
-                )
-                self.showSnackBarIfNeeded()
-            case let .failure(error):
-                self.engagementAction?(.showAlert(.error(error: error)))
-            }
+    @MainActor
+    func fetchSiteConfigurations() async {
+        do {
+            let site = try await environment.fetchSiteConfigurations()
+            siteConfiguration = site
+            action?(
+                .setAttachmentButtonEnabling(mediaPickerButtonEnabling)
+            )
+            showSnackBarIfNeeded()
+        } catch {
+            engagementAction?(.showAlert(.error(error: error)))
         }
     }
 }
@@ -1228,7 +1276,15 @@ extension ChatViewModel: ApplicationVisibilityTracker {
             delayScheduler: environment.combineScheduler.global
         )
         .sink { [weak self] _ in
-            _ = self?.environment.secureConversations.markMessagesAsRead { _ in }
+            Task {
+                do {
+                    try await self?.environment.secureConversations.markMessagesAsRead()
+                } catch {
+                    self?.environment.log.prefixed(Self.self).warning(
+                        "Marking messages as read failed: \(error)"
+                    )
+                }
+            }
         }
         .store(in: &markMessagesAsReadCancellables)
     }
@@ -1244,9 +1300,10 @@ extension ChatViewModel: AttachmentOptions {
 #if DEBUG
 extension ChatViewModel {
     /// Sets text and immediately sends it. Used for testing.
-    func invokeSetTextAndSendMessage(text: String) {
+    @MainActor
+    func invokeSetTextAndSendMessage(text: String) async {
         self.messageText = text
-        self.sendMessage()
+        await self.sendMessage()
     }
 
     /// Sets pending messages list for unit testing

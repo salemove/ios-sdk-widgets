@@ -1,8 +1,9 @@
 import Foundation
-import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 /// Loads older pages of chat history for the chat and transcript models, keeping at most one
 /// request in flight. Holds the key for the next older page; the Core SDK keeps no paging state.
+/// Used from the main thread only, like the chat and transcript models that own it.
 final class OlderChatHistoryLoader {
     struct Environment {
         var fetchOlderChatHistory: CoreSdkClient.FetchOlderChatHistory
@@ -16,6 +17,8 @@ final class OlderChatHistoryLoader {
     /// Bumped whenever the key is replaced from outside a load, so a load that was in flight
     /// meanwhile cannot prepend items or write back a key that no longer matches the history.
     private var generation = 0
+    /// The pull-to-load request started by `loadOlderItems`, so tests can wait for it.
+    private(set) var currentLoad: Task<Void, Never>?
 
     init(environment: Environment) {
         self.environment = environment
@@ -36,25 +39,54 @@ final class OlderChatHistoryLoader {
         self.olderPage = olderPage
     }
 
-    /// Calls `completion` with the older messages, oldest first, or with `nil` on failure. Stores
-    /// the next key on success and keeps the current one on failure, so the next pull retries the
-    /// same page. Does nothing when a load is already in flight or nothing older exists, and drops
-    /// the result if `replaceOlderPage` was called while the request was in flight.
-    func load(_ completion: @escaping ([ChatMessage]?) -> Void) {
-        guard canStartLoading, let olderPage else { return }
+    /// The outcome of loading one older page.
+    enum LoadOutcome {
+        /// The older messages, oldest first. The next key is stored.
+        case loaded([ChatMessage])
+        /// The request failed. The current key is kept, so the next pull retries the same page.
+        case failed
+        /// `replaceOlderPage` was called while the request was in flight, so the result was dropped.
+        case superseded
+    }
+
+    /// Loads the next older page. Returns `nil` without fetching when a load is already in flight
+    /// or nothing older exists.
+    @MainActor
+    func load() async -> LoadOutcome? {
+        guard let request = startLoading() else { return nil }
+        return await finishLoading(request)
+    }
+
+    private struct LoadRequest {
+        let olderPage: CoreSdkClient.OlderChatHistoryPage
+        let generation: Int
+    }
+
+    /// Marks a load as in flight before any suspension, so a second pull in the same run loop
+    /// cannot start another request.
+    private func startLoading() -> LoadRequest? {
+        guard canStartLoading, let olderPage else { return nil }
         isLoading = true
-        let loadGeneration = generation
-        environment.fetchOlderChatHistory(olderPage) { [weak self] result in
-            guard let self, loadGeneration == generation else { return }
-            isLoading = false
-            switch result {
-            case let .success(page):
-                self.olderPage = page.olderPage
-                completion(page.messages)
-            case let .failure(error):
-                environment.log.warning("Older chat history load failed: \(error)")
-                completion(nil)
-            }
+        return LoadRequest(olderPage: olderPage, generation: generation)
+    }
+
+    @MainActor
+    private func finishLoading(_ request: LoadRequest) async -> LoadOutcome {
+        let result: Result<CoreSdkClient.ChatHistoryPage, Error>
+        do {
+            result = .success(try await environment.fetchOlderChatHistory(request.olderPage))
+        } catch {
+            result = .failure(error)
+        }
+        guard request.generation == generation else { return .superseded }
+        isLoading = false
+        switch result {
+        case let .success(page):
+            olderPage = page.olderPage
+            return .loaded(page.messages)
+        case let .failure(error):
+            environment.log.warning("Older chat history load failed: \(error)")
+            return .failed
         }
     }
 }
@@ -74,12 +106,19 @@ extension OlderChatHistoryLoader {
         didPrependMessages: @escaping ([ChatMessage]) -> Void = { _ in },
         action: @escaping (ChatViewModel.Action) -> Void
     ) {
-        guard canStartLoading else { return }
+        guard let request = startLoading() else { return }
         environment.openTelemetry.logger.i(.chatScreenHistoryLoading)
         action(.olderHistoryStateUpdated(canLoad: true, isLoading: true))
-        load { [weak self, weak section] messages in
-            guard let self, let section else { return }
-            if let messages {
+        currentLoad = Task { @MainActor [weak self, weak section] in
+            guard let self else { return }
+            let outcome = await finishLoading(request)
+            guard let section else { return }
+            switch outcome {
+            case .superseded:
+                return
+            case .failed:
+                break
+            case let .loaded(messages):
                 environment.openTelemetry.logger.i(.chatScreenHistoryLoaded) {
                     $0[.messageCount] = .string("\(messages.count)")
                 }

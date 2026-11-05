@@ -1,13 +1,16 @@
 #if DEBUG
 
 import Foundation
-@_spi(GliaWidgets) import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 extension ChatViewModel.Environment {
     static let mock = Self(
         secureConversations: .mock,
-        fetchFile: { _, _, _ in },
-        uploadFileToEngagement: { _, _, _ in },
+        fetchFile: { _, _ in .mock() },
+        uploadFileToEngagement: { _, _ in
+            try await Task.sleep(nanoseconds: UInt64.max)
+            throw CancellationError()
+        },
         fileManager: .mock,
         data: .mock,
         date: { .mock },
@@ -22,14 +25,14 @@ extension ChatViewModel.Environment {
                 )
         },
         loadChatMessagesFromHistory: { true },
-        fetchSiteConfigurations: { _ in },
+        fetchSiteConfigurations: { try .mock() },
         getCurrentEngagement: { return nil },
         getNonTransferredSecureConversationEngagement: { return nil },
         timerProviding: .mock,
         uuid: { UUID.mock },
         uiApplication: .mock,
-        fetchChatHistory: { _ in },
-        fetchOlderChatHistory: { _, _ in },
+        fetchChatHistory: { .init(messages: []) },
+        fetchOlderChatHistory: { _ in .init(messages: []) },
         fileUploadListStyle: .initial,
         createFileUploadListModel: SecureConversations.FileUploadListViewModel.mock(environment:),
         createSendMessagePayload: { _, _ in .mock() },
