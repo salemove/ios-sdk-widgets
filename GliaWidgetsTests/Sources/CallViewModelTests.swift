@@ -767,7 +767,7 @@ class CallViewModelTests: XCTestCase {
         XCTAssertEqual(videoActionsCount, 0)
     }
 
-    func test_startShowsConnectedStateWhenCallStartedBeforeViewLoaded() {
+    func test_startShowsConnectedStateWhenCallStartedBeforeViewLoaded() async {
         var isConnectedShown = false
 
         call = .init(.video(direction: .twoWay), environment: .mock)
@@ -788,7 +788,7 @@ class CallViewModelTests: XCTestCase {
                 isConnectedShown = true
             }
         }
-        viewModel.start()
+        await viewModel.start()
 
         XCTAssertTrue(isConnectedShown)
     }

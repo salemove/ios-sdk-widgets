@@ -2,7 +2,8 @@
 import XCTest
 
 final class SurveyViewControllerPropsTests: XCTestCase {
-    func test_validSubmitClosesAndSubmitsOnceWhenTappedTwice() throws {
+    @MainActor
+    func test_validSubmitClosesAndSubmitsOnceWhenTappedTwice() async throws {
         let survey: CoreSdkClient.Survey = try .mock(id: "survey-id")
         var submittedIds: [String] = []
         var closeCount = 0
@@ -18,14 +19,15 @@ final class SurveyViewControllerPropsTests: XCTestCase {
             completion: { closeCount += 1 }
         )
 
-        props.submit(props)
-        props.submit(props)
+        await props.submit(props)
+        await props.submit(props)
 
         XCTAssertEqual(submittedIds, ["survey-id/engagement-id"])
         XCTAssertEqual(closeCount, 1)
     }
 
-    func test_invalidSubmitNeitherClosesNorSubmits() throws {
+    @MainActor
+    func test_invalidSubmitNeitherClosesNorSubmits() async throws {
         var submitCount = 0
         var closeCount = 0
         var updatedProps: Survey.ViewController.Props?
@@ -40,14 +42,15 @@ final class SurveyViewControllerPropsTests: XCTestCase {
         )
         props.questionsProps = [Survey.ViewController.Props.makeScalePropsMock()]
 
-        props.submit(props)
+        await props.submit(props)
 
         XCTAssertEqual(submitCount, 0)
         XCTAssertEqual(closeCount, 0)
         XCTAssertEqual(updatedProps?.questionsProps.map(\.showValidationError), [true])
     }
 
-    func test_validSubmitAfterInvalidSubmitClosesAndSubmits() throws {
+    @MainActor
+    func test_validSubmitAfterInvalidSubmitClosesAndSubmits() async throws {
         var submitCount = 0
         var closeCount = 0
         let props = Survey.ViewController.Props.live(
@@ -62,8 +65,8 @@ final class SurveyViewControllerPropsTests: XCTestCase {
         var invalidProps = props
         invalidProps.questionsProps = [Survey.ViewController.Props.makeScalePropsMock()]
 
-        props.submit(invalidProps)
-        props.submit(props)
+        await props.submit(invalidProps)
+        await props.submit(props)
 
         XCTAssertEqual(submitCount, 1)
         XCTAssertEqual(closeCount, 1)

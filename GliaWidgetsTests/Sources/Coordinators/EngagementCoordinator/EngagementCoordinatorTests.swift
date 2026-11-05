@@ -123,7 +123,8 @@ final class EngagementCoordinatorTests: XCTestCase {
         XCTAssertNotNil(surveyViewController)
     }
 
-    func test_failedSurveySubmitPresentsNoAlert() throws {
+    @MainActor
+    func test_failedSurveySubmitPresentsNoAlert() async throws {
         var submitCount = 0
         var alertLogMessages: [String] = []
         var alertLog = CoreSdkClient.Logger.mock
@@ -136,9 +137,9 @@ final class EngagementCoordinatorTests: XCTestCase {
         coordinator = createCoordinator(
             with: .direct(kind: .chat),
             environment: .mock(
-                submitSurveyAnswer: { _, _, _, completion in
+                submitSurveyAnswer: { _, _, _ in
                     submitCount += 1
-                    completion(.failure(.init(reason: "Submit failed")))
+                    throw CoreSdkClient.GliaCoreError(reason: "Submit failed")
                 },
                 log: coordinatorLog,
                 alertManager: .mock(environment: .mock(log: alertLog))
@@ -156,7 +157,8 @@ final class EngagementCoordinatorTests: XCTestCase {
         coordinator.end(surveyPresentation: .presentSurvey)
         let surveyViewController = try XCTUnwrap(coordinator.gliaPresenter.topMostViewController as? Survey.ViewController)
 
-        surveyViewController.props.submit(surveyViewController.props)
+        await surveyViewController.props.submit(surveyViewController.props)
+        await waitUntil { !errorLogMessages.isEmpty }
 
         XCTAssertEqual(submitCount, 1)
         XCTAssertEqual(alertLogMessages, [])

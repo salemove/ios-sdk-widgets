@@ -6,6 +6,7 @@ import QuickLook
 
 final class ChatCoordinatorTests: XCTestCase {
     var coordinator: ChatCoordinator!
+    var navigationPresenter = NavigationPresenter(with: NavigationController())
 
     override func setUp() {
         coordinator = createCoordinator()
@@ -20,8 +21,7 @@ final class ChatCoordinatorTests: XCTestCase {
         startWithSecureTranscriptFlow: Bool = false,
         skipTransferredSCHandling: Bool = false
     ) -> ChatCoordinator {
-        let navigationPresenter = NavigationPresenter(with: NavigationController())
-        return ChatCoordinator(
+        ChatCoordinator(
             interactor: .mock(),
             viewFactory: .mock(),
             navigationPresenter: navigationPresenter,

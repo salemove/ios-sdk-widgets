@@ -1,6 +1,6 @@
 import XCTest
 @testable import GliaWidgets
-@_spi(GliaWidgets) import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 final class ChatViewOlderHistoryTests: XCTestCase {
     func test_themeDefaultsOlderMessagesIndicatorColorToPrimary() {

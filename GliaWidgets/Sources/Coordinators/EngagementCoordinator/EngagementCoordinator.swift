@@ -309,7 +309,8 @@ extension EngagementCoordinator {
                     do {
                         try await environment.submitSurveyAnswer(answers, surveyId, engagementId)
                     } catch {
-                        environment.log.prefixed(Self.self).error("Submitting survey answers failed: \(error)")
+                        let reason = (error as? CoreSdkClient.GliaCoreError)?.reason ?? error.localizedDescription
+                        environment.log.prefixed(Self.self).error("Submitting survey answers failed: \(reason)")
                     }
                 }
             },

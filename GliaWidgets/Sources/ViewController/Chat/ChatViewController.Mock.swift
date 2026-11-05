@@ -23,7 +23,10 @@ extension ChatViewController {
                 alertManager: alertManager
             )
         )
-        await chatViewModel.start()
+        // Loading the view binds the view model before `viewDidLoad` starts it,
+        // so the actions emitted while starting reach the view.
+        controller.loadViewIfNeeded()
+        await controller.viewDidLoadTask?.value
         return controller
     }
 

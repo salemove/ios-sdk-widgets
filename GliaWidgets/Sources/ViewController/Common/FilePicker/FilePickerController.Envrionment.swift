@@ -1,5 +1,5 @@
 import Foundation
-@_spi(GliaWidgets) import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import UIKit
 import UniformTypeIdentifiers
 
