@@ -162,15 +162,15 @@ final class GliaTests: XCTestCase {
     func testConfigureMapsCoreConfigurationFailure() async {
         var environment = Glia.Environment.mock
         environment.coreSDKConfigurator.configureWithConfiguration = { _ in
-            throw CoreSdkClient.ConfigurationProcessError.invalidSiteApiKeyCredentials
+            throw CoreSdkClient.ConfigurationProcessError.localeRetrieval
         }
         let sdk = Glia(environment: environment)
 
         do {
             try await sdk.configure(with: .mock(), theme: .mock())
-            XCTFail("Configuration must fail when Core rejects the credentials")
+            XCTFail("Configuration must fail when Core cannot load the locale")
         } catch {
-            XCTAssertEqual(error as? GliaError, .invalidSiteApiKeyCredentials)
+            XCTAssertEqual(error as? GliaError, .invalidLocale)
         }
     }
 

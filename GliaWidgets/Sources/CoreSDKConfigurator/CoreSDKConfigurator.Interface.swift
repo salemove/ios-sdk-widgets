@@ -14,7 +14,6 @@ extension CoreSDKConfigurator {
                 let sdkConfiguration = try CoreSdkClient.Configuration(
                     siteId: configuration.site,
                     region: configuration.environment.region,
-                    authorizingMethod: configuration.authorizationMethod.coreAuthorizationMethod,
                     pushNotifications: configuration.pushNotifications.coreSdk,
                     manualLocaleOverride: configuration.manualLocaleOverride,
                     suppressPushNotificationsPermissionRequestDuringAuthentication: configuration

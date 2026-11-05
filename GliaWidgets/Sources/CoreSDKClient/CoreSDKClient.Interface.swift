@@ -250,7 +250,6 @@ extension CoreSdkClient {
     typealias EngagementChangedBlock = GliaCoreSDK.EngagementChangedBlock
     typealias QueueForEngagementOptions = GliaCoreSDK.QueueForEngagementOptions
     typealias Region = GliaCore.Region
-    typealias AuthorizationMethod = GliaCore.AuthorizationMethod
     typealias VisitorCode = GliaCoreSDK.VisitorCode
     typealias Tagged = GliaCoreSDK.Tagged
     typealias CoreVisitorInfo = GliaCore.VisitorInfo

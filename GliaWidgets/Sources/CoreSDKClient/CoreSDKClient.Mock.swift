@@ -112,20 +112,14 @@ extension CoreSdkClient.Configuration {
     static func mock(
         siteId: String = "mocked-id",
         region: CoreSdkClient.Region = .us,
-        authMethod: CoreSdkClient.AuthorizationMethod = .mock,
         suppressPushNotificationsPermissionRequestDuringAuthentication: Bool = false
     ) throws -> Self {
         try CoreSdkClient.Configuration(
             siteId: siteId,
             region: region,
-            authorizingMethod: authMethod,
             suppressPushNotificationsPermissionRequestDuringAuthentication: suppressPushNotificationsPermissionRequestDuringAuthentication
         )
     }
-}
-
-extension CoreSdkClient.AuthorizationMethod {
-    static let mock = Self.siteApiKey(id: "mockSiteApiKeyId", secret: "mockSiteApiKeySecret")
 }
 
 extension CoreSdkClient.VisitorContext {
