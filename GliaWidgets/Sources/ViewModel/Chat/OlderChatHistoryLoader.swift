@@ -1,5 +1,5 @@
 import Foundation
-import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 
 /// Loads older pages of chat history for the chat and transcript models, keeping at most one
 /// request in flight. Holds the key for the next older page; the Core SDK keeps no paging state.

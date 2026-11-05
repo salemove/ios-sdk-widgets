@@ -36,9 +36,12 @@ final class ChatViewController: EngagementViewController, PopoverPresenter {
         renderProps()
     }
 
+    /// The view model start triggered by `viewDidLoad`, so mocks and tests can wait for it.
+    private(set) var viewDidLoadTask: Task<Void, Never>?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        Task { [weak self] in
+        viewDidLoadTask = Task { [weak self] in
             await self?.viewModel.asyncEvent(.viewDidLoad)
         }
     }

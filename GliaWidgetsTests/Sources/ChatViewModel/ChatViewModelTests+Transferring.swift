@@ -36,7 +36,7 @@ extension ChatViewModelTests {
             allowedFileContentTypes: ["image/jpeg"],
             allowedFileSenders: .init(operator: true, visitor: true)
         )
-        env.fetchChatHistory = { [.mock()] }
+        env.fetchChatHistory = { .init(messages: [.mock()]) }
         env.loadChatMessagesFromHistory = { false }
         env.fetchSiteConfigurations = { site }
         env.createEntryWidget = { _ in .mock() }
