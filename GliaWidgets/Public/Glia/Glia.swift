@@ -637,9 +637,7 @@ extension Glia {
         // or a `ConfigurationProcessError`, the `ConfigurationProcessError` is translated
         // into a `GliaError`.
         if let processError = error as? ProcessError {
-            if processError == .invalidSiteApiKeyCredentials {
-                errorForCompletion = GliaError.invalidSiteApiKeyCredentials
-            } else if processError == .localeRetrieval {
+            if processError == .localeRetrieval {
                 errorForCompletion = GliaError.invalidLocale
             }
         }

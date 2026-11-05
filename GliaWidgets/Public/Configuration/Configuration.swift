@@ -82,15 +82,6 @@ public extension Configuration {
         /// User API key authorization.
         case userApiKey(id: String, secret: String)
 
-        var coreAuthorizationMethod: CoreSdkClient.AuthorizationMethod {
-            switch self {
-            case .siteApiKey(let id, let secret):
-                return .siteApiKey(id: id, secret: secret)
-            case let .userApiKey(id, secret):
-                return .userApiKey(id: id, secret: secret)
-            }
-        }
-
         var id: String {
             switch self {
             case let .siteApiKey(id, _):
