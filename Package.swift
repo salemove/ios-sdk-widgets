@@ -45,8 +45,8 @@ let package = Package(
         ),
         .binaryTarget(
             name: "GliaOpenTelemetry",
-            url: "https://github.com/salemove/ios-telemetry-bundle/releases/download/1.0.8/GliaOpenTelemetry.xcframework.zip",
-            checksum: "9dd9e68d8312c601a69e73f46adf0132226168baa0e3f21415af47835c4d139d"
+            url: "https://github.com/salemove/ios-telemetry-bundle/releases/download/1.1.1/GliaOpenTelemetry.xcframework.zip",
+            checksum: "89914f3366e686991f96454b5e0c970a31a1e84c58d62704bf3f94cb84349d48"
         ),
         .binaryTarget(
             name: "PhoenixChannelsClient",
