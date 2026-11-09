@@ -658,6 +658,141 @@ class CallViewModelTests: XCTestCase {
         XCTAssertFalse(isLocalVideoStreamPaused)
     }
 
+    func test_viewWillAppearReattachesVideoStreamsAddedWhileCallScreenWasMinimized() {
+        enum Attached: Equatable { case remoteVideo, localVideo }
+        var attached: [Attached] = []
+        var playedVideos: [String] = []
+
+        call = .init(.video(direction: .twoWay), environment: .mock)
+        viewModel = .init(
+            interactor: .mock(),
+            environment: .mock,
+            call: call,
+            unreadMessages: .init(with: 0),
+            startWith: .engagement(mediaType: .video),
+            replaceExistingEnqueueing: false
+        )
+
+        call.updateVideoStream(with: Self.videoStream(isRemote: true) { playedVideos.append("remote") })
+        call.updateVideoStream(with: Self.videoStream(isRemote: false) { playedVideos.append("local") })
+        playedVideos.removeAll()
+
+        viewModel.action = { action in
+            switch action {
+            case .setRemoteVideo(let streamView) where streamView != nil:
+                attached.append(.remoteVideo)
+            case .setLocalVideo(let streamView) where streamView != nil:
+                attached.append(.localVideo)
+            default:
+                break
+            }
+        }
+        viewModel.event(EngagementViewModel.Event.viewWillAppear)
+
+        XCTAssertEqual(attached, [.remoteVideo, .localVideo])
+        XCTAssertEqual(playedVideos, ["remote", "local"])
+    }
+
+    func test_viewWillAppearDoesNotReattachVideoStreamsAddedWhileCallScreenWasVisible() {
+        var attachedVideosCount = 0
+
+        call = .init(.video(direction: .twoWay), environment: .mock)
+        viewModel = .init(
+            interactor: .mock(),
+            environment: .mock,
+            call: call,
+            unreadMessages: .init(with: 0),
+            startWith: .engagement(mediaType: .video),
+            replaceExistingEnqueueing: false
+        )
+        viewModel.event(EngagementViewModel.Event.viewDidAppear)
+        call.updateVideoStream(with: Self.videoStream(isRemote: true))
+        call.updateVideoStream(with: Self.videoStream(isRemote: false))
+        viewModel.event(EngagementViewModel.Event.viewDidDisappear)
+
+        viewModel.action = { action in
+            switch action {
+            case .setRemoteVideo(let streamView) where streamView != nil,
+                 .setLocalVideo(let streamView) where streamView != nil:
+                attachedVideosCount += 1
+            default:
+                break
+            }
+        }
+        viewModel.event(EngagementViewModel.Event.viewWillAppear)
+
+        XCTAssertEqual(attachedVideosCount, 0)
+    }
+
+    func test_viewWillAppearWithoutVideoStreamsSendsNoVideoActions() {
+        var videoActionsCount = 0
+
+        call = .init(.audio, environment: .mock)
+        viewModel = .init(
+            interactor: .mock(),
+            environment: .mock,
+            call: call,
+            unreadMessages: .init(with: 0),
+            startWith: .engagement(mediaType: .audio),
+            replaceExistingEnqueueing: false
+        )
+        viewModel.action = { action in
+            switch action {
+            case .setRemoteVideo, .setLocalVideo, .setCameraFlip:
+                videoActionsCount += 1
+            default:
+                break
+            }
+        }
+
+        viewModel.event(EngagementViewModel.Event.viewWillAppear)
+
+        XCTAssertEqual(videoActionsCount, 0)
+    }
+
+    func test_startShowsConnectedStateWhenCallStartedBeforeViewLoaded() {
+        var isConnectedShown = false
+
+        call = .init(.video(direction: .twoWay), environment: .mock)
+        viewModel = .init(
+            interactor: .mock(),
+            environment: .mock,
+            call: call,
+            unreadMessages: .init(with: 0),
+            startWith: .engagement(mediaType: .video),
+            replaceExistingEnqueueing: false
+        )
+        call.updateVideoStream(with: Self.videoStream(isRemote: true))
+        call.updateVideoStream(with: Self.videoStream(isRemote: false))
+        XCTAssertEqual(call.state.value, .started)
+
+        viewModel.action = { action in
+            if case .connected = action {
+                isConnectedShown = true
+            }
+        }
+        viewModel.start()
+
+        XCTAssertTrue(isConnectedShown)
+    }
+
+    private static func videoStream(
+        isRemote: Bool,
+        onPlayVideo: @escaping () -> Void = {}
+    ) -> CoreSdkClient.MockVideoStreamable {
+        .mock(
+            getStreamViewFunc: { .init() },
+            playVideoFunc: onPlayVideo,
+            pauseFunc: {},
+            resumeFunc: {},
+            stopFunc: {},
+            getIsPausedFunc: { false },
+            setIsPausedFunc: { _ in },
+            getIsRemoteFunc: { isRemote },
+            setIsRemoteFunc: { _ in }
+        )
+    }
+
     func test_setFlipCameraButtonVisibleWhenHasCameraDeviceManagerInvokesCallback() {
         var cameraDeviceManager = CoreSdkClient.CameraDeviceManageableClient.failing
         let frontCamera = CoreSdkClient.CameraDevice(
