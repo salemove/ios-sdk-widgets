@@ -1,0 +1,33 @@
+{
+  "originHash" : "bd049b39f1410a7214441af45a25d00a7a3de9df27336befe6bbdd8a73cb742e",
+  "pins" : [
+    {
+      "identity" : "accessibilitysnapshot",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/cashapp/AccessibilitySnapshot",
+      "state" : {
+        "revision" : "68f9270211893bcbb8a9b1b9d02e71303de35e26",
+        "version" : "0.5.0"
+      }
+    },
+    {
+      "identity" : "swift-snapshot-testing",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pointfreeco/swift-snapshot-testing",
+      "state" : {
+        "revision" : "f8a9c997c3c1dab4e216a8ec9014e23144cbab37",
+        "version" : "1.9.0"
+      }
+    },
+    {
+      "identity" : "swiftlintplugins",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SimplyDanny/SwiftLintPlugins",
+      "state" : {
+        "revision" : "ef7d692fc6706e8f5628e26bcafaefa445c58a97",
+        "version" : "0.65.1"
+      }
+    }
+  ],
+  "version" : 3
+}

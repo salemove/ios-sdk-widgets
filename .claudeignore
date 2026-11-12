@@ -9,10 +9,6 @@ DerivedData/
 xcuserdata/
 *.xcuserdata
 
-# CocoaPods dependencies
-Pods/
-**/Pods/
-
 # Bundler
 .bundle/
 **/.bundle/
@@ -27,8 +23,6 @@ GliaCoreSDK/docs
 
 # Lock files (not source code)
 *.lock
-Podfile.lock
-**/Podfile.lock
 Gemfile.lock
 **/Gemfile.lock
 Package.resolved

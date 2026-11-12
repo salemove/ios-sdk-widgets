@@ -326,7 +326,6 @@ public class Glia {
         }
 
         environment.openTelemetry.logger.i(.widgetsSdkConfiguring) {
-            $0[.apiKeyId] = .string(configuration.authorizationMethod.id)
             $0[.environment] = .string(configuration.environment.rawValue)
             $0[.localeCode] = .string(configuration.manualLocaleOverride ?? "N/A")
         }

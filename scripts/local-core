@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+#
+# Toggle GliaCoreSDK between the released xcframework and a local ios-sdk checkout.
+#
+# Usage:
+#   scripts/local-core enable [path]   # build Core from sources; path defaults to ../ios-sdk
+#   scripts/local-core disable         # back to the released xcframework
+#   scripts/local-core status          # show current state
+#
+# `enable` writes an untracked, version-specific manifest into WidgetsDependencies.
+# SwiftPM prefers it over Package.swift, so no tracked file changes. A flag read by
+# Package.swift itself would not work: SwiftPM caches a manifest's evaluation by
+# its contents, and keeps serving the old result after the flag flips.
+#
+# After switching, re-resolve packages in Xcode
+# (File > Packages > Resolve Package Versions) and clean the build folder.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(dirname "$SCRIPT_DIR")"
+# Must be newer than the swift-tools-version of Package.swift to be preferred.
+LOCAL_MANIFEST="$REPO_ROOT/WidgetsDependencies/Package@swift-5.10.swift"
+
+status() {
+  if [[ -f "$LOCAL_MANIFEST" ]]; then
+    echo "[on]  GliaCoreSDK is built from $(sed -n 's/^let checkout = "\(.*\)"$/\1/p' "$LOCAL_MANIFEST")"
+  else
+    echo "[off] GliaCoreSDK is the released xcframework"
+  fi
+}
+
+enable_local() {
+  local checkout="${1:-$REPO_ROOT/../ios-sdk}"
+
+  if [[ ! -d "$checkout" ]]; then
+    echo "error: $checkout does not exist" >&2
+    exit 1
+  fi
+  checkout="$(cd "$checkout" && pwd)"
+
+  # Dependencies/Package.swift arrived with the CocoaPods removal in ios-sdk;
+  # a checkout without it cannot be built as a package.
+  if [[ ! -f "$checkout/GliaCoreSDK/Package.swift" || ! -f "$checkout/Dependencies/Package.swift" ]]; then
+    echo "error: $checkout is not an ios-sdk checkout that builds as a Swift package." >&2
+    echo "       It needs GliaCoreSDK/Package.swift and Dependencies/Package.swift." >&2
+    exit 1
+  fi
+
+  cat > "$LOCAL_MANIFEST" <<SWIFT
+// swift-tools-version:5.10
+
+import PackageDescription
+
+// Written by scripts/local-core. Do not commit.
+let checkout = "$checkout"
+
+let package = Package(
+    name: "WidgetsDependencies",
+    platforms: [
+        .iOS("15.1")
+    ],
+    products: [
+        // One dynamic library that holds GliaCoreSDK. Left to choose, Xcode
+        // builds a framework per package product, and a target linking
+        // \`GliaCore\` then finds none of GliaCoreSDK's symbols, since a dynamic
+        // library does not re-export the libraries it links.
+        .library(
+            name: "GliaCore",
+            type: .dynamic,
+            targets: ["GliaCoreFromSources"]
+        )
+    ],
+    dependencies: [
+        .package(path: "\\(checkout)/GliaCoreSDK")
+    ],
+    targets: [
+        // A product has to name a target of its own package, so the checkout
+        // is reached through this otherwise empty target.
+        .target(
+            name: "GliaCoreFromSources",
+            dependencies: [
+                .product(name: "GliaCoreSDK", package: "GliaCoreSDK")
+            ]
+        )
+    ]
+)
+SWIFT
+
+  status
+}
+
+disable_local() {
+  rm -f "$LOCAL_MANIFEST"
+  status
+}
+
+case "${1:-}" in
+  enable)  enable_local "${2:-}" ;;
+  disable) disable_local ;;
+  status)  status ;;
+  *)
+    echo "Usage: scripts/local-core {enable [path]|disable|status}" >&2
+    exit 1
+    ;;
+esac
