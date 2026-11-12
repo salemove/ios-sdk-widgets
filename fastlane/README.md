@@ -37,7 +37,7 @@ Creates a pull request in the repository with the required files to increment th
 [bundle exec] fastlane ios increment_project_version
 ```
 
-Increments versions in Xcode projects and Podspec file according to given type.
+Increments versions in the Xcode project and StaticValues.swift according to given type.
 
 Usage:
 fastlane increment_project_version type:major - increments X.0.0
@@ -59,7 +59,7 @@ Creates a pull request in the repository with whatever changes have been made. U
 [bundle exec] fastlane ios update_core_sdk_version
 ```
 
-Creates a pull request in the repository with updates to Core SDK version. 
+Points Package.swift and the project's WidgetsDependencies package at a Core SDK release, together with the binaries that release links.
 
 ----
 
