@@ -42,7 +42,6 @@ workflows:
     - script:
         inputs:
         - content: bundle install
-    - cocoapods-install@2: {}
     - recreate-user-schemes@1:
         inputs:
         - project_path: $BITRISE_PROJECT_PATH
@@ -72,7 +71,6 @@ workflows:
     - script:
         inputs:
         - content: bundle install
-    - cocoapods-install@2: {}
     - xcode-test@6:
         inputs:
         - scheme: $TEST_SCHEME
@@ -80,9 +78,6 @@ workflows:
     - git-tag@1:
         inputs:
         - tag: $NEW_VERSION
-    - script@1:
-        inputs:
-        - content: pod trunk push GliaWidgets.podspec --verbose --allow-warnings
     - cache-push@2: {}
     after_run:
     - documentation
@@ -112,7 +107,6 @@ workflows:
     - script:
         inputs:
         - content: bundle install
-    - cocoapods-install@2: {}
     - recreate-user-schemes@1:
         inputs:
         - project_path: $BITRISE_PROJECT_PATH
@@ -191,7 +185,6 @@ workflows:
     - script:
         inputs:
         - content: bundle install
-    - cocoapods-install: {}
     - recreate-user-schemes@1:
         inputs:
         - project_path: $BITRISE_PROJECT_PATH
@@ -231,7 +224,6 @@ workflows:
     - script:
         inputs:
         - content: bundle install
-    - cocoapods-install@2: {}
     - bitrise-step-stamp-appicon-with-version-number@1:
         inputs:
         - stamp_version: TestFlight
@@ -264,7 +256,6 @@ workflows:
         inputs:
         - script_file_path: null
         - content: bundle install
-    - cocoapods-install@2: {}
     - fastlane@3:
         inputs:
         - work_dir: $BITRISE_SOURCE_DIR/$XCODE_PROJ_DIR

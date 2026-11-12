@@ -1,25 +1,25 @@
-WIDGETS_SDK_SEMVER=$1
-CORE_SDK_SEMVER=$2
-CORE_SDK_CHECKSUM=$3
+set -euo pipefail
 
-# Copy a new podspec file from template
-cp ../templates/GliaWidgets.podspec ../GliaWidgets.podspec
+CORE_SDK_SEMVER=$1
+CORE_SDK_CHECKSUM=$2
 
-# Replace WIDGETS_SDK_VERSION_SEMVER with project_version value.
-sed -i '' "s/\${WIDGETS_SDK_VERSION_SEMVER}/${WIDGETS_SDK_SEMVER}/g" "../GliaWidgets.podspec"
-
-# Replace CORE_SDK_VERSION_SEMVER with passed value.
-sed -i '' "s/\${CORE_SDK_VERSION_SEMVER}/${CORE_SDK_SEMVER}/g" "../GliaWidgets.podspec"
+# Moves the binaries GliaCoreSDK links to the versions that release was built
+# against, in the manifest the Xcode project uses and in the Package.swift
+# template. WidgetsDependencies/Package.swift gets the GliaCoreSDK pin itself
+# this way too.
+ruby ../scripts/sync_core_binaries.rb "$CORE_SDK_SEMVER" \
+    ../WidgetsDependencies/Package.swift \
+    ../templates/Package.swift
 
 # Retrieves XCFramework semmer from Package.swift file to prevent version changes.
-# That's required because WIDGETS_SDK_SEMVER is always higher than XCFramework semver
+# That's required because the project version is always higher than XCFramework semver
 WIDGETS_SDK_XCFRAMEWORK_SEMVER=$(grep 'GliaWidgetsXcf.xcframework.zip' '../Package.swift' | awk -F"/" '{print $8}')
 WIDGETS_SDK_XCFRAMEWORK_CHECKSUM=$(awk '/GliaWidgetsXcf.xcframework.zip/{p=NR} NR==p+1' '../Package.swift' | grep 'checksum:' | awk -F'"' '{print $2}')
 
 # Copy a new Package.swift file from template
 cp ../templates/Package.swift ../Package.swift
 
-# Replace WIDGETS_SDK_SEMVER with project_version value.
+# Replace WIDGETS_SDK_SEMVER with the retrieved XCFramework semver.
 sed -i '' "s/\${WIDGETS_SDK_SEMVER}/${WIDGETS_SDK_XCFRAMEWORK_SEMVER}/g" "../Package.swift"
 
 # Replace WIDGETS_SDK_CHECKSUM with widgets_sdk_checksum value.
