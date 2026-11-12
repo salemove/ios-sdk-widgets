@@ -12,7 +12,6 @@ Glia Technologies
 - [Xcode 15.1+](https://developer.apple.com/xcode/)
 - Swift 5.3
 - [Git LFS](https://git-lfs.github.com/)
-- [CocoaPods](https://cocoapods.org/)
 
 To build the Example application, follow the instructions below:
 
@@ -21,25 +20,23 @@ git clone --depth 1 git@github.com:salemove/ios-sdk-widgets.git
 cd ios-sdk-widgets
 make clone-snapshots
 make integrate-githooks
-pod install
 xed GliaWidgets.xcworkspace
 ```
 
-## Cocoapods
+Xcode resolves the dependencies through Swift Package Manager when the workspace opens.
 
-To integrate `GliaWidgets` into your project via [CocoaPods](https://cocoapods.org/), modify your `Podfile` as follows:
+### Building against a local GliaCoreSDK
 
+By default the project links the released GliaCoreSDK xcframework. To build it from a local
+[ios-sdk](https://github.com/salemove/ios-sdk) checkout instead:
+
+```sh
+scripts/local-core enable ../ios-sdk   # build GliaCoreSDK from sources
+scripts/local-core disable             # back to the released xcframework
+scripts/local-core status
 ```
-# Podfile
 
-source 'https://github.com/CocoaPods/Specs.git'
-
-use_frameworks!
-
-target 'YOUR_TARGET_NAME' do
-    pod 'GliaWidgets'
-end
-```
+After switching, resolve packages again (File > Packages > Resolve Package Versions) and clean the build folder.
 
 ## Swift Package Manager
 

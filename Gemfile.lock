@@ -76,7 +76,6 @@ GEM
       typhoeus (~> 1.0)
     cocoapods-deintegrate (1.0.5)
     cocoapods-downloader (2.1)
-    cocoapods-no-autoimports (0.2.0)
     cocoapods-plugins (1.0.0)
       nap
     cocoapods-search (1.0.1)
@@ -362,7 +361,6 @@ PLATFORMS
 
 DEPENDENCIES
   cocoapods (>= 1.17.0)
-  cocoapods-no-autoimports
   fastlane (>= 2.240.0)
   jazzy (= 0.15.5)
   rdoc (< 8)

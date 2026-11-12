@@ -164,13 +164,15 @@ Components styled via Theme:
 - Mixed approach: Both Quick/Nimble and pure XCTest
 
 ### Dependencies
-External frameworks (via CocoaPods/SPM):
-- **GliaCoreSDK** (2.5.1) - Core business logic and networking
-- **GliaCoreDependency** (2.4.0) - Shared utilities
-- **WebRTC-lib** (119.0.0) - Video/audio rendering
+External frameworks, resolved through Swift Package Manager. The project links the `GliaCore`
+product of the local `WidgetsDependencies` package, which pins the released xcframeworks;
+`scripts/local-core enable` swaps GliaCoreSDK for a local ios-sdk checkout.
+- **GliaCoreSDK** (4.0.1) - Core business logic and networking
+- **GliaCoreDependency** (2.1.5) - Shared utilities
+- **WebRTC** (149.0.0) - Video/audio rendering
 - **TwilioVoice** (6.8.0) - VoIP call handling
-- **PhoenixChannelsClient** (1.1.3) - WebSocket communication
-- **GliaOpenTelemetry** (1.0.8) - Tracing and observability
+- **PhoenixChannelsClient** (1.3.2) - WebSocket communication
+- **GliaOpenTelemetry** (1.1.1) - Tracing and observability
 
 ---
 

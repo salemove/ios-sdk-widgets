@@ -18,7 +18,6 @@ This setup configures **Claude Code-specific integrations**:
 - ✅ iOS Simulator MCP for mobile testing
 
 **Not covered here** (see project README):
-- ❌ CocoaPods installation
 - ❌ Xcode configuration
 - ❌ Snapshot repository cloning
 - ❌ Swift toolchain setup
@@ -213,7 +212,7 @@ acli jira auth login --web
 Once setup is complete:
 
 1. ✅ Review [.claude/CLAUDE.md](../../CLAUDE.md) for project architecture and coding guidelines
-2. ✅ Check project README for CocoaPods, Xcode, and snapshot repo setup
+2. ✅ Check project README for Xcode and snapshot repo setup
 3. ✅ Ask Claude to verify integrations work: "Check if GitHub, Jira, and Confluence integrations are working"
 
 ## Process
