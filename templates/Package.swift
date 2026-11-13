@@ -25,13 +25,13 @@ let package = Package(
         ),
         .binaryTarget(
             name: "TwilioVoice",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.33.0/TwilioVoice.xcframework.zip",
-            checksum: "34288e0876a8840fa51d3813046cf1f40a5939079bea23ace5afe6e752f12f9e"
+            url: "https://github.com/twilio/twilio-voice-ios/releases/download/6.8.0/TwilioVoice.xcframework.zip",
+            checksum: "298ff9bae7eb434e911dd14a2d40c3582dc97133d3e3dbbe23f2088726301ddf"
         ),
         .binaryTarget(
             name: "WebRTC",
-            url: "https://github.com/salemove/ios-bundle/releases/download/0.33.0/WebRTC.xcframework.zip",
-            checksum: "f76e410f608d96989ba0312e099697703a37b4414f8f46bb9e30c3d9b4291a52"
+            url: "https://github.com/stasel/WebRTC/releases/download/149.0.0/WebRTC-M149.xcframework.zip",
+            checksum: "79c5a3e49a68de30a99baabaf5b4c0067dd7a0b66fdd4b8afb8ec337e746abba"
         ),
         .binaryTarget(
             name: "GliaCoreSDK",
@@ -45,13 +45,13 @@ let package = Package(
         ),
         .binaryTarget(
             name: "GliaOpenTelemetry",
-            url: "https://github.com/salemove/ios-telemetry-bundle/releases/download/1.0.8/GliaOpenTelemetry.xcframework.zip",
-            checksum: "9dd9e68d8312c601a69e73f46adf0132226168baa0e3f21415af47835c4d139d"
+            url: "https://github.com/salemove/ios-telemetry-bundle/releases/download/1.1.1/GliaOpenTelemetry.xcframework.zip",
+            checksum: "89914f3366e686991f96454b5e0c970a31a1e84c58d62704bf3f94cb84349d48"
         ),
         .binaryTarget(
             name: "PhoenixChannelsClient",
-            url: "https://github.com/salemove/phoenix-channels-kmm-bundle/releases/download/1.2.0/PhoenixChannelsClient.xcframework.zip",
-            checksum: "5f9ba724c41196b6d200786dbd2c5cd9c275dcea99cbfe76a169eb9bb2c66bc2"
+            url: "https://github.com/salemove/phoenix-channels-kmm-bundle/releases/download/1.3.2/PhoenixChannelsClient.xcframework.zip",
+            checksum: "efe66666503af08fbcbd6020fe0c4c79fcb30bfac8f9fef0e03fa1b8a86e3f2d"
         ),
         .target(
             name: "GliaWidgets",

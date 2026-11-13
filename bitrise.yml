@@ -42,7 +42,6 @@ workflows:
     - script:
         inputs:
         - content: bundle install
-    - cocoapods-install@2: {}
     - recreate-user-schemes@1:
         inputs:
         - project_path: $BITRISE_PROJECT_PATH
@@ -72,7 +71,6 @@ workflows:
     - script:
         inputs:
         - content: bundle install
-    - cocoapods-install@2: {}
     - xcode-test@6:
         inputs:
         - scheme: $TEST_SCHEME
@@ -80,9 +78,6 @@ workflows:
     - git-tag@1:
         inputs:
         - tag: $NEW_VERSION
-    - script@1:
-        inputs:
-        - content: pod trunk push GliaWidgets.podspec --verbose --allow-warnings
     - cache-push@2: {}
     after_run:
     - documentation
@@ -112,7 +107,6 @@ workflows:
     - script:
         inputs:
         - content: bundle install
-    - cocoapods-install@2: {}
     - recreate-user-schemes@1:
         inputs:
         - project_path: $BITRISE_PROJECT_PATH
@@ -191,10 +185,54 @@ workflows:
     - script:
         inputs:
         - content: bundle install
-    - cocoapods-install: {}
     - recreate-user-schemes@1:
         inputs:
         - project_path: $BITRISE_PROJECT_PATH
+    - script@1:
+        title: Resolve Swift packages
+        timeout: 900
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            set -eo pipefail
+            # Resolved here, unformatted and with a time limit, so that a stalled
+            # resolution fails this step with its output instead of hanging the
+            # test step silently.
+            xcodebuild -version
+
+            # git saves the token used to clone the snapshots in the keychain.
+            # Xcode looks up github.com credentials before it downloads binary
+            # targets, and reading an item that another tool saved makes macOS
+            # ask for permission in a dialog nobody can answer here.
+            removed=0
+            while security delete-internet-password -s github.com > /dev/null 2>&1; do
+              removed=$((removed + 1))
+            done
+            echo "Removed $removed github.com keychain item(s)"
+
+            xcodebuild -resolvePackageDependencies \
+              -workspace "$BITRISE_PROJECT_PATH" \
+              -scheme "$TEST_SCHEME" \
+              -scmProvider system &
+            resolve_pid=$!
+
+            # Shows what xcodebuild is waiting on if it has not finished in time.
+            (
+              sleep 240
+              kill -0 "$resolve_pid" 2> /dev/null || exit 0
+              echo "Still resolving after 4 minutes. Permission dialogs on screen:"
+              pgrep -lf SecurityAgent || echo "none"
+              echo "Where xcodebuild is waiting:"
+              sample "$resolve_pid" 2 2>&1 \
+                | grep -E 'Thread_|Sec[A-Z]|Keychain|URLSession|CFNetwork|SwiftPM|PackageGraph|Artifact|Basics|semaphore|mach_msg' \
+                | head -80
+            ) &
+            watch_pid=$!
+
+            status=0
+            wait "$resolve_pid" || status=$?
+            kill "$watch_pid" 2> /dev/null || true
+            exit "$status"
     - xcode-test@6:
         inputs:
         - scheme: $TEST_SCHEME
@@ -231,7 +269,6 @@ workflows:
     - script:
         inputs:
         - content: bundle install
-    - cocoapods-install@2: {}
     - bitrise-step-stamp-appicon-with-version-number@1:
         inputs:
         - stamp_version: TestFlight
@@ -264,7 +301,6 @@ workflows:
         inputs:
         - script_file_path: null
         - content: bundle install
-    - cocoapods-install@2: {}
     - fastlane@3:
         inputs:
         - work_dir: $BITRISE_SOURCE_DIR/$XCODE_PROJ_DIR

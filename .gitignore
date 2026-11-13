@@ -49,16 +49,8 @@ playground.xcworkspace
 # Package.resolved
 .build/
 
-# CocoaPods
-#
-# We recommend against adding the Pods directory to your .gitignore. However
-# you should judge for yourself, the pros and cons are mentioned at:
-# https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
-#
+# Left behind by CocoaPods in checkouts that predate its removal
 Pods/
-#
-# Add this line if you want to avoid checking in source code from the Xcode workspace
-# *.xcworkspace
 
 # Carthage
 #
@@ -95,5 +87,5 @@ SnapshotTests/__Snapshots__/
 xcf
 *.bak
 
-# Local pod overrides (developer-specific, never commit)
-LocalPods.rb
+# Manifest for building GliaCoreSDK from a local ios-sdk checkout, written by scripts/local-core
+WidgetsDependencies/Package@swift-*.swift

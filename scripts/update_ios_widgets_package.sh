@@ -9,16 +9,16 @@ git push origin "$BRANCH_NAME":"$BRANCH_NAME"
 # and replaces next placeholders:
 # - WIDGETS_SDK_SEMVER: actual value is passed in SEMVER;
 # - WIDGETS_SDK_CHECKSUM: actual value is passed in CHECKSUM;
-# - CORE_SDK_SEMVER: actual value is taken from GliaWidgets.podspec file;
+# - CORE_SDK_SEMVER: actual value is taken from Package.swift file;
 # - CORE_SDK_CHECKSUM: actual value is taken from Package.swift file;
 # Since templates/Package.swift file has placeholders for both CoreSDK and WidgetsSDK version
 # we need to replace them all.
 
-# Gets CoreSDK version from GliaWidgets.podspec file:
-# - `grep` command searches for the line containing "GliaCoreSDK', '" string.
-# - `awk` command splits `grep` output line into parts using "'" field separator (FS)
-# and returns 4th object in the result array.
-CORE_SDK_SEMVER=$(grep "GliaCoreSDK',\s*'" 'GliaWidgets.podspec' | awk -F"'" '{print $4}')
+# Gets CoreSDK version from the GliaCoreSDK xcframework url in Package.swift file:
+# - `grep` command searches for the line containing "GliaCoreSDK.xcframework.zip" string.
+# - `awk` command splits `grep` output line into parts using "/" field separator (FS)
+# and returns 8th object in the result array, which is the release tag.
+CORE_SDK_SEMVER=$(grep 'GliaCoreSDK.xcframework.zip' 'Package.swift' | awk -F"/" '{print $8}')
 
 # Gets CoreSDK xcframework checksum from Package.swift file:
 # - `awk` command searches for the line containing "GliaCoreSDK.xcframework.zip"

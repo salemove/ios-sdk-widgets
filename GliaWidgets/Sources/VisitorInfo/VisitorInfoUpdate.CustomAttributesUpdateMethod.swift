@@ -1,5 +1,5 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
-import GliaCoreSDK
 
 extension VisitorInfoUpdate {
     /// Specifies a method for updating custom attributes.
@@ -13,7 +13,7 @@ extension VisitorInfoUpdate {
 }
 
 extension VisitorInfoUpdate.CustomAttributesUpdateMethod {
-    func asCoreSdkNoteUpdateMethod() -> GliaCoreSDK.VisitorInfoUpdate.CustomAttributesUpdateMethod {
+    func asCoreSdkNoteUpdateMethod() -> CoreSdkClient.CoreVisitorInfoUpdate.CustomAttributesUpdateMethod {
         switch self {
         case .replace:
             return .replace

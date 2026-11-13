@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
 import Combine
 
@@ -116,6 +117,15 @@ extension SecureConversations.ChatWithTranscriptModel {
             model.event(event)
         case let .transcript(model):
             model.event(event)
+        }
+    }
+
+    func asyncEvent(_ event: Chat.AsyncEvent) async {
+        switch self {
+        case let .chat(model):
+            await model.asyncEvent(event)
+        case let .transcript(model):
+            await model.asyncEvent(event)
         }
     }
 

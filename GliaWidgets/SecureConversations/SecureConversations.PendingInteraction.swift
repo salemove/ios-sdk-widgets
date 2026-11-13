@@ -1,6 +1,5 @@
 import Foundation
 import Combine
-@_spi(GliaWidgets) import GliaCoreSDK
 
 extension SecureConversations {
     final class PendingInteraction: ObservableObject {
@@ -9,38 +8,29 @@ extension SecureConversations {
         @Published private(set) var hasPendingInteraction = false
         @Published private(set) var hasTransferredSecureConversation = false
         private let environment: Environment
-        private(set) var pendingStatusCancellationToken: String?
-        private(set) var unreadMessageCountCancellationToken: String?
+        private var pendingStatusTask: Task<Void, Never>?
+        private var unreadMessageCountTask: Task<Void, Never>?
         private var activeInteractor: Interactor?
         private var cancelBag = CancelBag()
 
         init(environment: Environment) throws {
-            self.environment = environment
-            let pendingStatusCancellationToken = environment.observePendingSecureConversationsStatus { [weak self] result in
-                guard let self else { return }
-                // At this point it is enough to know if there is a pending conversation,
-                // so no need to handle error.
-                pendingStatus = (try? result.get()) ?? false
-            }
-
-            guard pendingStatusCancellationToken != nil else {
+            let pendingStatusStream: AsyncThrowingStream<Bool, Swift.Error>
+            do {
+                pendingStatusStream = try environment.pendingSecureConversationStatusStream()
+            } catch {
                 throw Error.subscriptionFailure(.pendingStatus)
             }
 
-            self.pendingStatusCancellationToken = pendingStatusCancellationToken
-
-            let unreadMessageCountCancellationToken = environment.observeSecureConversationsUnreadMessageCount { [weak self] result in
-                guard let self else { return }
-                // At this point it is enough to know if there is an unread message count,
-                // so no need to handle error.
-                unreadMessageCount = (try? result.get()) ?? 0
-            }
-
-            guard unreadMessageCountCancellationToken != nil else {
+            let unreadMessageCountStream: AsyncThrowingStream<Int?, Swift.Error>
+            do {
+                unreadMessageCountStream = try environment.unreadMessageCountStream()
+            } catch {
                 throw Error.subscriptionFailure(.unreadMessageCount)
             }
 
-            self.unreadMessageCountCancellationToken = unreadMessageCountCancellationToken
+            self.environment = environment
+            consumePendingStatusStream(pendingStatusStream)
+            consumeUnreadMessageCountStream(unreadMessageCountStream)
 
             let interactorStatePublisher = environment.interactorPublisher
                 .flatMap { interactor -> AnyPublisher<InteractorState, Never> in
@@ -79,12 +69,45 @@ extension SecureConversations {
         }
 
         deinit {
-            if let unreadMessageCountCancellationToken {
-                environment.unsubscribeFromUnreadCount(unreadMessageCountCancellationToken)
-            }
+            unreadMessageCountTask?.cancel()
+            pendingStatusTask?.cancel()
+        }
+    }
+}
 
-            if let pendingStatusCancellationToken {
-                environment.unsubscribeFromPendingStatus(pendingStatusCancellationToken)
+extension SecureConversations.PendingInteraction {
+    private func consumePendingStatusStream(_ stream: AsyncThrowingStream<Bool, Swift.Error>) {
+        pendingStatusTask = Task { [weak self] in
+            do {
+                for try await value in stream {
+                    await MainActor.run { [weak self] in
+                        self?.pendingStatus = value
+                    }
+                }
+            } catch is CancellationError {
+                return
+            } catch {
+                await MainActor.run { [weak self] in
+                    self?.pendingStatus = false
+                }
+            }
+        }
+    }
+
+    private func consumeUnreadMessageCountStream(_ stream: AsyncThrowingStream<Int?, Swift.Error>) {
+        unreadMessageCountTask = Task { [weak self] in
+            do {
+                for try await count in stream {
+                    await MainActor.run { [weak self] in
+                        self?.unreadMessageCount = count ?? 0
+                    }
+                }
+            } catch is CancellationError {
+                return
+            } catch {
+                await MainActor.run { [weak self] in
+                    self?.unreadMessageCount = 0
+                }
             }
         }
     }
@@ -92,10 +115,8 @@ extension SecureConversations {
 
 extension SecureConversations.PendingInteraction {
     struct Environment {
-        var observePendingSecureConversationsStatus: CoreSdkClient.SecureConversations.ObservePendingStatus
-        var observeSecureConversationsUnreadMessageCount: CoreSdkClient.SecureConversations.SubscribeForUnreadMessageCount
-        var unsubscribeFromUnreadCount: CoreSdkClient.SecureConversations.UnsubscribeFromUnreadCount
-        var unsubscribeFromPendingStatus: CoreSdkClient.SecureConversations.UnsubscribeFromPendingStatus
+        var pendingSecureConversationStatusStream: CoreSdkClient.SecureConversations.PendingSecureConversationStatusStream
+        var unreadMessageCountStream: CoreSdkClient.SecureConversations.UnreadMessageCountStream
         var interactorPublisher: AnyPublisher<Interactor?, Never>
     }
 }
@@ -115,24 +136,20 @@ extension SecureConversations.PendingInteraction.Environment {
         client: CoreSdkClient,
         interactorPublisher: AnyPublisher<Interactor?, Never>
     ) {
-        self.observePendingSecureConversationsStatus = client.secureConversations.observePendingStatus
-        self.observeSecureConversationsUnreadMessageCount = client.secureConversations.subscribeForUnreadMessageCount
-        self.unsubscribeFromPendingStatus = client.secureConversations.unsubscribeFromPendingStatus
-        self.unsubscribeFromUnreadCount = client.secureConversations.unsubscribeFromPendingStatus
+        self.pendingSecureConversationStatusStream = client.secureConversations.pendingSecureConversationStatusStream
+        self.unreadMessageCountStream = client.secureConversations.unreadMessageCountStream
         self.interactorPublisher = interactorPublisher
     }
 }
 
 #if DEBUG
-@_spi(GliaWidgets) import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 extension SecureConversations.PendingInteraction.Environment {
     static let mock: Self = {
         let uuidGen = UUID.incrementing
         return Self(
-            observePendingSecureConversationsStatus: { _ in uuidGen().uuidString },
-            observeSecureConversationsUnreadMessageCount: { _ in uuidGen().uuidString },
-            unsubscribeFromUnreadCount: { _ in },
-            unsubscribeFromPendingStatus: { _ in },
+            pendingSecureConversationStatusStream: { AsyncThrowingStream { $0.finish() } },
+            unreadMessageCountStream: { AsyncThrowingStream { $0.finish() } },
             interactorPublisher: .mock(.mock())
         )
     }()

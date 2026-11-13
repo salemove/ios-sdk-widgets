@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 /// Configuration of a generic alert.
 public struct MessageAlertConfiguration: Equatable {
     /// Title of the alert.

@@ -1,5 +1,5 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
-import GliaCoreSDK
 
 extension VisitorInfoUpdate {
     /// Specifies a method for updating the Visitor's notes.
@@ -13,7 +13,7 @@ extension VisitorInfoUpdate {
 }
 
 extension VisitorInfoUpdate.NoteUpdateMethod {
-    func asCoreSdkNoteUpdateMethod() -> GliaCoreSDK.VisitorInfoUpdate.NoteUpdateMethod {
+    func asCoreSdkNoteUpdateMethod() -> CoreSdkClient.CoreVisitorInfoUpdate.NoteUpdateMethod {
         switch self {
         case .replace:
             return .replace

@@ -1,5 +1,4 @@
 import Foundation
-import GliaCoreSDK
 import Combine
 
 final class QueuesMonitor {
@@ -13,18 +12,20 @@ final class QueuesMonitor {
 
     // Declared as internal var for unit tests purposes
     var environment: Environment
-    private var subscriptionId: String? {
-        _subscriptionId.value
-    }
     private var observedQueues: [Queue] {
         _observedQueues.value
     }
 
-    private var _subscriptionId: LockIsolated<String?> = .init(nil)
+    private var queueUpdatesTask: Task<Void, Never>?
+    private var monitoringRequestId = UUID()
     private var _observedQueues: LockIsolated<[Queue]> = .init([])
 
     init(environment: Environment) {
         self.environment = environment
+    }
+
+    deinit {
+        queueUpdatesTask?.cancel()
     }
 
     /// Fetches all available site's queues for given queues IDs.
@@ -34,21 +35,18 @@ final class QueuesMonitor {
     ///   - fetchedQueuesCompletion: Returns fetched queues result for given `queuesIds`
     ///   if no queues were found among site's queues returns default queues.
     ///
-    func fetchQueues(queuesIds: [String], completion: @escaping (Result<[Queue], Error>) -> Void) {
-        environment.getQueues { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case let .success(queues):
-                let observedQueues = evaluateQueues(queuesIds: queuesIds, fetchedQueues: queues)
-                state = .updated(observedQueues)
-                self._observedQueues.setValue(observedQueues)
-                completion(.success(observedQueues))
-            case let .failure(error):
-                environment.logger.error("Setting up queues. Failed to get site queues: \(error)")
-                self.state = .failed(error)
-                completion(.failure(error))
-                return
-            }
+    @MainActor
+    func fetchQueues(queuesIds: [String]) async throws -> [Queue] {
+        do {
+            let queues = try await environment.getQueues()
+            let observedQueues = evaluateQueues(queuesIds: queuesIds, fetchedQueues: queues)
+            state = .updated(observedQueues)
+            self._observedQueues.setValue(observedQueues)
+            return observedQueues
+        } catch {
+            environment.logger.error("Setting up queues. Failed to get site queues: \(error)")
+            self.state = .failed(error)
+            throw error
         }
     }
 
@@ -59,27 +57,25 @@ final class QueuesMonitor {
     ///   - fetchedQueuesCompletion: Returns fetched queues result for given `queuesIds`
     ///   if no queues were found among site's queues returns default queues.
     ///
-    func fetchAndMonitorQueues(
-        queuesIds: [String] = [],
-        fetchedQueuesCompletion: ((Result<[Queue], Error>) -> Void)? = nil
-    ) {
+    @MainActor
+    func fetchAndMonitorQueues(queuesIds: [String] = []) async throws -> [Queue] {
         stopMonitoring()
-
-        fetchQueues(queuesIds: queuesIds) { [weak self] result in
-            if case let .success(queues) = result {
-                self?.observeQueuesUpdates(queues)
-            }
-            fetchedQueuesCompletion?(result)
+        let requestId = UUID()
+        monitoringRequestId = requestId
+        let queues = try await fetchQueues(queuesIds: queuesIds)
+        // A newer monitoring request was made while queues were being fetched,
+        // so that request is responsible for observing updates.
+        if monitoringRequestId == requestId {
+            observeQueuesUpdates(queues)
         }
+        return queues
     }
 
     /// Stops monitoring queues.
+    @MainActor
     func stopMonitoring() {
-        if let subscriptionId {
-            environment.unsubscribeFromUpdates(subscriptionId) { [weak self] error in
-                self?.state = .failed(error)
-            }
-        }
+        queueUpdatesTask?.cancel()
+        queueUpdatesTask = nil
     }
 }
 
@@ -121,22 +117,37 @@ private extension QueuesMonitor {
         }
     }
 
+    @MainActor
     func observeQueuesUpdates(_ queues: [Queue]) {
+        stopMonitoring()
         let queuesIds = queues.map { $0.id }
-        let subscriptionId = environment.subscribeForQueuesUpdates(queuesIds) { [weak self] result in
-            guard let self else {
-                return
-            }
-            switch result {
-            case .success(let queue):
-                self.updateQueue(queue)
-                self.state = .updated(self.observedQueues)
-                return
-            case .failure(let error):
-                self.state = .failed(error)
-                return
+        let updates = environment.queueUpdatesStream(queuesIds)
+        queueUpdatesTask = Task { @MainActor [weak self] in
+            do {
+                for try await queue in updates {
+                    guard !Task.isCancelled else { return }
+                    guard let self else { return }
+                    self.updateQueue(queue)
+                    self.state = .updated(self.observedQueues)
+                }
+            } catch {
+                guard !Task.isCancelled, let self else { return }
+                self.handleQueueUpdatesFailure(error)
             }
         }
-        _subscriptionId.setValue(subscriptionId)
+    }
+
+    @MainActor
+    func handleQueueUpdatesFailure(_ error: Error) {
+        switch error {
+        case is CancellationError:
+            return
+        case let error as CoreSdkClient.GliaCoreError where error.error as? CoreSdkClient.GeneralError == .internalError:
+            // Core SDK fails the subscription with an internal error when the socket is not
+            // connected yet. Fetched queues stay valid, so this must not surface as a failure.
+            environment.logger.warning("Setting up queues. Queue updates are unavailable: \(error.reason)")
+        default:
+            state = .failed(error)
+        }
     }
 }

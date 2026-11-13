@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import XCTest
 @testable import GliaWidgets
 
@@ -115,7 +116,7 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video), 
+            startWith: .engagement(mediaType: .video),
             replaceExistingEnqueueing: false
         )
 
@@ -172,7 +173,7 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video), 
+            startWith: .engagement(mediaType: .video),
             replaceExistingEnqueueing: false
         )
 
@@ -257,7 +258,7 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video), 
+            startWith: .engagement(mediaType: .video),
             replaceExistingEnqueueing: false
         )
 
@@ -336,7 +337,7 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video), 
+            startWith: .engagement(mediaType: .video),
             replaceExistingEnqueueing: false
         )
 
@@ -376,7 +377,7 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video), 
+            startWith: .engagement(mediaType: .video),
             replaceExistingEnqueueing: false
         )
 
@@ -387,25 +388,25 @@ class CallViewModelTests: XCTestCase {
         XCTAssertEqual(call.kind.value, .audio)
     }
 
-    func test_startMethodDoesNotHandleInteractorStateEnded() {
+    func test_startMethodDoesNotHandleInteractorStateEnded() async {
         let interactor: Interactor = .mock()
         interactor.state = .ended(.byOperator)
         let call: Call = .mock()
         let viewModel: CallViewModel = .mock(interactor: interactor, call: call)
 
         XCTAssertEqual(call.state.value, .none)
-        viewModel.start()
+        await viewModel.start()
 
         XCTAssertEqual(call.state.value, .none)
     }
-    func test_viewModelStartDoesNotInitiateEnqueuingWithStartActionAsEngagement() {
+    func test_viewModelStartDoesNotInitiateEnqueuingWithStartActionAsEngagement() async {
         let viewModel: CallViewModel = .mock()
-        viewModel.start()
+        await viewModel.start()
 
         XCTAssertEqual(viewModel.interactor.state, .none)
     }
 
-    func test_liveObservationAlertPresentationInitiatedWhenInteractorStateIsEnqueuing() throws {
+    func test_liveObservationAlertPresentationInitiatedWhenInteractorStateIsEnqueuing() async throws {
         enum Call {
             case showLiveObservationAlert
         }
@@ -414,9 +415,7 @@ class CallViewModelTests: XCTestCase {
         let site: CoreSdkClient.Site = try .mock()
 
         var viewModelEnvironment: EngagementViewModel.Environment = .mock
-        viewModelEnvironment.fetchSiteConfigurations = { completion in
-            completion(.success(site))
-        }
+        viewModelEnvironment.fetchSiteConfigurations = { site }
         let viewModel: ChatViewModel = .mock(
             interactor: interactor,
             environment: viewModelEnvironment
@@ -430,23 +429,24 @@ class CallViewModelTests: XCTestCase {
             }
         }
         interactor.state = .enqueueing(.audioCall)
+
+        // Will be removed when async state observing is implemented
+        await waitUntil {
+            calls == [.showLiveObservationAlert]
+        }
         XCTAssertEqual(calls, [.showLiveObservationAlert])
     }
 
-    func test_liveObservationAllowTriggersEnqueue() throws {
+    func test_liveObservationAllowTriggersEnqueue() async throws {
         var interactorEnv: Interactor.Environment = .mock
-        interactorEnv.coreSdk.queueForEngagement = { _, _, completion in
-            completion(.success(.mock))
-        }
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in .mock }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
-        var alertConfig: LiveObservation.Confirmation?
+        var alertConfig: GliaWidgets.LiveObservation.Confirmation?
         let site: CoreSdkClient.Site = try .mock()
 
         var viewModelEnvironment: EngagementViewModel.Environment = .mock
-        viewModelEnvironment.fetchSiteConfigurations = { completion in
-            completion(.success(site))
-        }
+        viewModelEnvironment.fetchSiteConfigurations = { site }
         let viewModel: ChatViewModel = .mock(
             interactor: interactor,
             environment: viewModelEnvironment
@@ -463,29 +463,34 @@ class CallViewModelTests: XCTestCase {
                 XCTFail("Unexpected action \(action).")
             }
         }
+        await viewModel.start()
         interactor.state = .enqueueing(.audioCall)
-        alertConfig?.accepted()
+
+        // Will be removed when async state observing is implemented
+        await waitUntil {
+            alertConfig != nil
+        }
+        await alertConfig?.accepted()
         XCTAssertEqual(interactor.state, .enqueued(.mock, .audioCall))
     }
 
-    func test_liveObservationDeclineTriggersNone() throws {
+    func test_liveObservationDeclineTriggersNone() async throws {
         enum Call {
             case queueForEngagement
         }
         var calls: [Call] = []
         var interactorEnv: Interactor.Environment = .mock
-        interactorEnv.coreSdk.queueForEngagement = { _, _, _ in
+        interactorEnv.coreSdk.queueForEngagement = { _, _ in
             calls.append(.queueForEngagement)
+            return .mock
         }
 
         let interactor: Interactor = .mock(environment: interactorEnv)
-        var alertConfig: LiveObservation.Confirmation?
+        var alertConfig: GliaWidgets.LiveObservation.Confirmation?
         let site: CoreSdkClient.Site = try .mock()
 
         var viewModelEnvironment: EngagementViewModel.Environment = .mock
-        viewModelEnvironment.fetchSiteConfigurations = { completion in
-            completion(.success(site))
-        }
+        viewModelEnvironment.fetchSiteConfigurations = { site }
         let viewModel: ChatViewModel = .mock(
             interactor: interactor,
             environment: viewModelEnvironment
@@ -503,12 +508,18 @@ class CallViewModelTests: XCTestCase {
             }
         }
         interactor.state = .enqueueing(.audioCall)
-        alertConfig?.declined()
+
+        // Will be removed when async state observing is implemented
+        await waitUntil {
+            alertConfig != nil
+        }
+        await alertConfig?.declined()
+
         XCTAssertEqual(interactor.state, .ended(.byVisitor))
         XCTAssertTrue(calls.isEmpty)
     }
 
-    func test_proximityManagerStartsAndStops() {
+    func test_proximityManagerStartsAndStops() async {
         enum Call: Equatable { case isIdleTimerDisabled(Bool), isProximityMonitoringEnabled(Bool) }
         var calls: [Call] = []
         var env = CallViewModel.Environment.failing()
@@ -534,7 +545,7 @@ class CallViewModelTests: XCTestCase {
             replaceExistingEnqueueing: false
         )
 
-        viewModel?.event(.viewDidLoad)
+        await viewModel?.asyncEvent(.viewDidLoad)
 
         XCTAssertEqual(calls, [
             .isIdleTimerDisabled(true),
@@ -544,12 +555,18 @@ class CallViewModelTests: XCTestCase {
         viewModel?.interactorEvent(.stateChanged(.ended(.byVisitor)))
         viewModel = nil
 
-        XCTAssertEqual(calls, [
+        let expectedCalls: [Call] = [
             .isIdleTimerDisabled(true),
             .isProximityMonitoringEnabled(true),
             .isIdleTimerDisabled(false),
             .isProximityMonitoringEnabled(false)
-        ])
+        ]
+
+        await waitUntil {
+            calls == expectedCalls
+        }
+
+        XCTAssertEqual(calls, expectedCalls)
     }
 
     func test_showLocalVideAssignsOnHoldCallbackThatWeaklyCapturesVideoStream() {
@@ -574,7 +591,7 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .audio), 
+            startWith: .engagement(mediaType: .audio),
             replaceExistingEnqueueing: false
         )
 
@@ -636,7 +653,7 @@ class CallViewModelTests: XCTestCase {
             environment: .mock,
             call: call,
             unreadMessages: .init(with: 0),
-            startWith: .engagement(mediaType: .video), 
+            startWith: .engagement(mediaType: .video),
             replaceExistingEnqueueing: false
         )
 
@@ -750,7 +767,7 @@ class CallViewModelTests: XCTestCase {
         XCTAssertEqual(videoActionsCount, 0)
     }
 
-    func test_startShowsConnectedStateWhenCallStartedBeforeViewLoaded() {
+    func test_startShowsConnectedStateWhenCallStartedBeforeViewLoaded() async {
         var isConnectedShown = false
 
         call = .init(.video(direction: .twoWay), environment: .mock)
@@ -771,7 +788,7 @@ class CallViewModelTests: XCTestCase {
                 isConnectedShown = true
             }
         }
-        viewModel.start()
+        await viewModel.start()
 
         XCTAssertTrue(isConnectedShown)
     }
@@ -962,5 +979,45 @@ class CallViewModelTests: XCTestCase {
         XCTAssertEqual(receivedAccessibilitiesWithCallbacks[0]?.tapCallback, nil)
         XCTAssertEqual(receivedAccessibilitiesWithCallbacks[0]?.accessibility, nil)
         XCTAssertEqual(warnings, ["Unable to access camera device manager: 'cameraIsNotAccessibleOnStream'."])
+    }
+
+    @MainActor
+    func test_endSessionDoesNotFinishWhenEndingEngagementFails() async {
+        var interactorEnv = Interactor.Environment.mock
+        interactorEnv.coreSdk.endEngagement = {
+            throw CoreSdkClient.GliaCoreError.mock()
+        }
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.state = .engaged(.mock())
+        viewModel = .mock(interactor: interactor)
+        var isFinished = false
+        viewModel.engagementDelegate = { event in
+            if case .finished = event {
+                isFinished = true
+            }
+        }
+
+        await viewModel.endSession()
+
+        XCTAssertFalse(isFinished)
+    }
+
+    @MainActor
+    func test_endSessionFinishesWhenEndingEngagementSucceeds() async {
+        var interactorEnv = Interactor.Environment.mock
+        interactorEnv.coreSdk.endEngagement = { true }
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.state = .engaged(.mock())
+        viewModel = .mock(interactor: interactor)
+        var isFinished = false
+        viewModel.engagementDelegate = { event in
+            if case .finished = event {
+                isFinished = true
+            }
+        }
+
+        await viewModel.endSession()
+
+        XCTAssertTrue(isFinished)
     }
 }

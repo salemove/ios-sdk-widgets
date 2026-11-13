@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
 
 class FileUpload {
@@ -57,6 +58,7 @@ class FileUpload {
     lazy var uuid = environment.uuid()
 
     private let storage: DataStorage
+    private var uploadTask: Task<Void, Never>?
     var environment: Environment
 
     init(with localFile: LocalFile, storage: DataStorage, environment: Environment) {
@@ -65,7 +67,12 @@ class FileUpload {
         self.environment = environment
     }
 
+    deinit {
+        uploadTask?.cancel()
+    }
+
     func startUpload() {
+        uploadTask?.cancel()
         // TODO: - Move to CoreSDK???
         environment.openTelemetry.logger.i(.chatScreenFileUploading) { _ in
             // TODO: - file id does not exist until uploading is finished. Need to rewrite as on Android.
@@ -77,7 +84,7 @@ class FileUpload {
                 progress.value = $0.fractionCompleted
             }
         }
-        let onCompletion: (FileUploadResult) -> Void = { [weak self] result in
+        let onCompletion: @MainActor (FileUploadResult) async -> Void = { [weak self] result in
             guard let self else { return }
             switch result {
             case let .success(engagementFile):
@@ -86,7 +93,8 @@ class FileUpload {
                 self.environment.openTelemetry.logger.i(.chatScreenFileUploaded) {
                     $0[.fileId] = .string(engagementFile.id)
                 }
-                self.storage.store(from: self.localFile.url, for: storageID)
+                await self.storage.storeInBackground(from: self.localFile.url, for: storageID)
+                guard !Task.isCancelled else { return }
                 self.state.value = .uploaded(file: engagementFile)
             case let .failure(error):
                 if let err = error as? CoreSdkClient.SalemoveError {
@@ -98,14 +106,23 @@ class FileUpload {
         }
 
         state.value = .uploading(progress: progress)
-        environment.uploadFile.uploadFile(
-            file,
-            progress: onProgress,
-            completion: onCompletion
-        )
+        let uploadFile = environment.uploadFile
+        uploadTask = Task { @MainActor in
+            do {
+                let engagementFile = try await uploadFile.uploadFile(file, progress: onProgress)
+                guard !Task.isCancelled else { return }
+                await onCompletion(.success(engagementFile))
+            } catch is CancellationError {
+                return
+            } catch {
+                guard !Task.isCancelled else { return }
+                await onCompletion(.failure(error))
+            }
+        }
     }
 
     func removeLocalFile() {
+        uploadTask?.cancel()
         guard let id = engagementFileInformation?.id else { return }
         storage.removeData(for: id)
     }

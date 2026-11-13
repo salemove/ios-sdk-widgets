@@ -1,3 +1,4 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
 
 extension ChatCoordinator {
@@ -24,7 +25,6 @@ extension ChatCoordinator {
         var createFileUploadListModel: SecureConversations.FileUploadListViewModel.Create
         var queueIds: [String]
         var listQueues: CoreSdkClient.GetQueues
-        var messagesWithUnreadCountLoaderScheduler: CoreSdkClient.ReactiveSwift.DateScheduler
         var isAuthenticated: () -> Bool
         var interactor: Interactor
         var startSocketObservation: CoreSdkClient.StartSocketObservation
@@ -83,7 +83,6 @@ extension ChatCoordinator.Environment {
             createFileUploadListModel: environment.createFileUploadListModel,
             queueIds: interactor.queueIds ?? [],
             listQueues: environment.listQueues,
-            messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
             isAuthenticated: environment.isAuthenticated,
             interactor: interactor,
             startSocketObservation: environment.startSocketObservation,
@@ -131,7 +130,6 @@ extension ChatCoordinator.Environment {
             createFileUploadListModel: environment.createFileUploadListModel,
             queueIds: environment.queueIds,
             listQueues: environment.listQueues,
-            messagesWithUnreadCountLoaderScheduler: environment.messagesWithUnreadCountLoaderScheduler,
             isAuthenticated: environment.isAuthenticated,
             interactor: environment.interactor,
             startSocketObservation: environment.startSocketObservation,

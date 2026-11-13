@@ -1,5 +1,5 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
-import GliaCoreSDK
 
 public struct Queue: Equatable {
     /// Queue identifier
@@ -41,7 +41,7 @@ public struct Queue: Equatable {
     }
 }
 
-extension GliaCoreSDK.Queue {
+extension CoreSdkClient.CoreQueue {
     func asWidgetSDKQueue() -> Queue {
         .init(
             id: self.id,
@@ -53,3 +53,25 @@ extension GliaCoreSDK.Queue {
         )
     }
 }
+
+#if DEBUG
+extension Queue {
+    static func mock(
+        id: String = "",
+        name: String = "",
+        status: QueueStatus = .unknown(""),
+        isDefault: Bool = false,
+        media: [MediaType] = [],
+        lastUpdated: Date = Date()
+    ) -> Queue {
+        Queue(
+            id: id,
+            name: name,
+            status: status,
+            media: media,
+            isDefault: isDefault,
+            lastUpdated: lastUpdated
+        )
+    }
+}
+#endif

@@ -1,4 +1,5 @@
 @testable import AccessibilitySnapshot
+import AccessibilitySnapshotCore
 @testable import GliaWidgets
 import SnapshotTesting
 import XCTest

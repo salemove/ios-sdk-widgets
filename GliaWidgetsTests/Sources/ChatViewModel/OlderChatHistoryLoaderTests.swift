@@ -1,10 +1,8 @@
 @testable import GliaWidgets
-@_spi(GliaWidgets) import GliaCoreSDK
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import XCTest
 
 final class OlderChatHistoryLoaderTests: XCTestCase {
-    private typealias Completion = (Result<CoreSdkClient.ChatHistoryPage, CoreSdkClient.GliaCoreError>) -> Void
-
     private let page2 = CoreSdkClient.OlderChatHistoryPage(url: "/api/v2/interactions/participants?p=2")
     private let page3 = CoreSdkClient.OlderChatHistoryPage(url: "/api/v2/interactions/participants?p=3")
 
@@ -19,97 +17,120 @@ final class OlderChatHistoryLoaderTests: XCTestCase {
         XCTAssertFalse(loader.canLoad)
     }
 
-    func test_loadWithoutKeyDoesNotFetch() {
+    @MainActor
+    func test_loadWithoutKeyDoesNotFetch() async {
         let loader = makeLoader()
-        var completions = 0
 
-        loader.load { _ in completions += 1 }
+        let outcome = await loader.load()
 
-        XCTAssertEqual(completions, 0)
+        XCTAssertNil(outcome)
     }
 
-    func test_loadPassesStoredKeyAndStoresNextOne() {
+    @MainActor
+    func test_loadPassesStoredKeyAndStoresNextOne() async {
         var requestedKeys: [CoreSdkClient.OlderChatHistoryPage] = []
         let page3 = page3
-        let loader = makeLoader(fetchOlderChatHistory: { key, completion in
+        let loader = makeLoader(fetchOlderChatHistory: { key in
             requestedKeys.append(key)
-            completion(.success(.init(messages: [.mock(id: "msg-1")], olderPage: requestedKeys.count == 1 ? page3 : nil)))
+            return .init(messages: [.mock(id: "msg-1")], olderPage: requestedKeys.count == 1 ? page3 : nil)
         })
         loader.replaceOlderPage(page2)
-        var results: [[ChatMessage]?] = []
 
-        loader.load { results.append($0) }
+        let first = await loader.load()
         XCTAssertEqual(loader.olderPage, page3)
-        loader.load { results.append($0) }
+        let second = await loader.load()
 
         XCTAssertEqual(requestedKeys, [page2, page3])
         XCTAssertNil(loader.olderPage)
         XCTAssertFalse(loader.canLoad)
-        XCTAssertEqual(results.map { $0?.map(\.id) }, [["msg-1"], ["msg-1"]])
+        XCTAssertEqual(loadedIds(first), ["msg-1"])
+        XCTAssertEqual(loadedIds(second), ["msg-1"])
     }
 
-    func test_loadKeepsOneRequestInFlight() {
-        var pendingCompletions: [Completion] = []
-        let loader = makeLoader(fetchOlderChatHistory: { _, completion in pendingCompletions.append(completion) })
+    @MainActor
+    func test_loadKeepsOneRequestInFlight() async {
+        let gate = SecureConversationsTranscriptModelTests.OlderPageGate()
+        var fetchCount = 0
+        let loader = makeLoader(fetchOlderChatHistory: { _ in
+            fetchCount += 1
+            return await gate.wait()
+        })
         loader.replaceOlderPage(page2)
-        var results: [[ChatMessage]?] = []
 
-        loader.load { results.append($0) }
+        let firstLoad = Task { await loader.load() }
+        await waitUntil { gate.isWaiting }
         XCTAssertTrue(loader.isLoading)
         XCTAssertFalse(loader.canStartLoading)
-        loader.load { results.append($0) }
-        XCTAssertEqual(pendingCompletions.count, 1)
+        let second = await loader.load()
+        XCTAssertNil(second)
+        XCTAssertEqual(fetchCount, 1)
 
-        pendingCompletions.first?(.success(.init(messages: [.mock(id: "msg-1")])))
+        gate.open(with: .init(messages: [.mock(id: "msg-1")]))
+        let first = await firstLoad.value
 
         XCTAssertFalse(loader.isLoading)
-        XCTAssertEqual(results.map { $0?.map(\.id) }, [["msg-1"]])
+        XCTAssertEqual(loadedIds(first), ["msg-1"])
     }
 
-    func test_loadFailureKeepsKeyCompletesWithNilAndLogsWarning() {
+    @MainActor
+    func test_loadFailureKeepsKeyReportsFailureAndLogsWarning() async {
         var logger = CoreSdkClient.Logger.mock
         var warnings = 0
         logger.warningClosure = { _, _, _, _ in warnings += 1 }
         var requestedKeys: [CoreSdkClient.OlderChatHistoryPage] = []
         let loader = makeLoader(
-            fetchOlderChatHistory: { key, completion in
+            fetchOlderChatHistory: { key in
                 requestedKeys.append(key)
-                completion(.failure(CoreSdkClient.GliaCoreError(reason: "offline")))
+                throw CoreSdkClient.GliaCoreError(reason: "offline")
             },
             log: logger
         )
         loader.replaceOlderPage(page2)
-        var results: [[ChatMessage]?] = []
 
-        loader.load { results.append($0) }
-        loader.load { results.append($0) }
+        let first = await loader.load()
+        let second = await loader.load()
 
-        XCTAssertEqual(results.count, 2)
-        XCTAssertNil(results.first ?? [])
+        XCTAssertTrue(isFailed(first))
+        XCTAssertTrue(isFailed(second))
         XCTAssertEqual(warnings, 2)
         XCTAssertFalse(loader.isLoading)
         XCTAssertEqual(loader.olderPage, page2)
         XCTAssertEqual(requestedKeys, [page2, page2])
     }
 
-    func test_replaceOlderPageDuringLoadDropsResultAndKeepsNewKey() {
-        var pendingCompletions: [Completion] = []
-        let loader = makeLoader(fetchOlderChatHistory: { _, completion in pendingCompletions.append(completion) })
+    @MainActor
+    func test_replaceOlderPageDuringLoadDropsResultAndKeepsNewKey() async {
+        let gate = SecureConversationsTranscriptModelTests.OlderPageGate()
+        let loader = makeLoader(fetchOlderChatHistory: { _ in await gate.wait() })
         loader.replaceOlderPage(page2)
-        var completions = 0
 
-        loader.load { _ in completions += 1 }
+        let load = Task { await loader.load() }
+        await waitUntil { gate.isWaiting }
         loader.replaceOlderPage(page3)
-        pendingCompletions.first?(.success(.init(messages: [.mock(id: "msg-1")], olderPage: nil)))
+        gate.open(with: .init(messages: [.mock(id: "msg-1")], olderPage: nil))
+        let outcome = await load.value
 
-        XCTAssertEqual(completions, 0)
+        guard case .superseded = outcome else {
+            return XCTFail("Expected the in-flight result to be dropped, got \(String(describing: outcome))")
+        }
         XCTAssertEqual(loader.olderPage, page3)
         XCTAssertFalse(loader.isLoading)
     }
 
+    private func loadedIds(_ outcome: OlderChatHistoryLoader.LoadOutcome?) -> [String]? {
+        guard case let .loaded(messages) = outcome else { return nil }
+        return messages.map(\.id)
+    }
+
+    private func isFailed(_ outcome: OlderChatHistoryLoader.LoadOutcome?) -> Bool {
+        guard case .failed = outcome else { return false }
+        return true
+    }
+
     private func makeLoader(
-        fetchOlderChatHistory: @escaping CoreSdkClient.FetchOlderChatHistory = { _, _ in
+        fetchOlderChatHistory: @escaping CoreSdkClient.FetchOlderChatHistory = { _ in
             XCTFail("Unexpected fetchOlderChatHistory")
+            return .init(messages: [])
         },
         log: CoreSdkClient.Logger = .mock
     ) -> OlderChatHistoryLoader {

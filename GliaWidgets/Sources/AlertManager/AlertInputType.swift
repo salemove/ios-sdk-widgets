@@ -1,21 +1,22 @@
+@_spi(GliaWidgets) internal import GliaCoreSDK
 import Foundation
 
 enum AlertInputType: Equatable {
     case error(
         error: (any Error)?,
-        dismissed: (() -> Void)? = nil
+        dismissed: (@MainActor () async -> Void)? = nil
     )
     case cameraSettings(dismissed: (() -> Void)? = nil)
-    case endEngagement(confirmed: () -> Void)
-    case leaveQueue(confirmed: () -> Void)
+    case endEngagement(confirmed: @MainActor () async -> Void)
+    case leaveQueue(confirmed: @MainActor () async -> Void)
     case liveObservationConfirmation(
         link: (WebViewController.Link) -> Void,
-        accepted: () -> Void,
-        declined: () -> Void
+        accepted: @MainActor () async -> Void,
+        declined: @MainActor () async -> Void
     )
     case mediaSourceNotAvailable(dismissed: (() -> Void)? = nil)
     case microphoneSettings(dismissed: (() -> Void)? = nil)
-    case operatorEndedEngagement(action: () -> Void)
+    case operatorEndedEngagement(action: @MainActor () async -> Void)
     case unsupportedGvaBroadcastError(dismissed: (() -> Void)? = nil)
     case unavailableMessageCenter(dismissed: (() -> Void)? = nil)
     case unavailableMessageCenterForBeingUnauthenticated(dismissed: (() -> Void)? = nil)

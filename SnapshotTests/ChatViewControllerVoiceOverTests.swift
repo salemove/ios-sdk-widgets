@@ -4,24 +4,28 @@ import SnapshotTesting
 import XCTest
 
 final class ChatViewControllerVoiceOverTests: SnapshotTestCase {
-    func test_messagesFromHistory() {
-        let viewController = ChatViewController.mockHistoryMessagesScreen()
+    @MainActor
+    func test_messagesFromHistory() async {
+        let viewController = await ChatViewController.mockHistoryMessagesScreen()
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 
-    func test_visitorUploadedFileStates() throws {
-        let viewController = try ChatViewController.mockVisitorFileUploadStates()
+    @MainActor
+    func test_visitorUploadedFileStates() async throws {
+        let viewController = try await ChatViewController.mockVisitorFileUploadStates()
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 
-    func test_choiceCard() throws {
-        let viewController = try ChatViewController.mockChoiceCard()
+    @MainActor
+    func test_choiceCard() async throws {
+        let viewController = try await ChatViewController.mockChoiceCard()
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 
-    func test_visitorFileDownloadStates() throws {
+    @MainActor
+    func test_visitorFileDownloadStates() async throws {
         var chatMessages: [ChatMessage] = []
-        let viewController = try ChatViewController.mockVisitorFileDownloadStates { messages in
+        let viewController = try await ChatViewController.mockVisitorFileDownloadStates { messages in
             chatMessages = messages
         }
         viewController.view.frame = UIScreen.main.bounds
@@ -35,18 +39,21 @@ final class ChatViewControllerVoiceOverTests: SnapshotTestCase {
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 
-    func test_gvaPersistentButton() throws {
-        let viewController = try ChatViewController.mockGvaPersistentButton()
+    @MainActor
+    func test_gvaPersistentButton() async throws {
+        let viewController = try await ChatViewController.mockGvaPersistentButton()
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 
-    func test_gvaResponseText() throws {
-        let viewController = try ChatViewController.mockGvaResponseText()
+    @MainActor
+    func test_gvaResponseText() async throws {
+        let viewController = try await ChatViewController.mockGvaResponseText()
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 
-    func test_gvaGalleryCard() throws {
-        let viewController = try ChatViewController.mockGvaGalleryCards()
+    @MainActor
+    func test_gvaGalleryCard() async throws {
+        let viewController = try await ChatViewController.mockGvaGalleryCards()
         viewController.assertSnapshot(as: .accessibilityImage)
     }
 
