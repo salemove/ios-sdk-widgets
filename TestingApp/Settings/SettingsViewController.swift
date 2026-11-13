@@ -9,9 +9,6 @@ private struct Section {
 final class SettingsViewController: UIViewController {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private var sections = [Section]()
-    private var authMethodCell: SettingsSegmentedControlCell!
-    private var siteApiKeyIdCell: SettingsTextCell!
-    private var siteApiKeySecretCell: SettingsTextCell!
     private var siteCell: SettingsTextCell!
     private var queueIDCell: SettingsTextCell!
     private var environmentCell: EnvironmentSettingsTextCell!
@@ -81,11 +78,6 @@ final class SettingsViewController: UIViewController {
     }
 
     @objc
-    func authMethodDidChange(sender: UISegmentedControl) {
-        // No action needed - just track the selection
-    }
-
-    @objc
     private func doneTapped() {
         updateConfiguration()
         props.changeTheme(makeTheme())
@@ -97,38 +89,6 @@ final class SettingsViewController: UIViewController {
 private extension SettingsViewController {
     // swiftlint:disable function_body_length
     private func createCells() {
-        let initialAuthMethodIndex: Int
-        switch props.config.authorizationMethod {
-        case .siteApiKey:
-            initialAuthMethodIndex = 0
-        case .userApiKey:
-            initialAuthMethodIndex = 1
-        }
-
-        authMethodCell = SettingsSegmentedControlCell(
-            title: "Auth Method:",
-            segments: ["Site API Key", "User API Key"],
-            selectedIndex: initialAuthMethodIndex
-        )
-        authMethodCell.segmentedControl.addTarget(
-            self,
-            action: #selector(authMethodDidChange),
-            for: .valueChanged
-        )
-        authMethodCell.segmentedControl.accessibilityIdentifier = "settings_authMethod_segmentedControl"
-
-        siteApiKeyIdCell = SettingsTextCell(
-            title: "Identifier:",
-            text: props.config.siteApiKeyId,
-            isRequired: true
-        )
-        siteApiKeyIdCell.textField.accessibilityIdentifier = "settings_siteApiKeyId_textfield"
-        siteApiKeySecretCell = SettingsTextCell(
-            title: "Secret:",
-            text: props.config.siteApiKeySecret,
-            isRequired: true
-        )
-        siteApiKeySecretCell.textField.accessibilityIdentifier = "settings_siteApiKeySecret_textfield"
         siteCell = SettingsTextCell(
             title: "Site:",
             text: props.config.site,
@@ -302,11 +262,8 @@ private extension SettingsViewController {
 
     private func updateConfigurationSection() {
         let cells: [SettingsCell] = [
-            authMethodCell,
             environmentCell,
             siteCell,
-            siteApiKeyIdCell,
-            siteApiKeySecretCell,
             queueIDCell,
             visitorContextAssedIdCell,
             manualLocaleOverrideCell,
@@ -328,7 +285,6 @@ private extension SettingsViewController {
 
         props.changeConfig(
             Configuration(
-                authorizationMethod: selectedAuthorizationMethod,
                 environment: environmentCell.environment,
                 site: siteCell.textField.text ?? "",
                 visitorContext: uuid.map { Configuration.VisitorContext(assetId: $0) },
@@ -343,20 +299,6 @@ private extension SettingsViewController {
         }
         props.changeFeatures(features)
         props.changeQueueId(queueIDCell.textField.text ?? "")
-    }
-
-    private var selectedAuthorizationMethod: Configuration.AuthorizationMethod {
-        let id = siteApiKeyIdCell.textField.text ?? ""
-        let secret = siteApiKeySecretCell.textField.text ?? ""
-
-        switch authMethodCell.segmentedControl.selectedSegmentIndex {
-        case 0:
-            return .siteApiKey(id: id, secret: secret)
-        case 1:
-            return .userApiKey(id: id, secret: secret)
-        default:
-            return .siteApiKey(id: id, secret: secret)
-        }
     }
 
     private func makeTheme() -> Theme {
@@ -410,20 +352,3 @@ extension SettingsViewController: UITableViewDataSource {
 }
 
 extension SettingsViewController: UITableViewDelegate {}
-
-private extension Configuration {
-
-    var siteApiKeyId: String {
-        switch authorizationMethod {
-        case .siteApiKey(let id, _), .userApiKey(let id, _):
-            return id
-        }
-    }
-
-    var siteApiKeySecret: String {
-        switch authorizationMethod {
-        case .siteApiKey(_, let secret), .userApiKey(_, let secret):
-            return secret
-        }
-    }
-}

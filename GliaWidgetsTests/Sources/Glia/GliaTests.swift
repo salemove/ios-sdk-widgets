@@ -1044,3 +1044,42 @@ final class GliaTests: XCTestCase {
         XCTAssertEqual(messages, ["Show Push Notifications Intermediate Dialog"])
     }
 }
+
+extension GliaTests {
+    @MainActor
+    func testConfigureLogsOnlyEnvironmentAndLocale() async throws {
+        var configuringAttributes: Set<OtelAttributes>?
+        let originalOpenTelemetry = DependencyContainer.current.widgets.openTelemetry
+        defer { DependencyContainer.current.widgets.openTelemetry = originalOpenTelemetry }
+        DependencyContainer.current.widgets.openTelemetry = .mock(
+            configuration: .init(domain: ""),
+            logger: .mock(i: { event, _, attributesBuilder in
+                guard event == .widgetsSdkConfiguring else { return }
+                var attributes: [OtelAttributes: OtelAttributeValue] = [:]
+                attributesBuilder?(&attributes)
+                configuringAttributes = Set(attributes.keys)
+            })
+        )
+        let sdk = Glia(environment: .mock)
+
+        try await sdk.configure(with: .mock(), theme: .mock())
+
+        XCTAssertEqual(configuringAttributes, [.environment, .localeCode])
+    }
+
+    @MainActor
+    func testConfigureMapsSiteSettingsFailureToInternalError() async {
+        var environment = Glia.Environment.mock
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in
+            throw CoreSdkClient.ConfigurationProcessError.siteSettingsRetrieval
+        }
+        let sdk = Glia(environment: environment)
+
+        do {
+            try await sdk.configure(with: .mock(), theme: .mock())
+            XCTFail("Configuration must fail when Core cannot load site settings")
+        } catch {
+            XCTAssertEqual(error as? GliaError, .internalError)
+        }
+    }
+}
