@@ -188,6 +188,22 @@ workflows:
     - recreate-user-schemes@1:
         inputs:
         - project_path: $BITRISE_PROJECT_PATH
+    - script@1:
+        title: Resolve Swift packages
+        timeout: 900
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            set -eo pipefail
+            # Resolved here, unformatted and with a time limit, so that a stalled
+            # resolution fails this step with its output instead of hanging the
+            # test step silently. Fetches with the system git rather than
+            # Xcode's own source control client.
+            xcodebuild -version
+            xcodebuild -resolvePackageDependencies \
+              -workspace "$BITRISE_PROJECT_PATH" \
+              -scheme "$TEST_SCHEME" \
+              -scmProvider system
     - xcode-test@6:
         inputs:
         - scheme: $TEST_SCHEME
