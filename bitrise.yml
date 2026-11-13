@@ -197,13 +197,42 @@ workflows:
             set -eo pipefail
             # Resolved here, unformatted and with a time limit, so that a stalled
             # resolution fails this step with its output instead of hanging the
-            # test step silently. Fetches with the system git rather than
-            # Xcode's own source control client.
+            # test step silently.
             xcodebuild -version
+
+            # git saves the token used to clone the snapshots in the keychain.
+            # Xcode looks up github.com credentials before it downloads binary
+            # targets, and reading an item that another tool saved makes macOS
+            # ask for permission in a dialog nobody can answer here.
+            removed=0
+            while security delete-internet-password -s github.com > /dev/null 2>&1; do
+              removed=$((removed + 1))
+            done
+            echo "Removed $removed github.com keychain item(s)"
+
             xcodebuild -resolvePackageDependencies \
               -workspace "$BITRISE_PROJECT_PATH" \
               -scheme "$TEST_SCHEME" \
-              -scmProvider system
+              -scmProvider system &
+            resolve_pid=$!
+
+            # Shows what xcodebuild is waiting on if it has not finished in time.
+            (
+              sleep 240
+              kill -0 "$resolve_pid" 2> /dev/null || exit 0
+              echo "Still resolving after 4 minutes. Permission dialogs on screen:"
+              pgrep -lf SecurityAgent || echo "none"
+              echo "Where xcodebuild is waiting:"
+              sample "$resolve_pid" 2 2>&1 \
+                | grep -E 'Thread_|Sec[A-Z]|Keychain|URLSession|CFNetwork|SwiftPM|PackageGraph|Artifact|Basics|semaphore|mach_msg' \
+                | head -80
+            ) &
+            watch_pid=$!
+
+            status=0
+            wait "$resolve_pid" || status=$?
+            kill "$watch_pid" 2> /dev/null || true
+            exit "$status"
     - xcode-test@6:
         inputs:
         - scheme: $TEST_SCHEME
