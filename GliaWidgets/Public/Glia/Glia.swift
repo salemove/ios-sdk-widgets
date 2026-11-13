@@ -641,6 +641,15 @@ extension Glia {
             }
         }
         let failure = ConfigurationFailure(error)
+        if error is CoreSdkClient.ConfigurationError {
+            // Thrown before Core is configured, so the remote logger has no endpoint yet
+            // and OTel is the only channel that can carry it. These are integrator input
+            // errors, hence warning.
+            environment.openTelemetry.logger.w(
+                .widgetsSdkConfigured,
+                message: failure.logMessage
+            )
+        }
         switch failure.level {
         case .warning:
             loggerPhase.logger.warning(failure.logMessage)
