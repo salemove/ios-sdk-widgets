@@ -7,7 +7,7 @@ extension CoreSdkClient {
             pushNotifications: .live,
             liveObservation: .live,
             secureConversations: .live,
-            clearSession: core.clearSessionForWidgets,
+            clearSession: core.clearSessionForWidgets(stopPushNotifications:),
             localeProvider: .init(getRemoteString: core.localeProvider.getRemoteStringForWidgets(_:)),
             configureWithConfiguration: core.configureForWidgets(with:),
             getVisitorInfo: {

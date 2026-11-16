@@ -90,13 +90,12 @@ final class GliaTests: XCTestCase {
     func testCallbackAPIsCompleteOnMainThread() async {
         let sdk = Glia(environment: .mock)
         let completed = expectation(description: "Callback APIs completed")
-        completed.expectedFulfillmentCount = 5
+        completed.expectedFulfillmentCount = 4
         let recordCompletion = {
             XCTAssertTrue(Thread.isMainThread)
             completed.fulfill()
         }
 
-        sdk.clearVisitorSession { _ in recordCompletion() }
         sdk.getVisitorInfo { _ in recordCompletion() }
         sdk.updateVisitorInfo(.init()) { _ in recordCompletion() }
         sdk.endEngagement { _ in recordCompletion() }
@@ -484,35 +483,6 @@ final class GliaTests: XCTestCase {
             features: .all
         )
         XCTAssertEqual(sdk.features, .all)
-    }
-
-    func testClearVisitorSessionThrowsErrorDuringActiveEngagement() async throws {
-        var environment = Glia.Environment.failing
-        var logger = CoreSdkClient.Logger.failing
-        logger.configureLocalLogLevelClosure = { _ in }
-        logger.configureRemoteLogLevelClosure = { _ in }
-        logger.infoClosure = { _, _, _, _ in }
-        logger.prefixedClosure = { _ in logger }
-        environment.coreSdk.createLogger = { _ in logger }
-        environment.coreSdk.getCurrentEngagement = { .mock() }
-        environment.print = .mock
-        environment.conditionalCompilation.isDebug = { false }
-        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = { AsyncThrowingStream { $0.finish() } }
-        let sdk = Glia(environment: environment)
-
-        var resultingError: Error?
-        let completed = expectation(description: "Clear visitor session completed")
-        sdk.clearVisitorSession { result in
-            defer { completed.fulfill() }
-            guard case let .failure(error) = result else {
-                fail("`clearVisitorSession` should fail when ongoing engegament exists.")
-                return
-            }
-            resultingError = error
-        }
-
-        await fulfillment(of: [completed], timeout: 1)
-        XCTAssertEqual(resultingError as? GliaError, GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed)
     }
 
     func test_minimize() {

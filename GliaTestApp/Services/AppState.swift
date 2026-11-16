@@ -163,16 +163,8 @@ final class AppState: ObservableObject {
         try await Glia.sharedInstance.endEngagement()
     }
 
-    func clearSession(completion: @escaping (Result<Void, Error>) -> Void) {
-        Glia.sharedInstance.clearVisitorSession { result in
-            DispatchQueue.main.async {
-                completion(result)
-            }
-        }
-    }
-
-    func clearSession() async throws {
-        try await Glia.sharedInstance.clearVisitorSession()
+    func clearSession() {
+        Glia.sharedInstance.clearVisitorData()
     }
 
     func saveConfiguration() {

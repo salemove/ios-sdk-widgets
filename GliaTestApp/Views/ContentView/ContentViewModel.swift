@@ -451,31 +451,10 @@ extension ContentView.ViewModel {
     }
 
     func clearSession() {
-        guard appState.sdkFlowMode == .completionHandlers else {
-            Task { [weak self] in
-                guard let self else { return }
-                do {
-                    try await appState.clearSession()
-                } catch {
-                    showError = AlertData(
-                        title: "Clear Session Failed",
-                        message: error.localizedDescription
-                    )
-                }
-            }
-            return
-        }
-
-        appState.clearSession { [weak self] result in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                if case .failure(let error) = result {
-                    self.showError = AlertData(
-                        title: "Clear Session Failed",
-                        message: error.localizedDescription
-                    )
-                }
-            }
+        appState.clearSession()
+        isAuthenticated = authentication?.isAuthenticated ?? false
+        if !isAuthenticated {
+            authentication = nil
         }
     }
 
