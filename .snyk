@@ -1,0 +1,36 @@
+# Snyk (https://snyk.io) policy file
+# Ruby-licensed transitive dependencies of the build tooling (fastlane, cocoapods, jazzy).
+# These gems are not shipped in the SDK. Revisit when the ignores expire.
+version: v1.25.0
+ignore:
+  snyk:lic:rubygems:highline:Ruby:
+    - '*':
+        reason: Transitive dependency of build tooling (fastlane); no supported fix available
+        expires: 2026-12-16T00:00:00.000Z
+        created: 2026-11-16T00:00:00.000Z
+  snyk:lic:rubygems:httpclient:Ruby:
+    - '*':
+        reason: Transitive dependency of build tooling (fastlane, cocoapods, jazzy); no supported fix available
+        expires: 2026-12-16T00:00:00.000Z
+        created: 2026-11-16T00:00:00.000Z
+  snyk:lic:rubygems:json:Ruby:
+    - '*':
+        reason: Transitive dependency of build tooling (fastlane, cocoapods, jazzy); no supported fix available
+        expires: 2026-12-16T00:00:00.000Z
+        created: 2026-11-16T00:00:00.000Z
+  snyk:lic:rubygems:rdoc:Ruby:
+    - '*':
+        reason: Documentation tooling dependency; rdoc 8.x is GPL-2.0-only, so no acceptable upgrade exists
+        expires: 2026-12-16T00:00:00.000Z
+        created: 2026-11-16T00:00:00.000Z
+  snyk:lic:rubygems:reline:Ruby:
+    - '*':
+        reason: Transitive dependency of build tooling (fastlane); no supported fix available
+        expires: 2026-12-16T00:00:00.000Z
+        created: 2026-11-16T00:00:00.000Z
+  snyk:lic:rubygems:open4:Ruby:
+    - '*':
+        reason: Transitive dependency of build tooling (jazzy); no supported fix available
+        expires: 2026-12-16T00:00:00.000Z
+        created: 2026-11-16T00:00:00.000Z
+patch: {}
