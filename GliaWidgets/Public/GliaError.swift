@@ -15,9 +15,6 @@ public enum GliaError: Error {
     /// Configuring during engagement is not allowed.
     case configuringDuringEngagementIsNotAllowed
 
-    /// Clearing visitor session during engagement is not allowed.
-    case clearingVisitorSessionDuringEngagementIsNotAllowed
-
     /// Starting engagement with no queue ids is not allowed.
     @available(*, deprecated, message: "Starting engagement with no queue ids is allowed")
     case startingEngagementWithNoQueueIdsIsNotAllowed

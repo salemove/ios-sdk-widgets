@@ -403,23 +403,37 @@ public class Glia {
         self.messageRenderer = messageRenderer
     }
 
-    /// Clear visitor session
+    /// Clears everything the SDK knows about the current visitor and starts over with a new anonymous one.
     ///
-    /// - Parameters:
-    ///   - completion: Completion handler.
+    /// Leaves the queue or ends the ongoing engagement and closes its UI without a survey,
+    /// de-authenticates the visitor, unsubscribes them from Secure Conversations push
+    /// notifications and clears the visitor session.
     ///
-    /// - Important: Note, that in case of ongoing engagement, `clearVisitorSession` must be called
-    ///   after ending engagement, because `GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed`
-    ///   will occur otherwise.
-    ///
-    public func clearVisitorSession(_ completion: @escaping (Result<Void, Error>) -> Void) {
-        Task { @MainActor in
-            do {
-                try await clearVisitorSession()
-                completion(.success(()))
-            } catch {
-                completion(.failure(error))
-            }
+    /// The visitor is forgotten locally before the method returns, whatever the network state.
+    /// Leaving the queue, ending the engagement and the push notification unsubscribe are then
+    /// sent to the backend on a best-effort basis: leaving the queue and ending the engagement
+    /// are retried once after a network failure, and failures are only logged.
+    @MainActor
+    public func clearVisitorData() {
+        environment.openTelemetry.logger.logMethodUse(
+            sdkType: .widgetsSdk,
+            className: Self.self,
+            methodName: "clearVisitorData",
+            methodParams: []
+        )
+        loggerPhase.logger.prefixed(Self.self).info("Clear visitor data")
+
+        let ongoingEngagement = environment.coreSdk.getNonTransferredSecureConversationEngagement()
+        let hadOngoingInteraction = ongoingEngagement != nil || interactor?.state.isQueueing == true
+        let endedCallVisualizerEngagement = ongoingEngagement.map { $0.source == .callVisualizer } ?? false
+
+        // Core must drop the engagement first: closing the UI while Core still holds it
+        // restores the engagement as a bubble.
+        environment.coreSdk.clearSession(true)
+        closeEngagementUI(endedCallVisualizerEngagement: endedCallVisualizerEngagement)
+        // Call Visualizer reports `.ended` itself when its session ends.
+        if hadOngoingInteraction, !endedCallVisualizerEngagement {
+            onEvent?(.ended)
         }
     }
 
@@ -731,29 +745,6 @@ public extension Glia {
             uiConfig: uiConfig,
             features: features
         )
-    }
-
-    /// Clears the current visitor session.
-    ///
-    /// - Important: If an engagement is ongoing, end the engagement before
-    ///   calling this method. Otherwise
-    ///   `GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed` is
-    ///   thrown.
-    /// - Throws: `GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed`
-    ///   when a non-transferred secure conversation is active.
-    @MainActor
-    func clearVisitorSession() async throws {
-        environment.openTelemetry.logger.logMethodUse(
-            sdkType: .widgetsSdk,
-            className: Self.self,
-            methodName: "clearVisitorSession",
-            methodParams: []
-        )
-        loggerPhase.logger.prefixed(Self.self).info("Clear visitor session")
-        guard environment.coreSdk.getNonTransferredSecureConversationEngagement() == nil else {
-            throw GliaError.clearingVisitorSessionDuringEngagementIsNotAllowed
-        }
-        environment.coreSdk.clearSession()
     }
 
     /// Fetches the current visitor's information.
