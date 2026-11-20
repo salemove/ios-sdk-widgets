@@ -132,6 +132,10 @@ extension CoreSdkClient.SecureConversations {
         pendingSecureConversationStatusStream: {
             fail("\(Self.self).pendingSecureConversationStatusStream")
             return AsyncThrowingStream { $0.finish() }
+        },
+        fileUploadAvailabilityStream: {
+            fail("\(Self.self).fileUploadAvailabilityStream")
+            return AsyncThrowingStream { $0.finish() }
         }
     )
 }

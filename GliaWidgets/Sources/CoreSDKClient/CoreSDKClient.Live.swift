@@ -140,7 +140,8 @@ extension CoreSdkClient.SecureConversations {
             return .init(data: fileData.data)
         },
         unreadMessageCountStream: core.secureConversations.unreadMessageCountStreamForWidgets,
-        pendingSecureConversationStatusStream: core.secureConversations.pendingSecureConversationStatusStreamForWidgets
+        pendingSecureConversationStatusStream: core.secureConversations.pendingSecureConversationStatusStreamForWidgets,
+        fileUploadAvailabilityStream: core.secureConversations.fileUploadAvailabilityStreamForWidgets
     )
 }
 
