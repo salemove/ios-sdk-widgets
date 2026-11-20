@@ -12,6 +12,11 @@
 # Package.swift itself would not work: SwiftPM caches a manifest's evaluation by
 # its contents, and keeps serving the old result after the flag flips.
 #
+# `enable` also adds GliaCore to the Embed Frameworks phase of TestingApp and
+# GliaTestApp in project.pbxproj, which `disable` removes again: a dynamic
+# package product built from sources is embedded only when the app lists it.
+# Do not commit project.pbxproj while local Core is on.
+#
 # After switching, re-resolve packages in Xcode
 # (File > Packages > Resolve Package Versions) and clean the build folder.
 
@@ -21,12 +26,18 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(dirname "$SCRIPT_DIR")"
 # Must be newer than the swift-tools-version of Package.swift to be preferred.
 LOCAL_MANIFEST="$REPO_ROOT/WidgetsDependencies/Package@swift-5.10.swift"
+PROJECT="$REPO_ROOT/GliaWidgets.xcodeproj/project.pbxproj"
+EMBED="$SCRIPT_DIR/local_core_embed.rb"
 
 status() {
+  local embedded
+  embedded="$("$EMBED" state "$PROJECT")"
   if [[ -f "$LOCAL_MANIFEST" ]]; then
     echo "[on]  GliaCoreSDK is built from $(sed -n 's/^let checkout = "\(.*\)"$/\1/p' "$LOCAL_MANIFEST")"
+    [[ "$embedded" == all ]] || echo "warning: the apps do not embed GliaCore ($embedded). Run scripts/local-core enable again." >&2
   else
     echo "[off] GliaCoreSDK is the released xcframework"
+    [[ "$embedded" == none ]] || echo "warning: project.pbxproj still embeds GliaCore ($embedded). Run scripts/local-core disable." >&2
   fi
 }
 
@@ -46,6 +57,8 @@ enable_local() {
     echo "       It needs GliaCoreSDK/Package.swift and Dependencies/Package.swift." >&2
     exit 1
   fi
+
+  "$EMBED" add "$PROJECT"
 
   cat > "$LOCAL_MANIFEST" <<SWIFT
 // swift-tools-version:5.10
@@ -92,6 +105,7 @@ SWIFT
 
 disable_local() {
   rm -f "$LOCAL_MANIFEST"
+  "$EMBED" remove "$PROJECT"
   status
 }
 
