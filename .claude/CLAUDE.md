@@ -166,7 +166,9 @@ Components styled via Theme:
 ### Dependencies
 External frameworks, resolved through Swift Package Manager. The project links the `GliaCore`
 product of the local `WidgetsDependencies` package, which pins the released xcframeworks;
-`scripts/local-core enable` swaps GliaCoreSDK for a local ios-sdk checkout.
+`scripts/local-core enable` swaps GliaCoreSDK for a local ios-sdk checkout
+and temporarily embeds it in the app targets (`project.pbxproj`). Run `disable` before committing
+project changes.
 - **GliaCoreSDK** (4.0.1) - Core business logic and networking
 - **GliaCoreDependency** (2.1.5) - Shared utilities
 - **WebRTC** (149.0.0) - Video/audio rendering

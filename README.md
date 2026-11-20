@@ -36,6 +36,10 @@ scripts/local-core disable             # back to the released xcframework
 scripts/local-core status
 ```
 
+`enable` also adds GliaCore to the Embed Frameworks phase of TestingApp and GliaTestApp in
+`project.pbxproj`, so device builds and archives contain it. `disable` removes it again. Do not
+commit `project.pbxproj` while local Core is on; the pre-commit hook refuses it.
+
 After switching, resolve packages again (File > Packages > Resolve Package Versions) and clean the build folder.
 
 ## Swift Package Manager
