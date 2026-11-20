@@ -7,4 +7,5 @@ if [ -x "$HOME/.git-hooks/pre-commit" ]; then
 else
   ./scripts/secret-scan.sh
 fi
+./scripts/local-core check-staged
 ./scripts/swiftlint.sh commit

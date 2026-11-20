@@ -15,7 +15,8 @@
 # `enable` also adds GliaCore to the Embed Frameworks phase of TestingApp and
 # GliaTestApp in project.pbxproj, which `disable` removes again: a dynamic
 # package product built from sources is embedded only when the app lists it.
-# Do not commit project.pbxproj while local Core is on.
+# Do not commit project.pbxproj while local Core is on; the pre-commit hook
+# refuses it.
 #
 # After switching, re-resolve packages in Xcode
 # (File > Packages > Resolve Package Versions) and clean the build folder.
@@ -109,10 +110,21 @@ disable_local() {
   status
 }
 
+check_staged() {
+  local staged_project="GliaWidgets.xcodeproj/project.pbxproj"
+  git -C "$REPO_ROOT" diff --cached --quiet -- "$staged_project" && return 0
+  if [[ "$(git -C "$REPO_ROOT" show ":$staged_project" | "$EMBED" state -)" != none ]]; then
+    echo "error: the staged project.pbxproj embeds GliaCore for local Core." >&2
+    echo "       Run scripts/local-core disable, stage the project again, then commit." >&2
+    exit 1
+  fi
+}
+
 case "${1:-}" in
   enable)  enable_local "${2:-}" ;;
   disable) disable_local ;;
   status)  status ;;
+  check-staged) check_staged ;;
   *)
     echo "Usage: scripts/local-core {enable [path]|disable|status}" >&2
     exit 1
