@@ -76,51 +76,9 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         XCTAssertFalse(viewModel.isSecureConversationsAvailable)
     }
 
-    func testMediaPickerButtonEnablingDependsOnSiteConfiguration() async throws {
-        var modelEnv = TranscriptModel.Environment.failing
-        modelEnv.fileManager = .mock
-        modelEnv.createFileUploadListModel = FileUploadListViewModel.mock(environment:)
-        modelEnv.uiApplication.preferredContentSizeCategory = { .unspecified }
-        modelEnv.getQueues = { [] }
-        modelEnv.fetchChatHistory = { .init(messages: []) }
-        modelEnv.secureConversations.getUnreadMessageCount = { 0 }
-        modelEnv.startSocketObservation = {}
-        modelEnv.maximumUploads = { 2 }
-        modelEnv.createEntryWidget = { _ in .mock() }
-        modelEnv.shouldShowLeaveSecureConversationDialog = { _ in false }
-        let site = try CoreSdkClient.Site.mock(
-            allowedFileContentTypes: ["image/jpeg"],
-            allowedFileSenders: .mock(visitor: true)
-        )
-        modelEnv.fetchSiteConfigurations = { site }
-
-        let availabilityEnv = SecureConversations.Availability.Environment(
-            getQueues: modelEnv.getQueues,
-            isAuthenticated: { true },
-            log: .mock,
-            queuesMonitor: .mock(getQueues: modelEnv.getQueues),
-            getCurrentEngagement: { .mock() }
-        )
-
-        let viewModel = TranscriptModel(
-            isCustomCardSupported: false,
-            environment: modelEnv,
-            availability: .init(
-                environment: availabilityEnv
-            ),
-            deliveredStatusText: "",
-            failedToDeliverStatusText: "",
-            unreadMessages: ObservableValue<Int>.init(with: .zero),
-            interactor: .failing
-        )
-
-        await viewModel.start(isTranscriptFetchNeeded: true)
-
-        XCTAssertFalse(viewModel.mediaPickerButtonEnabling.isDisabled)
-    }
-
     func testStartLoadsConfigurationAndChatHistoryAndGetUnreadMessageCount() async {
         var modelEnv = TranscriptModel.Environment.failing
+        modelEnv.secureConversations.fileUploadAvailabilityStream = { AsyncThrowingStream { $0.finish() } }
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.getQueues = { [] }
@@ -179,6 +137,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
     func testStartChecksSecureConversationsAvailability() async {
         var modelEnv = TranscriptModel.Environment.failing
+        modelEnv.secureConversations.fileUploadAvailabilityStream = { AsyncThrowingStream { $0.finish() } }
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.getQueues = { [] }
@@ -213,6 +172,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
     func testClearInputsSetMessageTextEmpty() async {
         var modelEnv = TranscriptModel.Environment.failing
+        modelEnv.secureConversations.fileUploadAvailabilityStream = { AsyncThrowingStream { $0.finish() } }
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.getQueues = { [] }
@@ -473,6 +433,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
     func testLoadHistoryAlsoInvokesUnreadMessageCount() async {
         var modelEnv = TranscriptModel.Environment.failing
+        modelEnv.secureConversations.fileUploadAvailabilityStream = { AsyncThrowingStream { $0.finish() } }
         let fileUploadListModel = FileUploadListViewModel.mock()
         fileUploadListModel.environment.uploader.limitReached.value = false
         modelEnv.fileManager = .mock
@@ -521,6 +482,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
     func testLoadHistoryAddsUnreadMessageDivider() async {
         var modelEnv = TranscriptModel.Environment.failing
+        modelEnv.secureConversations.fileUploadAvailabilityStream = { AsyncThrowingStream { $0.finish() } }
         let fileUploadListModel = FileUploadListViewModel.mock()
         fileUploadListModel.environment.uploader.limitReached.value = false
         modelEnv.fileManager = .mock
@@ -575,6 +537,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
     func testSystemMessagesFromWebSocket() async {
         var modelEnv = TranscriptModel.Environment.failing
+        modelEnv.secureConversations.fileUploadAvailabilityStream = { AsyncThrowingStream { $0.finish() } }
         let fileUploadListModel = FileUploadListViewModel.mock()
         fileUploadListModel.environment.uploader.limitReached.value = false
         modelEnv.fileManager = .mock
@@ -642,6 +605,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
     func testWelcomeMessagesFromWebSocket() async {
         var modelEnv = TranscriptModel.Environment.failing
+        modelEnv.secureConversations.fileUploadAvailabilityStream = { AsyncThrowingStream { $0.finish() } }
         let fileUploadListModel = FileUploadListViewModel.mock()
         fileUploadListModel.environment.uploader.limitReached.value = false
         modelEnv.fileManager = .mock
@@ -881,6 +845,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
     func testLoadHistoryAlsoInvokesSecureMarkMessagesAsReadIfShouldNotShowLeaveSecureConversationDialog() async {
         var modelEnv = TranscriptModel.Environment.failing
+        modelEnv.secureConversations.fileUploadAvailabilityStream = { AsyncThrowingStream { $0.finish() } }
         let fileUploadListModel = FileUploadListViewModel.mock()
         fileUploadListModel.environment.uploader.limitReached.value = false
         modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, function in function() }
@@ -939,6 +904,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
     func testLoadHistoryNotInvokesSecureMarkMessagesAsReadIfShouldShowLeaveSecureConversationDialog() async {
         var modelEnv = TranscriptModel.Environment.failing
+        modelEnv.secureConversations.fileUploadAvailabilityStream = { AsyncThrowingStream { $0.finish() } }
         let fileUploadListModel = FileUploadListViewModel.mock()
         fileUploadListModel.environment.uploader.limitReached.value = false
         modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, function in function() }
@@ -987,6 +953,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
 
     func testLeaveCurrentConversationAlertDeclineMarkMessagesAsRead() async {
         var modelEnv = TranscriptModel.Environment.failing
+        modelEnv.secureConversations.fileUploadAvailabilityStream = { AsyncThrowingStream { $0.finish() } }
         let fileUploadListModel = FileUploadListViewModel.mock()
         fileUploadListModel.environment.uploader.limitReached.value = false
         modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, function in function() }
@@ -1055,6 +1022,7 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         enum Call: Equatable { case secureMarkMessagesAsRead }
         var calls: [Call] = []
         var modelEnv = TranscriptModel.Environment.failing
+        modelEnv.secureConversations.fileUploadAvailabilityStream = { AsyncThrowingStream { $0.finish() } }
         let interactor: Interactor = .mock()
         let fileUploadListModel = FileUploadListViewModel.mock()
         fileUploadListModel.environment.uploader.limitReached.value = false
@@ -1069,7 +1037,6 @@ final class SecureConversationsTranscriptModelTests: XCTestCase {
         modelEnv.gcd.mainQueue.asyncAfterDeadline = { _, callback in callback() }
         modelEnv.loadChatMessagesFromHistory = { true }
         modelEnv.createEntryWidget = { _ in .mock() }
-        modelEnv.uiApplication.applicationState = { .active }
         modelEnv.secureConversations.markMessagesAsRead = {
             calls.append(.secureMarkMessagesAsRead)
         }

@@ -10,6 +10,7 @@ final class TranscriptModelMigrateTests: XCTestCase {
         }
         var calls: [Call] = []
         var modelEnv = TranscriptModel.Environment.failing
+        modelEnv.secureConversations.fileUploadAvailabilityStream = { AsyncThrowingStream { $0.finish() } }
         let fileUploadListModel = FileUploadListViewModel.mock()
         fileUploadListModel.environment.uploader.limitReached.value = false
         modelEnv.fileManager = .mock

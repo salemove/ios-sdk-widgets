@@ -263,6 +263,7 @@ extension SecureConversationsTranscriptModelTests {
         }
     ) -> (viewModel: TranscriptModel, spy: ChatViewModelTests.OlderHistoryActionSpy) {
         var modelEnv = TranscriptModel.Environment.failing
+        modelEnv.secureConversations.fileUploadAvailabilityStream = { AsyncThrowingStream { $0.finish() } }
         modelEnv.log = .mock
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
