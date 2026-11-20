@@ -23,6 +23,10 @@ extension SecureConversations {
         /// By default attachments are not available, until site configurations are fetched.
         private(set) var isAttachmentsAvailable: Bool = false { didSet { reportChange() } }
         private(set) var allowedFileContentTypes: [String] = []
+        /// On the Interaction API a file needs an existing secure conversation, so Core reports this
+        /// `false` until the visitor's first message starts one.
+        private(set) var isSecureFileUploadAvailable = false { didSet { reportChange() } }
+        private var fileUploadAvailabilityTask: Task<Void, Never>?
         private var isViewActive = ObservableValue<Bool>(with: false)
         var availabilityStatus: Availability.Status = .available(.queues(queueIds: [])) { didSet { reportChange() } }
         var messageInputState: MessageInputState = .normal { didSet { reportChange() } }
@@ -66,8 +70,13 @@ extension SecureConversations {
             }
         }
 
+        deinit {
+            fileUploadAvailabilityTask?.cancel()
+        }
+
         @MainActor
         func start() async {
+            observeFileUploadAvailability()
             await checkSecureConversationsAvailability()
             await loadAttachmentAvailability()
         }
@@ -157,6 +166,28 @@ private extension SecureConversations.WelcomeViewModel {
             delegate?(.showAlert(.error(error: error)))
         }
     }
+
+    func observeFileUploadAvailability() {
+        fileUploadAvailabilityTask?.cancel()
+        let stream: AsyncThrowingStream<Bool, Error>
+        do {
+            stream = try environment.secureConversations.fileUploadAvailabilityStream()
+        } catch {
+            environment.log.prefixed(Self.self).warning("Could not observe secure file upload availability")
+            return
+        }
+        fileUploadAvailabilityTask = Task { [weak self] in
+            do {
+                for try await isAvailable in stream {
+                    await MainActor.run { [weak self] in
+                        self?.isSecureFileUploadAvailable = isAvailable
+                    }
+                }
+            } catch {
+                // Core reports no failures; a cancelled or failed stream keeps the last value.
+            }
+        }
+    }
 }
 // MARK: - Props Generation
 extension SecureConversations.WelcomeViewModel {
@@ -219,7 +250,9 @@ extension SecureConversations.WelcomeViewModel {
         var filePickerButton: WelcomeViewProps.FilePickerButton?
 
         let isFilePickerEnabled = !instance.fileUploadListModel.isLimitReached
-        if instance.availabilityStatus.isAvailable, instance.isAttachmentsAvailable {
+        // During an ongoing engagement files are uploaded to the engagement, which needs no secure conversation.
+        let canUploadNow = instance.isSecureFileUploadAvailable || instance.environment.getCurrentEngagement() != nil
+        if instance.availabilityStatus.isAvailable, instance.isAttachmentsAvailable, canUploadNow {
             filePickerButton = WelcomeViewProps.FilePickerButton(
                 isEnabled: isFilePickerEnabled,
                 tap: Command { originView in

@@ -108,6 +108,7 @@ extension CoreSdkClient {
         var downloadFile: DownloadFile
         var unreadMessageCountStream: UnreadMessageCountStream
         var pendingSecureConversationStatusStream: PendingSecureConversationStatusStream
+        var fileUploadAvailabilityStream: FileUploadAvailabilityStream
     }
 }
 
@@ -138,6 +139,8 @@ extension CoreSdkClient.SecureConversations {
     typealias UnreadMessageCountStream = () throws -> AsyncThrowingStream<Int?, Error>
 
     typealias PendingSecureConversationStatusStream = () throws -> AsyncThrowingStream<Bool, Error>
+
+    typealias FileUploadAvailabilityStream = () throws -> AsyncThrowingStream<Bool, Error>
 }
 
 extension CoreSdkClient {

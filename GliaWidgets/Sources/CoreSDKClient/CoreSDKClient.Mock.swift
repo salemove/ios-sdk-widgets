@@ -54,7 +54,8 @@ extension CoreSdkClient.SecureConversations {
         markMessagesAsRead: {},
         downloadFile: { _, _ in .mock() },
         unreadMessageCountStream: { AsyncThrowingStream { $0.finish() } },
-        pendingSecureConversationStatusStream: { AsyncThrowingStream { $0.finish() } }
+        pendingSecureConversationStatusStream: { AsyncThrowingStream { $0.finish() } },
+        fileUploadAvailabilityStream: { AsyncThrowingStream { $0.finish() } }
     )
 }
 
