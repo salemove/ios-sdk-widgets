@@ -761,6 +761,96 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertEqual(try XCTUnwrap(receivedMessage).id, expectedMessageId)
     }
 
+    func test_visitorEchoAfterSendResultReplacesBubbleContent() async throws {
+        let messageId = "expected_message_id"
+        let locallyMaskedText = "This is invalid_information"
+        let serverMaskedText = "This is *******************"
+        let viewModel = await makeEngagedViewModelForVisitorEcho { _ in
+            .mock(id: messageId, content: locallyMaskedText)
+        }
+        await viewModel.invokeSetTextAndSendMessage(text: locallyMaskedText)
+        let itemCountBeforeEcho = viewModel.messagesSection.items.count
+        var refreshedRows: [[Int]] = []
+        viewModel.action = { action in
+            if case let .refreshRows(rows, _, _) = action {
+                refreshedRows.append(rows)
+            }
+        }
+
+        viewModel.interactorEvent(.receivedMessage(.mock(id: messageId, content: serverMaskedText)))
+
+        let lastItem = try XCTUnwrap(viewModel.messagesSection.items.last?.kind)
+        guard case let .visitorMessage(message, status) = lastItem else {
+            return XCTFail("Expected visitor message. Got \(lastItem) instead.")
+        }
+        XCTAssertEqual(message.content, serverMaskedText)
+        XCTAssertEqual(status, "Delivered")
+        XCTAssertEqual(viewModel.messagesSection.items.count, itemCountBeforeEcho)
+        XCTAssertEqual(viewModel.receivedMessageIds, [messageId.uppercased()])
+        XCTAssertEqual(refreshedRows, [[itemCountBeforeEcho - 1]])
+    }
+
+    func test_visitorEchoWithBlankContentKeepsBubbleContent() async throws {
+        let messageId = "expected_message_id"
+        let sentText = "This is invalid_information"
+        let viewModel = await makeEngagedViewModelForVisitorEcho { _ in
+            .mock(id: messageId, content: sentText)
+        }
+        await viewModel.invokeSetTextAndSendMessage(text: sentText)
+        var refreshedRows: [[Int]] = []
+        viewModel.action = { action in
+            if case let .refreshRows(rows, _, _) = action {
+                refreshedRows.append(rows)
+            }
+        }
+
+        viewModel.interactorEvent(.receivedMessage(.mock(id: messageId, content: "")))
+
+        let lastItem = try XCTUnwrap(viewModel.messagesSection.items.last?.kind)
+        guard case let .visitorMessage(message, status) = lastItem else {
+            return XCTFail("Expected visitor message. Got \(lastItem) instead.")
+        }
+        XCTAssertEqual(message.content, sentText)
+        XCTAssertEqual(status, "Delivered")
+        XCTAssertTrue(refreshedRows.isEmpty)
+    }
+
+    func test_visitorEchoForEarlierMessageKeepsLaterDeliveredStatus() async throws {
+        let viewModel = await makeEngagedViewModelForVisitorEcho { payload in
+            .mock(id: payload.messageId.rawValue, content: payload.content)
+        }
+        await viewModel.invokeSetTextAndSendMessage(text: "First invalid_information")
+        await viewModel.invokeSetTextAndSendMessage(text: "Second message")
+        let sentMessages = visitorMessages(in: viewModel)
+        XCTAssertEqual(sentMessages.count, 2)
+        let firstMessageId = try XCTUnwrap(sentMessages.first?.message.id)
+
+        viewModel.interactorEvent(.receivedMessage(.mock(id: firstMessageId, content: "First *******************")))
+
+        let messages = visitorMessages(in: viewModel)
+        XCTAssertEqual(messages.map(\.message.content), ["First *******************", "Second message"])
+        XCTAssertEqual(messages.map(\.status), [nil, "Delivered"])
+    }
+
+    func test_operatorMessageWithKnownIdIsNotApplied() async throws {
+        let messageId = "expected_message_id"
+        let sentText = "Visitor text"
+        let viewModel = await makeEngagedViewModelForVisitorEcho { _ in
+            .mock(id: messageId, content: sentText)
+        }
+        await viewModel.invokeSetTextAndSendMessage(text: sentText)
+        let itemCountBeforeEcho = viewModel.messagesSection.items.count
+
+        viewModel.interactorEvent(.receivedMessage(.mock(
+            id: messageId,
+            content: "Operator text",
+            sender: .init(type: .operator)
+        )))
+
+        XCTAssertEqual(visitorMessages(in: viewModel).map(\.message.content), [sentText])
+        XCTAssertEqual(viewModel.messagesSection.items.count, itemCountBeforeEcho)
+    }
+
     func test_messageReceivedFirstFromSocketDiscardsSameOneFromRest() async throws {
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
@@ -819,6 +909,52 @@ class ChatViewModelTests: XCTestCase {
         XCTAssertEqual(try XCTUnwrap(receivedMessage).id, expectedMessageId)
     }
 
+    private func makeEngagedViewModelForVisitorEcho(
+        sendResult: @escaping (CoreSdkClient.SendMessagePayload) -> CoreSdkClient.Message
+    ) async -> ChatViewModel {
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.loadChatMessagesFromHistory = { true }
+        viewModelEnv.fetchSiteConfigurations = { try .mock() }
+        var log = viewModelEnv.log
+        log.prefixedClosure = { _ in log }
+        log.infoClosure = { _, _, _, _ in }
+        viewModelEnv.log = log
+        viewModelEnv.fetchChatHistory = { .init(messages: []) }
+        viewModelEnv.createSendMessagePayload = {
+            .mock(messageIdSuffix: UUID().uuidString, content: $0, attachment: $1)
+        }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
+
+        let interactor = Interactor.failing
+        interactor.setCurrentEngagement(.mock())
+        var interactorLog = CoreSdkClient.Logger.failing
+        interactorLog.infoClosure = { _, _, _, _ in }
+        interactorLog.prefixedClosure = { _ in interactorLog }
+        interactor.environment.log = interactorLog
+        interactor.environment.gcd = .live
+        interactor.environment.coreSdk.configureWithInteractor = { _ in }
+        interactor.environment.coreSdk.configureWithConfiguration = { _ in }
+        interactor.environment.coreSdk.sendMessagePreview = { _ in true }
+        interactor.environment.coreSdk.sendMessageWithMessagePayload = { sendResult($0) }
+        interactor.environment.coreSdk.queueForEngagement = { _, _ in .mock }
+
+        let viewModel: ChatViewModel = .mock(interactor: interactor, environment: viewModelEnv)
+        viewModel.isViewLoaded = true
+        await viewModel.start()
+        interactor.state = .engaged(.mock())
+        return viewModel
+    }
+
+    private func visitorMessages(in viewModel: ChatViewModel) -> [(message: ChatMessage, status: String?)] {
+        viewModel.messagesSection.items.compactMap { item in
+            guard case let .visitorMessage(message, status) = item.kind else { return nil }
+            return (message, status)
+        }
+    }
+
     func test_messageContainedInPendingSectionDiscardsOneDeliveredViaSocket() async throws {
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.createFileUploadListModel = { _ in .mock() }
@@ -842,6 +978,87 @@ class ChatViewModelTests: XCTestCase {
         viewModel.interactorEvent(.receivedMessage(.mock(id: outgoingMessage.payload.messageId.rawValue)))
         XCTAssertEqual(viewModel.messagesSection.items.count, 0)
         XCTAssertEqual(viewModel.receivedMessageIds, [])
+    }
+
+    func test_visitorEchoForPendingMessageReplacesPendingBubbleContent() async throws {
+        let (viewModel, outgoingMessage) = await makeViewModelWithPendingMessage(
+            content: "This is invalid_information",
+            error: "Failed"
+        )
+        var refreshedRows: [(rows: [Int], section: Int)] = []
+        viewModel.action = { action in
+            if case let .refreshRows(rows, section, _) = action {
+                refreshedRows.append((rows, section))
+            }
+        }
+
+        viewModel.interactorEvent(.receivedMessage(.mock(
+            id: outgoingMessage.payload.messageId.rawValue,
+            content: "This is *******************"
+        )))
+
+        XCTAssertEqual(viewModel.pendingSection.items.count, 1)
+        let pendingItem = try XCTUnwrap(viewModel.pendingSection.items.first?.kind)
+        guard case let .outgoingMessage(pendingMessage, error) = pendingItem else {
+            return XCTFail("Expected outgoing message. Got \(pendingItem) instead.")
+        }
+        XCTAssertEqual(pendingMessage.payload.content, "This is *******************")
+        XCTAssertEqual(pendingMessage.payload.messageId, outgoingMessage.payload.messageId)
+        XCTAssertEqual(error, "Failed")
+        XCTAssertEqual(outgoingMessage.payload.content, "This is invalid_information")
+        XCTAssertEqual(refreshedRows.map(\.rows), [[0]])
+        XCTAssertEqual(refreshedRows.map(\.section), [viewModel.pendingSection.index])
+        XCTAssertEqual(viewModel.messagesSection.items.count, 0)
+        XCTAssertEqual(viewModel.receivedMessageIds, [])
+    }
+
+    func test_visitorEchoWithBlankContentKeepsPendingBubbleContent() async throws {
+        let (viewModel, outgoingMessage) = await makeViewModelWithPendingMessage(content: "This is invalid_information")
+
+        viewModel.interactorEvent(.receivedMessage(.mock(id: outgoingMessage.payload.messageId.rawValue, content: "")))
+
+        let pendingItem = try XCTUnwrap(viewModel.pendingSection.items.first?.kind)
+        guard case let .outgoingMessage(pendingMessage, _) = pendingItem else {
+            return XCTFail("Expected outgoing message. Got \(pendingItem) instead.")
+        }
+        XCTAssertEqual(pendingMessage.payload.content, "This is invalid_information")
+    }
+
+    func test_operatorMessageWithPendingMessageIdKeepsPendingBubbleContent() async throws {
+        let (viewModel, outgoingMessage) = await makeViewModelWithPendingMessage(content: "Visitor text")
+
+        viewModel.interactorEvent(.receivedMessage(.mock(
+            id: outgoingMessage.payload.messageId.rawValue,
+            content: "Operator text",
+            sender: .init(type: .operator)
+        )))
+
+        let pendingItem = try XCTUnwrap(viewModel.pendingSection.items.first?.kind)
+        guard case let .outgoingMessage(pendingMessage, _) = pendingItem else {
+            return XCTFail("Expected outgoing message. Got \(pendingItem) instead.")
+        }
+        XCTAssertEqual(pendingMessage.payload.content, "Visitor text")
+    }
+
+    private func makeViewModelWithPendingMessage(
+        content: String,
+        error: String? = nil
+    ) async -> (ChatViewModel, OutgoingMessage) {
+        var viewModelEnv = ChatViewModel.Environment.failing()
+        viewModelEnv.createFileUploadListModel = { _ in .mock() }
+        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
+        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
+        viewModelEnv.loadChatMessagesFromHistory = { true }
+        viewModelEnv.fetchSiteConfigurations = { try .mock() }
+        viewModelEnv.fetchChatHistory = { .init(messages: []) }
+        viewModelEnv.createEntryWidget = { _ in .mock() }
+
+        let viewModel: ChatViewModel = .mock(environment: viewModelEnv)
+        viewModel.isViewLoaded = true
+        await viewModel.start()
+        let outgoingMessage = OutgoingMessage(payload: .mock(messageIdSuffix: "1D_123", content: content))
+        viewModel.pendingSection.append(.init(kind: .outgoingMessage(outgoingMessage, error: error)))
+        return (viewModel, outgoingMessage)
     }
 
     func test_liveObservationAlertPresentationInitiatedWhenInteractorStateIsEnqueuing() async throws {

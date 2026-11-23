@@ -234,6 +234,63 @@ extension SecureConversations.ChatWithTranscriptModel {
         action?(.refreshRows(affectedRows, in: section.index, animated: false))
     }
 
+    // The send result of an Interaction API message carries the locally masked text, while the
+    // echo carries the text as the server stored it (the server may mask more), so the echo wins.
+    static func updateVisitorMessageContent(
+        with message: CoreSdkClient.Message,
+        in section: Section<ChatItem>,
+        action: ActionCallback?
+    ) {
+        guard !message.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+        guard let index = section.items.lastIndex(where: {
+            guard case let .visitorMessage(visitorMessage, _) = $0.kind else { return false }
+            return visitorMessage.id.uppercased() == message.id.uppercased()
+        }) else { return }
+        guard case let .visitorMessage(visitorMessage, status) = section.items[index].kind,
+              visitorMessage.content != message.content
+        else { return }
+
+        let updatedMessage = ChatMessage(
+            id: visitorMessage.id,
+            operator: visitorMessage.operator,
+            sender: visitorMessage.sender,
+            content: message.content,
+            attachment: visitorMessage.attachment,
+            downloads: visitorMessage.downloads,
+            metadata: visitorMessage.metadata
+        )
+        section.replaceItem(at: index, with: ChatItem(kind: .visitorMessage(updatedMessage, status: status)))
+        action?(.refreshRows([index], in: section.index, animated: false))
+    }
+
+    // A message sent before the operator joined stays an outgoing bubble for the whole session,
+    // so the echo's text is applied to it the same way. The outgoing message is copied, not
+    // mutated, because the same instance is also kept in the list of pending messages.
+    static func updateOutgoingMessageContent(
+        with message: CoreSdkClient.Message,
+        in section: Section<ChatItem>,
+        action: ActionCallback?
+    ) {
+        guard !message.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+        guard let index = section.items.lastIndex(where: {
+            guard case let .outgoingMessage(outgoingMessage, _) = $0.kind else { return false }
+            return outgoingMessage.payload.messageId.rawValue.uppercased() == message.id.uppercased()
+        }) else { return }
+        guard case let .outgoingMessage(outgoingMessage, error) = section.items[index].kind,
+              outgoingMessage.payload.content != message.content
+        else { return }
+
+        var updatedPayload = outgoingMessage.payload
+        updatedPayload.content = message.content
+        let updatedMessage = OutgoingMessage(
+            payload: updatedPayload,
+            files: outgoingMessage.files,
+            relation: outgoingMessage.relation
+        )
+        section.replaceItem(at: index, with: ChatItem(kind: .outgoingMessage(updatedMessage, error: error)))
+        action?(.refreshRows([index], in: section.index, animated: false))
+    }
+
     static func chatItemMatchesMessageId(
         chatItem: ChatItem,
         messageId: ChatMessage.MessageId

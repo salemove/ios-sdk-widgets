@@ -875,17 +875,33 @@ extension ChatViewModel {
         // Discard messages that have been already received.
         // This can happen in case if socket will delay
         // message delivery and it will be added during
-        // REST API response.
+        // REST API response. The visitor echo's text is still
+        // applied, because it can differ from the send result's.
         guard !hasReceivedMessage(messageId: message.id.uppercased()) else {
+            if message.sender.type == .visitor {
+                SecureConversations.ChatWithTranscriptModel.updateVisitorMessageContent(
+                    with: message,
+                    in: messagesSection,
+                    action: action
+                )
+            }
             return
         }
 
         // Discard pending message delivered via socket to
         // avoid message duplication. Currently pending messages
-        // stay in pending section whole session.
+        // stay in pending section whole session, so the visitor
+        // echo's text is applied to the pending bubble instead.
         for pendingMessage in self.pendingSection.items {
             if case let .outgoingMessage(outgoingPendingMessage, _) = pendingMessage.kind,
                 outgoingPendingMessage.payload.messageId.rawValue.uppercased() == message.id.uppercased() {
+                if message.sender.type == .visitor {
+                    SecureConversations.ChatWithTranscriptModel.updateOutgoingMessageContent(
+                        with: message,
+                        in: pendingSection,
+                        action: action
+                    )
+                }
                 return
             }
         }
