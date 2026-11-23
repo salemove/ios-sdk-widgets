@@ -50,6 +50,21 @@ final class SecureConversationsWelcomeScreenLayoutTests: SnapshotTestCase {
         viewController.assertSnapshot(as: .image, in: .landscape)
     }
 
+    func test_welcomeViewWithoutFilePicker() {
+        let props = Self.makeWelcomeProps(
+            theme: theme.secureConversationsWelcome,
+            filePickerButton: nil
+        )
+        let viewController = SecureConversations.WelcomeViewController(
+            viewFactory: .mock(theme: theme, messageRenderer: nil, environment: .mock),
+            viewModel: .init(environment: .mock, availability: .mock()),
+            props: .welcome(props),
+            environment: .mock(gcd: .live)
+        )
+        viewController.assertSnapshot(as: .image, in: .portrait)
+        viewController.assertSnapshot(as: .image, in: .landscape)
+    }
+
     // MARK: - Helpers
 
     func uploadedFileProps() -> SecureConversations.FileUploadView.Props {
@@ -84,12 +99,13 @@ final class SecureConversationsWelcomeScreenLayoutTests: SnapshotTestCase {
         theme: SecureConversations.WelcomeStyle,
         headerProps: Header.Props = headerProps(),
         uploads: [SecureConversations.FileUploadView.Props] = [],
-        warningMessage: String = ""
+        warningMessage: String = "",
+        filePickerButton: SecureConversations.WelcomeView.Props.FilePickerButton? = .init(isEnabled: true, tap: .nop)
     ) -> SecureConversations.WelcomeView.Props {
         .init(
             style: theme,
             checkMessageButtonTap: .nop,
-            filePickerButton: .init(isEnabled: true, tap: .nop),
+            filePickerButton: filePickerButton,
             sendMessageButton: .active(.nop),
             messageTextViewProps: .active(
                 .init(

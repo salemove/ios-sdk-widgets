@@ -60,10 +60,21 @@ extension SecureConversations {
 
         var siteConfiguration: CoreSdkClient.Site?
 
+        /// On the Interaction API a file needs an existing secure conversation, so Core reports this
+        /// `false` until the visitor's first message starts one.
+        private(set) var isSecureFileUploadAvailable = false {
+            didSet {
+                guard oldValue != isSecureFileUploadAvailable else { return }
+                action?(.setAttachmentButtonEnabling(mediaPickerButtonEnabling))
+            }
+        }
+        private var fileUploadAvailabilityTask: Task<Void, Never>?
+
         var mediaPickerButtonEnabling: MediaPickerButtonEnabling {
             guard let site = siteConfiguration else { return .disabled }
             guard site.allowedFileSenders.visitor else { return .disabled }
             guard !site.allowedFileContentTypes.isEmpty else { return .disabled }
+            guard isSecureFileUploadAvailable else { return .disabled }
             guard !fileUploadListModel.isLimitReached else { return .disabled }
             return .enabled(.secureMessaging)
         }
@@ -265,6 +276,7 @@ extension SecureConversations {
         /// - Parameter isTranscriptFetchNeeded: A flag indicating whether chat history will be loaded.
         @MainActor
         func start(isTranscriptFetchNeeded: Bool) async {
+            observeFileUploadAvailability()
             environment.startSocketObservation()
             async let availabilityCheck: Void = checkSecureConversationsAvailability()
             async let siteConfigurationsFetch: Void = fetchSiteConfigurations()
@@ -279,6 +291,7 @@ extension SecureConversations {
         }
 
         deinit {
+            fileUploadAvailabilityTask?.cancel()
             environment.interactor.removeObserver(self)
             unreadMessages.removeObserver(self)
         }
@@ -592,6 +605,31 @@ extension SecureConversations.TranscriptModel {
             self.action?(.setAttachmentButtonEnabling(self.mediaPickerButtonEnabling))
         } catch {
             self.engagementAction?(.showAlert(.error(error: error)))
+        }
+    }
+}
+
+// MARK: File upload availability
+extension SecureConversations.TranscriptModel {
+    private func observeFileUploadAvailability() {
+        fileUploadAvailabilityTask?.cancel()
+        let stream: AsyncThrowingStream<Bool, Error>
+        do {
+            stream = try environment.secureConversations.fileUploadAvailabilityStream()
+        } catch {
+            environment.log.prefixed(Self.self).warning("Could not observe secure file upload availability")
+            return
+        }
+        fileUploadAvailabilityTask = Task { [weak self] in
+            do {
+                for try await isAvailable in stream {
+                    await MainActor.run { [weak self] in
+                        self?.isSecureFileUploadAvailable = isAvailable
+                    }
+                }
+            } catch {
+                // Core reports no failures; a cancelled or failed stream keeps the last value.
+            }
         }
     }
 }

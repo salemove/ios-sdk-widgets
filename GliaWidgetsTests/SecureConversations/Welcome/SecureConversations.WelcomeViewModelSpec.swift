@@ -315,24 +315,57 @@ extension SecureConversationsWelcomeViewModelTests {
         }
     }
 
+    @MainActor
     func testFilePickerButtonIsAvailable() async throws {
-        var environment: WelcomeViewModel.Environment = .mock()
-        let site: CoreSdkClient.Site = try .mock(
-            allowedFileContentTypes: ["image/jpeg"],
-            allowedFileSenders: .init(operator: true, visitor: true)
+        let model = try await makeModelWithAttachmentsAllowed(
+            fileUploadAvailabilityStream: { AsyncThrowingStream { $0.yield(true) } },
+            getCurrentEngagement: { nil }
+        )
+        await waitForSecureFileUploadAvailability(true, of: model)
+
+        XCTAssertNotNil(filePickerButton(of: model))
+    }
+
+    @MainActor
+    func testFilePickerButtonIsHiddenUntilSecureFileUploadIsAvailable() async throws {
+        var availability: AsyncThrowingStream<Bool, Error>.Continuation?
+        let stream = AsyncThrowingStream<Bool, Error> { availability = $0 }
+        let model = try await makeModelWithAttachmentsAllowed(
+            fileUploadAvailabilityStream: { stream },
+            getCurrentEngagement: { nil }
         )
 
-        environment.fetchSiteConfigurations = { site }
+        availability?.yield(false)
+        XCTAssertNil(filePickerButton(of: model))
 
-        viewModel = .init(environment: environment, availability: .mock)
-        await viewModel.start()
-        viewModel.availabilityStatus = .available(.queues(queueIds: []))
+        availability?.yield(true)
+        await waitForSecureFileUploadAvailability(true, of: model)
+        XCTAssertNotNil(filePickerButton(of: model))
 
-        if case .welcome(let props) = viewModel.props() {
-            XCTAssertNotNil(props.filePickerButton)
-        } else {
-            XCTFail()
-        }
+        availability?.yield(false)
+        await waitForSecureFileUploadAvailability(false, of: model)
+        XCTAssertNil(filePickerButton(of: model))
+    }
+
+    @MainActor
+    func testFilePickerButtonIsShownDuringOngoingEngagementWithoutSecureFileUpload() async throws {
+        let model = try await makeModelWithAttachmentsAllowed(
+            fileUploadAvailabilityStream: { AsyncThrowingStream { $0.yield(false) } },
+            getCurrentEngagement: { .mock() }
+        )
+
+        XCTAssertFalse(model.isSecureFileUploadAvailable)
+        XCTAssertNotNil(filePickerButton(of: model))
+    }
+
+    @MainActor
+    func testFilePickerButtonIsHiddenWhenFileUploadAvailabilityCannotBeObserved() async throws {
+        let model = try await makeModelWithAttachmentsAllowed(
+            fileUploadAvailabilityStream: { throw CoreSdkClient.GliaCoreError(reason: "") },
+            getCurrentEngagement: { nil }
+        )
+
+        XCTAssertNil(filePickerButton(of: model))
     }
 
     func testFilePickerButtonIsNotAvailable() {
@@ -819,5 +852,49 @@ extension SecureConversationsWelcomeViewModelTests {
         } else {
             XCTFail()
         }
+    }
+}
+
+// File upload availability helpers
+private extension SecureConversationsWelcomeViewModelTests {
+    /// A started model whose site allows visitor attachments and whose service is available, so the
+    /// file picker depends only on secure file upload availability and the ongoing engagement.
+    @MainActor
+    func makeModelWithAttachmentsAllowed(
+        fileUploadAvailabilityStream: @escaping CoreSdkClient.SecureConversations.FileUploadAvailabilityStream,
+        getCurrentEngagement: @escaping CoreSdkClient.GetCurrentEngagement
+    ) async throws -> WelcomeViewModel {
+        let site: CoreSdkClient.Site = try .mock(
+            allowedFileContentTypes: ["image/jpeg"],
+            allowedFileSenders: .init(operator: true, visitor: true)
+        )
+        var environment = WelcomeViewModel.Environment.mock(getCurrentEngagement: getCurrentEngagement)
+        environment.fetchSiteConfigurations = { site }
+        environment.secureConversations.fileUploadAvailabilityStream = fileUploadAvailabilityStream
+        let model = WelcomeViewModel(environment: environment, availability: .mock)
+        await model.start()
+        model.availabilityStatus = .available(.queues(queueIds: []))
+        return model
+    }
+
+    @MainActor
+    func waitForSecureFileUploadAvailability(_ isAvailable: Bool, of model: WelcomeViewModel) async {
+        guard model.isSecureFileUploadAvailable != isAvailable else { return }
+        let reported = expectation(description: "Secure file upload availability is \(isAvailable)")
+        reported.assertForOverFulfill = false
+        model.delegate = { [weak model] event in
+            guard case .renderProps = event, model?.isSecureFileUploadAvailable == isAvailable else { return }
+            reported.fulfill()
+        }
+        await fulfillment(of: [reported], timeout: 1)
+        model.delegate = nil
+    }
+
+    func filePickerButton(of model: WelcomeViewModel) -> SecureConversations.WelcomeView.Props.FilePickerButton? {
+        guard case .welcome(let props) = model.props() else {
+            XCTFail("Expected welcome props")
+            return nil
+        }
+        return props.filePickerButton
     }
 }

@@ -138,6 +138,7 @@ extension SecureConversationsTranscriptModelTests {
         var calls: [Call] = []
 
         var modelEnv = TranscriptModel.Environment.failing
+        modelEnv.secureConversations.fileUploadAvailabilityStream = { AsyncThrowingStream { $0.finish() } }
         modelEnv.fileManager = .mock
         modelEnv.createFileUploadListModel = { _ in .mock() }
         modelEnv.getQueues = { [] }
