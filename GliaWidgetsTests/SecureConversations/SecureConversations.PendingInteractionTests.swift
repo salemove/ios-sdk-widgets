@@ -103,6 +103,41 @@ final class SecureConversationsPendingInteractionTests: XCTestCase {
         try XCTUnwrap(unreadCountContinuation).finish()
     }
 
+    func test_pendingStatusIsResolvedByFirstValue() async throws {
+        var pendingContinuation: AsyncThrowingStream<Bool, Swift.Error>.Continuation?
+        var environment = SecureConversations.PendingInteraction.Environment.failing
+        environment.pendingSecureConversationStatusStream = {
+            AsyncThrowingStream { pendingContinuation = $0 }
+        }
+        environment.unreadMessageCountStream = { AsyncThrowingStream { _ in } }
+        environment.interactorPublisher = .mock(.mock())
+
+        let pendingInteraction = try SecureConversations.PendingInteraction(environment: environment)
+        XCTAssertFalse(pendingInteraction.isPendingStatusResolved)
+
+        // `false` from Core is an answer too, unlike the initial `false`.
+        try XCTUnwrap(pendingContinuation).yield(false)
+        await waitUntil { pendingInteraction.isPendingStatusResolved }
+        XCTAssertFalse(pendingInteraction.pendingStatus)
+    }
+
+    func test_pendingStatusIsResolvedAsNotPendingWhenStreamFails() async throws {
+        var pendingContinuation: AsyncThrowingStream<Bool, Swift.Error>.Continuation?
+        var environment = SecureConversations.PendingInteraction.Environment.failing
+        environment.pendingSecureConversationStatusStream = {
+            AsyncThrowingStream { pendingContinuation = $0 }
+        }
+        environment.unreadMessageCountStream = { AsyncThrowingStream { _ in } }
+        environment.interactorPublisher = .mock(.mock())
+
+        let pendingInteraction = try SecureConversations.PendingInteraction(environment: environment)
+        try XCTUnwrap(pendingContinuation).finish(throwing: TestError.subscriptionUnavailable)
+
+        await waitUntil { pendingInteraction.isPendingStatusResolved }
+        XCTAssertFalse(pendingInteraction.pendingStatus)
+        XCTAssertFalse(pendingInteraction.hasPendingInteraction)
+    }
+
     func test_observationsAreCancelledOnDeinit() async throws {
         let pendingObservationStarted = expectation(description: "Pending status observation started")
         let unreadCountObservationStarted = expectation(description: "Unread count observation started")
