@@ -307,8 +307,7 @@ extension ChatViewModel {
         // When pending message is successfully delivered,
         // it has to be removed from the `pendingMessages` list, to avoid
         // situation where it gets sent again, for example after
-        // transfer to another operator. A file entry comes back with the
-        // file's id, so the outgoing payload's id identifies the pending item.
+        // transfer to another operator.
         removePendingMessage(by: outgoingMessage.payload.messageId.rawValue)
         self.replace(
             outgoingMessage,
@@ -670,8 +669,7 @@ extension ChatViewModel {
         }
         for upload in uploads {
             guard let info = upload.engagementFileInformation else { continue }
-            let file = CoreSdkClient.EngagementFile(id: info.id)
-            let filePayload = environment.createSendMessagePayload("", CoreSdkClient.Attachment(file: file))
+            let filePayload = CoreSdkClient.SendMessagePayload(fileId: info.id)
             outgoingMessages.append(OutgoingMessage(payload: filePayload, files: [upload.localFile]))
         }
         return outgoingMessages

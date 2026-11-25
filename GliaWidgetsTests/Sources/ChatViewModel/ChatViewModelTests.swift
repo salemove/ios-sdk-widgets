@@ -1427,19 +1427,7 @@ class ChatViewModelTests: XCTestCase {
         let interactor = Interactor.mock(environment: interactorEnv)
         interactor.state = .engaged(nil)
 
-        var viewModelEnv = ChatViewModel.Environment.failing()
-        viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
-        viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
-
-        let upload = FileUpload.mock()
-        upload.state.value = .uploaded(file: try .mock())
-        let fileUploadListViewModelEnv = SecureConversations.FileUploadListViewModel.Environment.mock
-        fileUploadListViewModelEnv.uploader.uploads = [upload]
-        viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
-        viewModelEnv.createSendMessagePayload = { CoreSdkClient.SendMessagePayload(content: $0, attachment: $1) }
-        viewModelEnv.createEntryWidget = { _ in .mock() }
-
-        let viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
+        let viewModel = try makeViewModelWithUploadedFile(interactor: interactor)
 
         let messageContent = "Mock"
         await viewModel.invokeSetTextAndSendMessage(text: messageContent)
@@ -1491,6 +1479,84 @@ class ChatViewModelTests: XCTestCase {
         let interactor = Interactor.mock(environment: interactorEnv)
         interactor.state = .engaged(nil)
 
+        viewModel = try makeViewModelWithUploadedFile(interactor: interactor)
+
+        await viewModel.invokeSetTextAndSendMessage(text: "Mock")
+
+        XCTAssertEqual(calls.value, [.sendText(outgoingBubbles: 2), .sendFile(outgoingBubbles: 1)])
+    }
+
+    @MainActor
+    func test_sentFileShowsOneBubbleWhicheverOfEchoAndSendResultArrivesFirst() async throws {
+        for echoArrivesFirst in [true, false] {
+            var viewModel: ChatViewModel!
+            let fileEcho = LockIsolated<CoreSdkClient.Message?>(nil)
+            var interactorEnv = Interactor.Environment.mock
+            interactorEnv.coreSdk.sendFile = { file in
+                // Core exposes both the echo and the send result under the file id.
+                let message = CoreSdkClient.Message.mock(id: file.id ?? "", content: "")
+                fileEcho.setValue(message)
+                if echoArrivesFirst {
+                    await MainActor.run { viewModel.interactorEvent(.receivedMessage(message)) }
+                }
+                return message
+            }
+            let interactor = Interactor.mock(environment: interactorEnv)
+            interactor.state = .engaged(nil)
+
+            viewModel = try makeViewModelWithUploadedFile(interactor: interactor)
+            viewModel.isViewLoaded = true
+
+            await viewModel.invokeSetTextAndSendMessage(text: "")
+            if !echoArrivesFirst, let echo = fileEcho.value {
+                viewModel.interactorEvent(.receivedMessage(echo))
+            }
+
+            let bubbles = viewModel.messagesSection.items.map(\.kind)
+            XCTAssertEqual(bubbles.count, 1, "echo first: \(echoArrivesFirst)")
+            guard case .visitorMessage = bubbles.first else {
+                return XCTFail("The file bubble should be delivered (echo first: \(echoArrivesFirst))")
+            }
+        }
+    }
+
+    @MainActor
+    func test_pendingFileShowsOneBubbleWhenEchoArrivesBeforeSendResult() async throws {
+        var viewModel: ChatViewModel!
+        var interactorEnv = Interactor.Environment.mock
+        interactorEnv.coreSdk.sendFile = { file in
+            let message = CoreSdkClient.Message.mock(id: file.id ?? "", content: "")
+            await MainActor.run { viewModel.interactorEvent(.receivedMessage(message)) }
+            return message
+        }
+        let interactor = Interactor.mock(environment: interactorEnv)
+        interactor.state = .enqueued(.mock, .chat)
+
+        viewModel = try makeViewModelWithUploadedFile(interactor: interactor) {
+            $0.gcd = .live
+            $0.log = .mock
+            $0.fetchSiteConfigurations = { try .mock() }
+        }
+        viewModel.isViewLoaded = true
+
+        await viewModel.invokeSetTextAndSendMessage(text: "")
+        interactor.setCurrentEngagement(.mock())
+        viewModel.update(for: .engaged(nil))
+        await waitUntil { viewModel.getPendingMessageForTesting().isEmpty }
+
+        let fileBubbles = (viewModel.pendingSection.items + viewModel.messagesSection.items).filter {
+            switch $0.kind {
+            case .outgoingMessage, .visitorMessage: return true
+            default: return false
+            }
+        }
+        XCTAssertEqual(fileBubbles.count, 1)
+    }
+
+    private func makeViewModelWithUploadedFile(
+        interactor: Interactor,
+        configure: (inout ChatViewModel.Environment) -> Void = { _ in }
+    ) throws -> ChatViewModel {
         var viewModelEnv = ChatViewModel.Environment.failing()
         viewModelEnv.fileManager.urlsForDirectoryInDomainMask = { _, _ in [.mock] }
         viewModelEnv.fileManager.createDirectoryAtUrlWithIntermediateDirectories = { _, _, _ in }
@@ -1501,11 +1567,8 @@ class ChatViewModelTests: XCTestCase {
         viewModelEnv.createFileUploadListModel = { _ in .mock(environment: fileUploadListViewModelEnv) }
         viewModelEnv.createSendMessagePayload = { CoreSdkClient.SendMessagePayload(content: $0, attachment: $1) }
         viewModelEnv.createEntryWidget = { _ in .mock() }
-        viewModel = ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
-
-        await viewModel.invokeSetTextAndSendMessage(text: "Mock")
-
-        XCTAssertEqual(calls.value, [.sendText(outgoingBubbles: 2), .sendFile(outgoingBubbles: 1)])
+        configure(&viewModelEnv)
+        return ChatViewModel.mock(interactor: interactor, environment: viewModelEnv)
     }
 
     func test_messagePreviewCancelsPreviousTaskWhenTextChanges() async {
