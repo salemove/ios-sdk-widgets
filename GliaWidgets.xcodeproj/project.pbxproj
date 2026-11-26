@@ -10,6 +10,7 @@
 		041F8A43587CE3D9966D35A4 /* GliaWidgets.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B6858469FEF9B12784E86B48 /* GliaWidgets.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		089BFF1E5F9BFEF1B6065866 /* GliaCore in Frameworks */ = {isa = PBXBuildFile; productRef = DA84D7B08C75624878DFFA1C /* GliaCore */; };
 		08AF6B1BD914E1BBBEC2541A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F70C532F27B7E1001E4C58 /* ContentView.swift */; };
+		0A44451391E8ACA844ED352E /* TestScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB9FAF4BC83DE1657022CBDD /* TestScheduler.swift */; };
 		15AE9223243F4AC46A874B79 /* ConfigurationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F70C432F27B7E1001E4C58 /* ConfigurationExtensions.swift */; };
 		18E49DEAF6C0AB05DDE1E3ED /* TranscriptModelTests+FileUploadAvailability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB24FB5E6905B201A2811F1 /* TranscriptModelTests+FileUploadAvailability.swift */; };
 		1A0452DD25DBD0A4000DA0C1 /* HeaderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0452DC25DBD0A4000DA0C1 /* HeaderButton.swift */; };
@@ -1774,6 +1775,7 @@
 		9AE9E4B427E0EE2E00BFE239 /* CallViewControllerVoiceOverTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewControllerVoiceOverTests.swift; sourceTree = "<group>"; };
 		9AE9E4B627E1E30500BFE239 /* MockHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHelpers.swift; sourceTree = "<group>"; };
 		A9882B487A64496EE362450F /* SensitiveDataView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SensitiveDataView.swift; sourceTree = "<group>"; };
+		AB9FAF4BC83DE1657022CBDD /* TestScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestScheduler.swift; sourceTree = "<group>"; };
 		AF03A7AE2A6E7DC40081887D /* AlertViewControllerDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertViewControllerDynamicTypeFontTests.swift; sourceTree = "<group>"; };
 		AF03A7B02A6E96870081887D /* BubbleViewDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleViewDynamicTypeFontTests.swift; sourceTree = "<group>"; };
 		AF03A7B22A6EA5490081887D /* CallViewControllerDynamicTypeFontTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewControllerDynamicTypeFontTests.swift; sourceTree = "<group>"; };
@@ -3627,6 +3629,7 @@
 			isa = PBXGroup;
 			children = (
 				2BC656652E8FDC1F007AECA6 /* Boxed.swift */,
+				AB9FAF4BC83DE1657022CBDD /* TestScheduler.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -7056,6 +7059,7 @@
 				C971476A7D6F0461EC00A6AC /* WebMessageCardViewTests.swift in Sources */,
 				1E4A6D48678E89FC8DD7F7D6 /* GliaTests+ConfigurationFailure.swift in Sources */,
 				18E49DEAF6C0AB05DDE1E3ED /* TranscriptModelTests+FileUploadAvailability.swift in Sources */,
+				0A44451391E8ACA844ED352E /* TestScheduler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

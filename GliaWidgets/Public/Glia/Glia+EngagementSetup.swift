@@ -72,7 +72,15 @@ extension Glia {
             // Root coordinator is not nil if secure conversation chat transcript is open
             if let rootCoordinator {
                 rootCoordinator.maximize()
-            } else {
+                return
+            }
+            afterPendingStatusResolved { [weak self] in
+                guard let self else { return }
+                // Another launch may have opened the UI while this one waited.
+                if let rootCoordinator {
+                    rootCoordinator.maximize()
+                    return
+                }
                 startRootCoordinator(
                     with: interactor,
                     viewFactory: viewFactory,
@@ -156,6 +164,25 @@ extension Glia {
             themeCompanyName: theme.call.connect.queue.firstText
         )
         return theme
+    }
+
+    /// Runs `action` once Core has reported whether a secure conversation is pending.
+    /// Right after `configure` the status is still the initial `false`, which would skip the
+    /// Leave Current Conversation dialog. After 2 seconds `action` runs as if nothing is pending.
+    func afterPendingStatusResolved(_ action: @escaping () -> Void) {
+        guard let pendingInteraction, !pendingInteraction.isPendingStatusResolved else {
+            action()
+            return
+        }
+        // The status and the timeout both complete the stream, so `action` runs exactly once.
+        pendingInteraction.$isPendingStatusResolved
+            .first { $0 }
+            .timeout(.seconds(2), scheduler: environment.combineScheduler.main)
+            .sink(
+                receiveCompletion: { _ in action() },
+                receiveValue: { _ in }
+            )
+            .store(in: &cancelBag)
     }
 
     func startRootCoordinator(

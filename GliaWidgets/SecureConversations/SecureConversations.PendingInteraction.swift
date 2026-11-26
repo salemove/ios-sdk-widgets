@@ -7,6 +7,10 @@ extension SecureConversations {
         @Published private(set) var unreadMessageCount = 0
         @Published private(set) var hasPendingInteraction = false
         @Published private(set) var hasTransferredSecureConversation = false
+        /// Becomes `true` once Core has delivered its first pending status, or the stream has ended.
+        /// It changes after `pendingStatus`, so `hasPendingInteraction` is already up to date
+        /// when subscribers see it.
+        @Published private(set) var isPendingStatusResolved = false
         private let environment: Environment
         private var pendingStatusTask: Task<Void, Never>?
         private var unreadMessageCountTask: Task<Void, Never>?
@@ -82,6 +86,7 @@ extension SecureConversations.PendingInteraction {
                 for try await value in stream {
                     await MainActor.run { [weak self] in
                         self?.pendingStatus = value
+                        self?.isPendingStatusResolved = true
                     }
                 }
             } catch is CancellationError {
@@ -90,6 +95,9 @@ extension SecureConversations.PendingInteraction {
                 await MainActor.run { [weak self] in
                     self?.pendingStatus = false
                 }
+            }
+            await MainActor.run { [weak self] in
+                self?.isPendingStatusResolved = true
             }
         }
     }

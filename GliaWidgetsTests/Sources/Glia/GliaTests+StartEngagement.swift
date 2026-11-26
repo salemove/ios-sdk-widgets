@@ -564,6 +564,71 @@ extension GliaTests {
         XCTAssertEqual(engagementLaunching.currentKind, .messaging(.chatTranscript))
     }
 
+    func testStartEngagementWaitsForLatePendingStatusAndShowsLeaveDialog() async throws {
+        let recorder = PendingStatusLaunchRecorder()
+        let sdk = try await makeSdkWithUnresolvedPendingStatus(recorder)
+
+        try sdk.getEngagementLauncher(queueIds: ["queueId"]).startChat()
+        recorder.scheduler.advance(by: .seconds(1))
+        XCTAssertTrue(recorder.launchings.isEmpty)
+
+        try XCTUnwrap(recorder.pendingStatus).yield(true)
+        await waitUntil { sdk.pendingInteraction?.isPendingStatusResolved == true }
+        recorder.scheduler.advance()
+        XCTAssertEqual(recorder.launchings, [.indirect(kind: .messaging(.chatTranscript), initialKind: .chat)])
+
+        // Passing the timeout afterwards must not start a second engagement.
+        recorder.scheduler.advance(by: .seconds(2))
+        XCTAssertEqual(recorder.launchings, [.indirect(kind: .messaging(.chatTranscript), initialKind: .chat)])
+    }
+
+    func testStartEngagementLaunchesDirectlyWhenPendingStatusTimesOut() async throws {
+        let recorder = PendingStatusLaunchRecorder()
+        let sdk = try await makeSdkWithUnresolvedPendingStatus(recorder)
+
+        try sdk.getEngagementLauncher(queueIds: ["queueId"]).startChat()
+        recorder.scheduler.advance(by: .seconds(1))
+        XCTAssertTrue(recorder.launchings.isEmpty)
+
+        recorder.scheduler.advance(by: .seconds(1))
+        XCTAssertEqual(recorder.launchings, [.direct(kind: .chat)])
+
+        // A status arriving after the timeout must not start a second engagement.
+        try XCTUnwrap(recorder.pendingStatus).yield(true)
+        await waitUntil { sdk.pendingInteraction?.isPendingStatusResolved == true }
+        recorder.scheduler.advance()
+        XCTAssertEqual(recorder.launchings, [.direct(kind: .chat)])
+    }
+
+    func testStartEngagementLaunchesDirectlyWhenPendingStatusFails() async throws {
+        let recorder = PendingStatusLaunchRecorder()
+        let sdk = try await makeSdkWithUnresolvedPendingStatus(recorder)
+
+        try sdk.getEngagementLauncher(queueIds: ["queueId"]).startChat()
+        XCTAssertTrue(recorder.launchings.isEmpty)
+
+        try XCTUnwrap(recorder.pendingStatus).finish(throwing: GliaError.internalError)
+        await waitUntil { sdk.pendingInteraction?.isPendingStatusResolved == true }
+        recorder.scheduler.advance()
+        XCTAssertEqual(recorder.launchings, [.direct(kind: .chat)])
+
+        // Passing the timeout afterwards must not start a second engagement.
+        recorder.scheduler.advance(by: .seconds(2))
+        XCTAssertEqual(recorder.launchings, [.direct(kind: .chat)])
+    }
+
+    func testStartEngagementDoesNotWaitWhenPendingStatusAlreadyArrived() async throws {
+        let recorder = PendingStatusLaunchRecorder()
+        let sdk = try await makeSdkWithUnresolvedPendingStatus(recorder)
+        try XCTUnwrap(recorder.pendingStatus).yield(true)
+        await waitUntil { sdk.pendingInteraction?.hasPendingInteraction == true }
+
+        try sdk.getEngagementLauncher(queueIds: ["queueId"]).startChat()
+
+        // The scheduler has not advanced, so the launch did not wait for it.
+        XCTAssertEqual(recorder.launchings, [.indirect(kind: .messaging(.chatTranscript), initialKind: .chat)])
+    }
+
     func testEngagementParamsDoNotLeakThroughEngagements() async throws {
         var environment = Glia.Environment.failing
         var logger = CoreSdkClient.Logger.failing
@@ -627,5 +692,47 @@ extension EngagementCoordinator.Environment: Transformable {
                 $0.preferredContentSizeCategory = { .unspecified }
             }
         }
+    }
+}
+
+private final class PendingStatusLaunchRecorder {
+    var launchings: [EngagementCoordinator.EngagementLaunching] = []
+    let scheduler = TestScheduler()
+    var pendingStatus: AsyncThrowingStream<Bool, Error>.Continuation?
+}
+
+private extension GliaTests {
+    /// Configures the SDK with a pending status stream that has not delivered anything yet.
+    func makeSdkWithUnresolvedPendingStatus(_ recorder: PendingStatusLaunchRecorder) async throws -> Glia {
+        var environment = Glia.Environment.failing
+        var logger = CoreSdkClient.Logger.failing
+        logger.configureLocalLogLevelClosure = { _ in }
+        logger.configureRemoteLogLevelClosure = { _ in }
+        logger.infoClosure = { _, _, _, _ in }
+        logger.prefixedClosure = { _ in logger }
+        environment.coreSdk.createLogger = { _ in logger }
+        environment.print = .mock
+        environment.conditionalCompilation.isDebug = { true }
+        environment.createRootCoordinator = { _, _, _, launching, _, _, _ in
+            recorder.launchings.append(launching)
+            return .mock(environment: .engagementCoordEnvironmentWithKeyWindow)
+        }
+        environment.combineScheduler = .init(
+            mainScheduler: .init(recorder.scheduler),
+            globalScheduler: .init(CoreSdkClient.ImmediateScheduler())
+        )
+        environment.coreSdk.localeProvider.getRemoteString = { _ in "" }
+        environment.coreSDKConfigurator.configureWithInteractor = { _ in }
+        environment.coreSDKConfigurator.configureWithConfiguration = { _ in }
+        environment.coreSdk.getCurrentEngagement = { nil }
+        environment.coreSdk.secureConversations.unreadMessageCountStream = { AsyncThrowingStream { _ in } }
+        environment.coreSdk.secureConversations.pendingSecureConversationStatusStream = {
+            AsyncThrowingStream { recorder.pendingStatus = $0 }
+        }
+
+        let sdk = Glia(environment: environment)
+        sdk.queuesMonitor = .mock()
+        try await sdk.configure(with: .mock(), theme: .mock())
+        return sdk
     }
 }
