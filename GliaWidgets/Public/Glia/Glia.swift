@@ -236,7 +236,7 @@ public class Glia {
         }
     }
 
-    // swiftlint:disable cyclomatic_complexity function_body_length
+    // swiftlint:disable function_body_length
     /// Setup SDK using specific engagement configuration without starting the engagement.
     /// - Parameters:
     ///   - configuration: Engagement configuration.
@@ -383,7 +383,7 @@ public class Glia {
             }
         }
     }
-    // swiftlint:enable cyclomatic_complexity function_body_length
+    // swiftlint:enable function_body_length
 
     /// Minimizes engagement view if ongoing engagement exists.
     /// Use this function to minimize the engagement view programmatically
