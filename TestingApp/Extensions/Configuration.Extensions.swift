@@ -179,8 +179,6 @@ extension ConfigurationError: CustomStringConvertible {
             return "invalidSite"
         case .invalidEnvironment:
             return "invalidEnvironment"
-        case .invalidSiteApiKey:
-            return "invalidSiteApiKey"
         case .invalidRegionEndpoint:
             return "invalidRegionEndpoint"
         case .invalidConfiguration:

@@ -273,7 +273,6 @@ public class Glia {
         }
 
         environment.openTelemetry.logger.i(.widgetsSdkConfiguring) {
-            $0[.apiKeyId] = .string(configuration.authorizationMethod.id)
             $0[.environment] = .string(configuration.environment.rawValue)
             $0[.localeCode] = .string(configuration.manualLocaleOverride ?? "N/A")
         }
@@ -374,9 +373,7 @@ public class Glia {
                 // or a `ConfigurationProcessError`, the `ConfigurationProcessError` is translated
                 // into a `GliaError`.
                 if let processError = error as? ProcessError {
-                    if processError == .invalidSiteApiKeyCredentials {
-                        errorForCompletion = GliaError.invalidSiteApiKeyCredentials
-                    } else if processError == .localeRetrieval {
+                    if processError == .localeRetrieval {
                         errorForCompletion = GliaError.invalidLocale
                     }
                 }
