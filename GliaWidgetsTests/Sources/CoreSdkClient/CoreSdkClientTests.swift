@@ -1,3 +1,4 @@
+import Combine
 @_spi(GliaWidgets) internal import GliaCoreSDK
 import XCTest
 @testable import GliaWidgets
@@ -89,5 +90,21 @@ final class CoreSdkClientTests: XCTestCase {
         client.getCurrentEngagement = { engagement }
 
         XCTAssertNil(client.getNonTransferredSecureConversationEngagement())
+    }
+
+    func testImmediateSchedulerPassesValuesThroughTimeoutWithoutFiringIt() {
+        let subject = PassthroughSubject<Int, Never>()
+        var events: [String] = []
+        let cancellable = subject
+            .timeout(.seconds(1), scheduler: CoreSdkClient.ImmediateScheduler())
+            .sink(
+                receiveCompletion: { _ in events.append("completed") },
+                receiveValue: { events.append("\($0)") }
+            )
+
+        XCTAssertEqual(events, [])
+        subject.send(1)
+        XCTAssertEqual(events, ["1"])
+        cancellable.cancel()
     }
 }

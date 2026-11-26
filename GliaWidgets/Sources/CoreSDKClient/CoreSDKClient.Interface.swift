@@ -360,8 +360,9 @@ extension CoreSdkClient {
             options: SchedulerOptions?,
             _ action: @escaping () -> Void
         ) -> any Combine.Cancellable {
-            action()
-            return AnyCancellable {}
+            // Repeating work never runs. `timeout` schedules its timer this way,
+            // and running it at once crashes Combine inside `subscribe`.
+            AnyCancellable {}
         }
     }
 
